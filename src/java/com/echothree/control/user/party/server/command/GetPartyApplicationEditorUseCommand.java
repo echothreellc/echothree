@@ -59,7 +59,7 @@ public class GetPartyApplicationEditorUseCommand
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ApplicationControl applicationControl;
 
@@ -71,6 +71,7 @@ public class GetPartyApplicationEditorUseCommand
 
     @Inject
     PartyLogic partyLogic;
+
 
     /** Creates a new instance of GetPartyApplicationEditorUseCommand */
     public GetPartyApplicationEditorUseCommand() {

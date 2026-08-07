@@ -22,13 +22,19 @@ import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
 import com.echothree.model.data.geo.server.value.GeoCodeAliasValue;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class GeoCodeAliasLogic
         extends BaseLogic {
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    GeoCodeAliasTypeLogic geoCodeAliasTypeLogic;
 
     protected GeoCodeAliasLogic() {
         super();
@@ -40,17 +46,13 @@ public class GeoCodeAliasLogic
 
     public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator eea, final GeoCode geoCode,
             final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
-        return geoControl.getGeoCodeAlias(geoCode, GeoCodeAliasTypeLogic.getInstance().getGeoCodeAliasTypeByName(eea,
+        return geoControl.getGeoCodeAlias(geoCode, geoCodeAliasTypeLogic.getGeoCodeAliasTypeByName(eea,
                 geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
     }
 
     public GeoCodeAliasValue getGeoCodeAliasValueUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode,
             final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
-        return geoControl.getGeoCodeAliasValueForUpdate(geoCode, GeoCodeAliasTypeLogic.getInstance().getGeoCodeAliasTypeByName(ema,
+        return geoControl.getGeoCodeAliasValueForUpdate(geoCode, geoCodeAliasTypeLogic.getGeoCodeAliasTypeByName(ema,
                 geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
     }
 

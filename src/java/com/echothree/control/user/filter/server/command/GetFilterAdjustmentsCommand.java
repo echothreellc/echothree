@@ -58,17 +58,18 @@ public class GetFilterAdjustmentsCommand
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetFilterAdjustmentsCommand */
-    public GetFilterAdjustmentsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterKindLogic filterKindLogic;
+
+
+    /** Creates a new instance of GetFilterAdjustmentsCommand */
+    public GetFilterAdjustmentsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     FilterKind filterKind;
 

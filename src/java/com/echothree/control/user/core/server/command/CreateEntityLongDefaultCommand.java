@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityLongDefaultCommand
@@ -50,8 +51,11 @@ public class CreateEntityLongDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LongAttribute", FieldType.SIGNED_LONG, true, null, null),
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
 
     /** Creates a new instance of CreateEntityLongDefaultCommand */
     public CreateEntityLongDefaultCommand() {
@@ -60,13 +64,13 @@ public class CreateEntityLongDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
             var longAttribute = Long.valueOf(form.getLongAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            EntityAttributeLogic.getInstance().createEntityLongDefault(this, entityAttribute,
+            entityAttributeLogic.createEntityLongDefault(this, entityAttribute,
                     longAttribute, addMissingAttributes, getPartyPK());
         }
 

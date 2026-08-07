@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class GeoCodeScopeLogic
         extends BaseLogic {
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected GeoCodeScopeLogic() {
         super();
@@ -52,7 +58,6 @@ public class GeoCodeScopeLogic
     public GeoCodeScope createGeoCodeScope(final ExecutionErrorAccumulator eea, final String geoCodeScopeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
         if(geoCodeScope == null) {
@@ -71,7 +76,6 @@ public class GeoCodeScopeLogic
 
     public GeoCodeScope getGeoCodeScopeByName(final ExecutionErrorAccumulator eea, final String geoCodeScopeName,
             final EntityPermission entityPermission) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName, entityPermission);
 
         if(geoCodeScope == null) {
@@ -92,9 +96,8 @@ public class GeoCodeScopeLogic
     public GeoCodeScope getGeoCodeScopeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final GeoCodeScopeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         GeoCodeScope geoCodeScope = null;
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScopeName = universalSpec.getGeoCodeScopeName();
-        var parameterCount = (geoCodeScopeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (geoCodeScopeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,7 +113,7 @@ public class GeoCodeScopeLogic
             }
             case 1 -> {
                 if(geoCodeScopeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GeoCodeScope.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -138,14 +141,10 @@ public class GeoCodeScopeLogic
     }
 
     public void updateGeoCodeScopeFromValue(GeoCodeScopeDetailValue geoCodeScopeDetailValue, BasePK updatedBy) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         geoControl.updateGeoCodeScopeFromValue(geoCodeScopeDetailValue, updatedBy);
     }
 
     private void checkDeleteGeoCodeScope(final ExecutionErrorAccumulator eea, final GeoCodeScope geoCodeScope) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         if(geoControl.countGeoCodesByGeoCodeScope(geoCodeScope) != 0) {
             eea.addExecutionError(ExecutionErrors.CannotDeleteGeoCodeScopeInUse.name(),
                     geoCodeScope.getLastDetail().getGeoCodeScopeName());
@@ -156,8 +155,6 @@ public class GeoCodeScopeLogic
         checkDeleteGeoCodeScope(eea, geoCodeScope);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var geoControl = Session.getModelController(GeoControl.class);
-
             geoControl.deleteGeoCodeScope(geoCodeScope, deletedBy);
         }
     }

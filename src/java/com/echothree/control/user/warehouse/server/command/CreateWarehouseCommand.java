@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWarehouseCommand
@@ -73,6 +73,22 @@ public class CreateWarehouseCommand
                 new FieldDefinition("ShippingManifestPrinterGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    WarehouseLogic warehouseLogic;
+
+    @Inject
+    WarehouseTypeLogic warehouseTypeLogic;
+
     
     /** Creates a new instance of CreateWarehouseCommand */
     public CreateWarehouseCommand() {
@@ -83,7 +99,6 @@ public class CreateWarehouseCommand
     protected BaseResult execute() {
         var result = WarehouseResultFactory.getCreateWarehouseResult();
         Warehouse warehouse = null;
-        var partyControl = Session.getModelController(PartyControl.class);
         var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
         var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
@@ -102,13 +117,10 @@ public class CreateWarehouseCommand
                     if(preferredCurrencyIsoName == null) {
                         preferredCurrency = null;
                     } else {
-                        var accountingControl = Session.getModelController(AccountingControl.class);
-
                         preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                     }
 
                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                        var printerControl = Session.getModelController(PrinterControl.class);
                         var inventoryMovePrinterGroupName = form.getInventoryMovePrinterGroupName();
                         var inventoryMovePrinterGroup = printerControl.getPrinterGroupByName(inventoryMovePrinterGroupName);
 
@@ -125,7 +137,7 @@ public class CreateWarehouseCommand
                                     var shippingManifestPrinterGroup = printerControl.getPrinterGroupByName(shippingManifestPrinterGroupName);
 
                                     if(shippingManifestPrinterGroup != null) {
-                                        var warehouseType = WarehouseTypeLogic.getInstance().getWarehouseTypeByName(this, form.getWarehouseTypeName());
+                                        var warehouseType = warehouseTypeLogic.getWarehouseTypeByName(this, form.getWarehouseTypeName());
 
                                         if(!hasExecutionErrors()) {
                                             var warehouseName = form.getWarehouseName();
@@ -134,7 +146,7 @@ public class CreateWarehouseCommand
                                             var sortOrder = Integer.valueOf(form.getSortOrder());
                                             var createdBy = getPartyPK();
 
-                                            warehouse = WarehouseLogic.getInstance().createWarehouse(this, warehouseName,
+                                            warehouse = warehouseLogic.createWarehouse(this, warehouseName,
                                                     warehouseType, preferredLanguage, preferredCurrency, preferredTimeZone,
                                                     preferredDateTimeFormat, name, isDefault, sortOrder, createdBy);
 

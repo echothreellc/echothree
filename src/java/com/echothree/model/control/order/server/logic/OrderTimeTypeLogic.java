@@ -36,14 +36,26 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class OrderTimeTypeLogic
         extends BaseLogic {
+
+    @Inject
+    OrderTimeControl orderTimeControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
 
     protected OrderTimeTypeLogic() {
         super();
@@ -55,7 +67,7 @@ public class OrderTimeTypeLogic
 
     public OrderTimeType createOrderTimeType(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderTimeTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
+        var orderType = orderTypeLogic.getOrderTypeByName(eea, orderTypeName);
         OrderTimeType orderTimeType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -67,7 +79,6 @@ public class OrderTimeTypeLogic
 
     public OrderTimeType createOrderTimeType(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderTimeTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
         if(orderTimeType == null) {
@@ -86,7 +97,6 @@ public class OrderTimeTypeLogic
 
     public OrderTimeType getOrderTimeTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderTimeTypeName,
             final EntityPermission entityPermission) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName, entityPermission);
 
         if(orderTimeType == null) {
@@ -107,7 +117,7 @@ public class OrderTimeTypeLogic
 
     public OrderTimeType getOrderTimeTypeByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderTimeTypeName,
             final EntityPermission entityPermission) {
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
+        var orderType = orderTypeLogic.getOrderTypeByName(eea, orderTypeName);
         OrderTimeType orderTimeType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -127,11 +137,10 @@ public class OrderTimeTypeLogic
 
     public OrderTimeType getOrderTimeTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final OrderTimeTypeUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var orderTypeName = universalSpec.getOrderTypeName();
         var orderTimeTypeName = universalSpec.getOrderTimeTypeName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(orderTypeName, orderTimeTypeName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         OrderTimeType orderTimeType = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -139,7 +148,6 @@ public class OrderTimeTypeLogic
 
             if(orderTypeName == null) {
                 if(allowDefault) {
-                    var orderTypeControl = Session.getModelController(OrderTypeControl.class);
                     orderType = orderTypeControl.getDefaultOrderType();
 
                     if(orderType == null) {
@@ -149,7 +157,7 @@ public class OrderTimeTypeLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                orderType = OrderTypeLogic.getInstance().getOrderTypeByName(eea, orderTypeName);
+                orderType = orderTypeLogic.getOrderTypeByName(eea, orderTypeName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -168,7 +176,7 @@ public class OrderTimeTypeLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.OrderTimeType.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -193,15 +201,11 @@ public class OrderTimeTypeLogic
 
     public void updateOrderTimeTypeFromValue(final ExecutionErrorAccumulator eea, OrderTimeTypeDetailValue orderTimeTypeDetailValue,
             BasePK updatedBy) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-
         orderTimeControl.updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, updatedBy);
     }
 
     public void deleteOrderTimeType(final ExecutionErrorAccumulator eea, final OrderTimeType orderTimeType,
             final BasePK deletedBy) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-
         orderTimeControl.deleteOrderTimeType(orderTimeType, deletedBy);
     }
 

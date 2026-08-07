@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUseCommand
@@ -59,6 +59,16 @@ public class GetUseCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    UseControl useControl;
+
+    @Inject
+    UseNameElementControl useNameElementControl;
+
+    @Inject
+    UseLogic useLogic;
+
     
     /** Creates a new instance of GetUseCommand */
     public GetUseCommand() {
@@ -67,7 +77,7 @@ public class GetUseCommand
     
     @Override
     protected Use getEntity() {
-        var use = UseLogic.getInstance().getUseByUniversalSpec(this, form, true);
+        var use = useLogic.getUseByUniversalSpec(this, form, true);
 
         if(!hasExecutionErrors()) {
             sendEvent(use.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,8 +91,6 @@ public class GetUseCommand
         var result = OfferResultFactory.getGetUseResult();
         
         if(use != null) {
-            var useControl = Session.getModelController(UseControl.class);
-            var useNameElementControl = Session.getModelController(UseNameElementControl.class);
             var userVisit = getUserVisit();
             
             result.setUse(useControl.getUseTransfer(userVisit, use));

@@ -24,6 +24,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class RemoveInvalidatedUserVisitsCommand
@@ -36,6 +37,10 @@ public class RemoveInvalidatedUserVisitsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
         ));
     }
+
+    @Inject
+    UserVisitLogic userVisitLogic;
+
     
     /** Creates a new instance of RemoveInvalidatedUserVisitsCommand */
     public RemoveInvalidatedUserVisitsCommand() {
@@ -44,7 +49,7 @@ public class RemoveInvalidatedUserVisitsCommand
     
     @Override
     protected BaseResult execute() {
-        UserVisitLogic.getInstance().removeInvalidatedUserVisits();
+        userVisitLogic.removeInvalidatedUserVisits();
         
         return null;
     }

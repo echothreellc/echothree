@@ -63,10 +63,13 @@ public class ContentLogic
     protected ContentControl contentControl;
 
     @Inject
+    protected OfferItemControl offerItemControl;
+
+    @Inject
     protected OfferUseControl offerUseControl;
 
     @Inject
-    protected OfferItemControl offerItemControl;
+    OfferItemLogic offerItemLogic;
 
     protected ContentLogic() {
         super();
@@ -297,7 +300,7 @@ public class ContentLogic
         var offerUse = getContentCategoryDefaultOfferUse(contentCategory);
         var offer = offerUse.getLastDetail().getOffer();
 
-        if(OfferItemLogic.getInstance().getOfferItemPrice(eea, offer, item, inventoryCondition, unitOfMeasureType, currency) != null) {
+        if(offerItemLogic.getOfferItemPrice(eea, offer, item, inventoryCondition, unitOfMeasureType, currency) != null) {
             var contentCategoryDetail = contentCategory.getLastDetail();
             var contentCatalog = contentCategoryDetail.getContentCatalog();
             var contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, item, inventoryCondition, unitOfMeasureType, currency);

@@ -60,16 +60,16 @@ public class GetFilterStepDestinationCommand
         );
     }
 
-    /** Creates a new instance of GetFilterStepDestinationCommand */
-    public GetFilterStepDestinationCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
-
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterLogic filterLogic;
+
+    /** Creates a new instance of GetFilterStepDestinationCommand */
+    public GetFilterStepDestinationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected FilterStepDestination getEntity() {

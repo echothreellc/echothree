@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnKindsCommand
@@ -50,9 +50,11 @@ public class GetReturnKindsCommand
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
 
     /** Creates a new instance of GetReturnKindsCommand */
     public GetReturnKindsCommand() {
@@ -66,14 +68,14 @@ public class GetReturnKindsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var returnControl = Session.getModelController(ReturnPolicyControl.class);
+        var returnControl = returnPolicyControl;
 
         return returnControl.countReturnKinds();
     }
 
     @Override
     protected Collection<ReturnKind> getEntities() {
-        var returnControl = Session.getModelController(ReturnPolicyControl.class);
+        var returnControl = returnPolicyControl;
 
         return returnControl.getReturnKinds();
     }
@@ -83,7 +85,7 @@ public class GetReturnKindsCommand
         var result = ReturnPolicyResultFactory.getGetReturnKindsResult();
 
         if(entities != null) {
-            var returnControl = Session.getModelController(ReturnPolicyControl.class);
+            var returnControl = returnPolicyControl;
 
             if(session.hasLimit(ReturnKindFactory.class)) {
                 result.setReturnKindCount(returnControl.countReturnKinds());

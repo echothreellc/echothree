@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContactWebAddressCommand
@@ -58,15 +58,31 @@ public class CreateContactWebAddressCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Url", FieldType.URL, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateContactWebAddressCommand */
     public CreateContactWebAddressCommand() {
@@ -83,18 +99,14 @@ public class CreateContactWebAddressCommand
     @Override
     protected BaseResult execute() {
         var result = ContactResultFactory.getCreateContactWebAddressResult();
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             BasePK createdBy = getPartyPK();
             var url = form.getUrl();
             var description = form.getDescription();
-            var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+            var contactMechanismName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
 
             var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.WEB_ADDRESS.name());
             var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,

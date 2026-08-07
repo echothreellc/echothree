@@ -41,9 +41,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPicklistTypeCommand
@@ -57,9 +57,9 @@ public class EditPicklistTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PicklistType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PicklistType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -76,6 +76,16 @@ public class EditPicklistTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    PicklistControl picklistControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of EditPicklistTypeCommand */
     public EditPicklistTypeCommand() {
@@ -94,7 +104,6 @@ public class EditPicklistTypeCommand
 
     @Override
     public PicklistType getEntity(EditPicklistTypeResult result) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistType picklistType;
         var picklistTypeName = spec.getPicklistTypeName();
 
@@ -120,8 +129,6 @@ public class EditPicklistTypeCommand
 
     @Override
     public void fillInResult(EditPicklistTypeResult result, PicklistType picklistType) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
-
         result.setPicklistType(picklistControl.getPicklistTypeTransfer(getUserVisit(), picklistType));
     }
 
@@ -132,7 +139,6 @@ public class EditPicklistTypeCommand
 
     @Override
     public void doLock(PicklistTypeEdit edit, PicklistType picklistType) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistTypeDescription = picklistControl.getPicklistTypeDescription(picklistType, getPreferredLanguage());
         var picklistTypeDetail = picklistType.getLastDetail();
 
@@ -156,7 +162,6 @@ public class EditPicklistTypeCommand
 
     @Override
     public void canUpdate(PicklistType picklistType) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistTypeName = edit.getPicklistTypeName();
         var duplicatePicklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
@@ -169,13 +174,11 @@ public class EditPicklistTypeCommand
 
             if(parentPicklistTypeName == null || parentPicklistType != null) {
                 if(picklistControl.isParentPicklistTypeSafe(picklistType, parentPicklistType)) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     var picklistSequenceTypeName = edit.getPicklistSequenceTypeName();
 
                     picklistSequenceType = sequenceControl.getSequenceTypeByName(picklistSequenceTypeName);
 
                     if(picklistSequenceTypeName == null || picklistSequenceType != null) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         var picklistWorkflowName = edit.getPicklistWorkflowName();
 
                         picklistWorkflow = picklistWorkflowName == null ? null : workflowControl.getWorkflowByName(picklistWorkflowName);
@@ -211,7 +214,6 @@ public class EditPicklistTypeCommand
 
     @Override
     public void doUpdate(PicklistType picklistType) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var partyPK = getPartyPK();
         var picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueForUpdate(picklistType);
         var picklistTypeDescription = picklistControl.getPicklistTypeDescriptionForUpdate(picklistType, getPreferredLanguage());

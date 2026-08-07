@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWorkflowCommand
@@ -56,8 +56,8 @@ public class EditWorkflowCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.Edit.name())
-            ))
+                        new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.Edit.name())
+                ))
         ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
@@ -75,6 +75,19 @@ public class EditWorkflowCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SecurityRoleGroupLogic securityRoleGroupLogic;
+
+    @Inject
+    SelectorTypeLogic selectorTypeLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     
     /** Creates a new instance of EditWorkflowCommand */
     public EditWorkflowCommand() {
@@ -93,7 +106,7 @@ public class EditWorkflowCommand
 
     @Override
     public Workflow getEntity(EditWorkflowResult result) {
-        return WorkflowLogic.getInstance().getWorkflowByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+        return workflowLogic.getWorkflowByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -103,14 +116,13 @@ public class EditWorkflowCommand
 
     @Override
     public void fillInResult(EditWorkflowResult result, Workflow freeOnBoard) {
-        var workflow = Session.getModelController(WorkflowControl.class);
+        var workflow = workflowControl;
 
         result.setWorkflow(workflow.getWorkflowTransfer(getUserVisit(), freeOnBoard));
     }
 
     @Override
     public void doLock(WorkflowEdit edit, Workflow workflow) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowDescription = workflowControl.getWorkflowDescription(workflow, getPreferredLanguage());
         var workflowDetail = workflow.getLastDetail();
         var selectorType = workflowDetail.getSelectorType();
@@ -133,7 +145,6 @@ public class EditWorkflowCommand
 
     @Override
     public void canUpdate(Workflow workflow) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = edit.getWorkflowName();
         var duplicateWorkflow = workflowControl.getWorkflowByName(workflowName);
 
@@ -145,12 +156,12 @@ public class EditWorkflowCommand
             var parameterCount = (selectorKindName == null ? 0 : 1) + (selectorTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
-                selectorType = parameterCount == 0 ? null : SelectorTypeLogic.getInstance().getSelectorTypeByName(this, selectorKindName, selectorTypeName);
+                selectorType = parameterCount == 0 ? null : selectorTypeLogic.getSelectorTypeByName(this, selectorKindName, selectorTypeName);
 
                 if(!hasExecutionErrors()) {
                     var securityRoleGroupName = edit.getSecurityRoleGroupName();
 
-                    securityRoleGroup = securityRoleGroupName == null ? null : SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByName(this, securityRoleGroupName);
+                    securityRoleGroup = securityRoleGroupName == null ? null : securityRoleGroupLogic.getSecurityRoleGroupByName(this, securityRoleGroupName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -160,7 +171,6 @@ public class EditWorkflowCommand
 
     @Override
     public void doUpdate(Workflow workflow) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyPK = getPartyPK();
         var workflowDetailValue = workflowControl.getWorkflowDetailValueForUpdate(workflow);
         var workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, getPreferredLanguage());

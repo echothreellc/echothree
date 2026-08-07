@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemTaxClassificationCommand
@@ -47,16 +47,26 @@ public class CreateItemTaxClassificationCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ItemTaxClassification.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemTaxClassification.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TaxClassificationName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    TaxControl taxControl;
+
     
     /** Creates a new instance of CreateItemTaxClassificationCommand */
     public CreateItemTaxClassificationCommand() {
@@ -65,17 +75,14 @@ public class CreateItemTaxClassificationCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var countryName = form.getCountryName();
             var countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
-                var taxControl = Session.getModelController(TaxControl.class);
                 var itemTaxClassification = taxControl.getItemTaxClassification(item, countryGeoCode);
 
                 if(itemTaxClassification == null) {

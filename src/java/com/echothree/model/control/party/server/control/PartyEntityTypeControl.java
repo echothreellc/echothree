@@ -32,6 +32,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 @CommandScope
 public class PartyEntityTypeControl
@@ -46,8 +47,11 @@ public class PartyEntityTypeControl
     //   Party Entity Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyEntityTypeFactory partyEntityTypeFactory;
+
     public PartyEntityType createPartyEntityType(Party party, EntityType entityType, Boolean confirmDelete, BasePK createdBy) {
-        var partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.getStartTime(), Session.MAX_TIME);
+        var partyEntityType = partyEntityTypeFactory.create(party, entityType, confirmDelete, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -77,23 +81,27 @@ public class PartyEntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyentitytypes " +
-                        "WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partyentitytypes
+                        WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyentitytypes " +
-                        "WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyentitytypes
+                        WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = partyEntityTypeFactory.prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, entityType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            partyEntityType = PartyEntityTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            partyEntityType = partyEntityTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -124,25 +132,29 @@ public class PartyEntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyentitytypes, entitytypes, entitytypedetails, componentvendors, componentvendordetails " +
-                        "WHERE pent_par_partyid = ? AND pent_thrutime = ? " +
-                        "AND pent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
-                        "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname";
+                query = """
+                        SELECT _ALL_
+                        FROM partyentitytypes, entitytypes, entitytypedetails, componentvendors, componentvendordetails
+                        WHERE pent_par_partyid = ? AND pent_thrutime = ?
+                        AND pent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                        AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                        ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partyentitytypes " +
-                        "WHERE pent_par_partyid = ? AND pent_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partyentitytypes
+                        WHERE pent_par_partyid = ? AND pent_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = PartyEntityTypeFactory.getInstance().prepareStatement(query);
+            var ps = partyEntityTypeFactory.prepareStatement(query);
 
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            partyEntityTypes = PartyEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyEntityTypes = partyEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch(SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -175,7 +187,7 @@ public class PartyEntityTypeControl
 
     public void updatePartyEntityTypeFromValue(PartyEntityTypeValue partyEntityTypeValue, BasePK updatedBy) {
         if(partyEntityTypeValue.hasBeenModified()) {
-            var partyEntityType = PartyEntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEntityTypeValue.getPrimaryKey());
+            var partyEntityType = partyEntityTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, partyEntityTypeValue.getPrimaryKey());
 
             partyEntityType.setThruTime(session.getStartTime());
             partyEntityType.store();
@@ -184,7 +196,7 @@ public class PartyEntityTypeControl
             var entityTypePK = partyEntityType.getEntityTypePK(); // Not updated
             var confirmDelete = partyEntityTypeValue.getConfirmDelete();
 
-            partyEntityType = PartyEntityTypeFactory.getInstance().create(partyPK, entityTypePK, confirmDelete, session.getStartTime(), Session.MAX_TIME);
+            partyEntityType = partyEntityTypeFactory.create(partyPK, entityTypePK, confirmDelete, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

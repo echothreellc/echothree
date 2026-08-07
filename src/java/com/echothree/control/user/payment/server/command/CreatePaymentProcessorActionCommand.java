@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentProcessorActionCommand
@@ -44,14 +45,17 @@ public class CreatePaymentProcessorActionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessor.name(), SecurityRoles.PaymentProcessorAction.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentProcessorActionTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorActionLogic paymentProcessorActionLogic;
 
     /** Creates a new instance of CreatePaymentProcessorDescriptionCommand */
     public CreatePaymentProcessorActionCommand() {
@@ -63,7 +67,7 @@ public class CreatePaymentProcessorActionCommand
         var paymentProcessorName = form.getPaymentProcessorName();
         var paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
 
-        PaymentProcessorActionLogic.getInstance().createPaymentProcessorAction(this, paymentProcessorName,
+        paymentProcessorActionLogic.createPaymentProcessorAction(this, paymentProcessorName,
                 paymentProcessorActionTypeName, getPartyPK());
 
         return null;

@@ -56,8 +56,8 @@ public class EditPartyTrainingClassSessionPageCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClassSessionPage.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -71,7 +71,7 @@ public class EditPartyTrainingClassSessionPageCommand
                 new FieldDefinition("ReadingEndTime", FieldType.DATE_TIME, false, null, null)
                 );
     }
-    
+
     @Inject
     private TrainingControl trainingControl;
 
@@ -83,6 +83,8 @@ public class EditPartyTrainingClassSessionPageCommand
 
     @Inject
     private TrainingClassPageLogic trainingClassPageLogic;
+
+
     
     /** Creates a new instance of EditPartyTrainingClassSessionPageCommand */
     public EditPartyTrainingClassSessionPageCommand() {

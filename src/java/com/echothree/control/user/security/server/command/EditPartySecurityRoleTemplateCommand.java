@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartySecurityRoleTemplateCommand
@@ -53,8 +53,8 @@ public class EditPartySecurityRoleTemplateCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartySecurityRoleTemplate.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,10 @@ public class EditPartySecurityRoleTemplateCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of EditPartySecurityRoleTemplateCommand */
     public EditPartySecurityRoleTemplateCommand() {
@@ -85,7 +89,6 @@ public class EditPartySecurityRoleTemplateCommand
     
     @Override
     public PartySecurityRoleTemplate getEntity(EditPartySecurityRoleTemplateResult result) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplate partySecurityRoleTemplate;
         var partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
 
@@ -111,14 +114,11 @@ public class EditPartySecurityRoleTemplateCommand
     
     @Override
     public void fillInResult(EditPartySecurityRoleTemplateResult result, PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        var securityControl = Session.getModelController(SecurityControl.class);
-        
         result.setPartySecurityRoleTemplate(securityControl.getPartySecurityRoleTemplateTransfer(getUserVisit(), partySecurityRoleTemplate));
     }
     
     @Override
     public void doLock(PartySecurityRoleTemplateEdit edit, PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getPreferredLanguage());
         var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
         
@@ -133,7 +133,6 @@ public class EditPartySecurityRoleTemplateCommand
         
     @Override
     public void canUpdate(PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var partySecurityRoleTemplateName = edit.getPartySecurityRoleTemplateName();
         var duplicatePartySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
 
@@ -144,7 +143,6 @@ public class EditPartySecurityRoleTemplateCommand
     
     @Override
     public void doUpdate(PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var partyPK = getPartyPK();
         var partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueForUpdate(partySecurityRoleTemplate);
         var partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescriptionForUpdate(partySecurityRoleTemplate, getPreferredLanguage());

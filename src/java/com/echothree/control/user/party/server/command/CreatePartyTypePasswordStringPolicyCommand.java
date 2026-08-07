@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyTypePasswordStringPolicyCommand
@@ -59,8 +59,15 @@ public class CreatePartyTypePasswordStringPolicyCommand
                 new FieldDefinition("RequiredLowerCaseCount", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MaximumRepeated", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MinimumCharacterTypes", FieldType.UNSIGNED_INTEGER, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of CreatePartyTypePasswordStringPolicyCommand */
     public CreatePartyTypePasswordStringPolicyCommand() {
@@ -82,7 +89,6 @@ public class CreatePartyTypePasswordStringPolicyCommand
         if((minimumPasswordLifetimeParameterCount == 0 || minimumPasswordLifetimeParameterCount == 2) &&
                 (maximumPasswordLifetimeParameterCount == 0 || maximumPasswordLifetimeParameterCount == 2) &&
                 (expirationWarningTimeParameterCount == 0 || expirationWarningTimeParameterCount == 2)) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyTypeName = form.getPartyTypeName();
             var partyType = partyControl.getPartyTypeByName(partyTypeName);
             
@@ -91,7 +97,6 @@ public class CreatePartyTypePasswordStringPolicyCommand
                     var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
 
                     if(partyTypePasswordStringPolicy == null) {
-                        var uomControl = Session.getModelController(UomControl.class);
                         var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {

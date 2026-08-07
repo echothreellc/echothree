@@ -35,9 +35,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditForumMessageAttachmentCommand
@@ -58,6 +58,13 @@ public class EditForumMessageAttachmentCommand
                 new FieldDefinition("String", FieldType.STRING, false, 1L, 512L)
                 );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
     
     /** Creates a new instance of EditForumMessageAttachmentCommand */
     public EditForumMessageAttachmentCommand() {
@@ -79,7 +86,6 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public ForumMessageAttachment getEntity(EditForumMessageAttachmentResult result) {
-        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageAttachment forumMessageAttachment = null;
         var forumMessageName = spec.getForumMessageName();
         var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
@@ -110,8 +116,6 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void fillInResult(EditForumMessageAttachmentResult result, ForumMessageAttachment forumMessageAttachment) {
-        var forumControl = Session.getModelController(ForumControl.class);
-
         result.setForumMessageAttachment(forumControl.getForumMessageAttachmentTransfer(getUserVisit(), forumMessageAttachment));
     }
 
@@ -119,8 +123,6 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void doLock(ForumMessageAttachmentEdit edit, ForumMessageAttachment forumMessageAttachment) {
-        var forumControl = Session.getModelController(ForumControl.class);
-        
         mimeType = forumMessageAttachment.getLastDetail().getMimeType();
 
         edit.setMimeTypeName(mimeType == null? null: mimeType.getLastDetail().getMimeTypeName());
@@ -139,7 +141,6 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void canUpdate(ForumMessageAttachment forumMessageAttachment) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = edit.getMimeTypeName();
 
         mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
@@ -163,7 +164,6 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void doUpdate(ForumMessageAttachment forumMessageAttachment) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessageAttachmentDetailValue = forumControl.getForumMessageAttachmentDetailValueForUpdate(forumMessageAttachment);
         var entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         var updatedBy = getPartyPK();

@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorCommand
@@ -65,6 +65,18 @@ public class GetVendorCommand
         );
     }
 
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    VendorLogic vendorLogic;
+
     /** Creates a new instance of GetVendorCommand */
     public GetVendorCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -83,7 +95,7 @@ public class GetVendorCommand
         partyName = form.getPartyName();
         universalEntitySpec = form;
         parameterCount = (vendorName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+                entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(!canSpecifyParty() && parameterCount != 0) {
             securityResult = getInsufficientSecurityResult();
@@ -99,15 +111,13 @@ public class GetVendorCommand
         if(parameterCount == 0) {
             var party = getParty();
 
-            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.VENDOR.name());
+            partyLogic.checkPartyType(this, party, PartyTypes.VENDOR.name());
 
             if(!hasExecutionErrors()) {
-                var vendorControl = Session.getModelController(VendorControl.class);
-
                 vendor = vendorControl.getVendor(party);
             }
         } else {
-            vendor = VendorLogic.getInstance().getVendorByName(this, vendorName, partyName, universalEntitySpec);
+            vendor = vendorLogic.getVendorByName(this, vendorName, partyName, universalEntitySpec);
         }
 
         if(vendor != null) {
@@ -122,8 +132,6 @@ public class GetVendorCommand
         var result = VendorResultFactory.getGetVendorResult();
 
         if(vendor != null) {
-            var vendorControl = Session.getModelController(VendorControl.class);
-
             result.setVendor(vendorControl.getVendorTransfer(getUserVisit(), vendor));
         }
 

@@ -25,6 +25,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetUserVisitPreferredLanguageCommand
@@ -35,8 +36,11 @@ public class SetUserVisitPreferredLanguageCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    LanguageLogic languageLogic;
 
     /** Creates a new instance of SetUserVisitPreferredLanguageCommand */
     public SetUserVisitPreferredLanguageCommand() {
@@ -45,11 +49,9 @@ public class SetUserVisitPreferredLanguageCommand
     
     @Override
     protected BaseResult execute() {
-        var currency = LanguageLogic.getInstance().getLanguageByName(this, form.getLanguageIsoName());
+        var currency = languageLogic.getLanguageByName(this, form.getLanguageIsoName());
 
         if(!hasExecutionErrors()) {
-            var userControl = getUserControl();
-
             userControl.setUserVisitPreferredLanguage(getUserVisitForUpdate(), currency, getPartyPK());
         }
 

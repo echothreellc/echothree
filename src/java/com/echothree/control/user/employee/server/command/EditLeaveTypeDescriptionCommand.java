@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLeaveTypeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditLeaveTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LeaveType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LeaveTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,12 @@ public class EditLeaveTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditLeaveTypeDescriptionCommand */
     public EditLeaveTypeDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditLeaveTypeDescriptionCommand
 
     @Override
     public LeaveTypeDescription getEntity(EditLeaveTypeDescriptionResult result) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveTypeDescription leaveTypeDescription = null;
         var leaveTypeName = spec.getLeaveTypeName();
         var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
         if(leaveType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditLeaveTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLeaveTypeDescriptionResult result, LeaveTypeDescription leaveTypeDescription) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-
         result.setLeaveTypeDescription(employeeControl.getLeaveTypeDescriptionTransfer(getUserVisit(), leaveTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditLeaveTypeDescriptionCommand
 
     @Override
     public void doUpdate(LeaveTypeDescription leaveTypeDescription) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var leaveTypeDescriptionValue = employeeControl.getLeaveTypeDescriptionValue(leaveTypeDescription);
 
         leaveTypeDescriptionValue.setDescription(edit.getDescription());

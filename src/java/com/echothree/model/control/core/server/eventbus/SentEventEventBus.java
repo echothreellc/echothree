@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.eventbus;
 
 import com.google.common.eventbus.EventBus;
 import io.github.classgraph.ClassGraph;
-import java.lang.reflect.InvocationTargetException;
+import javax.enterprise.inject.spi.CDI;
 
 public class SentEventEventBus {
 
@@ -35,12 +35,9 @@ public class SentEventEventBus {
 
             for(var sentEventSubscriberClass : sentEventSubscriberClasses) {
                 var clazz = sentEventSubscriberClass.loadClass();
-                var constructor = clazz.getDeclaredConstructor();
 
-                eventBus.register(constructor.newInstance());
+                eventBus.register(CDI.current().select(clazz).get());
             }
-        } catch(InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
-            throw new RuntimeException(e);
         }
     }
 

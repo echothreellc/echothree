@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePaymentMethodTypeCommand
@@ -44,13 +45,17 @@ public class DeletePaymentMethodTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethodType.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentMethodTypeLogic paymentMethodTypeLogic;
+
     
     /** Creates a new instance of DeletePaymentMethodTypeCommand */
     public DeletePaymentMethodTypeCommand() {
@@ -60,10 +65,10 @@ public class DeletePaymentMethodTypeCommand
     @Override
     protected BaseResult execute() {
         var paymentMethodTypeName = form.getPaymentMethodTypeName();
-        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByNameForUpdate(this, paymentMethodTypeName);
+        var paymentMethodType = paymentMethodTypeLogic.getPaymentMethodTypeByNameForUpdate(this, paymentMethodTypeName);
         
         if(!hasExecutionErrors()) {
-            PaymentMethodTypeLogic.getInstance().deletePaymentMethodType(this, paymentMethodType, getPartyPK());
+            paymentMethodTypeLogic.deletePaymentMethodType(this, paymentMethodType, getPartyPK());
         }
         
         return null;

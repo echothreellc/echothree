@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTypeContactListCommand
@@ -55,8 +55,8 @@ public class EditPartyTypeContactListCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.PartyTypeContactList.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditPartyTypeContactListCommand
                 new FieldDefinition("AddWhenCreated", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditPartyTypeContactListCommand */
     public EditPartyTypeContactListCommand() {
@@ -85,13 +92,11 @@ public class EditPartyTypeContactListCommand
 
     @Override
     public PartyTypeContactList getEntity(EditPartyTypeContactListResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyTypeContactList partyTypeContactList = null;
         var partyTypeName = spec.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
             var contactListName = spec.getContactListName();
             var contactList = contactListControl.getContactListByName(contactListName);
 
@@ -122,8 +127,6 @@ public class EditPartyTypeContactListCommand
 
     @Override
     public void fillInResult(EditPartyTypeContactListResult result, PartyTypeContactList partyTypeContactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setPartyTypeContactList(contactListControl.getPartyTypeContactListTransfer(getUserVisit(), partyTypeContactList));
     }
 
@@ -134,7 +137,6 @@ public class EditPartyTypeContactListCommand
 
     @Override
     public void doUpdate(PartyTypeContactList partyTypeContactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyTypeContactListValue = contactListControl.getPartyTypeContactListValue(partyTypeContactList);
 
         partyTypeContactListValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));

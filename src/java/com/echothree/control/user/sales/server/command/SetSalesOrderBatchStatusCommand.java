@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetSalesOrderBatchStatusCommand
@@ -43,15 +44,19 @@ public class SetSalesOrderBatchStatusCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderBatchStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderBatchStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SalesOrderBatchStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SalesOrderBatchLogic salesOrderBatchLogic;
+
     
     /** Creates a new instance of SetSalesOrderBatchStatusCommand */
     public SetSalesOrderBatchStatusCommand() {
@@ -60,12 +65,12 @@ public class SetSalesOrderBatchStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, form.getBatchName());
+        var batch = salesOrderBatchLogic.getBatchByName(this, form.getBatchName());
 
         if(batch != null) {
             var salesOrderBatchStatusChoice = form.getSalesOrderBatchStatusChoice();
 
-            SalesOrderBatchLogic.getInstance().setSalesOrderBatchStatus(session, this, batch, salesOrderBatchStatusChoice, getPartyPK());
+            salesOrderBatchLogic.setSalesOrderBatchStatus(session, this, batch, salesOrderBatchStatusChoice, getPartyPK());
         }
         
         return null;

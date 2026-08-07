@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSearchSortOrderCommand
@@ -45,15 +45,19 @@ public class DeleteSearchSortOrderCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SearchSortOrder.name(), SecurityRoles.Delete.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SearchSortOrder.name(), SecurityRoles.Delete.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SearchSortOrderName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of DeleteSearchSortOrderCommand */
     public DeleteSearchSortOrderCommand() {
@@ -62,7 +66,6 @@ public class DeleteSearchSortOrderCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKindName = form.getSearchKindName();
         var searchKind = searchControl.getSearchKindByName(searchKindName);
         

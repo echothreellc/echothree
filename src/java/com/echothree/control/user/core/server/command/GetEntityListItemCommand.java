@@ -29,6 +29,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityListItemCommand
@@ -43,8 +44,12 @@ public class GetEntityListItemCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of GetEntityListItemCommand */
     public GetEntityListItemCommand() {
@@ -54,7 +59,7 @@ public class GetEntityListItemCommand
     @Override
     protected EntityListItem getEntity() {
         EntityListItem entityListItem = null;
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this,
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this,
                 form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
                 
         if(!hasExecutionErrors()) {

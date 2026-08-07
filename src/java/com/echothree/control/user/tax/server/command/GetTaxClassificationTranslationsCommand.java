@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTaxClassificationTranslationsCommand
@@ -48,14 +48,21 @@ public class GetTaxClassificationTranslationsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TaxClassification.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TaxClassificationName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    TaxControl taxControl;
+
     
     /** Creates a new instance of GetTaxClassificationTranslationsCommand */
     public GetTaxClassificationTranslationsCommand() {
@@ -64,13 +71,11 @@ public class GetTaxClassificationTranslationsCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var result = TaxResultFactory.getGetTaxClassificationTranslationsResult();
         var countryName = form.getCountryName();
         var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            var taxControl = Session.getModelController(TaxControl.class);
             var taxClassificationName = form.getTaxClassificationName();
             var taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
             

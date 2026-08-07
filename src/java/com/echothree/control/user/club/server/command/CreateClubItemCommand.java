@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateClubItemCommand
@@ -62,6 +62,16 @@ public class CreateClubItemCommand
                 new FieldDefinition("SubscriptionTime", FieldType.UNSIGNED_LONG, false, null, null)
         );
     }
+
+    @Inject
+    ClubControl clubControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of CreateClubItemCommand */
     public CreateClubItemCommand() {
@@ -70,7 +80,6 @@ public class CreateClubItemCommand
     
     @Override
     protected BaseResult execute() {
-        var clubControl = Session.getModelController(ClubControl.class);
         var clubName = form.getClubName();
         var club = clubControl.getClubByName(clubName);
         
@@ -79,7 +88,6 @@ public class CreateClubItemCommand
             var clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
             
             if(clubItemType != null) {
-                var itemControl = Session.getModelController(ItemControl.class);
                 var itemName = form.getItemName();
                 var item = itemControl.getItemByName(itemName);
                 
@@ -90,7 +98,6 @@ public class CreateClubItemCommand
                         var clubItem = clubControl.getClubItem(club, clubItemType, item);
                         
                         if(clubItem == null) {
-                            var uomControl = Session.getModelController(UomControl.class);
                             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             UnitOfMeasureType unitOfMeasureType = null;
                             

@@ -29,14 +29,17 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TransactionTimeLogic
         extends BaseLogic {
+
+    @Inject
+    TransactionTimeControl transactionTimeControl;
 
     protected TransactionTimeLogic() {
         super();
@@ -47,7 +50,6 @@ public class TransactionTimeLogic
     }
 
     public TransactionTimeType getTransactionTimeTypeByName(final ExecutionErrorAccumulator eea, final String transactionTimeTypeName) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeType = transactionTimeControl.getTransactionTimeTypeByName(transactionTimeTypeName);
 
         if(transactionTimeType == null) {
@@ -58,7 +60,6 @@ public class TransactionTimeLogic
     }
 
     public void createTransactionTime(final ExecutionErrorAccumulator eea, final Transaction transaction, final String transactionTimeTypeName, final Long time, final BasePK partyPK) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeType = transactionTimeControl.getTransactionTimeTypeByName(transactionTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -72,7 +73,6 @@ public class TransactionTimeLogic
     }
 
     public void updateTransactionTime(final ExecutionErrorAccumulator eea, final Transaction transaction, final String transactionTimeTypeName, final Long time, final BasePK partyPK) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeType = transactionTimeControl.getTransactionTimeTypeByName(transactionTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -97,7 +97,6 @@ public class TransactionTimeLogic
 
     public void createOrUpdateTransactionTime(final ExecutionErrorAccumulator eea, final Transaction transaction, final String transactionTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeType = getTransactionTimeTypeByName(eea, transactionTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -113,7 +112,6 @@ public class TransactionTimeLogic
     }
 
     private TransactionTime getTransactionTimeEntity(final ExecutionErrorAccumulator eea, final Transaction transaction, final String transactionTimeTypeName) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeType = getTransactionTimeTypeByName(eea, transactionTimeTypeName);
         TransactionTime result = null;
 
@@ -138,15 +136,14 @@ public class TransactionTimeLogic
     public TransactionTimeTransfer getTransactionTimeTransfer(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final Transaction transaction, final String transactionTimeTypeName) {
         var transactionTime = getTransactionTimeEntity(eea, transaction, transactionTimeTypeName);
         
-        return transactionTime == null ? null : Session.getModelController(TransactionTimeControl.class).getTransactionTimeTransfer(userVisit, transactionTime);
+        return transactionTime == null ? null : transactionTimeControl.getTransactionTimeTransfer(userVisit, transactionTime);
     }
 
     public List<TransactionTimeTransfer> getTransactionTimeTransfersByOrder(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final Transaction transaction) {
-        return Session.getModelController(TransactionTimeControl.class).getTransactionTimeTransfersByTransaction(userVisit, transaction);
+        return transactionTimeControl.getTransactionTimeTransfersByTransaction(userVisit, transaction);
     }
 
     public void deleteTransactionTime(final ExecutionErrorAccumulator eea, final Transaction transaction, final String transactionTimeTypeName, final BasePK deletedBy) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeType = getTransactionTimeTypeByName(eea, transactionTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {

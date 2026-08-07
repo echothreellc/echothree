@@ -41,13 +41,49 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemAliasChecksumTypeLogic
         extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    BooklandEanChecksumLogic booklandEanChecksumLogic;
+
+    @Inject
+    Ean13ChecksumLogic ean13ChecksumLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    Gtin12ChecksumLogic gtin12ChecksumLogic;
+
+    @Inject
+    Gtin13ChecksumLogic gtin13ChecksumLogic;
+
+    @Inject
+    Gtin14ChecksumLogic gtin14ChecksumLogic;
+
+    @Inject
+    Gtin8ChecksumLogic gtin8ChecksumLogic;
+
+    @Inject
+    Isbn10ChecksumLogic isbn10ChecksumLogic;
+
+    @Inject
+    Isbn13ChecksumLogic isbn13ChecksumLogic;
+
+    @Inject
+    UpcAChecksumLogic upcAChecksumLogic;
+
+    @Inject
+    UpcEChecksumLogic upcEChecksumLogic;
 
     protected ItemAliasChecksumTypeLogic() {
         super();
@@ -59,7 +95,6 @@ public class ItemAliasChecksumTypeLogic
 
     public ItemAliasChecksumType getItemAliasChecksumTypeByName(final ExecutionErrorAccumulator eea, final String itemAliasChecksumTypeName,
             final EntityPermission entityPermission) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName, entityPermission);
 
         if(itemAliasChecksumType == null) {
@@ -80,9 +115,8 @@ public class ItemAliasChecksumTypeLogic
     public ItemAliasChecksumType getItemAliasChecksumTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ItemAliasChecksumTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemAliasChecksumType itemAliasChecksumType = null;
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemAliasChecksumTypeName = universalSpec.getItemAliasChecksumTypeName();
-        var parameterCount = (itemAliasChecksumTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemAliasChecksumTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -98,7 +132,7 @@ public class ItemAliasChecksumTypeLogic
             }
             case 1 -> {
                 if(itemAliasChecksumTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasChecksumType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -131,16 +165,16 @@ public class ItemAliasChecksumTypeLogic
 
         if(itemAliasChecksumType != null) {
             switch(ItemAliasChecksumTypes.valueOf(itemAliasChecksumType.getItemAliasChecksumTypeName())) {
-                case ISBN_10 -> Isbn10ChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case ISBN_13 -> Isbn13ChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case UPC_A -> UpcAChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case UPC_E -> UpcEChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case EAN_13 -> Ean13ChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case BOOKLAND_EAN -> BooklandEanChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case GTIN_8 -> Gtin8ChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case GTIN_12 -> Gtin12ChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case GTIN_13 -> Gtin13ChecksumLogic.getInstance().checkChecksum(eea, alias);
-                case GTIN_14 -> Gtin14ChecksumLogic.getInstance().checkChecksum(eea, alias);
+                case ISBN_10 -> isbn10ChecksumLogic.checkChecksum(eea, alias);
+                case ISBN_13 -> isbn13ChecksumLogic.checkChecksum(eea, alias);
+                case UPC_A -> upcAChecksumLogic.checkChecksum(eea, alias);
+                case UPC_E -> upcEChecksumLogic.checkChecksum(eea, alias);
+                case EAN_13 -> ean13ChecksumLogic.checkChecksum(eea, alias);
+                case BOOKLAND_EAN -> booklandEanChecksumLogic.checkChecksum(eea, alias);
+                case GTIN_8 -> gtin8ChecksumLogic.checkChecksum(eea, alias);
+                case GTIN_12 -> gtin12ChecksumLogic.checkChecksum(eea, alias);
+                case GTIN_13 -> gtin13ChecksumLogic.checkChecksum(eea, alias);
+                case GTIN_14 -> gtin14ChecksumLogic.checkChecksum(eea, alias);
                 case NONE -> {}
             }
         }

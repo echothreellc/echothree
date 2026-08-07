@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributesCommand
@@ -63,6 +64,10 @@ public class GetEntityAttributesCommand
                 new FieldDefinition("EntityAttributeTypeNames", FieldType.STRING, false, null, null)
         );
     }
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of GetEntityAttributesCommand */
     public GetEntityAttributesCommand() {
@@ -76,7 +81,7 @@ public class GetEntityAttributesCommand
     protected void handleForm() {
         var entityAttributeTypeNames = form.getEntityAttributeTypeNames();
 
-        entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
+        entityType = entityTypeLogic.getEntityTypeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors() && entityAttributeTypeNames != null) {
             var entityAttributeTypeNamesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(entityAttributeTypeNames).toArray(new String[0]);

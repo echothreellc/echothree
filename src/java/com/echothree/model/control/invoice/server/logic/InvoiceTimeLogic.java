@@ -22,12 +22,15 @@ import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class InvoiceTimeLogic {
+
+    @Inject
+    InvoiceControl invoiceControl;
 
     protected InvoiceTimeLogic() {
         super();
@@ -50,7 +53,6 @@ public class InvoiceTimeLogic {
 
     public void createOrUpdateInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceDetail = invoice.getLastDetail();
         var invoiceType = invoiceDetail.getInvoiceType();
         var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
@@ -72,7 +74,6 @@ public class InvoiceTimeLogic {
     }
 
     public Long getInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceDetail = invoice.getLastDetail();
         var invoiceType = invoiceDetail.getInvoiceType();
         var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
@@ -98,7 +99,6 @@ public class InvoiceTimeLogic {
     }
 
     public void deleteInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final BasePK deletedBy) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceDetail = invoice.getLastDetail();
         var invoiceType = invoiceDetail.getInvoiceType();
         var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);

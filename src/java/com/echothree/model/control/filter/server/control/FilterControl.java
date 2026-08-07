@@ -227,6 +227,12 @@ public class FilterControl
     //   Filter Kinds
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected FilterKindFactory filterKindFactory;
+
+    @Inject
+    protected FilterKindDetailFactory filterKindDetailFactory;
+
     public FilterKind createFilterKind(String filterKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultFilterKind = getDefaultFilterKind();
         var defaultFound = defaultFilterKind != null;
@@ -240,12 +246,12 @@ public class FilterControl
             isDefault = true;
         }
 
-        var filterKind = FilterKindFactory.getInstance().create();
-        var filterKindDetail = FilterKindDetailFactory.getInstance().create(filterKind, filterKindName, isDefault, sortOrder,
+        var filterKind = filterKindFactory.create();
+        var filterKindDetail = filterKindDetailFactory.create(filterKind, filterKindName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        filterKind = FilterKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        filterKind = filterKindFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 filterKind.getPrimaryKey());
         filterKind.setActiveDetail(filterKindDetail);
         filterKind.setLastDetail(filterKindDetail);
@@ -258,16 +264,18 @@ public class FilterControl
     
     public long countFilterKinds() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterkinds, filterkinddetails " +
-                "WHERE fltk_activedetailid = fltkdt_filterkinddetailid");
+                """
+                SELECT COUNT(*)
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
+                """);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterKind */
     public FilterKind getFilterKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterKindPK(entityInstance.getEntityUniqueId());
 
-        return FilterKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return filterKindFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public FilterKind getFilterKindByEntityInstance(EntityInstance entityInstance) {
@@ -284,19 +292,23 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ?");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ?
+                FOR UPDATE
+                """);
         getFilterKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public FilterKind getFilterKindByName(String filterKindName, EntityPermission entityPermission) {
-        return FilterKindFactory.getInstance().getEntityFromQuery(entityPermission, getFilterKindByNameQueries,
+        return filterKindFactory.getEntityFromQuery(entityPermission, getFilterKindByNameQueries,
                 filterKindName);
     }
 
@@ -322,19 +334,23 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFilterKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public FilterKind getDefaultFilterKind(EntityPermission entityPermission) {
-        return FilterKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultFilterKindQueries);
+        return filterKindFactory.getEntityFromQuery(entityPermission, getDefaultFilterKindQueries);
     }
 
     public FilterKind getDefaultFilterKind() {
@@ -355,21 +371,25 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid "
-                + "ORDER BY fltkdt_sortorder, fltkdt_filterkindname "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
+                ORDER BY fltkdt_sortorder, fltkdt_filterkindname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinds, filterkinddetails "
-                + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinds, filterkinddetails
+                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
+                FOR UPDATE
+                """);
         getFilterKindsQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<FilterKind> getFilterKinds(EntityPermission entityPermission) {
-        return FilterKindFactory.getInstance().getEntitiesFromQuery(entityPermission, getFilterKindsQueries);
+        return filterKindFactory.getEntitiesFromQuery(entityPermission, getFilterKindsQueries);
     }
 
     public List<FilterKind> getFilterKinds() {
@@ -433,7 +453,7 @@ public class FilterControl
     }
 
     private void updateFilterKindFromValue(FilterKindDetailValue filterKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var filterKind = FilterKindFactory.getInstance().getEntityFromPK(
+        var filterKind = filterKindFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, filterKindDetailValue.getFilterKindPK());
         var filterKindDetail = filterKind.getActiveDetailForUpdate();
 
@@ -461,7 +481,7 @@ public class FilterControl
             }
         }
 
-        filterKindDetail = FilterKindDetailFactory.getInstance().create(filterKindPK, filterKindName, isDefault, sortOrder, session.getStartTime(),
+        filterKindDetail = filterKindDetailFactory.create(filterKindPK, filterKindName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         filterKind.setActiveDetail(filterKindDetail);
@@ -508,9 +528,12 @@ public class FilterControl
     //   Filter Kind Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected FilterKindDescriptionFactory filterKindDescriptionFactory;
+
     public FilterKindDescription createFilterKindDescription(FilterKind filterKind, Language language, String description,
             BasePK createdBy) {
-        var filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind,
+        var filterKindDescription = filterKindDescriptionFactory.create(filterKind,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -524,19 +547,23 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinddescriptions "
-                + "WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM filterkinddescriptions
+                WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinddescriptions "
-                + "WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinddescriptions
+                WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ?
+                FOR UPDATE
+                """);
         getFilterKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private FilterKindDescription getFilterKindDescription(FilterKind filterKind, Language language, EntityPermission entityPermission) {
-        return FilterKindDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getFilterKindDescriptionQueries,
+        return filterKindDescriptionFactory.getEntityFromQuery(entityPermission, getFilterKindDescriptionQueries,
                 filterKind, language, Session.MAX_TIME);
     }
 
@@ -562,20 +589,24 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filterkinddescriptions, languages "
-                + "WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ? AND fltkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM filterkinddescriptions, languages
+                WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ? AND fltkd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filterkinddescriptions "
-                + "WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filterkinddescriptions
+                WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ?
+                FOR UPDATE
+                """);
         getFilterKindDescriptionsByFilterKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<FilterKindDescription> getFilterKindDescriptionsByFilterKind(FilterKind filterKind, EntityPermission entityPermission) {
-        return FilterKindDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getFilterKindDescriptionsByFilterKindQueries,
+        return filterKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getFilterKindDescriptionsByFilterKindQueries,
                 filterKind, Session.MAX_TIME);
     }
 
@@ -621,7 +652,7 @@ public class FilterControl
 
     public void updateFilterKindDescriptionFromValue(FilterKindDescriptionValue filterKindDescriptionValue, BasePK updatedBy) {
         if(filterKindDescriptionValue.hasBeenModified()) {
-            var filterKindDescription = FilterKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterKindDescription = filterKindDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterKindDescriptionValue.getPrimaryKey());
 
             filterKindDescription.setThruTime(session.getStartTime());
@@ -631,7 +662,7 @@ public class FilterControl
             var language = filterKindDescription.getLanguage();
             var description = filterKindDescriptionValue.getDescription();
 
-            filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind, language, description,
+            filterKindDescription = filterKindDescriptionFactory.create(filterKind, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -657,6 +688,12 @@ public class FilterControl
     //   Filter Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected FilterTypeFactory filterTypeFactory;
+
+    @Inject
+    protected FilterTypeDetailFactory filterTypeDetailFactory;
+
     public FilterType createFilterType(FilterKind filterKind, String filterTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultFilterType = getDefaultFilterType(filterKind);
         var defaultFound = defaultFilterType != null;
@@ -670,12 +707,12 @@ public class FilterControl
             isDefault = true;
         }
 
-        var filterType = FilterTypeFactory.getInstance().create();
-        var filterTypeDetail = FilterTypeDetailFactory.getInstance().create( filterType, filterKind, filterTypeName, isDefault, sortOrder,
+        var filterType = filterTypeFactory.create();
+        var filterTypeDetail = filterTypeDetailFactory.create( filterType, filterKind, filterTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        filterType = FilterTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        filterType = filterTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 filterType.getPrimaryKey());
         filterType.setActiveDetail(filterTypeDetail);
         filterType.setLastDetail(filterTypeDetail);
@@ -688,9 +725,11 @@ public class FilterControl
 
     public long countFilterTypesByFilterKind(FilterKind filterKind) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?
+                """,
                 filterKind);
     }
 
@@ -698,7 +737,7 @@ public class FilterControl
     public FilterType getFilterTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterTypePK(entityInstance.getEntityUniqueId());
 
-        return FilterTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return filterTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public FilterType getFilterTypeByEntityInstance(EntityInstance entityInstance) {
@@ -715,21 +754,25 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ? "
-                + "ORDER BY flttypdt_sortorder, flttypdt_filtertypename "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?
+                ORDER BY flttypdt_sortorder, flttypdt_filtertypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?
+                FOR UPDATE
+                """);
         getFilterTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<FilterType> getFilterTypes(FilterKind filterKind, EntityPermission entityPermission) {
-        return FilterTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getFilterTypesQueries,
+        return filterTypeFactory.getEntitiesFromQuery(entityPermission, getFilterTypesQueries,
                 filterKind);
     }
 
@@ -747,21 +790,25 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid "
-                + "AND flttypdt_fltk_filterkindid = ? AND flttypdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid
+                AND flttypdt_fltk_filterkindid = ? AND flttypdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid "
-                + "AND flttypdt_fltk_filterkindid = ? AND flttypdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid
+                AND flttypdt_fltk_filterkindid = ? AND flttypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultFilterTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public FilterType getDefaultFilterType(FilterKind filterKind, EntityPermission entityPermission) {
-        return FilterTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultFilterTypeQueries,
+        return filterTypeFactory.getEntityFromQuery(entityPermission, getDefaultFilterTypeQueries,
                 filterKind);
     }
 
@@ -783,21 +830,25 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid "
-                + "AND flttypdt_fltk_filterkindid = ? AND flttypdt_filtertypename = ?");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid
+                AND flttypdt_fltk_filterkindid = ? AND flttypdt_filtertypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypes, filtertypedetails "
-                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid "
-                + "AND flttypdt_fltk_filterkindid = ? AND flttypdt_filtertypename = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypes, filtertypedetails
+                WHERE flttyp_activedetailid = flttypdt_filtertypedetailid
+                AND flttypdt_fltk_filterkindid = ? AND flttypdt_filtertypename = ?
+                FOR UPDATE
+                """);
         getFilterTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public FilterType getFilterTypeByName(FilterKind filterKind, String filterTypeName, EntityPermission entityPermission) {
-        return FilterTypeFactory.getInstance().getEntityFromQuery(entityPermission, getFilterTypeByNameQueries,
+        return filterTypeFactory.getEntityFromQuery(entityPermission, getFilterTypeByNameQueries,
                 filterKind, filterTypeName);
     }
 
@@ -872,7 +923,7 @@ public class FilterControl
     private void updateFilterTypeFromValue(FilterTypeDetailValue filterTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(filterTypeDetailValue.hasBeenModified()) {
-            var filterType = FilterTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterType = filterTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterTypeDetailValue.getFilterTypePK());
             var filterTypeDetail = filterType.getActiveDetailForUpdate();
 
@@ -902,7 +953,7 @@ public class FilterControl
                 }
             }
 
-            filterTypeDetail = FilterTypeDetailFactory.getInstance().create(filterTypePK, filterKindPK, filterTypeName, isDefault, sortOrder,
+            filterTypeDetail = filterTypeDetailFactory.create(filterTypePK, filterKindPK, filterTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             filterType.setActiveDetail(filterTypeDetail);
@@ -958,9 +1009,12 @@ public class FilterControl
     //   Filter Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected FilterTypeDescriptionFactory filterTypeDescriptionFactory;
+
     public FilterTypeDescription createFilterTypeDescription(FilterType filterType, Language language, String description,
             BasePK createdBy) {
-        var filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType,
+        var filterTypeDescription = filterTypeDescriptionFactory.create(filterType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -974,19 +1028,23 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypedescriptions "
-                + "WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_lang_languageid = ? AND flttypd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM filtertypedescriptions
+                WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_lang_languageid = ? AND flttypd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypedescriptions "
-                + "WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_lang_languageid = ? AND flttypd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypedescriptions
+                WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_lang_languageid = ? AND flttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getFilterTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private FilterTypeDescription getFilterTypeDescription(FilterType filterType, Language language, EntityPermission entityPermission) {
-        return FilterTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getFilterTypeDescriptionQueries,
+        return filterTypeDescriptionFactory.getEntityFromQuery(entityPermission, getFilterTypeDescriptionQueries,
                 filterType, language, Session.MAX_TIME);
     }
 
@@ -1012,20 +1070,24 @@ public class FilterControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM filtertypedescriptions, languages "
-                + "WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_thrutime = ? AND flttypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM filtertypedescriptions, languages
+                WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_thrutime = ? AND flttypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM filtertypedescriptions "
-                + "WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM filtertypedescriptions
+                WHERE flttypd_flttyp_filtertypeid = ? AND flttypd_thrutime = ?
+                FOR UPDATE
+                """);
         getFilterTypeDescriptionsByFilterTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<FilterTypeDescription> getFilterTypeDescriptionsByFilterType(FilterType filterType, EntityPermission entityPermission) {
-        return FilterTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getFilterTypeDescriptionsByFilterTypeQueries,
+        return filterTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getFilterTypeDescriptionsByFilterTypeQueries,
                 filterType, Session.MAX_TIME);
     }
 
@@ -1071,7 +1133,7 @@ public class FilterControl
 
     public void updateFilterTypeDescriptionFromValue(FilterTypeDescriptionValue filterTypeDescriptionValue, BasePK updatedBy) {
         if(filterTypeDescriptionValue.hasBeenModified()) {
-            var filterTypeDescription = FilterTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterTypeDescription = filterTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterTypeDescriptionValue.getPrimaryKey());
 
             filterTypeDescription.setThruTime(session.getStartTime());
@@ -1081,7 +1143,7 @@ public class FilterControl
             var language = filterTypeDescription.getLanguage();
             var description = filterTypeDescriptionValue.getDescription();
 
-            filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType, language, description,
+            filterTypeDescription = filterTypeDescriptionFactory.create(filterType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1106,41 +1168,50 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Sources
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentSourceFactory filterAdjustmentSourceFactory;
+
     public FilterAdjustmentSource createFilterAdjustmentSource(String filterAdjustmentSourceName, Boolean allowedForInitialAmount,
             Boolean isDefault, Integer sortOrder) {
-        return FilterAdjustmentSourceFactory.getInstance().create(filterAdjustmentSourceName, allowedForInitialAmount,
+        return filterAdjustmentSourceFactory.create(filterAdjustmentSourceName, allowedForInitialAmount,
                 isDefault, sortOrder);
     }
 
     public long countFilterAdjustmentSources() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filteradjustmentsources");
+                """
+                SELECT COUNT(*)
+                FROM filteradjustmentsources
+                """);
     }
 
     public List<FilterAdjustmentSource> getFilterAdjustmentSources() {
-        var ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM filteradjustmentsources " +
-                "ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename " +
-                "_LIMIT_");
+        var ps = filterAdjustmentSourceFactory.prepareStatement(
+                """
+                SELECT _ALL_
+                FROM filteradjustmentsources
+                ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename
+                _LIMIT_
+                """);
         
-        return FilterAdjustmentSourceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return filterAdjustmentSourceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public FilterAdjustmentSource getFilterAdjustmentSourceByName(String filterAdjustmentSourceName) {
         FilterAdjustmentSource filterAdjustmentSource;
         
         try {
-            var ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filteradjustmentsources " +
-                    "WHERE fltas_filteradjustmentsourcename = ?");
+            var ps = filterAdjustmentSourceFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM filteradjustmentsources
+                    WHERE fltas_filteradjustmentsourcename = ?
+                    """);
             
             ps.setString(1, filterAdjustmentSourceName);
             
-            filterAdjustmentSource = FilterAdjustmentSourceFactory.getInstance().getEntityFromQuery(
+            filterAdjustmentSource = filterAdjustmentSourceFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1194,10 +1265,13 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Source Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentSourceDescriptionFactory filterAdjustmentSourceDescriptionFactory;
+
     public FilterAdjustmentSourceDescription createFilterAdjustmentSourceDescription(FilterAdjustmentSource filterAdjustmentSource,
             Language language, String description) {
-        return FilterAdjustmentSourceDescriptionFactory.getInstance().create(filterAdjustmentSource, language, description);
+        return filterAdjustmentSourceDescriptionFactory.create(filterAdjustmentSource, language, description);
     }
     
     public FilterAdjustmentSourceDescription getFilterAdjustmentSourceDescription(FilterAdjustmentSource filterAdjustmentSource,
@@ -1205,15 +1279,17 @@ public class FilterControl
         FilterAdjustmentSourceDescription filterAdjustmentSourceDescription;
         
         try {
-            var ps = FilterAdjustmentSourceDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filteradjustmentsourcedescriptions " +
-                    "WHERE fltasd_fltas_filteradjustmentsourceid = ? AND fltasd_lang_languageid = ?");
+            var ps = filterAdjustmentSourceDescriptionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM filteradjustmentsourcedescriptions
+                    WHERE fltasd_fltas_filteradjustmentsourceid = ? AND fltasd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, filterAdjustmentSource.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            filterAdjustmentSourceDescription = FilterAdjustmentSourceDescriptionFactory.getInstance().getEntityFromQuery(
+            filterAdjustmentSourceDescription = filterAdjustmentSourceDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1244,39 +1320,48 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentTypeFactory filterAdjustmentTypeFactory;
+
     public FilterAdjustmentType createFilterAdjustmentType(String filterAdjustmentTypeName, Boolean isDefault, Integer sortOrder) {
-        return FilterAdjustmentTypeFactory.getInstance().create(filterAdjustmentTypeName, isDefault, sortOrder);
+        return filterAdjustmentTypeFactory.create(filterAdjustmentTypeName, isDefault, sortOrder);
     }
 
     public long countFilterAdjustmentTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filteradjustmenttypes");
+                """
+                SELECT COUNT(*)
+                FROM filteradjustmenttypes
+                """);
     }
 
     public List<FilterAdjustmentType> getFilterAdjustmentTypes() {
-        var ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM filteradjustmenttypes " +
-                "ORDER BY fltat_sortorder, fltat_filteradjustmenttypename " +
-                "_LIMIT_");
+        var ps = filterAdjustmentTypeFactory.prepareStatement(
+                """
+                SELECT _ALL_
+                FROM filteradjustmenttypes
+                ORDER BY fltat_sortorder, fltat_filteradjustmenttypename
+                _LIMIT_
+                """);
         
-        return FilterAdjustmentTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return filterAdjustmentTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public FilterAdjustmentType getFilterAdjustmentTypeByName(String filterAdjustmentTypeName) {
         FilterAdjustmentType filterAdjustmentType;
         
         try {
-            var ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filteradjustmenttypes " +
-                    "WHERE fltat_filteradjustmenttypename = ?");
+            var ps = filterAdjustmentTypeFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM filteradjustmenttypes
+                    WHERE fltat_filteradjustmenttypename = ?
+                    """);
             
             ps.setString(1, filterAdjustmentTypeName);
             
-            filterAdjustmentType = FilterAdjustmentTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            filterAdjustmentType = filterAdjustmentTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1332,10 +1417,13 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentTypeDescriptionFactory filterAdjustmentTypeDescriptionFactory;
+
     public FilterAdjustmentTypeDescription createFilterAdjustmentTypeDescription(FilterAdjustmentType filterAdjustmentType,
             Language language, String description) {
-        return FilterAdjustmentTypeDescriptionFactory.getInstance().create(filterAdjustmentType, language, description);
+        return filterAdjustmentTypeDescriptionFactory.create(filterAdjustmentType, language, description);
     }
     
     public FilterAdjustmentTypeDescription getFilterAdjustmentTypeDescription(FilterAdjustmentType filterAdjustmentType,
@@ -1343,15 +1431,17 @@ public class FilterControl
         FilterAdjustmentTypeDescription filterAdjustmentTypeDescription;
         
         try {
-            var ps = FilterAdjustmentTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filteradjustmenttypedescriptions " +
-                    "WHERE fltatd_fltat_filteradjustmenttypeid = ? AND fltatd_lang_languageid = ?");
+            var ps = filterAdjustmentTypeDescriptionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM filteradjustmenttypedescriptions
+                    WHERE fltatd_fltat_filteradjustmenttypeid = ? AND fltatd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, filterAdjustmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            filterAdjustmentTypeDescription = FilterAdjustmentTypeDescriptionFactory.getInstance().getEntityFromQuery(
+            filterAdjustmentTypeDescription = filterAdjustmentTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1381,7 +1471,13 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustments
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentFactory filterAdjustmentFactory;
+
+    @Inject
+    protected FilterAdjustmentDetailFactory filterAdjustmentDetailFactory;
+
     public FilterAdjustment createFilterAdjustment(FilterKind filterKind, String filterAdjustmentName,
             FilterAdjustmentSource filterAdjustmentSource, FilterAdjustmentType filterAdjustmentType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -1397,13 +1493,13 @@ public class FilterControl
             isDefault = true;
         }
 
-        var filterAdjustment = FilterAdjustmentFactory.getInstance().create();
-        var filterAdjustmentDetail = FilterAdjustmentDetailFactory.getInstance().create(
+        var filterAdjustment = filterAdjustmentFactory.create();
+        var filterAdjustmentDetail = filterAdjustmentDetailFactory.create(
                 filterAdjustment, filterKind, filterAdjustmentName, filterAdjustmentSource, filterAdjustmentType,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        filterAdjustment = FilterAdjustmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        filterAdjustment = filterAdjustmentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 filterAdjustment.getPrimaryKey());
         filterAdjustment.setActiveDetail(filterAdjustmentDetail);
         filterAdjustment.setLastDetail(filterAdjustmentDetail);
@@ -1426,7 +1522,7 @@ public class FilterControl
     public FilterAdjustment getFilterAdjustmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterAdjustmentPK(entityInstance.getEntityUniqueId());
 
-        return FilterAdjustmentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return filterAdjustmentFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public FilterAdjustment getFilterAdjustmentByEntityInstance(EntityInstance entityInstance) {
@@ -1438,14 +1534,16 @@ public class FilterControl
     }
 
     public List<FilterAdjustment> getFilterAdjustments() {
-        var ps = FilterAdjustmentFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM filteradjustments, filteradjustmentdetails, filterkinds " +
-                "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid " +
-                "AND fltadt_fltk_filterkindid = fltk_filterkindid " +
-                "ORDER BY fltk_sortorder, fltk_filterkindname, fltadt_filteradjustmentname");
+        var ps = filterAdjustmentFactory.prepareStatement(
+                """
+                SELECT _ALL_
+                FROM filteradjustments, filteradjustmentdetails, filterkinds
+                WHERE flta_activedetailid = fltadt_filteradjustmentdetailid
+                AND fltadt_fltk_filterkindid = fltk_filterkindid
+                ORDER BY fltk_sortorder, fltk_filterkindname, fltadt_filteradjustmentname
+                """);
         
-        return FilterAdjustmentFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return filterAdjustmentFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     private List<FilterAdjustment> getFilterAdjustmentsByFilterKind(FilterKind filterKind, EntityPermission entityPermission) {
@@ -1455,23 +1553,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "ORDER BY fltadt_filteradjustmentname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        ORDER BY fltadt_filteradjustmentname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentFactory.prepareStatement(query);
             
             ps.setLong(1, filterKind.getPrimaryKey().getEntityId());
             
-            filterAdjustments = FilterAdjustmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterAdjustments = filterAdjustmentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1494,23 +1596,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "AND fltadt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        AND fltadt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "AND fltadt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        AND fltadt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentFactory.prepareStatement(query);
             
             ps.setLong(1, filterKind.getPrimaryKey().getEntityId());
             
-            filterAdjustment= FilterAdjustmentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterAdjustment= filterAdjustmentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1538,24 +1644,28 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "AND fltadt_filteradjustmentname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        AND fltadt_filteradjustmentname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustments, filteradjustmentdetails " +
-                        "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "AND fltadt_filteradjustmentname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustments, filteradjustmentdetails
+                        WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                        AND fltadt_filteradjustmentname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentFactory.prepareStatement(query);
             
             ps.setLong(1, filterKind.getPrimaryKey().getEntityId());
             ps.setString(2, filterAdjustmentName);
             
-            filterAdjustment= FilterAdjustmentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterAdjustment= filterAdjustmentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1629,7 +1739,7 @@ public class FilterControl
     private void updateFilterAdjustmentFromValue(FilterAdjustmentDetailValue filterAdjustmentDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(filterAdjustmentDetailValue.hasBeenModified()) {
-            var filterAdjustment = FilterAdjustmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustment = filterAdjustmentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentDetailValue.getFilterAdjustmentPK());
             var filterAdjustmentDetail = filterAdjustment.getActiveDetailForUpdate();
             
@@ -1661,7 +1771,7 @@ public class FilterControl
                 }
             }
             
-            filterAdjustmentDetail = FilterAdjustmentDetailFactory.getInstance().create(filterAdjustmentPK, filterKindPK,
+            filterAdjustmentDetail = filterAdjustmentDetailFactory.create(filterAdjustmentPK, filterKindPK,
                     filterAdjustmentName, filterAdjustmentSourcePK, filterAdjustmentTypePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
@@ -1711,10 +1821,13 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Amounts
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentAmountFactory filterAdjustmentAmountFactory;
+
     public FilterAdjustmentAmount createFilterAdjustmentAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long amount, BasePK createdBy) {
-        var filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(
+        var filterAdjustmentAmount = filterAdjustmentAmountFactory.create(
                 filterAdjustment, unitOfMeasureType, currency, amount, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -1739,22 +1852,26 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentamounts, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies " +
-                        "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ? " +
-                        "AND fltaa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "AND fltaa_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentamounts, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ?
+                        AND fltaa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
+                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
+                        AND fltaa_cur_currencyid = cur_currencyid
+                        ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentamounts " +
-                        "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentamounts
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentAmountFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentAmountFactory.prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1763,7 +1880,7 @@ public class FilterControl
                 ps.setLong(4, Session.MAX_TIME);
             }
             
-            filterAdjustmentAmounts = FilterAdjustmentAmountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterAdjustmentAmounts = filterAdjustmentAmountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1787,26 +1904,30 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentamounts " +
-                        "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_uomt_unitofmeasuretypeid = ? AND fltaa_cur_currencyid = ? " +
-                        "AND fltaa_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentamounts
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_uomt_unitofmeasuretypeid = ? AND fltaa_cur_currencyid = ?
+                        AND fltaa_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentamounts " +
-                        "WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_uomt_unitofmeasuretypeid = ? AND fltaa_cur_currencyid = ? " +
-                        "AND fltaa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentamounts
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_uomt_unitofmeasuretypeid = ? AND fltaa_cur_currencyid = ?
+                        AND fltaa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentAmountFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentAmountFactory.prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, currency.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterAdjustmentAmount = filterAdjustmentAmountFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1856,7 +1977,7 @@ public class FilterControl
 
     public void updateFilterAdjustmentAmountFromValue(FilterAdjustmentAmountValue filterAdjustmentAmountValue, BasePK updatedBy) {
         if(filterAdjustmentAmountValue.hasBeenModified()) {
-            var filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustmentAmount = filterAdjustmentAmountFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentAmountValue.getPrimaryKey());
             
             filterAdjustmentAmount.setThruTime(session.getStartTime());
@@ -1867,7 +1988,7 @@ public class FilterControl
             var currencyPK = filterAdjustmentAmount.getCurrencyPK(); // Not updated
             var amount = filterAdjustmentAmountValue.getAmount();
             
-            filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(filterAdjustmentPK,
+            filterAdjustmentAmount = filterAdjustmentAmountFactory.create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, amount, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
@@ -1893,10 +2014,13 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Fixed Amounts
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentFixedAmountFactory filterAdjustmentFixedAmountFactory;
+
     public FilterAdjustmentFixedAmount createFilterAdjustmentFixedAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long unitAmount, BasePK createdBy) {
-        var filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(
+        var filterAdjustmentFixedAmount = filterAdjustmentFixedAmountFactory.create(
                 filterAdjustment, unitOfMeasureType, currency, unitAmount, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -1921,22 +2045,26 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentfixedamounts, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies " +
-                        "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ? " +
-                        "AND fltafa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "AND fltafa_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentfixedamounts, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ?
+                        AND fltafa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
+                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
+                        AND fltafa_cur_currencyid = cur_currencyid
+                        ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentfixedamounts " +
-                        "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentfixedamounts
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentFixedAmountFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentFixedAmountFactory.prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1945,7 +2073,7 @@ public class FilterControl
                 ps.setLong(4, Session.MAX_TIME);
             }
             
-            filterAdjustmentFixedAmounts = FilterAdjustmentFixedAmountFactory.getInstance().getEntitiesFromQuery(
+            filterAdjustmentFixedAmounts = filterAdjustmentFixedAmountFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1970,26 +2098,30 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentfixedamounts " +
-                        "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_uomt_unitofmeasuretypeid = ? " +
-                        "AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentfixedamounts
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_uomt_unitofmeasuretypeid = ?
+                        AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentfixedamounts " +
-                        "WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_uomt_unitofmeasuretypeid = ? " +
-                        "AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentfixedamounts
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_uomt_unitofmeasuretypeid = ?
+                        AND fltafa_cur_currencyid = ? AND fltafa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentFixedAmountFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentFixedAmountFactory.prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, currency.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().getEntityFromQuery(
+            filterAdjustmentFixedAmount = filterAdjustmentFixedAmountFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2041,7 +2173,7 @@ public class FilterControl
 
     public void updateFilterAdjustmentFixedAmountFromValue(FilterAdjustmentFixedAmountValue filterAdjustmentFixedAmountValue, BasePK updatedBy) {
         if(filterAdjustmentFixedAmountValue.hasBeenModified()) {
-            var filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustmentFixedAmount = filterAdjustmentFixedAmountFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentFixedAmountValue.getPrimaryKey());
             
             filterAdjustmentFixedAmount.setThruTime(session.getStartTime());
@@ -2052,7 +2184,7 @@ public class FilterControl
             var currencyPK = filterAdjustmentFixedAmount.getCurrencyPK(); // Not updated
             var unitAmount = filterAdjustmentFixedAmountValue.getUnitAmount();
             
-            filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(filterAdjustmentPK,
+            filterAdjustmentFixedAmount = filterAdjustmentFixedAmountFactory.create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, unitAmount, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
@@ -2079,10 +2211,13 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Percents
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentPercentFactory filterAdjustmentPercentFactory;
+
     public FilterAdjustmentPercent createFilterAdjustmentPercent(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Integer percent, BasePK createdBy) {
-        var filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(
+        var filterAdjustmentPercent = filterAdjustmentPercentFactory.create(
                 filterAdjustment, unitOfMeasureType, currency, percent, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -2107,22 +2242,26 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentpercents, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies " +
-                        "WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ? " +
-                        "AND fltap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
-                        "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "AND fltap_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentpercents, unitofmeasuretypedetails, unitofmeasurekinddetails, currencies
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ?
+                        AND fltap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
+                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
+                        AND fltap_cur_currencyid = cur_currencyid
+                        ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentpercents " +
-                        "WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentpercents
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentPercentFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentPercentFactory.prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2131,7 +2270,7 @@ public class FilterControl
                 ps.setLong(4, Session.MAX_TIME);
             }
             
-            filterAdjustmentPercents = FilterAdjustmentPercentFactory.getInstance().getEntitiesFromQuery(entityPermission,
+            filterAdjustmentPercents = filterAdjustmentPercentFactory.getEntitiesFromQuery(entityPermission,
                     ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2156,26 +2295,30 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentpercents " +
-                        "WHERE fltap_flta_filteradjustmentid = ? AND fltap_uomt_unitofmeasuretypeid = ? AND fltap_cur_currencyid = ? " +
-                        "AND fltap_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentpercents
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_uomt_unitofmeasuretypeid = ? AND fltap_cur_currencyid = ?
+                        AND fltap_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentpercents " +
-                        "WHERE fltap_flta_filteradjustmentid = ? AND fltap_uomt_unitofmeasuretypeid = ? AND fltap_cur_currencyid = ? " +
-                        "AND fltap_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentpercents
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_uomt_unitofmeasuretypeid = ? AND fltap_cur_currencyid = ?
+                        AND fltap_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentPercentFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentPercentFactory.prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, currency.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterAdjustmentPercent = filterAdjustmentPercentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2226,7 +2369,7 @@ public class FilterControl
 
     public void updateFilterAdjustmentPercentFromValue(FilterAdjustmentPercentValue filterAdjustmentPercentValue, BasePK updatedBy) {
         if(filterAdjustmentPercentValue.hasBeenModified()) {
-            var filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustmentPercent = filterAdjustmentPercentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentPercentValue.getPrimaryKey());
             
             filterAdjustmentPercent.setThruTime(session.getStartTime());
@@ -2237,7 +2380,7 @@ public class FilterControl
             var currencyPK = filterAdjustmentPercent.getCurrencyPK(); // Not updated
             var percent = filterAdjustmentPercentValue.getPercent();
             
-            filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(filterAdjustmentPK,
+            filterAdjustmentPercent = filterAdjustmentPercentFactory.create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, percent, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
@@ -2263,11 +2406,14 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterAdjustmentDescriptionFactory filterAdjustmentDescriptionFactory;
+
     public FilterAdjustmentDescription createFilterAdjustmentDescription(FilterAdjustment filterAdjustment, Language language,
             String description,
             BasePK createdBy) {
-        var filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(
+        var filterAdjustmentDescription = filterAdjustmentDescriptionFactory.create(
                 filterAdjustment, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -2284,23 +2430,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentdescriptions " +
-                        "WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentdescriptions
+                        WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentdescriptions " +
-                        "WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentdescriptions
+                        WHERE fltad_flta_filteradjustmentid = ? AND fltad_lang_languageid = ? AND fltad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().getEntityFromQuery(
+            filterAdjustmentDescription = filterAdjustmentDescriptionFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2338,23 +2488,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentdescriptions, languages " +
-                        "WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ? AND fltad_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentdescriptions, languages
+                        WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ? AND fltad_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filteradjustmentdescriptions " +
-                        "WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filteradjustmentdescriptions
+                        WHERE fltad_flta_filteradjustmentid = ? AND fltad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterAdjustmentDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = filterAdjustmentDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            filterAdjustmentDescriptions = FilterAdjustmentDescriptionFactory.getInstance().getEntitiesFromQuery(
+            filterAdjustmentDescriptions = filterAdjustmentDescriptionFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2407,7 +2561,7 @@ public class FilterControl
     public void updateFilterAdjustmentDescriptionFromValue(FilterAdjustmentDescriptionValue filterAdjustmentDescriptionValue,
             BasePK updatedBy) {
         if(filterAdjustmentDescriptionValue.hasBeenModified()) {
-            var filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterAdjustmentDescription = filterAdjustmentDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentDescriptionValue.getPrimaryKey());
             
             filterAdjustmentDescription.setThruTime(session.getStartTime());
@@ -2417,7 +2571,7 @@ public class FilterControl
             var language = filterAdjustmentDescription.getLanguage();
             var description = filterAdjustmentDescriptionValue.getDescription();
             
-            filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(filterAdjustment,
+            filterAdjustmentDescription = filterAdjustmentDescriptionFactory.create(filterAdjustment,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -2443,7 +2597,13 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filters
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterFactory filterFactory;
+
+    @Inject
+    protected FilterDetailFactory filterDetailFactory;
+
     public Filter createFilter(FilterType filterType, String filterName, FilterAdjustment initialFilterAdjustment,
             Selector filterItemSelector, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultFilter = getDefaultFilter(filterType);
@@ -2458,12 +2618,12 @@ public class FilterControl
             isDefault = true;
         }
 
-        var filter = FilterFactory.getInstance().create();
-        var filterDetail = FilterDetailFactory.getInstance().create(filter, filterType, filterName,
+        var filter = filterFactory.create();
+        var filterDetail = filterDetailFactory.create(filter, filterType, filterName,
                 initialFilterAdjustment, filterItemSelector, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        filter = FilterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filter.getPrimaryKey());
+        filter = filterFactory.getEntityFromPK(EntityPermission.READ_WRITE, filter.getPrimaryKey());
         filter.setActiveDetail(filterDetail);
         filter.setLastDetail(filterDetail);
         filter.store();
@@ -2475,25 +2635,31 @@ public class FilterControl
 
     public long countFiltersByFilterType(FilterType filterType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filters, filterdetails " +
-                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filters, filterdetails
+                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
+                """,
                 filterType);
     }
 
     public long countFiltersBySelector(Selector selector) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filters, filterdetails " +
-                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_filteritemselectorid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filters, filterdetails
+                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_filteritemselectorid = ?
+                """,
                 selector);
     }
 
     public long countFiltersByFilterAdjustment(FilterAdjustment filterAdjustment) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filters, filterdetails " +
-                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_initialfilteradjustmentid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filters, filterdetails
+                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_initialfilteradjustmentid = ?
+                """,
                 filterAdjustment);
     }
 
@@ -2501,7 +2667,7 @@ public class FilterControl
     public Filter getFilterByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterPK(entityInstance.getEntityUniqueId());
 
-        return FilterFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return filterFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Filter getFilterByEntityInstance(EntityInstance entityInstance) {
@@ -2519,23 +2685,27 @@ public class FilterControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? " +
-                        "ORDER BY fltdt_sortorder, fltdt_filtername " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
+                        ORDER BY fltdt_sortorder, fltdt_filtername
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterFactory.getInstance().prepareStatement(query);
+            var ps = filterFactory.prepareStatement(query);
 
             ps.setLong(1, filterType.getPrimaryKey().getEntityId());
             
-            filters = FilterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filters = filterFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2579,7 +2749,7 @@ public class FilterControl
     }
 
     private List<Filter> getFiltersByInitialFilterAdjustment(FilterAdjustment initialFilterAdjustment, EntityPermission entityPermission) {
-        return FilterFactory.getInstance().getEntitiesFromQuery(entityPermission, getFiltersByInitialFilterAdjustmentQueries,
+        return filterFactory.getEntitiesFromQuery(entityPermission, getFiltersByInitialFilterAdjustmentQueries,
                 initialFilterAdjustment);
     }
 
@@ -2598,21 +2768,25 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterFactory.getInstance().prepareStatement(query);
+            var ps = filterFactory.prepareStatement(query);
             
             ps.setLong(1, filterType.getPrimaryKey().getEntityId());
             
-            filter = FilterFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filter = filterFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2639,22 +2813,26 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filters, filterdetails " +
-                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filters, filterdetails
+                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterFactory.getInstance().prepareStatement(query);
+            var ps = filterFactory.prepareStatement(query);
             
             ps.setLong(1, filterType.getPrimaryKey().getEntityId());
             ps.setString(2, filterName);
             
-            filter = FilterFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filter = filterFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2732,7 +2910,7 @@ public class FilterControl
     
     private void updateFilterFromValue(FilterDetailValue filterDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(filterDetailValue.hasBeenModified()) {
-            var filter = FilterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filter = filterFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterDetailValue.getFilterPK());
             var filterDetail = filter.getActiveDetailForUpdate();
             
@@ -2764,7 +2942,7 @@ public class FilterControl
                 }
             }
             
-            filterDetail = FilterDetailFactory.getInstance().create(filterPK, filterTypePK, filterName,
+            filterDetail = filterDetailFactory.create(filterPK, filterTypePK, filterName,
                     initialFilterAdjustmentPK, filterItemSelectorPK,  isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -2820,9 +2998,12 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterDescriptionFactory filterDescriptionFactory;
+
     public FilterDescription createFilterDescription(Filter filter, Language language, String description, BasePK createdBy) {
-        var filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.getStartTime(), Session.MAX_TIME);
+        var filterDescription = filterDescriptionFactory.create(filter, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2836,23 +3017,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterdescriptions " +
-                        "WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterdescriptions
+                        WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterdescriptions " +
-                        "WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterdescriptions
+                        WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = filterDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            filterDescription = FilterDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterDescription = filterDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2885,23 +3070,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterdescriptions, languages " +
-                        "WHERE fltd_flt_filterid = ? AND fltd_thrutime = ? AND fltd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM filterdescriptions, languages
+                        WHERE fltd_flt_filterid = ? AND fltd_thrutime = ? AND fltd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterdescriptions " +
-                        "WHERE fltd_flt_filterid = ? AND fltd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterdescriptions
+                        WHERE fltd_flt_filterid = ? AND fltd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = filterDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            filterDescriptions = FilterDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterDescriptions = filterDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2951,7 +3140,7 @@ public class FilterControl
     
     public void updateFilterDescriptionFromValue(FilterDescriptionValue filterDescriptionValue, BasePK updatedBy) {
         if(filterDescriptionValue.hasBeenModified()) {
-            var filterDescription = FilterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterDescriptionValue.getPrimaryKey());
+            var filterDescription = filterDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, filterDescriptionValue.getPrimaryKey());
             
             filterDescription.setThruTime(session.getStartTime());
             filterDescription.store();
@@ -2960,7 +3149,7 @@ public class FilterControl
             var language = filterDescription.getLanguage();
             var description = filterDescriptionValue.getDescription();
             
-            filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.getStartTime(), Session.MAX_TIME);
+            filterDescription = filterDescriptionFactory.create(filter, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2984,14 +3173,20 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Steps
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterStepFactory filterStepFactory;
+
+    @Inject
+    protected FilterStepDetailFactory filterStepDetailFactory;
+
     public FilterStep createFilterStep(Filter filter, String filterStepName, Selector filterItemSelector, BasePK createdBy) {
-        var filterStep = FilterStepFactory.getInstance().create();
-        var filterStepDetail = FilterStepDetailFactory.getInstance().create(filterStep, filter, filterStepName, filterItemSelector, session.getStartTime(),
+        var filterStep = filterStepFactory.create();
+        var filterStepDetail = filterStepDetailFactory.create(filterStep, filter, filterStepName, filterItemSelector, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        filterStep = FilterStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterStep.getPrimaryKey());
+        filterStep = filterStepFactory.getEntityFromPK(EntityPermission.READ_WRITE, filterStep.getPrimaryKey());
         filterStep.setActiveDetail(filterStepDetail);
         filterStep.setLastDetail(filterStepDetail);
         filterStep.store();
@@ -3003,17 +3198,21 @@ public class FilterControl
 
     public long countFilterStepsByFilter(Filter filter) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filtersteps, filterstepdetails " +
-                "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filtersteps, filterstepdetails
+                WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                """,
                 filter);
     }
 
     public long countFilterStepsBySelector(Selector selector) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filtersteps, filterstepdetails " +
-                "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_filteritemselectorid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filtersteps, filterstepdetails
+                WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_filteritemselectorid = ?
+                """,
                 selector);
     }
 
@@ -3021,7 +3220,7 @@ public class FilterControl
     public FilterStep getFilterStepByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterStepPK(entityInstance.getEntityUniqueId());
 
-        return FilterStepFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return filterStepFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public FilterStep getFilterStepByEntityInstance(EntityInstance entityInstance) {
@@ -3039,24 +3238,28 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filtersteps, filterstepdetails " +
-                        "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "AND fltstpdt_filterstepname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filtersteps, filterstepdetails
+                        WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                        AND fltstpdt_filterstepname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filtersteps, filterstepdetails " +
-                        "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "AND fltstpdt_filterstepname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filtersteps, filterstepdetails
+                        WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                        AND fltstpdt_filterstepname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepFactory.getInstance().prepareStatement(query);
+            var ps = filterStepFactory.prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setString(2, filterStepName);
             
-            filterStep = FilterStepFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterStep = filterStepFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3087,23 +3290,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filtersteps, filterstepdetails " +
-                        "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filtersteps, filterstepdetails
+                        WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filtersteps, filterstepdetails " +
-                        "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filtersteps, filterstepdetails
+                        WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepFactory.getInstance().prepareStatement(query);
+            var ps = filterStepFactory.prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             
-            filterSteps = FilterStepFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterSteps = filterStepFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3173,7 +3380,7 @@ public class FilterControl
     
     public void updateFilterStepFromValue(FilterStepDetailValue filterStepDetailValue, BasePK updatedBy) {
         if(filterStepDetailValue.hasBeenModified()) {
-            var filterStep = FilterStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterStep = filterStepFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterStepDetailValue.getFilterStepPK());
             var filterStepDetail = filterStep.getActiveDetailForUpdate();
             
@@ -3186,7 +3393,7 @@ public class FilterControl
             var filterStepName = filterStepDetailValue.getFilterStepName();
             var filterItemSelectorPK = filterStepDetailValue.getFilterItemSelectorPK();
             
-            filterStepDetail = FilterStepDetailFactory.getInstance().create(filterStepPK, filterPK, filterStepName,
+            filterStepDetail = filterStepDetailFactory.create(filterStepPK, filterPK, filterStepName,
                     filterItemSelectorPK, session.getStartTime(), Session.MAX_TIME);
             
             filterStep.setActiveDetail(filterStepDetail);
@@ -3221,9 +3428,12 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Step Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterStepDescriptionFactory filterStepDescriptionFactory;
+
     public FilterStepDescription createFilterStepDescription(FilterStep filterStep, Language language, String description, BasePK createdBy) {
-        var filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language,
+        var filterStepDescription = filterStepDescriptionFactory.create(filterStep, language,
                 description, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -3240,23 +3450,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdescriptions " +
-                        "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdescriptions
+                        WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdescriptions " +
-                        "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdescriptions
+                        WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_lang_languageid = ? AND fltstpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = filterStepDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            filterStepDescription = FilterStepDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterStepDescription = filterStepDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3289,23 +3503,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdescriptions, languages " +
-                        "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ? AND fltstpd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdescriptions, languages
+                        WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ? AND fltstpd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdescriptions " +
-                        "WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdescriptions
+                        WHERE fltstpd_fltstp_filterstepid = ? AND fltstpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = filterStepDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            filterStepDescriptions = FilterStepDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterStepDescriptions = filterStepDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3355,7 +3573,7 @@ public class FilterControl
     
     public void updateFilterStepDescriptionFromValue(FilterStepDescriptionValue filterStepDescriptionValue, BasePK updatedBy) {
         if(filterStepDescriptionValue.hasBeenModified()) {
-            var filterStepDescription = FilterStepDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterStepDescription = filterStepDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterStepDescriptionValue.getPrimaryKey());
             
             filterStepDescription.setThruTime(session.getStartTime());
@@ -3365,7 +3583,7 @@ public class FilterControl
             var language = filterStepDescription.getLanguage();
             var description = filterStepDescriptionValue.getDescription();
             
-            filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language, description,
+            filterStepDescription = filterStepDescriptionFactory.create(filterStep, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(filterStep.getPrimaryKey(), EventTypes.MODIFY, filterStepDescription.getPrimaryKey(),
@@ -3392,9 +3610,12 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Entrance Steps
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterEntranceStepFactory filterEntranceStepFactory;
+
     public FilterEntranceStep createFilterEntranceStep(Filter filter, FilterStep filterStep, BasePK createdBy) {
-        var filterEntranceStep = FilterEntranceStepFactory.getInstance().create(filter, filterStep, session.getStartTime(), Session.MAX_TIME);
+        var filterEntranceStep = filterEntranceStepFactory.create(filter, filterStep, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterEntranceStep.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -3404,17 +3625,21 @@ public class FilterControl
 
     public long countFilterEntranceStepsByFilter(Filter filter) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterentrancesteps
+                WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?
+                """,
                 filter, Session.MAX_TIME);
     }
 
     public long countFilterEntranceStepsByFilterStep(FilterStep filterStep) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterentrancesteps
+                WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                """,
                 filterStep, Session.MAX_TIME);
     }
 
@@ -3426,23 +3651,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps
+                        WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps
+                        WHERE fltens_flt_filterid = ? AND fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
+            var ps = filterEntranceStepFactory.prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setLong(2, filterStep.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            filterEntranceStep = FilterEntranceStepFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterEntranceStep = filterEntranceStepFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3465,20 +3694,24 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps, filterstepdetails " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ? " +
-                        "AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps, filterstepdetails
+                        WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?
+                        AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps
+                        WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
+            var ps = filterEntranceStepFactory.prepareStatement(query);
             
             ps.setLong(1, filter.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3486,7 +3719,7 @@ public class FilterControl
                 ps.setLong(3, Session.MAX_TIME);
             }
             
-            filterEntranceSteps = FilterEntranceStepFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterEntranceSteps = filterEntranceStepFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3509,20 +3742,24 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps, filterstepdetails" +
-                        "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
-                        "AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps, filterstepdetails
+                        WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                        AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterentrancesteps " +
-                        "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterentrancesteps
+                        WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterEntranceStepFactory.getInstance().prepareStatement(query);
+            var ps = filterEntranceStepFactory.prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3530,7 +3767,7 @@ public class FilterControl
                 ps.setLong(3, Session.MAX_TIME);
             }
             
-            filterEntranceSteps = FilterEntranceStepFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterEntranceSteps = filterEntranceStepFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3582,9 +3819,12 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Step Destinations
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterStepDestinationFactory filterStepDestinationFactory;
+
     public FilterStepDestination createFilterStepDestination(FilterStep fromFilterStep, FilterStep toFilterStep, BasePK createdBy) {
-        var filterStepDestination = FilterStepDestinationFactory.getInstance().create(fromFilterStep,
+        var filterStepDestination = filterStepDestinationFactory.create(fromFilterStep,
                 toFilterStep, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(fromFilterStep.getPrimaryKey(), EventTypes.MODIFY,
@@ -3595,17 +3835,21 @@ public class FilterControl
 
     public long countFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepdestinations
+                WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?
+                """,
                 fromFilterStep, Session.MAX_TIME);
     }
 
     public long countFilterStepDestinationsByToFilterStep(FilterStep toFilterStep) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepdestinations
+                WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                """,
                 toFilterStep, Session.MAX_TIME);
     }
 
@@ -3617,23 +3861,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations
+                        WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations
+                        WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
+            var ps = filterStepDestinationFactory.prepareStatement(query);
             
             ps.setLong(1, fromFilterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, toFilterStep.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            filterStepDestination = FilterStepDestinationFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterStepDestination = filterStepDestinationFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3656,20 +3904,24 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations, filterstepdetails " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations, filterstepdetails
+                        WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?
+                        AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations
+                        WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
+            var ps = filterStepDestinationFactory.prepareStatement(query);
             
             ps.setLong(1, fromFilterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3677,7 +3929,7 @@ public class FilterControl
                 ps.setLong(3, Session.MAX_TIME);
             }
             
-            filterStepDestinations = FilterStepDestinationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterStepDestinations = filterStepDestinationFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3700,20 +3952,24 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations, filterstepdetails " +
-                        "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations, filterstepdetails
+                        WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                        AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ?
+                        ORDER BY fltstpdt_filterstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepdestinations " +
-                        "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepdestinations
+                        WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepDestinationFactory.getInstance().prepareStatement(query);
+            var ps = filterStepDestinationFactory.prepareStatement(query);
             
             ps.setLong(1, toFilterStep.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -3721,7 +3977,7 @@ public class FilterControl
                 ps.setLong(3, Session.MAX_TIME);
             }
             
-            filterStepDestinations = FilterStepDestinationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterStepDestinations = filterStepDestinationFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3793,15 +4049,21 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Step Elements
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterStepElementFactory filterStepElementFactory;
+
+    @Inject
+    protected FilterStepElementDetailFactory filterStepElementDetailFactory;
+
     public FilterStepElement createFilterStepElement(FilterStep filterStep, String filterStepElementName, Selector filterItemSelector,
             FilterAdjustment filterAdjustment, BasePK createdBy) {
-        var filterStepElement = FilterStepElementFactory.getInstance().create();
-        var filterStepElementDetail = FilterStepElementDetailFactory.getInstance().create(filterStepElement, filterStep,
+        var filterStepElement = filterStepElementFactory.create();
+        var filterStepElementDetail = filterStepElementDetailFactory.create(filterStepElement, filterStep,
                 filterStepElementName, filterItemSelector, filterAdjustment, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        filterStepElement = FilterStepElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterStepElement.getPrimaryKey());
+        filterStepElement = filterStepElementFactory.getEntityFromPK(EntityPermission.READ_WRITE, filterStepElement.getPrimaryKey());
         filterStepElement.setActiveDetail(filterStepElementDetail);
         filterStepElement.setLastDetail(filterStepElementDetail);
         filterStepElement.store();
@@ -3813,25 +4075,31 @@ public class FilterControl
 
     public long countFilterStepElementsByFilterStep(FilterStep filterStep) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepelements, filterstepelementdetails
+                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
+                """,
                 filterStep);
     }
 
     public long countFilterStepElementsBySelector(Selector selector) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_filteritemselectorid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepelements, filterstepelementdetails
+                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_filteritemselectorid = ?
+                """,
                 selector);
     }
 
     public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_flta_filteradjustmentid = ?",
+                """
+                SELECT COUNT(*)
+                FROM filterstepelements, filterstepelementdetails
+                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_flta_filteradjustmentid = ?
+                """,
                 filterAdjustment);
     }
 
@@ -3839,7 +4107,7 @@ public class FilterControl
     public FilterStepElement getFilterStepElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterStepElementPK(entityInstance.getEntityUniqueId());
 
-        return FilterStepElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return filterStepElementFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public FilterStepElement getFilterStepElementByEntityInstance(EntityInstance entityInstance) {
@@ -3858,23 +4126,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid " +
-                        "AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelements, filterstepelementdetails
+                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid
+                        AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid " +
-                        "AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelements, filterstepelementdetails
+                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid
+                        AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepElementFactory.getInstance().prepareStatement(query);
+            var ps = filterStepElementFactory.prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             ps.setString(2, filterStepElementName);
-            filterStepElement = FilterStepElementFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterStepElement = filterStepElementFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3905,23 +4177,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
-                        "ORDER BY fltstpedt_filterstepelementname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelements, filterstepelementdetails
+                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
+                        ORDER BY fltstpedt_filterstepelementname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelements, filterstepelementdetails
+                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepElementFactory.getInstance().prepareStatement(query);
+            var ps = filterStepElementFactory.prepareStatement(query);
             
             ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
             
-            filterStepElements = FilterStepElementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterStepElements = filterStepElementFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3969,7 +4245,7 @@ public class FilterControl
     }
 
     private List<Filter> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment, EntityPermission entityPermission) {
-        return FilterFactory.getInstance().getEntitiesFromQuery(entityPermission, getFilterStepElementsByFilterAdjustmentQueries,
+        return filterFactory.getEntitiesFromQuery(entityPermission, getFilterStepElementsByFilterAdjustmentQueries,
                 filterAdjustment);
     }
 
@@ -4001,7 +4277,7 @@ public class FilterControl
     
     public void updateFilterStepElementFromValue(FilterStepElementDetailValue filterStepElementDetailValue, BasePK updatedBy) {
         if(filterStepElementDetailValue.hasBeenModified()) {
-            var filterStepElement = FilterStepElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var filterStepElement = filterStepElementFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      filterStepElementDetailValue.getFilterStepElementPK());
             var filterStepElementDetail = filterStepElement.getActiveDetailForUpdate();
             
@@ -4015,7 +4291,7 @@ public class FilterControl
             var filterItemSelectorPK = filterStepElementDetailValue.getFilterItemSelectorPK();
             var filterAdjustmentPK = filterStepElementDetailValue.getFilterAdjustmentPK();
             
-            filterStepElementDetail = FilterStepElementDetailFactory.getInstance().create(filterStepElementPK,
+            filterStepElementDetail = filterStepElementDetailFactory.create(filterStepElementPK,
                     filterStepPK, filterStepElementName, filterItemSelectorPK, filterAdjustmentPK, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -4048,10 +4324,13 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     //   Filter Step Element Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected FilterStepElementDescriptionFactory filterStepElementDescriptionFactory;
+
     public FilterStepElementDescription createFilterStepElementDescription(FilterStepElement filterStepElement, Language language,
             String description, BasePK createdBy) {
-        var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(
+        var filterStepElementDescription = filterStepElementDescriptionFactory.create(
                 filterStepElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterStepElement.getPrimaryKey(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4067,23 +4346,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelementdescriptions " +
-                        "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelementdescriptions
+                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelementdescriptions " +
-                        "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelementdescriptions
+                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepElementDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = filterStepElementDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, filterStepElement.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            filterStepElementDescription = filterStepElementDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4116,23 +4399,27 @@ public class FilterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelementdescriptions, languages " +
-                        "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ? AND fltstped_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelementdescriptions, languages
+                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ? AND fltstped_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM filterstepelementdescriptions " +
-                        "WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM filterstepelementdescriptions
+                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = FilterStepElementDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = filterStepElementDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, filterStepElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            filterStepElementDescriptions = FilterStepElementDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            filterStepElementDescriptions = filterStepElementDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4182,7 +4469,7 @@ public class FilterControl
     
     public void updateFilterStepElementDescriptionFromValue(FilterStepElementDescriptionValue filterStepElementDescriptionValue, BasePK updatedBy) {
         if(filterStepElementDescriptionValue.hasBeenModified()) {
-            var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterStepElementDescriptionValue.getPrimaryKey());
+            var filterStepElementDescription = filterStepElementDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, filterStepElementDescriptionValue.getPrimaryKey());
             
             filterStepElementDescription.setThruTime(session.getStartTime());
             filterStepElementDescription.store();
@@ -4191,7 +4478,7 @@ public class FilterControl
             var language = filterStepElementDescription.getLanguage();
             var description = filterStepElementDescriptionValue.getDescription();
             
-            filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(filterStepElement,
+            filterStepElementDescription = filterStepElementDescriptionFactory.create(filterStepElement,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(filterStepElement.getPrimaryKey(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAppearanceDescriptionCommand
@@ -48,13 +48,20 @@ public class GetAppearanceDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Appearance.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetAppearanceDescriptionCommand */
     public GetAppearanceDescriptionCommand() {
@@ -63,13 +70,11 @@ public class GetAppearanceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var result = CoreResultFactory.getGetAppearanceDescriptionResult();
         var appearanceName = form.getAppearanceName();
         var appearance = appearanceControl.getAppearanceByName(appearanceName);
 
         if(appearance != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -66,9 +66,10 @@ public class EditLocationTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
+
     @Inject
     WarehouseControl warehouseControl;
+
 
     /** Creates a new instance of EditLocationTypeCommand */
     public EditLocationTypeCommand() {

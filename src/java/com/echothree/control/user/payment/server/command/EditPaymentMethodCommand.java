@@ -42,10 +42,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPaymentMethodCommand
@@ -61,9 +61,9 @@ public class EditPaymentMethodCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethod.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethod.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
@@ -101,6 +101,13 @@ public class EditPaymentMethodCommand
                 new FieldDefinition("RequireIssuer", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of EditPaymentMethodCommand */
     public EditPaymentMethodCommand() {
@@ -112,7 +119,6 @@ public class EditPaymentMethodCommand
         var validationResult = validator.validate(edit, getEditFieldDefinitions());
         
         if(!validationResult.getHasErrors()) {
-            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
             var paymentMethod = paymentMethodControl.getPaymentMethodByName(spec.getPaymentMethodName());
             
             if(paymentMethod != null) {
@@ -141,7 +147,6 @@ public class EditPaymentMethodCommand
 
     @Override
     public PaymentMethod getEntity(EditPaymentMethodResult result) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         PaymentMethod paymentMethod;
         var paymentMethodName = spec.getPaymentMethodName();
 
@@ -167,8 +172,6 @@ public class EditPaymentMethodCommand
 
     @Override
     public void fillInResult(EditPaymentMethodResult result, PaymentMethod paymentMethod) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-
         result.setPaymentMethod(paymentMethodControl.getPaymentMethodTransfer(getUserVisit(), paymentMethod));
     }
 
@@ -177,7 +180,6 @@ public class EditPaymentMethodCommand
 
     @Override
     public void doLock(PaymentMethodEdit edit, PaymentMethod paymentMethod) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         var paymentMethodDescription = paymentMethodControl.getPaymentMethodDescription(paymentMethod, getPreferredLanguage());
         var paymentMethodDetail = paymentMethod.getLastDetail();
         var paymentMethodTypeName = paymentMethodDetail.getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
@@ -223,14 +225,12 @@ public class EditPaymentMethodCommand
 
     @Override
     public void canUpdate(PaymentMethod paymentMethod) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         var paymentMethodName = edit.getPaymentMethodName();
         var duplicatePaymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
         if(duplicatePaymentMethod != null && !paymentMethod.equals(duplicatePaymentMethod)) {
             addExecutionError(ExecutionErrors.DuplicatePaymentMethodName.name(), paymentMethodName);
         } else {
-            var selectorControl = Session.getModelController(SelectorControl.class);
             var itemSelectorName = edit.getItemSelectorName();
             itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorKinds.ITEM.name(),
                     SelectorTypes.PAYMENT_METHOD.name(), itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());
@@ -246,7 +246,6 @@ public class EditPaymentMethodCommand
 
     @Override
     public void doUpdate(PaymentMethod paymentMethod) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         var partyPK = getPartyPK();
         var paymentMethodDetailValue = paymentMethodControl.getPaymentMethodDetailValueForUpdate(paymentMethod);
         var paymentMethodDescription = paymentMethodControl.getPaymentMethodDescriptionForUpdate(paymentMethod, getPreferredLanguage());

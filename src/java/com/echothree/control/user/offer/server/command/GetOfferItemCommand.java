@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferItemCommand
@@ -59,6 +59,13 @@ public class GetOfferItemCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    OfferItemLogic offerItemLogic;
+
     
     /** Creates a new instance of GetOfferItemCommand */
     public GetOfferItemCommand() {
@@ -67,7 +74,7 @@ public class GetOfferItemCommand
     
     @Override
     protected OfferItem getEntity() {
-        var offerItem = OfferItemLogic.getInstance().getOfferItemByUniversalSpec(this, form);
+        var offerItem = offerItemLogic.getOfferItemByUniversalSpec(this, form);
 
         if(offerItem != null) {
             sendEvent(offerItem.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +85,6 @@ public class GetOfferItemCommand
     
     @Override
     protected BaseResult getResult(OfferItem offerItem) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var result = OfferResultFactory.getGetOfferItemResult();
 
         if(offerItem != null) {

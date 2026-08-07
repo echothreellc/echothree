@@ -41,9 +41,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemVolumeCommand
@@ -76,6 +76,16 @@ public class EditItemVolumeCommand
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ItemVolumeTypeLogic itemVolumeTypeLogic;
+
     
     /** Creates a new instance of EditItemVolumeCommand */
     public EditItemVolumeCommand() {
@@ -96,8 +106,6 @@ public class EditItemVolumeCommand
 
     @Override
     public ItemVolume getEntity(EditItemVolumeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var uomControl = Session.getModelController(UomControl.class);
         ItemVolume itemVolume = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
@@ -107,7 +115,7 @@ public class EditItemVolumeCommand
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
-                var itemVolumeType = ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByName(this, spec.getItemVolumeTypeName());
+                var itemVolumeType = itemVolumeTypeLogic.getItemVolumeTypeByName(this, spec.getItemVolumeTypeName());
 
                 if(!hasExecutionErrors()) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -145,15 +153,11 @@ public class EditItemVolumeCommand
 
     @Override
     public void fillInResult(EditItemVolumeResult result, ItemVolume itemVolume) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemVolume(itemControl.getItemVolumeTransfer(getUserVisit(), itemVolume));
     }
 
     @Override
     public void doLock(ItemVolumeEdit edit, ItemVolume itemVolume) {
-        var uomControl = Session.getModelController(UomControl.class);
-
         height = itemVolume.getHeight();
         var heightConversion = height == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, height).convertToHighestUnitOfMeasureType();
 
@@ -180,7 +184,6 @@ public class EditItemVolumeCommand
 
     @Override
     public void canUpdate(ItemVolume itemVolume) {
-        var uomControl = Session.getModelController(UomControl.class);
         var heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
 
         heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind, heightUnitOfMeasureTypeName);
@@ -226,8 +229,6 @@ public class EditItemVolumeCommand
 
     @Override
     public void doUpdate(ItemVolume itemVolume) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var uomControl = Session.getModelController(UomControl.class);
         var itemVolumeValue = itemControl.getItemVolumeValue(itemVolume);
 
         var heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();

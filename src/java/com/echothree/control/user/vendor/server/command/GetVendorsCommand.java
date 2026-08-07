@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorsCommand
@@ -53,6 +53,9 @@ public class GetVendorsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    VendorControl vendorControl;
+
     /** Creates a new instance of GetVendorsCommand */
     public GetVendorsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetVendorsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-
         return vendorControl.countVendors();
     }
 
     @Override
     protected Collection<Vendor> getEntities() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-
         return vendorControl.getVendors();
     }
 
@@ -82,8 +81,6 @@ public class GetVendorsCommand
         var result = VendorResultFactory.getGetVendorsResult();
 
         if(entities != null) {
-            var vendorControl = Session.getModelController(VendorControl.class);
-
             if(session.hasLimit(VendorFactory.class)) {
                 result.setVendorCount(getTotalEntities());
             }

@@ -35,13 +35,22 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentProcessorTransactionLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentProcessorTransactionControl paymentProcessorTransactionControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
 
     protected PaymentProcessorTransactionLogic() {
         super();
@@ -57,12 +66,10 @@ public class PaymentProcessorTransactionLogic
         PaymentProcessorTransaction paymentProcessorTransaction = null;
 
         if(paymentProcessorTransactionName == null) {
-            paymentProcessorTransactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.PAYMENT_PROCESSOR_TRANSACTION.name());
+            paymentProcessorTransactionName = sequenceGeneratorLogic.getNextSequenceValue(eea, SequenceTypes.PAYMENT_PROCESSOR_TRANSACTION.name());
         }
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-
             paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName);
             if(paymentProcessorTransaction == null) {
                 paymentProcessorTransaction = paymentProcessorTransactionControl.createPaymentProcessorTransaction(paymentProcessorTransactionName,
@@ -77,7 +84,6 @@ public class PaymentProcessorTransactionLogic
 
     public PaymentProcessorTransaction getPaymentProcessorTransactionByName(final ExecutionErrorAccumulator eea, final String paymentProcessorTransactionName,
             final EntityPermission entityPermission) {
-        var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
         var paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName, entityPermission);
 
         if(paymentProcessorTransaction == null) {
@@ -98,14 +104,13 @@ public class PaymentProcessorTransactionLogic
     public PaymentProcessorTransaction getPaymentProcessorTransactionByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTransactionUniversalSpec universalSpec, final EntityPermission entityPermission) {
         PaymentProcessorTransaction paymentProcessorTransaction = null;
-        var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
         var paymentProcessorTransactionName = universalSpec.getPaymentProcessorTransactionName();
-        var parameterCount = (paymentProcessorTransactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentProcessorTransactionName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(paymentProcessorTransactionName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorTransaction.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -134,8 +139,6 @@ public class PaymentProcessorTransactionLogic
 
     public void deletePaymentProcessorTransaction(final ExecutionErrorAccumulator eea, final PaymentProcessorTransaction paymentProcessorTransaction,
             final BasePK deletedBy) {
-        var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
-
         paymentProcessorTransactionControl.deletePaymentProcessorTransaction(paymentProcessorTransaction, deletedBy);
     }
 }

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowEntrancePartyTypeCommand
@@ -48,15 +48,22 @@ public class GetWorkflowEntrancePartyTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowEntrance.name(), SecurityRoles.PartyType.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
     
     /** Creates a new instance of GetWorkflowEntrancePartyTypeCommand */
     public GetWorkflowEntrancePartyTypeCommand() {
@@ -69,7 +76,7 @@ public class GetWorkflowEntrancePartyTypeCommand
         var workflowEntranceName = form.getWorkflowEntranceName();
         var partyTypeName = form.getPartyTypeName();
 
-        return WorkflowEntranceLogic.getInstance().getWorkflowEntrancePartyTypeByName(this, workflowName, workflowEntranceName, partyTypeName);
+        return workflowEntranceLogic.getWorkflowEntrancePartyTypeByName(this, workflowName, workflowEntranceName, partyTypeName);
     }
 
     @Override
@@ -77,8 +84,6 @@ public class GetWorkflowEntrancePartyTypeCommand
         var result = WorkflowResultFactory.getGetWorkflowEntrancePartyTypeResult();
 
         if(entity != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowEntrancePartyType(workflowControl.getWorkflowEntrancePartyTypeTransfer(getUserVisit(), entity));
         }
 

@@ -43,10 +43,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityAttributeCommand
@@ -79,6 +79,19 @@ public class EditEntityAttributeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of EditEntityAttributeCommand */
     public EditEntityAttributeCommand() {
@@ -90,7 +103,7 @@ public class EditEntityAttributeCommand
         var validationResult = validator.validate(edit, getEditFieldDefinitions());
         
         if(!validationResult.getHasErrors()) {
-            entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this,
+            entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this,
                     spec);
             
             if(!hasExecutionErrors()) {
@@ -117,7 +130,7 @@ public class EditEntityAttributeCommand
     
     @Override
     public EntityAttribute getEntity(EditEntityAttributeResult result) {
-        entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this,
+        entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this,
                 spec, editModeToEntityPermission(editMode));
 
         return entityAttribute;
@@ -236,11 +249,9 @@ public class EditEntityAttributeCommand
                     edit.getEntityListItemSequenceName() : null;
 
             if(entityListItemSequenceName != null) {
-                var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
+                var sequenceType = sequenceTypeLogic.getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
 
                 if(!hasExecutionErrors()) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
-
                     entityListItemSequence = sequenceControl.getSequenceByName(sequenceType, entityListItemSequenceName);
 
                     if(entityListItemSequence == null) {
@@ -256,7 +267,7 @@ public class EditEntityAttributeCommand
                 
                 if(parameterCount == 0 || parameterCount == 2) {
                     if(parameterCount == 2) {
-                        unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this, unitOfMeasureKindName, unitOfMeasureTypeName);
+                        unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKindName, unitOfMeasureTypeName);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -297,7 +308,7 @@ public class EditEntityAttributeCommand
         entityAttributeDetailValue.setTrackRevisions(Boolean.valueOf(edit.getTrackRevisions()));
         entityAttributeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        EntityAttributeLogic.getInstance().updateEntityAttributeFromValue(session, entityAttributeDetailValue, partyPK);
+        entityAttributeLogic.updateEntityAttributeFromValue(session, entityAttributeDetailValue, partyPK);
 
         var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);

@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCarrierCommand
@@ -55,8 +55,8 @@ public class CreateCarrierCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Carrier.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null),
@@ -71,8 +71,21 @@ public class CreateCarrierCommand
                 new FieldDefinition("AccountValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateCarrierCommand */
     public CreateCarrierCommand() {
@@ -81,7 +94,6 @@ public class CreateCarrierCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var result = CarrierResultFactory.getCreateCarrierResult();
         var carrierName = form.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
@@ -91,7 +103,6 @@ public class CreateCarrierCommand
             var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
             
             if(carrierType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
                 var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
                 
@@ -110,7 +121,6 @@ public class CreateCarrierCommand
                             if(preferredCurrencyIsoName == null)
                                 preferredCurrency = null;
                             else {
-                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                             }
                             
@@ -119,7 +129,6 @@ public class CreateCarrierCommand
                                 Selector geoCodeSelector = null;
 
                                 if(geoCodeSelectorName != null) {
-                                    var selectorControl = Session.getModelController(SelectorControl.class);
                                     var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                                     if(selectorKind != null) {
@@ -142,7 +151,6 @@ public class CreateCarrierCommand
                                     Selector itemSelector = null;
 
                                     if(itemSelectorName != null) {
-                                        var selectorControl = Session.getModelController(SelectorControl.class);
                                         var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                                         if(selectorKind != null) {

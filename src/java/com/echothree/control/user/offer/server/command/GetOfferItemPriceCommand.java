@@ -26,7 +26,6 @@ import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -38,9 +37,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferItemPriceCommand
@@ -54,8 +53,8 @@ public class GetOfferItemPriceCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferItemPrice.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L),
@@ -64,8 +63,27 @@ public class GetOfferItemPriceCommand
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IncludeHistory", FieldType.BOOLEAN, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of GetOfferItemPriceCommand */
     public GetOfferItemPriceCommand() {
@@ -75,39 +93,33 @@ public class GetOfferItemPriceCommand
     @Override
     protected boolean checkOptionalSecurityRoles() {
         // This occurs before validation, and parseBoolean is more lax than our validation of what's permitted for a FieldType.BOOLEAN.
-        return Boolean.parseBoolean(form.getIncludeHistory()) ? SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(),
+        return Boolean.parseBoolean(form.getIncludeHistory()) ? securityRoleLogic.hasSecurityRoleUsingNames(this, getParty(),
                 SecurityRoleGroups.OfferItemPrice.name(), SecurityRoles.History.name()) : true;
     }
     
     @Override
     protected OfferItemPrice getEntity() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         OfferItemPrice offerItemPrice = null;
 
         if(offer != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var itemName = form.getItemName();
             var item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
                 var offerItem = offerItemControl.getOfferItem(offer, item);
 
                 if(offerItem != null) {
-                    var inventoryControl = Session.getModelController(InventoryControl.class);
                     var inventoryConditionName = form.getInventoryConditionName();
                     var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
-                        var uomControl = Session.getModelController(UomControl.class);
                         var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
                         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                         if(unitOfMeasureType != null) {
-                            var accountingControl = Session.getModelController(AccountingControl.class);
                             var currencyIsoName = form.getCurrencyIsoName();
                             var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
@@ -148,7 +160,6 @@ public class GetOfferItemPriceCommand
         var result = OfferResultFactory.getGetOfferItemPriceResult();
 
         if(offerItemPrice != null) {
-            var offerItemControl = Session.getModelController(OfferItemControl.class);
             var userVisit = getUserVisit();
 
             result.setOfferItemPrice(offerItemControl.getOfferItemPriceTransfer(userVisit, offerItemPrice));

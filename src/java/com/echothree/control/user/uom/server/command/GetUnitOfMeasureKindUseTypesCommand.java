@@ -24,10 +24,10 @@ import com.echothree.model.data.uom.server.factory.UnitOfMeasureKindUseTypeFacto
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUnitOfMeasureKindUseTypesCommand
@@ -39,6 +39,9 @@ public class GetUnitOfMeasureKindUseTypesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    UomControl uomControl;
 
     /** Creates a new instance of GetUnitOfMeasureKindUseTypesCommand */
     public GetUnitOfMeasureKindUseTypesCommand() {
@@ -52,15 +55,11 @@ public class GetUnitOfMeasureKindUseTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var uomControl = Session.getModelController(UomControl.class);
-
         return uomControl.countUnitOfMeasureKindUseTypes();
     }
 
     @Override
     protected Collection<UnitOfMeasureKindUseType> getEntities() {
-        var uomControl = Session.getModelController(UomControl.class);
-
         return uomControl.getUnitOfMeasureKindUseTypes();
     }
 
@@ -69,7 +68,6 @@ public class GetUnitOfMeasureKindUseTypesCommand
         var result = UomResultFactory.getGetUnitOfMeasureKindUseTypesResult();
 
         if(entities != null) {
-            var uomControl = Session.getModelController(UomControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(UnitOfMeasureKindUseTypeFactory.class)) {

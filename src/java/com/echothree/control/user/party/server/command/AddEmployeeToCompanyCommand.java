@@ -27,6 +27,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class AddEmployeeToCompanyCommand
@@ -39,8 +40,18 @@ public class AddEmployeeToCompanyCommand
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    CompanyLogic companyLogic;
+
+    @Inject
+    EmployeeLogic employeeLogic;
+
+    @Inject
+    PartyRelationshipLogic partyRelationshipLogic;
+
     
     /** Creates a new instance of AddEmployeeToCompanyCommand */
     public AddEmployeeToCompanyCommand() {
@@ -51,17 +62,17 @@ public class AddEmployeeToCompanyCommand
     protected BaseResult execute() {
         var employeeName = form.getEmployeeName();
         var partyName = form.getPartyName();
-        var partyEmployee = EmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName);
+        var partyEmployee = employeeLogic.getPartyEmployeeByName(this, employeeName, partyName);
         
         if(!hasExecutionErrors()) {
             var companyName = form.getCompanyName();
-            var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, true);
+            var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, null, null, true);
 
             if(!hasExecutionErrors()) {
                 var companyParty = partyCompany.getParty();
                 var employeeParty = partyEmployee.getParty();
 
-                PartyRelationshipLogic.getInstance().addEmployeeToCompany(this, companyParty, employeeParty, getPartyPK());
+                partyRelationshipLogic.addEmployeeToCompany(this, companyParty, employeeParty, getPartyPK());
             }
         }
 

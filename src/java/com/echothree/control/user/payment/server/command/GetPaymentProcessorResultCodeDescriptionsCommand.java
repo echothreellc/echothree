@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorResultCodeDescriptionsCommand
@@ -47,13 +47,17 @@ public class GetPaymentProcessorResultCodeDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorResultCode.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorResultCodeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
+
     
     /** Creates a new instance of GetPaymentProcessorResultCodeDescriptionsCommand */
     public GetPaymentProcessorResultCodeDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetPaymentProcessorResultCodeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorResultCodeDescriptionsResult();
         var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
         var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);

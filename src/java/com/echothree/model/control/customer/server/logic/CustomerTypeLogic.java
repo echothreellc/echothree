@@ -42,13 +42,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CustomerTypeLogic
         extends BaseLogic {
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected CustomerTypeLogic() {
         super();
@@ -66,7 +72,6 @@ public class CustomerTypeLogic
             final Boolean defaultAllowReferenceDuplicates, final String defaultReferenceValidationPattern, final Boolean defaultTaxable,
             final AllocationPriority allocationPriority, final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType == null) {
@@ -89,7 +94,6 @@ public class CustomerTypeLogic
 
     public CustomerType getCustomerTypeByName(final ExecutionErrorAccumulator eea, final String customerTypeName,
             final EntityPermission entityPermission) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerType = customerControl.getCustomerTypeByName(customerTypeName, entityPermission);
 
         if(customerType == null) {
@@ -110,9 +114,8 @@ public class CustomerTypeLogic
     public CustomerType getCustomerTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final CustomerTypeUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
         CustomerType customerType = null;
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerTypeName = universalSpec.getCustomerTypeName();
-        var parameterCount = (customerTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (customerTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -128,7 +131,7 @@ public class CustomerTypeLogic
             }
             case 1 -> {
                 if(customerTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CustomerType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -157,14 +160,10 @@ public class CustomerTypeLogic
 
     public void updateCustomerTypeFromValue(final ExecutionErrorAccumulator eea, final CustomerTypeDetailValue customerTypeDetailValue,
             final BasePK updatedBy) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-
         customerControl.updateCustomerTypeFromValue(customerTypeDetailValue, updatedBy);
     }
 
     public void deleteCustomerType(final ExecutionErrorAccumulator eea, final CustomerType customerType, final BasePK deletedBy) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-
         customerControl.deleteCustomerType(customerType, deletedBy);
     }
 

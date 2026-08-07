@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultTerminationReasonCommand
@@ -50,9 +50,13 @@ public class SetDefaultTerminationReasonCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
     
     /** Creates a new instance of SetDefaultTerminationReasonCommand */
     public SetDefaultTerminationReasonCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultTerminationReasonCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var terminationReasonName = form.getTerminationReasonName();
         var terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueByNameForUpdate(terminationReasonName);
         

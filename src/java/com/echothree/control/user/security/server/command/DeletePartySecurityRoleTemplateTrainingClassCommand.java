@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartySecurityRoleTemplateTrainingClassCommand
@@ -48,14 +48,24 @@ public class DeletePartySecurityRoleTemplateTrainingClassCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartySecurityRoleTemplateTrainingClass.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartySecurityRoleTemplateLogic partySecurityRoleTemplateLogic;
+
     
     /** Creates a new instance of DeletePartySecurityRoleTemplateTrainingClassCommand */
     public DeletePartySecurityRoleTemplateTrainingClassCommand() {
@@ -64,12 +74,10 @@ public class DeletePartySecurityRoleTemplateTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
         var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
-            var trainingControl = Session.getModelController(TrainingControl.class);
             var trainingClassName = form.getTrainingClassName();
             var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
             
@@ -77,7 +85,7 @@ public class DeletePartySecurityRoleTemplateTrainingClassCommand
                 var partySecurityRoleTemplateTrainingClass = securityControl.getPartySecurityRoleTemplateTrainingClassForUpdate(partySecurityRoleTemplate, trainingClass);
 
                 if(partySecurityRoleTemplateTrainingClass != null) {
-                    PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplateTrainingClass, getPartyPK());
+                    partySecurityRoleTemplateLogic.deletePartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplateTrainingClass, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPartySecurityRoleTemplateTrainingClass.name(), partySecurityRoleTemplateName, trainingClassName);
                 }

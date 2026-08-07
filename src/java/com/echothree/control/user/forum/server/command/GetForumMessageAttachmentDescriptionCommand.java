@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumMessageAttachmentDescriptionCommand
@@ -42,8 +42,18 @@ public class GetForumMessageAttachmentDescriptionCommand
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ForumMessageAttachmentSequence", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ForumRoleTypeLogic forumRoleTypeLogic;
+
     
     /** Creates a new instance of GetForumMessageAttachmentDescriptionCommand */
     public GetForumMessageAttachmentDescriptionCommand() {
@@ -52,18 +62,16 @@ public class GetForumMessageAttachmentDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var result = ForumResultFactory.getGetForumMessageAttachmentDescriptionResult();
         var forumMessageName = form.getForumMessageName();
         var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
-            if(ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
+            if(forumRoleTypeLogic.isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
                 var forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
                 var forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 
                 if(forumMessageAttachment != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = form.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
 

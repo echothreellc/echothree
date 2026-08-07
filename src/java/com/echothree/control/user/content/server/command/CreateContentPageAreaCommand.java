@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentPageAreaForm;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentPageAreaCommand
@@ -48,8 +47,8 @@ public class CreateContentPageAreaCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPageArea.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -62,8 +61,15 @@ public class CreateContentPageAreaCommand
                 // ContentPageAreaBlob is not validated
                 new FieldDefinition("ContentPageAreaClob", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("ContentPageAreaUrl", FieldType.URL, false, 1L, 200L)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateContentPageAreaCommand */
     public CreateContentPageAreaCommand() {
@@ -72,7 +78,6 @@ public class CreateContentPageAreaCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -90,7 +95,6 @@ public class CreateContentPageAreaCommand
                     var contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
                     if(contentPageLayoutArea != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = form.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
@@ -98,7 +102,6 @@ public class CreateContentPageAreaCommand
                             var contentPageArea = contentControl.getContentPageArea(contentPage, contentPageLayoutArea, language);
                             
                             if(contentPageArea == null) {
-                                var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                                 var mimeTypeName = form.getMimeTypeName();
                                 var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
                                 

@@ -19,7 +19,6 @@ package com.echothree.control.user.comment.server.command;
 import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -33,9 +32,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCommentTypeCommand
@@ -54,8 +53,21 @@ public class CreateCommentTypeCommand
                 new FieldDefinition("MimeTypeUsageTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of CreateCommentTypeCommand */
     public CreateCommentTypeCommand() {
@@ -73,13 +85,12 @@ public class CreateCommentTypeCommand
         if(parameterCount == 0 || parameterCount == 2) {
             var componentVendorName = form.getComponentVendorName();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+            var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
                 
             if(!hasExecutionErrors()) {
                 var entityTypeDetail = entityType.getLastDetail();
 
                 if(entityTypeDetail.getIsExtensible()) {
-                    var commentControl = Session.getModelController(CommentControl.class);
                     var commentTypeName = form.getCommentTypeName();
 
                     commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
@@ -89,7 +100,6 @@ public class CreateCommentTypeCommand
                         Sequence commentSequence = null;
 
                         if(commentSequenceName != null) {
-                            var sequenceControl = Session.getModelController(SequenceControl.class);
                             var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.name());
 
                             if(sequenceType != null) {
@@ -103,7 +113,6 @@ public class CreateCommentTypeCommand
                             WorkflowEntrance workflowEntrance = null;
 
                             if(parameterCount != 0) {
-                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                 var workflow = workflowControl.getWorkflowByName(workflowName);
 
                                 if(workflow != null) {
@@ -118,7 +127,6 @@ public class CreateCommentTypeCommand
                             }
 
                             if(!hasExecutionErrors()) {
-                                var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                                 var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
                                 var mimeTypeUsageType = mimeTypeUsageTypeName == null ? null : mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 

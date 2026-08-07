@@ -24,13 +24,16 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class FilterAdjustmentTypeLogic
         extends BaseLogic {
+
+    @Inject
+    FilterControl filterControl;
 
     protected FilterAdjustmentTypeLogic() {
         super();
@@ -42,7 +45,6 @@ public class FilterAdjustmentTypeLogic
 
     public FilterAdjustmentType createFilterAdjustmentType(final ExecutionErrorAccumulator eea, final String filterAdjustmentTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
 
         if(filterAdjustmentType == null) {
@@ -59,7 +61,6 @@ public class FilterAdjustmentTypeLogic
     }
 
     public FilterAdjustmentType getFilterAdjustmentTypeByName(final ExecutionErrorAccumulator eea, final String filterAdjustmentTypeName) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
 
         if(filterAdjustmentType == null) {

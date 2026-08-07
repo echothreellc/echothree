@@ -114,11 +114,6 @@ public class EditCustomerTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditCustomerTypeCommand */
-    public EditCustomerTypeCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     AccountingControl accountingControl;
@@ -161,6 +156,12 @@ public class EditCustomerTypeCommand
 
     @Inject
     TermLogic termLogic;
+
+
+    /** Creates a new instance of EditCustomerTypeCommand */
+    public EditCustomerTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     protected EditCustomerTypeResult getResult() {

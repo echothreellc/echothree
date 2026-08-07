@@ -35,10 +35,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OfferUseControl
         extends BaseOfferControl {
+
+    @Inject
+    protected SourceControl sourceControl;
 
     /** Creates a new instance of OfferUseControl */
     protected OfferUseControl() {
@@ -49,13 +53,19 @@ public class OfferUseControl
     //   Offer Uses
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OfferUseFactory offerUseFactory;
+
+    @Inject
+    protected OfferUseDetailFactory offerUseDetailFactory;
+
     public OfferUse createOfferUse(Offer offer, Use use, Sequence salesOrderSequence, BasePK createdBy) {
-        var offerUse = OfferUseFactory.getInstance().create();
-        var offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUse, offer, use, salesOrderSequence,
+        var offerUse = offerUseFactory.create();
+        var offerUseDetail = offerUseDetailFactory.create(offerUse, offer, use, salesOrderSequence,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        offerUse = OfferUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerUse.getPrimaryKey());
+        offerUse = offerUseFactory.getEntityFromPK(EntityPermission.READ_WRITE, offerUse.getPrimaryKey());
         offerUse.setActiveDetail(offerUseDetail);
         offerUse.setLastDetail(offerUseDetail);
         offerUse.store();
@@ -67,24 +77,30 @@ public class OfferUseControl
 
     public long countOfferUses() {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                        + "FROM offeruses, offerusedetails "
-                        + "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid");
+                """
+                SELECT COUNT(*)
+                FROM offeruses, offerusedetails
+                WHERE ofruse_activedetailid = ofrusedt_offerusedetailid
+                """);
     }
 
     public long countOfferUsesByOffer(Offer offer) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                        + "FROM offeruses, offerusedetails "
-                        + "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?",
+                """
+                SELECT COUNT(*)
+                FROM offeruses, offerusedetails
+                WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?
+                """,
                 offer);
     }
 
     public long countOfferUsesByUse(Use use) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM offeruses, offerusedetails "
-                + "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ?",
+                """
+                SELECT COUNT(*)
+                FROM offeruses, offerusedetails
+                WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ?
+                """,
                 use);
     }
 
@@ -92,23 +108,27 @@ public class OfferUseControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM offeruses, offerusedetails, offers, offerdetails, uses, usedetails " +
-                    "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid " +
-                    "AND ofrusedt_use_useid = use_useid AND use_activedetailid = usedt_usedetailid " +
-                    "AND ofrusedt_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid " +
-                    "ORDER BY ofrdt_sortorder, ofrdt_offername, usedt_sortorder, usedt_usename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM offeruses, offerusedetails, offers, offerdetails, uses, usedetails
+                    WHERE ofruse_activedetailid = ofrusedt_offerusedetailid
+                    AND ofrusedt_use_useid = use_useid AND use_activedetailid = usedt_usedetailid
+                    AND ofrusedt_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
+                    ORDER BY ofrdt_sortorder, ofrdt_offername, usedt_sortorder, usedt_usename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM offeruses, offerusedetails " +
-                    "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM offeruses, offerusedetails
+                    WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = OfferUseFactory.getInstance().prepareStatement(query);
+        var ps = offerUseFactory.prepareStatement(query);
 
-        return OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<OfferUse> getOfferUses() {
@@ -126,24 +146,28 @@ public class OfferUseControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offeruses, offerusedetails, uses, usedetails " +
-                        "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? " +
-                        "AND ofrusedt_use_useid = use_useid AND use_activedetailid = usedt_usedetailid " +
-                        "ORDER BY usedt_sortorder, usedt_usename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM offeruses, offerusedetails, uses, usedetails
+                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?
+                        AND ofrusedt_use_useid = use_useid AND use_activedetailid = usedt_usedetailid
+                        ORDER BY usedt_sortorder, usedt_usename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offeruses, offerusedetails " +
-                        "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offeruses, offerusedetails
+                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = offerUseFactory.prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
 
-            offerUses = OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -166,24 +190,28 @@ public class OfferUseControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offeruses, offerusedetails, offers, offerdetails " +
-                        "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ? " +
-                        "AND ofrusedt_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid " +
-                        "ORDER BY ofrdt_sortorder, ofrdt_offername " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM offeruses, offerusedetails, offers, offerdetails
+                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ?
+                        AND ofrusedt_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
+                        ORDER BY ofrdt_sortorder, ofrdt_offername
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offeruses, offerusedetails " +
-                        "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offeruses, offerusedetails
+                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = offerUseFactory.prepareStatement(query);
 
             ps.setLong(1, use.getPrimaryKey().getEntityId());
 
-            offerUses = OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -206,24 +234,28 @@ public class OfferUseControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offeruses, offerusedetails, sequences, sequencedetails " +
-                        "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_salesordersequenceid = ? " +
-                        "AND ofrusedt_salesordersequenceid = sq_sequenceid AND sq_activedetailid = sqdt_sequencedetailid " +
-                        "ORDER BY sqdt_sortorder, sqdt_sequencename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM offeruses, offerusedetails, sequences, sequencedetails
+                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_salesordersequenceid = ?
+                        AND ofrusedt_salesordersequenceid = sq_sequenceid AND sq_activedetailid = sqdt_sequencedetailid
+                        ORDER BY sqdt_sortorder, sqdt_sequencename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offeruses, offerusedetails " +
-                        "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_salesordersequenceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offeruses, offerusedetails
+                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_salesordersequenceid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = offerUseFactory.prepareStatement(query);
 
             ps.setLong(1, salesOrderSequence.getPrimaryKey().getEntityId());
 
-            offerUses = OfferUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -246,22 +278,26 @@ public class OfferUseControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offeruses, offerusedetails " +
-                        "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? AND ofrusedt_use_useid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM offeruses, offerusedetails
+                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? AND ofrusedt_use_useid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM offeruses, offerusedetails " +
-                        "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? AND ofrusedt_use_useid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM offeruses, offerusedetails
+                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? AND ofrusedt_use_useid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = OfferUseFactory.getInstance().prepareStatement(query);
+            var ps = offerUseFactory.prepareStatement(query);
 
             ps.setLong(1, offer.getPrimaryKey().getEntityId());
             ps.setLong(2, use.getPrimaryKey().getEntityId());
 
-            offerUse = OfferUseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            offerUse = offerUseFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -305,7 +341,7 @@ public class OfferUseControl
 
     public void updateOfferUseFromValue(OfferUseDetailValue offerUseDetailValue, BasePK updatedBy) {
         if(offerUseDetailValue.hasBeenModified()) {
-            var offerUse = OfferUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var offerUse = offerUseFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     offerUseDetailValue.getOfferUsePK());
             var offerUseDetail = offerUse.getActiveDetailForUpdate();
 
@@ -317,7 +353,7 @@ public class OfferUseControl
             var usePK = offerUseDetail.getUsePK();
             var sequencePK = offerUseDetailValue.getSalesOrderSequencePK();
 
-            offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUsePK, offerPK, usePK, sequencePK,
+            offerUseDetail = offerUseDetailFactory.create(offerUsePK, offerPK, usePK, sequencePK,
                     session.getStartTime(), Session.MAX_TIME);
 
             offerUse.setActiveDetail(offerUseDetail);
@@ -328,7 +364,6 @@ public class OfferUseControl
     }
 
     public void deleteOfferUse(OfferUse offerUse, BasePK deletedBy) {
-        var sourceControl = Session.getModelController(SourceControl.class);
 
         sourceControl.deleteSourcesByOfferUse(offerUse, deletedBy);
 

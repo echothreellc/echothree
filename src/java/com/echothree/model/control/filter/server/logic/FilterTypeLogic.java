@@ -35,7 +35,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
@@ -45,6 +44,15 @@ import javax.inject.Inject;
 public class FilterTypeLogic
         extends BaseLogic {
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
     protected FilterTypeLogic() {
         super();
     }
@@ -53,12 +61,9 @@ public class FilterTypeLogic
         return CDI.current().select(FilterTypeLogic.class).get();
     }
 
-    @Inject
-    FilterControl filterControl;
-
     public FilterType createFilterType(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+        var filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
         FilterType filterType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -106,7 +111,7 @@ public class FilterTypeLogic
 
     public FilterType getFilterTypeByName(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterTypeName,
             final EntityPermission entityPermission) {
-        var filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+        var filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
         FilterType filterType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -129,7 +134,7 @@ public class FilterTypeLogic
         var filterKindName = universalSpec.getFilterKindName();
         var filterTypeName = universalSpec.getFilterTypeName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         FilterType filterType = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -146,7 +151,7 @@ public class FilterTypeLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+                filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -165,7 +170,7 @@ public class FilterTypeLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterType.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {

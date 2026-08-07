@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSalesOrderBatchStatusChoicesCommand
@@ -43,16 +44,20 @@ public class GetSalesOrderBatchStatusChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderBatchStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderBatchStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSalesOrderBatchStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SalesOrderBatchLogic salesOrderBatchLogic;
+
     
     /** Creates a new instance of GetSalesOrderBatchStatusChoicesCommand */
     public GetSalesOrderBatchStatusChoicesCommand() {
@@ -63,13 +68,13 @@ public class GetSalesOrderBatchStatusChoicesCommand
     protected BaseResult execute() {
         var result = SalesResultFactory.getGetSalesOrderBatchStatusChoicesResult();
         var batchName = form.getBatchName();
-        var batch = batchName == null? null: SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
+        var batch = batchName == null? null: salesOrderBatchLogic.getBatchByName(this, batchName);
 
         if(!hasExecutionErrors()) {
             var defaultSalesOrderBatchStatusChoice = form.getDefaultSalesOrderBatchStatusChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-            result.setSalesOrderBatchStatusChoices(SalesOrderBatchLogic.getInstance().getSalesOrderBatchStatusChoices(defaultSalesOrderBatchStatusChoice,
+            result.setSalesOrderBatchStatusChoices(salesOrderBatchLogic.getSalesOrderBatchStatusChoices(defaultSalesOrderBatchStatusChoice,
                     getPreferredLanguage(), allowNullChoice, batch, getPartyPK()));
         }
 

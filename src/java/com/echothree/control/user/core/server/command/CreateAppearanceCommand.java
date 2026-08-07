@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateAppearanceCommand
@@ -52,8 +52,8 @@ public class CreateAppearanceCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Appearance.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, false, null, null),
@@ -64,8 +64,24 @@ public class CreateAppearanceCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    ColorControl colorControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    FontLogic fontLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateAppearanceCommand */
     public CreateAppearanceCommand() {
@@ -75,20 +91,17 @@ public class CreateAppearanceCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateAppearanceResult();
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceName = form.getAppearanceName();
         
         if(appearanceName == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.APPEARANCE.name());
             
-            appearanceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+            appearanceName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         }
 
         var appearance = appearanceControl.getAppearanceByName(appearanceName);
         
         if(appearance == null) {
-            var colorControl = Session.getModelController(ColorControl.class);
             var textColorName = form.getTextColorName();
             var textColor = textColorName == null ? null : colorControl.getColorByName(textColorName);
             
@@ -98,11 +111,11 @@ public class CreateAppearanceCommand
 
                 if(backgroundColorName == null || backgroundColor != null) {
                     var fontStyleName = form.getFontStyleName();
-                    var fontStyle = fontStyleName == null ? null : FontLogic.getInstance().getFontStyleByName(this, fontStyleName);
+                    var fontStyle = fontStyleName == null ? null : fontLogic.getFontStyleByName(this, fontStyleName);
                     
                     if(!hasExecutionErrors()) {
                         var fontWeightName = form.getFontWeightName();
-                        var fontWeight = fontWeightName == null ? null : FontLogic.getInstance().getFontWeightByName(this, fontWeightName);
+                        var fontWeight = fontWeightName == null ? null : fontLogic.getFontWeightByName(this, fontWeightName);
 
                         if(!hasExecutionErrors()) {
                             var partyPK = getPartyPK();

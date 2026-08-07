@@ -37,10 +37,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class EntityAttributeGroupControl
         extends BaseCoreControl {
+
+    @Inject
+    protected CoreControl coreControl;
+
+    @Inject
+    protected SearchControl searchControl;
 
     /** Creates a new instance of EntityAttributeGroupControl */
     protected EntityAttributeGroupControl() {
@@ -51,8 +58,16 @@ public class EntityAttributeGroupControl
     //   Entity Attribute Group Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+
+    @Inject
+    protected EntityAttributeGroupFactory entityAttributeGroupFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<EntityAttributeGroupResultTransfer> getEntityAttributeGroupResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
         List<EntityAttributeGroupResultTransfer> entityAttributeGroupResultTransfers;
@@ -67,19 +82,20 @@ public class EntityAttributeGroupControl
             entityAttributeGroupResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
-                var coreControl = Session.getModelController(CoreControl.class);
-                var ps = SearchResultFactory.getInstance().prepareStatement(
-                        "SELECT eni_entityuniqueid "
-                                + "FROM searchresults, entityinstances "
-                                + "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid "
-                                + "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid "
-                                + "_LIMIT_");
+                var ps = searchResultFactory.prepareStatement(
+                        """
+                        SELECT eni_entityuniqueid
+                        FROM searchresults, entityinstances
+                        WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                        _LIMIT_
+                        """);
 
                 ps.setLong(1, search.getPrimaryKey().getEntityId());
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
+                        var entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
                         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
                         entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityAttributeGroupName(),
@@ -99,19 +115,20 @@ public class EntityAttributeGroupControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
             try {
-                var coreControl = Session.getModelController(CoreControl.class);
-                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
-                        "SELECT eni_entityuniqueid "
-                                + "FROM cachedexecutedsearchresults, entityinstances "
-                                + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid "
-                                + "ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid "
-                                + "_LIMIT_");
+                var ps = cachedExecutedSearchResultFactory.prepareStatement(
+                        """
+                        SELECT eni_entityuniqueid
+                        FROM cachedexecutedsearchresults, entityinstances
+                        WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid
+                        _LIMIT_
+                        """);
 
                 ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
+                        var entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
                         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
                         entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityAttributeGroupName(),
@@ -129,8 +146,6 @@ public class EntityAttributeGroupControl
     }
 
     public List<EntityAttributeGroupObject> getEntityAttributeGroupObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
         var entityAttributeGroupObjects = new ArrayList<EntityAttributeGroupObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

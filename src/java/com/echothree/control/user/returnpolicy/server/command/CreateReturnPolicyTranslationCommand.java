@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateReturnPolicyTranslationCommand
@@ -49,8 +49,8 @@ public class CreateReturnPolicyTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ReturnPolicy.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -59,8 +59,18 @@ public class CreateReturnPolicyTranslationCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("PolicyMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateReturnPolicyTranslationCommand */
     public CreateReturnPolicyTranslationCommand() {
@@ -69,7 +79,6 @@ public class CreateReturnPolicyTranslationCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
@@ -78,7 +87,6 @@ public class CreateReturnPolicyTranslationCommand
             var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
             if(returnPolicy != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -86,7 +94,6 @@ public class CreateReturnPolicyTranslationCommand
                     var returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslation(returnPolicy, language);
 
                     if(returnPolicyTranslation == null) {
-                        var mimeTypeLogic = MimeTypeLogic.getInstance();
                         var policyMimeTypeName = form.getPolicyMimeTypeName();
                         var policy = form.getPolicy();
 

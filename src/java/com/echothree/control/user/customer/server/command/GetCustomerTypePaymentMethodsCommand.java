@@ -59,18 +59,19 @@ public class GetCustomerTypePaymentMethodsCommand
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    @Inject
-    CustomerControl customerControl;
 
     @Inject
-    CustomerTypeLogic customerTypeLogic;
+    CustomerControl customerControl;
 
     @Inject
     PaymentMethodControl paymentMethodControl;
 
     @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
     PaymentMethodLogic paymentMethodLogic;
+
 
     /** Creates a new instance of GetCustomerTypePaymentMethodsCommand */
     public GetCustomerTypePaymentMethodsCommand() {

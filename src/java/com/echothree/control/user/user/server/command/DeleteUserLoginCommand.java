@@ -27,7 +27,6 @@ import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.party.server.entity.Party;
@@ -40,9 +39,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteUserLoginCommand
@@ -58,15 +57,31 @@ public class DeleteUserLoginCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.UserLogin.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    UserKeyLogic userKeyLogic;
+
+    @Inject
+    UserSessionLogic userSessionLogic;
+
     
     /** Creates a new instance of DeleteUserLoginCommand */
     public DeleteUserLoginCommand() {
@@ -76,21 +91,20 @@ public class DeleteUserLoginCommand
     @Override
     protected BaseResult execute() {
         var partyName = form.getPartyName();
-        var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (partyName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             Party party = null;
             
             if(partyName == null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Party.name());
 
                 if(!hasExecutionErrors()) {
                     party = partyControl.getPartyByEntityInstanceForUpdate(entityInstance);
                 }
             } else {
-                party = PartyLogic.getInstance().getPartyByName(this, form.getPartyName());
+                party = partyLogic.getPartyByName(this, form.getPartyName());
             }
             
             if(!hasExecutionErrors()) {
@@ -98,15 +112,14 @@ public class DeleteUserLoginCommand
                 var securityRoleGroupName = getSecurityRoleGroupName(partyType);
 
                 if(securityRoleGroupName != null 
-                        && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
+                        && securityRoleLogic.hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
                         if(partyType.getAllowUserLogins()) {
-                            var userControl = getUserControl();
                             var userLogin = userControl.getUserLoginForUpdate(party);
 
                             if(userLogin != null) {
-                                UserKeyLogic.getInstance().clearUserKeysByParty(party);
-                                UserSessionLogic.getInstance().deleteUserSessionsByParty(party);
+                                userKeyLogic.clearUserKeysByParty(party);
+                                userSessionLogic.deleteUserSessionsByParty(party);
 
                                 userControl.deleteUserLogin(userLogin, getPartyPK());
                             } else {

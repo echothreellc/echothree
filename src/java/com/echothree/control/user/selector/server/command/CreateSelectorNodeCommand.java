@@ -18,7 +18,6 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorNodeForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -53,10 +52,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSelectorNodeCommand
@@ -86,7 +85,7 @@ public class CreateSelectorNodeCommand
                 new FieldDefinition("SelectorNodeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Negate", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
         
         booleanFormFieldDefinitions = List.of(
                 new FieldDefinition("SelectorBooleanTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -146,6 +145,40 @@ public class CreateSelectorNodeCommand
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SelectorNodeTypeLogic selectorNodeTypeLogic;
+
     
     /** Creates a new instance of CreateSelectorNodeCommand */
     public CreateSelectorNodeCommand() {
@@ -158,7 +191,7 @@ public class CreateSelectorNodeCommand
         var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            var selectorNodeType = SelectorNodeTypeLogic.getInstance().getSelectorNodeTypeByName(this, form.getSelectorNodeTypeName());
+            var selectorNodeType = selectorNodeTypeLogic.getSelectorNodeTypeByName(this, form.getSelectorNodeTypeName());
             
             if(!hasExecutionErrors()) {
                 var selectorNodeTypeEnum = SelectorNodeTypes.valueOf(selectorNodeType.getSelectorNodeTypeName());
@@ -215,7 +248,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class AccountingSelectorNodeType
         extends BaseSelectorNodeType {
-        AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+        AccountingControl accountingControl = CreateSelectorNodeCommand.this.accountingControl;
 
         private AccountingSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -231,7 +264,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class EmployeeSelectorNodeType
         extends BaseSelectorNodeType {
-        EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+        EmployeeControl employeeControl = CreateSelectorNodeCommand.this.employeeControl;
 
         private EmployeeSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -240,7 +273,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class GeoSelectorNodeType
         extends BaseSelectorNodeType {
-        GeoControl geoControl = Session.getModelController(GeoControl.class);
+        GeoControl geoControl = CreateSelectorNodeCommand.this.geoControl;
 
         private GeoSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -249,7 +282,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class ItemSelectorNodeType
         extends BaseSelectorNodeType {
-        ItemControl itemControl = Session.getModelController(ItemControl.class);
+        ItemControl itemControl = CreateSelectorNodeCommand.this.itemControl;
 
         private ItemSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -258,7 +291,7 @@ public class CreateSelectorNodeCommand
 
     private abstract class PaymentProcessorSelectorNodeType
             extends BaseSelectorNodeType {
-        PaymentProcessorControl paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
+        PaymentProcessorControl paymentProcessorControl = CreateSelectorNodeCommand.this.paymentProcessorControl;
 
         private PaymentProcessorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -267,7 +300,7 @@ public class CreateSelectorNodeCommand
 
     private abstract class PaymentMethodSelectorNodeType
             extends BaseSelectorNodeType {
-        PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+        PaymentMethodControl paymentMethodControl = CreateSelectorNodeCommand.this.paymentMethodControl;
 
         private PaymentMethodSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -276,7 +309,7 @@ public class CreateSelectorNodeCommand
 
     private abstract class TrainingSelectorNodeType
         extends BaseSelectorNodeType {
-        TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+        TrainingControl trainingControl = CreateSelectorNodeCommand.this.trainingControl;
 
         private TrainingSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -285,7 +318,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class VendorSelectorNodeType
         extends BaseSelectorNodeType {
-        VendorControl vendorControl = Session.getModelController(VendorControl.class);
+        VendorControl vendorControl = CreateSelectorNodeCommand.this.vendorControl;
 
         private VendorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -294,7 +327,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class WorkSelectorNodeType
         extends BaseSelectorNodeType {
-        WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+        WorkflowControl workflowControl = CreateSelectorNodeCommand.this.workflowControl;
 
         private WorkSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -662,7 +695,6 @@ public class CreateSelectorNodeCommand
     @Override
     protected BaseResult execute() {
         if(!hasExecutionErrors()) {
-            var selectorControl = Session.getModelController(SelectorControl.class);
             var selectorKindName = form.getSelectorKindName();
             var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 

@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchSortDirectionDescriptionCommand
@@ -55,8 +55,8 @@ public class EditSearchSortDirectionDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchSortDirection.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchSortDirectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditSearchSortDirectionDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of EditSearchSortDirectionDescriptionCommand */
     public EditSearchSortDirectionDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditSearchSortDirectionDescriptionCommand
 
     @Override
     public SearchSortDirectionDescription getEntity(EditSearchSortDirectionDescriptionResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchSortDirectionDescription searchSortDirectionDescription = null;
         var searchSortDirectionName = spec.getSearchSortDirectionName();
         var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
         if(searchSortDirection != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditSearchSortDirectionDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchSortDirectionDescriptionResult result, SearchSortDirectionDescription searchSortDirectionDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchSortDirectionDescription(searchControl.getSearchSortDirectionDescriptionTransfer(getUserVisit(), searchSortDirectionDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditSearchSortDirectionDescriptionCommand
 
     @Override
     public void doUpdate(SearchSortDirectionDescription searchSortDirectionDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortDirectionDescriptionValue = searchControl.getSearchSortDirectionDescriptionValue(searchSortDirectionDescription);
         searchSortDirectionDescriptionValue.setDescription(edit.getDescription());
 

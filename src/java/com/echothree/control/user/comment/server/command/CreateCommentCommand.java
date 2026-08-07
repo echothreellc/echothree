@@ -21,7 +21,6 @@ import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -39,9 +38,9 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCommentCommand
@@ -59,10 +58,28 @@ public class CreateCommentCommand
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ClobComment", FieldType.STRING, false, 1L, null),
-                new FieldDefinition("StringComment", FieldType.STRING, false, 1L, 512L)
-                // BlobComment is not validated
-                );
+                new FieldDefinition("StringComment", FieldType.STRING, false, 1L, 512L) // BlobComment is not validated
+        );
     }
+
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateCommentCommand */
     public CreateCommentCommand() {
@@ -71,7 +88,6 @@ public class CreateCommentCommand
     
     protected String createComment(EntityInstanceControl entityInstanceControl, CommentControl commentControl, CommentType commentType, EntityInstance commentedEntityInstance, Language language, MimeType mimeType,
             ByteArray blobComment, String clobComment, String stringComment) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         BasePK createdBy = getPartyPK();
         EntityInstance commentedByEntityInstance = null;
         String commentName = null;
@@ -80,7 +96,6 @@ public class CreateCommentCommand
         var workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
 
         if(commentedByUsername != null) {
-            var userControl = getUserControl();
             var userLogin = userControl.getUserLoginByUsername(commentedByUsername);
 
             if(userLogin != null) {
@@ -93,8 +108,6 @@ public class CreateCommentCommand
         }
 
         if(!hasExecutionErrors() && (workflowEntranceName != null && workflowEntrance != null)) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowEntrance = workflowControl.getWorkflowEntranceByName(workflowEntrance.getLastDetail().getWorkflow(),
                     workflowEntranceName);
 
@@ -111,7 +124,7 @@ public class CreateCommentCommand
                 commentSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COMMENT.name());
             }
 
-            commentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(commentSequence);
+            commentName = sequenceGeneratorLogic.getNextSequenceValue(commentSequence);
 
             var comment = commentControl.createComment(commentName, commentType, commentedEntityInstance,
                     commentedByEntityInstance, language == null? getPreferredLanguage(): language, description, mimeType, createdBy);
@@ -125,7 +138,6 @@ public class CreateCommentCommand
             }
 
             if(workflowEntrance != null) {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
 
                 // TODO: WorkEffort should be created for addEntityToWorkflow
@@ -139,19 +151,16 @@ public class CreateCommentCommand
     @Override
     protected BaseResult execute() {
         var result = CommentResultFactory.getCreateCommentResult();
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         String commentName = null;
         var entityRef = form.getEntityRef();
         var commentedEntityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(commentedEntityInstance != null) {
-            var commentControl = Session.getModelController(CommentControl.class);
             var commentTypeName = form.getCommentTypeName();
             var commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(),
                     commentTypeName);
 
             if(commentType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = languageIsoName == null? null: partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -168,7 +177,6 @@ public class CreateCommentCommand
                             addExecutionError(ExecutionErrors.MissingStringComment.name());
                         }
                     } else {
-                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                         var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {

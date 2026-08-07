@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEventTypeCommand
@@ -55,6 +56,9 @@ public class GetEventTypeCommand
         );
     }
 
+    @Inject
+    EventTypeLogic eventTypeLogic;
+
     /** Creates a new instance of GetEventTypeCommand */
     public GetEventTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -62,7 +66,7 @@ public class GetEventTypeCommand
 
     @Override
     protected EventType getEntity() {
-        var eventType = EventTypeLogic.getInstance().getEventTypeByUniversalSpec(this, form);
+        var eventType = eventTypeLogic.getEventTypeByUniversalSpec(this, form);
 
         return eventType;
     }

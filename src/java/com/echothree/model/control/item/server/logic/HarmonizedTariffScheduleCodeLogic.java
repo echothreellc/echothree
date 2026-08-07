@@ -24,13 +24,16 @@ import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeU
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class HarmonizedTariffScheduleCodeLogic
         extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
 
     protected HarmonizedTariffScheduleCodeLogic() {
         super();
@@ -41,7 +44,6 @@ public class HarmonizedTariffScheduleCodeLogic
     }
 
     public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByName(final ExecutionErrorAccumulator eea, final String harmonizedTariffScheduleCodeUnitName) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
 
         if(harmonizedTariffScheduleCodeUnit == null) {
@@ -52,7 +54,6 @@ public class HarmonizedTariffScheduleCodeLogic
     }
     
     public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByName(final ExecutionErrorAccumulator eea, final String harmonizedTariffScheduleCodeUseTypeName) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
         if(harmonizedTariffScheduleCodeUseType == null) {

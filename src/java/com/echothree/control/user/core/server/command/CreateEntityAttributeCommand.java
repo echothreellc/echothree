@@ -45,10 +45,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityAttributeCommand
@@ -222,6 +222,25 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     
     /** Creates a new instance of CreateEntityAttributeCommand */
     public CreateEntityAttributeCommand() {
@@ -248,7 +267,7 @@ public class CreateEntityAttributeCommand
         var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            var entityAttributeType = EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, form.getEntityAttributeTypeName());
+            var entityAttributeType = entityAttributeLogic.getEntityAttributeTypeByName(this, form.getEntityAttributeTypeName());
             
             if(!hasExecutionErrors()) {
                 validationResult = AdditionalEntityAttributeValidation(form, validator, entityAttributeType);
@@ -269,9 +288,9 @@ public class CreateEntityAttributeCommand
             var parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
-                var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
+                var entityType = entityTypeLogic.getEntityTypeByUniversalSpec(this, form);
                 var entityAttributeTypeName = form.getEntityAttributeTypeName();
-                var entityAttributeType = EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, entityAttributeTypeName);
+                var entityAttributeType = entityAttributeLogic.getEntityAttributeTypeByName(this, entityAttributeTypeName);
 
                 if(!hasExecutionErrors()) {
                     var entityListItemSequenceName = entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
@@ -280,11 +299,9 @@ public class CreateEntityAttributeCommand
                     Sequence entityListItemSequence = null;
 
                     if(entityListItemSequenceName != null) {
-                        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
+                        var sequenceType = sequenceTypeLogic.getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
 
                         if(!hasExecutionErrors()) {
-                            var sequenceControl = Session.getModelController(SequenceControl.class);
-
                             entityListItemSequence = sequenceControl.getSequenceByName(sequenceType, entityListItemSequenceName);
 
                             if(entityListItemSequence == null) {
@@ -297,7 +314,7 @@ public class CreateEntityAttributeCommand
                         UnitOfMeasureType unitOfMeasureType = null;
 
                         if(parameterCount == 2) {
-                            unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this, unitOfMeasureKindName, unitOfMeasureTypeName);
+                            unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKindName, unitOfMeasureTypeName);
                         }
 
                         if(!hasExecutionErrors()) {
@@ -305,7 +322,7 @@ public class CreateEntityAttributeCommand
                             Workflow workflow = null;
 
                             if(workflowName != null) {
-                                workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+                                workflow = workflowLogic.getWorkflowByName(this, workflowName);
                             }
 
                             if(!hasExecutionErrors()) {
@@ -334,7 +351,7 @@ public class CreateEntityAttributeCommand
                                 var sortOrder = Integer.valueOf(form.getSortOrder());
                                 var description = form.getDescription();
 
-                                entityAttribute = EntityAttributeLogic.getInstance().createEntityAttribute(this, entityType,
+                                entityAttribute = entityAttributeLogic.createEntityAttribute(this, entityType,
                                         entityAttributeName, entityAttributeType, trackRevisions, checkContentWebAddress,
                                         validationPattern, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue,
                                         lowerRangeIntegerValue, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue,

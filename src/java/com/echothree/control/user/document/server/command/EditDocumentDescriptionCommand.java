@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditDocumentDescriptionCommand
@@ -55,8 +55,8 @@ public class EditDocumentDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Document.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DocumentName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditDocumentDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditDocumentDescriptionCommand */
     public EditDocumentDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditDocumentDescriptionCommand
 
     @Override
     public DocumentDescription getEntity(EditDocumentDescriptionResult result) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentDescription documentDescription = null;
         var documentName = spec.getDocumentName();
         var document = documentControl.getDocumentByName(documentName);
 
         if(document != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditDocumentDescriptionCommand
 
     @Override
     public void fillInResult(EditDocumentDescriptionResult result, DocumentDescription documentDescription) {
-        var documentControl = Session.getModelController(DocumentControl.class);
-
         result.setDocumentDescription(documentControl.getDocumentDescriptionTransfer(getUserVisit(), documentDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditDocumentDescriptionCommand
 
     @Override
     public void doUpdate(DocumentDescription documentDescription) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentDescriptionValue = documentControl.getDocumentDescriptionValue(documentDescription);
         documentDescriptionValue.setDescription(edit.getDescription());
 

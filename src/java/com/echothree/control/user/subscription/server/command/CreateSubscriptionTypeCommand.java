@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSubscriptionTypeCommand
@@ -60,6 +60,13 @@ public class CreateSubscriptionTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of CreateSubscriptionTypeCommand */
     public CreateSubscriptionTypeCommand() {
@@ -68,7 +75,6 @@ public class CreateSubscriptionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -81,7 +87,6 @@ public class CreateSubscriptionTypeCommand
                 Sequence subscriptionSequence = null;
                 
                 if(subscriptionSequenceName != null) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
                     subscriptionSequence = sequenceControl.getSequenceByName(sequenceType, subscriptionSequenceName);
                 }

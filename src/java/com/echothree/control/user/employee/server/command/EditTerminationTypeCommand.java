@@ -35,10 +35,10 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTerminationTypeCommand
@@ -67,6 +67,10 @@ public class EditTerminationTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
     
     /** Creates a new instance of EditTerminationTypeCommand */
     public EditTerminationTypeCommand() {
@@ -75,7 +79,6 @@ public class EditTerminationTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var result = EmployeeResultFactory.getEditTerminationTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {

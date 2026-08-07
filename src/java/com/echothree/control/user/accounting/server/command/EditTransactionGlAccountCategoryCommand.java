@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTransactionGlAccountCategoryCommand
@@ -52,8 +52,8 @@ public class EditTransactionGlAccountCategoryCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TransactionGlAccountCategory.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -68,6 +68,10 @@ public class EditTransactionGlAccountCategoryCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of EditTransactionGlAccountCategoryCommand */
     public EditTransactionGlAccountCategoryCommand() {
@@ -76,7 +80,6 @@ public class EditTransactionGlAccountCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getEditTransactionGlAccountCategoryResult();
         var transactionTypeName = spec.getTransactionTypeName();
         var transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);

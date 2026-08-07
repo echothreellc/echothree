@@ -47,10 +47,10 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCustomerCommand
@@ -88,6 +88,22 @@ public class EditCustomerCommand
                 new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
     
     /** Creates a new instance of EditCustomerCommand */
     public EditCustomerCommand() {
@@ -106,7 +122,6 @@ public class EditCustomerCommand
 
     @Override
     public Party getEntity(EditCustomerResult result) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         Customer customer;
         var customerName = spec.getCustomerName();
 
@@ -132,15 +147,11 @@ public class EditCustomerCommand
 
     @Override
     public void fillInResult(EditCustomerResult result, Party party) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-
         result.setCustomer(customerControl.getCustomerTransfer(getUserVisit(), party));
     }
 
     @Override
     public void doLock(CustomerEdit edit, Party party) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
         var customer = customerControl.getCustomer(party);
         var partyDetail = party.getLastDetail();
         var partyGroup = partyControl.getPartyGroup(party);
@@ -189,8 +200,6 @@ public class EditCustomerCommand
 
     @Override
     public void canUpdate(Party party) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
         var customerTypeName = edit.getCustomerTypeName();
 
         customerType = customerControl.getCustomerTypeByName(customerTypeName);
@@ -199,7 +208,6 @@ public class EditCustomerCommand
             var cancellationPolicyName = edit.getCancellationPolicyName();
 
             if(cancellationPolicyName != null) {
-                var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                 var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -209,14 +217,12 @@ public class EditCustomerCommand
                 var returnPolicyName = edit.getReturnPolicyName();
 
                 if(returnPolicyName != null) {
-                    var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                     var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                     returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                 }
 
                 if(returnPolicyName == null || returnPolicy != null) {
-                    var accountingControl = Session.getModelController(AccountingControl.class);
                     var arGlAccountName = edit.getArGlAccountName();
 
                     arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
@@ -279,8 +285,6 @@ public class EditCustomerCommand
 
     @Override
     public void doUpdate(Party party) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
         var soundex = new Soundex();
         var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
         var customer = customerControl.getCustomerForUpdate(party);

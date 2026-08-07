@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSelectorKindCommand
@@ -44,17 +45,21 @@ public class CreateSelectorKindCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SelectorKind.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SelectorKind.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    SelectorKindLogic selectorKindLogic;
+
     
     /** Creates a new instance of CreateSelectorKindCommand */
     public CreateSelectorKindCommand() {
@@ -70,7 +75,7 @@ public class CreateSelectorKindCommand
         var description = form.getDescription();
         var createdBy = getPartyPK();
 
-        var selectorKind = SelectorKindLogic.getInstance().createSelectorKind(this, selectorKindName,
+        var selectorKind = selectorKindLogic.createSelectorKind(this, selectorKindName,
                 isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
 
         if(selectorKind != null) {

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemDescriptionTypeUseTypeCommand
@@ -70,6 +70,12 @@ public class EditItemDescriptionTypeUseTypeCommand
         );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemDescriptionTypeUseTypeLogic itemDescriptionTypeUseTypeLogic;
+
     /** Creates a new instance of EditItemDescriptionTypeUseTypeCommand */
     public EditItemDescriptionTypeUseTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -87,7 +93,7 @@ public class EditItemDescriptionTypeUseTypeCommand
 
     @Override
     public ItemDescriptionTypeUseType getEntity(EditItemDescriptionTypeUseTypeResult result) {
-        return ItemDescriptionTypeUseTypeLogic.getInstance().getItemDescriptionTypeUseTypeByUniversalSpec(this,
+        return itemDescriptionTypeUseTypeLogic.getItemDescriptionTypeUseTypeByUniversalSpec(this,
                 spec, false, editModeToEntityPermission(editMode));
     }
 
@@ -98,14 +104,11 @@ public class EditItemDescriptionTypeUseTypeCommand
 
     @Override
     public void fillInResult(EditItemDescriptionTypeUseTypeResult result, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemDescriptionTypeUseType(itemControl.getItemDescriptionTypeUseTypeTransfer(getUserVisit(), itemDescriptionTypeUseType));
     }
 
     @Override
     public void doLock(ItemDescriptionTypeUseTypeEdit edit, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getPreferredLanguage());
         var itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
 
@@ -120,7 +123,6 @@ public class EditItemDescriptionTypeUseTypeCommand
 
     @Override
     public void canUpdate(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionTypeUseTypeName = edit.getItemDescriptionTypeUseTypeName();
         var duplicateItemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
@@ -131,7 +133,6 @@ public class EditItemDescriptionTypeUseTypeCommand
 
     @Override
     public void doUpdate(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
         var itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueForUpdate(itemDescriptionTypeUseType);
         var itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescriptionForUpdate(itemDescriptionTypeUseType, getPreferredLanguage());
@@ -141,7 +142,7 @@ public class EditItemDescriptionTypeUseTypeCommand
         itemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemDescriptionTypeUseTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        ItemDescriptionTypeUseTypeLogic.getInstance().updateItemDescriptionTypeUseTypeFromValue(itemDescriptionTypeUseTypeDetailValue, partyPK);
+        itemDescriptionTypeUseTypeLogic.updateItemDescriptionTypeUseTypeFromValue(itemDescriptionTypeUseTypeDetailValue, partyPK);
 
         if(itemDescriptionTypeUseTypeDescription == null && description != null) {
             itemControl.createItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getPreferredLanguage(), description, partyPK);

@@ -66,10 +66,10 @@ public class EditInvoiceTypeDescriptionCommand
     }
 
     @Inject
-    PartyControl partyControl;
+    InvoiceControl invoiceControl;
 
     @Inject
-    InvoiceControl invoiceControl;
+    PartyControl partyControl;
 
     /** Creates a new instance of EditInvoiceTypeDescriptionCommand */
     public EditInvoiceTypeDescriptionCommand() {

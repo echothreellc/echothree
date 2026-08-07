@@ -52,9 +52,9 @@ public class EditItemPurchasingCategoryDescriptionCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ItemPurchasingCategory.name(), SecurityRoles.Description.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemPurchasingCategory.name(), SecurityRoles.Description.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, true, null, null),
@@ -65,17 +65,18 @@ public class EditItemPurchasingCategoryDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
-    
-    /** Creates a new instance of EditItemPurchasingCategoryDescriptionCommand */
-    public EditItemPurchasingCategoryDescriptionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     PartyControl partyControl;
 
     @Inject
     VendorControl vendorControl;
+
+
+    /** Creates a new instance of EditItemPurchasingCategoryDescriptionCommand */
+    public EditItemPurchasingCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditItemPurchasingCategoryDescriptionResult getResult() {

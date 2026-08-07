@@ -127,7 +127,13 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     //   Batch Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BatchTypeFactory batchTypeFactory;
+
+    @Inject
+    protected BatchTypeDetailFactory batchTypeDetailFactory;
+
     public BatchType createBatchType(String batchTypeName, BatchType parentBatchType, SequenceType batchSequenceType, Workflow batchWorkflow,
             WorkflowEntrance batchWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultBatchType = getDefaultBatchType();
@@ -142,13 +148,13 @@ public class BatchControl
             isDefault = true;
         }
 
-        var batchType = BatchTypeFactory.getInstance().create();
-        var batchTypeDetail = BatchTypeDetailFactory.getInstance().create(batchType, batchTypeName, parentBatchType, batchSequenceType,
+        var batchType = batchTypeFactory.create();
+        var batchTypeDetail = batchTypeDetailFactory.create(batchType, batchTypeName, parentBatchType, batchSequenceType,
                 batchWorkflow, batchWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        batchType = BatchTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        batchType = batchTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 batchType.getPrimaryKey());
         batchType.setActiveDetail(batchTypeDetail);
         batchType.setLastDetail(batchTypeDetail);
@@ -163,7 +169,7 @@ public class BatchControl
     public BatchType getBatchTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new BatchTypePK(entityInstance.getEntityUniqueId());
 
-        return BatchTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return batchTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public BatchType getBatchTypeByEntityInstance(EntityInstance entityInstance) {
@@ -204,7 +210,7 @@ public class BatchControl
     }
 
     private BatchType getBatchTypeByName(String batchTypeName, EntityPermission entityPermission) {
-        return BatchTypeFactory.getInstance().getEntityFromQuery(entityPermission, getBatchTypeByNameQueries, batchTypeName);
+        return batchTypeFactory.getEntityFromQuery(entityPermission, getBatchTypeByNameQueries, batchTypeName);
     }
 
     public BatchType getBatchTypeByName(String batchTypeName) {
@@ -245,7 +251,7 @@ public class BatchControl
     }
 
     private BatchType getDefaultBatchType(EntityPermission entityPermission) {
-        return BatchTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultBatchTypeQueries);
+        return batchTypeFactory.getEntityFromQuery(entityPermission, getDefaultBatchTypeQueries);
     }
 
     public BatchType getDefaultBatchType() {
@@ -282,7 +288,7 @@ public class BatchControl
     }
 
     private List<BatchType> getBatchTypes(EntityPermission entityPermission) {
-        return BatchTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchTypesQueries);
+        return batchTypeFactory.getEntitiesFromQuery(entityPermission, getBatchTypesQueries);
     }
 
     public List<BatchType> getBatchTypes() {
@@ -316,7 +322,7 @@ public class BatchControl
 
     private List<BatchType> getBatchTypesByParentBatchType(BatchType parentBatchType,
             EntityPermission entityPermission) {
-        return BatchTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchTypesByParentBatchTypeQueries,
+        return batchTypeFactory.getEntitiesFromQuery(entityPermission, getBatchTypesByParentBatchTypeQueries,
                 parentBatchType);
     }
 
@@ -406,7 +412,7 @@ public class BatchControl
     private void updateBatchTypeFromValue(BatchTypeDetailValue batchTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(batchTypeDetailValue.hasBeenModified()) {
-            var batchType = BatchTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batchType = batchTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      batchTypeDetailValue.getBatchTypePK());
             var batchTypeDetail = batchType.getActiveDetailForUpdate();
             
@@ -438,7 +444,7 @@ public class BatchControl
                 }
             }
             
-            batchTypeDetail = BatchTypeDetailFactory.getInstance().create(batchTypePK, batchTypeName, parentBatchTypePK, batchSequenceTypePK,
+            batchTypeDetail = batchTypeDetailFactory.create(batchTypePK, batchTypeName, parentBatchTypePK, batchSequenceTypePK,
                     batchWorkflowPK, batchWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             batchType.setActiveDetail(batchTypeDetail);
@@ -507,9 +513,12 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     //   Batch Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BatchTypeDescriptionFactory batchTypeDescriptionFactory;
+
     public BatchTypeDescription createBatchTypeDescription(BatchType batchType, Language language, String description, BasePK createdBy) {
-        var batchTypeDescription = BatchTypeDescriptionFactory.getInstance().create(batchType, language, description,
+        var batchTypeDescription = batchTypeDescriptionFactory.create(batchType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(batchType.getPrimaryKey(), EventTypes.MODIFY, batchTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -537,7 +546,7 @@ public class BatchControl
     }
     
     private BatchTypeDescription getBatchTypeDescription(BatchType batchType, Language language, EntityPermission entityPermission) {
-        return BatchTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getBatchTypeDescriptionQueries,
+        return batchTypeDescriptionFactory.getEntityFromQuery(entityPermission, getBatchTypeDescriptionQueries,
                 batchType, language, Session.MAX_TIME);
     }
     
@@ -579,7 +588,7 @@ public class BatchControl
     }
     
     private List<BatchTypeDescription> getBatchTypeDescriptionsByBatchType(BatchType batchType, EntityPermission entityPermission) {
-        return BatchTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchTypeDescriptionsByBatchTypeQueries,
+        return batchTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getBatchTypeDescriptionsByBatchTypeQueries,
                 batchType, Session.MAX_TIME);
     }
     
@@ -625,7 +634,7 @@ public class BatchControl
     
     public void updateBatchTypeDescriptionFromValue(BatchTypeDescriptionValue batchTypeDescriptionValue, BasePK updatedBy) {
         if(batchTypeDescriptionValue.hasBeenModified()) {
-            var batchTypeDescription = BatchTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batchTypeDescription = batchTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     batchTypeDescriptionValue.getPrimaryKey());
             
             batchTypeDescription.setThruTime(session.getStartTime());
@@ -635,7 +644,7 @@ public class BatchControl
             var language = batchTypeDescription.getLanguage();
             var description = batchTypeDescriptionValue.getDescription();
             
-            batchTypeDescription = BatchTypeDescriptionFactory.getInstance().create(batchType, language, description,
+            batchTypeDescription = batchTypeDescriptionFactory.create(batchType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(batchType.getPrimaryKey(), EventTypes.MODIFY, batchTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -661,8 +670,11 @@ public class BatchControl
     //   Batch Type Entity Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected BatchTypeEntityTypeFactory batchTypeEntityTypeFactory;
+
     public BatchTypeEntityType createBatchTypeEntityType(BatchType batchType, EntityType entityType, BasePK createdBy) {
-        var batchTypeEntityType = BatchTypeEntityTypeFactory.getInstance().create(batchType, entityType,
+        var batchTypeEntityType = batchTypeEntityTypeFactory.create(batchType, entityType,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(batchType.getPrimaryKey(), EventTypes.MODIFY, batchTypeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -717,7 +729,7 @@ public class BatchControl
     }
 
     private BatchTypeEntityType getBatchTypeEntityType(BatchType batchType, EntityType entityType, EntityPermission entityPermission) {
-        return BatchTypeEntityTypeFactory.getInstance().getEntityFromQuery(entityPermission, getBatchTypeEntityTypeQueries,
+        return batchTypeEntityTypeFactory.getEntityFromQuery(entityPermission, getBatchTypeEntityTypeQueries,
                 batchType, entityType, Session.MAX_TIME);
     }
 
@@ -752,7 +764,7 @@ public class BatchControl
     }
 
     private List<BatchTypeEntityType> getBatchTypeEntityTypesByBatchType(BatchType batchType, EntityPermission entityPermission) {
-        return BatchTypeEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchTypeEntityTypesByBatchTypeQueries,
+        return batchTypeEntityTypeFactory.getEntitiesFromQuery(entityPermission, getBatchTypeEntityTypesByBatchTypeQueries,
                 batchType, Session.MAX_TIME);
     }
 
@@ -787,7 +799,7 @@ public class BatchControl
     }
 
     private List<BatchTypeEntityType> getBatchTypeEntityTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        return BatchTypeEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchTypeEntityTypesByEntityTypeQueries,
+        return batchTypeEntityTypeFactory.getEntitiesFromQuery(entityPermission, getBatchTypeEntityTypesByEntityTypeQueries,
                 entityType, Session.MAX_TIME);
     }
 
@@ -844,7 +856,13 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     //   Batch Alias Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BatchAliasTypeFactory batchAliasTypeFactory;
+
+    @Inject
+    protected BatchAliasTypeDetailFactory batchAliasTypeDetailFactory;
+
     public BatchAliasType createBatchAliasType(BatchType batchType, String batchAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultBatchAliasType = getDefaultBatchAliasType(batchType);
@@ -859,12 +877,12 @@ public class BatchControl
             isDefault = true;
         }
 
-        var batchAliasType = BatchAliasTypeFactory.getInstance().create();
-        var batchAliasTypeDetail = BatchAliasTypeDetailFactory.getInstance().create(batchAliasType, batchType, batchAliasTypeName,
+        var batchAliasType = batchAliasTypeFactory.create();
+        var batchAliasTypeDetail = batchAliasTypeDetailFactory.create(batchAliasType, batchType, batchAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        batchAliasType = BatchAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, batchAliasType.getPrimaryKey());
+        batchAliasType = batchAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, batchAliasType.getPrimaryKey());
         batchAliasType.setActiveDetail(batchAliasTypeDetail);
         batchAliasType.setLastDetail(batchAliasTypeDetail);
         batchAliasType.store();
@@ -878,7 +896,7 @@ public class BatchControl
     public BatchAliasType getBatchAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new BatchAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return BatchAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return batchAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public BatchAliasType getBatchAliasTypeByEntityInstance(EntityInstance entityInstance) {
@@ -920,7 +938,7 @@ public class BatchControl
     }
     
     private BatchAliasType getBatchAliasTypeByName(BatchType batchType, String batchAliasTypeName, EntityPermission entityPermission) {
-        return BatchAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getBatchAliasTypeByNameQueries,
+        return batchAliasTypeFactory.getEntityFromQuery(entityPermission, getBatchAliasTypeByNameQueries,
                 batchType, batchAliasTypeName);
     }
     
@@ -963,7 +981,7 @@ public class BatchControl
     }
     
     private BatchAliasType getDefaultBatchAliasType(BatchType batchType, EntityPermission entityPermission) {
-        return BatchAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultBatchAliasTypeQueries, batchType);
+        return batchAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultBatchAliasTypeQueries, batchType);
     }
     
     public BatchAliasType getDefaultBatchAliasType(BatchType batchType) {
@@ -1000,7 +1018,7 @@ public class BatchControl
     }
     
     private List<BatchAliasType> getBatchAliasTypes(BatchType batchType, EntityPermission entityPermission) {
-        return BatchAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchAliasTypesQueries, batchType);
+        return batchAliasTypeFactory.getEntitiesFromQuery(entityPermission, getBatchAliasTypesQueries, batchType);
     }
     
     public List<BatchAliasType> getBatchAliasTypes(BatchType batchType) {
@@ -1063,7 +1081,7 @@ public class BatchControl
     private void updateBatchAliasTypeFromValue(BatchAliasTypeDetailValue batchAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(batchAliasTypeDetailValue.hasBeenModified()) {
-            var batchAliasType = BatchAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batchAliasType = batchAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     batchAliasTypeDetailValue.getBatchAliasTypePK());
             var batchAliasTypeDetail = batchAliasType.getActiveDetailForUpdate();
             
@@ -1094,7 +1112,7 @@ public class BatchControl
                 }
             }
             
-            batchAliasTypeDetail = BatchAliasTypeDetailFactory.getInstance().create(batchAliasTypePK, batchTypePK, batchAliasTypeName,
+            batchAliasTypeDetail = batchAliasTypeDetailFactory.create(batchAliasTypePK, batchTypePK, batchAliasTypeName,
                     validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             batchAliasType.setActiveDetail(batchAliasTypeDetail);
@@ -1151,9 +1169,12 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     //   Batch Alias Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BatchAliasTypeDescriptionFactory batchAliasTypeDescriptionFactory;
+
     public BatchAliasTypeDescription createBatchAliasTypeDescription(BatchAliasType batchAliasType, Language language, String description, BasePK createdBy) {
-        var batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().create(batchAliasType, language,
+        var batchAliasTypeDescription = batchAliasTypeDescriptionFactory.create(batchAliasType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(batchAliasType.getPrimaryKey(), EventTypes.MODIFY, batchAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1181,7 +1202,7 @@ public class BatchControl
     }
     
     private BatchAliasTypeDescription getBatchAliasTypeDescription(BatchAliasType batchAliasType, Language language, EntityPermission entityPermission) {
-        return BatchAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getBatchAliasTypeDescriptionQueries,
+        return batchAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getBatchAliasTypeDescriptionQueries,
                 batchAliasType, language, Session.MAX_TIME);
     }
     
@@ -1223,7 +1244,7 @@ public class BatchControl
     }
     
     private List<BatchAliasTypeDescription> getBatchAliasTypeDescriptionsByBatchAliasType(BatchAliasType batchAliasType, EntityPermission entityPermission) {
-        return BatchAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchAliasTypeDescriptionsByBatchAliasTypeQueries,
+        return batchAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getBatchAliasTypeDescriptionsByBatchAliasTypeQueries,
                 batchAliasType, Session.MAX_TIME);
     }
     
@@ -1269,7 +1290,7 @@ public class BatchControl
     
     public void updateBatchAliasTypeDescriptionFromValue(BatchAliasTypeDescriptionValue batchAliasTypeDescriptionValue, BasePK updatedBy) {
         if(batchAliasTypeDescriptionValue.hasBeenModified()) {
-            var batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batchAliasTypeDescription = batchAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      batchAliasTypeDescriptionValue.getPrimaryKey());
             
             batchAliasTypeDescription.setThruTime(session.getStartTime());
@@ -1279,7 +1300,7 @@ public class BatchControl
             var language = batchAliasTypeDescription.getLanguage();
             var description = batchAliasTypeDescriptionValue.getDescription();
             
-            batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().create(batchAliasType, language, description,
+            batchAliasTypeDescription = batchAliasTypeDescriptionFactory.create(batchAliasType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(batchAliasType.getPrimaryKey(), EventTypes.MODIFY, batchAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1304,13 +1325,19 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     //   Batches
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BatchFactory batchFactory;
+
+    @Inject
+    protected BatchDetailFactory batchDetailFactory;
+
     public Batch createBatch(BatchType batchType, String batchName, BasePK createdBy) {
-        var batch = BatchFactory.getInstance().create();
-        var batchDetail = BatchDetailFactory.getInstance().create(batch, batchType, batchName, session.getStartTime(), Session.MAX_TIME);
+        var batch = batchFactory.create();
+        var batchDetail = batchDetailFactory.create(batch, batchType, batchName, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        batch = BatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, batch.getPrimaryKey());
+        batch = batchFactory.getEntityFromPK(EntityPermission.READ_WRITE, batch.getPrimaryKey());
         batch.setActiveDetail(batchDetail);
         batch.setLastDetail(batchDetail);
         batch.store();
@@ -1324,7 +1351,7 @@ public class BatchControl
     public Batch getBatchByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new BatchPK(entityInstance.getEntityUniqueId());
 
-        return BatchFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return batchFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Batch getBatchByEntityInstance(EntityInstance entityInstance) {
@@ -1345,7 +1372,7 @@ public class BatchControl
     }
 
     public Batch getBatchByPK(BatchPK batchPK) {
-        return BatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, batchPK);
+        return batchFactory.getEntityFromPK(EntityPermission.READ_ONLY, batchPK);
     }
     
     private static final Map<EntityPermission, String> getBatchByNameQueries;
@@ -1370,7 +1397,7 @@ public class BatchControl
     }
     
     public Batch getBatchByName(BatchType batchType, String batchName, EntityPermission entityPermission) {
-        return BatchFactory.getInstance().getEntityFromQuery(entityPermission, getBatchByNameQueries,
+        return batchFactory.getEntityFromQuery(entityPermission, getBatchByNameQueries,
                 batchType, batchName);
     }
     
@@ -1415,7 +1442,7 @@ public class BatchControl
     }
 
     private Batch getBatchByAlias(BatchAliasType batchAliasType, String alias, EntityPermission entityPermission) {
-        return BatchFactory.getInstance().getEntityFromQuery(entityPermission, getBatchByAliasQueries, batchAliasType, alias, Session.MAX_TIME);
+        return batchFactory.getEntityFromQuery(entityPermission, getBatchByAliasQueries, batchAliasType, alias, Session.MAX_TIME);
     }
 
     public Batch getBatchByAlias(BatchAliasType batchAliasType, String alias) {
@@ -1447,7 +1474,7 @@ public class BatchControl
     }
     
     private List<Batch> getBatches(BatchType batchType, EntityPermission entityPermission) {
-        return BatchFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchesQueries, batchType);
+        return batchFactory.getEntitiesFromQuery(entityPermission, getBatchesQueries, batchType);
     }
     
     public List<Batch> getBatches(BatchType batchType) {
@@ -1483,7 +1510,7 @@ public class BatchControl
     
     public void updateBatchFromValue(BatchDetailValue batchDetailValue, BasePK updatedBy) {
         if(batchDetailValue.hasBeenModified()) {
-            var batch = BatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var batch = batchFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     batchDetailValue.getBatchPK());
             var batchDetail = batch.getActiveDetailForUpdate();
             
@@ -1495,7 +1522,7 @@ public class BatchControl
             var batchTypePK = batchType.getPrimaryKey();
             var batchName = batchDetailValue.getBatchName();
             
-            batchDetail = BatchDetailFactory.getInstance().create(batchPK, batchTypePK, batchName, session.getStartTime(), Session.MAX_TIME);
+            batchDetail = batchDetailFactory.create(batchPK, batchTypePK, batchName, session.getStartTime(), Session.MAX_TIME);
             
             batch.setActiveDetail(batchDetail);
             batch.setLastDetail(batchDetail);
@@ -1528,9 +1555,12 @@ public class BatchControl
     // --------------------------------------------------------------------------------
     //   Batch Aliases
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected BatchAliasFactory batchAliasFactory;
+
     public BatchAlias createBatchAlias(Batch batch, BatchAliasType batchAliasType, String alias, BasePK createdBy) {
-        var batchAlias = BatchAliasFactory.getInstance().create(batch, batchAliasType, alias, session.getStartTime(), Session.MAX_TIME);
+        var batchAlias = batchAliasFactory.create(batch, batchAliasType, alias, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, batchAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1573,7 +1603,7 @@ public class BatchControl
     }
     
     private BatchAlias getBatchAlias(Batch batch, BatchAliasType batchAliasType, EntityPermission entityPermission) {
-        return BatchAliasFactory.getInstance().getEntityFromQuery(entityPermission, getBatchAliasQueries,
+        return batchAliasFactory.getEntityFromQuery(entityPermission, getBatchAliasQueries,
                 batch, batchAliasType, Session.MAX_TIME);
     }
     
@@ -1613,7 +1643,7 @@ public class BatchControl
     }
 
     private BatchAlias getBatchAliasByAlias(BatchAliasType batchAliasType, String alias, EntityPermission entityPermission) {
-        return BatchAliasFactory.getInstance().getEntityFromQuery(entityPermission, getBatchAliasByAliasQueries, batchAliasType, alias, Session.MAX_TIME);
+        return batchAliasFactory.getEntityFromQuery(entityPermission, getBatchAliasByAliasQueries, batchAliasType, alias, Session.MAX_TIME);
     }
 
     public BatchAlias getBatchAliasByAlias(BatchAliasType batchAliasType, String alias) {
@@ -1647,7 +1677,7 @@ public class BatchControl
     }
     
     private List<BatchAlias> getBatchAliasesByBatch(Batch batch, EntityPermission entityPermission) {
-        return BatchAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchAliasesByBatchQueries,
+        return batchAliasFactory.getEntitiesFromQuery(entityPermission, getBatchAliasesByBatchQueries,
                 batch, Session.MAX_TIME);
     }
     
@@ -1681,7 +1711,7 @@ public class BatchControl
     }
     
     private List<BatchAlias> getBatchAliasesByBatchAliasType(BatchAliasType batchAliasType, EntityPermission entityPermission) {
-        return BatchAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchAliasesByBatchAliasTypeQueries,
+        return batchAliasFactory.getEntitiesFromQuery(entityPermission, getBatchAliasesByBatchAliasTypeQueries,
                 batchAliasType, Session.MAX_TIME);
     }
     
@@ -1710,7 +1740,7 @@ public class BatchControl
     
     public void updateBatchAliasFromValue(BatchAliasValue batchAliasValue, BasePK updatedBy) {
         if(batchAliasValue.hasBeenModified()) {
-            var batchAlias = BatchAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, batchAliasValue.getPrimaryKey());
+            var batchAlias = batchAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE, batchAliasValue.getPrimaryKey());
             
             batchAlias.setThruTime(session.getStartTime());
             batchAlias.store();
@@ -1719,7 +1749,7 @@ public class BatchControl
             var batchAliasTypePK = batchAlias.getBatchAliasTypePK();
             var alias  = batchAliasValue.getAlias();
             
-            batchAlias = BatchAliasFactory.getInstance().create(batchPK, batchAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
+            batchAlias = batchAliasFactory.create(batchPK, batchAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(batchPK, EventTypes.MODIFY, batchAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1751,8 +1781,11 @@ public class BatchControl
     //   Batch Entities
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected BatchEntityFactory batchEntityFactory;
+
     public BatchEntity createBatchEntity(EntityInstance entityInstance, Batch batch, BasePK createdBy) {
-        var batchEntity = BatchEntityFactory.getInstance().create(entityInstance, batch, session.getStartTime(), Session.MAX_TIME);
+        var batchEntity = batchEntityFactory.create(entityInstance, batch, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, batchEntity.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1795,7 +1828,7 @@ public class BatchControl
     }
 
     private BatchEntity getBatchEntity(EntityInstance entityInstance, Batch batch, EntityPermission entityPermission) {
-        return BatchEntityFactory.getInstance().getEntityFromQuery(entityPermission, getBatchEntityQueries,
+        return batchEntityFactory.getEntityFromQuery(entityPermission, getBatchEntityQueries,
                 entityInstance, batch, Session.MAX_TIME);
     }
 
@@ -1829,7 +1862,7 @@ public class BatchControl
     }
 
     private List<BatchEntity> getBatchEntitiesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        return BatchEntityFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchEntitiesByEntityInstanceQueries,
+        return batchEntityFactory.getEntitiesFromQuery(entityPermission, getBatchEntitiesByEntityInstanceQueries,
                 entityInstance, Session.MAX_TIME);
     }
 
@@ -1863,7 +1896,7 @@ public class BatchControl
     }
 
     private List<BatchEntity> getBatchEntitiesByBatch(Batch batch, EntityPermission entityPermission) {
-        return BatchEntityFactory.getInstance().getEntitiesFromQuery(entityPermission, getBatchEntitiesByBatchQueries,
+        return batchEntityFactory.getEntitiesFromQuery(entityPermission, getBatchEntitiesByBatchQueries,
                 batch, Session.MAX_TIME);
     }
 

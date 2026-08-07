@@ -22,13 +22,19 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class QueuedEntityLogic
         extends BaseLogic {
+
+    @Inject
+    QueueControl queueControl;
+
+    @Inject
+    QueueTypeLogic queueTypeLogic;
 
     protected QueuedEntityLogic() {
         super();
@@ -39,12 +45,10 @@ public class QueuedEntityLogic
     }
     
     public QueuedEntity createQueuedEntityUsingNames(final ExecutionErrorAccumulator eea, final String queueTypeName, final EntityInstance entityInstance) {
-        var queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
+        var queueType = queueTypeLogic.getQueueTypeByName(eea, QueueTypes.INDEXING.name());
         QueuedEntity queuedEntity = null;
         
         if(!hasExecutionErrors(eea)) {
-            var queueControl = Session.getModelController(QueueControl.class);
-            
             queueControl.createQueuedEntity(queueType, entityInstance);
         }
         

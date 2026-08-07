@@ -33,10 +33,20 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SalesOrderPaymentPreferenceLogic
         extends BaseLogic {
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    OrderLogic orderLogic;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
 
     protected SalesOrderPaymentPreferenceLogic() {
         super();
@@ -56,8 +66,6 @@ public class SalesOrderPaymentPreferenceLogic
      */
     public void checkCustomerTypePaymentMethod(final ExecutionErrorAccumulator eea, final CustomerType customerType,
             final PaymentMethod paymentMethod) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-        
         if(!customerControl.getCustomerTypePaymentMethodExists(customerType, paymentMethod)
                 && customerControl.countCustomerTypePaymentMethodsByCustomerType(customerType) != 0) {
             handleExecutionError(UnknownCustomerTypePaymentMethodException.class, eea, ExecutionErrors.UnknownCustomerTypePaymentMethod.name(),
@@ -82,7 +90,6 @@ public class SalesOrderPaymentPreferenceLogic
     public OrderPaymentPreference createSalesOrderPaymentPreference(final Session session, final ExecutionErrorAccumulator eea, final Order order,
             final Integer orderPaymentPreferenceSequence, final PaymentMethod paymentMethod, final PartyPaymentMethod partyPaymentMethod,
             final Boolean wasPresent, final Long maximumAmount, final Integer sortOrder, final PartyPK createdBy) {
-        var salesOrderLogic = SalesOrderLogic.getInstance();
         OrderPaymentPreference orderPaymentPreference = null;
         
         salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdBy);
@@ -107,7 +114,7 @@ public class SalesOrderPaymentPreferenceLogic
                 }
 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    orderPaymentPreference = OrderLogic.getInstance().createOrderPaymentPreference(session, eea, order, orderPaymentPreferenceSequence, paymentMethod,
+                    orderPaymentPreference = orderLogic.createOrderPaymentPreference(session, eea, order, orderPaymentPreferenceSequence, paymentMethod,
                             partyPaymentMethod, wasPresent, maximumAmount, sortOrder, createdBy);
                 }
             }

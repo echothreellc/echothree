@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ReturnKindLogic
         extends BaseLogic {
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ReturnKindLogic() {
         super();
@@ -52,7 +58,7 @@ public class ReturnKindLogic
     public ReturnKind createReturnKind(final ExecutionErrorAccumulator eea, final String returnKindName,
             final SequenceType returnSequenceType, final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var returnControl = Session.getModelController(ReturnPolicyControl.class);
+        var returnControl = returnPolicyControl;
         var returnKind = returnControl.getReturnKindByName(returnKindName);
 
         if(returnKind == null) {
@@ -71,7 +77,7 @@ public class ReturnKindLogic
 
     public ReturnKind getReturnKindByName(final ExecutionErrorAccumulator eea, final String returnKindName,
             final EntityPermission entityPermission) {
-        var returnControl = Session.getModelController(ReturnPolicyControl.class);
+        var returnControl = returnPolicyControl;
         var returnKind = returnControl.getReturnKindByName(returnKindName, entityPermission);
 
         if(returnKind == null) {
@@ -92,9 +98,9 @@ public class ReturnKindLogic
     public ReturnKind getReturnKindByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ReturnKindUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ReturnKind returnKind = null;
-        var returnControl = Session.getModelController(ReturnPolicyControl.class);
+        var returnControl = returnPolicyControl;
         var returnKindName = universalSpec.getReturnKindName();
-        var parameterCount = (returnKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (returnKindName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,7 +116,7 @@ public class ReturnKindLogic
             }
             case 1 -> {
                 if(returnKindName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ReturnKind.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

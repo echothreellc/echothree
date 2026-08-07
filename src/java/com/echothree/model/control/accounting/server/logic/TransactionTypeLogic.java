@@ -28,13 +28,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TransactionTypeLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected TransactionTypeLogic() {
         super();
@@ -46,7 +52,6 @@ public class TransactionTypeLogic
 
     public TransactionType getTransactionTypeByName(final ExecutionErrorAccumulator eea, final String transactionTypeName,
             final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName, entityPermission);
 
         if(transactionType == null) {
@@ -67,14 +72,13 @@ public class TransactionTypeLogic
     public TransactionType getTransactionTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final TransactionTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         TransactionType transactionType = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionTypeName = universalSpec.getTransactionTypeName();
-        var parameterCount = (transactionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (transactionTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(transactionTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

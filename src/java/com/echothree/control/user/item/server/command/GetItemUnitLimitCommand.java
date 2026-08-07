@@ -44,7 +44,7 @@ public class GetItemUnitLimitCommand
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.PERCENT, true, null, null)
         );
     }
-    
+
     @Inject
     ItemControl itemControl;
 
@@ -56,6 +56,8 @@ public class GetItemUnitLimitCommand
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+
     
     /** Creates a new instance of GetItemUnitLimitCommand */
     public GetItemUnitLimitCommand() {

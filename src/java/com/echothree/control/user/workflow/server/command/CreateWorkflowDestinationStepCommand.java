@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkflowDestinationStepCommand
@@ -46,8 +46,8 @@ public class CreateWorkflowDestinationStepCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.WorkflowStep.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
@@ -55,8 +55,12 @@ public class CreateWorkflowDestinationStepCommand
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DestinationWorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DestinationWorkflowStepName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateWorkflowDestinationStepCommand */
     public CreateWorkflowDestinationStepCommand() {
@@ -65,7 +69,6 @@ public class CreateWorkflowDestinationStepCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         

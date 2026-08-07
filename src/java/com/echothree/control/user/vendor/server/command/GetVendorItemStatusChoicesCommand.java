@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorItemStatusChoicesCommand
@@ -45,17 +45,21 @@ public class GetVendorItemStatusChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.VendorItemStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.VendorItemStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("DefaultVendorItemStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("DefaultVendorItemStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of GetVendorItemStatusChoicesCommand */
     public GetVendorItemStatusChoicesCommand() {
@@ -64,7 +68,6 @@ public class GetVendorItemStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetVendorItemStatusChoicesResult();
         var vendorName = form.getVendorName();
         var vendor = vendorControl.getVendorByName(vendorName);

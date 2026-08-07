@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteLicenseTypeCommand
@@ -46,13 +46,17 @@ public class DeleteLicenseTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LicenseType.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LicenseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    LicenseControl licenseControl;
+
     
     /** Creates a new instance of DeleteLicenseTypeCommand */
     public DeleteLicenseTypeCommand() {
@@ -61,7 +65,6 @@ public class DeleteLicenseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         var licenseTypeName = form.getLicenseTypeName();
         var licenseType = licenseControl.getLicenseTypeByNameForUpdate(licenseTypeName);
         

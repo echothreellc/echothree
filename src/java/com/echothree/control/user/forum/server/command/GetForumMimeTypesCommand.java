@@ -40,15 +40,18 @@ public class GetForumMimeTypesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ForumName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ForumName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ForumControl forumControl;
-    
+
     @Inject
     ForumLogic forumLogic;
+
+
+
     
     /** Creates a new instance of GetForumMimeTypesCommand */
     public GetForumMimeTypesCommand() {

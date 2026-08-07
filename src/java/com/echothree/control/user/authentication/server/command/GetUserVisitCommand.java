@@ -23,12 +23,14 @@ import com.echothree.model.data.user.server.entity.UserKeyDetail;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUserVisitCommand
         extends BaseSimpleCommand<GetUserVisitForm> {
     
     /** Creates a new instance of GetUserVisitCommand */
+
     public GetUserVisitCommand() {
         super(null, null, false);
     }
@@ -36,7 +38,6 @@ public class GetUserVisitCommand
     @Override
     protected BaseResult execute() {
         var result = AuthenticationResultFactory.getGetUserVisitResult();
-        var userControl = getUserControl();
         var userKeyName = form.getUserKeyName();
         UserKeyDetail userKeyDetail = null;
         

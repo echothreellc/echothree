@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteWarehouseTypeCommand
@@ -51,6 +52,10 @@ public class DeleteWarehouseTypeCommand
                 new FieldDefinition("WarehouseTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    WarehouseTypeLogic warehouseTypeLogic;
+
     
     /** Creates a new instance of DeleteWarehouseTypeCommand */
     public DeleteWarehouseTypeCommand() {
@@ -60,10 +65,10 @@ public class DeleteWarehouseTypeCommand
     @Override
     protected BaseResult execute() {
         var warehouseTypeName = form.getWarehouseTypeName();
-        var warehouseType = WarehouseTypeLogic.getInstance().getWarehouseTypeByNameForUpdate(this, warehouseTypeName);
+        var warehouseType = warehouseTypeLogic.getWarehouseTypeByNameForUpdate(this, warehouseTypeName);
         
         if(!hasExecutionErrors()) {
-            WarehouseTypeLogic.getInstance().deleteWarehouseType(this, warehouseType, getPartyPK());
+            warehouseTypeLogic.deleteWarehouseType(this, warehouseType, getPartyPK());
         }
         
         return null;

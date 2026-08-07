@@ -37,6 +37,12 @@ import javax.inject.Inject;
 public class ContactListFrequencyLogic
     extends BaseLogic {
 
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ContactListFrequencyLogic() {
         super();
     }
@@ -44,9 +50,6 @@ public class ContactListFrequencyLogic
     public static ContactListFrequencyLogic getInstance() {
         return CDI.current().select(ContactListFrequencyLogic.class).get();
     }
-    
-    @Inject
-    ContactListControl contactListControl;
 
     public ContactListFrequency getContactListFrequencyByName(final ExecutionErrorAccumulator eea, final String contactListFrequencyName,
             final EntityPermission entityPermission) {
@@ -72,7 +75,7 @@ public class ContactListFrequencyLogic
             final ContactListFrequencyUniversalSpec universalSpec, final boolean allowDefault, final EntityPermission entityPermission) {
         ContactListFrequency contactListFrequency = null;
         var contactListFrequencyName = universalSpec.getContactListFrequencyName();
-        var parameterCount = (contactListFrequencyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contactListFrequencyName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -88,7 +91,7 @@ public class ContactListFrequencyLogic
             }
             case 1 -> {
                 if(contactListFrequencyName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactListFrequency.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

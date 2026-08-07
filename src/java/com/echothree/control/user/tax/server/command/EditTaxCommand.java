@@ -32,10 +32,10 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTaxCommand
@@ -62,6 +62,16 @@ public class EditTaxCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    TaxControl taxControl;
+
     
     /** Creates a new instance of EditTaxCommand */
     public EditTaxCommand() {
@@ -70,7 +80,6 @@ public class EditTaxCommand
     
     @Override
     protected BaseResult execute() {
-        var taxControl = Session.getModelController(TaxControl.class);
         var result = TaxResultFactory.getEditTaxResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -116,7 +125,6 @@ public class EditTaxCommand
                 var duplicateTax = taxControl.getTaxByName(taxName);
                 
                 if(duplicateTax == null || tax.equals(duplicateTax)) {
-                    var contactControl = Session.getModelController(ContactControl.class);
                     var contactMechanismPurposeName = edit.getContactMechanismPurposeName();
                     var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
                     
@@ -124,7 +132,6 @@ public class EditTaxCommand
                         var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                         
                         if(contactMechanismPurpose.getContactMechanismType().equals(contactMechanismType)) {
-                            var accountingControl = Session.getModelController(AccountingControl.class);
                             var glAccountName = edit.getGlAccountName();
                             var glAccount = accountingControl.getGlAccountByName(glAccountName);
                             

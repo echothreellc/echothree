@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLocationUseTypesCommand
@@ -53,6 +53,9 @@ public class GetLocationUseTypesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    LocationUseTypeControl locationUseTypeControl;
+
     /** Creates a new instance of GetLocationUseTypesCommand */
     public GetLocationUseTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetLocationUseTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-
         return locationUseTypeControl.countLocationUseTypes();
     }
 
     @Override
     protected Collection<LocationUseType> getEntities() {
-        var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-
         return locationUseTypeControl.getLocationUseTypes();
     }
 
@@ -82,8 +81,6 @@ public class GetLocationUseTypesCommand
         var result = WarehouseResultFactory.getGetLocationUseTypesResult();
 
         if(entities != null) {
-            var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-
             if(session.hasLimit(LocationUseTypeFactory.class)) {
                 result.setLocationUseTypeCount(getTotalEntities());
             }

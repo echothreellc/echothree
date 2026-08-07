@@ -31,6 +31,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityEntityAttributeCommand
@@ -54,6 +55,13 @@ public class CreateEntityEntityAttributeCommand
                 new FieldDefinition("UuidAttribute", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of CreateEntityEntityAttributeCommand */
     public CreateEntityEntityAttributeCommand() {
@@ -62,17 +70,17 @@ public class CreateEntityEntityAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.ENTITY);
 
             if(!hasExecutionErrors()) {
                 var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
 
                 if(entityEntityAttribute == null) {
-                    var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityInstanceAttribute(this, form);
+                    var entityInstanceAttribute = entityAttributeLogic.getEntityInstanceAttribute(this, form);
 
                     if(entityInstanceAttribute != null) {
                         if(coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {
@@ -97,7 +105,7 @@ public class CreateEntityEntityAttributeCommand
                     }
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateEntityEntityAttribute.name(),
-                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                 entityAttribute.getLastDetail().getEntityAttributeName());
                 }
             }

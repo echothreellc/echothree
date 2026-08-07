@@ -65,11 +65,6 @@ public class GetEntityTagsCommand
                 new FieldDefinition("TagName", FieldType.TAG, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetEntityTagsCommand */
-    public GetEntityTagsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     EntityInstanceControl entityInstanceControl;
@@ -82,6 +77,12 @@ public class GetEntityTagsCommand
 
     @Inject
     TagLogic tagLogic;
+
+
+    /** Creates a new instance of GetEntityTagsCommand */
+    public GetEntityTagsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private EntityInstance taggedEntityInstance;
     private Tag tag;

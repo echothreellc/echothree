@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePaymentProcessorCommand
@@ -46,13 +46,17 @@ public class DeletePaymentProcessorCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessor.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
     
     /** Creates a new instance of DeletePaymentProcessorCommand */
     public DeletePaymentProcessorCommand() {
@@ -61,7 +65,6 @@ public class DeletePaymentProcessorCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var paymentProcessorName = form.getPaymentProcessorName();
         var paymentProcessor = paymentProcessorControl.getPaymentProcessorByNameForUpdate(paymentProcessorName);
         

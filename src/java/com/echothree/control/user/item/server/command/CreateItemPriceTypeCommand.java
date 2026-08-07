@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemPriceTypeCommand
@@ -53,8 +53,12 @@ public class CreateItemPriceTypeCommand
                 new FieldDefinition("ItemPriceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of CreateItemPriceTypeCommand */
     public CreateItemPriceTypeCommand() {
@@ -63,7 +67,6 @@ public class CreateItemPriceTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemPriceTypeName = form.getItemPriceTypeName();
         var itemPriceType = itemControl.getItemPriceTypeByName(itemPriceTypeName);
         

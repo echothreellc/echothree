@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetScaleTypeDescriptionCommand
@@ -48,14 +48,21 @@ public class GetScaleTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ScaleType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ScaleTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
     
     /** Creates a new instance of GetScaleTypeDescriptionCommand */
     public GetScaleTypeDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetScaleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var result = ScaleResultFactory.getGetScaleTypeDescriptionResult();
         var scaleTypeName = form.getScaleTypeName();
         var scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
         
         if(scaleType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

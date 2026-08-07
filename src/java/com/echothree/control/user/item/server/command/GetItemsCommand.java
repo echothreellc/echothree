@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemsCommand
@@ -53,6 +53,9 @@ public class GetItemsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    ItemControl itemControl;
+
     /** Creates a new instance of GetItemsCommand */
     public GetItemsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetItemsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.countItems();
     }
 
     @Override
     protected Collection<Item> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.getItems();
     }
 
@@ -82,8 +81,6 @@ public class GetItemsCommand
         var result = ItemResultFactory.getGetItemsResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             if(session.hasLimit(ItemFactory.class)) {
                 result.setItemCount(getTotalEntities());
             }

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateBatchTypeCommand
@@ -48,9 +48,9 @@ public class CreateBatchTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.BatchType.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.BatchType.name(), SecurityRoles.Create.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -61,8 +61,18 @@ public class CreateBatchTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateBatchTypeCommand */
     public CreateBatchTypeCommand() {
@@ -71,7 +81,6 @@ public class CreateBatchTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
@@ -84,12 +93,10 @@ public class CreateBatchTypeCommand
             }
 
             if(parentBatchTypeName == null || parentBatchType != null) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var batchSequenceTypeName = form.getBatchSequenceTypeName();
                 var batchSequenceType = sequenceControl.getSequenceTypeByName(batchSequenceTypeName);
 
                 if(batchSequenceTypeName == null || batchSequenceType != null) {
-                    var workflowControl = Session.getModelController(WorkflowControl.class);
                     var batchWorkflowName = form.getBatchWorkflowName();
                     var batchWorkflow = batchWorkflowName == null ? null : workflowControl.getWorkflowByName(batchWorkflowName);
 

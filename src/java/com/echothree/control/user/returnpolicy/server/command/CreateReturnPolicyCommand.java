@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateReturnPolicyCommand
@@ -43,9 +44,9 @@ public class CreateReturnPolicyCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ReturnPolicy.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ReturnPolicy.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -55,8 +56,12 @@ public class CreateReturnPolicyCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PolicyMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ReturnPolicyLogic returnPolicyLogic;
+
     
     /** Creates a new instance of CreateReturnPolicyCommand */
     public CreateReturnPolicyCommand() {
@@ -74,7 +79,7 @@ public class CreateReturnPolicyCommand
         var policy = form.getPolicy();
         var partyPK = getPartyPK();
 
-        ReturnPolicyLogic.getInstance().createReturnPolicy(this, returnKindName, returnPolicyName,
+        returnPolicyLogic.createReturnPolicy(this, returnKindName, returnPolicyName,
                 isDefault, sortOrder, getPreferredLanguage(), description, policyMimeTypeName, policy, partyPK);
 
         return null;

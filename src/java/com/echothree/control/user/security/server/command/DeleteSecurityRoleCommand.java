@@ -21,7 +21,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -30,9 +29,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSecurityRoleCommand
@@ -56,6 +55,10 @@ public class DeleteSecurityRoleCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of DeleteSecurityRoleCommand */
     public DeleteSecurityRoleCommand() {
@@ -64,11 +67,9 @@ public class DeleteSecurityRoleCommand
     
     @Override
     protected BaseResult execute() {
-        var securityRole = SecurityRoleLogic.getInstance().getSecurityRoleByUniversalSpecForUpdate(this, form, false);
+        var securityRole = securityRoleLogic.getSecurityRoleByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            var securityControl = Session.getModelController(SecurityControl.class);
-
             securityControl.deleteSecurityRole(securityRole, getPartyPK());
         }
 

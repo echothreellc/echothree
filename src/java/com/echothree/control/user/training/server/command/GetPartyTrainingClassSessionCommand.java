@@ -56,17 +56,19 @@ public class GetPartyTrainingClassSessionCommand
                 new FieldDefinition("PartyTrainingClassSessionSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetPartyTrainingClassSessionCommand */
-    public GetPartyTrainingClassSessionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     TrainingControl trainingControl;
 
     @Inject
     PartyTrainingClassLogic partyTrainingClassLogic;
+
+
+    /** Creates a new instance of GetPartyTrainingClassSessionCommand */
+    public GetPartyTrainingClassSessionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
     
     @Override
     protected BaseResult execute() {

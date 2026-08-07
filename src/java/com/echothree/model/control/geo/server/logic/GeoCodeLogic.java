@@ -37,13 +37,31 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class GeoCodeLogic
         extends BaseLogic {
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    TaxControl taxControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected GeoCodeLogic() {
         super();
@@ -55,7 +73,6 @@ public class GeoCodeLogic
 
     public GeoCode getGeoCodeByName(final ExecutionErrorAccumulator eea, final String geoCodeName,
             final EntityPermission entityPermission) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCode = geoControl.getGeoCodeByName(geoCodeName, entityPermission);
 
         if(geoCode == null) {
@@ -76,14 +93,13 @@ public class GeoCodeLogic
     public GeoCode getGeoCodeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final GeoCodeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         GeoCode geoCode = null;
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeName = universalSpec.getGeoCodeName();
-        var parameterCount = (geoCodeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (geoCodeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(geoCodeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GeoCode.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -112,7 +128,6 @@ public class GeoCodeLogic
 
     public GeoCode getGeoCodeByAlias(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType, final GeoCodeScope geoCodeScope,
             final String geoCodeAliasTypeName, final String alias) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
         GeoCodeAlias geoCodeAlias = null;
 
@@ -127,12 +142,6 @@ public class GeoCodeLogic
     }
 
     public void deleteGeoCode(final ExecutionErrorAccumulator eea, final GeoCode geoCode, final BasePK deletedBy) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var geoControl = Session.getModelController(GeoControl.class);
-        var itemControl = Session.getModelController(ItemControl.class);
-        var selectorControl = Session.getModelController(SelectorControl.class);
-        var taxControl = Session.getModelController(TaxControl.class);
-
         if(contactControl.countContactPostalAddressCorrectionsByCityGeoCode(geoCode) == 0
                 && contactControl.countContactPostalAddressCorrectionsByCountyGeoCode(geoCode) == 0
                 && contactControl.countContactPostalAddressCorrectionsByStateGeoCode(geoCode) == 0

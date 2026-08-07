@@ -56,6 +56,9 @@ public class GetForumMessagesCommand
     ForumControl forumControl;
 
     @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
     ForumRoleTypeLogic forumLogic;
 
     /** Creates a new instance of GetForumMessagesCommand */
@@ -68,11 +71,11 @@ public class GetForumMessagesCommand
     @Override
     protected void handleForm() {
         var forumThreadName = form.getForumThreadName();
-        var parameterCount = (forumThreadName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (forumThreadName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(forumThreadName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ForumThread.name());
 
                 if(!hasExecutionErrors()) {

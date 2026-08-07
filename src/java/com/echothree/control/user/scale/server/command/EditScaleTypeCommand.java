@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditScaleTypeCommand
@@ -53,8 +53,8 @@ public class EditScaleTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ScaleType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ScaleTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,9 @@ public class EditScaleTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ScaleControl scaleControl;
 
     /** Creates a new instance of EditScaleTypeCommand */
     public EditScaleTypeCommand() {
@@ -85,7 +88,6 @@ public class EditScaleTypeCommand
 
     @Override
     public ScaleType getEntity(EditScaleTypeResult result) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         ScaleType scaleType;
         var scaleTypeName = spec.getScaleTypeName();
 
@@ -111,14 +113,11 @@ public class EditScaleTypeCommand
 
     @Override
     public void fillInResult(EditScaleTypeResult result, ScaleType scaleType) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
-
         result.setScaleType(scaleControl.getScaleTypeTransfer(getUserVisit(), scaleType));
     }
 
     @Override
     public void doLock(ScaleTypeEdit edit, ScaleType scaleType) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var scaleTypeDescription = scaleControl.getScaleTypeDescription(scaleType, getPreferredLanguage());
         var scaleTypeDetail = scaleType.getLastDetail();
 
@@ -133,7 +132,6 @@ public class EditScaleTypeCommand
 
     @Override
     public void canUpdate(ScaleType scaleType) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var scaleTypeName = edit.getScaleTypeName();
         var duplicateScaleType = scaleControl.getScaleTypeByName(scaleTypeName);
 
@@ -144,7 +142,6 @@ public class EditScaleTypeCommand
 
     @Override
     public void doUpdate(ScaleType scaleType) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var partyPK = getPartyPK();
         var scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueForUpdate(scaleType);
         var scaleTypeDescription = scaleControl.getScaleTypeDescriptionForUpdate(scaleType, getPreferredLanguage());

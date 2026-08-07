@@ -45,10 +45,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLeaveCommand
@@ -62,9 +62,9 @@ public class EditLeaveCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Leave.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Leave.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LeaveName", FieldType.ENTITY_NAME, true, null, null)
@@ -80,6 +80,21 @@ public class EditLeaveCommand
                 new FieldDefinition("LeaveReasonName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    LeaveLogic leaveLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
 
     /** Creates a new instance of EditLeaveCommand */
     public EditLeaveCommand() {
@@ -98,7 +113,6 @@ public class EditLeaveCommand
 
     @Override
     public Leave getEntity(EditLeaveResult result) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         Leave leave;
         var leaveName = spec.getLeaveName();
 
@@ -122,8 +136,6 @@ public class EditLeaveCommand
 
     @Override
     public void fillInResult(EditLeaveResult result, Leave leave) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-
         result.setLeave(employeeControl.getLeaveTransfer(getUserVisit(), leave));
     }
 
@@ -131,8 +143,6 @@ public class EditLeaveCommand
     
     @Override
     public void doLock(LeaveEdit edit, Leave leave) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         var leaveDetail = leave.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
         
@@ -150,7 +160,7 @@ public class EditLeaveCommand
 
     @Override
     public void canEdit(Leave leave) {
-        if(WorkflowStepLogic.getInstance().isEntityInWorkflowStepsForUpdate(null, LeaveStatusConstants.Workflow_LEAVE_STATUS, leave,
+        if(workflowStepLogic.isEntityInWorkflowStepsForUpdate(null, LeaveStatusConstants.Workflow_LEAVE_STATUS, leave,
                 LeaveStatusConstants.WorkflowStep_APPROVED, LeaveStatusConstants.WorkflowStep_DENIED, LeaveStatusConstants.WorkflowStep_SUBMITTED).isEmpty()) {
             addExecutionError(ExecutionErrors.InvalidLeaveStatus.name(), leave.getLastDetail().getLeaveName());
         }
@@ -164,21 +174,17 @@ public class EditLeaveCommand
 
     @Override
     public void canUpdate(Leave leave) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var companyName = edit.getCompanyName();
 
         partyCompany = partyControl.getPartyCompanyByName(companyName);
 
         if(partyCompany != null) {
-            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-            
             totalTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                     edit.getTotalTime(), edit.getTotalTimeUnitOfMeasureTypeName(),
                     null, ExecutionErrors.MissingRequiredTotalTime.name(), null, ExecutionErrors.MissingRequiredTotalTimeUnitOfMeasureTypeName.name(),
                     null, ExecutionErrors.UnknownTotalTimeUnitOfMeasureTypeName.name());
 
             if(!hasExecutionErrors()) {
-                var employeeControl = Session.getModelController(EmployeeControl.class);
                 var leaveTypeName = edit.getLeaveTypeName();
 
                 leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
@@ -211,7 +217,6 @@ public class EditLeaveCommand
 
     @Override
     public void doUpdate(Leave leave) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var leaveDetailValue = employeeControl.getLeaveDetailValueForUpdate(leave);
 
         leaveDetailValue.setCompanyPartyPK(partyCompany.getPartyPK());
@@ -221,7 +226,7 @@ public class EditLeaveCommand
         leaveDetailValue.setEndTime(endTime);
         leaveDetailValue.setTotalTime(totalTime);
 
-        LeaveLogic.getInstance().updateLeaveFromValue(null, leaveDetailValue, getPartyPK());
+        leaveLogic.updateLeaveFromValue(null, leaveDetailValue, getPartyPK());
     }
 
 }

@@ -29,6 +29,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class RemoveEmployeFromDepartmentCommand
@@ -41,8 +42,24 @@ public class RemoveEmployeFromDepartmentCommand
                 new FieldDefinition("DepartmentName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    CompanyLogic companyLogic;
+
+    @Inject
+    DepartmentLogic departmentLogic;
+
+    @Inject
+    DivisionLogic divisionLogic;
+
+    @Inject
+    EmployeeLogic employeeLogic;
+
+    @Inject
+    PartyRelationshipLogic partyRelationshipLogic;
+
     
     /** Creates a new instance of RemoveEmployeFromDepartmentCommand */
     public RemoveEmployeFromDepartmentCommand() {
@@ -53,25 +70,25 @@ public class RemoveEmployeFromDepartmentCommand
     protected BaseResult execute() {
         var employeeName = form.getEmployeeName();
         var partyName = form.getPartyName();
-        var partyEmployee = EmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName);
+        var partyEmployee = employeeLogic.getPartyEmployeeByName(this, employeeName, partyName);
 
         if(!hasExecutionErrors()) {
             var companyName = form.getCompanyName();
-            var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
+            var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, null, null, false);
 
             if(!hasExecutionErrors()) {
                 var divisionName = form.getDivisionName();
-                var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, false);
+                var partyDivision = divisionLogic.getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, false);
 
                 if(!hasExecutionErrors()) {
                     var departmentName = form.getDepartmentName();
-                    var partyDepartment = DepartmentLogic.getInstance().getPartyDepartmentByName(this, partyDivision == null ? null : partyDivision.getParty(), departmentName, null, null, true);
+                    var partyDepartment = departmentLogic.getPartyDepartmentByName(this, partyDivision == null ? null : partyDivision.getParty(), departmentName, null, null, true);
 
                     if(!hasExecutionErrors()) {
                         var departmentParty = partyDepartment.getParty();
                         var employeeParty = partyEmployee.getParty();
 
-                        PartyRelationshipLogic.getInstance().removeEmployeeFromDepartment(this, departmentParty, employeeParty, getPartyPK());
+                        partyRelationshipLogic.removeEmployeeFromDepartment(this, departmentParty, employeeParty, getPartyPK());
                     }
                 }
             }

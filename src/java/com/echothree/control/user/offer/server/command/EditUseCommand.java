@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditUseCommand
@@ -54,8 +54,8 @@ public class EditUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Use.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null)
@@ -69,6 +69,16 @@ public class EditUseCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    UseControl useControl;
+
+    @Inject
+    UseTypeControl useTypeControl;
+
+    @Inject
+    UseLogic useLogic;
+
     
     /** Creates a new instance of EditUseCommand */
     public EditUseCommand() {
@@ -77,7 +87,6 @@ public class EditUseCommand
     
     @Override
     protected BaseResult execute() {
-        var useControl = Session.getModelController(UseControl.class);
         var result = OfferResultFactory.getEditUseResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -118,7 +127,6 @@ public class EditUseCommand
                 var duplicateUse = useControl.getUseByName(useName);
                 
                 if(duplicateUse == null || use.equals(duplicateUse)) {
-                    var useTypeControl = Session.getModelController(UseTypeControl.class);
                     var useTypeName = edit.getUseTypeName();
                     var useType = useTypeControl.getUseTypeByName(useTypeName);
                     
@@ -135,7 +143,7 @@ public class EditUseCommand
                                 useDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                                 useDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-                                UseLogic.getInstance().updateUseFromValue(useDetailValue, partyPK);
+                                useLogic.updateUseFromValue(useDetailValue, partyPK);
                                 
                                 if(useDescription == null && description != null) {
                                     useControl.createUseDescription(use, getPreferredLanguage(), description, partyPK);

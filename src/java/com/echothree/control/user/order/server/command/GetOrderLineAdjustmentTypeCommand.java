@@ -58,12 +58,13 @@ public class GetOrderLineAdjustmentTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
     @Inject
     OrderLineAdjustmentControl orderLineAdjustmentControl;
 
     @Inject
     OrderLineAdjustmentTypeLogic orderLineAdjustmentTypeLogic;
+
 
     /** Creates a new instance of GetOrderLineAdjustmentTypeCommand */
     public GetOrderLineAdjustmentTypeCommand() {

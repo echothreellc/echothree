@@ -22,13 +22,16 @@ import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SourceLogic
         extends BaseLogic {
+
+    @Inject
+    SourceControl sourceControl;
 
     protected SourceLogic() {
         super();
@@ -39,7 +42,6 @@ public class SourceLogic
     }
     
     public Source getSourceByName(final ExecutionErrorAccumulator eea, final String sourceName) {
-        var sourceControl = Session.getModelController(SourceControl.class);
         var source = sourceControl.getSourceByName(sourceName);
 
         if(source == null) {

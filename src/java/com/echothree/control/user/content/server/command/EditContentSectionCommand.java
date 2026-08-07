@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentSectionCommand
@@ -55,8 +55,8 @@ public class EditContentSectionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentSection.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -71,6 +71,10 @@ public class EditContentSectionCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of EditContentSectionCommand */
     public EditContentSectionCommand() {
@@ -91,7 +95,6 @@ public class EditContentSectionCommand
     
     @Override
     public ContentSection getEntity(EditContentSectionResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentSection contentSection = null;
         var contentCollectionName = spec.getContentCollectionName();
         
@@ -125,14 +128,11 @@ public class EditContentSectionCommand
     
     @Override
     public void fillInResult(EditContentSectionResult result, ContentSection contentSection) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentSection(contentControl.getContentSectionTransfer(getUserVisit(), contentSection));
     }
     
     @Override
     public void doLock(ContentSectionEdit edit, ContentSection contentSection) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentSectionDescription = contentControl.getContentSectionDescription(contentSection, getPreferredLanguage());
         var contentSectionDetail = contentSection.getLastDetail();
         var parentContentSection = contentSectionDetail.getParentContentSection();
@@ -151,7 +151,6 @@ public class EditContentSectionCommand
     
     @Override
     public void canUpdate(ContentSection contentSection) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentSectionName = edit.getContentSectionName();
         var duplicateContentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
 
@@ -175,7 +174,6 @@ public class EditContentSectionCommand
     
     @Override
     public void doUpdate(ContentSection contentSection) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         var contentSectionDetailValue = contentControl.getContentSectionDetailValueForUpdate(contentSection);
         var contentSectionDescription = contentControl.getContentSectionDescriptionForUpdate(contentSection, getPreferredLanguage());

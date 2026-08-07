@@ -21,11 +21,16 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class InvalidateUserSessionCommand
         extends BaseSimpleCommand {
     
+    @Inject
+    UserSessionLogic userSessionLogic;
+
+
     /** Creates a new instance of InvalidateUserSessionCommand */
     public InvalidateUserSessionCommand() {
         super(null, false);
@@ -33,7 +38,7 @@ public class InvalidateUserSessionCommand
     
     @Override
     protected BaseResult execute() {
-        UserSessionLogic.getInstance().invalidateUserSession(getUserSession());
+        userSessionLogic.invalidateUserSession(getUserSession());
         
         return null;
     }

@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCustomerTypeContactListCommand
@@ -55,8 +55,8 @@ public class EditCustomerTypeContactListCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.CustomerTypeContactList.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditCustomerTypeContactListCommand
                 new FieldDefinition("AddWhenCreated", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    CustomerControl customerControl;
+
     
     /** Creates a new instance of EditCustomerTypeContactListCommand */
     public EditCustomerTypeContactListCommand() {
@@ -85,13 +92,11 @@ public class EditCustomerTypeContactListCommand
 
     @Override
     public CustomerTypeContactList getEntity(EditCustomerTypeContactListResult result) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         CustomerTypeContactList customerTypeContactList = null;
         var customerTypeName = spec.getCustomerTypeName();
         var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
             var contactListName = spec.getContactListName();
             var contactList = contactListControl.getContactListByName(contactListName);
 
@@ -122,8 +127,6 @@ public class EditCustomerTypeContactListCommand
 
     @Override
     public void fillInResult(EditCustomerTypeContactListResult result, CustomerTypeContactList customerTypeContactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setCustomerTypeContactList(contactListControl.getCustomerTypeContactListTransfer(getUserVisit(), customerTypeContactList));
     }
 
@@ -134,7 +137,6 @@ public class EditCustomerTypeContactListCommand
 
     @Override
     public void doUpdate(CustomerTypeContactList customerTypeContactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var customerTypeContactListValue = contactListControl.getCustomerTypeContactListValue(customerTypeContactList);
 
         customerTypeContactListValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));

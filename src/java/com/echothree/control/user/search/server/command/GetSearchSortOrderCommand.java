@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchSortOrderCommand
@@ -60,6 +60,12 @@ public class GetSearchSortOrderCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchSortOrderLogic searchSortOrderLogic;
+
     /** Creates a new instance of GetSearchSortOrderCommand */
     public GetSearchSortOrderCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -67,7 +73,7 @@ public class GetSearchSortOrderCommand
 
     @Override
     protected SearchSortOrder getEntity() {
-        var searchSortOrder = SearchSortOrderLogic.getInstance().getSearchSortOrderByUniversalSpec(this, form, true);
+        var searchSortOrder = searchSortOrderLogic.getSearchSortOrderByUniversalSpec(this, form, true);
 
         if(searchSortOrder != null) {
             sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +84,6 @@ public class GetSearchSortOrderCommand
 
     @Override
     protected BaseResult getResult(SearchSortOrder searchSortOrder) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchSortOrderResult();
 
         if(searchSortOrder != null) {

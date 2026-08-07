@@ -55,7 +55,7 @@ public class DeleteCustomerTypePaymentMethodCommand
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     CustomerControl customerControl;
 
@@ -64,6 +64,7 @@ public class DeleteCustomerTypePaymentMethodCommand
 
     @Inject
     PaymentMethodLogic paymentMethodLogic;
+
 
     /** Creates a new instance of DeleteCustomerTypePaymentMethodCommand */
     public DeleteCustomerTypePaymentMethodCommand() {

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetQueueTypeDescriptionsCommand
@@ -47,13 +47,17 @@ public class GetQueueTypeDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.QueueType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("QueueTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    QueueControl queueControl;
+
     
     /** Creates a new instance of GetQueueTypeDescriptionsCommand */
     public GetQueueTypeDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetQueueTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var queueControl = Session.getModelController(QueueControl.class);
         var result = QueueResultFactory.getGetQueueTypeDescriptionsResult();
         var queueTypeName = form.getQueueTypeName();
         var queueType = queueControl.getQueueTypeByName(queueTypeName);

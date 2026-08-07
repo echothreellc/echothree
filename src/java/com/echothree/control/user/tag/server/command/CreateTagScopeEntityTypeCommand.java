@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTagScopeEntityTypeCommand
@@ -48,15 +48,25 @@ public class CreateTagScopeEntityTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TagScopeEntityType.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    TagScopeLogic tagScopeLogic;
+
     
     /** Creates a new instance of CreateTagScopeEntityTypeCommand */
     public CreateTagScopeEntityTypeCommand() {
@@ -65,12 +75,11 @@ public class CreateTagScopeEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeName = form.getTagScopeName();
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
-        var tagScope = TagScopeLogic.getInstance().getTagScopeByName(this, tagScopeName);
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        var tagScope = tagScopeLogic.getTagScopeByName(this, tagScopeName);
+        var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
 
         if(!hasExecutionErrors()) {
             if(entityType.getLastDetail().getIsExtensible()) {

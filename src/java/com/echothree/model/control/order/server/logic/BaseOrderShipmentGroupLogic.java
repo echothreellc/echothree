@@ -31,12 +31,18 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 public class BaseOrderShipmentGroupLogic
         extends BaseLogic {
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    OrderShipmentGroupControl orderShipmentGroupControl;
 
     protected BaseOrderShipmentGroupLogic() {
         super();
@@ -45,8 +51,6 @@ public class BaseOrderShipmentGroupLogic
     public OrderShipmentGroup createOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order, Integer orderShipmentGroupSequence,
             final ItemDeliveryType itemDeliveryType, final Boolean isDefault, final PartyContactMechanism partyContactMechanism,
             final ShippingMethod shippingMethod, final Boolean holdUntilComplete, final BasePK createdBy) {
-        var orderControl = Session.getModelController(OrderControl.class);
-        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
         var orderStatus = orderControl.getOrderStatusForUpdate(order);
         OrderShipmentGroup orderShipmentGroup = null;
 
@@ -78,7 +82,6 @@ public class BaseOrderShipmentGroupLogic
 
     public OrderShipmentGroup getDefaultOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order,
             final ItemDeliveryType itemDeliveryType, final EntityPermission entityPermission) {
-        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
         var orderShipmentGroup = orderShipmentGroupControl.getDefaultOrderShipmentGroup(order, itemDeliveryType, entityPermission);
 
         if(orderShipmentGroup == null) {
@@ -101,7 +104,6 @@ public class BaseOrderShipmentGroupLogic
 
     public OrderShipmentGroup getOrderShipmentGroupBySequence(final ExecutionErrorAccumulator eea, final Order order,
             final Integer orderShipmentGroupSequence, final EntityPermission entityPermission) {
-        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
         var orderShipmentGroup = orderShipmentGroupControl.getOrderShipmentGroupBySequence(order, orderShipmentGroupSequence);
 
         if(orderShipmentGroup == null) {

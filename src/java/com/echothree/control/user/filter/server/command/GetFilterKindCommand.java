@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterKindCommand
@@ -59,6 +59,12 @@ public class GetFilterKindCommand
         );
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
     /** Creates a new instance of GetFilterKindCommand */
     public GetFilterKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetFilterKindCommand
 
     @Override
     protected FilterKind getEntity() {
-        var filterKind = FilterKindLogic.getInstance().getFilterKindByUniversalSpec(this, form, true);
+        var filterKind = filterKindLogic.getFilterKindByUniversalSpec(this, form, true);
 
         if(filterKind != null) {
             sendEvent(filterKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetFilterKindCommand
 
     @Override
     protected BaseResult getResult(FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterKindResult();
 
         if(filterKind != null) {

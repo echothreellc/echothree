@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditAppearanceDescriptionCommand
@@ -55,8 +55,8 @@ public class EditAppearanceDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Appearance.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditAppearanceDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditAppearanceDescriptionCommand */
     public EditAppearanceDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditAppearanceDescriptionCommand
 
     @Override
     public AppearanceDescription getEntity(EditAppearanceDescriptionResult result) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         AppearanceDescription appearanceDescription = null;
         var appearanceName = spec.getAppearanceName();
         var appearance = appearanceControl.getAppearanceByName(appearanceName);
 
         if(appearance != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditAppearanceDescriptionCommand
 
     @Override
     public void fillInResult(EditAppearanceDescriptionResult result, AppearanceDescription appearanceDescription) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
-
         result.setAppearanceDescription(appearanceControl.getAppearanceDescriptionTransfer(getUserVisit(), appearanceDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditAppearanceDescriptionCommand
 
     @Override
     public void doUpdate(AppearanceDescription appearanceDescription) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceDescriptionValue = appearanceControl.getAppearanceDescriptionValue(appearanceDescription);
         appearanceDescriptionValue.setDescription(edit.getDescription());
 

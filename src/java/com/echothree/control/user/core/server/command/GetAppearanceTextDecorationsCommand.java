@@ -57,12 +57,13 @@ public class GetAppearanceTextDecorationsCommand
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     AppearanceControl appearanceControl;
 
     @Inject
     AppearanceLogic appearanceLogic;
+
 
     /** Creates a new instance of GetAppearanceTextDecorationsCommand */
     public GetAppearanceTextDecorationsCommand() {

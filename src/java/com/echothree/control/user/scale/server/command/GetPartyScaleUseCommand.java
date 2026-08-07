@@ -57,12 +57,13 @@ public class GetPartyScaleUseCommand
                 new FieldDefinition("ScaleUseTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ScaleControl scaleControl;
 
     @Inject
     PartyLogic partyLogic;
+
 
     /** Creates a new instance of GetPartyScaleUseCommand */
     public GetPartyScaleUseCommand() {

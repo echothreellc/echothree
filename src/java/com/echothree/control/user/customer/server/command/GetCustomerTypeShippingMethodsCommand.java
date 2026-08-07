@@ -57,12 +57,13 @@ public class GetCustomerTypeShippingMethodsCommand
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     CustomerControl customerControl;
 
     @Inject
     CustomerTypeLogic customerTypeLogic;
+
 
     /** Creates a new instance of GetCustomerTypeShippingMethodsCommand */
     public GetCustomerTypeShippingMethodsCommand() {

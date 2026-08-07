@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContactListFrequencyDescriptionsCommand
@@ -47,13 +47,17 @@ public class GetContactListFrequencyDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactListFrequency.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListFrequencyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
     
     /** Creates a new instance of GetContactListFrequencyDescriptionsCommand */
     public GetContactListFrequencyDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetContactListFrequencyDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var result = ContactListResultFactory.getGetContactListFrequencyDescriptionsResult();
         var contactListFrequencyName = form.getContactListFrequencyName();
         var contactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);

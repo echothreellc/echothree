@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSecurityRolesCommand
@@ -57,6 +57,13 @@ public class GetSecurityRolesCommand
                 new FieldDefinition("SecurityRoleGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    SecurityRoleGroupLogic securityRoleGroupLogic;
+
     
     /** Creates a new instance of GetSecurityRolesCommand */
     public GetSecurityRolesCommand() {
@@ -69,13 +76,11 @@ public class GetSecurityRolesCommand
     protected void handleForm() {
         var securityRoleGroupName = form.getSecurityRoleGroupName();
 
-        securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByName(this, securityRoleGroupName);
+        securityRoleGroup = securityRoleGroupLogic.getSecurityRoleGroupByName(this, securityRoleGroupName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var securityControl = Session.getModelController(SecurityControl.class);
-
         return hasExecutionErrors() ? null :
                 securityControl.countSecurityRolesBySecurityRoleGroup(securityRoleGroup);
     }
@@ -85,8 +90,6 @@ public class GetSecurityRolesCommand
         Collection<SecurityRole> entities = null;
 
         if(!hasExecutionErrors()) {
-            var securityControl = Session.getModelController(SecurityControl.class);
-
             entities = securityControl.getSecurityRoles(securityRoleGroup);
         }
 
@@ -96,7 +99,6 @@ public class GetSecurityRolesCommand
     @Override
     protected BaseResult getResult(Collection<SecurityRole> entities) {
         var result = SecurityResultFactory.getGetSecurityRolesResult();
-        var securityControl = Session.getModelController(SecurityControl.class);
         var userVisit = getUserVisit();
 
         result.setSecurityRoleGroup(securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup));

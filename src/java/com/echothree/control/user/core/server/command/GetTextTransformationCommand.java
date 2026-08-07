@@ -31,9 +31,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTextTransformationCommand
@@ -49,6 +49,16 @@ public class GetTextTransformationCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    TextControl textControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    TextLogic textLogic;
+
     
     /** Creates a new instance of GetTextTransformationCommand */
     public GetTextTransformationCommand() {
@@ -59,20 +69,18 @@ public class GetTextTransformationCommand
     protected TextTransformation getEntity() {
         TextTransformation textTransformation = null;
         var textTransformationName = form.getTextTransformationName();
-        var parameterCount = (textTransformationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (textTransformationName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(textTransformationName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.TextTransformation.name());
 
                 if(!hasExecutionErrors()) {
-                    var textControl = Session.getModelController(TextControl.class);
-
                     textTransformation = textControl.getTextTransformationByEntityInstance(entityInstance);
                 }
             } else {
-                textTransformation = TextLogic.getInstance().getTextTransformationByName(this, textTransformationName);
+                textTransformation = textLogic.getTextTransformationByName(this, textTransformationName);
             }
 
             if(textTransformation != null) {
@@ -90,8 +98,6 @@ public class GetTextTransformationCommand
         var result = CoreResultFactory.getGetTextTransformationResult();
 
         if(textTransformation != null) {
-            var textControl = Session.getModelController(TextControl.class);
-
             result.setTextTransformation(textControl.getTextTransformationTransfer(getUserVisit(), textTransformation));
         }
 

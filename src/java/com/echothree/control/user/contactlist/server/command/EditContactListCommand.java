@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactListCommand
@@ -59,8 +59,8 @@ public class EditContactListCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null)
@@ -77,6 +77,12 @@ public class EditContactListCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     /** Creates a new instance of EditContactListCommand */
     public EditContactListCommand() {
@@ -95,7 +101,6 @@ public class EditContactListCommand
 
     @Override
     public ContactList getEntity(EditContactListResult result) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactList contactList;
         var contactListName = spec.getContactListName();
 
@@ -119,8 +124,6 @@ public class EditContactListCommand
 
     @Override
     public void fillInResult(EditContactListResult result, ContactList contactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setContactList(contactListControl.getContactListTransfer(getUserVisit(), contactList));
     }
 
@@ -128,7 +131,6 @@ public class EditContactListCommand
 
     @Override
     public void doLock(ContactListEdit edit, ContactList contactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListDescription = contactListControl.getContactListDescription(contactList, getPreferredLanguage());
         var contactListDetail = contactList.getLastDetail();
 
@@ -153,7 +155,6 @@ public class EditContactListCommand
 
     @Override
     public void canUpdate(ContactList contactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListName = edit.getContactListName();
         var duplicateContactList = contactListControl.getContactListByName(contactListName);
 
@@ -175,7 +176,6 @@ public class EditContactListCommand
                     contactListFrequency = contactListFrequencyName == null ? null : contactListControl.getContactListFrequencyByName(contactListFrequencyName);
 
                     if(contactListFrequencyName == null || contactListFrequency != null) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         var defaultPartyContactListStatusChoice = edit.getDefaultPartyContactListStatusChoice();
                         var workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
 
@@ -199,7 +199,6 @@ public class EditContactListCommand
 
     @Override
     public void doUpdate(ContactList contactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
         var contactListDetailValue = contactListControl.getContactListDetailValueForUpdate(contactList);
         var contactListDescription = contactListControl.getContactListDescriptionForUpdate(contactList, getPreferredLanguage());

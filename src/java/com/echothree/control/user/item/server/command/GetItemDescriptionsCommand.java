@@ -49,21 +49,6 @@ import javax.inject.Inject;
 public class GetItemDescriptionsCommand
         extends BasePaginatedMultipleEntitiesCommand<ItemDescription, GetItemDescriptionsForm> {
 
-    @Inject
-    ItemControl itemControl;
-
-    @Inject
-    PartyControl partyControl;
-
-    @Inject
-    ItemLogic itemLogic;
-
-    @Inject
-    ItemDescriptionTypeUseTypeLogic itemDescriptionTypeUseTypeLogic;
-
-    @Inject
-    LanguageLogic languageLogic;
-
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -81,6 +66,22 @@ public class GetItemDescriptionsCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ItemDescriptionTypeUseTypeLogic itemDescriptionTypeUseTypeLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     
     /** Creates a new instance of GetItemDescriptionsCommand */
     public GetItemDescriptionsCommand() {

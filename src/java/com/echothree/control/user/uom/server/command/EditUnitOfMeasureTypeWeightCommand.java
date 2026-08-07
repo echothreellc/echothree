@@ -53,15 +53,16 @@ public class EditUnitOfMeasureTypeWeightCommand
                 new FieldDefinition("Weight", FieldType.UNSIGNED_LONG, true, null, null)
         );
     }
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditUnitOfMeasureTypeWeightCommand */
     public EditUnitOfMeasureTypeWeightCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
-    @Inject
-    UomControl uomControl;
-
     @Override
     protected EditUnitOfMeasureTypeWeightResult getResult() {
         return UomResultFactory.getEditUnitOfMeasureTypeWeightResult();

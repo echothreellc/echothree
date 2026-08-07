@@ -28,10 +28,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRelatedItemsCommand
@@ -47,6 +47,10 @@ public class GetRelatedItemsCommand
                 new FieldDefinition("ToItemName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetRelatedItemsCommand */
     public GetRelatedItemsCommand() {
@@ -64,7 +68,6 @@ public class GetRelatedItemsCommand
         var parameterCount = (fromItemName == null ? 0 : 1) + (toItemName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var relatedItemTypeName = form.getRelatedItemTypeName();
 
             relatedItemType = relatedItemTypeName == null ? null : itemControl.getRelatedItemTypeByName(relatedItemTypeName);
@@ -91,7 +94,6 @@ public class GetRelatedItemsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
         Long totalEntities = null;
 
         if(!hasExecutionErrors()) {
@@ -118,8 +120,6 @@ public class GetRelatedItemsCommand
         Collection<RelatedItem> entities = null;
 
         if(!hasExecutionErrors()) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             if(relatedItemType == null) {
                 if(fromItem != null) {
                     entities = itemControl.getRelatedItemsByFromItem(fromItem);
@@ -143,7 +143,6 @@ public class GetRelatedItemsCommand
         var result = ItemResultFactory.getGetRelatedItemsResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(RelatedItemFactory.class)) {

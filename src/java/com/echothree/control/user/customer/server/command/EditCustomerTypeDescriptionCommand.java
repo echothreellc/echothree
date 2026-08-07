@@ -65,17 +65,18 @@ public class EditCustomerTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditCustomerTypeDescriptionCommand */
-    public EditCustomerTypeDescriptionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
-    
+
     @Inject
     CustomerControl customerControl;
 
     @Inject
     PartyControl partyControl;
+
+
+    /** Creates a new instance of EditCustomerTypeDescriptionCommand */
+    public EditCustomerTypeDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     protected EditCustomerTypeDescriptionResult getResult() {

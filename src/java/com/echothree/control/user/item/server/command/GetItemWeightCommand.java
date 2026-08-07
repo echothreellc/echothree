@@ -45,11 +45,6 @@ public class GetItemWeightCommand
                 new FieldDefinition("ItemWeightTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetItemWeightCommand */
-    public GetItemWeightCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
-    }
 
     @Inject
     ItemControl itemControl;
@@ -62,6 +57,12 @@ public class GetItemWeightCommand
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+
+    /** Creates a new instance of GetItemWeightCommand */
+    public GetItemWeightCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected BaseResult execute() {

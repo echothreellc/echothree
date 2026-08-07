@@ -23,9 +23,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRoleTypeDescriptionCommand
@@ -38,8 +38,12 @@ public class CreateRoleTypeDescriptionCommand
                 new FieldDefinition("RoleTypeName", FieldType.STRING, true, null, 40L),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateRoleTypeDescriptionCommand */
     public CreateRoleTypeDescriptionCommand() {
@@ -48,7 +52,6 @@ public class CreateRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var roleTypeName = form.getRoleTypeName();
         var roleType = partyControl.getRoleTypeByName(roleTypeName);
         

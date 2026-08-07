@@ -111,6 +111,12 @@ public class TaxControl
     //   Tax Classifications
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected TaxClassificationFactory taxClassificationFactory;
+
+    @Inject
+    protected TaxClassificationDetailFactory taxClassificationDetailFactory;
+
     public TaxClassification createTaxClassification(GeoCode countryGeoCode, String taxClassificationName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultTaxClassification = getDefaultTaxClassification(countryGeoCode);
@@ -125,12 +131,12 @@ public class TaxControl
             isDefault = true;
         }
 
-        var taxClassification = TaxClassificationFactory.getInstance().create();
-        var taxClassificationDetail = TaxClassificationDetailFactory.getInstance().create( taxClassification, countryGeoCode,
+        var taxClassification = taxClassificationFactory.create();
+        var taxClassificationDetail = taxClassificationDetailFactory.create( taxClassification, countryGeoCode,
                 taxClassificationName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        taxClassification = taxClassificationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 taxClassification.getPrimaryKey());
         taxClassification.setActiveDetail(taxClassificationDetail);
         taxClassification.setLastDetail(taxClassificationDetail);
@@ -145,7 +151,7 @@ public class TaxControl
     public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
 
-        return TaxClassificationFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return taxClassificationFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance) {
@@ -189,7 +195,7 @@ public class TaxControl
     }
 
     private List<TaxClassification> getTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return TaxClassificationFactory.getInstance().getEntitiesFromQuery(entityPermission, getTaxClassificationsByCountryGeoCodeQueries,
+        return taxClassificationFactory.getEntitiesFromQuery(entityPermission, getTaxClassificationsByCountryGeoCodeQueries,
                 countryGeoCode);
     }
 
@@ -225,7 +231,7 @@ public class TaxControl
     }
 
     private TaxClassification getDefaultTaxClassification(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return TaxClassificationFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultTaxClassificationQueries,
+        return taxClassificationFactory.getEntityFromQuery(entityPermission, getDefaultTaxClassificationQueries,
                 countryGeoCode);
     }
 
@@ -265,7 +271,7 @@ public class TaxControl
     }
 
     private TaxClassification getTaxClassificationByName(GeoCode countryGeoCode, String taxClassificationName, EntityPermission entityPermission) {
-        return TaxClassificationFactory.getInstance().getEntityFromQuery(entityPermission, getTaxClassificationByNameQueries,
+        return taxClassificationFactory.getEntityFromQuery(entityPermission, getTaxClassificationByNameQueries,
                 countryGeoCode, taxClassificationName);
     }
 
@@ -342,7 +348,7 @@ public class TaxControl
     private void updateTaxClassificationFromValue(TaxClassificationDetailValue taxClassificationDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(taxClassificationDetailValue.hasBeenModified()) {
-            var taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var taxClassification = taxClassificationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      taxClassificationDetailValue.getTaxClassificationPK());
             var taxClassificationDetail = taxClassification.getActiveDetailForUpdate();
 
@@ -372,7 +378,7 @@ public class TaxControl
                 }
             }
 
-            taxClassificationDetail = TaxClassificationDetailFactory.getInstance().create(taxClassificationPK, countryGeoCodePK, taxClassificationName,
+            taxClassificationDetail = taxClassificationDetailFactory.create(taxClassificationPK, countryGeoCodePK, taxClassificationName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             taxClassification.setActiveDetail(taxClassificationDetail);
@@ -430,9 +436,12 @@ public class TaxControl
     //   Tax Classification Translations
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected TaxClassificationTranslationFactory taxClassificationTranslationFactory;
+
     public TaxClassificationTranslation createTaxClassificationTranslation(TaxClassification taxClassification,
             Language language, String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
-        var taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassification,
+        var taxClassificationTranslation = taxClassificationTranslationFactory.create(taxClassification,
                 language, description, overviewMimeType, overview, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(taxClassification.getPrimaryKey(), EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -462,7 +471,7 @@ public class TaxControl
     }
 
     private TaxClassificationTranslation getTaxClassificationTranslation(TaxClassification taxClassification, Language language, EntityPermission entityPermission) {
-        return TaxClassificationTranslationFactory.getInstance().getEntityFromQuery(entityPermission, getTaxClassificationTranslationQueries,
+        return taxClassificationTranslationFactory.getEntityFromQuery(entityPermission, getTaxClassificationTranslationQueries,
                 taxClassification, language, Session.MAX_TIME);
     }
 
@@ -506,7 +515,7 @@ public class TaxControl
     }
 
     private List<TaxClassificationTranslation> getTaxClassificationTranslationsByTaxClassification(TaxClassification taxClassification, EntityPermission entityPermission) {
-        return TaxClassificationTranslationFactory.getInstance().getEntitiesFromQuery(entityPermission, getTaxClassificationTranslationsByTaxClassificationQueries,
+        return taxClassificationTranslationFactory.getEntitiesFromQuery(entityPermission, getTaxClassificationTranslationsByTaxClassificationQueries,
                 taxClassification, Session.MAX_TIME);
     }
 
@@ -545,7 +554,7 @@ public class TaxControl
 
     public void updateTaxClassificationTranslationFromValue(TaxClassificationTranslationValue taxClassificationTranslationValue, BasePK updatedBy) {
         if(taxClassificationTranslationValue.hasBeenModified()) {
-            var taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var taxClassificationTranslation = taxClassificationTranslationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      taxClassificationTranslationValue.getPrimaryKey());
 
             taxClassificationTranslation.setThruTime(session.getStartTime());
@@ -557,7 +566,7 @@ public class TaxControl
             var overviewMimeTypePK = taxClassificationTranslationValue.getOverviewMimeTypePK();
             var overview = taxClassificationTranslationValue.getOverview();
 
-            taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassificationPK,
+            taxClassificationTranslation = taxClassificationTranslationFactory.create(taxClassificationPK,
                     languagePK, description, overviewMimeTypePK, overview, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(taxClassificationPK, EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -583,14 +592,20 @@ public class TaxControl
     //   Item Tax Classifications
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ItemTaxClassificationFactory itemTaxClassificationFactory;
+
+    @Inject
+    protected ItemTaxClassificationDetailFactory itemTaxClassificationDetailFactory;
+
     public ItemTaxClassification createItemTaxClassification(Item item, GeoCode countryGeoCode, TaxClassification taxClassification, BasePK createdBy) {
-        var itemTaxClassification = ItemTaxClassificationFactory.getInstance().create();
-        var itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(
+        var itemTaxClassification = itemTaxClassificationFactory.create();
+        var itemTaxClassificationDetail = itemTaxClassificationDetailFactory.create(
                 itemTaxClassification, item, countryGeoCode, taxClassification, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        itemTaxClassification = ItemTaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        itemTaxClassification = itemTaxClassificationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 itemTaxClassification.getPrimaryKey());
         itemTaxClassification.setActiveDetail(itemTaxClassificationDetail);
         itemTaxClassification.setLastDetail(itemTaxClassificationDetail);
@@ -653,7 +668,7 @@ public class TaxControl
     }
 
     private List<ItemTaxClassification> getItemTaxClassificationsByItem(Item item, EntityPermission entityPermission) {
-        return ItemTaxClassificationFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByItemQueries,
+        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByItemQueries,
                 item);
     }
 
@@ -690,7 +705,7 @@ public class TaxControl
     }
 
     private List<ItemTaxClassification> getItemTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return ItemTaxClassificationFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByCountryGeoCodeQueries,
+        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByCountryGeoCodeQueries,
                 countryGeoCode);
     }
 
@@ -728,7 +743,7 @@ public class TaxControl
     }
 
     private List<ItemTaxClassification> getItemTaxClassificationsByTaxClassification(TaxClassification taxClassification, EntityPermission entityPermission) {
-        return ItemTaxClassificationFactory.getInstance().getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByTaxClassificationQueries,
+        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByTaxClassificationQueries,
                 taxClassification);
     }
 
@@ -764,7 +779,7 @@ public class TaxControl
     }
 
     private ItemTaxClassification getItemTaxClassification(Item item, GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return ItemTaxClassificationFactory.getInstance().getEntityFromQuery(entityPermission, getItemTaxClassificationQueries,
+        return itemTaxClassificationFactory.getEntityFromQuery(entityPermission, getItemTaxClassificationQueries,
                 item, countryGeoCode);
     }
 
@@ -813,7 +828,7 @@ public class TaxControl
     public void updateItemTaxClassificationFromValue(ItemTaxClassificationDetailValue itemTaxClassificationDetailValue,
             BasePK updatedBy) {
         if(itemTaxClassificationDetailValue.hasBeenModified()) {
-            var itemTaxClassification = ItemTaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var itemTaxClassification = itemTaxClassificationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      itemTaxClassificationDetailValue.getItemTaxClassificationPK());
             var itemTaxClassificationDetail = itemTaxClassification.getActiveDetailForUpdate();
 
@@ -825,7 +840,7 @@ public class TaxControl
             var countryGeoCodePK = itemTaxClassificationDetail.getCountryGeoCodePK();
             var taxClassificationPK = itemTaxClassificationDetailValue.getTaxClassificationPK();
 
-            itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(itemTaxClassificationPK, itemPK, countryGeoCodePK,
+            itemTaxClassificationDetail = itemTaxClassificationDetailFactory.create(itemTaxClassificationPK, itemPK, countryGeoCodePK,
                     taxClassificationPK, session.getStartTime(), Session.MAX_TIME);
 
             itemTaxClassification.setActiveDetail(itemTaxClassificationDetail);
@@ -865,7 +880,13 @@ public class TaxControl
     // --------------------------------------------------------------------------------
     //   Taxes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TaxFactory taxFactory;
+
+    @Inject
+    protected TaxDetailFactory taxDetailFactory;
+
     public Tax createTax(String taxName, ContactMechanismPurpose contactMechanismPurpose, GlAccount glAccount,
             Boolean includeShippingCharge, Boolean includeProcessingCharge, Boolean includeInsuranceCharge, Integer percent,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -881,13 +902,13 @@ public class TaxControl
             isDefault = true;
         }
 
-        var tax = TaxFactory.getInstance().create();
-        var taxDetail = TaxDetailFactory.getInstance().create(tax, taxName, contactMechanismPurpose, glAccount,
+        var tax = taxFactory.create();
+        var taxDetail = taxDetailFactory.create(tax, taxName, contactMechanismPurpose, glAccount,
                 includeShippingCharge, includeProcessingCharge, includeInsuranceCharge, percent, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        tax = TaxFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, tax.getPrimaryKey());
+        tax = taxFactory.getEntityFromPK(EntityPermission.READ_WRITE, tax.getPrimaryKey());
         tax.setActiveDetail(taxDetail);
         tax.setLastDetail(taxDetail);
         tax.store();
@@ -901,7 +922,7 @@ public class TaxControl
     public Tax getTaxByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TaxPK(entityInstance.getEntityUniqueId());
 
-        return TaxFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return taxFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Tax getTaxByEntityInstance(EntityInstance entityInstance) {
@@ -940,9 +961,9 @@ public class TaxControl
                     """;
         }
 
-        var ps = TaxFactory.getInstance().prepareStatement(query);
+        var ps = taxFactory.prepareStatement(query);
         
-        return TaxFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return taxFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<Tax> getTaxes() {
@@ -974,11 +995,11 @@ public class TaxControl
                         """;
             }
 
-            var ps = TaxFactory.getInstance().prepareStatement(query);
+            var ps = taxFactory.prepareStatement(query);
             
             ps.setString(1, taxName);
             
-            tax = TaxFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            tax = taxFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1020,9 +1041,9 @@ public class TaxControl
                     """;
         }
 
-        var ps = TaxFactory.getInstance().prepareStatement(query);
+        var ps = taxFactory.prepareStatement(query);
         
-        return TaxFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return taxFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public Tax getDefaultTax() {
@@ -1058,7 +1079,7 @@ public class TaxControl
     private void updateTaxFromValue(TaxDetailValue taxDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(taxDetailValue.hasBeenModified()) {
-            var tax = TaxFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var tax = taxFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      taxDetailValue.getTaxPK());
             var taxDetail = tax.getActiveDetailForUpdate();
             
@@ -1092,7 +1113,7 @@ public class TaxControl
                 }
             }
             
-            taxDetail = TaxDetailFactory.getInstance().create(taxPK, taxName, contactMechanismPurposePK, glAccountPK,
+            taxDetail = taxDetailFactory.create(taxPK, taxName, contactMechanismPurposePK, glAccountPK,
                     includeShippingCharge, includeProcessingCharge, includeInsuranceCharge, percent, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
             
@@ -1139,9 +1160,12 @@ public class TaxControl
     // --------------------------------------------------------------------------------
     //   Tax Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected TaxDescriptionFactory taxDescriptionFactory;
+
     public TaxDescription createTaxDescription(Tax tax, Language language, String description, BasePK createdBy) {
-        var taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
+        var taxDescription = taxDescriptionFactory.create(tax, language, description,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(tax.getPrimaryKey(), EventTypes.MODIFY, taxDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1170,13 +1194,13 @@ public class TaxControl
                         """;
             }
 
-            var ps = TaxDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = taxDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, tax.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            taxDescription = TaxDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            taxDescription = taxDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1223,12 +1247,12 @@ public class TaxControl
                         """;
             }
 
-            var ps = TaxDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = taxDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, tax.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            taxDescriptions = TaxDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            taxDescriptions = taxDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1282,7 +1306,7 @@ public class TaxControl
     
     public void updateTaxDescriptionFromValue(TaxDescriptionValue taxDescriptionValue, BasePK updatedBy) {
         if(taxDescriptionValue.hasBeenModified()) {
-            var taxDescription = TaxDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var taxDescription = taxDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     taxDescriptionValue.getPrimaryKey());
             
             taxDescription.setThruTime(session.getStartTime());
@@ -1292,7 +1316,7 @@ public class TaxControl
             var language = taxDescription.getLanguage();
             var description = taxDescriptionValue.getDescription();
             
-            taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
+            taxDescription = taxDescriptionFactory.create(tax, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(tax.getPrimaryKey(), EventTypes.MODIFY, taxDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1317,9 +1341,12 @@ public class TaxControl
     // --------------------------------------------------------------------------------
     //   Geo Code Taxes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected GeoCodeTaxFactory geoCodeTaxFactory;
+
     public GeoCodeTax createGeoCodeTax(GeoCode geoCode, Tax tax, BasePK createdBy) {
-        var geoCodeTax = GeoCodeTaxFactory.getInstance().create(geoCode, tax, session.getStartTime(),
+        var geoCodeTax = geoCodeTaxFactory.create(geoCode, tax, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, createdBy);
@@ -1369,13 +1396,13 @@ public class TaxControl
                         """;
             }
 
-            var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTaxFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, tax.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeTax = GeoCodeTaxFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeTax = geoCodeTaxFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1416,12 +1443,12 @@ public class TaxControl
                         """;
             }
 
-            var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTaxFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeTaxes = GeoCodeTaxFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeTaxes = geoCodeTaxFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1462,12 +1489,12 @@ public class TaxControl
                         """;
             }
 
-            var ps = GeoCodeTaxFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeTaxFactory.prepareStatement(query);
             
             ps.setLong(1, tax.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeTaxes = GeoCodeTaxFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeTaxes = geoCodeTaxFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

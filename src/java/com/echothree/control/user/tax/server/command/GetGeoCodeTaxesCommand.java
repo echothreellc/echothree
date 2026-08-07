@@ -46,7 +46,7 @@ public class GetGeoCodeTaxesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TaxName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

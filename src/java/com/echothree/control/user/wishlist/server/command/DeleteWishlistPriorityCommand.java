@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteWishlistPriorityCommand
@@ -54,6 +55,10 @@ public class DeleteWishlistPriorityCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    WishlistPriorityLogic wishlistPriorityLogic;
+
     
     /** Creates a new instance of DeleteWishlistPriorityCommand */
     public DeleteWishlistPriorityCommand() {
@@ -62,10 +67,10 @@ public class DeleteWishlistPriorityCommand
     
     @Override
     protected BaseResult execute() {
-        var wishlistPriority = WishlistPriorityLogic.getInstance().getWishlistPriorityByUniversalSpecForUpdate(this, form, false);
+        var wishlistPriority = wishlistPriorityLogic.getWishlistPriorityByUniversalSpecForUpdate(this, form, false);
 
         if(wishlistPriority != null) {
-            WishlistPriorityLogic.getInstance().deleteWishlistPriority(this, wishlistPriority, getPartyPK());
+            wishlistPriorityLogic.deleteWishlistPriority(this, wishlistPriority, getPartyPK());
         }
         
         return null;

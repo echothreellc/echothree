@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderTypesCommand
@@ -52,6 +52,10 @@ public class GetOrderTypesCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
     
     /** Creates a new instance of GetOrderTypesCommand */
     public GetOrderTypesCommand() {
@@ -65,15 +69,11 @@ public class GetOrderTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-
         return orderTypeControl.countOrderTypes();
     }
 
     @Override
     protected Collection<OrderType> getEntities() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-
         return orderTypeControl.getOrderTypes();
     }
 
@@ -82,8 +82,6 @@ public class GetOrderTypesCommand
         var result = OrderResultFactory.getGetOrderTypesResult();
 
         if(entities != null) {
-            var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-
             if(session.hasLimit(OrderTypeFactory.class)) {
                 result.setOrderTypeCount(getTotalEntities());
             }

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferChainTypeCommand
@@ -58,6 +58,13 @@ public class GetOfferChainTypeCommand
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    OfferControl offerControl;
+
     
     /** Creates a new instance of GetOfferChainTypeCommand */
     public GetOfferChainTypeCommand() {
@@ -66,13 +73,11 @@ public class GetOfferChainTypeCommand
     
     @Override
     protected OfferChainType getEntity() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         OfferChainType offerChainType = null;
         
         if(offer != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainKindName = form.getChainKindName();
             var chainKind = chainControl.getChainKindByName(chainKindName);
 
@@ -103,7 +108,6 @@ public class GetOfferChainTypeCommand
     
     @Override
     protected BaseResult getResult(OfferChainType offerChainType) {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getGetOfferChainTypeResult();
 
         if(offerChainType != null) {

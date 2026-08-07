@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityAliasTypeCommand
@@ -63,6 +64,13 @@ public class CreateEntityAliasTypeCommand
         );
 
     }
+
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of CreateEntityAliasTypeCommand */
     public CreateEntityAliasTypeCommand() {
@@ -73,7 +81,7 @@ public class CreateEntityAliasTypeCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateEntityAliasTypeResult();
         EntityAliasType entityAliasType = null;
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
+        var entityType = entityTypeLogic.getEntityTypeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
             var partyPK = getPartyPK();
@@ -83,7 +91,7 @@ public class CreateEntityAliasTypeCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            entityAliasType = EntityAliasTypeLogic.getInstance().createEntityAliasType(this, entityType,
+            entityAliasType = entityAliasTypeLogic.createEntityAliasType(this, entityType,
                     entityAliasTypeName, validationPattern, isDefault, sortOrder, partyPK,
                     getPreferredLanguage(), description);
         }

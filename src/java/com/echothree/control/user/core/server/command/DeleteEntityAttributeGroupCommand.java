@@ -44,12 +44,12 @@ public class DeleteEntityAttributeGroupCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAttributeGroup.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of DeleteEntityAttributeGroupCommand */

@@ -52,9 +52,11 @@ public class GetEditorsCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     EditorControl editorControl;
+
+
     
     /** Creates a new instance of GetEditorsCommand */
     public GetEditorsCommand() {

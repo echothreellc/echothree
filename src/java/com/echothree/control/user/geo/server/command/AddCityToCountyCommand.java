@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class AddCityToCountyCommand
@@ -49,16 +49,20 @@ public class AddCityToCountyCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.County.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.County.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CityGeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CountyGeoCodeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CountyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of AddCityToCountyCommand */
     public AddCityToCountyCommand() {
@@ -72,7 +76,6 @@ public class AddCityToCountyCommand
         var parameterCount = (countyGeoCodeName == null ? 0 : 1) + (countyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var geoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTY.name());
             var cityGeoCodeName = form.getCityGeoCodeName();
             var cityGeoCode = geoControl.getGeoCodeByName(cityGeoCodeName);

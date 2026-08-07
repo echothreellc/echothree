@@ -39,6 +39,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityGeoPointDefaultCommand
@@ -72,6 +73,12 @@ public class EditEntityGeoPointDefaultCommand
         );
     }
 
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     /** Creates a new instance of EditEntityGeoPointDefaultCommand */
     public EditEntityGeoPointDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -89,7 +96,7 @@ public class EditEntityGeoPointDefaultCommand
 
     @Override
     public EntityGeoPointDefault getEntity(EditEntityGeoPointDefaultResult result) {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, spec);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
         EntityGeoPointDefault entityGeoPointDefault = null;
 
         if(!hasExecutionErrors()) {
@@ -121,7 +128,6 @@ public class EditEntityGeoPointDefaultCommand
 
     @Override
     public void doLock(EntityGeoPointDefaultEdit edit, EntityGeoPointDefault entityGeoPointDefault) {
-        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         var geoPointUtils = GeoPointUtils.getInstance();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
 
@@ -140,8 +146,6 @@ public class EditEntityGeoPointDefaultCommand
 
     @Override
     public void canUpdate(EntityGeoPointDefault entityGeoPointDefault) {
-        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-
         elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
                 edit.getElevation(), edit.getElevationUnitOfMeasureTypeName(),
                 null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),

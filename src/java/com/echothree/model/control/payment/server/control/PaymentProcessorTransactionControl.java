@@ -36,10 +36,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorTransactionControl
         extends BasePaymentControl {
+
+    @Inject
+    protected PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl;
 
     /** Creates a new instance of PaymentProcessorTransactionControl */
     protected PaymentProcessorTransactionControl() {
@@ -50,17 +54,23 @@ public class PaymentProcessorTransactionControl
     //   Payment Processor Transactions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PaymentProcessorTransactionFactory paymentProcessorTransactionFactory;
+
+    @Inject
+    protected PaymentProcessorTransactionDetailFactory paymentProcessorTransactionDetailFactory;
+
     public PaymentProcessorTransaction createPaymentProcessorTransaction(final String paymentProcessorTransactionName,
             final PaymentProcessor paymentProcessor, final PaymentProcessorActionType paymentProcessorActionType,
             final PaymentProcessorResultCode paymentProcessorResultCode, final BasePK createdBy) {
 
-        var paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().create();
-        var paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(
+        var paymentProcessorTransaction = paymentProcessorTransactionFactory.create();
+        var paymentProcessorTransactionDetail = paymentProcessorTransactionDetailFactory.create(
                 paymentProcessorTransaction, paymentProcessorTransactionName, paymentProcessor, paymentProcessorActionType,
                 paymentProcessorResultCode, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTransaction.getPrimaryKey());
+        paymentProcessorTransaction = paymentProcessorTransactionFactory.getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTransaction.getPrimaryKey());
         paymentProcessorTransaction.setActiveDetail(paymentProcessorTransactionDetail);
         paymentProcessorTransaction.setLastDetail(paymentProcessorTransactionDetail);
         paymentProcessorTransaction.store();
@@ -110,7 +120,7 @@ public class PaymentProcessorTransactionControl
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorTransactionPK(entityInstance.getEntityUniqueId());
 
-        return PaymentProcessorTransactionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return paymentProcessorTransactionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PaymentProcessorTransaction getPaymentProcessorTransactionByEntityInstance(final EntityInstance entityInstance) {
@@ -123,18 +133,23 @@ public class PaymentProcessorTransactionControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "AND pprctrxdt_paymentprocessortransactionname = ?",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            AND pprctrxdt_paymentprocessortransactionname = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " + "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "AND pprctrxdt_paymentprocessortransactionname = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            AND pprctrxdt_paymentprocessortransactionname = ?
+            FOR UPDATE
+            """);
 
     public PaymentProcessorTransaction getPaymentProcessorTransactionByName(final String paymentProcessorTransactionName, final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorTransactionByNameQueries,
+        return paymentProcessorTransactionFactory.getEntityFromQuery(entityPermission, getPaymentProcessorTransactionByNameQueries,
                 paymentProcessorTransactionName);
     }
 
@@ -156,19 +171,23 @@ public class PaymentProcessorTransactionControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionsQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            ORDER BY pprctrxdt_paymentprocessortransactionname
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorTransaction> getPaymentProcessorTransactions(final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsQueries);
+        return paymentProcessorTransactionFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsQueries);
     }
 
     public List<PaymentProcessorTransaction> getPaymentProcessorTransactions() {
@@ -181,22 +200,26 @@ public class PaymentProcessorTransactionControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionsByPaymentProcessorQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "AND pprctrxdt_pprc_paymentprocessorid = ? " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            AND pprctrxdt_pprc_paymentprocessorid = ?
+            ORDER BY pprctrxdt_paymentprocessortransactionname
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "AND pprctrxdt_pprc_paymentprocessorid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            AND pprctrxdt_pprc_paymentprocessorid = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessor(final PaymentProcessor paymentProcessor,
             final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorQueries,
+        return paymentProcessorTransactionFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorQueries,
                 paymentProcessor, Session.MAX_TIME);
     }
 
@@ -210,22 +233,26 @@ public class PaymentProcessorTransactionControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionsByPaymentProcessorActionTypeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "AND pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            AND pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ?
+            ORDER BY pprctrxdt_paymentprocessortransactionname
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "AND pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            AND pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType,
             final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorActionTypeQueries,
+        return paymentProcessorTransactionFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorActionTypeQueries,
                 paymentProcessorActionType, Session.MAX_TIME);
     }
 
@@ -239,22 +266,26 @@ public class PaymentProcessorTransactionControl
 
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionsByPaymentProcessorResultCodeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "AND pprctrxdt_pprcrc_paymentprocessorresultcodeid = ? " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
-                    "_LIMIT_",
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            AND pprctrxdt_pprcrc_paymentprocessorresultcodeid = ?
+            ORDER BY pprctrxdt_paymentprocessortransactionname
+            _LIMIT_
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "AND pprctrxdt_pprcrc_paymentprocessorresultcodeid = ? " +
-                    "FOR UPDATE");
+            """
+            SELECT _ALL_
+            FROM paymentprocessortransactions, paymentprocessortransactiondetails
+            WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid
+            AND pprctrxdt_pprcrc_paymentprocessorresultcodeid = ?
+            FOR UPDATE
+            """);
 
     private List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode,
             final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorResultCodeQueries,
+        return paymentProcessorTransactionFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorResultCodeQueries,
                 paymentProcessorResultCode, Session.MAX_TIME);
     }
 
@@ -294,7 +325,7 @@ public class PaymentProcessorTransactionControl
     public void updatePaymentProcessorTransactionFromValue(final PaymentProcessorTransactionDetailValue paymentProcessorTransactionDetailValue,
             final BasePK updatedBy) {
         if(paymentProcessorTransactionDetailValue.hasBeenModified()) {
-            var paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var paymentProcessorTransaction = paymentProcessorTransactionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     paymentProcessorTransactionDetailValue.getPaymentProcessorTransactionPK());
             var paymentProcessorTransactionDetail = paymentProcessorTransaction.getActiveDetailForUpdate();
 
@@ -307,7 +338,7 @@ public class PaymentProcessorTransactionControl
             var paymentProcessorActionTypePK = paymentProcessorTransactionDetailValue.getPaymentProcessorActionTypePK(); // R/W
             var paymentProcessorResultCodePK = paymentProcessorTransactionDetailValue.getPaymentProcessorResultCodePK(); // R/W
 
-            paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(paymentProcessorTransactionPK,
+            paymentProcessorTransactionDetail = paymentProcessorTransactionDetailFactory.create(paymentProcessorTransactionPK,
                     paymentProcessorTransactionName, paymentProcessorPK, paymentProcessorActionTypePK, paymentProcessorResultCodePK,
                     session.getStartTime(), Session.MAX_TIME);
 
@@ -319,7 +350,6 @@ public class PaymentProcessorTransactionControl
     }
 
     public void deletePaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction, final BasePK deletedBy) {
-        var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
 
         paymentProcessorTransactionCodeControl.deletePaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction, deletedBy);
 

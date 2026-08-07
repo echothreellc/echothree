@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemDescriptionTypeLogic
     extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ItemDescriptionTypeLogic() {
         super();
@@ -53,7 +59,6 @@ public class ItemDescriptionTypeLogic
             final ItemDescriptionType parentItemDescriptionType, final Boolean useParentIfMissing, final MimeTypeUsageType mimeTypeUsageType,
             final Boolean checkContentWebAddress, final Boolean includeInIndex, final Boolean indexDefault, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
         if(itemDescriptionType == null) {
@@ -73,7 +78,6 @@ public class ItemDescriptionTypeLogic
 
     public ItemDescriptionType getItemDescriptionTypeByName(final ExecutionErrorAccumulator eea, final String itemDescriptionTypeName,
             final EntityPermission entityPermission) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName, entityPermission);
 
         if(itemDescriptionType == null) {
@@ -94,9 +98,8 @@ public class ItemDescriptionTypeLogic
     public ItemDescriptionType getItemDescriptionTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ItemDescriptionTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemDescriptionType itemDescriptionType = null;
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionTypeName = universalSpec.getItemDescriptionTypeName();
-        var parameterCount = (itemDescriptionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemDescriptionTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -112,7 +115,7 @@ public class ItemDescriptionTypeLogic
             }
             case 1 -> {
                 if(itemDescriptionTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDescriptionType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -141,8 +144,6 @@ public class ItemDescriptionTypeLogic
 
     public void deleteItemDescriptionType(final ExecutionErrorAccumulator eea, final ItemDescriptionType itemDescriptionType,
             final BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.deleteItemDescriptionType(itemDescriptionType, deletedBy);
     }
 

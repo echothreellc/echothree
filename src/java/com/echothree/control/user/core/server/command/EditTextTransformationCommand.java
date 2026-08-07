@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTextTransformationCommand
@@ -53,8 +53,8 @@ public class EditTextTransformationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TextTransformation.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TextTransformationName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,10 @@ public class EditTextTransformationCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of EditTextTransformationCommand */
     public EditTextTransformationCommand() {
@@ -85,7 +89,6 @@ public class EditTextTransformationCommand
 
     @Override
     public TextTransformation getEntity(EditTextTransformationResult result) {
-        var textControl = Session.getModelController(TextControl.class);
         TextTransformation textTransformation;
         var textTransformationName = spec.getTextTransformationName();
 
@@ -109,14 +112,11 @@ public class EditTextTransformationCommand
 
     @Override
     public void fillInResult(EditTextTransformationResult result, TextTransformation textTransformation) {
-        var textControl = Session.getModelController(TextControl.class);
-
         result.setTextTransformation(textControl.getTextTransformationTransfer(getUserVisit(), textTransformation));
     }
 
     @Override
     public void doLock(TextTransformationEdit edit, TextTransformation textTransformation) {
-        var textControl = Session.getModelController(TextControl.class);
         var textTransformationDescription = textControl.getTextTransformationDescription(textTransformation, getPreferredLanguage());
         var textTransformationDetail = textTransformation.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditTextTransformationCommand
 
     @Override
     public void canUpdate(TextTransformation textTransformation) {
-        var textControl = Session.getModelController(TextControl.class);
         var textTransformationName = edit.getTextTransformationName();
         var duplicateTextTransformation = textControl.getTextTransformationByName(textTransformationName);
 
@@ -142,7 +141,6 @@ public class EditTextTransformationCommand
 
     @Override
     public void doUpdate(TextTransformation textTransformation) {
-        var textControl = Session.getModelController(TextControl.class);
         var partyPK = getPartyPK();
         var textTransformationDetailValue = textControl.getTextTransformationDetailValueForUpdate(textTransformation);
         var textTransformationDescription = textControl.getTextTransformationDescriptionForUpdate(textTransformation, getPreferredLanguage());

@@ -37,11 +37,11 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import com.echothree.control.user.item.common.spec.ItemCategoryUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemCategoryCommand
@@ -56,8 +56,8 @@ public class EditItemCategoryCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemCategory.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemCategoryName", FieldType.ENTITY_NAME, false, null, null),
@@ -73,6 +73,16 @@ public class EditItemCategoryCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemCategoryLogic itemCategoryLogic;
+
     
     /** Creates a new instance of EditItemCategoryCommand */
     public EditItemCategoryCommand() {
@@ -91,21 +101,20 @@ public class EditItemCategoryCommand
     
     @Override
     public ItemCategory getEntity(EditItemCategoryResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = null;
         var itemCategoryName = spec.getItemCategoryName();
-        var parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = (itemCategoryName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             if(itemCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ItemCategory.name());
 
                 if(!hasExecutionErrors()) {
                     itemCategory = itemControl.getItemCategoryByEntityInstance(entityInstance, editModeToEntityPermission(editMode));
                 }
             } else {
-                itemCategory = ItemCategoryLogic.getInstance().getItemCategoryByName(this, itemCategoryName, editModeToEntityPermission(editMode));
+                itemCategory = itemCategoryLogic.getItemCategoryByName(this, itemCategoryName, editModeToEntityPermission(editMode));
             }
 
             if(itemCategory != null) {
@@ -125,8 +134,6 @@ public class EditItemCategoryCommand
     
     @Override
     public void fillInResult(EditItemCategoryResult result, ItemCategory itemCategory) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        
         result.setItemCategory(itemControl.getItemCategoryTransfer(getUserVisit(), itemCategory));
     }
     
@@ -134,7 +141,6 @@ public class EditItemCategoryCommand
     
     @Override
     public void doLock(ItemCategoryEdit edit, ItemCategory itemCategory) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemCategoryDescription = itemControl.getItemCategoryDescription(itemCategory, getPreferredLanguage());
         var itemCategoryDetail = itemCategory.getLastDetail();
         
@@ -152,7 +158,6 @@ public class EditItemCategoryCommand
         
     @Override
     public void canUpdate(ItemCategory itemCategory) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemCategoryName = edit.getItemCategoryName();
         var duplicateItemCategory = itemControl.getItemCategoryByName(itemCategoryName);
 
@@ -177,7 +182,6 @@ public class EditItemCategoryCommand
     
     @Override
     public void doUpdate(ItemCategory itemCategory) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
         var itemCategoryDetailValue = itemControl.getItemCategoryDetailValueForUpdate(itemCategory);
         var itemCategoryDescription = itemControl.getItemCategoryDescriptionForUpdate(itemCategory, getPreferredLanguage());

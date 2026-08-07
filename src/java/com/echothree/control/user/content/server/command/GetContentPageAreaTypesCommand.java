@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageAreaTypesCommand
@@ -48,12 +48,15 @@ public class GetContentPageAreaTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPageAreaType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of GetContentPageAreaTypesCommand */
     public GetContentPageAreaTypesCommand() {
@@ -67,15 +70,11 @@ public class GetContentPageAreaTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return contentControl.countContentPageAreaTypes();
     }
 
     @Override
     protected Collection<ContentPageAreaType> getEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return contentControl.getContentPageAreaTypes();
     }
 
@@ -84,8 +83,6 @@ public class GetContentPageAreaTypesCommand
         var result = ContentResultFactory.getGetContentPageAreaTypesResult();
 
         if(entities != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             if(session.hasLimit(ContentPageAreaTypeFactory.class)) {
                 result.setContentPageAreaTypeCount(getTotalEntities());
             }

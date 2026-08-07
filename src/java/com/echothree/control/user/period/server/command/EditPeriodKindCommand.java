@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPeriodKindCommand
@@ -52,9 +52,9 @@ public class EditPeriodKindCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PeriodKind.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PeriodKind.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, true, null, null)
@@ -69,6 +69,13 @@ public class EditPeriodKindCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    PeriodControl periodControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of EditPeriodKindCommand */
     public EditPeriodKindCommand() {
@@ -77,7 +84,6 @@ public class EditPeriodKindCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var result = PeriodResultFactory.getEditPeriodKindResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -130,7 +136,6 @@ public class EditPeriodKindCommand
                     var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
                     if(parameterCount == 0 || parameterCount == 2) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         var workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
 
                         if(workflowName == null || workflow != null) {

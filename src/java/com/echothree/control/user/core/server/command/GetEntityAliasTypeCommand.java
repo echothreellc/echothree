@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAliasTypeCommand
@@ -59,6 +59,13 @@ public class GetEntityAliasTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
     
     /** Creates a new instance of GetEntityAliasTypeCommand */
     public GetEntityAliasTypeCommand() {
@@ -67,12 +74,11 @@ public class GetEntityAliasTypeCommand
     
     @Override
     protected EntityAliasType getEntity() {
-        return EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
+        return entityAliasTypeLogic.getEntityAliasTypeByUniversalSpec(this, form);
     }
     
     @Override
     protected BaseResult getResult(EntityAliasType entityAliasType) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var result = CoreResultFactory.getGetEntityAliasTypeResult();
 
         if(entityAliasType != null) {

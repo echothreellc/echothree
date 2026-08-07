@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchDefaultOperatorCommand
@@ -59,6 +59,12 @@ public class GetSearchDefaultOperatorCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchDefaultOperatorLogic searchDefaultOperatorLogic;
+
     /** Creates a new instance of GetSearchDefaultOperatorCommand */
     public GetSearchDefaultOperatorCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetSearchDefaultOperatorCommand
 
     @Override
     protected SearchDefaultOperator getEntity() {
-        var searchDefaultOperator = SearchDefaultOperatorLogic.getInstance().getSearchDefaultOperatorByUniversalSpec(this, form, true);
+        var searchDefaultOperator = searchDefaultOperatorLogic.getSearchDefaultOperatorByUniversalSpec(this, form, true);
 
         if(searchDefaultOperator != null) {
             sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetSearchDefaultOperatorCommand
 
     @Override
     protected BaseResult getResult(SearchDefaultOperator searchDefaultOperator) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchDefaultOperatorResult();
 
         if(searchDefaultOperator != null) {

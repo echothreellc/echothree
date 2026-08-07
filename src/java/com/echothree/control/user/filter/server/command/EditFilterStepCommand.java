@@ -72,17 +72,18 @@ public class EditFilterStepCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditFilterStepCommand */
-    public EditFilterStepCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     FilterControl filterControl;
 
     @Inject
     SelectorControl selectorControl;
+
+
+    /** Creates a new instance of EditFilterStepCommand */
+    public EditFilterStepCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditFilterStepResult getResult() {

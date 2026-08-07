@@ -51,14 +51,16 @@ public class DeletePartyTrainingClassCommand
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyTrainingClassLogic partyTrainingClassLogic;
+
     
     /** Creates a new instance of DeletePartyTrainingClassCommand */
     public DeletePartyTrainingClassCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
-    @Inject
-    PartyTrainingClassLogic partyTrainingClassLogic;
     
     @Override
     protected BaseResult execute() {

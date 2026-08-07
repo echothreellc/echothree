@@ -22,13 +22,16 @@ import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SymbolPositionLogic
     extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
 
     protected SymbolPositionLogic() {
         super();
@@ -39,7 +42,6 @@ public class SymbolPositionLogic
     }
 
     public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
 
         if(symbolPosition == null) {

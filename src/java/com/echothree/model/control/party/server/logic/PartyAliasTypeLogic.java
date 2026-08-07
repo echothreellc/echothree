@@ -35,14 +35,23 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyAliasTypeLogic
         extends BaseLogic {
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyTypeLogic partyTypeLogic;
 
     protected PartyAliasTypeLogic() {
         super();
@@ -55,7 +64,7 @@ public class PartyAliasTypeLogic
     public PartyAliasType createPartyAliasType(final ExecutionErrorAccumulator eea, final String partyTypeName, final String partyAliasTypeName,
             final String validationPattern, final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var partyType = PartyTypeLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+        var partyType = partyTypeLogic.getPartyTypeByName(eea, partyTypeName);
         PartyAliasType partyAliasType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -69,7 +78,6 @@ public class PartyAliasTypeLogic
     public PartyAliasType createPartyAliasType(final ExecutionErrorAccumulator eea, final PartyType partyType, final String partyAliasTypeName,
             final String validationPattern, final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
         if(partyAliasType == null) {
@@ -87,7 +95,6 @@ public class PartyAliasTypeLogic
 
     public PartyAliasType getPartyAliasTypeByName(final ExecutionErrorAccumulator eea, final PartyType partyType, final String partyAliasTypeName,
             final EntityPermission entityPermission) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName, entityPermission);
 
         if(partyAliasType == null) {
@@ -108,7 +115,7 @@ public class PartyAliasTypeLogic
 
     public PartyAliasType getPartyAliasTypeByName(final ExecutionErrorAccumulator eea, final String partyTypeName, final String partyAliasTypeName,
             final EntityPermission entityPermission) {
-        var partyType = PartyTypeLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+        var partyType = partyTypeLogic.getPartyTypeByName(eea, partyTypeName);
         PartyAliasType partyAliasType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -128,11 +135,10 @@ public class PartyAliasTypeLogic
 
     public PartyAliasType getPartyAliasTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final PartyAliasTypeUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyTypeName = universalSpec.getPartyTypeName();
         var partyAliasTypeName = universalSpec.getPartyAliasTypeName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(partyTypeName, partyAliasTypeName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         PartyAliasType partyAliasType = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -149,7 +155,7 @@ public class PartyAliasTypeLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                partyType = PartyTypeLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+                partyType = partyTypeLogic.getPartyTypeByName(eea, partyTypeName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -168,7 +174,7 @@ public class PartyAliasTypeLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyAliasType.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -193,15 +199,11 @@ public class PartyAliasTypeLogic
 
     public void updatePartyAliasTypeFromValue(final ExecutionErrorAccumulator eea, final PartyAliasTypeDetailValue partyAliasTypeDetailValue,
             final BasePK updatedBy) {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         partyControl.updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, updatedBy);
     }
 
     public void deletePartyAliasType(final ExecutionErrorAccumulator eea, final PartyAliasType partyAliasType,
             final BasePK deletedBy) {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         partyControl.deletePartyAliasType(partyAliasType, deletedBy);
     }
 }

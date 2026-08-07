@@ -44,6 +44,12 @@ import javax.inject.Inject;
 public class OrderTypeLogic
     extends BaseLogic {
 
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected OrderTypeLogic() {
         super();
     }
@@ -51,12 +57,6 @@ public class OrderTypeLogic
     public static OrderTypeLogic getInstance() {
         return CDI.current().select(OrderTypeLogic.class).get();
     }
-
-    @Inject
-    OrderTypeControl orderTypeControl;
-
-    @Inject
-    EntityInstanceLogic entityInstanceLogic;
 
     public OrderType createOrderType(final ExecutionErrorAccumulator eea, final String orderTypeName,
             final SequenceType orderSequenceType, final Workflow orderWorkflow,

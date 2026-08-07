@@ -67,10 +67,12 @@ public class EditWishlistTypeDescriptionCommand
 
     @Inject
     WishlistControl wishlistControl;
-    @Inject
-    WishlistTypeLogic wishlistTypeLogic;
+
     @Inject
     LanguageLogic languageLogic;
+
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
 
     /** Creates a new instance of EditWishlistTypeDescriptionCommand */
     public EditWishlistTypeDescriptionCommand() {

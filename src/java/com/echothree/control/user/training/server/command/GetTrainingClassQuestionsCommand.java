@@ -68,6 +68,7 @@ public class GetTrainingClassQuestionsCommand
 
     @Inject
     private TrainingClassSectionLogic trainingClassSectionLogic;
+
     
     /** Creates a new instance of GetTrainingClassQuestionsCommand */
     public GetTrainingClassQuestionsCommand() {

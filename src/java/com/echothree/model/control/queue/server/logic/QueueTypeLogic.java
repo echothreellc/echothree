@@ -22,13 +22,16 @@ import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class QueueTypeLogic
         extends BaseLogic {
+
+    @Inject
+    QueueControl queueControl;
 
     protected QueueTypeLogic() {
         super();
@@ -39,7 +42,6 @@ public class QueueTypeLogic
     }
     
     public QueueType getQueueTypeByName(final ExecutionErrorAccumulator eea, final String queueTypeName) {
-        var queueControl = Session.getModelController(QueueControl.class);
         var queueType = queueControl.getQueueTypeByName(queueTypeName);
 
         if(queueType == null) {

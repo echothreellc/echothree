@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditApplicationEditorCommand
@@ -55,8 +55,8 @@ public class EditApplicationEditorCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ApplicationEditor.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
@@ -68,6 +68,16 @@ public class EditApplicationEditorCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
+    @Inject
+    EditorLogic editorLogic;
+
     
     /** Creates a new instance of EditApplicationEditorCommand */
     public EditApplicationEditorCommand() {
@@ -88,15 +98,13 @@ public class EditApplicationEditorCommand
     public ApplicationEditor getEntity(EditApplicationEditorResult result) {
         ApplicationEditor applicationEditor = null;
         var applicationName = spec.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var editorName = spec.getEditorName();
-            var editor = EditorLogic.getInstance().getEditorByName(this, editorName);
+            var editor = editorLogic.getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                var applicationControl = Session.getModelController(ApplicationControl.class);
-                
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     applicationEditor = applicationControl.getApplicationEditor(application, editor);
                 } else { // EditMode.UPDATE
@@ -119,8 +127,6 @@ public class EditApplicationEditorCommand
 
     @Override
     public void fillInResult(EditApplicationEditorResult result, ApplicationEditor applicationEditor) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
-
         result.setApplicationEditor(applicationControl.getApplicationEditorTransfer(getUserVisit(), applicationEditor));
     }
 
@@ -134,7 +140,6 @@ public class EditApplicationEditorCommand
 
     @Override
     public void doUpdate(ApplicationEditor applicationEditor) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var partyPK = getPartyPK();
         var applicationEditorDetailValue = applicationControl.getApplicationEditorDetailValueForUpdate(applicationEditor);
 

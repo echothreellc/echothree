@@ -20,7 +20,6 @@ import com.echothree.control.user.authentication.common.form.SetPasswordForm;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.user.common.UserConstants;
@@ -30,9 +29,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetPasswordCommand
@@ -49,8 +48,24 @@ public class SetPasswordCommand
                 new FieldDefinition("OldPassword", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("NewPassword1", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("NewPassword2", FieldType.STRING, true, 1L, 40L)
-                );
+        );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    PasswordStringPolicyLogic passwordStringPolicyLogic;
+
     
     /** Creates a new instance of SetPasswordCommand */
     public SetPasswordCommand() {
@@ -66,19 +81,15 @@ public class SetPasswordCommand
         var parameterCount = (partyName == null ? 0 : 1) + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
         
         if(parameterCount < 2) {
-            var userControl = getUserControl();
             var self = getParty();
             Party party = null;
             
             if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                
                 party = partyControl.getPartyByName(partyName);
                 if(party == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(employeeName != null) {
-                var employeeControl = Session.getModelController(EmployeeControl.class);
                 var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                 
                 if(partyEmployee != null) {
@@ -87,7 +98,6 @@ public class SetPasswordCommand
                     addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else if(customerName != null) {
-                var customerControl = Session.getModelController(CustomerControl.class);
                 var customer = customerControl.getCustomerByName(customerName);
                 
                 if(customer != null) {
@@ -96,7 +106,6 @@ public class SetPasswordCommand
                     addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
                 }
             } else if(vendorName != null) {
-                var vendorControl = Session.getModelController(VendorControl.class);
                 var vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {
@@ -110,7 +119,7 @@ public class SetPasswordCommand
             
             if(!hasExecutionErrors()) {
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.EMPLOYEE.name(), PartyTypes.CUSTOMER.name(),
+                    partyLogic.checkPartyType(this, party, PartyTypes.EMPLOYEE.name(), PartyTypes.CUSTOMER.name(),
                             PartyTypes.VENDOR.name());
 
                     if(!hasExecutionErrors()) {
@@ -135,7 +144,7 @@ public class SetPasswordCommand
 
                                 if(!hasExecutionErrors()) {
                                     var userLoginPasswordStringValue = userControl.getUserLoginPasswordStringValueForUpdate(userLoginPassword);
-                                    var partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
+                                    var partyTypePasswordStringPolicy = passwordStringPolicyLogic.checkStringPassword(session,
                                             getUserVisit(), this, party, userLoginPassword, userLoginPasswordStringValue, newPassword1);
 
                                     if(!hasExecutionErrors()) {

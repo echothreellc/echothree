@@ -34,10 +34,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderTimeTypesCommand
@@ -58,6 +58,16 @@ public class GetOrderTimeTypesCommand
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    OrderTimeControl orderTimeControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
     
     /** Creates a new instance of GetOrderTimeTypesCommand */
     public GetOrderTimeTypesCommand() {
@@ -70,13 +80,11 @@ public class GetOrderTimeTypesCommand
     protected void handleForm() {
         var orderTypeName = form.getOrderTypeName();
 
-        orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, orderTypeName);
+        orderType = orderTypeLogic.getOrderTypeByName(this, orderTypeName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-
         return hasExecutionErrors() ? null : orderTimeControl.countOrderTimeTypes(orderType);
     }
 
@@ -85,8 +93,6 @@ public class GetOrderTimeTypesCommand
         Collection<OrderTimeType> orderTimeTypes = null;
 
         if(!hasExecutionErrors()) {
-            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-
             orderTimeTypes = orderTimeControl.getOrderTimeTypes(orderType);
         }
 
@@ -98,8 +104,6 @@ public class GetOrderTimeTypesCommand
         var result = OrderResultFactory.getGetOrderTimeTypesResult();
 
         if(entities != null) {
-            var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(OrderTimeTypeFactory.class)) {

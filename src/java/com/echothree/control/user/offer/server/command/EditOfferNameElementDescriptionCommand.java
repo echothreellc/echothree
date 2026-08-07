@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOfferNameElementDescriptionCommand
@@ -53,8 +53,8 @@ public class EditOfferNameElementDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferNameElement.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferNameElementName", FieldType.ENTITY_NAME, true, null, null),
@@ -65,6 +65,13 @@ public class EditOfferNameElementDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    OfferNameElementControl offerNameElementControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditOfferNameElementDescriptionCommand */
     public EditOfferNameElementDescriptionCommand() {
@@ -73,13 +80,11 @@ public class EditOfferNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var result = OfferResultFactory.getEditOfferNameElementDescriptionResult();
         var offerNameElementName = spec.getOfferNameElementName();
         var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

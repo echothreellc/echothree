@@ -24,12 +24,18 @@ import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.factory.UserSessionFactory;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UserSessionLogic {
+
+    @Inject
+    UserSessionFactory userSessionFactory;
+
+    @Inject
+    UserControl userControl;
 
     protected UserSessionLogic() {
         super();
@@ -47,10 +53,8 @@ public class UserSessionLogic {
      */
     public UserSession invalidateUserSession(UserSession userSession) {
         if(userSession.getIdentityVerifiedTime() != null) {
-            var userControl = Session.getModelController(UserControl.class);
-
             if(!userSession.getEntityPermission().equals(EntityPermission.READ_WRITE)) {
-                userSession = UserSessionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userSession.getPrimaryKey());
+                userSession = userSessionFactory.getEntityFromPK(EntityPermission.READ_WRITE, userSession.getPrimaryKey());
             }
 
             userControl.deleteUserSession(userSession);
@@ -64,21 +68,16 @@ public class UserSessionLogic {
     /** Sets the Party and PartyRelationship to null when a UserSession contains the specified Party.
      */
     public void deleteUserSessionsByParty(Party party) {
-        var userControl = Session.getModelController(UserControl.class);
-
         userControl.deleteUserSessions(userControl.getUserSessionsByPartyForUpdate(party));
     }
 
     /** Sets the Party and PartyRelationship to null when a UserSession contains the specified PartyRelationship.
      */
     public void deleteUserSessionsByPartyRelationship(PartyRelationship partyRelationship) {
-        var userControl = Session.getModelController(UserControl.class);
-
         userControl.deleteUserSessions(userControl.getUserSessionsByPartyRelationshipForUpdate(partyRelationship));
     }
 
     public UserSession deleteUserSessionByUserVisit(UserVisit userVisit) {
-        var userControl = Session.getModelController(UserControl.class);
         var userSession = userControl.getUserSessionByUserVisitForUpdate(userVisit);
 
         if(userSession != null) {
@@ -89,8 +88,6 @@ public class UserSessionLogic {
     }
 
     public UserSession deleteUserSessionByUserVisitPK(UserVisitPK userVisitPK) {
-        var userControl = Session.getModelController(UserControl.class);
-        
         return deleteUserSessionByUserVisit(userControl.getUserVisitByPKForUpdate(userVisitPK));
     }
 

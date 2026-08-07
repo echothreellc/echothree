@@ -36,10 +36,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowEntityTypesCommand
@@ -62,6 +62,16 @@ public class GetWorkflowEntityTypesCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     
     /** Creates a new instance of GetWorkflowEntityTypesCommand */
     public GetWorkflowEntityTypesCommand() {
@@ -80,9 +90,9 @@ public class GetWorkflowEntityTypesCommand
 
         if(parameterCount == 1) {
             if(workflowName != null) {
-                workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+                workflow = workflowLogic.getWorkflowByName(this, workflowName);
             } else {
-                entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+                entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -91,8 +101,6 @@ public class GetWorkflowEntityTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return hasExecutionErrors() ? null :
                 workflow != null ?
                         workflowControl.countWorkflowEntityTypesByWorkflow(workflow) :
@@ -104,8 +112,6 @@ public class GetWorkflowEntityTypesCommand
         Collection<WorkflowEntityType> workflowEntityTypes = null;
 
         if(!hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             if(workflow != null) {
                 workflowEntityTypes = workflowControl.getWorkflowEntityTypesByWorkflow(workflow);
             } else {
@@ -121,7 +127,6 @@ public class GetWorkflowEntityTypesCommand
         var result = WorkflowResultFactory.getGetWorkflowEntityTypesResult();
 
         if(entities != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflow(workflow == null ? null : workflowControl.getWorkflowTransfer(userVisit, workflow));

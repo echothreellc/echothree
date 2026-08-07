@@ -38,6 +38,9 @@ import javax.inject.Inject;
 public class OrderLineTimeLogic
         extends BaseLogic {
 
+    @Inject
+    OrderTimeControl orderTimeControl;
+
     protected OrderLineTimeLogic() {
         super();
     }
@@ -45,9 +48,6 @@ public class OrderLineTimeLogic
     public static OrderLineTimeLogic getInstance() {
         return CDI.current().select(OrderLineTimeLogic.class).get();
     }
-    
-    @Inject
-    OrderTimeControl orderTimeControl;
 
     private String getOrderTypeName(OrderType orderType) {
         return orderType.getLastDetail().getOrderTypeName();

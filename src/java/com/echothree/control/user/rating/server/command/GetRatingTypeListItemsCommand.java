@@ -45,12 +45,13 @@ public class GetRatingTypeListItemsCommand
                 new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     RatingControl ratingControl;
 
     @Inject
     RatingTypeLogic ratingTypeLogic;
+
 
     /** Creates a new instance of GetRatingTypeListItemsCommand */
     public GetRatingTypeListItemsCommand() {

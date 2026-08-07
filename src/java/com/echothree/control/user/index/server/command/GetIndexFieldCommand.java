@@ -56,12 +56,7 @@ public class GetIndexFieldCommand
                 new FieldDefinition("IndexFieldName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetIndexFieldCommand */
-    public GetIndexFieldCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     IndexControl indexControl;
 
@@ -70,6 +65,12 @@ public class GetIndexFieldCommand
 
     @Inject
     IndexTypeLogic indexTypeLogic;
+
+
+    /** Creates a new instance of GetIndexFieldCommand */
+    public GetIndexFieldCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected BaseResult execute() {

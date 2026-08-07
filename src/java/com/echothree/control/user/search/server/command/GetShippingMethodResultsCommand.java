@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetShippingMethodResultsCommand
@@ -58,6 +58,15 @@ public class GetShippingMethodResultsCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    ShippingMethodControl shippingMethodControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetShippingMethodResultsCommand */
     public GetShippingMethodResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +75,6 @@ public class GetShippingMethodResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetShippingMethodResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.SHIPPING_METHOD.name());
         
         if(searchKind != null) {
@@ -78,10 +86,8 @@ public class GetShippingMethodResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var shippingMethodControl = Session.getModelController(ShippingMethodControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setShippingMethodResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setShippingMethodResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setShippingMethodResults(shippingMethodControl.getShippingMethodResultTransfers(userVisit, userVisitSearch));

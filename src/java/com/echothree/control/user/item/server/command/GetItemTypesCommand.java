@@ -24,10 +24,10 @@ import com.echothree.model.data.item.server.factory.ItemTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemTypesCommand
@@ -39,6 +39,9 @@ public class GetItemTypesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ItemControl itemControl;
 
     /** Creates a new instance of GetItemTypesCommand */
     public GetItemTypesCommand() {
@@ -52,15 +55,11 @@ public class GetItemTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.countItemTypes();
     }
 
     @Override
     protected Collection<ItemType> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.getItemTypes();
     }
 
@@ -69,8 +68,6 @@ public class GetItemTypesCommand
         var result = ItemResultFactory.getGetItemTypesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             if(session.hasLimit(ItemTypeFactory.class)) {
                 result.setItemTypeCount(getTotalEntities());
             }

@@ -43,12 +43,14 @@ public class GetItemUnitCustomerTypeLimitsCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ItemControl itemControl;
-    
+
     @Inject
     ItemLogic itemLogic;
+
+
 
     /** Creates a new instance of GetItemUnitCustomerTypeLimitsCommand */
     public GetItemUnitCustomerTypeLimitsCommand() {

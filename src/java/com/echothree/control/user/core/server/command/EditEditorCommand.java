@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEditorCommand
@@ -53,8 +53,8 @@ public class EditEditorCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Editor.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, true, null, null)
@@ -74,6 +74,10 @@ public class EditEditorCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    EditorControl editorControl;
+
     
     /** Creates a new instance of EditEditorCommand */
     public EditEditorCommand() {
@@ -92,7 +96,6 @@ public class EditEditorCommand
 
     @Override
     public Editor getEntity(EditEditorResult result) {
-        var editorControl = Session.getModelController(EditorControl.class);
         Editor editor;
         var editorName = spec.getEditorName();
 
@@ -116,14 +119,11 @@ public class EditEditorCommand
 
     @Override
     public void fillInResult(EditEditorResult result, Editor editor) {
-        var editorControl = Session.getModelController(EditorControl.class);
-
         result.setEditor(editorControl.getEditorTransfer(getUserVisit(), editor));
     }
 
     @Override
     public void doLock(EditorEdit edit, Editor editor) {
-        var editorControl = Session.getModelController(EditorControl.class);
         var editorDescription = editorControl.getEditorDescription(editor, getPreferredLanguage());
         var editorDetail = editor.getLastDetail();
         var minimumHeight = editorDetail.getMinimumHeight();
@@ -151,7 +151,6 @@ public class EditEditorCommand
 
     @Override
     public void canUpdate(Editor editor) {
-        var editorControl = Session.getModelController(EditorControl.class);
         var editorName = edit.getEditorName();
         var duplicateEditor = editorControl.getEditorByName(editorName);
 
@@ -162,7 +161,6 @@ public class EditEditorCommand
 
     @Override
     public void doUpdate(Editor editor) {
-        var editorControl = Session.getModelController(EditorControl.class);
         var partyPK = getPartyPK();
         var editorDetailValue = editorControl.getEditorDetailValueForUpdate(editor);
         var editorDescription = editorControl.getEditorDescriptionForUpdate(editor, getPreferredLanguage());

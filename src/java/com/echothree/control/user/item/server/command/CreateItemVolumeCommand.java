@@ -33,11 +33,11 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemVolumeCommand
@@ -65,6 +65,16 @@ public class CreateItemVolumeCommand
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ItemVolumeTypeLogic itemVolumeTypeLogic;
+
     
     /** Creates a new instance of CreateItemVolumeCommand */
     public CreateItemVolumeCommand() {
@@ -73,12 +83,10 @@ public class CreateItemVolumeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(),
                     unitOfMeasureTypeName);
@@ -87,7 +95,7 @@ public class CreateItemVolumeCommand
                 var itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
                 
                 if(itemUnitOfMeasureType != null) {
-                    var itemVolumeType = ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByName(this, form.getItemVolumeTypeName());
+                    var itemVolumeType = itemVolumeTypeLogic.getItemVolumeTypeByName(this, form.getItemVolumeTypeName());
 
                     if(!hasExecutionErrors()) {
                         var itemVolume = itemControl.getItemVolume(item, unitOfMeasureType, itemVolumeType);

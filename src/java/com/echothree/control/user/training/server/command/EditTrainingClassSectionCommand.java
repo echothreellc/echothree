@@ -40,10 +40,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassSectionCommand
@@ -58,8 +58,8 @@ public class EditTrainingClassSectionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassSection.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -78,6 +78,13 @@ public class EditTrainingClassSectionCommand
                 new FieldDefinition("Introduction", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of EditTrainingClassSectionCommand */
     public EditTrainingClassSectionCommand() {
@@ -98,7 +105,6 @@ public class EditTrainingClassSectionCommand
     
     @Override
     public TrainingClassSection getEntity(EditTrainingClassSectionResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassSection trainingClassSection = null;
         var trainingClassName = spec.getTrainingClassName();
 
@@ -132,8 +138,6 @@ public class EditTrainingClassSectionCommand
 
     @Override
     public void fillInResult(EditTrainingClassSectionResult result, TrainingClassSection trainingClassSection) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(getUserVisit(), trainingClassSection));
     }
 
@@ -142,7 +146,6 @@ public class EditTrainingClassSectionCommand
     
     @Override
     public void doLock(TrainingClassSectionEdit edit, TrainingClassSection trainingClassSection) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslation(trainingClassSection, getPreferredLanguage());
         var trainingClassSectionDetail = trainingClassSection.getLastDetail();
         var questionCount = trainingClassSectionDetail.getQuestionCount();
@@ -166,14 +169,12 @@ public class EditTrainingClassSectionCommand
 
     @Override
     public void canUpdate(TrainingClassSection trainingClassSection) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassSectionName = edit.getTrainingClassSectionName();
         var duplicateTrainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
         if(duplicateTrainingClassSection != null && !trainingClassSection.equals(duplicateTrainingClassSection)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassSectionName.name(), trainingClassSectionName);
         } else {
-            var mimeTypeLogic = MimeTypeLogic.getInstance();
             var overviewMimeTypeName = edit.getOverviewMimeTypeName();
             var overview = edit.getOverview();
 
@@ -194,7 +195,6 @@ public class EditTrainingClassSectionCommand
     
     @Override
     public void doUpdate(TrainingClassSection trainingClassSection) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         var trainingClassSectionDetailValue = trainingControl.getTrainingClassSectionDetailValueForUpdate(trainingClassSection);
         var trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslationForUpdate(trainingClassSection, getPreferredLanguage());

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultApplicationEditorUseCommand
@@ -46,15 +46,22 @@ public class SetDefaultApplicationEditorUseCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ApplicationEditorUse.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ApplicationEditorUse.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
     
     /** Creates a new instance of SetDefaultApplicationEditorUseCommand */
     public SetDefaultApplicationEditorUseCommand() {
@@ -64,10 +71,9 @@ public class SetDefaultApplicationEditorUseCommand
     @Override
     protected BaseResult execute() {
         var applicationName = form.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
-            var applicationControl = Session.getModelController(ApplicationControl.class);
             var applicationEditorUseName = form.getApplicationEditorUseName();
             var applicationEditorUseDetailValue = applicationControl.getApplicationEditorUseDetailValueByNameForUpdate(application,
                     applicationEditorUseName);

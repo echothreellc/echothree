@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderPriorityControl
@@ -56,6 +57,12 @@ public class OrderPriorityControl
     // --------------------------------------------------------------------------------
     //   Order Priorities
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected OrderPriorityFactory orderPriorityFactory;
+
+    @Inject
+    protected OrderPriorityDetailFactory orderPriorityDetailFactory;
 
     public OrderPriority createOrderPriority(OrderType orderType, String orderPriorityName, Integer priority, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -71,12 +78,12 @@ public class OrderPriorityControl
             isDefault = true;
         }
 
-        var orderPriority = OrderPriorityFactory.getInstance().create();
-        var orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriority, orderType, orderPriorityName, priority,
+        var orderPriority = orderPriorityFactory.create();
+        var orderPriorityDetail = orderPriorityDetailFactory.create(orderPriority, orderType, orderPriorityName, priority,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        orderPriority = OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderPriority = orderPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderPriority.getPrimaryKey());
         orderPriority.setActiveDetail(orderPriorityDetail);
         orderPriority.setLastDetail(orderPriorityDetail);
@@ -92,7 +99,7 @@ public class OrderPriorityControl
             final EntityPermission entityPermission) {
         var pk = new OrderPriorityPK(entityInstance.getEntityUniqueId());
 
-        return OrderPriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderPriorityFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderPriority getOrderPriorityByEntityInstance(final EntityInstance entityInstance) {
@@ -104,15 +111,17 @@ public class OrderPriorityControl
     }
 
     public OrderPriority getOrderPriorityByPK(OrderPriorityPK pk) {
-        return OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return orderPriorityFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countOrderPriorities(OrderType orderType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ?
+                """,
                 orderType);
     }
 
@@ -122,21 +131,25 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ?");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ?
+                FOR UPDATE
+                """);
         getOrderPriorityByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public OrderPriority getOrderPriorityByName(OrderType orderType, String orderPriorityName, EntityPermission entityPermission) {
-        return OrderPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getOrderPriorityByNameQueries,
+        return orderPriorityFactory.getEntityFromQuery(entityPermission, getOrderPriorityByNameQueries,
                 orderType, orderPriorityName);
     }
 
@@ -162,21 +175,25 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1 " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultOrderPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public OrderPriority getDefaultOrderPriority(OrderType orderType, EntityPermission entityPermission) {
-        return OrderPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderPriorityQueries,
+        return orderPriorityFactory.getEntityFromQuery(entityPermission, getDefaultOrderPriorityQueries,
                 orderType);
     }
 
@@ -198,22 +215,26 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? " +
-                "ORDER BY ordprdt_sortorder, ordprdt_orderpriorityname");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ?
+                ORDER BY ordprdt_sortorder, ordprdt_orderpriorityname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderpriorities, orderprioritydetails " +
-                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
-                "AND ordprdt_ordtyp_ordertypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderpriorities, orderprioritydetails
+                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
+                AND ordprdt_ordtyp_ordertypeid = ?
+                FOR UPDATE
+                """);
         getOrderPrioritiesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<OrderPriority> getOrderPriorities(OrderType orderType, EntityPermission entityPermission) {
-        return OrderPriorityFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderPrioritiesQueries,
+        return orderPriorityFactory.getEntitiesFromQuery(entityPermission, getOrderPrioritiesQueries,
                 orderType);
     }
 
@@ -281,7 +302,7 @@ public class OrderPriorityControl
     private void updateOrderPriorityFromValue(OrderPriorityDetailValue orderPriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderPriorityDetailValue.hasBeenModified()) {
-            var orderPriority = OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderPriority = orderPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      orderPriorityDetailValue.getOrderPriorityPK());
             var orderPriorityDetail = orderPriority.getActiveDetailForUpdate();
 
@@ -312,7 +333,7 @@ public class OrderPriorityControl
                 }
             }
 
-            orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriorityPK, orderTypePK, orderPriorityName, priority, isDefault,
+            orderPriorityDetail = orderPriorityDetailFactory.create(orderPriorityPK, orderTypePK, orderPriorityName, priority, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderPriority.setActiveDetail(orderPriorityDetail);
@@ -359,8 +380,11 @@ public class OrderPriorityControl
     //   Order Priority Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderPriorityDescriptionFactory orderPriorityDescriptionFactory;
+
     public OrderPriorityDescription createOrderPriorityDescription(OrderPriority orderPriority, Language language, String description, BasePK createdBy) {
-        var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
+        var orderPriorityDescription = orderPriorityDescriptionFactory.create(orderPriority, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -374,19 +398,23 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderprioritydescriptions " +
-                "WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM orderprioritydescriptions
+                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderprioritydescriptions " +
-                "WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderprioritydescriptions
+                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderPriorityDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private OrderPriorityDescription getOrderPriorityDescription(OrderPriority orderPriority, Language language, EntityPermission entityPermission) {
-        return OrderPriorityDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getOrderPriorityDescriptionQueries,
+        return orderPriorityDescriptionFactory.getEntityFromQuery(entityPermission, getOrderPriorityDescriptionQueries,
                 orderPriority, language, Session.MAX_TIME);
     }
 
@@ -412,20 +440,24 @@ public class OrderPriorityControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM orderprioritydescriptions, languages " +
-                "WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ? AND ordprd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM orderprioritydescriptions, languages
+                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ? AND ordprd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM orderprioritydescriptions " +
-                "WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM orderprioritydescriptions
+                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ?
+                FOR UPDATE
+                """);
         getOrderPriorityDescriptionsByOrderPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<OrderPriorityDescription> getOrderPriorityDescriptionsByOrderPriority(OrderPriority orderPriority, EntityPermission entityPermission) {
-        return OrderPriorityDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderPriorityDescriptionsByOrderPriorityQueries,
+        return orderPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderPriorityDescriptionsByOrderPriorityQueries,
                 orderPriority, Session.MAX_TIME);
     }
 
@@ -471,7 +503,7 @@ public class OrderPriorityControl
 
     public void updateOrderPriorityDescriptionFromValue(OrderPriorityDescriptionValue orderPriorityDescriptionValue, BasePK updatedBy) {
         if(orderPriorityDescriptionValue.hasBeenModified()) {
-            var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderPriorityDescription = orderPriorityDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderPriorityDescriptionValue.getPrimaryKey());
 
             orderPriorityDescription.setThruTime(session.getStartTime());
@@ -481,7 +513,7 @@ public class OrderPriorityControl
             var language = orderPriorityDescription.getLanguage();
             var description = orderPriorityDescriptionValue.getDescription();
 
-            orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
+            orderPriorityDescription = orderPriorityDescriptionFactory.create(orderPriority, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

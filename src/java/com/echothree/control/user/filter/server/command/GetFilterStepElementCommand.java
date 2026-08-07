@@ -62,17 +62,18 @@ public class GetFilterStepElementCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetFilterStepElementCommand */
-    public GetFilterStepElementCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterStepElementLogic filterStepElementLogic;
+
+
+    /** Creates a new instance of GetFilterStepElementCommand */
+    public GetFilterStepElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected FilterStepElement getEntity() {

@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCountryCommand
@@ -55,8 +55,8 @@ public class GetCountryCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Country.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, false, null, null),
@@ -65,8 +65,12 @@ public class GetCountryCommand
                 new FieldDefinition("Iso3Letter", FieldType.UPPER_LETTER_3, false, null, null),
                 new FieldDefinition("Iso2Letter", FieldType.UPPER_LETTER_2, false, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of GetCountryCommand */
     public GetCountryCommand() {
@@ -90,7 +94,6 @@ public class GetCountryCommand
         }
 
         if(parameterCount < 2) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var geoCodeScope = geoControl.getGeoCodeScopeByName(GeoCodeScopes.COUNTRIES.name());
 
             if(parameterCount == 0) {
@@ -200,8 +203,6 @@ public class GetCountryCommand
         var result = GeoResultFactory.getGetCountryResult();
 
         if(entity != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
-
             result.setCountry(geoControl.getCountryTransfer(getUserVisit(), entity));
         }
 

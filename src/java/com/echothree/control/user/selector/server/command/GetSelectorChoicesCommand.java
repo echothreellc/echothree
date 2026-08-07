@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorChoicesCommand
@@ -37,12 +37,16 @@ public class GetSelectorChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("DefaultSelectorChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("DefaultSelectorChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of GetSelectorChoicesCommand */
     public GetSelectorChoicesCommand() {
@@ -51,7 +55,6 @@ public class GetSelectorChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorChoicesResult();
         var selectorKindName = form.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);

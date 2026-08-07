@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTypeDocumentTypeUsageTypeCommand
@@ -55,8 +55,8 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTypeDocumentTypeUsageType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -68,6 +68,13 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditPartyTypeDocumentTypeUsageTypeCommand */
     public EditPartyTypeDocumentTypeUsageTypeCommand() {
@@ -86,13 +93,11 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
 
     @Override
     public PartyTypeDocumentTypeUsageType getEntity(EditPartyTypeDocumentTypeUsageTypeResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = null;
         var partyTypeName = spec.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            var documentControl = Session.getModelController(DocumentControl.class);
             var documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
             var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
@@ -123,8 +128,6 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
 
     @Override
     public void fillInResult(EditPartyTypeDocumentTypeUsageTypeResult result, PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
-
         result.setPartyTypeDocumentTypeUsageType(documentControl.getPartyTypeDocumentTypeUsageTypeTransfer(getUserVisit(), partyTypeDocumentTypeUsageType));
     }
 
@@ -136,7 +139,6 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
 
     @Override
     public void doUpdate(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var partyTypeDocumentTypeUsageTypeValue = documentControl.getPartyTypeDocumentTypeUsageTypeValueForUpdate(partyTypeDocumentTypeUsageType);
 
         partyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateGlAccountCommand
@@ -64,6 +64,13 @@ public class CreateGlAccountCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    GlAccountLogic glAccountLogic;
+
     
     /** Creates a new instance of CreateGlAccountCommand */
     public CreateGlAccountCommand() {
@@ -73,7 +80,6 @@ public class CreateGlAccountCommand
     @Override
     protected BaseResult execute() {
         var result = AccountingResultFactory.getCreateGlAccountResult();
-        var accountingControl = Session.getModelController(AccountingControl.class);
         GlAccount glAccount = null;
         var parentGlAccountName = form.getParentGlAccountName();
         GlAccount parentGlAccount = null;
@@ -108,7 +114,7 @@ public class CreateGlAccountCommand
                                 var description = form.getDescription();
                                 var partyPK = getPartyPK();
 
-                                glAccount = GlAccountLogic.getInstance().createGlAccount(this, glAccountName, parentGlAccount,
+                                glAccount = glAccountLogic.createGlAccount(this, glAccountName, parentGlAccount,
                                         glAccountType, glAccountClass, glAccountCategory, glResourceType, currency, isDefault,
                                         getPreferredLanguage(), description, partyPK);
                             } else {

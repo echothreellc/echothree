@@ -23,10 +23,10 @@ import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWishlistTypesCommand
@@ -38,6 +38,10 @@ public class GetWishlistTypesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    WishlistControl wishlistControl;
+
     
     /** Creates a new instance of GetWishlistTypesCommand */
     public GetWishlistTypesCommand() {
@@ -51,23 +55,17 @@ public class GetWishlistTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-
         return wishlistControl.countWishlistTypes();
     }
 
     @Override
     protected Collection<WishlistType> getEntities() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-
         return wishlistControl.getWishlistTypes();
     }
 
     @Override
     protected BaseResult getResult(Collection<WishlistType> entities) {
         var result = WishlistResultFactory.getGetWishlistTypesResult();
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-
         result.setWishlistTypes(wishlistControl.getWishlistTypeTransfers(getUserVisit(), entities));
 
         return result;

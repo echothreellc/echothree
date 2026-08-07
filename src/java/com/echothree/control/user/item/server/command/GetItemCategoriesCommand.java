@@ -32,10 +32,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemCategoriesCommand
@@ -56,6 +56,10 @@ public class GetItemCategoriesCommand
                 new FieldDefinition("ParentItemCategoryName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetItemCategoriesCommand */
     public GetItemCategoriesCommand() {
@@ -66,7 +70,6 @@ public class GetItemCategoriesCommand
     
     @Override
     protected void handleForm() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var parentItemCategoryName = form.getParentItemCategoryName();
 
         parentItemCategory = parentItemCategoryName == null ? null : itemControl.getItemCategoryByName(parentItemCategoryName);
@@ -80,9 +83,6 @@ public class GetItemCategoriesCommand
     protected Long getTotalEntities() {
         if(hasExecutionErrors())
             return null;
-
-        var itemControl = Session.getModelController(ItemControl.class);
-        
         return parentItemCategory == null
                 ? itemControl.countItemCategories()
                 : itemControl.countItemCategoriesByParentItemCategory(parentItemCategory);
@@ -93,8 +93,6 @@ public class GetItemCategoriesCommand
         Collection<ItemCategory> itemCategories = null;
         
         if(!hasExecutionErrors()) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            
             itemCategories = parentItemCategory == null ? itemControl.getItemCategories()
                     : itemControl.getItemCategoriesByParentItemCategory(parentItemCategory);
         }
@@ -107,7 +105,6 @@ public class GetItemCategoriesCommand
         var result = ItemResultFactory.getGetItemCategoriesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemCategoryFactory.class)) {

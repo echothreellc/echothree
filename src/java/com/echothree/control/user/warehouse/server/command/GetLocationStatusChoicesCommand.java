@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLocationStatusChoicesCommand
@@ -54,8 +54,12 @@ public class GetLocationStatusChoicesCommand
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultLocationStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of GetLocationStatusChoicesCommand */
     public GetLocationStatusChoicesCommand() {
@@ -65,7 +69,6 @@ public class GetLocationStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var result = WarehouseResultFactory.getGetLocationStatusChoicesResult();
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         

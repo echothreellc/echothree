@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteDateTimeFormatDescriptionCommand
@@ -36,10 +36,14 @@ public class DeleteDateTimeFormatDescriptionCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("DateTimeFormatName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("DateTimeFormatName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteDateTimeFormatDescriptionCommand */
     public DeleteDateTimeFormatDescriptionCommand() {
@@ -48,7 +52,6 @@ public class DeleteDateTimeFormatDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var dateTimeFormatName = form.getDateTimeFormatName();
         var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
         

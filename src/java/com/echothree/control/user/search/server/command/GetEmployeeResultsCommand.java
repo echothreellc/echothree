@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseGetResultsCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEmployeeResultsCommand
@@ -56,6 +56,12 @@ public class GetEmployeeResultsCommand
         );
     }
 
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetEmployeeResultsCommand */
     public GetEmployeeResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,14 +72,12 @@ public class GetEmployeeResultsCommand
         var result = SearchResultFactory.getGetEmployeeResultsResult();
         var searchTypeName = form.getSearchTypeName();
         var userVisit = getUserVisit();
-        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
+        var userVisitSearch = searchLogic.getUserVisitSearchByName(this, userVisit,
                 SearchKinds.EMPLOYEE.name(), searchTypeName);
 
         if(!hasExecutionErrors()) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                result.setEmployeeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                result.setEmployeeResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
             }
 
             result.setEmployeeResults(employeeControl.getEmployeeResultTransfers(userVisit, userVisitSearch));

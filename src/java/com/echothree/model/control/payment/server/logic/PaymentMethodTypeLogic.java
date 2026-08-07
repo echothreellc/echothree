@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentMethodTypeLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentMethodTypeControl paymentMethodTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected PaymentMethodTypeLogic() {
         super();
@@ -51,7 +57,6 @@ public class PaymentMethodTypeLogic
     public PaymentMethodType createPaymentMethodType(final ExecutionErrorAccumulator eea, final String paymentMethodTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
 
         if(paymentMethodType == null) {
@@ -69,7 +74,6 @@ public class PaymentMethodTypeLogic
 
     public PaymentMethodType getPaymentMethodTypeByName(final ExecutionErrorAccumulator eea, final String paymentMethodTypeName,
             final EntityPermission entityPermission) {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName, entityPermission);
 
         if(paymentMethodType == null) {
@@ -90,9 +94,8 @@ public class PaymentMethodTypeLogic
     public PaymentMethodType getPaymentMethodTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentMethodTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentMethodType paymentMethodType = null;
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var paymentMethodTypeName = universalSpec.getPaymentMethodTypeName();
-        var parameterCount = (paymentMethodTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentMethodTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         if(parameterCount == 0) {
             if(allowDefault) {
@@ -106,7 +109,7 @@ public class PaymentMethodTypeLogic
             }
         } else if(parameterCount == 1) {
             if(paymentMethodTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentMethodType.name());
 
                 if(eea == null || !eea.hasExecutionErrors()) {
@@ -134,8 +137,6 @@ public class PaymentMethodTypeLogic
 
     public void deletePaymentMethodType(final ExecutionErrorAccumulator eea, final PaymentMethodType paymentMethodType,
             final BasePK deletedBy) {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-
         paymentMethodTypeControl.deletePaymentMethodType(paymentMethodType, deletedBy);
     }
 }

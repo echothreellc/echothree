@@ -40,6 +40,9 @@ public class LanguageLogic
     @Inject
     PartyControl partyControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected LanguageLogic() {
         super();
     }
@@ -70,7 +73,7 @@ public class LanguageLogic
     public Language getLanguageByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
         Language projectLanguage = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
+        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.Language.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

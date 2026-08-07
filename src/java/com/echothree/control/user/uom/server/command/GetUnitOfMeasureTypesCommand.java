@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUnitOfMeasureTypesCommand
@@ -58,6 +58,12 @@ public class GetUnitOfMeasureTypesCommand
         );
     }
 
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    UnitOfMeasureKindLogic unitOfMeasureKindLogic;
+
     /** Creates a new instance of GetUnitOfMeasureTypesCommand */
     public GetUnitOfMeasureTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -69,13 +75,11 @@ public class GetUnitOfMeasureTypesCommand
     protected void handleForm() {
         var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
 
-        unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(this, unitOfMeasureKindName);
+        unitOfMeasureKind = unitOfMeasureKindLogic.getUnitOfMeasureKindByName(this, unitOfMeasureKindName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var uomControl = Session.getModelController(UomControl.class);
-
         return hasExecutionErrors() ? null :
                 uomControl.countUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
     }
@@ -85,8 +89,6 @@ public class GetUnitOfMeasureTypesCommand
         Collection<UnitOfMeasureType> entities = null;
 
         if(!hasExecutionErrors()) {
-            var uomControl = Session.getModelController(UomControl.class);
-
             entities = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
         }
 
@@ -98,7 +100,6 @@ public class GetUnitOfMeasureTypesCommand
         var result = UomResultFactory.getGetUnitOfMeasureTypesResult();
 
         if(entities != null) {
-            var uomControl = Session.getModelController(UomControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(UnitOfMeasureTypeFactory.class)) {

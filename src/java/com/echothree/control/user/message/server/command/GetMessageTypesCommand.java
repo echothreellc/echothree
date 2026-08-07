@@ -44,12 +44,13 @@ public class GetMessageTypesCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     MessageControl messageControl;
 
     @Inject
     EntityTypeLogic entityTypeLogic;
+
 
     /** Creates a new instance of GetMessageTypesCommand */
     public GetMessageTypesCommand() {

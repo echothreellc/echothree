@@ -37,6 +37,12 @@ import javax.inject.Inject;
 public class ContactListGroupLogic
     extends BaseLogic {
 
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ContactListGroupLogic() {
         super();
     }
@@ -44,9 +50,6 @@ public class ContactListGroupLogic
     public static ContactListGroupLogic getInstance() {
         return CDI.current().select(ContactListGroupLogic.class).get();
     }
-    
-    @Inject
-    ContactListControl contactListControl;
 
     public ContactListGroup getContactListGroupByName(final ExecutionErrorAccumulator eea, final String contactListGroupName,
             final EntityPermission entityPermission) {
@@ -71,7 +74,7 @@ public class ContactListGroupLogic
             final ContactListGroupUniversalSpec spec, final boolean allowDefault, final EntityPermission entityPermission) {
         ContactListGroup contactListGroup = null;
         var contactListGroupName = spec.getContactListGroupName();
-        var parameterCount = (contactListGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = (contactListGroupName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -87,7 +90,7 @@ public class ContactListGroupLogic
             }
             case 1 -> {
                 if(contactListGroupName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, spec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, spec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactListGroup.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

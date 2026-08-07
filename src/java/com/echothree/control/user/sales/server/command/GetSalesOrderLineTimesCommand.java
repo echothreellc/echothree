@@ -44,12 +44,13 @@ public class GetSalesOrderLineTimesCommand
                 new FieldDefinition("OrderLineSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
         );
     }
-    
+
     @Inject
     OrderTimeControl orderTimeControl;
 
     @Inject
     SalesOrderLineLogic salesOrderLineLogic;
+
 
     /** Creates a new instance of GetSalesOrderLineTimesCommand */
     public GetSalesOrderLineTimesCommand() {

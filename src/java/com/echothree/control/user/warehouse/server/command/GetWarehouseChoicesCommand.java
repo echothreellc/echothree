@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWarehouseChoicesCommand
@@ -52,8 +52,12 @@ public class GetWarehouseChoicesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultWarehouseChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of GetWarehouseChoicesCommand */
     public GetWarehouseChoicesCommand() {
@@ -62,7 +66,6 @@ public class GetWarehouseChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var result = WarehouseResultFactory.getGetWarehouseChoicesResult();
         var defaultWarehouseChoice = form.getDefaultWarehouseChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

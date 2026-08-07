@@ -25,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteRatingTypeListItemDescriptionCommand
@@ -37,13 +37,20 @@ public class DeleteRatingTypeListItemDescriptionCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-            new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    RatingControl ratingControl;
+
     
     /** Creates a new instance of DeleteRatingTypeListItemDescriptionCommand */
     public DeleteRatingTypeListItemDescriptionCommand() {
@@ -60,7 +67,6 @@ public class DeleteRatingTypeListItemDescriptionCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
                 var ratingTypeName = form.getRatingTypeName();
                 var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
@@ -69,7 +75,6 @@ public class DeleteRatingTypeListItemDescriptionCommand
                     var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItem != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = form.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
                         

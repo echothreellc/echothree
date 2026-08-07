@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGlAccountTypesCommand
@@ -52,6 +52,10 @@ public class GetGlAccountTypesCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of GetGlAccountTypesCommand */
     public GetGlAccountTypesCommand() {
@@ -65,15 +69,11 @@ public class GetGlAccountTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         return accountingControl.countGlAccountTypes();
     }
 
     @Override
     protected Collection<GlAccountType> getEntities() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         return accountingControl.getGlAccountTypes();
     }
 
@@ -82,8 +82,6 @@ public class GetGlAccountTypesCommand
         var result = AccountingResultFactory.getGetGlAccountTypesResult();
 
         if(entities != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-
             result.setGlAccountTypes(accountingControl.getGlAccountTypeTransfers(getUserVisit(), entities));
         }
 

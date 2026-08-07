@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentCollectionDescriptionCommand
@@ -55,8 +55,8 @@ public class EditContentCollectionDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCollection.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditContentCollectionDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContentCollectionDescriptionCommand */
     public EditContentCollectionDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditContentCollectionDescriptionCommand
     
     @Override
     public ContentCollectionDescription getEntity(EditContentCollectionDescriptionResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentCollectionDescription contentCollectionDescription = null;
         var contentCollectionName = spec.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,8 +129,6 @@ public class EditContentCollectionDescriptionCommand
     
     @Override
     public void fillInResult(EditContentCollectionDescriptionResult result, ContentCollectionDescription contentCollectionDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentCollectionDescription(contentControl.getContentCollectionDescriptionTransfer(getUserVisit(), contentCollectionDescription));
     }
     
@@ -136,7 +139,6 @@ public class EditContentCollectionDescriptionCommand
     
     @Override
     public void doUpdate(ContentCollectionDescription contentCollectionDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionDescriptionValue = contentControl.getContentCollectionDescriptionValue(contentCollectionDescription);
         contentCollectionDescriptionValue.setDescription(edit.getDescription());
 

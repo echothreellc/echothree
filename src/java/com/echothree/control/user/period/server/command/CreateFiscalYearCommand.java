@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFiscalYearCommand
@@ -52,6 +53,10 @@ public class CreateFiscalYearCommand
                 new FieldDefinition("Year", FieldType.YEAR, true, null, null)
         );
     }
+
+    @Inject
+    FiscalPeriodLogic fiscalPeriodLogic;
+
     
     /** Creates a new instance of CreateFiscalYearCommand */
     public CreateFiscalYearCommand() {
@@ -63,7 +68,7 @@ public class CreateFiscalYearCommand
         var result = PeriodResultFactory.getCreateFiscalYearResult();
         var year = Integer.valueOf(form.getYear());
         
-        var period = FiscalPeriodLogic.getInstance().createFiscalYear(this, year, getPartyPK());
+        var period = fiscalPeriodLogic.createFiscalYear(this, year, getPartyPK());
 
         if(period != null) {
             result.setPeriodName(period.getLastDetail().getPeriodName());

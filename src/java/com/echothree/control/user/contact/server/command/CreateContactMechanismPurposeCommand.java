@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContactMechanismPurposeCommand
@@ -41,8 +41,12 @@ public class CreateContactMechanismPurposeCommand
                 new FieldDefinition("EventSubscriber", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
     
     /** Creates a new instance of CreateContactMechanismPurposeCommand */
     public CreateContactMechanismPurposeCommand() {
@@ -51,7 +55,6 @@ public class CreateContactMechanismPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismPurposeName = form.getContactMechanismPurposeName();
         var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
         

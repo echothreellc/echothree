@@ -27,6 +27,7 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CustomerLoginCommand
@@ -40,8 +41,18 @@ public class CustomerLoginCommand
                 new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
                 new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("RemoteInet4Address", FieldType.INET_4_ADDRESS, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    LockoutPolicyLogic lockoutPolicyLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    UserLoginLogic userLoginLogic;
+
     
     /** Creates a new instance of CustomerLoginCommand */
     public CustomerLoginCommand() {
@@ -50,18 +61,17 @@ public class CustomerLoginCommand
     
     @Override
     protected BaseResult execute() {
-        var userLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, form.getUsername());
+        var userLogin = userLoginLogic.getUserLoginByUsername(this, form.getUsername());
         
         if(!hasExecutionErrors()) {
             var party = userLogin.getParty();
 
-            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
+            partyLogic.checkPartyType(this, party, PartyTypes.CUSTOMER.name());
 
             if(!hasExecutionErrors()) {
-                var userControl = getUserControl();
                 var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
 
-                LockoutPolicyLogic.getInstance().checkUserLogin(session, this, party, userLoginStatus);
+                lockoutPolicyLogic.checkUserLogin(session, this, party, userLoginStatus);
                 
                 if(!hasExecutionErrors()) {
                     if(checkPasswords(userLoginStatus, form.getPassword(), party, true)) {

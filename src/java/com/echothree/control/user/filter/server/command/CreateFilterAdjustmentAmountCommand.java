@@ -36,10 +36,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentAmountCommand
@@ -75,6 +75,19 @@ public class CreateFilterAdjustmentAmountCommand
                 new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.PRICE_UNIT, true, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of CreateFilterAdjustmentAmountCommand */
     public CreateFilterAdjustmentAmountCommand() {
@@ -105,7 +118,7 @@ public class CreateFilterAdjustmentAmountCommand
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
-        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
+        var filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
 
         if(!hasExecutionErrors()) {
             var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
@@ -115,15 +128,14 @@ public class CreateFilterAdjustmentAmountCommand
                 var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
 
-                var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this,
                         unitOfMeasureName, unitOfMeasureKindName, unitOfMeasureTypeName);
 
                 if(!hasExecutionErrors()) {
                     var currencyIsoName = form.getCurrencyIsoName();
-                    var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+                    var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        var filterControl = Session.getModelController(FilterControl.class);
                         var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment,
                                 unitOfMeasureType, currency);
 

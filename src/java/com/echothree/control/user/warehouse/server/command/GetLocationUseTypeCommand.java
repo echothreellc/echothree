@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLocationUseTypeCommand
@@ -59,6 +59,12 @@ public class GetLocationUseTypeCommand
         );
     }
 
+    @Inject
+    LocationUseTypeControl locationUseTypeControl;
+
+    @Inject
+    LocationUseTypeLogic locationUseTypeLogic;
+
     /** Creates a new instance of GetLocationUseTypeCommand */
     public GetLocationUseTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetLocationUseTypeCommand
 
     @Override
     protected LocationUseType getEntity() {
-        var entity = LocationUseTypeLogic.getInstance().getLocationUseTypeByUniversalSpec(this, form, true);
+        var entity = locationUseTypeLogic.getLocationUseTypeByUniversalSpec(this, form, true);
 
         if(entity != null) {
             sendEvent(entity.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -80,8 +86,6 @@ public class GetLocationUseTypeCommand
         var result = WarehouseResultFactory.getGetLocationUseTypeResult();
 
         if(entity != null) {
-            var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-
             result.setLocationUseType(locationUseTypeControl.getLocationUseTypeTransfer(getUserVisit(), entity));
         }
 

@@ -119,6 +119,7 @@ public class ReturnPolicyControl
         extends BaseModelControl {
     
     /** Creates a new instance of ReturnPolicyControl */
+
     protected ReturnPolicyControl() {
         super();
     }
@@ -167,8 +168,11 @@ public class ReturnPolicyControl
     //   Party Return Policies
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PartyReturnPolicyFactory partyReturnPolicyFactory;
+
     public PartyReturnPolicy createPartyReturnPolicy(Party party, ReturnPolicy returnPolicy, BasePK createdBy) {
-        var partyReturnPolicy = PartyReturnPolicyFactory.getInstance().create(party, returnPolicy, session.getStartTime(), Session.MAX_TIME);
+        var partyReturnPolicy = partyReturnPolicyFactory.create(party, returnPolicy, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyReturnPolicy.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -219,7 +223,7 @@ public class ReturnPolicyControl
     }
 
     private PartyReturnPolicy getPartyReturnPolicy(Party party, ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        return PartyReturnPolicyFactory.getInstance().getEntityFromQuery(entityPermission, getPartyReturnPolicyQueries,
+        return partyReturnPolicyFactory.getEntityFromQuery(entityPermission, getPartyReturnPolicyQueries,
                 party, returnPolicy, Session.MAX_TIME);
     }
 
@@ -258,7 +262,7 @@ public class ReturnPolicyControl
     }
 
     private List<PartyReturnPolicy> getPartyReturnPoliciesByReturnPolicy(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        return PartyReturnPolicyFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyReturnPoliciesByReturnPolicyQueries,
+        return partyReturnPolicyFactory.getEntitiesFromQuery(entityPermission, getPartyReturnPoliciesByReturnPolicyQueries,
                 returnPolicy, Session.MAX_TIME);
     }
 
@@ -293,7 +297,7 @@ public class ReturnPolicyControl
     }
 
     private List<PartyReturnPolicy> getPartyReturnPoliciesByParty(Party party, EntityPermission entityPermission) {
-        return PartyReturnPolicyFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyReturnPoliciesByPartyQueries,
+        return partyReturnPolicyFactory.getEntitiesFromQuery(entityPermission, getPartyReturnPoliciesByPartyQueries,
                 party, Session.MAX_TIME);
     }
 
@@ -328,7 +332,6 @@ public class ReturnPolicyControl
     }
 
     public void deletePartyReturnPolicy(PartyReturnPolicy partyReturnPolicy, BasePK deletedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
         partyReturnPolicy.setThruTime(session.getStartTime());
 
@@ -355,7 +358,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Kinds
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnKindFactory returnKindFactory;
+
+    @Inject
+    protected ReturnKindDetailFactory returnKindDetailFactory;
+
     public ReturnKind createReturnKind(String returnKindName, SequenceType returnSequenceType, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultReturnKind = getDefaultReturnKind();
@@ -370,12 +379,12 @@ public class ReturnPolicyControl
             isDefault = true;
         }
 
-        var returnKind = ReturnKindFactory.getInstance().create();
-        var returnKindDetail = ReturnKindDetailFactory.getInstance().create(returnKind, returnKindName,
+        var returnKind = returnKindFactory.create();
+        var returnKindDetail = returnKindDetailFactory.create(returnKind, returnKindName,
                 returnSequenceType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        returnKind = ReturnKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        returnKind = returnKindFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 returnKind.getPrimaryKey());
         returnKind.setActiveDetail(returnKindDetail);
         returnKind.setLastDetail(returnKindDetail);
@@ -398,7 +407,7 @@ public class ReturnPolicyControl
     public ReturnKind getReturnKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ReturnKindPK(entityInstance.getEntityUniqueId());
 
-        return ReturnKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return returnKindFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ReturnKind getReturnKindByEntityInstance(EntityInstance entityInstance) {
@@ -429,7 +438,7 @@ public class ReturnPolicyControl
     }
 
     public ReturnKind getReturnKindByName(String returnKindName, EntityPermission entityPermission) {
-        return ReturnKindFactory.getInstance().getEntityFromQuery(entityPermission, getReturnKindByNameQueries,
+        return returnKindFactory.getEntityFromQuery(entityPermission, getReturnKindByNameQueries,
                 returnKindName);
     }
     
@@ -469,7 +478,7 @@ public class ReturnPolicyControl
     }
 
     public ReturnKind getDefaultReturnKind(EntityPermission entityPermission) {
-        return ReturnKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultReturnKindQueries);
+        return returnKindFactory.getEntityFromQuery(entityPermission, getDefaultReturnKindQueries);
     }
     
     public ReturnKind getDefaultReturnKind() {
@@ -506,7 +515,7 @@ public class ReturnPolicyControl
     }
 
     private List<ReturnKind> getReturnKinds(EntityPermission entityPermission) {
-        return ReturnKindFactory.getInstance().getEntitiesFromQuery(entityPermission, getReturnKindsQueries);
+        return returnKindFactory.getEntitiesFromQuery(entityPermission, getReturnKindsQueries);
     }
     
     public List<ReturnKind> getReturnKinds() {
@@ -570,7 +579,7 @@ public class ReturnPolicyControl
     }
 
     private void updateReturnKindFromValue(ReturnKindDetailValue returnKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var returnKind = ReturnKindFactory.getInstance().getEntityFromPK(
+        var returnKind = returnKindFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, returnKindDetailValue.getReturnKindPK());
         var returnKindDetail = returnKind.getActiveDetailForUpdate();
         
@@ -599,7 +608,7 @@ public class ReturnPolicyControl
             }
         }
         
-        returnKindDetail = ReturnKindDetailFactory.getInstance().create(returnKindPK, returnKindName, returnSequenceTypePK,
+        returnKindDetail = returnKindDetailFactory.create(returnKindPK, returnKindName, returnSequenceTypePK,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         returnKind.setActiveDetail(returnKindDetail);
@@ -644,10 +653,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Kind Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnKindDescriptionFactory returnKindDescriptionFactory;
+
     public ReturnKindDescription createReturnKindDescription(ReturnKind returnKind, Language language, String description,
             BasePK createdBy) {
-        var returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind,
+        var returnKindDescription = returnKindDescriptionFactory.create(returnKind,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(returnKind.getPrimaryKey(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -675,7 +687,7 @@ public class ReturnPolicyControl
     }
 
     private ReturnKindDescription getReturnKindDescription(ReturnKind returnKind, Language language, EntityPermission entityPermission) {
-        return ReturnKindDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getReturnKindDescriptionQueries,
+        return returnKindDescriptionFactory.getEntityFromQuery(entityPermission, getReturnKindDescriptionQueries,
                 returnKind, language, Session.MAX_TIME);
     }
     
@@ -717,7 +729,7 @@ public class ReturnPolicyControl
     }
 
     private List<ReturnKindDescription> getReturnKindDescriptionsByReturnKind(ReturnKind returnKind, EntityPermission entityPermission) {
-        return ReturnKindDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getReturnKindDescriptionsByReturnKindQueries,
+        return returnKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getReturnKindDescriptionsByReturnKindQueries,
                 returnKind, Session.MAX_TIME);
     }
     
@@ -763,7 +775,7 @@ public class ReturnPolicyControl
     
     public void updateReturnKindDescriptionFromValue(ReturnKindDescriptionValue returnKindDescriptionValue, BasePK updatedBy) {
         if(returnKindDescriptionValue.hasBeenModified()) {
-            var returnKindDescription = ReturnKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnKindDescription = returnKindDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnKindDescriptionValue.getPrimaryKey());
             
             returnKindDescription.setThruTime(session.getStartTime());
@@ -773,7 +785,7 @@ public class ReturnPolicyControl
             var language = returnKindDescription.getLanguage();
             var description = returnKindDescriptionValue.getDescription();
             
-            returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind, language, description,
+            returnKindDescription = returnKindDescriptionFactory.create(returnKind, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(returnKind.getPrimaryKey(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -798,7 +810,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Policies
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnPolicyFactory returnPolicyFactory;
+
+    @Inject
+    protected ReturnPolicyDetailFactory returnPolicyDetailFactory;
+
     public ReturnPolicy createReturnPolicy(ReturnKind returnKind, String returnPolicyName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultReturnPolicy = getDefaultReturnPolicy(returnKind);
@@ -813,13 +831,13 @@ public class ReturnPolicyControl
             isDefault = true;
         }
 
-        var returnPolicy = ReturnPolicyFactory.getInstance().create();
-        var returnPolicyDetail = ReturnPolicyDetailFactory.getInstance().create(
+        var returnPolicy = returnPolicyFactory.create();
+        var returnPolicyDetail = returnPolicyDetailFactory.create(
                 returnPolicy, returnKind, returnPolicyName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        returnPolicy = ReturnPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        returnPolicy = returnPolicyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 returnPolicy.getPrimaryKey());
         returnPolicy.setActiveDetail(returnPolicyDetail);
         returnPolicy.setLastDetail(returnPolicyDetail);
@@ -842,7 +860,7 @@ public class ReturnPolicyControl
     public ReturnPolicy getReturnPolicyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ReturnPolicyPK(entityInstance.getEntityUniqueId());
 
-        return ReturnPolicyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return returnPolicyFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ReturnPolicy getReturnPolicyByEntityInstance(EntityInstance entityInstance) {
@@ -876,11 +894,11 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
+            var ps = returnPolicyFactory.prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             
-            returnPolicies = ReturnPolicyFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnPolicies = returnPolicyFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -919,11 +937,11 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
+            var ps = returnPolicyFactory.prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             
-            returnPolicy = ReturnPolicyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnPolicy = returnPolicyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -966,12 +984,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnPolicyFactory.getInstance().prepareStatement(query);
+            var ps = returnPolicyFactory.prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             ps.setString(2, returnPolicyName);
             
-            returnPolicy = ReturnPolicyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnPolicy = returnPolicyFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1053,7 +1071,7 @@ public class ReturnPolicyControl
     private void updateReturnPolicyFromValue(ReturnPolicyDetailValue returnPolicyDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(returnPolicyDetailValue.hasBeenModified()) {
-            var returnPolicy = ReturnPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnPolicy = returnPolicyFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnPolicyDetailValue.getReturnPolicyPK());
             var returnPolicyDetail = returnPolicy.getActiveDetailForUpdate();
             
@@ -1083,7 +1101,7 @@ public class ReturnPolicyControl
                 }
             }
             
-            returnPolicyDetail = ReturnPolicyDetailFactory.getInstance().create(returnPolicyPK,
+            returnPolicyDetail = returnPolicyDetailFactory.create(returnPolicyPK,
                     returnKindPK, returnPolicyName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             returnPolicy.setActiveDetail(returnPolicyDetail);
@@ -1140,9 +1158,12 @@ public class ReturnPolicyControl
     //   Return Policy Translations
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ReturnPolicyTranslationFactory returnPolicyTranslationFactory;
+
     public ReturnPolicyTranslation createReturnPolicyTranslation(ReturnPolicy returnPolicy, Language language,
             String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
-        var returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicy,
+        var returnPolicyTranslation = returnPolicyTranslationFactory.create(returnPolicy,
                 language, description, overviewMimeType, overview, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1170,7 +1191,7 @@ public class ReturnPolicyControl
     }
 
     private ReturnPolicyTranslation getReturnPolicyTranslation(ReturnPolicy returnPolicy, Language language, EntityPermission entityPermission) {
-        return ReturnPolicyTranslationFactory.getInstance().getEntityFromQuery(entityPermission, getReturnPolicyTranslationQueries, returnPolicy, language,
+        return returnPolicyTranslationFactory.getEntityFromQuery(entityPermission, getReturnPolicyTranslationQueries, returnPolicy, language,
                 Session.MAX_TIME);
     }
 
@@ -1212,7 +1233,7 @@ public class ReturnPolicyControl
     }
 
     private List<ReturnPolicyTranslation> getReturnPolicyTranslationsByReturnPolicy(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        return ReturnPolicyTranslationFactory.getInstance().getEntitiesFromQuery(entityPermission, getReturnPolicyTranslationsByReturnPolicyQueries,
+        return returnPolicyTranslationFactory.getEntitiesFromQuery(entityPermission, getReturnPolicyTranslationsByReturnPolicyQueries,
                 returnPolicy, Session.MAX_TIME);
     }
 
@@ -1251,7 +1272,7 @@ public class ReturnPolicyControl
 
     public void updateReturnPolicyTranslationFromValue(ReturnPolicyTranslationValue returnPolicyTranslationValue, BasePK updatedBy) {
         if(returnPolicyTranslationValue.hasBeenModified()) {
-            var returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnPolicyTranslation = returnPolicyTranslationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     returnPolicyTranslationValue.getPrimaryKey());
 
             returnPolicyTranslation.setThruTime(session.getStartTime());
@@ -1263,7 +1284,7 @@ public class ReturnPolicyControl
             var policyMimeTypePK = returnPolicyTranslationValue.getPolicyMimeTypePK();
             var policy = returnPolicyTranslationValue.getPolicy();
 
-            returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicyPK, languagePK, description,
+            returnPolicyTranslation = returnPolicyTranslationFactory.create(returnPolicyPK, languagePK, description,
                     policyMimeTypePK, policy, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(returnPolicyPK, EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1288,7 +1309,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Policy Reasons
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnPolicyReasonFactory returnPolicyReasonFactory;
+
     public ReturnPolicyReason createReturnPolicyReason(ReturnPolicy returnPolicy, ReturnReason returnReason, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultReturnPolicyReason = getDefaultReturnPolicyReason(returnPolicy);
@@ -1303,7 +1327,7 @@ public class ReturnPolicyControl
             isDefault = true;
         }
 
-        var returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicy, returnReason,
+        var returnPolicyReason = returnPolicyReasonFactory.create(returnPolicy, returnReason,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyReason.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1348,13 +1372,13 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
+            var ps = returnPolicyReasonFactory.prepareStatement(query);
             
             ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            returnPolicyReason = ReturnPolicyReasonFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnPolicyReason = returnPolicyReasonFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1397,12 +1421,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
+            var ps = returnPolicyReasonFactory.prepareStatement(query);
             
             ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnPolicyReason = ReturnPolicyReasonFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnPolicyReason = returnPolicyReasonFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1448,12 +1472,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
+            var ps = returnPolicyReasonFactory.prepareStatement(query);
             
             ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnPolicyReasons = ReturnPolicyReasonFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnPolicyReasons = returnPolicyReasonFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1493,12 +1517,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnPolicyReasonFactory.getInstance().prepareStatement(query);
+            var ps = returnPolicyReasonFactory.prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnPolicyReasons = ReturnPolicyReasonFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnPolicyReasons = returnPolicyReasonFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1538,7 +1562,7 @@ public class ReturnPolicyControl
     
     private void updateReturnPolicyReasonFromValue(ReturnPolicyReasonValue returnPolicyReasonValue, boolean checkDefault, BasePK updatedBy) {
         if(returnPolicyReasonValue.hasBeenModified()) {
-            var returnPolicyReason = ReturnPolicyReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnPolicyReason = returnPolicyReasonFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnPolicyReasonValue.getPrimaryKey());
             
             returnPolicyReason.setThruTime(session.getStartTime());
@@ -1566,7 +1590,7 @@ public class ReturnPolicyControl
                 }
             }
             
-            returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicyPK, returnReasonPK,
+            returnPolicyReason = returnPolicyReasonFactory.create(returnPolicyPK, returnReasonPK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(returnPolicyPK, EventTypes.MODIFY, returnPolicyReason.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1619,7 +1643,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Reasons
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnReasonFactory returnReasonFactory;
+
+    @Inject
+    protected ReturnReasonDetailFactory returnReasonDetailFactory;
+
     public ReturnReason createReturnReason(ReturnKind returnKind, String returnReasonName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultReturnReason = getDefaultReturnReason(returnKind);
@@ -1634,13 +1664,13 @@ public class ReturnPolicyControl
             isDefault = true;
         }
 
-        var returnReason = ReturnReasonFactory.getInstance().create();
-        var returnReasonDetail = ReturnReasonDetailFactory.getInstance().create(
+        var returnReason = returnReasonFactory.create();
+        var returnReasonDetail = returnReasonDetailFactory.create(
                 returnReason, returnKind, returnReasonName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        returnReason = ReturnReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        returnReason = returnReasonFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 returnReason.getPrimaryKey());
         returnReason.setActiveDetail(returnReasonDetail);
         returnReason.setLastDetail(returnReasonDetail);
@@ -1655,7 +1685,7 @@ public class ReturnPolicyControl
     public ReturnReason getReturnReasonByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ReturnReasonPK(entityInstance.getEntityUniqueId());
 
-        return ReturnReasonFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return returnReasonFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ReturnReason getReturnReasonByEntityInstance(EntityInstance entityInstance) {
@@ -1698,11 +1728,11 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonFactory.prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             
-            returnReasons = ReturnReasonFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnReasons = returnReasonFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1741,11 +1771,11 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonFactory.prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             
-            returnReason = ReturnReasonFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnReason = returnReasonFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1788,12 +1818,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonFactory.prepareStatement(query);
             
             ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
             ps.setString(2, returnReasonName);
             
-            returnReason = ReturnReasonFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnReason = returnReasonFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1872,7 +1902,7 @@ public class ReturnPolicyControl
     private void updateReturnReasonFromValue(ReturnReasonDetailValue returnReasonDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(returnReasonDetailValue.hasBeenModified()) {
-            var returnReason = ReturnReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnReason = returnReasonFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnReasonDetailValue.getReturnReasonPK());
             var returnReasonDetail = returnReason.getActiveDetailForUpdate();
             
@@ -1902,7 +1932,7 @@ public class ReturnPolicyControl
                 }
             }
             
-            returnReasonDetail = ReturnReasonDetailFactory.getInstance().create(returnReasonPK,
+            returnReasonDetail = returnReasonDetailFactory.create(returnReasonPK,
                     returnKindPK, returnReasonName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             returnReason.setActiveDetail(returnReasonDetail);
@@ -1958,10 +1988,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Reason Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnReasonDescriptionFactory returnReasonDescriptionFactory;
+
     public ReturnReasonDescription createReturnReasonDescription(ReturnReason returnReason, Language language, String description,
             BasePK createdBy) {
-        var returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason,
+        var returnReasonDescription = returnReasonDescriptionFactory.create(returnReason,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1990,13 +2023,13 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnReasonDescription = returnReasonDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2043,12 +2076,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnReasonDescriptions = ReturnReasonDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnReasonDescriptions = returnReasonDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2098,7 +2131,7 @@ public class ReturnPolicyControl
     
     public void updateReturnReasonDescriptionFromValue(ReturnReasonDescriptionValue returnReasonDescriptionValue, BasePK updatedBy) {
         if(returnReasonDescriptionValue.hasBeenModified()) {
-            var returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnReasonDescription = returnReasonDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnReasonDescriptionValue.getPrimaryKey());
             
             returnReasonDescription.setThruTime(session.getStartTime());
@@ -2108,7 +2141,7 @@ public class ReturnPolicyControl
             var language = returnReasonDescription.getLanguage();
             var description = returnReasonDescriptionValue.getDescription();
             
-            returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason, language, description,
+            returnReasonDescription = returnReasonDescriptionFactory.create(returnReason, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2133,7 +2166,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Reason Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnReasonTypeFactory returnReasonTypeFactory;
+
     public ReturnReasonType createReturnReasonType(ReturnReason returnReason, ReturnType returnType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultReturnReasonType = getDefaultReturnReasonType(returnReason);
@@ -2148,7 +2184,7 @@ public class ReturnPolicyControl
             isDefault = true;
         }
 
-        var returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReason, returnType,
+        var returnReasonType = returnReasonTypeFactory.create(returnReason, returnType,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2193,13 +2229,13 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonTypeFactory.prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, returnType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            returnReasonType = ReturnReasonTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnReasonType = returnReasonTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2242,12 +2278,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonTypeFactory.prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnReasonType = ReturnReasonTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnReasonType = returnReasonTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2294,12 +2330,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonTypeFactory.prepareStatement(query);
             
             ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnReasonTypes = ReturnReasonTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnReasonTypes = returnReasonTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2339,12 +2375,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnReasonTypeFactory.getInstance().prepareStatement(query);
+            var ps = returnReasonTypeFactory.prepareStatement(query);
             
             ps.setLong(1, returnType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnReasonTypes = ReturnReasonTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnReasonTypes = returnReasonTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2384,7 +2420,7 @@ public class ReturnPolicyControl
     
     private void updateReturnReasonTypeFromValue(ReturnReasonTypeValue returnReasonTypeValue, boolean checkDefault, BasePK updatedBy) {
         if(returnReasonTypeValue.hasBeenModified()) {
-            var returnReasonType = ReturnReasonTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnReasonType = returnReasonTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnReasonTypeValue.getPrimaryKey());
             
             returnReasonType.setThruTime(session.getStartTime());
@@ -2412,7 +2448,7 @@ public class ReturnPolicyControl
                 }
             }
             
-            returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReasonPK, returnTypePK,
+            returnReasonType = returnReasonTypeFactory.create(returnReasonPK, returnTypePK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(returnReasonPK, EventTypes.MODIFY, returnReasonType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2465,7 +2501,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnTypeFactory returnTypeFactory;
+
+    @Inject
+    protected ReturnTypeDetailFactory returnTypeDetailFactory;
+
     public ReturnType createReturnType(ReturnKind returnKind, String returnTypeName, Sequence returnSequence, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultReturnType = getDefaultReturnType(returnKind);
@@ -2480,13 +2522,13 @@ public class ReturnPolicyControl
             isDefault = true;
         }
 
-        var returnType = ReturnTypeFactory.getInstance().create();
-        var returnTypeDetail = ReturnTypeDetailFactory.getInstance().create(
+        var returnType = returnTypeFactory.create();
+        var returnTypeDetail = returnTypeDetailFactory.create(
                 returnType, returnKind, returnTypeName, returnSequence, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        returnType = ReturnTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        returnType = returnTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 returnType.getPrimaryKey());
         returnType.setActiveDetail(returnTypeDetail);
         returnType.setLastDetail(returnTypeDetail);
@@ -2519,7 +2561,7 @@ public class ReturnPolicyControl
     public ReturnType getReturnTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ReturnTypePK(entityInstance.getEntityUniqueId());
 
-        return ReturnTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return returnTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ReturnType getReturnTypeByEntityInstance(EntityInstance entityInstance) {
@@ -2552,7 +2594,7 @@ public class ReturnPolicyControl
     }
 
     private List<ReturnType> getReturnTypes(ReturnKind returnKind, EntityPermission entityPermission) {
-        return ReturnTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getReturnTypesQueries,
+        return returnTypeFactory.getEntitiesFromQuery(entityPermission, getReturnTypesQueries,
                 returnKind);
     }
     
@@ -2586,7 +2628,7 @@ public class ReturnPolicyControl
     }
 
     private ReturnType getDefaultReturnType(ReturnKind returnKind, EntityPermission entityPermission) {
-        return ReturnTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultReturnTypeQueries,
+        return returnTypeFactory.getEntityFromQuery(entityPermission, getDefaultReturnTypeQueries,
                 returnKind);
     }
     
@@ -2624,7 +2666,7 @@ public class ReturnPolicyControl
     }
 
     private ReturnType getReturnTypeByName(ReturnKind returnKind, String returnTypeName, EntityPermission entityPermission) {
-        return ReturnTypeFactory.getInstance().getEntityFromQuery(entityPermission, getReturnTypeByNameQueries,
+        return returnTypeFactory.getEntityFromQuery(entityPermission, getReturnTypeByNameQueries,
                 returnKind, returnTypeName);
     }
     
@@ -2696,7 +2738,7 @@ public class ReturnPolicyControl
     private void updateReturnTypeFromValue(ReturnTypeDetailValue returnTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(returnTypeDetailValue.hasBeenModified()) {
-            var returnType = ReturnTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnType = returnTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnTypeDetailValue.getReturnTypePK());
             var returnTypeDetail = returnType.getActiveDetailForUpdate();
             
@@ -2727,7 +2769,7 @@ public class ReturnPolicyControl
                 }
             }
             
-            returnTypeDetail = ReturnTypeDetailFactory.getInstance().create(returnTypePK, returnKindPK, returnTypeName,
+            returnTypeDetail = returnTypeDetailFactory.create(returnTypePK, returnKindPK, returnTypeName,
                     returnSequencePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             returnType.setActiveDetail(returnTypeDetail);
@@ -2783,10 +2825,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnTypeDescriptionFactory returnTypeDescriptionFactory;
+
     public ReturnTypeDescription createReturnTypeDescription(ReturnType returnType, Language language, String description,
             BasePK createdBy) {
-        var returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType,
+        var returnTypeDescription = returnTypeDescriptionFactory.create(returnType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2814,7 +2859,7 @@ public class ReturnPolicyControl
     }
 
     private ReturnTypeDescription getReturnTypeDescription(ReturnType returnType, Language language, EntityPermission entityPermission) {
-        return ReturnTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getReturnTypeDescriptionQueries,
+        return returnTypeDescriptionFactory.getEntityFromQuery(entityPermission, getReturnTypeDescriptionQueries,
                 returnType, language, Session.MAX_TIME);
     }
     
@@ -2856,7 +2901,7 @@ public class ReturnPolicyControl
     }
 
     private List<ReturnTypeDescription> getReturnTypeDescriptionsByReturnType(ReturnType returnType, EntityPermission entityPermission) {
-        return ReturnTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getReturnTypeDescriptionsByReturnTypeQueries,
+        return returnTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getReturnTypeDescriptionsByReturnTypeQueries,
                 returnType, Session.MAX_TIME);
     }
     
@@ -2902,7 +2947,7 @@ public class ReturnPolicyControl
     
     public void updateReturnTypeDescriptionFromValue(ReturnTypeDescriptionValue returnTypeDescriptionValue, BasePK updatedBy) {
         if(returnTypeDescriptionValue.hasBeenModified()) {
-            var returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnTypeDescription = returnTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnTypeDescriptionValue.getPrimaryKey());
             
             returnTypeDescription.setThruTime(session.getStartTime());
@@ -2912,7 +2957,7 @@ public class ReturnPolicyControl
             var language = returnTypeDescription.getLanguage();
             var description = returnTypeDescriptionValue.getDescription();
             
-            returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType, language, description,
+            returnTypeDescription = returnTypeDescriptionFactory.create(returnType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2937,7 +2982,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
     //   Return Type Shipping Methods
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ReturnTypeShippingMethodFactory returnTypeShippingMethodFactory;
+
     public ReturnTypeShippingMethod createReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultReturnTypeShippingMethod = getDefaultReturnTypeShippingMethod(returnType);
@@ -2952,7 +3000,7 @@ public class ReturnPolicyControl
             isDefault = true;
         }
 
-        var returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnType, shippingMethod,
+        var returnTypeShippingMethod = returnTypeShippingMethodFactory.create(returnType, shippingMethod,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2981,13 +3029,13 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = returnTypeShippingMethodFactory.prepareStatement(query);
             
             ps.setLong(1, returnType.getPrimaryKey().getEntityId());
             ps.setLong(2, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnTypeShippingMethod = returnTypeShippingMethodFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3030,12 +3078,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = returnTypeShippingMethodFactory.prepareStatement(query);
             
             ps.setLong(1, returnType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            returnTypeShippingMethod = returnTypeShippingMethodFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3081,12 +3129,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = returnTypeShippingMethodFactory.prepareStatement(query);
             
             ps.setLong(1, returnType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnTypeShippingMethods = ReturnTypeShippingMethodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnTypeShippingMethods = returnTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3127,12 +3175,12 @@ public class ReturnPolicyControl
                         """;
             }
 
-            var ps = ReturnTypeShippingMethodFactory.getInstance().prepareStatement(query);
+            var ps = returnTypeShippingMethodFactory.prepareStatement(query);
             
             ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            returnTypeShippingMethods = ReturnTypeShippingMethodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            returnTypeShippingMethods = returnTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3188,7 +3236,7 @@ public class ReturnPolicyControl
     
     private void updateReturnTypeShippingMethodFromValue(ReturnTypeShippingMethodValue returnTypeShippingMethodValue, boolean checkDefault, BasePK updatedBy) {
         if(returnTypeShippingMethodValue.hasBeenModified()) {
-            var returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var returnTypeShippingMethod = returnTypeShippingMethodFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      returnTypeShippingMethodValue.getPrimaryKey());
             
             returnTypeShippingMethod.setThruTime(session.getStartTime());
@@ -3216,7 +3264,7 @@ public class ReturnPolicyControl
                 }
             }
             
-            returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnTypePK, shippingMethodPK,
+            returnTypeShippingMethod = returnTypeShippingMethodFactory.create(returnTypePK, shippingMethodPK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(returnTypePK, EventTypes.MODIFY, returnTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

@@ -92,6 +92,7 @@ public class CommentControl
         extends BaseModelControl {
     
     /** Creates a new instance of CommentControl */
+
     protected CommentControl() {
         super();
     }
@@ -121,16 +122,22 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentTypeFactory commentTypeFactory;
+
+    @Inject
+    protected CommentTypeDetailFactory commentTypeDetailFactory;
+
     public CommentType createCommentType(EntityType entityType, String commentTypeName, Sequence commentSequence,
             WorkflowEntrance workflowEntrance, MimeTypeUsageType mimeTypeUsageType, Integer sortOrder, BasePK createdBy) {
-        var commentType = CommentTypeFactory.getInstance().create();
-        var commentTypeDetail = CommentTypeDetailFactory.getInstance().create(commentType, entityType,
+        var commentType = commentTypeFactory.create();
+        var commentTypeDetail = commentTypeDetailFactory.create(commentType, entityType,
                 commentTypeName, commentSequence, workflowEntrance, mimeTypeUsageType, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        commentType = CommentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        commentType = commentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 commentType.getPrimaryKey());
         commentType.setActiveDetail(commentTypeDetail);
         commentType.setLastDetail(commentTypeDetail);
@@ -145,7 +152,7 @@ public class CommentControl
     public CommentType getCommentTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommentTypePK(entityInstance.getEntityUniqueId());
 
-        return CommentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return commentTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommentType getCommentTypeByEntityInstance(EntityInstance entityInstance) {
@@ -172,22 +179,26 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypes, commenttypedetails " +
-                        "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
-                        "ORDER BY cmnttypdt_sortorder, cmnttypdt_commenttypename";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypes, commenttypedetails
+                        WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ?
+                        ORDER BY cmnttypdt_sortorder, cmnttypdt_commenttypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypes, commenttypedetails " +
-                        "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypes, commenttypedetails
+                        WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentTypeFactory.getInstance().prepareStatement(query);
+            var ps = commentTypeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
-            commentTypes = CommentTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            commentTypes = commentTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -210,24 +221,28 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypes, commenttypedetails " +
-                        "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
-                        "AND cmnttypdt_commenttypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypes, commenttypedetails
+                        WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ?
+                        AND cmnttypdt_commenttypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypes, commenttypedetails " +
-                        "WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ? " +
-                        "AND cmnttypdt_commenttypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypes, commenttypedetails
+                        WHERE cmnttyp_activedetailid = cmnttypdt_commenttypedetailid AND cmnttypdt_ent_entitytypeid = ?
+                        AND cmnttypdt_commenttypename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentTypeFactory.getInstance().prepareStatement(query);
+            var ps = commentTypeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, commentTypeName);
             
-            commentType = CommentTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commentType = commentTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -271,7 +286,7 @@ public class CommentControl
     
     public void updateCommentTypeFromValue(CommentTypeDetailValue commentTypeDetailValue, BasePK updatedBy) {
         if(commentTypeDetailValue.hasBeenModified()) {
-            var commentType = CommentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commentType = commentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      commentTypeDetailValue.getCommentTypePK());
             var commentTypeDetail = commentType.getActiveDetailForUpdate();
             
@@ -286,7 +301,7 @@ public class CommentControl
             var mimeTypeUsageTypePK = commentTypeDetail.getMimeTypeUsageTypePK(); // Not updated
             var sortOrder = commentTypeDetailValue.getSortOrder();
             
-            commentTypeDetail = CommentTypeDetailFactory.getInstance().create(commentTypePK, entityTypePK, commentTypeName,
+            commentTypeDetail = commentTypeDetailFactory.create(commentTypePK, entityTypePK, commentTypeName,
                     commentSequencePK, workflowEntrancePK, mimeTypeUsageTypePK, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -323,10 +338,13 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentTypeDescriptionFactory commentTypeDescriptionFactory;
+
     public CommentTypeDescription createCommentTypeDescription(CommentType commentType, Language language, String description,
             BasePK createdBy) {
-        var commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType,
+        var commentTypeDescription = commentTypeDescriptionFactory.create(commentType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(commentType.getPrimaryKey(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -341,23 +359,27 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypedescriptions " +
-                        "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypedescriptions
+                        WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypedescriptions " +
-                        "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypedescriptions
+                        WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_lang_languageid = ? AND cmnttypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = commentTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            commentTypeDescription = CommentTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commentTypeDescription = commentTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -388,23 +410,27 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypedescriptions, languages " +
-                        "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ? AND cmnttypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypedescriptions, languages
+                        WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ? AND cmnttypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commenttypedescriptions " +
-                        "WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commenttypedescriptions
+                        WHERE cmnttypd_cmnttyp_commenttypeid = ? AND cmnttypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = commentTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            commentTypeDescriptions = CommentTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            commentTypeDescriptions = commentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -454,7 +480,7 @@ public class CommentControl
     
     public void updateCommentTypeDescriptionFromValue(CommentTypeDescriptionValue commentTypeDescriptionValue, BasePK updatedBy) {
         if(commentTypeDescriptionValue.hasBeenModified()) {
-            var commentTypeDescription = CommentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentTypeDescriptionValue.getPrimaryKey());
+            var commentTypeDescription = commentTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, commentTypeDescriptionValue.getPrimaryKey());
             
             commentTypeDescription.setThruTime(session.getStartTime());
             commentTypeDescription.store();
@@ -463,7 +489,7 @@ public class CommentControl
             var language = commentTypeDescription.getLanguage();
             var description = commentTypeDescriptionValue.getDescription();
             
-            commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType, language, description, session.getStartTime(), Session.MAX_TIME);
+            commentTypeDescription = commentTypeDescriptionFactory.create(commentType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(commentType.getPrimaryKey(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -487,16 +513,22 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Usage Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentUsageTypeFactory commentUsageTypeFactory;
+
+    @Inject
+    protected CommentUsageTypeDetailFactory commentUsageTypeDetailFactory;
+
     public CommentUsageType createCommentUsageType(CommentType commentType, String commentUsageTypeName, Boolean selectedByDefault,
             Integer sortOrder, BasePK createdBy) {
-        var commentUsageType = CommentUsageTypeFactory.getInstance().create();
-        var commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(
+        var commentUsageType = commentUsageTypeFactory.create();
+        var commentUsageTypeDetail = commentUsageTypeDetailFactory.create(
                 commentUsageType, commentType, commentUsageTypeName, selectedByDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        commentUsageType = CommentUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        commentUsageType = commentUsageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 commentUsageType.getPrimaryKey());
         commentUsageType.setActiveDetail(commentUsageTypeDetail);
         commentUsageType.setLastDetail(commentUsageTypeDetail);
@@ -511,7 +543,7 @@ public class CommentControl
     public CommentUsageType getCommentUsageTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CommentUsageTypePK(entityInstance.getEntityUniqueId());
 
-        return CommentUsageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return commentUsageTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public CommentUsageType getCommentUsageTypeByEntityInstance(EntityInstance entityInstance) {
@@ -538,24 +570,28 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid " +
-                        "AND cmntutypdt_cmnttyp_commenttypeid = ? " +
-                        "ORDER BY cmntutypdt_sortorder, cmntutypdt_commentusagetypename";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypes, commentusagetypedetails
+                        WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid
+                        AND cmntutypdt_cmnttyp_commenttypeid = ?
+                        ORDER BY cmntutypdt_sortorder, cmntutypdt_commentusagetypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid " +
-                        "AND cmntutypdt_cmnttyp_commenttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypes, commentusagetypedetails
+                        WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid
+                        AND cmntutypdt_cmnttyp_commenttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentUsageTypeFactory.getInstance().prepareStatement(query);
+            var ps = commentUsageTypeFactory.prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             
-            commentUsageTypes = CommentUsageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            commentUsageTypes = commentUsageTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -579,24 +615,28 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid " +
-                        "AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypes, commentusagetypedetails
+                        WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid
+                        AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid " +
-                        "AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypes, commentusagetypedetails
+                        WHERE cmntutyp_activedetailid = cmntutypdt_commentusagetypedetailid
+                        AND cmntutypdt_cmnttyp_commenttypeid = ? AND cmntutypdt_commentusagetypename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentUsageTypeFactory.getInstance().prepareStatement(query);
+            var ps = commentUsageTypeFactory.prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             ps.setString(2, commentUsageTypeName);
             
-            commentUsageType = CommentUsageTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commentUsageType = commentUsageTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -640,7 +680,7 @@ public class CommentControl
     
     public void updateCommentUsageTypeFromValue(CommentUsageTypeDetailValue commentUsageTypeDetailValue, BasePK updatedBy) {
         if(commentUsageTypeDetailValue.hasBeenModified()) {
-            var commentUsageType = CommentUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commentUsageType = commentUsageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      commentUsageTypeDetailValue.getCommentUsageTypePK());
             var commentUsageTypeDetail = commentUsageType.getActiveDetailForUpdate();
             
@@ -653,7 +693,7 @@ public class CommentControl
             var selectedByDefault = commentUsageTypeDetailValue.getSelectedByDefault();
             var sortOrder = commentUsageTypeDetailValue.getSortOrder();
             
-            commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(commentUsageTypePK, commentTypePK,
+            commentUsageTypeDetail = commentUsageTypeDetailFactory.create(commentUsageTypePK, commentTypePK,
                     commentUsageTypeName, selectedByDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             commentUsageType.setActiveDetail(commentUsageTypeDetail);
@@ -688,10 +728,13 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Usage Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentUsageTypeDescriptionFactory commentUsageTypeDescriptionFactory;
+
     public CommentUsageTypeDescription createCommentUsageTypeDescription(CommentUsageType commentUsageType, Language language,
             String description, BasePK createdBy) {
-        var commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(
+        var commentUsageTypeDescription = commentUsageTypeDescriptionFactory.create(
                 commentUsageType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(commentUsageType.getPrimaryKey(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -707,23 +750,27 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypedescriptions " +
-                        "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypedescriptions
+                        WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypedescriptions " +
-                        "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypedescriptions
+                        WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_lang_languageid = ? AND cmntutypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = commentUsageTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, commentUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commentUsageTypeDescription = commentUsageTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -755,23 +802,27 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypedescriptions, languages " +
-                        "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ? AND cmntutypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypedescriptions, languages
+                        WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ? AND cmntutypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusagetypedescriptions " +
-                        "WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusagetypedescriptions
+                        WHERE cmntutypd_cmntutyp_commentusagetypeid = ? AND cmntutypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentUsageTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = commentUsageTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, commentUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            commentUsageTypeDescriptions = CommentUsageTypeDescriptionFactory.getInstance().getEntitiesFromQuery(
+            commentUsageTypeDescriptions = commentUsageTypeDescriptionFactory.getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -822,7 +873,7 @@ public class CommentControl
     
     public void updateCommentUsageTypeDescriptionFromValue(CommentUsageTypeDescriptionValue commentUsageTypeDescriptionValue, BasePK updatedBy) {
         if(commentUsageTypeDescriptionValue.hasBeenModified()) {
-            var commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commentUsageTypeDescription = commentUsageTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      commentUsageTypeDescriptionValue.getPrimaryKey());
             
             commentUsageTypeDescription.setThruTime(session.getStartTime());
@@ -832,7 +883,7 @@ public class CommentControl
             var language = commentUsageTypeDescription.getLanguage();
             var description = commentUsageTypeDescriptionValue.getDescription();
             
-            commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(commentUsageType,
+            commentUsageTypeDescription = commentUsageTypeDescriptionFactory.create(commentUsageType,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(commentUsageType.getPrimaryKey(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -857,16 +908,22 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comments
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentFactory commentFactory;
+
+    @Inject
+    protected CommentDetailFactory commentDetailFactory;
+
     public Comment createComment(String commentName, CommentType commentType, EntityInstance commentedEntityInstance,
             EntityInstance commentedByEntityInstance, Language language, String description, MimeType mimeType, BasePK createdBy) {
-        var comment = CommentFactory.getInstance().create();
-        var commentDetail = CommentDetailFactory.getInstance().create(comment, commentName, commentType,
+        var comment = commentFactory.create();
+        var commentDetail = commentDetailFactory.create(comment, commentName, commentType,
                 commentedEntityInstance, commentedByEntityInstance, language, description, mimeType, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        comment = CommentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, comment.getPrimaryKey());
+        comment = commentFactory.getEntityFromPK(EntityPermission.READ_WRITE, comment.getPrimaryKey());
         comment.setActiveDetail(commentDetail);
         comment.setLastDetail(commentDetail);
         comment.store();
@@ -884,21 +941,25 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentFactory.getInstance().prepareStatement(query);
+            var ps = commentFactory.prepareStatement(query);
             
             ps.setString(1, commentName);
             
-            comment = CommentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            comment = commentFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -933,21 +994,25 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentFactory.getInstance().prepareStatement(query);
+            var ps = commentFactory.prepareStatement(query);
             
             ps.setLong(1, commentedEntityInstance.getPrimaryKey().getEntityId());
             
-            comments = CommentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            comments = commentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -970,21 +1035,25 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_commentedbyentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentFactory.getInstance().prepareStatement(query);
+            var ps = commentFactory.prepareStatement(query);
             
             ps.setLong(1, commentedByEntityInstance.getPrimaryKey().getEntityId());
             
-            comments = CommentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            comments = commentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1007,21 +1076,25 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid AND cmntdt_cmnttyp_commenttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentFactory.getInstance().prepareStatement(query);
+            var ps = commentFactory.prepareStatement(query);
             
             ps.setLong(1, commentType.getPrimaryKey().getEntityId());
             
-            comments = CommentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            comments = commentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1045,24 +1118,28 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid " +
-                        "AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid
+                        AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM comments, commentdetails " +
-                        "WHERE cmnt_activedetailid = cmntdt_commentdetailid " +
-                        "AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM comments, commentdetails
+                        WHERE cmnt_activedetailid = cmntdt_commentdetailid
+                        AND cmntdt_commentedentityinstanceid = ? AND cmntdt_cmnttyp_commenttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentFactory.getInstance().prepareStatement(query);
+            var ps = commentFactory.prepareStatement(query);
             
             ps.setLong(1, commentedEntityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, commentType.getPrimaryKey().getEntityId());
             
-            comments = CommentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            comments = commentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1105,7 +1182,7 @@ public class CommentControl
     
     public void updateCommentFromValue(CommentDetailValue commentDetailValue,  BasePK updatedBy) {
         if(commentDetailValue.hasBeenModified()) {
-            var comment = CommentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var comment = commentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      commentDetailValue.getCommentPK());
             var commentDetail = comment.getActiveDetailForUpdate();
             
@@ -1121,7 +1198,7 @@ public class CommentControl
             var description = commentDetailValue.getDescription();
             var mimeTypePK = commentDetailValue.getMimeTypePK();
             
-            commentDetail = CommentDetailFactory.getInstance().create(commentPK, commentName, commentTypePK,
+            commentDetail = commentDetailFactory.create(commentPK, commentName, commentTypePK,
                     commentedEntityInstancePK, commentedByEntityInstancePK, languagePK, description, mimeTypePK,
                     session.getStartTime(), Session.MAX_TIME);
             
@@ -1150,7 +1227,6 @@ public class CommentControl
             if(comment == null) {
                 workflowControl.getWorkflowEntranceChoices(commentStatusChoicesBean, defaultCommentStatusChoice, language, allowNullChoice, workflow, partyPK);
             } else {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
                 var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
 
@@ -1243,9 +1319,12 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Strings
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentStringFactory commentStringFactory;
+
     public CommentString createCommentString(Comment comment, String string, BasePK createdBy) {
-        var commentString = CommentStringFactory.getInstance().create(comment, string, session.getStartTime(), Session.MAX_TIME);
+        var commentString = commentStringFactory.create(comment, string, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
@@ -1260,22 +1339,26 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentstrings " +
-                        "WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentstrings
+                        WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentstrings " +
-                        "WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentstrings
+                        WHERE cmnts_cmnt_commentid = ? AND cmnts_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentStringFactory.getInstance().prepareStatement(query);
+            var ps = commentStringFactory.prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            commentString = CommentStringFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commentString = commentStringFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1303,7 +1386,7 @@ public class CommentControl
     
     public void updateCommentStringFromValue(CommentStringValue commentStringValue, BasePK updatedBy) {
         if(commentStringValue.hasBeenModified()) {
-            var commentString = CommentStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentStringValue.getPrimaryKey());
+            var commentString = commentStringFactory.getEntityFromPK(EntityPermission.READ_WRITE, commentStringValue.getPrimaryKey());
             
             commentString.setThruTime(session.getStartTime());
             commentString.store();
@@ -1311,7 +1394,7 @@ public class CommentControl
             var commentPK = commentString.getCommentPK(); // Not updated
             var string = commentStringValue.getString();
             
-            commentString = CommentStringFactory.getInstance().create(commentPK, string, session.getStartTime(), Session.MAX_TIME);
+            commentString = commentStringFactory.create(commentPK, string, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(commentPK, EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
             sendEvent(commentString.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentString.getCommentPK(), EventTypes.MODIFY, updatedBy);
@@ -1328,9 +1411,12 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Blobs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentBlobFactory commentBlobFactory;
+
     public CommentBlob createCommentBlob(Comment comment, ByteArray blob, BasePK createdBy) {
-        var commentBlob = CommentBlobFactory.getInstance().create(comment, blob, session.getStartTime(), Session.MAX_TIME);
+        var commentBlob = commentBlobFactory.create(comment, blob, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
@@ -1345,22 +1431,26 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentblobs " +
-                        "WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentblobs
+                        WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentblobs " +
-                        "WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentblobs
+                        WHERE cmntb_cmnt_commentid = ? AND cmntb_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentBlobFactory.getInstance().prepareStatement(query);
+            var ps = commentBlobFactory.prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            commentBlob = CommentBlobFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commentBlob = commentBlobFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1388,7 +1478,7 @@ public class CommentControl
     
     public void updateCommentBlobFromValue(CommentBlobValue commentBlobValue, BasePK updatedBy) {
         if(commentBlobValue.hasBeenModified()) {
-            var commentBlob = CommentBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentBlobValue.getPrimaryKey());
+            var commentBlob = commentBlobFactory.getEntityFromPK(EntityPermission.READ_WRITE, commentBlobValue.getPrimaryKey());
             
             commentBlob.setThruTime(session.getStartTime());
             commentBlob.store();
@@ -1396,7 +1486,7 @@ public class CommentControl
             var commentPK = commentBlob.getCommentPK(); // Not updated
             var blob = commentBlobValue.getBlob();
             
-            commentBlob = CommentBlobFactory.getInstance().create(commentPK, blob, session.getStartTime(), Session.MAX_TIME);
+            commentBlob = commentBlobFactory.create(commentPK, blob, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(commentPK, EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
             sendEvent(commentBlob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentBlob.getCommentPK(), EventTypes.MODIFY, updatedBy);
@@ -1413,9 +1503,12 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Clobs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentClobFactory commentClobFactory;
+
     public CommentClob createCommentClob(Comment comment, String clob, BasePK createdBy) {
-        var commentClob = CommentClobFactory.getInstance().create(comment, clob, session.getStartTime(),
+        var commentClob = commentClobFactory.create(comment, clob, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1431,22 +1524,26 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentclobs " +
-                        "WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentclobs
+                        WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentclobs " +
-                        "WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentclobs
+                        WHERE cmntc_cmnt_commentid = ? AND cmntc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentClobFactory.getInstance().prepareStatement(query);
+            var ps = commentClobFactory.prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            commentClob = CommentClobFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commentClob = commentClobFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1474,7 +1571,7 @@ public class CommentControl
     
     public void updateCommentClobFromValue(CommentClobValue commentClobValue, BasePK updatedBy) {
         if(commentClobValue.hasBeenModified()) {
-            var commentClob = CommentClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentClobValue.getPrimaryKey());
+            var commentClob = commentClobFactory.getEntityFromPK(EntityPermission.READ_WRITE, commentClobValue.getPrimaryKey());
 
             commentClob.setThruTime(session.getStartTime());
             commentClob.store();
@@ -1482,7 +1579,7 @@ public class CommentControl
             var commentPK = commentClob.getCommentPK(); // Not updated
             var clob = commentClobValue.getClob();
 
-            commentClob = CommentClobFactory.getInstance().create(commentPK, clob, session.getStartTime(), Session.MAX_TIME);
+            commentClob = commentClobFactory.create(commentPK, clob, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(commentPK, EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
             sendEvent(commentClob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentClob.getCommentPK(), EventTypes.MODIFY, updatedBy);
@@ -1499,9 +1596,12 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Usages
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected CommentUsageFactory commentUsageFactory;
+
     public CommentUsage createCommentUsage(Comment comment, CommentUsageType commentUsageType, BasePK createdBy) {
-        var commentUsage = CommentUsageFactory.getInstance().create(comment, commentUsageType,
+        var commentUsage = commentUsageFactory.create(comment, commentUsageType,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1517,23 +1617,27 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages " +
-                        "WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages
+                        WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages " +
-                        "WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages
+                        WHERE cmntu_cmnt_commentid = ? AND cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentUsageFactory.getInstance().prepareStatement(query);
+            var ps = commentUsageFactory.prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, commentUsageType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            commentUsage = CommentUsageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commentUsage = commentUsageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1556,25 +1660,29 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages, commentusagetypes, commentusagetypedetails " +
-                        "WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ? " +
-                        "AND cmntu_cmntutyp_commentusagetypeid = cmntutyp_commentusagetypeid " +
-                        "AND cmntutyp_lastdetailid = cmntutypdt_commentusagetypedetailid " +
-                        "ORDER BY cmntutypdt_sortorder, cmntutypdt_commentusagetypename";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages, commentusagetypes, commentusagetypedetails
+                        WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ?
+                        AND cmntu_cmntutyp_commentusagetypeid = cmntutyp_commentusagetypeid
+                        AND cmntutyp_lastdetailid = cmntutypdt_commentusagetypedetailid
+                        ORDER BY cmntutypdt_sortorder, cmntutypdt_commentusagetypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages " +
-                        "WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages
+                        WHERE cmntu_cmnt_commentid = ? AND cmntu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentUsageFactory.getInstance().prepareStatement(query);
+            var ps = commentUsageFactory.prepareStatement(query);
             
             ps.setLong(1, comment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            comments = CommentUsageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            comments = commentUsageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1597,25 +1705,29 @@ public class CommentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages, comments, commentdetails " +
-                        "WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ? " +
-                        "AND cmntu_cmnt_commentid = cmnt_commentid " +
-                        "AND cmnt_lastdetailid = cmntdt_commentdetailid " +
-                        "ORDER BY cmntdt_commentname";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages, comments, commentdetails
+                        WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?
+                        AND cmntu_cmnt_commentid = cmnt_commentid
+                        AND cmnt_lastdetailid = cmntdt_commentdetailid
+                        ORDER BY cmntdt_commentname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM commentusages " +
-                        "WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM commentusages
+                        WHERE cmntu_cmntutyp_commentusagetypeid = ? AND cmntu_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = CommentUsageFactory.getInstance().prepareStatement(query);
+            var ps = commentUsageFactory.prepareStatement(query);
             
             ps.setLong(1, commentUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            comments = CommentUsageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            comments = commentUsageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

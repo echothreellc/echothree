@@ -56,7 +56,7 @@ public class GetLotCommand
                 new FieldDefinition("LotIdentifier", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUnitOfMeasureKindChoicesCommand
@@ -40,8 +40,12 @@ public class GetUnitOfMeasureKindChoicesCommand
                 new FieldDefinition("DefaultUnitOfMeasureKindChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("UnitOfMeasureKindUseTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of GetUnitOfMeasureKindChoicesCommand */
     public GetUnitOfMeasureKindChoicesCommand() {
@@ -51,7 +55,6 @@ public class GetUnitOfMeasureKindChoicesCommand
     @Override
     protected BaseResult execute() {
         var result = UomResultFactory.getGetUnitOfMeasureKindChoicesResult();
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
         var unitOfMeasureKindUseType = unitOfMeasureKindUseTypeName == null? null: uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         

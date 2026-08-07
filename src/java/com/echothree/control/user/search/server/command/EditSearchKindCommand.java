@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchKindCommand
@@ -53,8 +53,8 @@ public class EditSearchKindCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchKind.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchKindName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,9 @@ public class EditSearchKindCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
 
     /** Creates a new instance of EditSearchKindCommand */
     public EditSearchKindCommand() {
@@ -85,7 +88,6 @@ public class EditSearchKindCommand
 
     @Override
     public SearchKind getEntity(EditSearchKindResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind;
         var searchKindName = spec.getSearchKindName();
 
@@ -109,14 +111,11 @@ public class EditSearchKindCommand
 
     @Override
     public void fillInResult(EditSearchKindResult result, SearchKind searchKind) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchKind(searchControl.getSearchKindTransfer(getUserVisit(), searchKind));
     }
 
     @Override
     public void doLock(SearchKindEdit edit, SearchKind searchKind) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKindDescription = searchControl.getSearchKindDescription(searchKind, getPreferredLanguage());
         var searchKindDetail = searchKind.getLastDetail();
 
@@ -131,7 +130,6 @@ public class EditSearchKindCommand
 
     @Override
     public void canUpdate(SearchKind searchKind) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKindName = edit.getSearchKindName();
         var duplicateSearchKind = searchControl.getSearchKindByName(searchKindName);
 
@@ -142,7 +140,6 @@ public class EditSearchKindCommand
 
     @Override
     public void doUpdate(SearchKind searchKind) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
         var searchKindDetailValue = searchControl.getSearchKindDetailValueForUpdate(searchKind);
         var searchKindDescription = searchControl.getSearchKindDescriptionForUpdate(searchKind, getPreferredLanguage());

@@ -44,10 +44,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassCommand
@@ -62,8 +62,8 @@ public class EditTrainingClassCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClass.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null)
@@ -98,6 +98,19 @@ public class EditTrainingClassCommand
                 new FieldDefinition("Introduction", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of EditTrainingClassCommand */
     public EditTrainingClassCommand() {
@@ -116,7 +129,6 @@ public class EditTrainingClassCommand
 
     @Override
     public TrainingClass getEntity(EditTrainingClassResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClass trainingClass;
         var trainingClassName = spec.getTrainingClassName();
 
@@ -142,8 +154,6 @@ public class EditTrainingClassCommand
 
     @Override
     public void fillInResult(EditTrainingClassResult result, TrainingClass trainingClass) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));
     }
 
@@ -152,8 +162,6 @@ public class EditTrainingClassCommand
     
     @Override
     public void doLock(TrainingClassEdit edit, TrainingClass trainingClass) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         var trainingClassTranslation = trainingControl.getTrainingClassTranslation(trainingClass, getPreferredLanguage());
         var trainingClassDetail = trainingClass.getLastDetail();
         var workEffortScope = trainingClassDetail.getWorkEffortScope();
@@ -212,14 +220,12 @@ public class EditTrainingClassCommand
     
     @Override
     public void canUpdate(TrainingClass trainingClass) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassName = edit.getTrainingClassName();
         var duplicateTrainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(duplicateTrainingClass != null && !trainingClass.equals(duplicateTrainingClass)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassName.name(), trainingClassName);
         } else {
-            var mimeTypeLogic = MimeTypeLogic.getInstance();
             var overviewMimeTypeName = edit.getOverviewMimeTypeName();
             var overview = edit.getOverview();
 
@@ -236,8 +242,6 @@ public class EditTrainingClassCommand
                         ExecutionErrors.UnknownIntroductionMimeTypeName.name(), ExecutionErrors.UnknownIntroductionMimeTypeUsage.name());
 
                 if(!hasExecutionErrors()) {
-                    var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-
                     estimatedReadingTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                             edit.getEstimatedReadingTime(), edit.getEstimatedReadingTimeUnitOfMeasureTypeName(),
                             null, ExecutionErrors.MissingRequiredEstimatedReadingTime.name(), null, ExecutionErrors.MissingRequiredEstimatedReadingTimeUnitOfMeasureTypeName.name(),
@@ -271,7 +275,6 @@ public class EditTrainingClassCommand
                                         var workEffortScopeName = edit.getWorkEffortScopeName();
 
                                         if(workEffortScopeName != null) {
-                                            var workEffortControl = Session.getModelController(WorkEffortControl.class);
                                             var workEffortType = workEffortControl.getWorkEffortTypeByName(TrainingConstants.WorkEffortType_TRAINING);
 
                                             if(workEffortType != null) {
@@ -311,7 +314,6 @@ public class EditTrainingClassCommand
     
     @Override
     public void doUpdate(TrainingClass trainingClass) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         var trainingClassDetailValue = trainingControl.getTrainingClassDetailValueForUpdate(trainingClass);
         var trainingClassTranslation = trainingControl.getTrainingClassTranslationForUpdate(trainingClass, getPreferredLanguage());

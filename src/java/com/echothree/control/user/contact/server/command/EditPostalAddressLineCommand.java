@@ -29,10 +29,10 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPostalAddressLineCommand
@@ -56,6 +56,10 @@ public class EditPostalAddressLineCommand
                 new FieldDefinition("CollapseIfEmpty", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
     
     /** Creates a new instance of EditPostalAddressLineCommand */
     public EditPostalAddressLineCommand() {
@@ -64,7 +68,6 @@ public class EditPostalAddressLineCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var result = ContactResultFactory.getEditPostalAddressLineResult();
         var postalAddressFormatName = spec.getPostalAddressFormatName();
         var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);

@@ -99,7 +99,7 @@ public class EditorControl
     public Editor getEditorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EditorPK(entityInstance.getEntityUniqueId());
 
-        return EditorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return editorFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Editor getEditorByEntityInstance(EntityInstance entityInstance) {
@@ -387,8 +387,8 @@ public class EditorControl
     //   Editor Descriptions
     // --------------------------------------------------------------------------------
 
-        @Inject
-        protected EditorDescriptionFactory editorDescriptionFactory;
+    @Inject
+    protected EditorDescriptionFactory editorDescriptionFactory;
 
         public EditorDescription createEditorDescription(Editor editor, Language language, String description, BasePK createdBy) {
         var editorDescription = editorDescriptionFactory.create(editor, language, description,

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateApplicationEditorUseCommand
@@ -48,8 +48,8 @@ public class CreateApplicationEditorUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ApplicationEditorUse.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
@@ -60,8 +60,18 @@ public class CreateApplicationEditorUseCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    EditorControl editorControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
     
     /** Creates a new instance of CreateApplicationEditorUseCommand */
     public CreateApplicationEditorUseCommand() {
@@ -71,20 +81,18 @@ public class CreateApplicationEditorUseCommand
     @Override
     protected BaseResult execute() {
         var applicationName = form.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            var applicationControl = Session.getModelController(ApplicationControl.class);
             var applicationEditorUseName = form.getApplicationEditorUseName();
             var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse == null) {
-                var editorControl = Session.getModelController(EditorControl.class);
                 var defaultEditorName = form.getDefaultEditorName();
                 var editor = defaultEditorName == null ? null : editorControl.getEditorByName(defaultEditorName);
                 
                 if(defaultEditorName == null || editor != null) {
-                    var applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
+                    var applicationEditor = editor == null ? null : applicationLogic.getApplicationEditor(this, application, editor);
                     
                     if(!hasExecutionErrors()) {
                         var strDefaultHeight = form.getDefaultHeight();

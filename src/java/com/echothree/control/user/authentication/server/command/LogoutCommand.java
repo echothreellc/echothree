@@ -20,11 +20,16 @@ import com.echothree.model.control.user.server.logic.UserVisitLogic;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class LogoutCommand
         extends BaseSimpleCommand {
     
+    @Inject
+    UserVisitLogic userVisitLogic;
+
+
     /** Creates a new instance of LogoutCommand */
     public LogoutCommand() {
         super(null, false);
@@ -32,7 +37,7 @@ public class LogoutCommand
     
     @Override
     protected BaseResult execute() {
-        UserVisitLogic.getInstance().logout(getUserVisitPK(), session.getStartTime(), getPartyPK());
+        userVisitLogic.logout(getUserVisitPK(), session.getStartTime(), getPartyPK());
         
         return null;
     }

@@ -60,17 +60,18 @@ public class GetFilterAdjustmentAmountsCommand
                 new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetFilterAdjustmentAmountsCommand */
-    public GetFilterAdjustmentAmountsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterAdjustmentLogic filterAdjustmentLogic;
+
+
+    /** Creates a new instance of GetFilterAdjustmentAmountsCommand */
+    public GetFilterAdjustmentAmountsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     FilterAdjustment filterAdjustment;
 

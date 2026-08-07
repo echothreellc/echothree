@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWarehouseTypeCommand
@@ -56,6 +57,10 @@ public class CreateWarehouseTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    WarehouseTypeLogic warehouseTypeLogic;
+
     
     /** Creates a new instance of CreateWarehouseTypeCommand */
     public CreateWarehouseTypeCommand() {
@@ -72,7 +77,7 @@ public class CreateWarehouseTypeCommand
         var description = form.getDescription();
         var partyPK = getPartyPK();
 
-        var warehouseType = WarehouseTypeLogic.getInstance().createWarehouseType(this, warehouseTypeName, priority,
+        var warehouseType = warehouseTypeLogic.createWarehouseType(this, warehouseTypeName, priority,
                 isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
 
         if(warehouseType != null) {

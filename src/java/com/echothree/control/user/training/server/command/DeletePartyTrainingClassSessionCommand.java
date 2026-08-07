@@ -55,17 +55,22 @@ public class DeletePartyTrainingClassSessionCommand
                 new FieldDefinition("PartyTrainingClassSessionSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
         );
     }
-    
-    /** Creates a new instance of DeletePartyTrainingClassSessionCommand */
-    public DeletePartyTrainingClassSessionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
 
     @Inject
     TrainingControl trainingControl;
 
     @Inject
     PartyTrainingClassLogic partyTrainingClassLogic;
+
+    @Inject
+    PartyTrainingClassSessionLogic partyTrainingClassSessionLogic;
+
+
+    /** Creates a new instance of DeletePartyTrainingClassSessionCommand */
+    public DeletePartyTrainingClassSessionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+
     
     @Override
     protected BaseResult execute() {
@@ -77,7 +82,7 @@ public class DeletePartyTrainingClassSessionCommand
             var partyTrainingClassSession = trainingControl.getPartyTrainingClassSessionBySequenceForUpdate(partyTrainingClass, partyTrainingClassSessionSequence);
 
             if(partyTrainingClassSession != null) {
-                PartyTrainingClassSessionLogic.getInstance().deletePartyTrainingClassSession(partyTrainingClassSession, getPartyPK());
+                partyTrainingClassSessionLogic.deletePartyTrainingClassSession(partyTrainingClassSession, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPartyTrainingClassSessionSequence.name(), partyTrainingClassName, form.getPartyTrainingClassSessionSequence());
             }

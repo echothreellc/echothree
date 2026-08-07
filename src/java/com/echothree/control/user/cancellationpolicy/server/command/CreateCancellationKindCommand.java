@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCancellationKindCommand
@@ -47,8 +48,8 @@ public class CreateCancellationKindCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CancellationKind.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -56,8 +57,15 @@ public class CreateCancellationKindCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
     
     /** Creates a new instance of CreateCancellationKindCommand */
     public CreateCancellationKindCommand() {
@@ -70,14 +78,14 @@ public class CreateCancellationKindCommand
         CancellationKind cancellationKind = null;
         var cancellationKindName = form.getCancellationKindName();
         var cancellationSequenceTypeName = form.getCancellationSequenceTypeName();
-        var cancellationSequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, cancellationSequenceTypeName);
+        var cancellationSequenceType = sequenceTypeLogic.getSequenceTypeByName(this, cancellationSequenceTypeName);
 
         if(!hasExecutionErrors()) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            cancellationKind = CancellationKindLogic.getInstance().createCancellationKind(this, cancellationKindName,
+            cancellationKind = cancellationKindLogic.createCancellationKind(this, cancellationKindName,
                     cancellationSequenceType, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         }
 

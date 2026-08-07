@@ -29,6 +29,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityStringDefaultCommand
@@ -52,8 +53,15 @@ public class CreateEntityStringDefaultCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("StringAttribute", FieldType.STRING, true, 1L, 512L)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     
     /** Creates a new instance of CreateEntityStringDefaultCommand */
     public CreateEntityStringDefaultCommand() {
@@ -62,14 +70,14 @@ public class CreateEntityStringDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
-        var language = LanguageLogic.getInstance().getLanguage(this, form, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
+        var language = languageLogic.getLanguage(this, form, form);
 
         if(!hasExecutionErrors()) {
             var stringAttribute = String.valueOf(form.getStringAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            EntityAttributeLogic.getInstance().createEntityStringDefault(this, entityAttribute, language,
+            entityAttributeLogic.createEntityStringDefault(this, entityAttribute, language,
                     stringAttribute, addMissingAttributes, getPartyPK());
         }
         

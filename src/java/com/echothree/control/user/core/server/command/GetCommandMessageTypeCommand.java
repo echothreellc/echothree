@@ -19,7 +19,6 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetCommandMessageTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommandMessageTypeCommand
@@ -51,9 +50,10 @@ public class GetCommandMessageTypeCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommandMessageTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CommandMessageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
     
     /** Creates a new instance of GetCommandMessageTypeCommand */
     public GetCommandMessageTypeCommand() {
@@ -62,7 +62,6 @@ public class GetCommandMessageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var commandControl = Session.getModelController(CommandControl.class);
         var result = CoreResultFactory.getGetCommandMessageTypeResult();
         var commandMessageTypeName = form.getCommandMessageTypeName();
         var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);

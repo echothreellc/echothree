@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCarrierTypeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditCarrierTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CarrierType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CarrierTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditCarrierTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCarrierTypeDescriptionCommand */
     public EditCarrierTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditCarrierTypeDescriptionCommand
 
     @Override
     public CarrierTypeDescription getEntity(EditCarrierTypeDescriptionResult result) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierTypeDescription carrierTypeDescription = null;
         var carrierTypeName = spec.getCarrierTypeName();
         var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
 
         if(carrierType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditCarrierTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditCarrierTypeDescriptionResult result, CarrierTypeDescription carrierTypeDescription) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
-
         result.setCarrierTypeDescription(carrierControl.getCarrierTypeDescriptionTransfer(getUserVisit(), carrierTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditCarrierTypeDescriptionCommand
 
     @Override
     public void doUpdate(CarrierTypeDescription carrierTypeDescription) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierTypeDescriptionValue = carrierControl.getCarrierTypeDescriptionValue(carrierTypeDescription);
         
         carrierTypeDescriptionValue.setDescription(edit.getDescription());

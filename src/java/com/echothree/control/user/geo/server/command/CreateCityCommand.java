@@ -36,10 +36,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCityCommand
@@ -53,8 +53,8 @@ public class CreateCityCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.City.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("StateGeoCodeName", FieldType.ENTITY_NAME, true, null, null),
@@ -62,8 +62,15 @@ public class CreateCityCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateCityCommand */
     public CreateCityCommand() {
@@ -73,7 +80,6 @@ public class CreateCityCommand
     @Override
     protected BaseResult execute() {
         var result = GeoResultFactory.getCreateCityResult();
-        var geoControl = Session.getModelController(GeoControl.class);
         BasePK createdBy = getPartyPK();
         GeoCode geoCode;
 
@@ -112,7 +118,7 @@ public class CreateCityCommand
         var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, cityName);
         
         if(geoCodeAlias == null) {
-            var geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
+            var geoCodeName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();

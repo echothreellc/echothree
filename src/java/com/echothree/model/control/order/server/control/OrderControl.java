@@ -66,6 +66,24 @@ import javax.inject.Inject;
 public class OrderControl
         extends BaseOrderControl {
     
+    @Inject
+    protected OrderAdjustmentControl orderAdjustmentControl;
+
+    @Inject
+    protected OrderLineControl orderLineControl;
+
+    @Inject
+    protected OrderRoleControl orderRoleControl;
+
+    @Inject
+    protected OrderTimeControl orderTimeControl;
+
+    @Inject
+    protected OrderTypeControl orderTypeControl;
+
+    @Inject
+    protected WishlistControl wishlistControl;
+
     /** Creates a new instance of OrderControl */
     protected OrderControl() {
         super();
@@ -74,19 +92,25 @@ public class OrderControl
     // --------------------------------------------------------------------------------
     //   Orders
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderFactory orderFactory;
+
+    @Inject
+    protected OrderDetailFactory orderDetailFactory;
+
     public Order createOrder(OrderType orderType, String orderName, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete,
             Boolean allowBackorders, Boolean allowSubstitutions, Boolean allowCombiningShipments, Term term, FreeOnBoard freeOnBoard,
             String reference, String description, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable,
             BasePK createdBy) {
-        var order = OrderFactory.getInstance().create();
-        var orderDetail = OrderDetailFactory.getInstance().create(order, orderType, orderName, orderPriority,
+        var order = orderFactory.create();
+        var orderDetail = orderDetailFactory.create(order, orderType, orderName, orderPriority,
                 currency, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, term,
                 freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, order.getPrimaryKey());
+        order = orderFactory.getEntityFromPK(EntityPermission.READ_WRITE, order.getPrimaryKey());
         order.setActiveDetail(orderDetail);
         order.setLastDetail(orderDetail);
         order.store();
@@ -99,14 +123,14 @@ public class OrderControl
     }
     
     public Order getOrderByPK(OrderPK orderPK) {
-        return OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
+        return orderFactory.getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Order */
     public Order getOrderByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderPK(entityInstance.getEntityUniqueId());
 
-        return OrderFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Order getOrderByEntityInstance(EntityInstance entityInstance) {
@@ -171,12 +195,11 @@ public class OrderControl
     }
 
     public Order getOrderByName(OrderType orderType, String orderName, EntityPermission entityPermission) {
-        return OrderFactory.getInstance().getEntityFromQuery(entityPermission, getOrderByNameQueries,
+        return orderFactory.getEntityFromQuery(entityPermission, getOrderByNameQueries,
                 orderType, orderName);
     }
 
     private Order getOrderByNameUsingNames(String orderTypeName, String orderName, EntityPermission entityPermission) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
 
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
@@ -226,7 +249,7 @@ public class OrderControl
 
     public void updateOrderFromValue(OrderDetailValue orderDetailValue, BasePK updatedBy) {
         if(orderDetailValue.hasBeenModified()) {
-            var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderDetailValue.getOrderPK());
+            var order = orderFactory.getEntityFromPK(EntityPermission.READ_WRITE, orderDetailValue.getOrderPK());
             var orderDetail = order.getActiveDetailForUpdate();
             
             orderDetail.setThruTime(session.getStartTime());
@@ -249,7 +272,7 @@ public class OrderControl
             var returnPolicyPK = orderDetailValue.getReturnPolicyPK();
             var taxable = orderDetailValue.getTaxable();
             
-            orderDetail = OrderDetailFactory.getInstance().create(orderPK, orderTypePK, orderName, orderPriorityPK, currencyPK, holdUntilComplete,
+            orderDetail = orderDetailFactory.create(orderPK, orderTypePK, orderName, orderPriorityPK, currencyPK, holdUntilComplete,
                     allowBackorders, allowSubstitutions, allowCombiningShipments, termPK, freeOnBoardPK, reference, description, cancellationPolicyPK,
                     returnPolicyPK, taxable, session.getStartTime(), Session.MAX_TIME);
             
@@ -261,10 +284,6 @@ public class OrderControl
     }
     
     public void deleteOrder(Order order, BasePK deletedBy) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
-        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-        var orderLineControl = Session.getModelController(OrderLineControl.class);
 
         removeOrderStatusByOrder(order);
         deleteOrderContentCatalogsByOrder(order, deletedBy);
@@ -277,7 +296,6 @@ public class OrderControl
         var orderDetail = order.getLastDetailForUpdate();
         var orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
         if(orderTypeName.equals(OrderTypes.WISHLIST.name())) {
-            var wishlistControl = Session.getModelController(WishlistControl.class);
             
             wishlistControl.deleteWishlistByOrder(order, deletedBy);
         }
@@ -296,7 +314,6 @@ public class OrderControl
     }
     
     public void deleteOrdersByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlists = wishlistControl.getWishlistsByWishlistTypeForUpdate(wishlistType);
         
         wishlists.forEach((wishlist) -> {
@@ -307,9 +324,12 @@ public class OrderControl
     // --------------------------------------------------------------------------------
     //   Order Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderStatusFactory orderStatusFactory;
+
     public OrderStatus createOrderStatus(Order order) {
-        return OrderStatusFactory.getInstance().create(order, 0, 0, 0, 0);
+        return orderStatusFactory.create(order, 0, 0, 0, 0);
     }
     
     private OrderStatus getOrderStatus(Order order, EntityPermission entityPermission) {
@@ -333,11 +353,11 @@ public class OrderControl
                         """;
             }
 
-            var ps = OrderStatusFactory.getInstance().prepareStatement(query);
+            var ps = orderStatusFactory.prepareStatement(query);
             
             ps.setLong(1, order.getPrimaryKey().getEntityId());
             
-            orderStatus = OrderStatusFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            orderStatus = orderStatusFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -364,9 +384,12 @@ public class OrderControl
     // --------------------------------------------------------------------------------
     //   Order User Visits
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected OrderUserVisitFactory orderUserVisitFactory;
+
     public OrderUserVisit createOrderUserVisit(Order order, UserVisit userVisit) {
-        return OrderUserVisitFactory.getInstance().create(order, userVisit, session.getStartTime(), Session.MAX_TIME);
+        return orderUserVisitFactory.create(order, userVisit, session.getStartTime(), Session.MAX_TIME);
     }
 
     public long countOrderUserVisitByOrder(final Order order) {
@@ -407,7 +430,7 @@ public class OrderControl
     }
 
     private OrderUserVisit getOrderUserVisit(Order order, UserVisit userVisit, EntityPermission entityPermission) {
-        return OrderUserVisitFactory.getInstance().getEntityFromQuery(entityPermission, getOrderUserVisitQueries,
+        return orderUserVisitFactory.getEntityFromQuery(entityPermission, getOrderUserVisitQueries,
                 order, userVisit, Session.MAX_TIME);
     }
     
@@ -452,7 +475,7 @@ public class OrderControl
     }
 
     private List<OrderUserVisit> getOrderUserVisitsByOrder(Order order, EntityPermission entityPermission) {
-        return OrderUserVisitFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderUserVisitsByOrderQueries,
+        return orderUserVisitFactory.getEntitiesFromQuery(entityPermission, getOrderUserVisitsByOrderQueries,
                 order, Session.MAX_TIME);
     }
     
@@ -489,7 +512,7 @@ public class OrderControl
     }
 
     private List<OrderUserVisit> getOrderUserVisitsByUserVisit(UserVisit userVisit, EntityPermission entityPermission) {
-        return OrderUserVisitFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderUserVisitsByUserVisitQueries,
+        return orderUserVisitFactory.getEntitiesFromQuery(entityPermission, getOrderUserVisitsByUserVisitQueries,
                 userVisit, Session.MAX_TIME);
     }
     
@@ -541,9 +564,9 @@ public class OrderControl
     // --------------------------------------------------------------------------------
     //   Order Content Catalog
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    OrderContentCatalogFactory orderContentCatalogFactory;
+    protected OrderContentCatalogFactory orderContentCatalogFactory;
 
     @Inject
     OrderContentCatalogTransferCache orderContentCatalogTransferCache;

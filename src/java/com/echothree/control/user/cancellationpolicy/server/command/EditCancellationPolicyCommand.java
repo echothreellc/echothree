@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCancellationPolicyCommand
@@ -57,8 +57,8 @@ public class EditCancellationPolicyCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CancellationPolicy.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -74,6 +74,12 @@ public class EditCancellationPolicyCommand
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
 
     /** Creates a new instance of EditCancellationPolicyCommand */
     public EditCancellationPolicyCommand() {
@@ -94,7 +100,6 @@ public class EditCancellationPolicyCommand
 
     @Override
     public CancellationPolicy getEntity(EditCancellationPolicyResult result) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         CancellationPolicy cancellationPolicy = null;
         var cancellationKindName = spec.getCancellationKindName();
 
@@ -128,8 +133,6 @@ public class EditCancellationPolicyCommand
 
     @Override
     public void fillInResult(EditCancellationPolicyResult result, CancellationPolicy cancellationPolicy) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-
         result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(getUserVisit(), cancellationPolicy));
     }
 
@@ -137,7 +140,6 @@ public class EditCancellationPolicyCommand
 
     @Override
     public void doLock(CancellationPolicyEdit edit, CancellationPolicy cancellationPolicy) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslation(cancellationPolicy, getPreferredLanguage());
         var cancellationPolicyDetail = cancellationPolicy.getLastDetail();
 
@@ -156,14 +158,12 @@ public class EditCancellationPolicyCommand
 
     @Override
     public void canUpdate(CancellationPolicy cancellationPolicy) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationPolicyName = edit.getCancellationPolicyName();
         var duplicateCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
         if(duplicateCancellationPolicy != null && !cancellationPolicy.equals(duplicateCancellationPolicy)) {
             addExecutionError(ExecutionErrors.DuplicateCancellationPolicyName.name(), cancellationPolicyName);
         } else {
-            var mimeTypeLogic = MimeTypeLogic.getInstance();
             var policyMimeTypeName = edit.getPolicyMimeTypeName();
             var policy = edit.getPolicy();
 
@@ -175,7 +175,6 @@ public class EditCancellationPolicyCommand
 
     @Override
     public void doUpdate(CancellationPolicy cancellationPolicy) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var partyPK = getPartyPK();
         var cancellationPolicyDetailValue = cancellationPolicyControl.getCancellationPolicyDetailValueForUpdate(cancellationPolicy);
         var cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslationForUpdate(cancellationPolicy, getPreferredLanguage());

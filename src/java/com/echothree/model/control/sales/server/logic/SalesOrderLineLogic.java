@@ -72,10 +72,56 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SalesOrderLineLogic
         extends BaseOrderLineLogic {
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    SalesOrderControl salesOrderControl;
+
+    @Inject
+    AssociateReferralLogic associateReferralLogic;
+
+    @Inject
+    CancellationPolicyLogic cancellationPolicyLogic;
+
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    OfferItemLogic offerItemLogic;
+
+    @Inject
+    ReturnPolicyLogic returnPolicyLogic;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
+
+    @Inject
+    SalesOrderShipmentGroupLogic salesOrderShipmentGroupLogic;
+
+    @Inject
+    SourceLogic sourceLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
 
     protected SalesOrderLineLogic() {
         super();
@@ -116,22 +162,18 @@ public class SalesOrderLineLogic
             InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, final Long quantity, Long unitAmount,
             final String description, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable, final Source source,
             final AssociateReferral associateReferral, final Party createdByParty) {
-        var salesOrderLogic = SalesOrderLogic.getInstance();
         var createdByPartyPK = createdByParty.getPrimaryKey();
         OrderLine orderLine = null;
 
         // Create a new Sales Order if there was not one supplied. Defaults will be used for nearly all options.
         if(order == null) {
-            order = SalesOrderLogic.getInstance().createSalesOrder(session, eea, userVisit, (Batch)null, null, null,
+            order = salesOrderLogic.createSalesOrder(session, eea, userVisit, (Batch)null, null, null,
                     null, null, null, null, null, null, null, null, null, null, null, createdByParty);
         }
 
         salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdByPartyPK);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var salesOrderShipmentGroupLogic = SalesOrderShipmentGroupLogic.getInstance();
-            var itemControl = Session.getModelController(ItemControl.class);
-            var salesOrderControl = Session.getModelController(SalesOrderControl.class);
             var orderDetail = order.getLastDetail();
             var itemDetail = item.getLastDetail();
             var itemDeliveryType = itemDetail.getItemDeliveryType();
@@ -149,7 +191,7 @@ public class SalesOrderLineLogic
                 // If a default doesn't exist, then create one.
                 if(orderShipmentGroup == null) {
                     var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator(); // No Execution Errors, don't throw Exceptions
-                    orderShipmentGroup = SalesOrderShipmentGroupLogic.getInstance().getDefaultOrderShipmentGroup(dummyExecutionErrorAccumulator,
+                    orderShipmentGroup = salesOrderShipmentGroupLogic.getDefaultOrderShipmentGroup(dummyExecutionErrorAccumulator,
                             order, itemDeliveryType);
 
                     if(orderShipmentGroup == null) {
@@ -180,8 +222,6 @@ public class SalesOrderLineLogic
 
                 // Check InventoryCondition.
                 if(inventoryCondition == null) {
-                    var inventoryControl = Session.getModelController(InventoryControl.class);
-
                     inventoryCondition = inventoryControl.getDefaultInventoryCondition();
 
                     if(inventoryControl == null) {
@@ -208,11 +248,10 @@ public class SalesOrderLineLogic
                     offerUse = salesOrder.getOfferUse();
                 }
 
-                var offerItem = OfferItemLogic.getInstance().getOfferItem(eea, offerUse.getLastDetail().getOffer(), item);
+                var offerItem = offerItemLogic.getOfferItem(eea, offerUse.getLastDetail().getOffer(), item);
 
                 // Verify unitAmount.
                 if(offerItem != null) {
-                    var offerItemControl = Session.getModelController(OfferItemControl.class);
                     var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
 
                     if(offerItemPrice == null) {
@@ -318,7 +357,7 @@ public class SalesOrderLineLogic
                 }
 
                 // Check Item's status.
-                if(!WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, ItemStatusConstants.Workflow_ITEM_STATUS, item,
+                if(!workflowStepLogic.isEntityInWorkflowSteps(eea, ItemStatusConstants.Workflow_ITEM_STATUS, item,
                         ItemStatusConstants.WorkflowStep_ITEM_STATUS_DISCONTINUED).isEmpty()) {
                     handleExecutionError(ItemDiscontinuedException.class, eea, ExecutionErrors.ItemDiscontinued.name(), item.getLastDetail().getItemName());
                 }
@@ -368,25 +407,25 @@ public class SalesOrderLineLogic
             final String returnPolicyName, final String unitOfMeasureTypeName, final String sourceName,
             final String strOrderLineSequence, final String strQuantity, final String strUnitAmount, final String description,
             final String strTaxable, final Party createdByParty) {
-        var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
-        var item = ItemLogic.getInstance().getItemByNameThenAlias(eea, itemName);
-        var inventoryCondition = inventoryConditionName == null ? null : InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
-        var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(eea, CancellationKinds.CUSTOMER_CANCELLATION.name(), cancellationPolicyName);
-        var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(eea, ReturnKinds.CUSTOMER_RETURN.name(), returnPolicyName);
-        var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
+        var order = orderName == null ? null : salesOrderLogic.getOrderByName(eea, orderName);
+        var item = itemLogic.getItemByNameThenAlias(eea, itemName);
+        var inventoryCondition = inventoryConditionName == null ? null : inventoryConditionLogic.getInventoryConditionByName(eea, inventoryConditionName);
+        var cancellationPolicy = cancellationPolicyName == null ? null : cancellationPolicyLogic.getCancellationPolicyByName(eea, CancellationKinds.CUSTOMER_CANCELLATION.name(), cancellationPolicyName);
+        var returnPolicy = returnPolicyName == null ? null : returnPolicyLogic.getReturnPolicyByName(eea, ReturnKinds.CUSTOMER_RETURN.name(), returnPolicyName);
+        var source = sourceName == null ? null : sourceLogic.getSourceByName(eea, sourceName);
         OrderLine orderLine = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var itemDetail = item.getLastDetail();
             var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-            var unitOfMeasureType = unitOfMeasureTypeName == null ? null : UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea, unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureType = unitOfMeasureTypeName == null ? null : unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(eea, unitOfMeasureKind, unitOfMeasureTypeName);
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 var orderLineSequence = strOrderLineSequence == null ? null : Integer.valueOf(strOrderLineSequence);
                 var quantity = Long.valueOf(strQuantity);
                 var unitAmount = strUnitAmount == null ? null : Long.valueOf(strUnitAmount);
                 var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
-                var associateReferral = AssociateReferralLogic.getInstance().getAssociateReferral(session, userVisit);
+                var associateReferral = associateReferralLogic.getAssociateReferral(session, userVisit);
 
                 orderLine = createSalesOrderLine(session, eea, userVisit, order, null,
                         null, orderLineSequence, null, null, null, item, inventoryCondition, unitOfMeasureType, quantity,

@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOrderAliasCommand
@@ -48,8 +48,18 @@ public class CreateOrderAliasCommand
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    OrderAliasControl orderAliasControl;
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
     
     /** Creates a new instance of CreateOrderAliasCommand */
     public CreateOrderAliasCommand() {
@@ -68,17 +78,14 @@ public class CreateOrderAliasCommand
 
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderControl = Session.getModelController(OrderControl.class);
             var orderName = form.getOrderName();
             var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
-                var orderAliasControl = Session.getModelController(OrderAliasControl.class);
                 var orderAliasTypeName = form.getOrderAliasTypeName();
                 var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 

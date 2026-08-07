@@ -27,7 +27,6 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -46,17 +45,18 @@ public class GetOrderTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetOrderTypeCommand */
-    public GetOrderTypeCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     OrderTypeControl orderTypeControl;
 
     @Inject
     OrderTypeLogic orderTypeLogic;
+
+
+    /** Creates a new instance of GetOrderTypeCommand */
+    public GetOrderTypeCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected OrderType getEntity() {

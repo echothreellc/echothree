@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSelectorTypeCommand
@@ -43,15 +44,19 @@ public class DeleteSelectorTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.Delete.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.Delete.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SelectorTypeLogic selectorTypeLogic;
+
     
     /** Creates a new instance of DeleteSelectorTypeCommand */
     public DeleteSelectorTypeCommand() {
@@ -62,10 +67,10 @@ public class DeleteSelectorTypeCommand
     protected BaseResult execute() {
         var selectorKindName = form.getSelectorKindName();
         var selectorTypeName = form.getSelectorTypeName();
-        var selectorType = SelectorTypeLogic.getInstance().getSelectorTypeByNameForUpdate(this, selectorKindName, selectorTypeName);
+        var selectorType = selectorTypeLogic.getSelectorTypeByNameForUpdate(this, selectorKindName, selectorTypeName);
 
         if(!hasExecutionErrors()) {
-            SelectorTypeLogic.getInstance().deleteSelectorType(this, selectorType, getPartyPK());
+            selectorTypeLogic.deleteSelectorType(this, selectorType, getPartyPK());
         }
 
         return null;

@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EndJobCommand
@@ -41,12 +41,16 @@ public class EndJobCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                ));
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("JobName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    JobControl jobControl;
+
     
     /** Creates a new instance of EndJobCommand */
     public EndJobCommand() {
@@ -55,7 +59,6 @@ public class EndJobCommand
     
     @Override
     protected BaseResult execute() {
-        var jobControl = Session.getModelController(JobControl.class);
         var jobName = form.getJobName();
         var job = jobControl.getJobByName(jobName);
         

@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityDateDefaultCommand
@@ -48,8 +49,11 @@ public class DeleteEntityDateDefaultCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
 
     /** Creates a new instance of CreateEntityDateDefaultCommand */
     public DeleteEntityDateDefaultCommand() {
@@ -58,10 +62,10 @@ public class DeleteEntityDateDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttributeLogic.getInstance().deleteEntityDateDefault(this, entityAttribute, getPartyPK());
+            entityAttributeLogic.deleteEntityDateDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteFilterAdjustmentCommand
@@ -52,6 +53,10 @@ public class DeleteFilterAdjustmentCommand
                 new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
     
     /** Creates a new instance of DeleteFilterAdjustmentCommand */
     public DeleteFilterAdjustmentCommand() {
@@ -62,11 +67,11 @@ public class DeleteFilterAdjustmentCommand
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
-        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByNameForUpdate(this,
+        var filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByNameForUpdate(this,
                 filterKindName, filterAdjustmentName);
 
         if(!hasExecutionErrors()) {
-            FilterAdjustmentLogic.getInstance().deleteFilterAdjustment(this, filterAdjustment, getPartyPK());
+            filterAdjustmentLogic.deleteFilterAdjustment(this, filterAdjustment, getPartyPK());
         }
 
         return null;

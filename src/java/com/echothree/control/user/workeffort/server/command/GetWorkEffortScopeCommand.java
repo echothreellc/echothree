@@ -42,9 +42,10 @@ public class GetWorkEffortScopeCommand
                 new FieldDefinition("WorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     WorkEffortControl workEffortControl;
+
 
     /** Creates a new instance of GetWorkEffortScopeCommand */
     public GetWorkEffortScopeCommand() {

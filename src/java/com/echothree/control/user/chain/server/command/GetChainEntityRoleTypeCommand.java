@@ -59,12 +59,13 @@ public class GetChainEntityRoleTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
     @Inject
     ChainControl chainControl;
 
     @Inject
     ChainEntityRoleTypeLogic chainEntityRoleTypeLogic;
+
 
     /** Creates a new instance of GetChainEntityRoleTypeCommand */
     public GetChainEntityRoleTypeCommand() {

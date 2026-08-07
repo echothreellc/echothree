@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityLongRangeDescriptionCommand
@@ -54,8 +54,8 @@ public class EditEntityLongRangeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityLongRange.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
@@ -69,6 +69,10 @@ public class EditEntityLongRangeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditEntityLongRangeDescriptionCommand */
     public EditEntityLongRangeDescriptionCommand() {
@@ -104,7 +108,6 @@ public class EditEntityLongRangeDescriptionCommand
                     var entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
 
                     if(entityLongRange != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = spec.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
 

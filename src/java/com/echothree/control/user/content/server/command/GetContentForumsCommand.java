@@ -36,12 +36,7 @@ import javax.inject.Inject;
 public class GetContentForumsCommand
         extends BasePaginatedMultipleEntitiesCommand<ContentForum, GetContentForumsForm> {
 
-    @Inject
-    ContentControl contentControl;
     
-    @Inject
-    ContentLogic contentLogic;
-
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
@@ -49,6 +44,12 @@ public class GetContentForumsCommand
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    ContentLogic contentLogic;
 
     /** Creates a new instance of GetContentForumsCommand */
     public GetContentForumsCommand() {

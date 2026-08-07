@@ -50,11 +50,6 @@ public class GetOrderAliasCommand
                 new FieldDefinition("OrderAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetOrderAliasCommand */
-    public GetOrderAliasCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
-    }
 
     @Inject
     OrderAliasControl orderAliasControl;
@@ -64,6 +59,12 @@ public class GetOrderAliasCommand
 
     @Inject
     OrderTypeLogic orderTypeLogic;
+
+
+    /** Creates a new instance of GetOrderAliasCommand */
+    public GetOrderAliasCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected CommandSecurityDefinition getCommandSecurityDefinition() {

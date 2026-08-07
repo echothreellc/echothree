@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeAliasTypeDescriptionCommand
@@ -55,8 +55,8 @@ public class EditGeoCodeAliasTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeAliasType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -68,6 +68,12 @@ public class EditGeoCodeAliasTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditGeoCodeAliasTypeDescriptionCommand */
     public EditGeoCodeAliasTypeDescriptionCommand() {
@@ -86,7 +92,6 @@ public class EditGeoCodeAliasTypeDescriptionCommand
 
     @Override
     public GeoCodeAliasTypeDescription getEntity(EditGeoCodeAliasTypeDescriptionResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAliasTypeDescription geoAliasTypeDescription = null;
         var geoCodeTypeName = spec.getGeoCodeTypeName();
         var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
@@ -96,7 +101,6 @@ public class EditGeoCodeAliasTypeDescriptionCommand
             var geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
             if(geoAliasType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -130,8 +134,6 @@ public class EditGeoCodeAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditGeoCodeAliasTypeDescriptionResult result, GeoCodeAliasTypeDescription geoAliasTypeDescription) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         result.setGeoCodeAliasTypeDescription(geoControl.getGeoCodeAliasTypeDescriptionTransfer(getUserVisit(), geoAliasTypeDescription));
     }
 
@@ -142,7 +144,6 @@ public class EditGeoCodeAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(GeoCodeAliasTypeDescription geoAliasTypeDescription) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoAliasTypeDescriptionValue = geoControl.getGeoCodeAliasTypeDescriptionValue(geoAliasTypeDescription);
 
         geoAliasTypeDescriptionValue.setDescription(edit.getDescription());

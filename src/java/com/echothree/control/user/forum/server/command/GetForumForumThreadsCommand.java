@@ -45,9 +45,11 @@ public class GetForumForumThreadsCommand
                 new FieldDefinition("ForumThreadName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     protected ForumControl forumControl;
+
+
     
     private Forum forum;
     private ForumThread forumThread;

@@ -61,8 +61,11 @@ public class SalesOrderBatchControl
     //   Sales Order Batches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SalesOrderBatchFactory salesOrderBatchFactory;
+
     public SalesOrderBatch createSalesOrderBatch(Batch batch, PaymentMethod paymentMethod, BasePK createdBy) {
-        var salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.getStartTime(), Session.MAX_TIME);
+        var salesOrderBatch = salesOrderBatchFactory.create(batch, paymentMethod, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -95,7 +98,7 @@ public class SalesOrderBatchControl
     }
 
     private SalesOrderBatch getSalesOrderBatch(Batch batch, EntityPermission entityPermission) {
-        return SalesOrderBatchFactory.getInstance().getEntityFromQuery(entityPermission, getSalesOrderBatchQueries,
+        return salesOrderBatchFactory.getEntityFromQuery(entityPermission, getSalesOrderBatchQueries,
                 batch, Session.MAX_TIME);
     }
 
@@ -139,7 +142,7 @@ public class SalesOrderBatchControl
 
     public void updateSalesOrderBatchFromValue(SalesOrderBatchValue salesOrderBatchValue, BasePK updatedBy) {
         if(salesOrderBatchValue.hasBeenModified()) {
-            var salesOrderBatch = SalesOrderBatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var salesOrderBatch = salesOrderBatchFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderBatchValue.getPrimaryKey());
 
             salesOrderBatch.setThruTime(session.getStartTime());
@@ -148,7 +151,7 @@ public class SalesOrderBatchControl
             var batchPK = salesOrderBatch.getBatchPK(); // Not updated
             var paymentMethodPK = salesOrderBatchValue.getPaymentMethodPK();
 
-            salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batchPK, paymentMethodPK, session.getStartTime(), Session.MAX_TIME);
+            salesOrderBatch = salesOrderBatchFactory.create(batchPK, paymentMethodPK, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(batchPK, EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -168,6 +171,9 @@ public class SalesOrderBatchControl
     //   Sales Order Batch Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
     public List<SalesOrderBatchResultTransfer> getSalesOrderBatchResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var salesOrderBatchResultTransfers = new ArrayList<SalesOrderBatchResultTransfer>();
@@ -179,7 +185,7 @@ public class SalesOrderBatchControl
         }
 
         try {
-            var ps = SearchResultFactory.getInstance().prepareStatement("""
+            var ps = searchResultFactory.prepareStatement("""
                     SELECT eni_entityuniqueid
                     FROM searchresults, entityinstances
                     WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid

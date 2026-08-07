@@ -42,10 +42,23 @@ import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class IndexLogic
         extends BaseLogic {
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    QueueControl queueControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    QueueTypeLogic queueTypeLogic;
 
     protected IndexLogic() {
         super();
@@ -56,7 +69,6 @@ public class IndexLogic
     }
     
     public Index getIndexByName(final ExecutionErrorAccumulator eea, final String indexName) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var index = indexControl.getIndexByName(indexName);
 
         if(index == null) {
@@ -88,7 +100,7 @@ public class IndexLogic
         if(entityTypeName.equals(EntityTypes.Party.name())
                 && componentVendor.getLastDetail().getComponentVendorName().equals(ComponentVendors.ECHO_THREE.name())) {
             // The Party indexes aren't by Language, so we're not worried about de-dupping them.
-            var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, indexTypeDetail.getIndexTypeName());
+            var partyType = partyLogic.getPartyTypeByName(eea, indexTypeDetail.getIndexTypeName());
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 queueEntityInstances(session, queueControl, queueTypePK, new EntityInstancePKsByPartyTypeQuery().execute(entityType, partyType));
@@ -108,11 +120,9 @@ public class IndexLogic
      * @param entityType the EntityType that should be reindexed. If null, all indexes will be reindexed (Optional)
      */
     public void reindex(final Session session, final ExecutionErrorAccumulator eea, final EntityType entityType) {
-        var queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
+        var queueType = queueTypeLogic.getQueueTypeByName(eea, QueueTypes.INDEXING.name());
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var indexControl = Session.getModelController(IndexControl.class);
-            var queueControl = Session.getModelController(QueueControl.class);
             var queueTypePK = queueType.getPrimaryKey();
             Set<EntityType> queuedEntityTypes = new HashSet<>();
             var indexTypes = entityType == null ? indexControl.getIndexTypes() : indexControl.getIndexTypesByEntityType(entityType);

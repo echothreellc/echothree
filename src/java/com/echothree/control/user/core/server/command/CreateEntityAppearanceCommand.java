@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityAppearanceCommand
@@ -48,14 +48,24 @@ public class CreateEntityAppearanceCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAppearance.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    AppearanceLogic appearanceLogic;
+
     
     /** Creates a new instance of CreateEntityAppearanceCommand */
     public CreateEntityAppearanceCommand() {
@@ -64,17 +74,15 @@ public class CreateEntityAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityRef = form.getEntityRef();
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            var appearanceControl = Session.getModelController(AppearanceControl.class);
             var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
 
             if(entityAppearance == null) {
                 var appearanceName = form.getAppearanceName();
-                var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+                var appearance = appearanceLogic.getAppearanceByName(this, appearanceName);
 
                 if(!hasExecutionErrors()) {
                     appearanceControl.createEntityAppearance(entityInstance, appearance, getPartyPK());

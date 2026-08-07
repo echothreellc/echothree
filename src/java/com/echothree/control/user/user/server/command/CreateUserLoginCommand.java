@@ -28,7 +28,6 @@ import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.command.BaseResult;
@@ -38,9 +37,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUserLoginCommand
@@ -56,8 +55,8 @@ public class CreateUserLoginCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.UserLogin.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -68,8 +67,21 @@ public class CreateUserLoginCommand
                 new FieldDefinition("Password2", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Answer", FieldType.STRING, false, 1L, 40L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    PasswordStringPolicyLogic passwordStringPolicyLogic;
+
     
     /** Creates a new instance of CreateUserLoginCommand */
     public CreateUserLoginCommand() {
@@ -79,39 +91,35 @@ public class CreateUserLoginCommand
     @Override
     protected BaseResult execute() {
         var partyName = form.getPartyName();
-        var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (partyName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             Party party = null;
             
             if(partyName == null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Party.name());
 
                 if(!hasExecutionErrors()) {
                     party = partyControl.getPartyByEntityInstanceForUpdate(entityInstance);
                 }
             } else {
-                party = PartyLogic.getInstance().getPartyByName(this, form.getPartyName());
+                party = partyLogic.getPartyByName(this, form.getPartyName());
             }
             
             if(!hasExecutionErrors()) {
-                var partyLogic = PartyLogic.getInstance();
-
                 if(!hasExecutionErrors()) {
                     var partyType = party.getLastDetail().getPartyType();
                     var securityRoleGroupName = getSecurityRoleGroupName(partyType);
 
                     if(securityRoleGroupName != null 
-                            && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
+                            && securityRoleLogic.hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                         if(!hasExecutionErrors()) {
                             if(partyType.getAllowUserLogins()) {
                                 partyLogic.checkPartyType(this, party, PartyTypes.CUSTOMER.name(), PartyTypes.EMPLOYEE.name(),
                                         PartyTypes.VENDOR.name());
 
                                 if(!hasExecutionErrors()) {
-                                    var userControl = getUserControl();
                                     var username = form.getUsername();
                                     var userLogin = userControl.getUserLoginByUsername(username);
 
@@ -134,7 +142,7 @@ public class CreateUserLoginCommand
                                             var password2 = form.getPassword2();
 
                                             if(password1.equals(password2)) {
-                                                var partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
+                                                var partyTypePasswordStringPolicy = passwordStringPolicyLogic.checkStringPassword(session,
                                                         getUserVisit(), this, partyType, null, null, password1);
 
                                                 if(!hasExecutionErrors()) {

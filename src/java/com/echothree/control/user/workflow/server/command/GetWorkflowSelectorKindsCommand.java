@@ -54,18 +54,13 @@ public class GetWorkflowSelectorKindsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.SelectorKind.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, false, null, null)
         );
-    }
-    
-    /** Creates a new instance of GetWorkflowSelectorKindsCommand */
-    public GetWorkflowSelectorKindsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Inject
@@ -75,10 +70,16 @@ public class GetWorkflowSelectorKindsCommand
     WorkflowControl workflowControl;
 
     @Inject
-    WorkflowLogic workflowLogic;
+    SelectorKindLogic selectorKindLogic;
 
     @Inject
-    SelectorKindLogic selectorKindLogic;
+    WorkflowLogic workflowLogic;
+
+
+    /** Creates a new instance of GetWorkflowSelectorKindsCommand */
+    public GetWorkflowSelectorKindsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     Workflow workflow;
     SelectorKind selectorKind;

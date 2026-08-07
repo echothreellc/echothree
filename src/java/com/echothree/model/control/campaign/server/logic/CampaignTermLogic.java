@@ -45,6 +45,24 @@ import javax.inject.Inject;
 public class CampaignTermLogic
         extends BaseLogic {
 
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     protected CampaignTermLogic() {
         super();
     }
@@ -52,9 +70,6 @@ public class CampaignTermLogic
     public static CampaignTermLogic getInstance() {
         return CDI.current().select(CampaignTermLogic.class).get();
     }
-
-    @Inject
-    CampaignControl campaignControl;
 
     public CampaignTerm getCampaignTermByName(final ExecutionErrorAccumulator eea, final String campaignTermName,
             final EntityPermission entityPermission) {
@@ -98,12 +113,12 @@ public class CampaignTermLogic
             final CampaignTermUniversalSpec universalSpec, final EntityPermission entityPermission) {
         CampaignTerm campaignTerm = null;
         var campaignTermName = universalSpec.getCampaignTermName();
-        var parameterCount = (campaignTermName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (campaignTermName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(campaignTermName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignTerm.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -131,16 +146,12 @@ public class CampaignTermLogic
     }
     
     public void setCampaignTermStatus(final Session session, ExecutionErrorAccumulator eea, CampaignTerm campaignTerm, String campaignTermStatusChoice, PartyPK modifiedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflowLogic = WorkflowLogic.getInstance();
         var workflow = workflowLogic.getWorkflowByName(eea, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = campaignTermStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), campaignTermStatusChoice);
 
         if(workflowDestination != null || campaignTermStatusChoice == null) {
-            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;

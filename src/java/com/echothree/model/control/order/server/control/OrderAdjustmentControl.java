@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderAdjustmentControl
@@ -63,6 +64,12 @@ public class OrderAdjustmentControl
     // --------------------------------------------------------------------------------
     //   Order Adjustment Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected OrderAdjustmentTypeFactory orderAdjustmentTypeFactory;
+
+    @Inject
+    protected OrderAdjustmentTypeDetailFactory orderAdjustmentTypeDetailFactory;
 
     public OrderAdjustmentType createOrderAdjustmentType(OrderType orderType, String orderAdjustmentTypeName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -78,12 +85,12 @@ public class OrderAdjustmentControl
             isDefault = true;
         }
 
-        var orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().create();
-        var orderAdjustmentTypeDetail = OrderAdjustmentTypeDetailFactory.getInstance().create(orderAdjustmentType, orderType,
+        var orderAdjustmentType = orderAdjustmentTypeFactory.create();
+        var orderAdjustmentTypeDetail = orderAdjustmentTypeDetailFactory.create(orderAdjustmentType, orderType,
                 orderAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderAdjustmentType = orderAdjustmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderAdjustmentType.getPrimaryKey());
         orderAdjustmentType.setActiveDetail(orderAdjustmentTypeDetail);
         orderAdjustmentType.setLastDetail(orderAdjustmentTypeDetail);
@@ -98,7 +105,7 @@ public class OrderAdjustmentControl
     public OrderAdjustmentType getOrderAdjustmentTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderAdjustmentTypePK(entityInstance.getEntityUniqueId());
 
-        return OrderAdjustmentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderAdjustmentTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderAdjustmentType getOrderAdjustmentTypeByEntityInstance(EntityInstance entityInstance) {
@@ -142,7 +149,7 @@ public class OrderAdjustmentControl
     }
 
     private OrderAdjustmentType getOrderAdjustmentTypeByName(OrderType orderType, String orderAdjustmentTypeName, EntityPermission entityPermission) {
-        return OrderAdjustmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderAdjustmentTypeByNameQueries,
+        return orderAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getOrderAdjustmentTypeByNameQueries,
                 orderType, orderAdjustmentTypeName);
     }
 
@@ -186,7 +193,7 @@ public class OrderAdjustmentControl
     }
 
     private OrderAdjustmentType getDefaultOrderAdjustmentType(OrderType orderType, EntityPermission entityPermission) {
-        return OrderAdjustmentTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderAdjustmentTypeQueries,
+        return orderAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderAdjustmentTypeQueries,
                 orderType);
     }
 
@@ -228,7 +235,7 @@ public class OrderAdjustmentControl
     }
 
     private List<OrderAdjustmentType> getOrderAdjustmentTypes(OrderType orderType, EntityPermission entityPermission) {
-        return OrderAdjustmentTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderAdjustmentTypesQueries,
+        return orderAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission, getOrderAdjustmentTypesQueries,
                 orderType);
     }
 
@@ -296,7 +303,7 @@ public class OrderAdjustmentControl
     private void updateOrderAdjustmentTypeFromValue(OrderAdjustmentTypeDetailValue orderAdjustmentTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(orderAdjustmentTypeDetailValue.hasBeenModified()) {
-            var orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderAdjustmentType = orderAdjustmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      orderAdjustmentTypeDetailValue.getOrderAdjustmentTypePK());
             var orderAdjustmentTypeDetail = orderAdjustmentType.getActiveDetailForUpdate();
 
@@ -326,7 +333,7 @@ public class OrderAdjustmentControl
                 }
             }
 
-            orderAdjustmentTypeDetail = OrderAdjustmentTypeDetailFactory.getInstance().create(orderAdjustmentTypePK, orderTypePK, orderAdjustmentTypeName, isDefault, sortOrder,
+            orderAdjustmentTypeDetail = orderAdjustmentTypeDetailFactory.create(orderAdjustmentTypePK, orderTypePK, orderAdjustmentTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             orderAdjustmentType.setActiveDetail(orderAdjustmentTypeDetail);
@@ -374,8 +381,11 @@ public class OrderAdjustmentControl
     //   Order Adjustment Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderAdjustmentTypeDescriptionFactory orderAdjustmentTypeDescriptionFactory;
+
     public OrderAdjustmentTypeDescription createOrderAdjustmentTypeDescription(OrderAdjustmentType orderAdjustmentType, Language language, String description, BasePK createdBy) {
-        var orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
+        var orderAdjustmentTypeDescription = orderAdjustmentTypeDescriptionFactory.create(orderAdjustmentType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -405,7 +415,7 @@ public class OrderAdjustmentControl
     }
 
     private OrderAdjustmentTypeDescription getOrderAdjustmentTypeDescription(OrderAdjustmentType orderAdjustmentType, Language language, EntityPermission entityPermission) {
-        return OrderAdjustmentTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getOrderAdjustmentTypeDescriptionQueries,
+        return orderAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderAdjustmentTypeDescriptionQueries,
                 orderAdjustmentType, language, Session.MAX_TIME);
     }
 
@@ -448,7 +458,7 @@ public class OrderAdjustmentControl
     }
 
     private List<OrderAdjustmentTypeDescription> getOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(OrderAdjustmentType orderAdjustmentType, EntityPermission entityPermission) {
-        return OrderAdjustmentTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getOrderAdjustmentTypeDescriptionsByOrderAdjustmentTypeQueries,
+        return orderAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderAdjustmentTypeDescriptionsByOrderAdjustmentTypeQueries,
                 orderAdjustmentType, Session.MAX_TIME);
     }
 
@@ -494,7 +504,7 @@ public class OrderAdjustmentControl
 
     public void updateOrderAdjustmentTypeDescriptionFromValue(OrderAdjustmentTypeDescriptionValue orderAdjustmentTypeDescriptionValue, BasePK updatedBy) {
         if(orderAdjustmentTypeDescriptionValue.hasBeenModified()) {
-            var orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var orderAdjustmentTypeDescription = orderAdjustmentTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     orderAdjustmentTypeDescriptionValue.getPrimaryKey());
 
             orderAdjustmentTypeDescription.setThruTime(session.getStartTime());
@@ -504,7 +514,7 @@ public class OrderAdjustmentControl
             var language = orderAdjustmentTypeDescription.getLanguage();
             var description = orderAdjustmentTypeDescriptionValue.getDescription();
 
-            orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
+            orderAdjustmentTypeDescription = orderAdjustmentTypeDescriptionFactory.create(orderAdjustmentType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -530,14 +540,20 @@ public class OrderAdjustmentControl
     //   Order Adjustments
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected OrderAdjustmentFactory orderAdjustmentFactory;
+
+    @Inject
+    protected OrderAdjustmentDetailFactory orderAdjustmentDetailFactory;
+
     public OrderAdjustment createOrderAdjustment(Order order, Integer orderAdjustmentSequence, OrderAdjustmentType orderAdjustmentType, Long amount,
             BasePK createdBy) {
-        var orderAdjustment = OrderAdjustmentFactory.getInstance().create();
-        var orderAdjustmentDetail = OrderAdjustmentDetailFactory.getInstance().create(orderAdjustment,
+        var orderAdjustment = orderAdjustmentFactory.create();
+        var orderAdjustmentDetail = orderAdjustmentDetailFactory.create(orderAdjustment,
                 order, orderAdjustmentSequence, orderAdjustmentType, amount, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        orderAdjustment = OrderAdjustmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        orderAdjustment = orderAdjustmentFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 orderAdjustment.getPrimaryKey());
         orderAdjustment.setActiveDetail(orderAdjustmentDetail);
         orderAdjustment.setLastDetail(orderAdjustmentDetail);
@@ -552,7 +568,7 @@ public class OrderAdjustmentControl
     public OrderAdjustment getOrderAdjustmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OrderAdjustmentPK(entityInstance.getEntityUniqueId());
 
-        return OrderAdjustmentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return orderAdjustmentFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public OrderAdjustment getOrderAdjustmentByEntityInstance(EntityInstance entityInstance) {
@@ -603,11 +619,11 @@ public class OrderAdjustmentControl
                         """;
             }
 
-            var ps = OrderAdjustmentFactory.getInstance().prepareStatement(query);
+            var ps = orderAdjustmentFactory.prepareStatement(query);
 
             ps.setLong(1, order.getPrimaryKey().getEntityId());
 
-            orderAdjustments = OrderAdjustmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            orderAdjustments = orderAdjustmentFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

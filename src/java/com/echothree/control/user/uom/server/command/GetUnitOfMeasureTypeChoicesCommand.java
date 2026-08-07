@@ -28,9 +28,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUnitOfMeasureTypeChoicesCommand
@@ -47,8 +47,18 @@ public class GetUnitOfMeasureTypeChoicesCommand
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of GetUnitOfMeasureTypeChoicesCommand */
     public GetUnitOfMeasureTypeChoicesCommand() {
@@ -57,7 +67,6 @@ public class GetUnitOfMeasureTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = Session.getModelController(UomControl.class);
         var result = UomResultFactory.getGetUnitOfMeasureTypeChoicesResult();
         var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
@@ -95,7 +104,6 @@ public class GetUnitOfMeasureTypeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUseTypeName.name(), unitOfMeasureKindUseTypeName);
                 }
             } else if(vendorName != null) {
-                var vendorControl = Session.getModelController(VendorControl.class);
                 var vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {
@@ -110,7 +118,6 @@ public class GetUnitOfMeasureTypeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else {
-                var itemControl = Session.getModelController(ItemControl.class);
                 var item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {

@@ -30,10 +30,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditMessageDescriptionCommand
@@ -54,6 +54,13 @@ public class EditMessageDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    MessageControl messageControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditMessageDescriptionCommand */
     public EditMessageDescriptionCommand() {
@@ -71,7 +78,6 @@ public class EditMessageDescriptionCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var messageControl = Session.getModelController(MessageControl.class);
                 var messageTypeName = spec.getMessageTypeName();
                 var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
@@ -80,7 +86,6 @@ public class EditMessageDescriptionCommand
                     var message = messageControl.getMessageByName(messageType, messageName);
                     
                     if(message != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = spec.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
                         

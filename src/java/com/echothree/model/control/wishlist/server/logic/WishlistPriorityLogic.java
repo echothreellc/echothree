@@ -34,14 +34,23 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WishlistPriorityLogic
         extends BaseLogic {
+
+    @Inject
+    WishlistControl wishlistControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
 
     protected WishlistPriorityLogic() {
         super();
@@ -53,7 +62,7 @@ public class WishlistPriorityLogic
 
     public WishlistPriority createWishlistPriority(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistPriorityName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(eea, wishlistTypeName);
+        var wishlistType = wishlistTypeLogic.getWishlistTypeByName(eea, wishlistTypeName);
         WishlistPriority wishlistPriority = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -65,7 +74,6 @@ public class WishlistPriorityLogic
 
     public WishlistPriority createWishlistPriority(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistPriorityName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
 
         if(wishlistPriority == null) {
@@ -84,7 +92,6 @@ public class WishlistPriorityLogic
 
     public WishlistPriority getWishlistPriorityByName(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistPriorityName,
             final EntityPermission entityPermission) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName, entityPermission);
 
         if(wishlistPriority == null) {
@@ -105,7 +112,7 @@ public class WishlistPriorityLogic
 
     public WishlistPriority getWishlistPriorityByName(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistPriorityName,
             final EntityPermission entityPermission) {
-        var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(eea, wishlistTypeName);
+        var wishlistType = wishlistTypeLogic.getWishlistTypeByName(eea, wishlistTypeName);
         WishlistPriority wishlistPriority = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -125,11 +132,10 @@ public class WishlistPriorityLogic
 
     public WishlistPriority getWishlistPriorityByUniversalSpec(final ExecutionErrorAccumulator eea, final WishlistPriorityUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistTypeName = universalSpec.getWishlistTypeName();
         var wishlistPriorityName = universalSpec.getWishlistPriorityName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(wishlistTypeName, wishlistPriorityName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         WishlistPriority wishlistPriority = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -146,7 +152,7 @@ public class WishlistPriorityLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(eea, wishlistTypeName);
+                wishlistType = wishlistTypeLogic.getWishlistTypeByName(eea, wishlistTypeName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -165,7 +171,7 @@ public class WishlistPriorityLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WishlistPriority.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -190,8 +196,6 @@ public class WishlistPriorityLogic
 
     public void deleteWishlistPriority(final ExecutionErrorAccumulator eea, final WishlistPriority wishlistPriority,
             final BasePK deletedBy) {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-
         wishlistControl.deleteWishlistPriority(wishlistPriority, deletedBy);
     }
 

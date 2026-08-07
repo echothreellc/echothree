@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class FreeOnBoardLogic
         extends BaseLogic {
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected FreeOnBoardLogic() {
         super();
@@ -51,7 +57,6 @@ public class FreeOnBoardLogic
     public FreeOnBoard createFreeOnBoard(final ExecutionErrorAccumulator eea, final String freeOnBoardName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
 
         if(freeOnBoard == null) {
@@ -69,7 +74,6 @@ public class FreeOnBoardLogic
 
     public FreeOnBoard getFreeOnBoardByName(final ExecutionErrorAccumulator eea, final String freeOnBoardName,
             final EntityPermission entityPermission) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName, entityPermission);
 
         if(freeOnBoard == null) {
@@ -90,9 +94,8 @@ public class FreeOnBoardLogic
     public FreeOnBoard getFreeOnBoardByUniversalSpec(final ExecutionErrorAccumulator eea,
             final FreeOnBoardUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         FreeOnBoard freeOnBoard = null;
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoardName = universalSpec.getFreeOnBoardName();
-        var parameterCount = (freeOnBoardName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (freeOnBoardName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,7 +111,7 @@ public class FreeOnBoardLogic
             }
             case 1 -> {
                 if(freeOnBoardName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.FreeOnBoard.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -136,7 +139,6 @@ public class FreeOnBoardLogic
     }
 
     public FreeOnBoard getDefaultFreeOnBoard(final ExecutionErrorAccumulator eea) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoard = freeOnBoardControl.getDefaultFreeOnBoard();
 
         if(freeOnBoard == null) {
@@ -148,8 +150,6 @@ public class FreeOnBoardLogic
 
     public void deleteFreeOnBoard(final ExecutionErrorAccumulator eea, final FreeOnBoard freeOnBoard,
             final BasePK deletedBy) {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-
         freeOnBoardControl.deleteFreeOnBoard(freeOnBoard, deletedBy);
     }
 }

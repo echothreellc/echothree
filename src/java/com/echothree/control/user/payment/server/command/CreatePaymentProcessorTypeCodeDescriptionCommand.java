@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentProcessorTypeCodeDescriptionCommand
@@ -44,8 +45,8 @@ public class CreatePaymentProcessorTypeCodeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorTypeCodeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -53,8 +54,11 @@ public class CreatePaymentProcessorTypeCodeDescriptionCommand
                 new FieldDefinition("PaymentProcessorTypeCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorTypeCodeLogic paymentProcessorTypeCodeLogic;
 
     /** Creates a new instance of CreatePaymentProcessorTypeCodeTypeDescriptionCommand */
     public CreatePaymentProcessorTypeCodeDescriptionCommand() {
@@ -69,7 +73,7 @@ public class CreatePaymentProcessorTypeCodeDescriptionCommand
         var languageIsoName = form.getLanguageIsoName();
         var description = form.getDescription();
 
-        PaymentProcessorTypeCodeLogic.getInstance().createPaymentProcessorTypeCodeDescription(this,
+        paymentProcessorTypeCodeLogic.createPaymentProcessorTypeCodeDescription(this,
                 paymentProcessorTypeName, paymentProcessorTypeCodeTypeName, paymentProcessorTypeCodeName,
                 languageIsoName, description, getPartyPK());
 

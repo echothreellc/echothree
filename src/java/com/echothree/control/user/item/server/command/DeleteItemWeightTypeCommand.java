@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemWeightTypeCommand
@@ -44,15 +45,19 @@ public class DeleteItemWeightTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemWeightType.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemWeightTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemWeightTypeLogic itemWeightTypeLogic;
+
     
     /** Creates a new instance of DeleteItemWeightTypeCommand */
     public DeleteItemWeightTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteItemWeightTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemWeightType = ItemWeightTypeLogic.getInstance().getItemWeightTypeByUniversalSpecForUpdate(this, form, false);
+        var itemWeightType = itemWeightTypeLogic.getItemWeightTypeByUniversalSpecForUpdate(this, form, false);
         
         if(!hasExecutionErrors()) {
-            ItemWeightTypeLogic.getInstance().deleteItemWeightType(this, itemWeightType, getPartyPK());
+            itemWeightTypeLogic.deleteItemWeightType(this, itemWeightType, getPartyPK());
         }
         
         return null;

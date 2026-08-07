@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateShipmentTypeShippingMethodCommand
@@ -40,8 +40,15 @@ public class CreateShipmentTypeShippingMethodCommand
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ShipmentControl shipmentControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
     
     /** Creates a new instance of CreateShipmentTypeShippingMethodCommand */
     public CreateShipmentTypeShippingMethodCommand() {
@@ -50,12 +57,10 @@ public class CreateShipmentTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentType != null) {
-            var shippingControl = Session.getModelController(ShippingControl.class);
             var shippingMethodName = form.getShippingMethodName();
             var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             

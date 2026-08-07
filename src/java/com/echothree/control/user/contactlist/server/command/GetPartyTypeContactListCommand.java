@@ -67,6 +67,7 @@ public class GetPartyTypeContactListCommand
 
     @Inject
     PartyLogic partyLogic;
+
     
     /** Creates a new instance of GetPartyTypeContactListCommand */
     public GetPartyTypeContactListCommand() {

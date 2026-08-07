@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTextDecorationDescriptionCommand
@@ -55,8 +55,8 @@ public class EditTextDecorationDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TextDecoration.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TextDecorationName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditTextDecorationDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of EditTextDecorationDescriptionCommand */
     public EditTextDecorationDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditTextDecorationDescriptionCommand
 
     @Override
     public TextDecorationDescription getEntity(EditTextDecorationDescriptionResult result) {
-        var textControl = Session.getModelController(TextControl.class);
         TextDecorationDescription textDecorationDescription = null;
         var textDecorationName = spec.getTextDecorationName();
         var textDecoration = textControl.getTextDecorationByName(textDecorationName);
 
         if(textDecoration != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditTextDecorationDescriptionCommand
 
     @Override
     public void fillInResult(EditTextDecorationDescriptionResult result, TextDecorationDescription textDecorationDescription) {
-        var textControl = Session.getModelController(TextControl.class);
-
         result.setTextDecorationDescription(textControl.getTextDecorationDescriptionTransfer(getUserVisit(), textDecorationDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditTextDecorationDescriptionCommand
 
     @Override
     public void doUpdate(TextDecorationDescription textDecorationDescription) {
-        var textControl = Session.getModelController(TextControl.class);
         var textDecorationDescriptionValue = textControl.getTextDecorationDescriptionValue(textDecorationDescription);
         textDecorationDescriptionValue.setDescription(edit.getDescription());
 

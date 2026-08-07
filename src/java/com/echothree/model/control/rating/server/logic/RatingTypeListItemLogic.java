@@ -23,13 +23,19 @@ import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class RatingTypeListItemLogic
         extends BaseLogic {
+
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    RatingTypeLogic ratingTypeLogic;
 
     protected RatingTypeListItemLogic() {
         super();
@@ -40,7 +46,6 @@ public class RatingTypeListItemLogic
     }
     
     public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final RatingType ratingType, final String ratingTypeListItemName) {
-        var ratingControl = Session.getModelController(RatingControl.class);
         var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
 
         if(ratingTypeListItem == null) {
@@ -57,7 +62,7 @@ public class RatingTypeListItemLogic
 
     public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName,
             final String ratingTypeName, final String ratingTypeListItemName) {
-        var ratingType = RatingTypeLogic.getInstance().getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName);
+        var ratingType = ratingTypeLogic.getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName);
         RatingTypeListItem ratingTypeListItem = null;
         
         if(!hasExecutionErrors(eea)) {

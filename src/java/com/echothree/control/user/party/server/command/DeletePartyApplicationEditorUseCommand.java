@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartyApplicationEditorUseCommand
@@ -48,15 +48,25 @@ public class DeletePartyApplicationEditorUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyApplicationEditorUse.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyApplicationEditorUseControl partyApplicationEditorUseControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     
     /** Creates a new instance of DeletePartyApplicationEditorUseCommand */
     public DeletePartyApplicationEditorUseCommand() {
@@ -66,18 +76,17 @@ public class DeletePartyApplicationEditorUseCommand
     @Override
     protected BaseResult execute() {
         var partyName = form.getPartyName();
-        var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
+        var party = partyName == null ? getParty() : partyLogic.getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
             var applicationName = form.getApplicationName();
-            var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+            var application = applicationLogic.getApplicationByName(this, applicationName);
             
             if(!hasExecutionErrors()) {
                 var applicationEditorUseName = form.getApplicationEditorUseName();
-                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                var applicationEditorUse = applicationLogic.getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
                     var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse != null) {

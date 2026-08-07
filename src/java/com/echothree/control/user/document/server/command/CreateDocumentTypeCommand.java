@@ -17,7 +17,6 @@
 package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.CreateDocumentTypeForm;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateDocumentTypeCommand
@@ -48,9 +47,9 @@ public class CreateDocumentTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.DocumentType.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.DocumentType.name(), SecurityRoles.Create.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DocumentTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -60,8 +59,12 @@ public class CreateDocumentTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of CreateDocumentTypeCommand */
     public CreateDocumentTypeCommand() {
@@ -70,7 +73,6 @@ public class CreateDocumentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeName = form.getDocumentTypeName();
         var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
@@ -87,8 +89,6 @@ public class CreateDocumentTypeCommand
                 var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
                 if(mimeTypeUsageTypeName != null) {
-                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-
                     mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                 }
 

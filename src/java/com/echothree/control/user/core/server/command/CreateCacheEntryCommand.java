@@ -19,7 +19,6 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateCacheEntryForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CacheEntryControl;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.util.common.command.BaseResult;
@@ -29,9 +28,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCacheEntryCommand
@@ -46,8 +45,15 @@ public class CreateCacheEntryCommand
                 new FieldDefinition("ValidForTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("ValidForTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Clob", FieldType.STRING, false, 1L, null)
-                );
+        );
     }
+
+    @Inject
+    CacheEntryControl cacheEntryControl;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of CreateCacheEntryCommand */
     public CreateCacheEntryCommand() {
@@ -56,17 +62,15 @@ public class CreateCacheEntryCommand
     
     @Override
     protected BaseResult execute() {
-        var cacheEntryControl = Session.getModelController(CacheEntryControl.class);
         var cacheEntryKey = form.getCacheEntryKey();
         var cacheEntry = cacheEntryControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 
         if(cacheEntry == null) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = form.getMimeTypeName();
             var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
-                var validForTime = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                var validForTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                         form.getValidForTime(), form.getValidForTimeUnitOfMeasureTypeName(),
                         null, ExecutionErrors.MissingRequiredValidForTime.name(), null, ExecutionErrors.MissingRequiredValidForTimeUnitOfMeasureTypeName.name(),
                         null, ExecutionErrors.UnknownValidForTimeUnitOfMeasureTypeName.name());

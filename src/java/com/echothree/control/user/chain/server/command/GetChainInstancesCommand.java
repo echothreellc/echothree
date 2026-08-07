@@ -45,12 +45,13 @@ public class GetChainInstancesCommand
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ChainControl chainControl;
 
     @Inject
     ChainLogic chainLogic;
+
 
     /** Creates a new instance of GetChainInstancesCommand */
     public GetChainInstancesCommand() {

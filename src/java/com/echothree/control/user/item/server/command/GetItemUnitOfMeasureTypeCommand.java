@@ -28,9 +28,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemUnitOfMeasureTypeCommand
@@ -43,8 +43,18 @@ public class GetItemUnitOfMeasureTypeCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of GetItemUnitOfMeasureTypeCommand */
     public GetItemUnitOfMeasureTypeCommand() {
@@ -54,14 +64,12 @@ public class GetItemUnitOfMeasureTypeCommand
 
     @Override
     protected ItemUnitOfMeasureType getEntity() {
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
-        var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+        var item = itemLogic.getItemByName(this, form.getItemName());
+        var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this,
                 item.getLastDetail().getUnitOfMeasureKind(), form.getUnitOfMeasureTypeName());
         ItemUnitOfMeasureType itemUnitOfMeasureType = null;
 
         if(!hasExecutionErrors()) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
 
             if(itemUnitOfMeasureType == null) {
@@ -78,8 +86,6 @@ public class GetItemUnitOfMeasureTypeCommand
         var result = ItemResultFactory.getGetItemUnitOfMeasureTypeResult();
 
         if(entity != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             result.setItemUnitOfMeasureType(itemControl.getItemUnitOfMeasureTypeTransfer(getUserVisit(), entity));
         }
 

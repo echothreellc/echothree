@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDepartmentCommand
@@ -60,6 +60,12 @@ public class GetDepartmentCommand
         );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    DepartmentLogic departmentLogic;
+
     /** Creates a new instance of GetDepartmentCommand */
     public GetDepartmentCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -72,7 +78,7 @@ public class GetDepartmentCommand
         var divisionName = form.getDivisionName();
         var departmentName = form.getDepartmentName();
         var partyName = form.getPartyName();
-        var partyDepartment = DepartmentLogic.getInstance().getPartyDepartmentByName(this, companyName,
+        var partyDepartment = departmentLogic.getPartyDepartmentByName(this, companyName,
                 divisionName, departmentName, partyName, form, true);
 
         if(partyDepartment != null) {
@@ -87,8 +93,6 @@ public class GetDepartmentCommand
         var result = PartyResultFactory.getGetDepartmentResult();
 
         if(partyDepartment != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             result.setDepartment(partyControl.getDepartmentTransfer(getUserVisit(), partyDepartment));
         }
 

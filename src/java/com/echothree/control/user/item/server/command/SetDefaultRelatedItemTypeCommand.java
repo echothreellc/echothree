@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultRelatedItemTypeCommand
@@ -45,14 +45,18 @@ public class SetDefaultRelatedItemTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.RelatedItemType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.RelatedItemType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of SetDefaultRelatedItemTypeCommand */
     public SetDefaultRelatedItemTypeCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultRelatedItemTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var relatedItemTypeName = form.getRelatedItemTypeName();
         var relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueByNameForUpdate(relatedItemTypeName);
         

@@ -53,9 +53,11 @@ public class GetPrinterGroupJobCommand
                 new FieldDefinition("PrinterGroupJobName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     PrinterControl printerControl;
+
+
     
     /** Creates a new instance of GetPrinterGroupJobCommand */
     public GetPrinterGroupJobCommand() {

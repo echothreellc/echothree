@@ -60,15 +60,16 @@ public class GetPartyPaymentMethodsCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
-    @Inject
-    PartyPaymentMethodControl partyPaymentMethodControl;
 
     @Inject
     PartyControl partyControl;
 
     @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
     PartyLogic partyLogic;
+
 
     /** Creates a new instance of GetPartyPaymentMethodsCommand */
     public GetPartyPaymentMethodsCommand() {

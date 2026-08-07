@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactMechanismAliasTypeCommand
@@ -53,8 +53,8 @@ public class EditContactMechanismAliasTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanismAliasType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactMechanismAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -68,6 +68,10 @@ public class EditContactMechanismAliasTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
     
     /** Creates a new instance of EditContactMechanismAliasTypeCommand */
     public EditContactMechanismAliasTypeCommand() {
@@ -86,7 +90,6 @@ public class EditContactMechanismAliasTypeCommand
     
     @Override
     public ContactMechanismAliasType getEntity(EditContactMechanismAliasTypeResult result) {
-        var contactControl = Session.getModelController(ContactControl.class);
         ContactMechanismAliasType contactMechanismAliasType;
         var contactMechanismAliasTypeName = spec.getContactMechanismAliasTypeName();
 
@@ -112,14 +115,11 @@ public class EditContactMechanismAliasTypeCommand
     
     @Override
     public void fillInResult(EditContactMechanismAliasTypeResult result, ContactMechanismAliasType contactMechanismAliasType) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        
         result.setContactMechanismAliasType(contactControl.getContactMechanismAliasTypeTransfer(getUserVisit(), contactMechanismAliasType));
     }
     
     @Override
     public void doLock(ContactMechanismAliasTypeEdit edit, ContactMechanismAliasType contactMechanismAliasType) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismAliasTypeDescription = contactControl.getContactMechanismAliasTypeDescription(contactMechanismAliasType, getPreferredLanguage());
         var contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
 
@@ -134,7 +134,6 @@ public class EditContactMechanismAliasTypeCommand
         
     @Override
     public void canUpdate(ContactMechanismAliasType contactMechanismAliasType) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismAliasTypeName = edit.getContactMechanismAliasTypeName();
         var duplicateContactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
 
@@ -145,7 +144,6 @@ public class EditContactMechanismAliasTypeCommand
     
     @Override
     public void doUpdate(ContactMechanismAliasType contactMechanismAliasType) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var partyPK = getPartyPK();
         var contactMechanismAliasTypeDetailValue = contactControl.getContactMechanismAliasTypeDetailValueForUpdate(contactMechanismAliasType);
         var contactMechanismAliasTypeDescription = contactControl.getContactMechanismAliasTypeDescriptionForUpdate(contactMechanismAliasType, getPreferredLanguage());

@@ -54,9 +54,11 @@ public class GetServerServiceCommand
                 new FieldDefinition("ServiceName", FieldType.HOST_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ServerControl serverControl;
+
+
     
     /** Creates a new instance of GetServerServiceCommand */
     public GetServerServiceCommand() {

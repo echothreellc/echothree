@@ -57,12 +57,13 @@ public class GetIndexFieldsCommand
                 new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     IndexControl indexControl;
 
     @Inject
     IndexTypeLogic indexTypeLogic;
+
 
     /** Creates a new instance of GetIndexFieldsCommand */
     public GetIndexFieldsCommand() {

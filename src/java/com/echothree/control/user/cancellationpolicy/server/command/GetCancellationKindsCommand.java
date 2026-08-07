@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationKindsCommand
@@ -53,6 +53,9 @@ public class GetCancellationKindsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
     /** Creates a new instance of GetCancellationKindsCommand */
     public GetCancellationKindsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,14 +68,14 @@ public class GetCancellationKindsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var cancellationControl = Session.getModelController(CancellationPolicyControl.class);
+        var cancellationControl = cancellationPolicyControl;
 
         return cancellationControl.countCancellationKinds();
     }
 
     @Override
     protected Collection<CancellationKind> getEntities() {
-        var cancellationControl = Session.getModelController(CancellationPolicyControl.class);
+        var cancellationControl = cancellationPolicyControl;
 
         return cancellationControl.getCancellationKinds();
     }
@@ -82,7 +85,7 @@ public class GetCancellationKindsCommand
         var result = CancellationPolicyResultFactory.getGetCancellationKindsResult();
 
         if(entities != null) {
-            var cancellationControl = Session.getModelController(CancellationPolicyControl.class);
+            var cancellationControl = cancellationPolicyControl;
 
             if(session.hasLimit(CancellationKindFactory.class)) {
                 result.setCancellationKindCount(cancellationControl.countCancellationKinds());

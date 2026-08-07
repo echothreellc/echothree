@@ -24,10 +24,10 @@ import com.echothree.model.data.item.server.factory.ItemUseTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemUseTypesCommand
@@ -39,6 +39,9 @@ public class GetItemUseTypesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ItemControl itemControl;
 
     /** Creates a new instance of GetItemUseTypesCommand */
     public GetItemUseTypesCommand() {
@@ -52,15 +55,11 @@ public class GetItemUseTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.countItemUseTypes();
     }
 
     @Override
     protected Collection<ItemUseType> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.getItemUseTypes();
     }
 
@@ -69,7 +68,6 @@ public class GetItemUseTypesCommand
         var result = ItemResultFactory.getGetItemUseTypesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemUseTypeFactory.class)) {

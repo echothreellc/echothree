@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorKindCommand
@@ -59,6 +59,12 @@ public class GetSelectorKindCommand
         );
     }
 
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    SelectorKindLogic selectorKindLogic;
+
     /** Creates a new instance of GetSelectorKindCommand */
     public GetSelectorKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetSelectorKindCommand
 
     @Override
     protected SelectorKind getEntity() {
-        var selectorKind = SelectorKindLogic.getInstance().getSelectorKindByUniversalSpec(this, form, true);
+        var selectorKind = selectorKindLogic.getSelectorKindByUniversalSpec(this, form, true);
 
         if(selectorKind != null) {
             sendEvent(selectorKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetSelectorKindCommand
 
     @Override
     protected BaseResult getResult(SelectorKind selectorKind) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorKindResult();
 
         if(selectorKind != null) {

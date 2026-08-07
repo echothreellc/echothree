@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteUseCommand
@@ -44,13 +45,17 @@ public class DeleteUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Use.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    UseLogic useLogic;
+
     
     /** Creates a new instance of DeleteUseCommand */
     public DeleteUseCommand() {
@@ -60,10 +65,10 @@ public class DeleteUseCommand
     @Override
     protected BaseResult execute() {
         var useName = form.getUseName();
-        var use = UseLogic.getInstance().getUseByNameForUpdate(this, useName);
+        var use = useLogic.getUseByNameForUpdate(this, useName);
 
         if(!hasExecutionErrors()) {
-            UseLogic.getInstance().deleteUse(this, use, getPartyPK());
+            useLogic.deleteUse(this, use, getPartyPK());
         }
 
         return null;

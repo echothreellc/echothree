@@ -35,13 +35,22 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemAccountingCategoryLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ItemAccountingCategoryLogic() {
         super();
@@ -55,7 +64,6 @@ public class ItemAccountingCategoryLogic
             final ItemAccountingCategory parentItemAccountingCategory, final GlAccount inventoryGlAccount, final GlAccount salesGlAccount,
             final GlAccount returnsGlAccount, final GlAccount cogsGlAccount, final GlAccount returnsCogsGlAccount, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
 
         if(itemAccountingCategory == null) {
@@ -76,7 +84,6 @@ public class ItemAccountingCategoryLogic
 
     public ItemAccountingCategory getItemAccountingCategoryByName(final ExecutionErrorAccumulator eea, final String itemAccountingCategoryName,
             final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName, entityPermission);
 
         if(itemAccountingCategory == null) {
@@ -97,9 +104,8 @@ public class ItemAccountingCategoryLogic
     public ItemAccountingCategory getItemAccountingCategoryByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ItemAccountingCategoryUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemAccountingCategory itemAccountingCategory = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var itemAccountingCategoryName = universalSpec.getItemAccountingCategoryName();
-        var parameterCount = (itemAccountingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemAccountingCategoryName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -115,7 +121,7 @@ public class ItemAccountingCategoryLogic
             }
             case 1 -> {
                 if(itemAccountingCategoryName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAccountingCategory.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -143,8 +149,6 @@ public class ItemAccountingCategoryLogic
     }
 
     public void updateItemAccountingCategoryFromValue(ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue, BasePK updatedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         accountingControl.updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, updatedBy);
     }
 
@@ -160,9 +164,6 @@ public class ItemAccountingCategoryLogic
     }
 
     private void checkDeleteItemAccountingCategory(final ExecutionErrorAccumulator eea, final ItemAccountingCategory itemAccountingCategory) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        var itemControl = Session.getModelController(ItemControl.class);
-        
         if(countItemsByItemAccountingCategoryChildren(accountingControl, itemControl, itemAccountingCategory) != 0) {
             eea.addExecutionError(ExecutionErrors.CannotDeleteItemAccountingCategoryInUse.name(),
                     itemAccountingCategory.getLastDetail().getItemAccountingCategoryName());
@@ -173,8 +174,6 @@ public class ItemAccountingCategoryLogic
         checkDeleteItemAccountingCategory(eea, itemAccountingCategory);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-
             accountingControl.deleteItemAccountingCategory(itemAccountingCategory, deletedBy);
         }
     }

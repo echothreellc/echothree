@@ -55,9 +55,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCustomerTypeCommand
@@ -101,6 +101,46 @@ public class CreateCustomerTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SourceControl sourceControl;
+
+    @Inject
+    UseControl useControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    AllocationPriorityLogic allocationPriorityLogic;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    FreeOnBoardLogic freeOnBoardLogic;
+
+    @Inject
+    TermLogic termLogic;
+
     
     /** Creates a new instance of CreateCustomerTypeCommand */
     public CreateCustomerTypeCommand() {
@@ -115,7 +155,6 @@ public class CreateCustomerTypeCommand
         Sequence customerSequence = null;
         
         if(customerSequenceName != null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
             
             if(sequenceType != null) {
@@ -124,7 +163,6 @@ public class CreateCustomerTypeCommand
         }
         
         if(customerSequenceName == null || customerSequence != null) {
-            var offerControl = Session.getModelController(OfferControl.class);
             var defaultOfferName = form.getDefaultOfferName();
             var defaultUseName = form.getDefaultUseName();
             var defaultSourceName = form.getDefaultSourceName();
@@ -135,11 +173,9 @@ public class CreateCustomerTypeCommand
                 var defaultOffer = offerControl.getOfferByName(defaultOfferName);
                 
                 if(defaultOffer != null) {
-                    var useControl = Session.getModelController(UseControl.class);
                     var defaultUse = useControl.getUseByName(defaultUseName);
                     
                     if(defaultUse != null) {
-                        var offerUseControl = Session.getModelController(OfferUseControl.class);
                         defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                         
                         if(defaultOfferUse == null) {
@@ -152,7 +188,6 @@ public class CreateCustomerTypeCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                var sourceControl = Session.getModelController(SourceControl.class);
                 var source = sourceControl.getSourceByName(defaultSourceName);
                 
                 if(source != null) {
@@ -170,15 +205,14 @@ public class CreateCustomerTypeCommand
             if(!invalidDefaultOfferOrSourceSpecification) {
                 var defaultTermName = form.getDefaultTermName();
                 var defaultFreeOnBoardName = form.getDefaultFreeOnBoardName();
-                var defaultTerm = defaultTermName == null ? null : TermLogic.getInstance().getTermByName(this, defaultTermName);
-                var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
+                var defaultTerm = defaultTermName == null ? null : termLogic.getTermByName(this, defaultTermName);
+                var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : freeOnBoardLogic.getFreeOnBoardByName(this, defaultFreeOnBoardName);
 
                 if(!hasExecutionErrors()) {
                     var defaultCancellationPolicyName = form.getDefaultCancellationPolicyName();
                     CancellationPolicy defaultCancellationPolicy = null;
                     
                     if(defaultCancellationPolicyName != null) {
-                        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                         var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
                         
                         defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, defaultCancellationPolicyName);
@@ -189,14 +223,12 @@ public class CreateCustomerTypeCommand
                         ReturnPolicy defaultReturnPolicy = null;
                         
                         if(defaultReturnPolicyName != null) {
-                            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                             var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
                             
                             defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                         }
                         
                         if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                            var workflowControl = Session.getModelController(WorkflowControl.class);
                             var defaultCustomerStatusChoice = form.getDefaultCustomerStatusChoice();
                             WorkflowEntrance defaultCustomerStatus = null;
                             
@@ -215,7 +247,6 @@ public class CreateCustomerTypeCommand
                                 }
                                 
                                 if(defaultCustomerCreditStatusChoice == null || defaultCustomerCreditStatus != null) {
-                                    var accountingControl = Session.getModelController(AccountingControl.class);
                                     var defaultArGlAccountName = form.getDefaultArGlAccountName();
                                     var defaultArGlAccount = defaultArGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultArGlAccountName);
 
@@ -225,7 +256,7 @@ public class CreateCustomerTypeCommand
 
                                         if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
                                             var allocationPriorityName = form.getAllocationPriorityName();
-                                            var allocationPriority = allocationPriorityName == null ? null : AllocationPriorityLogic.getInstance().getAllocationPriorityByName(this, allocationPriorityName);
+                                            var allocationPriority = allocationPriorityName == null ? null : allocationPriorityLogic.getAllocationPriorityByName(this, allocationPriorityName);
                                             
                                             if(!hasExecutionErrors()) {
                                                 var customerTypeName = form.getCustomerTypeName();
@@ -242,7 +273,7 @@ public class CreateCustomerTypeCommand
                                                 var description = form.getDescription();
                                                 var partyPK = getPartyPK();
 
-                                                customerType = CustomerTypeLogic.getInstance().createCustomerType(this, customerTypeName, customerSequence, defaultOfferUse,
+                                                customerType = customerTypeLogic.createCustomerType(this, customerTypeName, customerSequence, defaultOfferUse,
                                                         defaultTerm, defaultFreeOnBoard, defaultCancellationPolicy, defaultReturnPolicy, defaultCustomerStatus,
                                                         defaultCustomerCreditStatus, defaultArGlAccount, defaultHoldUntilComplete, defaultAllowBackorders,
                                                         defaultAllowSubstitutions, defaultAllowCombiningShipments, defaultRequireReference,

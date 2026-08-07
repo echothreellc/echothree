@@ -31,13 +31,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class OfferNameElementLogic
         extends BaseLogic {
+
+    @Inject
+    OfferNameElementControl offerNameElementControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected OfferNameElementLogic() {
         super();
@@ -50,7 +56,6 @@ public class OfferNameElementLogic
     public OfferNameElement createOfferNameElement(final ExecutionErrorAccumulator eea, final String offerNameElementName,
             final Integer offset, final Integer length, final String validationPattern, final Language language, final String description,
             final BasePK createdBy) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
 
         if(offerNameElement == null) {
@@ -70,7 +75,6 @@ public class OfferNameElementLogic
 
     public OfferNameElement getOfferNameElementByName(final ExecutionErrorAccumulator eea, final String offerNameElementName,
             final EntityPermission entityPermission) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName, entityPermission);
 
         if(offerNameElement == null) {
@@ -90,14 +94,13 @@ public class OfferNameElementLogic
 
     public OfferNameElement getOfferNameElementByUniversalSpec(final ExecutionErrorAccumulator eea,
             final OfferNameElementUniversalSpec universalSpec, final EntityPermission entityPermission) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElementName = universalSpec.getOfferNameElementName();
-        var parameterCount = (offerNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (offerNameElementName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         OfferNameElement offerNameElement = null;
 
         if(parameterCount == 1) {
             if(offerNameElementName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.OfferNameElement.name());
 
                 if(eea == null || !eea.hasExecutionErrors()) {
@@ -125,8 +128,6 @@ public class OfferNameElementLogic
 
     public void deleteOfferNameElement(final ExecutionErrorAccumulator eea, final OfferNameElement offerNameElement,
             final BasePK deletedBy) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-
         offerNameElementControl.deleteOfferNameElement(offerNameElement, deletedBy);
     }
 

@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePaymentProcessorResultCodeCommand
@@ -44,13 +45,17 @@ public class DeletePaymentProcessorResultCodeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorResultCode.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorResultCodeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorResultCodeLogic paymentProcessorResultCodeLogic;
+
     
     /** Creates a new instance of DeletePaymentProcessorResultCodeCommand */
     public DeletePaymentProcessorResultCodeCommand() {
@@ -60,10 +65,10 @@ public class DeletePaymentProcessorResultCodeCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
-        var paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().getPaymentProcessorResultCodeByNameForUpdate(this, paymentProcessorResultCodeName);
+        var paymentProcessorResultCode = paymentProcessorResultCodeLogic.getPaymentProcessorResultCodeByNameForUpdate(this, paymentProcessorResultCodeName);
         
         if(!hasExecutionErrors()) {
-            PaymentProcessorResultCodeLogic.getInstance().deletePaymentProcessorResultCode(this, paymentProcessorResultCode, getPartyPK());
+            paymentProcessorResultCodeLogic.deletePaymentProcessorResultCode(this, paymentProcessorResultCode, getPartyPK());
         }
         
         return null;

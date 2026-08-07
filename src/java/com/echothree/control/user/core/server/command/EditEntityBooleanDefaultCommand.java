@@ -36,6 +36,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityBooleanDefaultCommand
@@ -63,6 +64,10 @@ public class EditEntityBooleanDefaultCommand
                 new FieldDefinition("BooleanAttribute", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of EditEntityBooleanDefaultCommand */
     public EditEntityBooleanDefaultCommand() {
@@ -81,7 +86,7 @@ public class EditEntityBooleanDefaultCommand
 
     @Override
     public EntityBooleanDefault getEntity(EditEntityBooleanDefaultResult result) {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, spec);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
         EntityBooleanDefault entityBooleanDefault = null;
 
         if(!hasExecutionErrors()) {

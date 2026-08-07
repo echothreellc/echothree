@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateIndexCommand
@@ -49,8 +49,8 @@ public class CreateIndexCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Index.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IndexName", FieldType.ENTITY_NAME, true, null, null),
@@ -60,8 +60,21 @@ public class CreateIndexCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    IndexLogic indexLogic;
+
+    @Inject
+    IndexTypeLogic indexTypeLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     
     /** Creates a new instance of CreateIndexCommand */
     public CreateIndexCommand() {
@@ -70,7 +83,6 @@ public class CreateIndexCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexName = form.getIndexName();
         var index = indexControl.getIndexByName(indexName);
         
@@ -81,11 +93,11 @@ public class CreateIndexCommand
             
             if(index == null) {
                 var indexTypeName = form.getIndexTypeName();
-                var indexType = IndexTypeLogic.getInstance().getIndexTypeByName(this, indexTypeName);
+                var indexType = indexTypeLogic.getIndexTypeByName(this, indexTypeName);
 
                 if(!hasExecutionErrors()) {
                     var languageIsoName = form.getLanguageIsoName();
-                    var language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                    var language = languageIsoName == null ? null : languageLogic.getLanguageByName(this, languageIsoName);
 
                     if(!hasExecutionErrors()) {
                         index = language == null ? null : indexControl.getIndex(indexType, language);
@@ -104,7 +116,7 @@ public class CreateIndexCommand
                             }
                             
                             if(entityType != null) {
-                                IndexLogic.getInstance().reindex(session, this, entityType);
+                                indexLogic.reindex(session, this, entityType);
                             }
                         } else {
                             addExecutionError(ExecutionErrors.DuplicateIndex.name(), indexTypeName, languageIsoName);

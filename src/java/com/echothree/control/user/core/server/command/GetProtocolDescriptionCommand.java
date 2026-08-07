@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetProtocolDescriptionCommand
@@ -48,13 +48,20 @@ public class GetProtocolDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Protocol.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ProtocolName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of GetProtocolDescriptionCommand */
     public GetProtocolDescriptionCommand() {
@@ -63,13 +70,11 @@ public class GetProtocolDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var serverControl = Session.getModelController(ServerControl.class);
         var result = CoreResultFactory.getGetProtocolDescriptionResult();
         var protocolName = form.getProtocolName();
         var protocol = serverControl.getProtocolByName(protocolName);
 
         if(protocol != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

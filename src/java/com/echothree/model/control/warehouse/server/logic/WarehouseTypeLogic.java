@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WarehouseTypeLogic
         extends BaseLogic {
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected WarehouseTypeLogic() {
         super();
@@ -51,7 +57,6 @@ public class WarehouseTypeLogic
     public WarehouseType createWarehouseType(final ExecutionErrorAccumulator eea, final String warehouseTypeName,
             final Integer priority, final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);
 
         if(warehouseType == null) {
@@ -69,7 +74,6 @@ public class WarehouseTypeLogic
 
     public WarehouseType getWarehouseTypeByName(final ExecutionErrorAccumulator eea, final String warehouseTypeName,
             final EntityPermission entityPermission) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName, entityPermission);
 
         if(warehouseType == null) {
@@ -90,9 +94,8 @@ public class WarehouseTypeLogic
     public WarehouseType getWarehouseTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final WarehouseTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         WarehouseType warehouseType = null;
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseTypeName = universalSpec.getWarehouseTypeName();
-        var parameterCount = (warehouseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (warehouseTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,7 +111,7 @@ public class WarehouseTypeLogic
             }
             case 1 -> {
                 if(warehouseTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.WarehouseType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -137,8 +140,6 @@ public class WarehouseTypeLogic
 
     public void deleteWarehouseType(final ExecutionErrorAccumulator eea, final WarehouseType warehouseType,
             final BasePK deletedBy) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-
         warehouseControl.deleteWarehouseType(warehouseType, deletedBy);
     }
 

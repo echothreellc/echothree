@@ -29,10 +29,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateBatchAliasCommand
@@ -46,8 +46,12 @@ public class CreateBatchAliasCommand
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    BatchControl batchControl;
+
     
     /** Creates a new instance of CreateBatchAliasCommand */
     public CreateBatchAliasCommand() {
@@ -66,7 +70,6 @@ public class CreateBatchAliasCommand
 
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
 

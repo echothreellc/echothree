@@ -41,6 +41,12 @@ import javax.inject.Inject;
 public class ChainActionTypeLogic
         extends BaseLogic {
 
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected ChainActionTypeLogic() {
         super();
     }
@@ -48,9 +54,6 @@ public class ChainActionTypeLogic
     public static ChainActionTypeLogic getInstance() {
         return CDI.current().select(ChainActionTypeLogic.class).get();
     }
-
-    @Inject
-    ChainControl chainControl;
 
     public ChainActionType createChainActionType(final ExecutionErrorAccumulator eea, final String chainActionTypeName,
             final Boolean allowMultiple, final Boolean isDefault, final Integer sortOrder, final Language language,
@@ -93,7 +96,7 @@ public class ChainActionTypeLogic
             final ChainActionTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ChainActionType chainActionType = null;
         var chainActionTypeName = universalSpec.getChainActionTypeName();
-        var parameterCount = (chainActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (chainActionTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +112,7 @@ public class ChainActionTypeLogic
             }
             case 1 -> {
                 if(chainActionTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainActionType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

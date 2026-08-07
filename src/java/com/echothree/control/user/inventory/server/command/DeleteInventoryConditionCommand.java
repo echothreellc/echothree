@@ -45,12 +45,12 @@ public class DeleteInventoryConditionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

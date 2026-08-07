@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTermCommand
@@ -44,6 +44,13 @@ public class GetTermCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    TermLogic termLogic;
+
     
     /** Creates a new instance of GetTermCommand */
     public GetTermCommand() {
@@ -52,7 +59,7 @@ public class GetTermCommand
 
     @Override
     protected Term getEntity() {
-        var term = TermLogic.getInstance().getTermByUniversalSpec(this, form, true);
+        var term = termLogic.getTermByUniversalSpec(this, form, true);
 
         if(term != null) {
             sendEvent(term.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,8 +71,6 @@ public class GetTermCommand
     @Override
     protected BaseResult getResult(Term term) {
         var result = TermResultFactory.getGetTermResult();
-        var termControl = Session.getModelController(TermControl.class);
-
         if(term != null) {
             result.setTerm(termControl.getTermTransfer(getUserVisit(), term));
         }

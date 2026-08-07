@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditIndexTypeCommand
@@ -55,8 +55,8 @@ public class EditIndexTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.IndexType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -71,6 +71,13 @@ public class EditIndexTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of EditIndexTypeCommand */
     public EditIndexTypeCommand() {
@@ -89,7 +96,6 @@ public class EditIndexTypeCommand
 
     @Override
     public IndexType getEntity(EditIndexTypeResult result) {
-        var indexControl = Session.getModelController(IndexControl.class);
         IndexType indexType;
         var indexTypeName = spec.getIndexTypeName();
 
@@ -113,8 +119,6 @@ public class EditIndexTypeCommand
 
     @Override
     public void fillInResult(EditIndexTypeResult result, IndexType indexType) {
-        var indexControl = Session.getModelController(IndexControl.class);
-
         result.setIndexType(indexControl.getIndexTypeTransfer(getUserVisit(), indexType));
     }
 
@@ -122,7 +126,6 @@ public class EditIndexTypeCommand
     
     @Override
     public void doLock(IndexTypeEdit edit, IndexType indexType) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexTypeDescription = indexControl.getIndexTypeDescription(indexType, getPreferredLanguage());
         var indexTypeDetail = indexType.getLastDetail();
         
@@ -144,7 +147,6 @@ public class EditIndexTypeCommand
     
     @Override
     public void canUpdate(IndexType indexType) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexTypeName = edit.getIndexTypeName();
         var duplicateIndexType = indexControl.getIndexTypeByName(indexTypeName);
 
@@ -156,7 +158,7 @@ public class EditIndexTypeCommand
             var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
-                entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+                entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
             } else {
                 addExecutionError(ExecutionErrors.InvalidParameterCount.name());
             }
@@ -165,7 +167,6 @@ public class EditIndexTypeCommand
 
     @Override
     public void doUpdate(IndexType indexType) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var partyPK = getPartyPK();
         var indexTypeDetailValue = indexControl.getIndexTypeDetailValueForUpdate(indexType);
         var indexTypeDescription = indexControl.getIndexTypeDescriptionForUpdate(indexType, getPreferredLanguage());

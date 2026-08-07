@@ -37,13 +37,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TermLogic
         extends BaseLogic {
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected TermLogic() {
         super();
@@ -56,7 +62,6 @@ public class TermLogic
     public Term createTerm(final ExecutionErrorAccumulator eea, final String termName, final TermType termType,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var termControl = Session.getModelController(TermControl.class);
         var term = termControl.getTermByName(termName);
 
         if(term == null) {
@@ -74,7 +79,6 @@ public class TermLogic
 
     public Term getTermByName(final ExecutionErrorAccumulator eea, final String termName,
             final EntityPermission entityPermission) {
-        var termControl = Session.getModelController(TermControl.class);
         var term = termControl.getTermByName(termName, entityPermission);
 
         if(term == null) {
@@ -95,9 +99,8 @@ public class TermLogic
     public Term getTermByUniversalSpec(final ExecutionErrorAccumulator eea,
             final TermUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         Term term = null;
-        var termControl = Session.getModelController(TermControl.class);
         var termName = universalSpec.getTermName();
-        var parameterCount = (termName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (termName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -113,7 +116,7 @@ public class TermLogic
             }
             case 1 -> {
                 if(termName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Term.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
@@ -141,7 +144,6 @@ public class TermLogic
     }
 
     public PartyTerm getPartyTerm(final ExecutionErrorAccumulator eea, final Party party) {
-        var termControl = Session.getModelController(TermControl.class);
         var partyTerm = termControl.getPartyTerm(party);
 
         if(partyTerm == null) {
@@ -152,7 +154,6 @@ public class TermLogic
     }
     
     public Term getDefaultTerm(final ExecutionErrorAccumulator eea) {
-        var termControl = Session.getModelController(TermControl.class);
         var term = termControl.getDefaultTerm();
 
         if(term == null) {
@@ -163,14 +164,10 @@ public class TermLogic
     }
 
     public void updateTermFromValue(final ExecutionErrorAccumulator eea, TermDetailValue termDetailValue, BasePK updatedBy) {
-        var termControl = Session.getModelController(TermControl.class);
-
         termControl.updateTermFromValue(termDetailValue, updatedBy);
     }
 
     public void deleteTerm(final ExecutionErrorAccumulator eea, Term term, BasePK deletedBy) {
-        var termControl = Session.getModelController(TermControl.class);
-
         termControl.deleteTerm(term, deletedBy);
     }
 

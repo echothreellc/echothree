@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCampaignTermDescriptionCommand
@@ -55,8 +55,8 @@ public class EditCampaignTermDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CampaignTerm.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CampaignTermName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,6 +67,13 @@ public class EditCampaignTermDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCampaignTermDescriptionCommand */
     public EditCampaignTermDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditCampaignTermDescriptionCommand
 
     @Override
     public CampaignTermDescription getEntity(EditCampaignTermDescriptionResult result) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignTermDescription campaignTermDescription = null;
         var campaignTermName = spec.getCampaignTermName();
         var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
 
         if(campaignTerm != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditCampaignTermDescriptionCommand
 
     @Override
     public void fillInResult(EditCampaignTermDescriptionResult result, CampaignTermDescription campaignTermDescription) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-
         result.setCampaignTermDescription(campaignControl.getCampaignTermDescriptionTransfer(getUserVisit(), campaignTermDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditCampaignTermDescriptionCommand
 
     @Override
     public void doUpdate(CampaignTermDescription campaignTermDescription) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var campaignTermDescriptionValue = campaignControl.getCampaignTermDescriptionValue(campaignTermDescription);
         campaignTermDescriptionValue.setDescription(edit.getDescription());
 

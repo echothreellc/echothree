@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditHarmonizedTariffScheduleCodeUnitCommand
@@ -53,8 +53,8 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCodeUnit.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("HarmonizedTariffScheduleCodeUnitName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,9 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
 
     /** Creates a new instance of EditHarmonizedTariffScheduleCodeUnitCommand */
     public EditHarmonizedTariffScheduleCodeUnitCommand() {
@@ -85,7 +88,6 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
 
     @Override
     public HarmonizedTariffScheduleCodeUnit getEntity(EditHarmonizedTariffScheduleCodeUnitResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit;
         var harmonizedTariffScheduleCodeUnitName = spec.getHarmonizedTariffScheduleCodeUnitName();
 
@@ -109,14 +111,11 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
 
     @Override
     public void fillInResult(EditHarmonizedTariffScheduleCodeUnitResult result, HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setHarmonizedTariffScheduleCodeUnit(itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(getUserVisit(), harmonizedTariffScheduleCodeUnit));
     }
 
     @Override
     public void doLock(HarmonizedTariffScheduleCodeUnitEdit edit, HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());
         var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
 
@@ -131,7 +130,6 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
 
     @Override
     public void canUpdate(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUnitName = edit.getHarmonizedTariffScheduleCodeUnitName();
         var duplicateHarmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
 
@@ -142,7 +140,6 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
 
     @Override
     public void doUpdate(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
         var harmonizedTariffScheduleCodeUnitDetailValue = itemControl.getHarmonizedTariffScheduleCodeUnitDetailValueForUpdate(harmonizedTariffScheduleCodeUnit);
         var harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionForUpdate(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());

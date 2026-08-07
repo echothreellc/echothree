@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateGlAccountTypeCommand
@@ -53,6 +54,10 @@ public class CreateGlAccountTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    GlAccountTypeLogic glAccountTypeLogic;
+
     
     /** Creates a new instance of CreateGlAccountTypeCommand */
     public CreateGlAccountTypeCommand() {
@@ -65,7 +70,7 @@ public class CreateGlAccountTypeCommand
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 
-        GlAccountTypeLogic.getInstance().createGlAccountType(this, glAccountTypeName, isDefault, sortOrder, null, null);
+        glAccountTypeLogic.createGlAccountType(this, glAccountTypeName, isDefault, sortOrder, null, null);
 
         return null;
     }

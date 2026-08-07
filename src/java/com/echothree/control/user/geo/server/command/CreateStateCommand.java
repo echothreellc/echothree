@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateStateCommand
@@ -51,8 +51,8 @@ public class CreateStateCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.State.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CountryGeoCodeName", FieldType.ENTITY_NAME, true, null, null),
@@ -61,8 +61,15 @@ public class CreateStateCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateStateCommand */
     public CreateStateCommand() {
@@ -72,7 +79,6 @@ public class CreateStateCommand
     @Override
     protected BaseResult execute() {
         var result = GeoResultFactory.getCreateStateResult();
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
 
         var countryGeoCodeName = form.getCountryGeoCodeName();
@@ -93,7 +99,7 @@ public class CreateStateCommand
             
             if(geoCodeAlias == null) {
                 BasePK createdBy = getPartyPK();
-                var geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
+                var geoCodeName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
                 var stateName = form.getStateName();
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());

@@ -31,9 +31,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTextDecorationCommand
@@ -49,6 +49,16 @@ public class GetTextDecorationCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    TextControl textControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    TextLogic textLogic;
+
     
     /** Creates a new instance of GetTextDecorationCommand */
     public GetTextDecorationCommand() {
@@ -59,20 +69,18 @@ public class GetTextDecorationCommand
     protected TextDecoration getEntity() {
         TextDecoration textDecoration = null;
         var textDecorationName = form.getTextDecorationName();
-        var parameterCount = (textDecorationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (textDecorationName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(textDecorationName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.TextDecoration.name());
 
                 if(!hasExecutionErrors()) {
-                    var textControl = Session.getModelController(TextControl.class);
-
                     textDecoration = textControl.getTextDecorationByEntityInstance(entityInstance);
                 }
             } else {
-                textDecoration = TextLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+                textDecoration = textLogic.getTextDecorationByName(this, textDecorationName);
             }
 
             if(textDecoration != null) {
@@ -90,8 +98,6 @@ public class GetTextDecorationCommand
         var result = CoreResultFactory.getGetTextDecorationResult();
 
         if(textDecoration != null) {
-            var textControl = Session.getModelController(TextControl.class);
-
             result.setTextDecoration(textControl.getTextDecorationTransfer(getUserVisit(), textDecoration));
         }
 

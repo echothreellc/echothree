@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class LocationUseTypeControl
@@ -48,10 +49,13 @@ public class LocationUseTypeControl
     // --------------------------------------------------------------------------------
     //   Location Use Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LocationUseTypeFactory locationUseTypeFactory;
+
     public LocationUseType createLocationUseType(final String locationUseTypeName, final Boolean allowMultiple, final Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy) {
-        var locationUseType = LocationUseTypeFactory.getInstance().create(locationUseTypeName, allowMultiple, isDefault, sortOrder);
+        var locationUseType = locationUseTypeFactory.create(locationUseTypeName, allowMultiple, isDefault, sortOrder);
 
         sendEvent(locationUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -62,7 +66,7 @@ public class LocationUseTypeControl
     public LocationUseType getLocationUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LocationUseTypePK(entityInstance.getEntityUniqueId());
 
-        return LocationUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return locationUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public LocationUseType getLocationUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -84,14 +88,16 @@ public class LocationUseTypeControl
         LocationUseType locationUseType;
 
         try {
-            var ps = LocationUseTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM locationusetypes " +
-                            "WHERE locutyp_locationusetypename = ?");
+            var ps = locationUseTypeFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM locationusetypes
+                    WHERE locutyp_locationusetypename = ?
+                    """);
 
             ps.setString(1, locationUseTypeName);
 
-            locationUseType = LocationUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            locationUseType = locationUseTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -108,31 +114,37 @@ public class LocationUseTypeControl
     }
 
     public LocationUseType getDefaultLocationUseType(final EntityPermission entityPermission) {
-        var ps = LocationUseTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                        "FROM locationusetypes " +
-                        "WHERE locutyp_isdefault = 1");
+        var ps = locationUseTypeFactory.prepareStatement(
+                """
+                SELECT _ALL_
+                FROM locationusetypes
+                WHERE locutyp_isdefault = 1
+                """);
 
-        return LocationUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return locationUseTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     private List<LocationUseType> getLocationUseTypes(EntityPermission entityPermission) {
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM locationusetypes " +
-                    "ORDER BY locutyp_sortorder, locutyp_locationusetypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM locationusetypes
+                    ORDER BY locutyp_sortorder, locutyp_locationusetypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM locationusetypes " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM locationusetypes
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = LocationUseTypeFactory.getInstance().prepareStatement(query);
+        var ps = locationUseTypeFactory.prepareStatement(query);
 
-        return LocationUseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return locationUseTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<LocationUseType> getLocationUseTypes() {
@@ -196,9 +208,12 @@ public class LocationUseTypeControl
     // --------------------------------------------------------------------------------
     //   Location Use Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected LocationUseTypeDescriptionFactory locationUseTypeDescriptionFactory;
+
     public LocationUseTypeDescription createLocationUseTypeDescription(LocationUseType locationUseType, Language language, String description, final BasePK createdBy) {
-        var locationUseTypeDescription =  LocationUseTypeDescriptionFactory.getInstance().create(locationUseType, language, description);
+        var locationUseTypeDescription =  locationUseTypeDescriptionFactory.create(locationUseType, language, description);
 
         sendEvent(locationUseType.getPrimaryKey(), EventTypes.MODIFY, locationUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -209,15 +224,17 @@ public class LocationUseTypeControl
         LocationUseTypeDescription locationUseTypeDescription;
         
         try {
-            var ps = LocationUseTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM locationusetypedescriptions " +
-                    "WHERE locutypd_locutyp_locationusetypeid = ? AND locutypd_lang_languageid = ?");
+            var ps = locationUseTypeDescriptionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM locationusetypedescriptions
+                    WHERE locutypd_locutyp_locationusetypeid = ? AND locutypd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, locationUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            locationUseTypeDescription = LocationUseTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            locationUseTypeDescription = locationUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

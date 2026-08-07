@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactListTypeCommand
@@ -55,8 +55,8 @@ public class EditContactListTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactListType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -73,6 +73,12 @@ public class EditContactListTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ContactListControl contactListControl;
 
     /** Creates a new instance of EditContactListTypeCommand */
     public EditContactListTypeCommand() {
@@ -91,7 +97,6 @@ public class EditContactListTypeCommand
 
     @Override
     public ContactListType getEntity(EditContactListTypeResult result) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListType contactListType;
         var contactListTypeName = spec.getContactListTypeName();
 
@@ -115,14 +120,11 @@ public class EditContactListTypeCommand
 
     @Override
     public void fillInResult(EditContactListTypeResult result, ContactListType contactListType) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setContactListType(contactListControl.getContactListTypeTransfer(getUserVisit(), contactListType));
     }
 
     @Override
     public void doLock(ContactListTypeEdit edit, ContactListType contactListType) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListTypeDescription = contactListControl.getContactListTypeDescription(contactListType, getPreferredLanguage());
         var contactListTypeDetail = contactListType.getLastDetail();
         var confirmationRequestChain = contactListTypeDetail.getConfirmationRequestChain();
@@ -148,14 +150,12 @@ public class EditContactListTypeCommand
 
     @Override
     public void canUpdate(ContactListType contactListType) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListTypeName = edit.getContactListTypeName();
         var duplicateContactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(duplicateContactListType != null && !contactListType.equals(duplicateContactListType)) {
             addExecutionError(ExecutionErrors.DuplicateContactListTypeName.name(), contactListTypeName);
         } else {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainKind = chainControl.getChainKindByName(ChainKinds.CONTACT_LIST.name());
             var confirmationRequestChainName = edit.getConfirmationRequestChainName();
 
@@ -188,7 +188,6 @@ public class EditContactListTypeCommand
 
     @Override
     public void doUpdate(ContactListType contactListType) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
         var contactListTypeDetailValue = contactListControl.getContactListTypeDetailValueForUpdate(contactListType);
         var contactListTypeDescription = contactListControl.getContactListTypeDescriptionForUpdate(contactListType, getPreferredLanguage());

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWorkflowDestinationCommand
@@ -71,6 +71,13 @@ public class EditWorkflowDestinationCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
     
     /** Creates a new instance of EditWorkflowDestinationCommand */
     public EditWorkflowDestinationCommand() {
@@ -89,7 +96,7 @@ public class EditWorkflowDestinationCommand
 
     @Override
     public WorkflowDestination getEntity(EditWorkflowDestinationResult result) {
-        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return workflowDestinationLogic.getWorkflowDestinationByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -99,14 +106,13 @@ public class EditWorkflowDestinationCommand
 
     @Override
     public void fillInResult(EditWorkflowDestinationResult result, WorkflowDestination freeOnBoard) {
-        var workflow = Session.getModelController(WorkflowControl.class);
+        var workflow = workflowControl;
 
         result.setWorkflowDestination(workflow.getWorkflowDestinationTransfer(getUserVisit(), freeOnBoard));
     }
 
     @Override
     public void doLock(WorkflowDestinationEdit edit, WorkflowDestination workflowDestination) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowDestinationDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, getPreferredLanguage());
         var workflowDestinationDetail = workflowDestination.getLastDetail();
 
@@ -121,7 +127,6 @@ public class EditWorkflowDestinationCommand
 
     @Override
     public void canUpdate(WorkflowDestination workflowDestination) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowStep = workflowDestination.getLastDetail().getWorkflowStep();
         var workflowDestinationName = edit.getWorkflowDestinationName();
         var duplicateWorkflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
@@ -133,7 +138,6 @@ public class EditWorkflowDestinationCommand
 
     @Override
     public void doUpdate(WorkflowDestination workflowDestination) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyPK = getPartyPK();
         var workflowDestinationDetailValue = workflowControl.getWorkflowDestinationDetailValueForUpdate(workflowDestination);
         var workflowDestinationDescription = workflowControl.getWorkflowDestinationDescriptionForUpdate(workflowDestination, getPreferredLanguage());

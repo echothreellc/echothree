@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGenderDescriptionsCommand
@@ -38,8 +38,12 @@ public class GetGenderDescriptionsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetGenderDescriptionsCommand */
     public GetGenderDescriptionsCommand() {
@@ -48,7 +52,6 @@ public class GetGenderDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetGenderDescriptionsResult();
         var genderName = form.getGenderName();
         var gender = partyControl.getGenderByName(genderName);

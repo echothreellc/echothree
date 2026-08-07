@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactEmailAddressCommand
@@ -59,8 +59,8 @@ public class EditContactEmailAddressCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -73,6 +73,13 @@ public class EditContactEmailAddressCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContactEmailAddressCommand */
     public EditContactEmailAddressCommand() {
@@ -98,13 +105,11 @@ public class EditContactEmailAddressCommand
 
     @Override
     public PartyContactMechanism getEntity(EditContactEmailAddressResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyContactMechanism partyContactMechanism = null;
         var partyName = spec.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismName = spec.getContactMechanismName();
             var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
@@ -144,15 +149,12 @@ public class EditContactEmailAddressCommand
 
     @Override
     public void fillInResult(EditContactEmailAddressResult result, PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
-
         result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
                 partyContactMechanism.getLastDetail().getContactMechanism()));
     }
 
     @Override
     public void doLock(ContactEmailAddressEdit edit, PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetail = contactMechanism.getLastDetail();
         var contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
@@ -165,8 +167,6 @@ public class EditContactEmailAddressCommand
 
     @Override
     public void canUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var userControl = getUserControl();
         var party = partyContactMechanism.getLastDetail().getParty();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
@@ -186,7 +186,6 @@ public class EditContactEmailAddressCommand
 
     @Override
     public void doUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var updatedBy = getPartyPK();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetailValue = contactControl.getContactMechanismDetailValue(contactMechanism.getLastDetail());

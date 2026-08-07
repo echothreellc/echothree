@@ -22,13 +22,16 @@ import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SequenceEncoderTypeLogic
         extends BaseLogic {
+
+    @Inject
+    SequenceControl sequenceControl;
 
     protected SequenceEncoderTypeLogic() {
         super();
@@ -39,7 +42,6 @@ public class SequenceEncoderTypeLogic
     }
 
     public SequenceEncoderType getSequenceEncoderTypeByName(final ExecutionErrorAccumulator eea, final String sequenceEncoderTypeName) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
 
         if(sequenceEncoderType == null) {

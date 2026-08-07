@@ -35,11 +35,29 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.inject.Inject;
 
 public class FilterStepElementLogic
         extends BaseLogic {
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
+    @Inject
+    FilterLogic filterLogic;
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
+    @Inject
+    FilterTypeLogic filterTypeLogic;
 
     private FilterStepElementLogic() {
         super();
@@ -55,7 +73,6 @@ public class FilterStepElementLogic
 
     public FilterStepElement getFilterStepElementByName(final ExecutionErrorAccumulator eea, final FilterStep filterStep,
             final String filterStepElementName, final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName, entityPermission);
 
         if(filterStepElement == null) {
@@ -82,14 +99,13 @@ public class FilterStepElementLogic
 
     public FilterStepElement getFilterStepElementByUniversalSpec(final ExecutionErrorAccumulator eea,
             final FilterStepElementUniversalSpec universalSpec, final boolean allowDefault, final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = universalSpec.getFilterKindName();
         var filterTypeName = universalSpec.getFilterTypeName();
         var filterName = universalSpec.getFilterName();
         var filterStepName = universalSpec.getFilterStepName();
         var filterStepElementName = universalSpec.getFilterStepElementName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName, filterName, filterStepName, filterStepElementName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         FilterStepElement filterStepElement = null;
 
         if(nameParameterCount < 6 && possibleEntitySpecs == 0) {
@@ -109,7 +125,7 @@ public class FilterStepElementLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+                filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -125,7 +141,7 @@ public class FilterStepElementLogic
                         handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
-                    filterType = FilterTypeLogic.getInstance().getFilterTypeByName(eea, filterKind, filterTypeName);
+                    filterType = filterTypeLogic.getFilterTypeByName(eea, filterKind, filterTypeName);
                 }
             }
 
@@ -142,7 +158,7 @@ public class FilterStepElementLogic
                         handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
-                    filter = FilterLogic.getInstance().getFilterByName(eea, filterType, filterName);
+                    filter = filterLogic.getFilterByName(eea, filterType, filterName);
                 }
             }
 
@@ -151,7 +167,7 @@ public class FilterStepElementLogic
                     // FilterStep does not have a default.
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 } else {
-                    filterStep = FilterStepLogic.getInstance().getFilterStepByName(eea, filter, filterStepName);
+                    filterStep = filterStepLogic.getFilterStepByName(eea, filter, filterStepName);
                 }
             }
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -163,7 +179,7 @@ public class FilterStepElementLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterStepElement.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {

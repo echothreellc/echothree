@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetEmployeeStatusCommand
@@ -46,15 +46,22 @@ public class SetEmployeeStatusCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.EmployeeStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.EmployeeStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EmployeeStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    EmployeeLogic employeeLogic;
+
     
     /** Creates a new instance of SetEmployeeStatusCommand */
     public SetEmployeeStatusCommand() {
@@ -63,14 +70,13 @@ public class SetEmployeeStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var employeeName = form.getEmployeeName();
         var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
         
         if(partyEmployee != null) {
             var employeeStatusChoice = form.getEmployeeStatusChoice();
             
-            EmployeeLogic.getInstance().setEmployeeStatus(session, this, partyEmployee.getParty(), employeeStatusChoice, getPartyPK());
+            employeeLogic.setEmployeeStatus(session, this, partyEmployee.getParty(), employeeStatusChoice, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
         }

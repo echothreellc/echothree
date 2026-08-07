@@ -46,21 +46,27 @@ public class GetItemUnitCustomerTypeLimitCommand
                 new FieldDefinition("CustomerTypeName", FieldType.PERCENT, true, null, null)
         );
     }
-    
+
     @Inject
     ItemControl itemControl;
-    
+
     @Inject
     CustomerTypeLogic customerTypeLogic;
-    
+
     @Inject
     InventoryConditionLogic inventoryConditionLogic;
-    
+
     @Inject
     ItemLogic itemLogic;
-    
+
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+
+
+
+
+
     
     /** Creates a new instance of GetItemUnitCustomerTypeLimitCommand */
     public GetItemUnitCustomerTypeLimitCommand() {

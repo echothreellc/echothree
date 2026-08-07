@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCampaignMediumStatusChoicesCommand
@@ -45,16 +45,20 @@ public class GetCampaignMediumStatusChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.CampaignMediumStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.CampaignMediumStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CampaignMediumName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("DefaultCampaignMediumStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("CampaignMediumName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultCampaignMediumStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    CampaignControl campaignControl;
+
     
     /** Creates a new instance of GetCampaignMediumStatusChoicesCommand */
     public GetCampaignMediumStatusChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetCampaignMediumStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var result = CampaignResultFactory.getGetCampaignMediumStatusChoicesResult();
         var campaignMediumName = form.getCampaignMediumName();
         var campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);

@@ -38,7 +38,6 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
@@ -53,10 +52,17 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemDescriptionLogic
         extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
 
     protected ItemDescriptionLogic() {
         super();
@@ -67,7 +73,6 @@ public class ItemDescriptionLogic
     }
 
     public String getIndexDefaultItemDescriptionTypeName() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionType = itemControl.getIndexDefaultItemDescriptionType();
         
         return itemDescriptionType.getLastDetail().getItemDescriptionTypeName();
@@ -110,8 +115,6 @@ public class ItemDescriptionLogic
     
     // Find the first available parent ItemDescription based on the Party's preferred Language.
     public ItemDescription getBestParent(final ItemDescriptionType itemDescriptionType, final Item item, final Party party) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
         var language = party == null ? partyControl.getDefaultLanguage() : partyControl.getPreferredLanguage(party);
         
         return getBestParent(itemControl, itemDescriptionType, item, language);
@@ -120,7 +123,6 @@ public class ItemDescriptionLogic
     // Find the first available parent ItemDescription based on the Party's preferred Language.
     public ItemDescription getBestParentUsingNames(final ExecutionErrorAccumulator eea, final String itemDescriptionTypeName, final Item item,
             final Party party) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
         
         if(itemDescriptionType == null) {
@@ -139,7 +141,6 @@ public class ItemDescriptionLogic
             var mimeType = itemDescription.getLastDetail().getMimeType();
             
             if(mimeType == null) {
-                var itemControl = Session.getModelController(ItemControl.class);
                 var itemStringDescription = itemControl.getItemStringDescription(itemDescription);
 
                 stringDescription = itemStringDescription.getStringDescription();
@@ -283,7 +284,6 @@ public class ItemDescriptionLogic
     }
 
     public ItemDescription searchForItemDescription(ItemDescriptionType itemDescriptionType, Item item, Language language, BasePK createdBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescription itemDescription = null;
 
         if(isImage(itemDescriptionType)) {
@@ -469,7 +469,6 @@ public class ItemDescriptionLogic
     }
 
     public void deleteItemImageDescriptionChildren(ItemDescriptionType itemDescriptionType, Item item, Language language, BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var childItemDescriptionTypes = itemControl.getItemDescriptionTypesByParentItemDescriptionType(itemDescriptionType);
 
         childItemDescriptionTypes.forEach((childItemDescriptionType) -> {
@@ -499,7 +498,6 @@ public class ItemDescriptionLogic
     }
 
     public void deleteItemDescription(ItemDescription itemDescription, BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var mimeTypeUsageType = itemDescription.getLastDetail().getItemDescriptionType().getLastDetail().getMimeTypeUsageType();
 
         itemControl.deleteItemDescription(itemDescription, deletedBy);
@@ -508,14 +506,12 @@ public class ItemDescriptionLogic
             var itemImageDescription = itemControl.getItemImageDescription(itemDescription);
 
             if(!itemImageDescription.getScaledFromParent()) {
-                ItemDescriptionLogic.getInstance().deleteItemImageDescriptionChildren(itemDescription, deletedBy);
+                this.deleteItemImageDescriptionChildren(itemDescription, deletedBy);
             }
         }
     }
     
     public void updateItemImageDescriptionTypeFromValue(ItemImageDescriptionTypeValue itemImageDescriptionTypeValue, BasePK updatedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.updateItemImageDescriptionTypeFromValue(itemImageDescriptionTypeValue, updatedBy);
 
         if(itemImageDescriptionTypeValue.getPreferredHeightHasBeenModified() || itemImageDescriptionTypeValue.getPreferredWidthHasBeenModified()
@@ -526,8 +522,6 @@ public class ItemDescriptionLogic
     }
 
     public void updateItemImageTypeFromValue(ItemImageTypeDetailValue itemImageTypeDetailValue, BasePK updatedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.updateItemImageTypeFromValue(itemImageTypeDetailValue, updatedBy);
 
         if(itemImageTypeDetailValue.getPreferredMimeTypePKHasBeenModified() || itemImageTypeDetailValue.getQualityHasBeenModified()) {

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorItemCostCommand
@@ -52,8 +52,8 @@ public class GetVendorItemCostCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.VendorItemCost.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
@@ -61,8 +61,20 @@ public class GetVendorItemCostCommand
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    VendorControl vendorControl;
 
     /** Creates a new instance of GetVendorItemCostCommand */
     public GetVendorItemCostCommand() {
@@ -77,7 +89,6 @@ public class GetVendorItemCostCommand
         VendorItemCost entity = null;
 
         if(parameterCount == 1) {
-            var vendorControl = Session.getModelController(VendorControl.class);
             Vendor vendor = null;
 
             if(vendorName != null) {
@@ -87,7 +98,6 @@ public class GetVendorItemCostCommand
                     addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
@@ -107,7 +117,6 @@ public class GetVendorItemCostCommand
                 var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
 
                 if(vendorItem != null) {
-                    var inventoryControl = Session.getModelController(InventoryControl.class);
                     var inventoryConditionName = form.getInventoryConditionName();
                     var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
@@ -117,7 +126,6 @@ public class GetVendorItemCostCommand
                                 inventoryCondition);
 
                         if(inventoryConditionUse != null) {
-                            var uomControl = Session.getModelController(UomControl.class);
                             var unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
                             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
@@ -153,7 +161,6 @@ public class GetVendorItemCostCommand
 
     @Override
     protected BaseResult getResult(VendorItemCost entity) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetVendorItemCostResult();
 
         if(entity != null) {

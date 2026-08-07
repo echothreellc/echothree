@@ -57,6 +57,7 @@ public class GetLotAliasTypeCommand
 
     @Inject
     LotAliasControl lotAliasControl;
+
     /** Creates a new instance of GetLotAliasTypeCommand */
     public GetLotAliasTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);

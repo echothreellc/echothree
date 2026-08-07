@@ -28,9 +28,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSecurityRoleGroupResultsCommand
@@ -41,8 +41,17 @@ public class GetSecurityRoleGroupResultsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SecurityRoleGroupControl securityRoleGroupControl;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of GetSecurityRoleGroupResultsCommand */
     public GetSecurityRoleGroupResultsCommand() {
@@ -52,7 +61,6 @@ public class GetSecurityRoleGroupResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetSecurityRoleGroupResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.SECURITY_ROLE_GROUP.name());
         
         if(searchKind != null) {
@@ -64,10 +72,8 @@ public class GetSecurityRoleGroupResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var securityRoleGroupControl = Session.getModelController(SecurityRoleGroupControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setSecurityRoleGroupResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setSecurityRoleGroupResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setSecurityRoleGroupResults(securityRoleGroupControl.getSecurityRoleGroupResultTransfers(userVisit, userVisitSearch));

@@ -29,10 +29,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyAliasCommand
@@ -45,8 +45,12 @@ public class CreatePartyAliasCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreatePartyAliasCommand */
     public CreatePartyAliasCommand() {
@@ -65,7 +69,6 @@ public class CreatePartyAliasCommand
 
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSequenceChecksumTypeCommand
@@ -56,6 +56,12 @@ public class GetSequenceChecksumTypeCommand
         );
     }
 
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceChecksumTypeLogic sequenceChecksumTypeLogic;
+
     /** Creates a new instance of GetSequenceChecksumTypeCommand */
     public GetSequenceChecksumTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,12 +71,11 @@ public class GetSequenceChecksumTypeCommand
     protected SequenceChecksumType getEntity() {
         var sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
 
-        return SequenceChecksumTypeLogic.getInstance().getSequenceChecksumTypeByName(this, sequenceChecksumTypeName);
+        return sequenceChecksumTypeLogic.getSequenceChecksumTypeByName(this, sequenceChecksumTypeName);
     }
 
     @Override
     protected BaseResult getResult(SequenceChecksumType sequenceChecksumType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceChecksumTypeResult();
 
         if(sequenceChecksumType != null) {

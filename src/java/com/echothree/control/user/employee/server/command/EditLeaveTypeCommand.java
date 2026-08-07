@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLeaveTypeCommand
@@ -53,8 +53,8 @@ public class EditLeaveTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LeaveType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LeaveTypeName", FieldType.ENTITY_NAME, true, null, null)
@@ -67,6 +67,9 @@ public class EditLeaveTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
 
     /** Creates a new instance of EditLeaveTypeCommand */
     public EditLeaveTypeCommand() {
@@ -85,7 +88,6 @@ public class EditLeaveTypeCommand
 
     @Override
     public LeaveType getEntity(EditLeaveTypeResult result) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveType leaveType;
         var leaveTypeName = spec.getLeaveTypeName();
 
@@ -111,14 +113,11 @@ public class EditLeaveTypeCommand
 
     @Override
     public void fillInResult(EditLeaveTypeResult result, LeaveType leaveType) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-
         result.setLeaveType(employeeControl.getLeaveTypeTransfer(getUserVisit(), leaveType));
     }
 
     @Override
     public void doLock(LeaveTypeEdit edit, LeaveType leaveType) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var leaveTypeDescription = employeeControl.getLeaveTypeDescription(leaveType, getPreferredLanguage());
         var leaveTypeDetail = leaveType.getLastDetail();
 
@@ -133,7 +132,6 @@ public class EditLeaveTypeCommand
 
     @Override
     public void canUpdate(LeaveType leaveType) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var leaveTypeName = edit.getLeaveTypeName();
         var duplicateLeaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
@@ -144,7 +142,6 @@ public class EditLeaveTypeCommand
 
     @Override
     public void doUpdate(LeaveType leaveType) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var partyPK = getPartyPK();
         var leaveTypeDetailValue = employeeControl.getLeaveTypeDetailValueForUpdate(leaveType);
         var leaveTypeDescription = employeeControl.getLeaveTypeDescriptionForUpdate(leaveType, getPreferredLanguage());

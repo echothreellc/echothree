@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBatchTypeCommand
@@ -48,13 +48,17 @@ public class GetBatchTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.BatchType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    BatchControl batchControl;
+
     
     /** Creates a new instance of GetBatchTypeCommand */
     public GetBatchTypeCommand() {
@@ -63,7 +67,6 @@ public class GetBatchTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var result = BatchResultFactory.getGetBatchTypeResult();
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);

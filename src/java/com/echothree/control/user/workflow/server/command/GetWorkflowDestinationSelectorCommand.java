@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowDestinationSelectorCommand
@@ -48,16 +48,23 @@ public class GetWorkflowDestinationSelectorCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.Selector.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
     
     /** Creates a new instance of GetWorkflowDestinationSelectorCommand */
     public GetWorkflowDestinationSelectorCommand() {
@@ -71,7 +78,7 @@ public class GetWorkflowDestinationSelectorCommand
         var workflowDestinationName = form.getWorkflowDestinationName();
         var selectorName = form.getSelectorName();
 
-        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationSelectorByName(this, workflowName,
+        return workflowDestinationLogic.getWorkflowDestinationSelectorByName(this, workflowName,
                 workflowStepName, workflowDestinationName, selectorName);
     }
 
@@ -80,8 +87,6 @@ public class GetWorkflowDestinationSelectorCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationSelectorResult();
 
         if(entity != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowDestinationSelector(workflowControl.getWorkflowDestinationSelectorTransfer(getUserVisit(), entity));
         }
 

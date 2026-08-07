@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderLineAdjustmentTypeCommand
@@ -53,9 +53,9 @@ public class EditOrderLineAdjustmentTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.OrderLineAdjustmentType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.OrderLineAdjustmentType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -69,6 +69,13 @@ public class EditOrderLineAdjustmentTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    OrderLineAdjustmentControl orderLineAdjustmentControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
     
     /** Creates a new instance of EditOrderLineAdjustmentTypeCommand */
     public EditOrderLineAdjustmentTypeCommand() {
@@ -87,13 +94,11 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public OrderLineAdjustmentType getEntity(EditOrderLineAdjustmentTypeResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderLineAdjustmentType orderLineAdjustmentType = null;
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
             var orderLineAdjustmentTypeName = spec.getOrderLineAdjustmentTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -121,14 +126,11 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void fillInResult(EditOrderLineAdjustmentTypeResult result, OrderLineAdjustmentType orderLineAdjustmentType) {
-        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
-
         result.setOrderLineAdjustmentType(orderLineAdjustmentControl.getOrderLineAdjustmentTypeTransfer(getUserVisit(), orderLineAdjustmentType));
     }
 
     @Override
     public void doLock(OrderLineAdjustmentTypeEdit edit, OrderLineAdjustmentType orderLineAdjustmentType) {
-        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         var orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getPreferredLanguage());
         var orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
 
@@ -143,12 +145,10 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void canUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
             var orderLineAdjustmentTypeName = edit.getOrderLineAdjustmentTypeName();
             var duplicateOrderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 
@@ -162,7 +162,6 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void doUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
-        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         var partyPK = getPartyPK();
         var orderLineAdjustmentTypeDetailValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDetailValueForUpdate(orderLineAdjustmentType);
         var orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionForUpdate(orderLineAdjustmentType, getPreferredLanguage());

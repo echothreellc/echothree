@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditClubCommand
@@ -76,6 +76,19 @@ public class EditClubCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ClubControl clubControl;
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of EditClubCommand */
     public EditClubCommand() {
@@ -84,7 +97,6 @@ public class EditClubCommand
     
     @Override
     protected BaseResult execute() {
-        var clubControl = Session.getModelController(ClubControl.class);
         var result = ClubResultFactory.getEditClubResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -129,7 +141,6 @@ public class EditClubCommand
                 var duplicateClub = clubControl.getClubByName(clubName);
                 
                 if(duplicateClub == null || club.equals(duplicateClub)) {
-                    var subscriptionControl = Session.getModelController(SubscriptionControl.class);
                     var subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
                     var subscriptionTypeName = edit.getSubscriptionTypeName();
                     var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
@@ -142,7 +153,6 @@ public class EditClubCommand
                             Filter clubPriceFilter = null;
                             
                             if(clubPriceFilterName != null) {
-                                var filterControl = Session.getModelController(FilterControl.class);
                                 var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
                                 var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
                                 
@@ -152,7 +162,6 @@ public class EditClubCommand
                             }
                             
                             if(clubPriceFilterName == null || clubPriceFilter != null) {
-                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 var currencyIsoName = edit.getCurrencyIsoName();
                                 var currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 

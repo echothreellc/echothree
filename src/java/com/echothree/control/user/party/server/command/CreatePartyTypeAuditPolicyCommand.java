@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyTypeAuditPolicyCommand
@@ -43,8 +43,15 @@ public class CreatePartyTypeAuditPolicyCommand
                 new FieldDefinition("AuditCommands", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RetainUserVisitsTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("RetainUserVisitsTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of CreatePartyTypeAuditPolicyCommand */
     public CreatePartyTypeAuditPolicyCommand() {
@@ -58,7 +65,6 @@ public class CreatePartyTypeAuditPolicyCommand
         var lockoutInactiveTimeParameterCount = (rawRetainUserVisitsTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
 
         if(lockoutInactiveTimeParameterCount == 0 || lockoutInactiveTimeParameterCount == 2) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyTypeName = form.getPartyTypeName();
             var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
@@ -67,7 +73,6 @@ public class CreatePartyTypeAuditPolicyCommand
                     var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
 
                     if(partyTypeAuditPolicy == null) {
-                        var uomControl = Session.getModelController(UomControl.class);
                         var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {

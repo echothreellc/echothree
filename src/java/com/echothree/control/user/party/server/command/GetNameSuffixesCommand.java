@@ -23,10 +23,10 @@ import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetNameSuffixesCommand
@@ -38,6 +38,10 @@ public class GetNameSuffixesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetNameSuffixesCommand */
     public GetNameSuffixesCommand() {
@@ -51,23 +55,17 @@ public class GetNameSuffixesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         return partyControl.countNameSuffixes();
     }
     
     @Override
     protected Collection<NameSuffix> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
-        
         return partyControl.getNameSuffixes();
     }
     
     @Override
     protected BaseResult getResult(Collection<NameSuffix> entities) {
         var result = PartyResultFactory.getGetNameSuffixesResult();
-        var partyControl = Session.getModelController(PartyControl.class);
-        
         result.setNameSuffixes(partyControl.getNameSuffixTransfers(getUserVisit(), entities));
         
         return result;

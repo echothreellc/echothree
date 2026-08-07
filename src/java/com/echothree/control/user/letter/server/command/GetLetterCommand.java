@@ -57,17 +57,18 @@ public class GetLetterCommand
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetLetterCommand */
-    public GetLetterCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     LetterControl letterControl;
 
     @Inject
     ChainTypeLogic chainTypeLogic;
+
+
+    /** Creates a new instance of GetLetterCommand */
+    public GetLetterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected BaseResult execute() {

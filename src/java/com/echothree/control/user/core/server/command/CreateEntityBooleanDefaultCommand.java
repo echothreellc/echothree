@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityBooleanDefaultCommand
@@ -50,8 +51,11 @@ public class CreateEntityBooleanDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("BooleanAttribute", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
 
     /** Creates a new instance of CreateEntityBooleanDefaultCommand */
     public CreateEntityBooleanDefaultCommand() {
@@ -60,13 +64,13 @@ public class CreateEntityBooleanDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
             var booleanAttribute = Boolean.valueOf(form.getBooleanAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            EntityAttributeLogic.getInstance().createEntityBooleanDefault(this, entityAttribute,
+            entityAttributeLogic.createEntityBooleanDefault(this, entityAttribute,
                     booleanAttribute, addMissingAttributes, getPartyPK());
         }
 

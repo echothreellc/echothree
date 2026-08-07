@@ -51,6 +51,9 @@ public class TaxClassificationLogic
     @Inject
     TaxControl taxControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected TaxClassificationLogic() {
         super();
     }
@@ -109,12 +112,12 @@ public class TaxClassificationLogic
         var taxClassificationName = universalSpec.getTaxClassificationName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(countryName, taxClassificationName);
         TaxClassification taxClassification = null;
-        var parameterCount = nameParameterCount + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = nameParameterCount + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(nameParameterCount == 0) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TaxClassification.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {

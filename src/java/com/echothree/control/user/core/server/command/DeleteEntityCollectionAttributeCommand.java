@@ -31,6 +31,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityCollectionAttributeCommand
@@ -54,6 +55,13 @@ public class DeleteEntityCollectionAttributeCommand
                 new FieldDefinition("UuidAttribute", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of DeleteEntityCollectionAttributeCommand */
     public DeleteEntityCollectionAttributeCommand() {
@@ -62,14 +70,14 @@ public class DeleteEntityCollectionAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.COLLECTION);
 
             if(!hasExecutionErrors()) {
-                var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityInstanceAttribute(this, form);
+                var entityInstanceAttribute = entityAttributeLogic.getEntityInstanceAttribute(this, form);
 
                 if(!hasExecutionErrors()) {
                     var entityCollectionAttribute = coreControl.getEntityCollectionAttributeForUpdate(entityAttribute, entityInstance, entityInstanceAttribute);
@@ -78,9 +86,9 @@ public class DeleteEntityCollectionAttributeCommand
                         coreControl.deleteEntityCollectionAttribute(entityCollectionAttribute, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityCollectionAttribute.name(),
-                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                 entityAttribute.getLastDetail().getEntityAttributeName(),
-                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstanceAttribute));
+                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstanceAttribute));
                     }
                 }
             }

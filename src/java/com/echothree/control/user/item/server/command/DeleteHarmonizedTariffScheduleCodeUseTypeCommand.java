@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteHarmonizedTariffScheduleCodeUseTypeCommand
@@ -45,14 +45,18 @@ public class DeleteHarmonizedTariffScheduleCodeUseTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCodeUseType.name(), SecurityRoles.Delete.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCodeUseType.name(), SecurityRoles.Delete.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("HarmonizedTariffScheduleCodeUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of DeleteHarmonizedTariffScheduleCodeUseTypeCommand */
     public DeleteHarmonizedTariffScheduleCodeUseTypeCommand() {
@@ -61,7 +65,6 @@ public class DeleteHarmonizedTariffScheduleCodeUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
         var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByNameForUpdate(harmonizedTariffScheduleCodeUseTypeName);
         

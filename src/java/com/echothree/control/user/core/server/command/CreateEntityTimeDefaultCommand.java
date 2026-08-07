@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityTimeDefaultCommand
@@ -50,8 +51,11 @@ public class CreateEntityTimeDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TimeAttribute", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
 
     /** Creates a new instance of CreateEntityTimeDefaultCommand */
     public CreateEntityTimeDefaultCommand() {
@@ -60,13 +64,13 @@ public class CreateEntityTimeDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
             var timeAttribute = Long.valueOf(form.getTimeAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            EntityAttributeLogic.getInstance().createEntityTimeDefault(this, entityAttribute,
+            entityAttributeLogic.createEntityTimeDefault(this, entityAttribute,
                     timeAttribute, addMissingAttributes, getPartyPK());
         }
 

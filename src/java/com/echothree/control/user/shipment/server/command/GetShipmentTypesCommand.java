@@ -52,9 +52,11 @@ public class GetShipmentTypesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     ShipmentControl shipmentControl;
+
+
     
     /** Creates a new instance of GetShipmentTypesCommand */
     public GetShipmentTypesCommand() {

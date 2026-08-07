@@ -60,12 +60,7 @@ public class GetOfferItemPricesCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetOfferItemPricesCommand */
-    public GetOfferItemPricesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     ItemControl itemControl;
 
@@ -74,6 +69,12 @@ public class GetOfferItemPricesCommand
 
     @Inject
     OfferItemControl offerItemControl;
+
+
+    /** Creates a new instance of GetOfferItemPricesCommand */
+    public GetOfferItemPricesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private OfferItem offerItem;
 
