@@ -33,6 +33,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityTypeCommand
@@ -56,6 +57,10 @@ public class GetEntityTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of GetEntityTypeCommand */
     public GetEntityTypeCommand() {
@@ -64,7 +69,7 @@ public class GetEntityTypeCommand
     
     @Override
     protected EntityType getEntity() {
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
+        var entityType = entityTypeLogic.getEntityTypeByUniversalSpec(this, form);
 
         return entityType;
     }

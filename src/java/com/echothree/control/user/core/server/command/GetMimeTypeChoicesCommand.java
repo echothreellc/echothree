@@ -19,7 +19,6 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -30,9 +29,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMimeTypeChoicesCommand
@@ -57,6 +56,18 @@ public class GetMimeTypeChoicesCommand
                 );
     }
 
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    ItemControl itemControl;
+
     /** Creates a new instance of GetMimeTypeChoicesCommand */
     public GetMimeTypeChoicesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -80,7 +91,6 @@ public class GetMimeTypeChoicesCommand
                 + (commentName != null? 1: 0) + (documentTypeName != null? 1: 0) + (documentName != null? 1: 0);
 
         if(parameterCount == 1) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var defaultMimeTypeChoice = form.getDefaultMimeTypeChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
@@ -94,7 +104,6 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownMimeTypeUsageTypeName.name(), mimeTypeUsageTypeName);
                     }
                 } else if(itemDescriptionTypeName != null) {
-                    var itemControl = Session.getModelController(ItemControl.class);
                     var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
                     if(itemDescriptionType != null) {
@@ -107,8 +116,6 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeName.name(), itemDescriptionTypeName);
                     }
                 } else if(documentTypeName != null || documentName != null) {
-                    var documentControl = Session.getModelController(DocumentControl.class);
-
                     if(documentTypeName != null) {
                         var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
@@ -141,8 +148,6 @@ public class GetMimeTypeChoicesCommand
                             getPreferredLanguage(), allowNullChoice));
                 }
             } else if(forumName != null || forumMessageName != null) {
-                var forumControl = Session.getModelController(ForumControl.class);
-
                 if(forumName != null) {
                     var forum = forumControl.getForumByName(forumName);
 
@@ -166,7 +171,6 @@ public class GetMimeTypeChoicesCommand
                     }
                 }
             } else if((componentVendorName != null && entityTypeName != null && commentTypeName != null) || commentName != null) {
-                var commentControl = Session.getModelController(CommentControl.class);
                 MimeTypeUsageType mimeTypeUsageType = null;
 
                 if(commentName != null) {

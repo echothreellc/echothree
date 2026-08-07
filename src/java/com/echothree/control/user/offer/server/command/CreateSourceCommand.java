@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSourceCommand
@@ -62,6 +62,19 @@ public class CreateSourceCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    SourceControl sourceControl;
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of CreateSourceCommand */
     public CreateSourceCommand() {
@@ -70,23 +83,19 @@ public class CreateSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getCreateSourceResult();
         Source source = null;
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var useControl = Session.getModelController(UseControl.class);
             var useName = form.getUseName();
             var use = useControl.getUseByName(useName);
             
             if(use != null) {
-                var offerUseControl = Session.getModelController(OfferUseControl.class);
                 var offerUse = offerUseControl.getOfferUse(offer, use);
                 
                 if(offerUse != null) {
-                    var sourceControl = Session.getModelController(SourceControl.class);
                     var sourceName = form.getSourceName();
 
                     source = sourceControl.getSourceByName(sourceName);

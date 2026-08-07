@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemUnitPriceLimitCommand
@@ -47,6 +47,19 @@ public class CreateItemUnitPriceLimitCommand
                 new FieldDefinition("MaximumUnitPrice", FieldType.UNSIGNED_PRICE_UNIT, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of CreateItemUnitPriceLimitCommand */
     public CreateItemUnitPriceLimitCommand() {
@@ -55,17 +68,14 @@ public class CreateItemUnitPriceLimitCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var inventoryConditionName = form.getInventoryConditionName();
             var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                 var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
                 
@@ -73,7 +83,6 @@ public class CreateItemUnitPriceLimitCommand
                     var itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
                     
                     if(itemUnitOfMeasureType != null) {
-                        var accountingControl = Session.getModelController(AccountingControl.class);
                         var currencyIsoName = form.getCurrencyIsoName();
                         var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                         

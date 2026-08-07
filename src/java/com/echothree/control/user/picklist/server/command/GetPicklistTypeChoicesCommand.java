@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistTypeChoicesCommand
@@ -53,6 +53,10 @@ public class GetPicklistTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PicklistControl picklistControl;
+
     
     /** Creates a new instance of GetPicklistTypeChoicesCommand */
     public GetPicklistTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetPicklistTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var result = PicklistResultFactory.getGetPicklistTypeChoicesResult();
         var defaultPicklistTypeChoice = form.getDefaultPicklistTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

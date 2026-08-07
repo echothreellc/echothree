@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowDestinationCommand
@@ -59,6 +59,13 @@ public class GetWorkflowDestinationCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
     
     /** Creates a new instance of GetWorkflowDestinationCommand */
     public GetWorkflowDestinationCommand() {
@@ -67,7 +74,7 @@ public class GetWorkflowDestinationCommand
     
     @Override
     protected WorkflowDestination getEntity() {
-        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationByUniversalSpec(this, form, true);
+        return workflowDestinationLogic.getWorkflowDestinationByUniversalSpec(this, form, true);
     }
 
     @Override
@@ -75,8 +82,6 @@ public class GetWorkflowDestinationCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationResult();
 
         if(workflowDestination != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(getUserVisit(), workflowDestination));
         }
 

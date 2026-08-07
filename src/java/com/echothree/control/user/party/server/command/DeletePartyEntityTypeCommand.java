@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartyEntityTypeCommand
@@ -56,6 +56,13 @@ public class DeletePartyEntityTypeCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyEntityTypeControl partyEntityTypeControl;
+
     
     /** Creates a new instance of DeletePartyEntityTypeCommand */
     public DeletePartyEntityTypeCommand() {
@@ -64,7 +71,6 @@ public class DeletePartyEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
@@ -77,7 +83,6 @@ public class DeletePartyEntityTypeCommand
                 var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
                     var partyEntityType = partyEntityTypeControl.getPartyEntityTypeForUpdate(party, entityType);
 
                     if(partyEntityType != null) {

@@ -58,13 +58,13 @@ public class GetGeoCodeAliasesCommand
                 );
     }
 
+    @Inject
+    GeoControl geoControl;
+
     /** Creates a new instance of GetGeoCodeAliasesCommand */
     public GetGeoCodeAliasesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    GeoControl geoControl;
 
     GeoCode geoCode;
 

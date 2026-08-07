@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderAliasTypeChoicesCommand
@@ -56,6 +56,13 @@ public class GetOrderAliasTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    OrderAliasControl orderAliasControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
     
     /** Creates a new instance of GetOrderAliasTypeChoicesCommand */
     public GetOrderAliasTypeChoicesCommand() {
@@ -64,13 +71,11 @@ public class GetOrderAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var result = OrderResultFactory.getGetOrderAliasTypeChoicesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderAliasControl = Session.getModelController(OrderAliasControl.class);
             var defaultOrderAliasTypeChoice = form.getDefaultOrderAliasTypeChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

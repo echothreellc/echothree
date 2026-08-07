@@ -46,7 +46,7 @@ public class GetMessagesCommand
                 new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     MessageControl messageControl;
 
@@ -55,6 +55,7 @@ public class GetMessagesCommand
 
     @Inject
     EntityTypeLogic entityTypeLogic;
+
 
     /** Creates a new instance of GetMessagesCommand */
     public GetMessagesCommand() {

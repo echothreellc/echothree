@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageLayoutAreaCommand
@@ -45,6 +45,10 @@ public class GetContentPageLayoutAreaCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of GetContentPageLayoutAreaCommand */
     public GetContentPageLayoutAreaCommand() {
@@ -53,7 +57,6 @@ public class GetContentPageLayoutAreaCommand
     
     @Override
     protected ContentPageLayoutArea getEntity() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         ContentPageLayoutArea contentPageLayoutArea = null;
@@ -93,8 +96,6 @@ public class GetContentPageLayoutAreaCommand
         var result = ContentResultFactory.getGetContentPageLayoutAreaResult();
 
         if (contentPageLayoutArea != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             result.setContentPageLayoutArea(contentControl.getContentPageLayoutAreaTransfer(getUserVisit(), contentPageLayoutArea));
         }
 

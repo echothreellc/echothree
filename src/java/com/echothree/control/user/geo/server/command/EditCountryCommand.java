@@ -43,9 +43,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCountryCommand
@@ -95,6 +95,24 @@ public class EditCountryCommand
                 );
     }
 
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    GeoCodeAliasLogic geoCodeAliasLogic;
+
+    @Inject
+    GeoCodeLogic geoCodeLogic;
+
+    @Inject
+    GeoCodeScopeLogic geoCodeScopeLogic;
+
+    @Inject
+    GeoCodeTypeLogic geoCodeTypeLogic;
+
     /** Creates a new instance of EditCountryCommand */
     public EditCountryCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -112,7 +130,6 @@ public class EditCountryCommand
 
     @Override
     public GeoCode getEntity(EditCountryResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode;
         var geoCodeName = spec.getGeoCodeName();
 
@@ -142,15 +159,11 @@ public class EditCountryCommand
 
     @Override
     public void fillInResult(EditCountryResult result, GeoCode geoCode) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         result.setCountry(geoControl.getCountryTransfer(getUserVisit(), geoCode));
     }
 
     @Override
     public void doLock(CountryEdit edit, GeoCode geoCode) {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var geoCodeAliasLogic = GeoCodeAliasLogic.getInstance();
         var geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, getPreferredLanguage());
         var geoCodeDetail = geoCode.getLastDetail();
         var geoCodeCountry = geoControl.getGeoCodeCountry(geoCode);
@@ -198,15 +211,12 @@ public class EditCountryCommand
 
     @Override
     public void canUpdate(GeoCode geoCode) {
-        var geoCodeTypeLogic = GeoCodeTypeLogic.getInstance();
         var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoCodeTypes.COUNTRY.name());
 
         if(!hasExecutionErrors()) {
-            var geoCodeScopeLogic = GeoCodeScopeLogic.getInstance();
             var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoCodeScopes.COUNTRIES.name());
 
             if(!hasExecutionErrors()) {
-                var geoCodeLogic = GeoCodeLogic.getInstance();
                 var iso3Number = edit.getIso3Number();
                 var duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.ISO_3_NUMBER.name(), iso3Number);
 
@@ -226,7 +236,6 @@ public class EditCountryCommand
                             duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.COUNTRY_NAME.name(), countryName);
 
                             if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
-                                var contactControl = Session.getModelController(ContactControl.class);
                                 var postalAddressFormatName = edit.getPostalAddressFormatName();
 
                                 postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
@@ -260,8 +269,6 @@ public class EditCountryCommand
 
     @Override
     public void doUpdate(GeoCode geoCode) {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var geoCodeAliasLogic = GeoCodeAliasLogic.getInstance();
         var partyPK = getPartyPK();
         var geoCodeDetailValue = geoControl.getGeoCodeDetailValueForUpdate(geoCode);
         var geoCodeDescription = geoControl.getGeoCodeDescriptionForUpdate(geoCode, getPreferredLanguage());

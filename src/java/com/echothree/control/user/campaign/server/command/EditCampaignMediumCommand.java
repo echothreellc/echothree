@@ -67,6 +67,7 @@ public class EditCampaignMediumCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
     @Inject
     CampaignControl campaignControl;
 

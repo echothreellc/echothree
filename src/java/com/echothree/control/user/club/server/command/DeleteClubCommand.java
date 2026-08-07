@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteClubCommand
@@ -53,6 +53,10 @@ public class DeleteClubCommand
                 new FieldDefinition("ClubName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ClubControl clubControl;
+
     
     /** Creates a new instance of DeleteClubCommand */
     public DeleteClubCommand() {
@@ -61,7 +65,6 @@ public class DeleteClubCommand
     
     @Override
     protected BaseResult execute() {
-        var clubControl = Session.getModelController(ClubControl.class);
         var clubName = form.getClubName();
         var club = clubControl.getClubByNameForUpdate(clubName);
         

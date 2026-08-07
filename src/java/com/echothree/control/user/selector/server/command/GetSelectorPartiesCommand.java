@@ -59,6 +59,7 @@ public class GetSelectorPartiesCommand
 
     @Inject
     SelectorTypeLogic selectorTypeLogic;
+
     
     /** Creates a new instance of GetSelectorPartiesCommand */
     public GetSelectorPartiesCommand() {

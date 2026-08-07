@@ -44,12 +44,13 @@ public class GetWorkRequirementScopeCommand
                 new FieldDefinition("WorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     WorkEffortControl workEffortControl;
 
     @Inject
     WorkRequirementControl workRequirementControl;
+
 
     /** Creates a new instance of GetWorkRequirementScopeCommand */
     public GetWorkRequirementScopeCommand() {

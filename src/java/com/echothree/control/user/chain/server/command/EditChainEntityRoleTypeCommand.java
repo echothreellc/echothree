@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainEntityRoleTypeCommand
@@ -73,6 +73,9 @@ public class EditChainEntityRoleTypeCommand
                 );
     }
 
+    @Inject
+    ChainControl chainControl;
+
     /** Creates a new instance of EditChainEntityRoleTypeCommand */
     public EditChainEntityRoleTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -92,7 +95,6 @@ public class EditChainEntityRoleTypeCommand
 
     @Override
     public ChainEntityRoleType getEntity(EditChainEntityRoleTypeResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainEntityRoleType chainEntityRoleType = null;
         var chainKindName = spec.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
@@ -131,14 +133,11 @@ public class EditChainEntityRoleTypeCommand
 
     @Override
     public void fillInResult(EditChainEntityRoleTypeResult result, ChainEntityRoleType chainEntityRoleType) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainEntityRoleType(chainControl.getChainEntityRoleTypeTransfer(getUserVisit(), chainEntityRoleType));
     }
 
     @Override
     public void doLock(ChainEntityRoleTypeEdit edit, ChainEntityRoleType chainEntityRoleType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescription(chainEntityRoleType, getPreferredLanguage());
         var chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetail();
         var entityTypeDetail = chainEntityRoleTypeDetail.getEntityType().getLastDetail();
@@ -157,7 +156,6 @@ public class EditChainEntityRoleTypeCommand
     
     @Override
     public void canUpdate(ChainEntityRoleType chainEntityRoleType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainTypeDetail = chainType.getLastDetail();
         var chainEntityRoleTypeName = edit.getChainEntityRoleTypeName();
         var duplicateChainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
@@ -184,7 +182,6 @@ public class EditChainEntityRoleTypeCommand
 
     @Override
     public void doUpdate(ChainEntityRoleType chainEntityRoleType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
         var chainEntityRoleTypeDetailValue = chainControl.getChainEntityRoleTypeDetailValueForUpdate(chainEntityRoleType);
         var chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescriptionForUpdate(chainEntityRoleType, getPreferredLanguage());

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class GetPaymentProcessorTypeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PaymentProcessorTypeControl paymentProcessorTypeControl;
+
     
     /** Creates a new instance of GetPaymentProcessorTypeDescriptionCommand */
     public GetPaymentProcessorTypeDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetPaymentProcessorTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorTypeDescriptionResult();
         var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
         var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
         
         if(paymentProcessorType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

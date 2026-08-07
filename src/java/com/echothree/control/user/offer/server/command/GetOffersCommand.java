@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOffersCommand
@@ -53,6 +53,10 @@ public class GetOffersCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    OfferControl offerControl;
+
     
     /** Creates a new instance of GetOffersCommand */
     public GetOffersCommand() {
@@ -66,15 +70,11 @@ public class GetOffersCommand
 
     @Override
     protected Long getTotalEntities() {
-        var offerControl = Session.getModelController(OfferControl.class);
-
         return offerControl.countOffers();
     }
 
     @Override
     protected Collection<Offer> getEntities() {
-        var offerControl = Session.getModelController(OfferControl.class);
-        
         return offerControl.getOffers();
     }
     
@@ -83,8 +83,6 @@ public class GetOffersCommand
         var result = OfferResultFactory.getGetOffersResult();
 
         if(entities != null) {
-            var offerControl = Session.getModelController(OfferControl.class);
-
             if(session.hasLimit(OfferFactory.class)) {
                 result.setOfferCount(getTotalEntities());
             }

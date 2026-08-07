@@ -29,6 +29,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityBooleanDefaultCommand
@@ -52,6 +53,9 @@ public class DeleteEntityBooleanDefaultCommand
                 );
     }
 
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     /** Creates a new instance of CreateEntityBooleanDefaultCommand */
     public DeleteEntityBooleanDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -59,10 +63,10 @@ public class DeleteEntityBooleanDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttributeLogic.getInstance().deleteEntityBooleanDefault(this, entityAttribute, getPartyPK());
+            entityAttributeLogic.deleteEntityBooleanDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

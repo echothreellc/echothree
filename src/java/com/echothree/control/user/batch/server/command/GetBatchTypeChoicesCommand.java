@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBatchTypeChoicesCommand
@@ -53,6 +53,10 @@ public class GetBatchTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    BatchControl batchControl;
+
     
     /** Creates a new instance of GetBatchTypeChoicesCommand */
     public GetBatchTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetBatchTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var result = BatchResultFactory.getGetBatchTypeChoicesResult();
         var defaultBatchTypeChoice = form.getDefaultBatchTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

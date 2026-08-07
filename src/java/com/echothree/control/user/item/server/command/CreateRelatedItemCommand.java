@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRelatedItemCommand
@@ -57,6 +57,10 @@ public class CreateRelatedItemCommand
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of CreateRelatedItemCommand */
     public CreateRelatedItemCommand() {
@@ -66,7 +70,6 @@ public class CreateRelatedItemCommand
     @Override
     protected BaseResult execute() {
         var result = ItemResultFactory.getCreateRelatedItemResult();
-        var itemControl = Session.getModelController(ItemControl.class);
         var relatedItemTypeName = form.getRelatedItemTypeName();
         var relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
         

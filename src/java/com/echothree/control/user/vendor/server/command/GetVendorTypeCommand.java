@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorTypeCommand
@@ -58,6 +58,13 @@ public class GetVendorTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    VendorTypeLogic vendorTypeLogic;
+
     
     /** Creates a new instance of GetVendorTypeCommand */
     public GetVendorTypeCommand() {
@@ -66,7 +73,7 @@ public class GetVendorTypeCommand
 
     @Override
     protected VendorType getEntity() {
-        var vendorType = VendorTypeLogic.getInstance().getVendorTypeByUniversalSpec(this, form, true);
+        var vendorType = vendorTypeLogic.getVendorTypeByUniversalSpec(this, form, true);
 
         if(vendorType != null) {
             sendEvent(vendorType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetVendorTypeCommand
 
     @Override
     protected BaseResult getResult(VendorType vendorType) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetVendorTypeResult();
 
         if(vendorType != null) {

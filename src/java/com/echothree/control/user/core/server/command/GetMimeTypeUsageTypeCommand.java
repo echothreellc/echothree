@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -26,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMimeTypeUsageTypeCommand
@@ -41,6 +40,7 @@ public class GetMimeTypeUsageTypeCommand
             new FieldDefinition("MimeTypeUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
     
     /** Creates a new instance of GetMimeTypeUsageTypeCommand */
     public GetMimeTypeUsageTypeCommand() {
@@ -49,7 +49,6 @@ public class GetMimeTypeUsageTypeCommand
 
     @Override
     protected MimeTypeUsageType getEntity() {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
         var mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
@@ -62,7 +61,6 @@ public class GetMimeTypeUsageTypeCommand
 
     @Override
     protected BaseResult getResult(MimeTypeUsageType mimeTypeUsageType) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var result = CoreResultFactory.getGetMimeTypeUsageTypeResult();
 
         if(mimeTypeUsageType != null) {

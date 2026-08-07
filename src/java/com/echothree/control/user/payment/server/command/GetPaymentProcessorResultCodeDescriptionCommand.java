@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorResultCodeDescriptionCommand
@@ -56,6 +56,13 @@ public class GetPaymentProcessorResultCodeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
+
     
     /** Creates a new instance of GetPaymentProcessorResultCodeDescriptionCommand */
     public GetPaymentProcessorResultCodeDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetPaymentProcessorResultCodeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorResultCodeDescriptionResult();
         var paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
         var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCode != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

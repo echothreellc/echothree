@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditInvoiceTimeTypeDescriptionCommand
@@ -68,6 +68,13 @@ public class EditInvoiceTimeTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditInvoiceTimeTypeDescriptionCommand */
     public EditInvoiceTimeTypeDescriptionCommand() {
@@ -86,7 +93,6 @@ public class EditInvoiceTimeTypeDescriptionCommand
 
     @Override
     public InvoiceTimeTypeDescription getEntity(EditInvoiceTimeTypeDescriptionResult result) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         InvoiceTimeTypeDescription invoiceTimeTypeDescription = null;
         var invoiceTypeName = spec.getInvoiceTypeName();
         var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
@@ -96,7 +102,6 @@ public class EditInvoiceTimeTypeDescriptionCommand
             var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -130,8 +135,6 @@ public class EditInvoiceTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditInvoiceTimeTypeDescriptionResult result, InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
-
         result.setInvoiceTimeTypeDescription(invoiceControl.getInvoiceTimeTypeDescriptionTransfer(getUserVisit(), invoiceTimeTypeDescription));
     }
 
@@ -142,7 +145,6 @@ public class EditInvoiceTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceTimeTypeDescriptionValue = invoiceControl.getInvoiceTimeTypeDescriptionValue(invoiceTimeTypeDescription);
         invoiceTimeTypeDescriptionValue.setDescription(edit.getDescription());
 

@@ -49,8 +49,10 @@ public class GetForumsCommand
 
     @Inject
     ForumControl forumControl;
+
     @Inject
     ForumGroupLogic forumGroupLogic;
+
     
     /** Creates a new instance of GetForumsCommand */
     public GetForumsCommand() {

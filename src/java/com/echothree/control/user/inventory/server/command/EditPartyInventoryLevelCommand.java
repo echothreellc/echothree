@@ -90,6 +90,7 @@ public class EditPartyInventoryLevelCommand
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 

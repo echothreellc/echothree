@@ -30,11 +30,11 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteGlAccountCategoryCommand
@@ -55,6 +55,10 @@ public class DeleteGlAccountCategoryCommand
                 new FieldDefinition("GlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of DeleteGlAccountCategoryCommand */
     public DeleteGlAccountCategoryCommand() {
@@ -63,7 +67,6 @@ public class DeleteGlAccountCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glAccountCategoryName = form.getGlAccountCategoryName();
         var glAccountCategory = accountingControl.getGlAccountCategoryByNameForUpdate(glAccountCategoryName);
         

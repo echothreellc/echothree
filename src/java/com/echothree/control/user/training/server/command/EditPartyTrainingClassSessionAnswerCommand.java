@@ -75,7 +75,7 @@ public class EditPartyTrainingClassSessionAnswerCommand
                 new FieldDefinition("QuestionEndTime", FieldType.DATE_TIME, false, null, null)
                 );
     }
-    
+
     @Inject
     private TrainingControl trainingControl;
 
@@ -93,6 +93,8 @@ public class EditPartyTrainingClassSessionAnswerCommand
 
     @Inject
     private TrainingClassSectionLogic trainingClassSectionLogic;
+
+
     
     /** Creates a new instance of EditPartyTrainingClassSessionAnswerCommand */
     public EditPartyTrainingClassSessionAnswerCommand() {

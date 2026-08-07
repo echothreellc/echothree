@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteWorkflowStepCommand
@@ -56,6 +56,13 @@ public class DeleteWorkflowStepCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
+
     
     /** Creates a new instance of DeleteWorkflowStepCommand */
     public DeleteWorkflowStepCommand() {
@@ -64,11 +71,9 @@ public class DeleteWorkflowStepCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByUniversalSpecForUpdate(this, form, false);
+        var workflowStep = workflowStepLogic.getWorkflowStepByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowControl.deleteWorkflowStep(workflowStep, getPartyPK());
         }
 

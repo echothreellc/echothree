@@ -20,7 +20,6 @@ import com.echothree.control.user.printer.common.form.CreatePrinterGroupJobForm;
 import com.echothree.control.user.printer.common.result.CreatePrinterGroupJobResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.server.logic.PrinterGroupJobLogic;
@@ -38,9 +37,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePrinterGroupJobCommand
@@ -66,6 +65,13 @@ public class CreatePrinterGroupJobCommand
                 new FieldDefinition("Clob", FieldType.STRING, false, 1L, null)
                 );
     }
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    PrinterGroupJobLogic printerGroupJobLogic;
+
     
     /** Creates a new instance of CreatePrinterGroupJobCommand */
     public CreatePrinterGroupJobCommand() {
@@ -78,7 +84,7 @@ public class CreatePrinterGroupJobCommand
         var priority = Integer.valueOf(form.getPriority());
         var description = form.getDescription();
 
-        var printerGroupJob = PrinterGroupJobLogic.getInstance().createPrinterGroupJob(this, printerGroup, copies, priority, mimeType,
+        var printerGroupJob = printerGroupJobLogic.createPrinterGroupJob(this, printerGroup, copies, priority, mimeType,
                 getPreferredLanguage(), description, blob, clob, getPartyPK());
 
         if(!hasExecutionErrors()) {
@@ -89,13 +95,11 @@ public class CreatePrinterGroupJobCommand
 
     @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var result = PrinterResultFactory.getCreatePrinterGroupJobResult();
         var printerGroupName = form.getPrinterGroupName();
         var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(printerGroup != null) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = form.getMimeTypeName();
             var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 

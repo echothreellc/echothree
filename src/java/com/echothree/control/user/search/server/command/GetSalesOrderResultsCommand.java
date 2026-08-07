@@ -28,9 +28,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSalesOrderResultsCommand
@@ -44,6 +44,15 @@ public class GetSalesOrderResultsCommand
                 );
     }
 
+    @Inject
+    SalesOrderControl salesOrderControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetSalesOrderResultsCommand */
     public GetSalesOrderResultsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -52,7 +61,6 @@ public class GetSalesOrderResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetSalesOrderResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.SALES_ORDER.name());
         
         if(searchKind != null) {
@@ -64,10 +72,8 @@ public class GetSalesOrderResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var salesOrderControl = Session.getModelController(SalesOrderControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setSalesOrderResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setSalesOrderResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setSalesOrderResults(salesOrderControl.getSalesOrderResultTransfers(userVisit, userVisitSearch));

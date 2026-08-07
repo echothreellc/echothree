@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultHarmonizedTariffScheduleCodeUseTypeCommand
@@ -52,6 +52,10 @@ public class SetDefaultHarmonizedTariffScheduleCodeUseTypeCommand
                 new FieldDefinition("HarmonizedTariffScheduleCodeUseTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of SetDefaultHarmonizedTariffScheduleCodeUseTypeCommand */
     public SetDefaultHarmonizedTariffScheduleCodeUseTypeCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultHarmonizedTariffScheduleCodeUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
         var harmonizedTariffScheduleCodeUseTypeDetailValue = itemControl.getHarmonizedTariffScheduleCodeUseTypeDetailValueByNameForUpdate(harmonizedTariffScheduleCodeUseTypeName);
         

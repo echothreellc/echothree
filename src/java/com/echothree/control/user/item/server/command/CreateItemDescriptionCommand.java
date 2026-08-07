@@ -20,7 +20,6 @@ import com.echothree.control.user.item.common.form.CreateItemDescriptionForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic.ImageDimensions;
@@ -46,9 +45,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemDescriptionCommand
@@ -75,6 +74,16 @@ public class CreateItemDescriptionCommand
                 new FieldDefinition("StringDescription", FieldType.STRING, false, 1L, 512L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ItemDescriptionLogic itemDescriptionLogic;
+
     
     /** Creates a new instance of CreateItemDescriptionCommand */
     public CreateItemDescriptionCommand() {
@@ -99,7 +108,7 @@ public class CreateItemDescriptionCommand
                     if(itemImageType != null) {
                         // Only works for images coming in as BLOBs.
                         if(blobDescription != null) {
-                            imageDimensions = ItemDescriptionLogic.getInstance().getImageDimensions(mimeType.getLastDetail().getMimeTypeName(), blobDescription);
+                            imageDimensions = itemDescriptionLogic.getImageDimensions(mimeType.getLastDetail().getMimeTypeName(), blobDescription);
                         }
 
                         if(imageDimensions == null) {
@@ -157,7 +166,7 @@ public class CreateItemDescriptionCommand
                 itemControl.createItemImageDescription(itemDescription, itemImageType, imageDimensions.getHeight(), imageDimensions.getWidth(), false,
                         createdBy);
 
-                ItemDescriptionLogic.getInstance().deleteItemImageDescriptionChildren(itemDescription, createdBy);
+                itemDescriptionLogic.deleteItemImageDescriptionChildren(itemDescription, createdBy);
             }
         }
 
@@ -167,7 +176,6 @@ public class CreateItemDescriptionCommand
     @Override
     protected BaseResult execute() {
         var result = ItemResultFactory.getCreateItemDescriptionResult();
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         ItemDescription itemDescription = null;
@@ -177,7 +185,6 @@ public class CreateItemDescriptionCommand
             var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
             
             if(itemDescriptionType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
@@ -204,7 +211,6 @@ public class CreateItemDescriptionCommand
                                 addExecutionError(ExecutionErrors.InvalidMimeType.name());
                             }
                         } else {
-                            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                             var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
                             
                             if(mimeType != null) {

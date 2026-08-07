@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyAliasCommand
@@ -51,6 +51,16 @@ public class GetPartyAliasCommand
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyAliasTypeLogic partyAliasTypeLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     
     /** Creates a new instance of GetPartyAliasCommand */
     public GetPartyAliasCommand() {
@@ -80,14 +90,12 @@ public class GetPartyAliasCommand
         PartyAlias partyAlias = null;
 
         if(parameterCount == 1) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(parameterOption1) {
-                var party = PartyLogic.getInstance().getPartyByName(this, partyName);
+                var party = partyLogic.getPartyByName(this, partyName);
 
                 if(!hasExecutionErrors()) {
                     var partyType = party.getLastDetail().getPartyType();
-                    var partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByName(this, partyType, partyAliasTypeName);
+                    var partyAliasType = partyAliasTypeLogic.getPartyAliasTypeByName(this, partyType, partyAliasTypeName);
 
                     if(!hasExecutionErrors()) {
                         partyAlias = partyControl.getPartyAlias(party, partyAliasType);
@@ -99,7 +107,7 @@ public class GetPartyAliasCommand
                     }
                 }
             } else {
-                var partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByName(this, partyTypeName, partyAliasTypeName);
+                var partyAliasType = partyAliasTypeLogic.getPartyAliasTypeByName(this, partyTypeName, partyAliasTypeName);
 
                 if(!hasExecutionErrors()) {
                     partyAlias = partyControl.getPartyAliasByAlias(partyAliasType, alias);
@@ -123,8 +131,6 @@ public class GetPartyAliasCommand
         var result = PartyResultFactory.getGetPartyAliasResult();
 
         if(partyAlias != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             result.setPartyAlias(partyControl.getPartyAliasTransfer(getUserVisit(), partyAlias));
         }
 

@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOfferUseCommand
@@ -69,6 +69,19 @@ public class EditOfferUseCommand
                 new FieldDefinition("SalesOrderSequenceName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of EditOfferUseCommand */
     public EditOfferUseCommand() {
@@ -77,19 +90,15 @@ public class EditOfferUseCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getEditOfferUseResult();
         var offerName = spec.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var useControl = Session.getModelController(UseControl.class);
             var useName = spec.getUseName();
             var use = useControl.getUseByName(useName);
             
             if(use != null) {
-                var offerUseControl = Session.getModelController(OfferUseControl.class);
-
                 if(editMode.equals(EditMode.LOCK)) {
                     var offerUse = offerUseControl.getOfferUse(offer, use);
                     
@@ -119,7 +128,6 @@ public class EditOfferUseCommand
                         Sequence salesOrderSequence = null;
                         
                         if(salesOrderSequenceName != null) {
-                            var sequenceControl = Session.getModelController(SequenceControl.class);
                             var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
                             
                             if(sequenceType != null) {

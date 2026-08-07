@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCountyCommand
@@ -62,6 +62,10 @@ public class GetCountyCommand
                 new FieldDefinition("CountyNumber", FieldType.NUMBER_3, false, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of GetCountyCommand */
     public GetCountyCommand() {
@@ -76,7 +80,6 @@ public class GetCountyCommand
         var parameterCount = (countyName == null ? 0 : 1) + (countyNumber == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var createdBy = getPartyPK();
 
             var stateGeoCodeName = form.getStateGeoCodeName();
@@ -147,8 +150,6 @@ public class GetCountyCommand
         var result = GeoResultFactory.getGetCountyResult();
 
         if(entity != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
-
             result.setCounty(geoControl.getCountyTransfer(getUserVisit(), entity));
         }
 

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetPartyReturnPolicyStatusCommand
@@ -58,6 +58,16 @@ public class SetPartyReturnPolicyStatusCommand
                 new FieldDefinition("PartyReturnPolicyStatusChoice", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    PartyReturnPolicyLogic partyReturnPolicyLogic;
+
     
     /** Creates a new instance of SetPartyReturnPolicyStatusCommand */
     public SetPartyReturnPolicyStatusCommand() {
@@ -66,12 +76,10 @@ public class SetPartyReturnPolicyStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             var returnKindName = form.getReturnKindName();
             var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
@@ -85,7 +93,7 @@ public class SetPartyReturnPolicyStatusCommand
                     if(partyReturnPolicy != null) {
                         var partyReturnPolicyStatusChoice = form.getPartyReturnPolicyStatusChoice();
 
-                        PartyReturnPolicyLogic.getInstance().setPartyReturnPolicyStatus(this, partyReturnPolicy, partyReturnPolicyStatusChoice, getPartyPK());
+                        partyReturnPolicyLogic.setPartyReturnPolicyStatus(this, partyReturnPolicy, partyReturnPolicyStatusChoice, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartyReturnPolicy.name(), partyName, returnKindName, returnPolicyName);
                     }

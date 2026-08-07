@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetProtocolChoicesCommand
@@ -53,6 +53,10 @@ public class GetProtocolChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of GetProtocolChoicesCommand */
     public GetProtocolChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetProtocolChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var serverControl = Session.getModelController(ServerControl.class);
         var result = CoreResultFactory.getGetProtocolChoicesResult();
         var defaultProtocolChoice = form.getDefaultProtocolChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

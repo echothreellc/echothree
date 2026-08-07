@@ -57,17 +57,18 @@ public class SetSequenceValueCommand
                  new FieldDefinition("Value", FieldType.STRING, true, 1L, 40L)
          );
     }
-    
-    /** Creates a new instance of SetSequenceValueCommand */
-    public SetSequenceValueCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
 
     @Inject
     SequenceControl sequenceControl;
 
     @Inject
     SequenceLogic sequenceLogic;
+
+
+    /** Creates a new instance of SetSequenceValueCommand */
+    public SetSequenceValueCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected BaseResult execute() {

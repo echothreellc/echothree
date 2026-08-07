@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLeaveCommand
@@ -69,6 +69,25 @@ public class CreateLeaveCommand
                 new FieldDefinition("LeaveStatus", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    LeaveLogic leaveLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+    @Inject
+    WorkflowSecurityLogic workflowSecurityLogic;
+
     
     /** Creates a new instance of CreateLeaveCommand */
     public CreateLeaveCommand() {
@@ -77,7 +96,6 @@ public class CreateLeaveCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
@@ -86,7 +104,6 @@ public class CreateLeaveCommand
             var partyCompany = partyControl.getPartyCompanyByName(companyName);
 
             if(partyCompany != null) {
-                var employeeControl = Session.getModelController(EmployeeControl.class);
                 var leaveTypeName = form.getLeaveTypeName();
                 var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
@@ -95,7 +112,6 @@ public class CreateLeaveCommand
                     var leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
                     if(leaveReasonName == null || leaveReason != null) {
-                        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
                         var totalTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                                 form.getTotalTime(), form.getTotalTimeUnitOfMeasureTypeName(),
                                 null, ExecutionErrors.MissingRequiredTotalTime.name(), null, ExecutionErrors.MissingRequiredTotalTimeUnitOfMeasureTypeName.name(),
@@ -107,12 +123,11 @@ public class CreateLeaveCommand
                             var leaveStatusChoice = form.getLeaveStatus();
 
                             if(leaveStatusChoice != null) {
-                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                 leaveStatus = workflowControl.getWorkflowEntranceUsingNames(this, LeaveStatusConstants.Workflow_LEAVE_STATUS,
                                         leaveStatusChoice);
 
                                 if(!hasExecutionErrors()) {
-                                    WorkflowSecurityLogic.getInstance().checkAddEntityToWorkflow(this, leaveStatus, createdBy);
+                                    workflowSecurityLogic.checkAddEntityToWorkflow(this, leaveStatus, createdBy);
                                 }
                             }
 
@@ -122,7 +137,7 @@ public class CreateLeaveCommand
                                 var endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
 
                                 if(endTime == null || endTime > startTime) {
-                                    LeaveLogic.getInstance().createLeave(session, party, partyCompany.getParty(), leaveType, leaveReason, startTime, endTime,
+                                    leaveLogic.createLeave(session, party, partyCompany.getParty(), leaveType, leaveReason, startTime, endTime,
                                             totalTime, leaveStatus, createdBy);
                                 } else {
                                     addExecutionError(endTime.equals(startTime) ? ExecutionErrors.EndTimeEqualToStartTime.name() : ExecutionErrors.EndTimeBeforeStartTime.name());

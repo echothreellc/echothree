@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSelectorKindDescriptionCommand
@@ -68,6 +68,12 @@ public class EditSelectorKindDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     /** Creates a new instance of EditSelectorKindDescriptionCommand */
     public EditSelectorKindDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditSelectorKindDescriptionCommand
 
     @Override
     public SelectorKindDescription getEntity(EditSelectorKindDescriptionResult result) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorKindDescription selectorKindDescription = null;
         var selectorKindName = spec.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(selectorKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditSelectorKindDescriptionCommand
 
     @Override
     public void fillInResult(EditSelectorKindDescriptionResult result, SelectorKindDescription selectorKindDescription) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-
         result.setSelectorKindDescription(selectorControl.getSelectorKindDescriptionTransfer(getUserVisit(), selectorKindDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditSelectorKindDescriptionCommand
 
     @Override
     public void doUpdate(SelectorKindDescription selectorKindDescription) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindDescriptionValue = selectorControl.getSelectorKindDescriptionValue(selectorKindDescription);
 
         selectorKindDescriptionValue.setDescription(edit.getDescription());

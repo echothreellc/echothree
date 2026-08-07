@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTermTypeCommand
@@ -47,6 +48,10 @@ public class CreateTermTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    TermTypeLogic termTypeLogic;
+
     
     /** Creates a new instance of CreateTermTypeCommand */
     public CreateTermTypeCommand() {
@@ -59,7 +64,7 @@ public class CreateTermTypeCommand
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 
-        TermTypeLogic.getInstance().createTermType(this, termTypeName, isDefault, sortOrder, null,
+        termTypeLogic.createTermType(this, termTypeName, isDefault, sortOrder, null,
                 null, getPartyPK());
 
         return null;

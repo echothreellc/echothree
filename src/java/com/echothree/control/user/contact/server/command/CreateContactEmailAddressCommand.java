@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContactEmailAddressCommand
@@ -62,6 +62,13 @@ public class CreateContactEmailAddressCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ContactEmailAddressLogic contactEmailAddressLogic;
+
     
     /** Creates a new instance of CreateContactEmailAddressCommand */
     public CreateContactEmailAddressCommand() {
@@ -78,7 +85,6 @@ public class CreateContactEmailAddressCommand
     @Override
     protected BaseResult execute() {
         var result = ContactResultFactory.getCreateContactEmailAddressResult();
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
@@ -88,7 +94,7 @@ public class CreateContactEmailAddressCommand
             var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
             var description = form.getDescription();
 
-            var partyContactMechanism = ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
+            var partyContactMechanism = contactEmailAddressLogic.createContactEmailAddress(party,
                     emailAddress, allowSolicitation, description, null, createdBy);
             var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
             

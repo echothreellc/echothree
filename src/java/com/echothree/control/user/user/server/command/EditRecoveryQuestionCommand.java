@@ -30,6 +30,7 @@ import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditRecoveryQuestionCommand
@@ -50,6 +51,7 @@ public class EditRecoveryQuestionCommand
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
     
     /** Creates a new instance of EditRecoveryQuestionCommand */
     public EditRecoveryQuestionCommand() {
@@ -58,7 +60,6 @@ public class EditRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var result = UserResultFactory.getEditRecoveryQuestionResult();
         
         if(editMode.equals(EditMode.LOCK)) {

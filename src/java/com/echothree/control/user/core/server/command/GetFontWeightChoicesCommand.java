@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFontWeightChoicesCommand
@@ -53,6 +53,10 @@ public class GetFontWeightChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    FontControl fontControl;
+
     
     /** Creates a new instance of GetFontWeightChoicesCommand */
     public GetFontWeightChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetFontWeightChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var fontControl = Session.getModelController(FontControl.class);
         var result = CoreResultFactory.getGetFontWeightChoicesResult();
         var defaultFontWeightChoice = form.getDefaultFontWeightChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

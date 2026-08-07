@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWishlistPriorityDescriptionCommand
@@ -57,6 +57,13 @@ public class CreateWishlistPriorityDescriptionCommand
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WishlistControl wishlistControl;
+
     
     /** Creates a new instance of CreateWishlistPriorityDescriptionCommand */
     public CreateWishlistPriorityDescriptionCommand() {
@@ -65,7 +72,6 @@ public class CreateWishlistPriorityDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistTypeName = form.getWishlistTypeName();
         var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
@@ -74,7 +80,6 @@ public class CreateWishlistPriorityDescriptionCommand
             var wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
             
             if(wishlistPriority != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

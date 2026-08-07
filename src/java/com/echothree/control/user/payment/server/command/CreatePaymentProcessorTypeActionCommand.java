@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentProcessorTypeActionCommand
@@ -55,6 +56,10 @@ public class CreatePaymentProcessorTypeActionCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    PaymentProcessorTypeActionLogic paymentProcessorTypeActionLogic;
+
     
     /** Creates a new instance of CreatePaymentProcessorTypeActionTypeCommand */
     public CreatePaymentProcessorTypeActionCommand() {
@@ -69,7 +74,7 @@ public class CreatePaymentProcessorTypeActionCommand
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 
-        var paymentProcessorTypeAction = PaymentProcessorTypeActionLogic.getInstance().createPaymentProcessorTypeAction(this,
+        var paymentProcessorTypeAction = paymentProcessorTypeActionLogic.createPaymentProcessorTypeAction(this,
                 paymentProcessorTypeName, paymentProcessorActionTypeName, isDefault, sortOrder, getPartyPK());
 
         if(paymentProcessorTypeAction != null && !hasExecutionErrors()) {

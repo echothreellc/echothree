@@ -30,6 +30,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityNameAttributeCommand
@@ -52,6 +53,13 @@ public class CreateEntityNameAttributeCommand
                 new FieldDefinition("NameAttribute", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of CreateEntityNameAttributeCommand */
     public CreateEntityNameAttributeCommand() {
@@ -60,14 +68,14 @@ public class CreateEntityNameAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.NAME);
 
             if(!hasExecutionErrors()) {
-                EntityAttributeLogic.getInstance().createEntityNameAttribute(this, entityAttribute, form.getNameAttribute(), entityInstance,
+                entityAttributeLogic.createEntityNameAttribute(this, entityAttribute, form.getNameAttribute(), entityInstance,
                         getPartyPK());
             }
         }

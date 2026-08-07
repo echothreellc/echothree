@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditReturnKindCommand
@@ -71,6 +71,12 @@ public class EditReturnKindCommand
                 );
     }
 
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     /** Creates a new instance of EditReturnKindCommand */
     public EditReturnKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -88,7 +94,6 @@ public class EditReturnKindCommand
 
     @Override
     public ReturnKind getEntity(EditReturnKindResult result) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnKind returnKind;
         var returnKindName = spec.getReturnKindName();
 
@@ -112,8 +117,6 @@ public class EditReturnKindCommand
 
     @Override
     public void fillInResult(EditReturnKindResult result, ReturnKind returnKind) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
         result.setReturnKind(returnPolicyControl.getReturnKindTransfer(getUserVisit(), returnKind));
     }
 
@@ -121,7 +124,6 @@ public class EditReturnKindCommand
 
     @Override
     public void doLock(ReturnKindEdit edit, ReturnKind returnKind) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindDescription = returnPolicyControl.getReturnKindDescription(returnKind, getPreferredLanguage());
         var returnKindDetail = returnKind.getLastDetail();
 
@@ -139,14 +141,12 @@ public class EditReturnKindCommand
 
     @Override
     public void canUpdate(ReturnKind returnKind) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindName = edit.getReturnKindName();
         var duplicateReturnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(duplicateReturnKind != null && !returnKind.equals(duplicateReturnKind)) {
             addExecutionError(ExecutionErrors.DuplicateReturnKindName.name(), returnKindName);
         } else {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var returnSequenceTypeName = edit.getReturnSequenceTypeName();
 
             returnSequenceType = sequenceControl.getSequenceTypeByName(returnSequenceTypeName);
@@ -159,7 +159,6 @@ public class EditReturnKindCommand
 
     @Override
     public void doUpdate(ReturnKind returnKind) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var partyPK = getPartyPK();
         var returnKindDetailValue = returnPolicyControl.getReturnKindDetailValueForUpdate(returnKind);
         var returnKindDescription = returnPolicyControl.getReturnKindDescriptionForUpdate(returnKind, getPreferredLanguage());

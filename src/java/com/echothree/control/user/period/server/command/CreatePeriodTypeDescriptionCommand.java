@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePeriodTypeDescriptionCommand
@@ -57,6 +57,13 @@ public class CreatePeriodTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PeriodControl periodControl;
+
     
     /** Creates a new instance of CreatePeriodTypeDescriptionCommand */
     public CreatePeriodTypeDescriptionCommand() {
@@ -65,7 +72,6 @@ public class CreatePeriodTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var periodKindName = form.getPeriodKindName();
         var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
@@ -74,7 +80,6 @@ public class CreatePeriodTypeDescriptionCommand
             var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
             
             if(periodType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

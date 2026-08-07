@@ -25,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRatingTypeDescriptionsCommand
@@ -42,6 +42,10 @@ public class GetRatingTypeDescriptionsCommand
             new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    RatingControl ratingControl;
+
     
     /** Creates a new instance of GetRatingTypeDescriptionsCommand */
     public GetRatingTypeDescriptionsCommand() {
@@ -59,7 +63,6 @@ public class GetRatingTypeDescriptionsCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
                 var ratingTypeName = form.getRatingTypeName();
                 var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 

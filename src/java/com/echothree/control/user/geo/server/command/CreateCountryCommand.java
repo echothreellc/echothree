@@ -41,9 +41,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCountryCommand
@@ -87,6 +87,25 @@ public class CreateCountryCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    GeoCodeLogic geoCodeLogic;
+
+    @Inject
+    GeoCodeScopeLogic geoCodeScopeLogic;
+
+    @Inject
+    GeoCodeTypeLogic geoCodeTypeLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateCountryCommand */
     public CreateCountryCommand() {
@@ -95,18 +114,14 @@ public class CreateCountryCommand
 
     @Override
     protected BaseResult execute() {
-        var geoCodeTypeLogic = GeoCodeTypeLogic.getInstance();
         var result = GeoResultFactory.getCreateCountryResult();
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
         var geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoCodeTypes.COUNTRY.name());
 
         if(!hasExecutionErrors()) {
-            var geoCodeScopeLogic = GeoCodeScopeLogic.getInstance();
             var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoCodeScopes.COUNTRIES.name());
 
             if(!hasExecutionErrors()) {
-                var geoCodeLogic = GeoCodeLogic.getInstance();
                 var iso3Number = form.getIso3Number();
 
                 geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.ISO_3_NUMBER.name(), iso3Number);
@@ -127,13 +142,12 @@ public class CreateCountryCommand
                             geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoCodeAliasTypes.COUNTRY_NAME.name(), countryName);
 
                             if(geoCode == null && !hasExecutionErrors()) {
-                                var contactControl = Session.getModelController(ContactControl.class);
                                 var postalAddressFormatName = form.getPostalAddressFormatName();
                                 var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
 
                                 if(postalAddressFormat != null) {
                                     BasePK createdBy = getPartyPK();
-                                    var geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
+                                    var geoCodeName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
                                     var telephoneCode = form.getTelephoneCode();
                                     var areaCodePattern = form.getAreaCodePattern();
                                     var areaCodeRequired = Boolean.valueOf(form.getAreaCodeRequired());

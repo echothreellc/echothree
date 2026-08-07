@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRelatedItemTypeChoicesCommand
@@ -53,6 +53,10 @@ public class GetRelatedItemTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetRelatedItemTypeChoicesCommand */
     public GetRelatedItemTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetRelatedItemTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetRelatedItemTypeChoicesResult();
         var defaultRelatedItemTypeChoice = form.getDefaultRelatedItemTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

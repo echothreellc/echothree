@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCancellationTypeDescriptionCommand
@@ -57,6 +57,13 @@ public class CreateCancellationTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateCancellationTypeDescriptionCommand */
     public CreateCancellationTypeDescriptionCommand() {
@@ -65,7 +72,6 @@ public class CreateCancellationTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationKindName = form.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
@@ -74,7 +80,6 @@ public class CreateCancellationTypeDescriptionCommand
             var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
             
             if(cancellationType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

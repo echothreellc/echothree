@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityAliasCommand
@@ -57,6 +58,12 @@ public class CreateEntityAliasCommand
                 );
     }
 
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     /** Creates a new instance of CreateEntityAliasCommand */
     public CreateEntityAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -64,13 +71,13 @@ public class CreateEntityAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasType(this, entityInstance, form, form);
+            var entityAliasType = entityAliasTypeLogic.getEntityAliasType(this, entityInstance, form, form);
 
             if(!hasExecutionErrors()) {
-                EntityAliasTypeLogic.getInstance().createEntityAlias(this,  entityInstance, entityAliasType, form.getAlias(),
+                entityAliasTypeLogic.createEntityAlias(this,  entityInstance, entityAliasType, form.getAlias(),
                         getPartyPK());
             }
         }

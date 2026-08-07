@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContactMechanismChoicesCommand
@@ -44,6 +44,13 @@ public class GetContactMechanismChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetContactMechanismChoicesCommand */
     public GetContactMechanismChoicesCommand() {
@@ -52,13 +59,11 @@ public class GetContactMechanismChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = ContactResultFactory.getGetContactMechanismChoicesResult();
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismTypeName = form.getContactMechanismTypeName();
             var contactMechanismType = contactMechanismTypeName == null ? null : contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
             

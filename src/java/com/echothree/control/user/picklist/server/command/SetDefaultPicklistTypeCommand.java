@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultPicklistTypeCommand
@@ -52,6 +52,10 @@ public class SetDefaultPicklistTypeCommand
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PicklistControl picklistControl;
+
     
     /** Creates a new instance of SetDefaultPicklistTypeCommand */
     public SetDefaultPicklistTypeCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultPicklistTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistTypeName = form.getPicklistTypeName();
         var picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueByNameForUpdate(picklistTypeName);
         

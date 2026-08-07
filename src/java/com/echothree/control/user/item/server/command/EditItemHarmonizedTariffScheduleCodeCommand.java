@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemHarmonizedTariffScheduleCodeCommand
@@ -71,6 +71,12 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
                 );
     }
 
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
     /** Creates a new instance of EditItemHarmonizedTariffScheduleCodeCommand */
     public EditItemHarmonizedTariffScheduleCodeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -91,13 +97,11 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
 
     @Override
     public ItemHarmonizedTariffScheduleCode getEntity(EditItemHarmonizedTariffScheduleCodeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var countryName = spec.getCountryName();
             
             countryGeoCode = geoControl.getCountryByAlias(countryName);
@@ -139,8 +143,6 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
 
     @Override
     public void fillInResult(EditItemHarmonizedTariffScheduleCodeResult result, ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemHarmonizedTariffScheduleCode(itemControl.getItemHarmonizedTariffScheduleCodeTransfer(getUserVisit(), itemHarmonizedTariffScheduleCode));
     }
 
@@ -155,7 +157,6 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
     
     @Override
     public void canUpdate(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeName = edit.getHarmonizedTariffScheduleCodeName();
         
         harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(countryGeoCode, harmonizedTariffScheduleCodeName);
@@ -175,7 +176,6 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
 
     @Override
     public void doUpdate(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemHarmonizedTariffScheduleCodeDetailValue = itemControl.getItemHarmonizedTariffScheduleCodeDetailValueForUpdate(itemHarmonizedTariffScheduleCode);
         
         itemHarmonizedTariffScheduleCodeDetailValue.setHarmonizedTariffScheduleCodePK(harmonizedTariffScheduleCode.getPrimaryKey());

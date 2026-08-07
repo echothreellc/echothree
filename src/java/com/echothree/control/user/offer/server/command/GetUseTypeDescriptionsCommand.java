@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUseTypeDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetUseTypeDescriptionsCommand
                 new FieldDefinition("UseTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    UseTypeControl useTypeControl;
+
     
     /** Creates a new instance of GetUseTypeDescriptionsCommand */
     public GetUseTypeDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetUseTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var result = OfferResultFactory.getGetUseTypeDescriptionsResult();
         var useTypeName = form.getUseTypeName();
         var useType = useTypeControl.getUseTypeByName(useTypeName);

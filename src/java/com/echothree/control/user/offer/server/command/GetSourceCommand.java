@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSourceCommand
@@ -55,6 +55,10 @@ public class GetSourceCommand
                 new FieldDefinition("SourceName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SourceControl sourceControl;
+
     
     /** Creates a new instance of GetSourceCommand */
     public GetSourceCommand() {
@@ -63,7 +67,6 @@ public class GetSourceCommand
     
     @Override
     protected Source getEntity() {
-        var sourceControl = Session.getModelController(SourceControl.class);
         var sourceName = form.getSourceName();
         var source = sourceControl.getSourceByName(sourceName);
         
@@ -76,7 +79,6 @@ public class GetSourceCommand
     
     @Override
     protected BaseResult getResult(Source source) {
-        var sourceControl = Session.getModelController(SourceControl.class);
         var result = OfferResultFactory.getGetSourceResult();
         
         if(source != null) {

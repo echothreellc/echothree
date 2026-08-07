@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowEntranceSelectorCommand
@@ -57,6 +57,13 @@ public class GetWorkflowEntranceSelectorCommand
                 new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
     
     /** Creates a new instance of GetWorkflowEntranceSelectorCommand */
     public GetWorkflowEntranceSelectorCommand() {
@@ -69,7 +76,7 @@ public class GetWorkflowEntranceSelectorCommand
         var workflowEntranceName = form.getWorkflowEntranceName();
         var selectorName = form.getSelectorName();
 
-        return WorkflowEntranceLogic.getInstance().getWorkflowEntranceSelectorByName(this, workflowName, workflowEntranceName,
+        return workflowEntranceLogic.getWorkflowEntranceSelectorByName(this, workflowName, workflowEntranceName,
                 selectorName);
     }
 
@@ -78,8 +85,6 @@ public class GetWorkflowEntranceSelectorCommand
         var result = WorkflowResultFactory.getGetWorkflowEntranceSelectorResult();
 
         if(entity != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowEntranceSelector(workflowControl.getWorkflowEntranceSelectorTransfer(getUserVisit(), entity));
         }
 

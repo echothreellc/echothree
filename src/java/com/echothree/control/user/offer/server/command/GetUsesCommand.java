@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUsesCommand
@@ -53,6 +53,10 @@ public class GetUsesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of GetUsesCommand */
     public GetUsesCommand() {
@@ -66,15 +70,11 @@ public class GetUsesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var useControl = Session.getModelController(UseControl.class);
-
         return useControl.countUses();
     }
 
     @Override
     protected Collection<Use> getEntities() {
-        var useControl = Session.getModelController(UseControl.class);
-        
         return useControl.getUses();
     }
     
@@ -83,8 +83,6 @@ public class GetUsesCommand
         var result = OfferResultFactory.getGetUsesResult();
 
         if(entities != null) {
-            var useControl = Session.getModelController(UseControl.class);
-
             if(session.hasLimit(UseFactory.class)) {
                 result.setUseCount(getTotalEntities());
             }

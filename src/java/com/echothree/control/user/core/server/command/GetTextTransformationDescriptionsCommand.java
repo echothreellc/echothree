@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTextTransformationDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetTextTransformationDescriptionsCommand
                 new FieldDefinition("TextTransformationName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of GetTextTransformationDescriptionsCommand */
     public GetTextTransformationDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetTextTransformationDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var textControl = Session.getModelController(TextControl.class);
         var result = CoreResultFactory.getGetTextTransformationDescriptionsResult();
         var textTransformationName = form.getTextTransformationName();
         var textTransformation = textControl.getTextTransformationByName(textTransformationName);

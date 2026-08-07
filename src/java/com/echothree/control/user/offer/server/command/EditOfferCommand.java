@@ -47,9 +47,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOfferCommand
@@ -81,6 +81,22 @@ public class EditOfferCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    OfferLogic offerLogic;
+
     
     /** Creates a new instance of EditOfferCommand */
     public EditOfferCommand() {
@@ -89,7 +105,6 @@ public class EditOfferCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getEditOfferResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -139,7 +154,6 @@ public class EditOfferCommand
                     Sequence salesOrderSequence = null;
                     
                     if(salesOrderSequenceName != null) {
-                        var sequenceControl = Session.getModelController(SequenceControl.class);
                         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
                         
                         if(sequenceType != null) {
@@ -154,7 +168,6 @@ public class EditOfferCommand
                         Selector offerItemSelector = null;
                         
                         if(offerItemSelectorName != null) {
-                            var selectorControl = Session.getModelController(SelectorControl.class);
                             var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                             
                             if(selectorKind != null) {
@@ -176,7 +189,6 @@ public class EditOfferCommand
                             Filter offerItemPriceFilter = null;
                             
                             if(offerItemPriceFilterName != null) {
-                                var filterControl = Session.getModelController(FilterControl.class);
                                 var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
                                 var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
                                 
@@ -200,7 +212,7 @@ public class EditOfferCommand
                                         offerDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                                         offerDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-                                        OfferLogic.getInstance().updateOfferFromValue(offerDetailValue, partyPK);
+                                        offerLogic.updateOfferFromValue(offerDetailValue, partyPK);
 
                                         if(offerDescription == null && description != null) {
                                             offerControl.createOfferDescription(offer, getPreferredLanguage(), description, partyPK);

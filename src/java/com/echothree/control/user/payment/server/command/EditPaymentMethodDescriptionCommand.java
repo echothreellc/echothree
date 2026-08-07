@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPaymentMethodDescriptionCommand
@@ -68,6 +68,12 @@ public class EditPaymentMethodDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
     /** Creates a new instance of EditPaymentMethodDescriptionCommand */
     public EditPaymentMethodDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public PaymentMethodDescription getEntity(EditPaymentMethodDescriptionResult result) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         PaymentMethodDescription paymentMethodDescription = null;
         var paymentMethodName = spec.getPaymentMethodName();
         var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
         if(paymentMethod != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public void fillInResult(EditPaymentMethodDescriptionResult result, PaymentMethodDescription paymentMethodDescription) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-
         result.setPaymentMethodDescription(paymentMethodControl.getPaymentMethodDescriptionTransfer(getUserVisit(), paymentMethodDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public void doUpdate(PaymentMethodDescription paymentMethodDescription) {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         var paymentMethodDescriptionValue = paymentMethodControl.getPaymentMethodDescriptionValue(paymentMethodDescription);
         paymentMethodDescriptionValue.setDescription(edit.getDescription());
 

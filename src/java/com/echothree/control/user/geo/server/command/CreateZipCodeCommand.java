@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateZipCodeCommand
@@ -62,6 +62,13 @@ public class CreateZipCodeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateZipCodeCommand */
     public CreateZipCodeCommand() {
@@ -71,7 +78,6 @@ public class CreateZipCodeCommand
     @Override
     protected BaseResult execute() {
         var result = GeoResultFactory.getCreateZipCodeResult();
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
 
         var countryGeoCodeName = form.getCountryGeoCodeName();
@@ -92,7 +98,7 @@ public class CreateZipCodeCommand
             
             if(geoCodeAlias == null) {
                 BasePK createdBy = getPartyPK();
-                var geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
+                var geoCodeName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

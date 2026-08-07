@@ -30,6 +30,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityNameAttributeCommand
@@ -51,6 +52,13 @@ public class DeleteEntityNameAttributeCommand
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of DeleteEntityNameAttributeCommand */
     public DeleteEntityNameAttributeCommand() {
@@ -59,10 +67,10 @@ public class DeleteEntityNameAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -72,8 +80,8 @@ public class DeleteEntityNameAttributeCommand
 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
+                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {

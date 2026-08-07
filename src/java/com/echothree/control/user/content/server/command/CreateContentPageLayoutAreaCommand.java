@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentPageLayoutAreaCommand
@@ -56,6 +56,10 @@ public class CreateContentPageLayoutAreaCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of CreateContentPageLayoutAreaCommand */
     public CreateContentPageLayoutAreaCommand() {
@@ -64,7 +68,6 @@ public class CreateContentPageLayoutAreaCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageLayoutName = form.getContentPageLayoutName();
         var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         

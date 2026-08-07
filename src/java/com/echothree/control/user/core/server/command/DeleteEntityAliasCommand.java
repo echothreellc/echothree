@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityAliasCommand
@@ -59,6 +59,15 @@ public class DeleteEntityAliasCommand
         );
     }
 
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     /** Creates a new instance of DeleteEntityAliasCommand */
     public DeleteEntityAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -66,10 +75,10 @@ public class DeleteEntityAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
                 var entityAliasTypeName = form.getEntityAliasTypeName();
@@ -79,12 +88,11 @@ public class DeleteEntityAliasCommand
 
                 if(parameterCount == 1) {
                     var entityAliasType = entityAliasTypeName == null ?
-                            EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUuid(this, entityAliasTypeUuid) :
-                            EntityAliasTypeLogic.getInstance().getEntityAliasTypeByName(this, entityInstance.getEntityType(), entityAliasTypeName);
+                            entityAliasTypeLogic.getEntityAliasTypeByUuid(this, entityAliasTypeUuid) :
+                            entityAliasTypeLogic.getEntityAliasTypeByName(this, entityInstance.getEntityType(), entityAliasTypeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                             var entityAlias = entityAliasControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
 
                             if(entityAlias != null) {

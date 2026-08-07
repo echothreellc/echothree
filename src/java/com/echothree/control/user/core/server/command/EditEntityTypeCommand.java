@@ -40,6 +40,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityTypeCommand
@@ -72,6 +73,10 @@ public class EditEntityTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of EditEntityTypeCommand */
     public EditEntityTypeCommand() {
@@ -128,7 +133,6 @@ public class EditEntityTypeCommand
 
     @Override
     public void doLock(EntityTypeEdit edit, EntityType entityType) {
-        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         var entityTypeDescription = entityTypeControl.getEntityTypeDescription(entityType, getPreferredLanguage());
         var entityTypeDetail = entityType.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
@@ -156,8 +160,6 @@ public class EditEntityTypeCommand
         if(duplicateEntityType != null && !entityType.equals(duplicateEntityType)) {
             addExecutionError(ExecutionErrors.DuplicateEntityTypeName.name(), entityTypeName);
         } else {
-            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-
             lockTimeout = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                     edit.getLockTimeout(), edit.getLockTimeoutUnitOfMeasureTypeName(),
                     null, ExecutionErrors.MissingRequiredLockTimeout.name(), null, ExecutionErrors.MissingRequiredLockTimeoutUnitOfMeasureTypeName.name(),

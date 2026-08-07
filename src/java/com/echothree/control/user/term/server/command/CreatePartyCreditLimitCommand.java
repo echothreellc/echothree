@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyCreditLimitCommand
@@ -45,6 +45,16 @@ public class CreatePartyCreditLimitCommand
                 new FieldDefinition("PotentialCreditLimit:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of CreatePartyCreditLimitCommand */
     public CreatePartyCreditLimitCommand() {
@@ -53,7 +63,6 @@ public class CreatePartyCreditLimitCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
         
@@ -61,12 +70,10 @@ public class CreatePartyCreditLimitCommand
             var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
             
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
-                var accountingControl = Session.getModelController(AccountingControl.class);
                 var currencyIsoName = form.getCurrencyIsoName();
                 var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                 
                 if(currency != null) {
-                    var termControl = Session.getModelController(TermControl.class);
                     var partyCreditLimit = termControl.getPartyCreditLimit(party, currency);
                     
                     if(partyCreditLimit == null) {

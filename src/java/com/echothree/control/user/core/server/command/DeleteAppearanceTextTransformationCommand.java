@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteAppearanceTextTransformationCommand
@@ -56,6 +56,16 @@ public class DeleteAppearanceTextTransformationCommand
                 new FieldDefinition("TextTransformationName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    AppearanceLogic appearanceLogic;
+
+    @Inject
+    TextLogic textLogic;
+
     
     /** Creates a new instance of DeleteAppearanceTextTransformationCommand */
     public DeleteAppearanceTextTransformationCommand() {
@@ -65,14 +75,13 @@ public class DeleteAppearanceTextTransformationCommand
     @Override
     protected BaseResult execute() {
         var appearanceName = form.getAppearanceName();
-        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var appearance = appearanceLogic.getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
             var textTransformationName = form.getTextTransformationName();
-            var textTransformation = TextLogic.getInstance().getTextTransformationByName(this, textTransformationName);
+            var textTransformation = textLogic.getTextTransformationByName(this, textTransformationName);
             
             if(!hasExecutionErrors()) {
-                var appearanceControl = Session.getModelController(AppearanceControl.class);
                 var appearanceTextTransformation = appearanceControl.getAppearanceTextTransformationForUpdate(appearance, textTransformation);
                 
                 if(appearanceTextTransformation != null) {

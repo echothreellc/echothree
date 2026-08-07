@@ -27,7 +27,6 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.control.CustomerControl;
@@ -54,6 +53,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCommunicationEventCommand
@@ -68,6 +68,42 @@ public class CreateCommunicationEventCommand
                 new FieldDefinition("ClobDocument", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CommunicationControl communicationControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SourceControl sourceControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ContactEmailAddressLogic contactEmailAddressLogic;
+
+    @Inject
+    WorkEffortLogic workEffortLogic;
     
     /** Creates a new instance of CreateCommunicationEventCommand */
     public CreateCommunicationEventCommand() {
@@ -76,12 +112,10 @@ public class CreateCommunicationEventCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = Session.getModelController(CommunicationControl.class);
         var communicationSourceName = form.getCommunicationSourceName();
         var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
 
         if(communicationSource != null) {
-            var workEffortLogic = WorkEffortLogic.getInstance();
             var communicationEmailSource = communicationControl.getCommunicationEmailSource(communicationSource);
             var receiveWorkEffortScope = communicationEmailSource.getReceiveWorkEffortScope();
             var preparedWorkEffort = workEffortLogic.prepareForWorkEffort(this, receiveWorkEffortScope, null, null, null);
@@ -91,9 +125,6 @@ public class CreateCommunicationEventCommand
                 var communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
 
                 if(communicationEventType != null) {
-                    var contactControl = Session.getModelController(ContactControl.class);
-                    var documentControl = Session.getModelController(DocumentControl.class);
-                    var workflowControl = Session.getModelController(WorkflowControl.class);
                     var createdBy = getPartyPK();
                     Party party = null;
                     PartyContactMechanism partyContactMechanism = null;
@@ -107,7 +138,6 @@ public class CreateCommunicationEventCommand
                     if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)
                             && communicationEventTypeName.equals(CommunicationConstants.CommunicationEventType_EMAIL)
                             && clobDocument == null && blobDocument != null) {
-                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                         String description = null;
                         String emailAddress = null;
 
@@ -153,15 +183,12 @@ public class CreateCommunicationEventCommand
                             var partyContactMechanisms = contactControl.getPartyContactMechanismsByEmailAddress(emailAddress);
 
                             if(partyContactMechanisms.isEmpty()) {
-                                var sourceControl = Session.getModelController(SourceControl.class);
                                 var source = sourceControl.getDefaultSource();
 
                                 if(source != null) {
-                                    var customerControl = Session.getModelController(CustomerControl.class);
                                     var customerType = customerControl.getDefaultCustomerType();
 
                                     if(customerType != null) {
-                                        var termControl = Session.getModelController(TermControl.class);
                                         var customerTypeDetail = customerType.getLastDetail();
                                         var term = customerTypeDetail.getDefaultTerm();
 
@@ -173,7 +200,6 @@ public class CreateCommunicationEventCommand
                                             var defaultArGlAccount = customerTypeDetail.getDefaultArGlAccount();
 
                                             if(defaultArGlAccount == null) {
-                                                var accountingControl = Session.getModelController(AccountingControl.class);
                                                 var glAccountCategory = accountingControl.getGlAccountCategoryByName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
 
                                                 if(glAccountCategory != null) {
@@ -184,7 +210,6 @@ public class CreateCommunicationEventCommand
                                             }
 
                                             if(defaultArGlAccount != null) {
-                                                var partyControl = Session.getModelController(PartyControl.class);
                                                 var defaultOfferUse = source.getLastDetail().getOfferUse();
                                                 var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
 
@@ -196,7 +221,7 @@ public class CreateCommunicationEventCommand
                                                         customerTypeDetail.getDefaultRequireReference(), customerTypeDetail.getDefaultAllowReferenceDuplicates(),
                                                         customerTypeDetail.getDefaultReferenceValidationPattern(), createdBy);
 
-                                                partyContactMechanism = ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
+                                                partyContactMechanism = contactEmailAddressLogic.createContactEmailAddress(party,
                                                         emailAddress, false, null, ContactMechanismPurposes.PRIMARY_EMAIL.name(), createdBy);
 
                                                 termControl.createPartyTerm(party, term, customerTypeDetail.getDefaultTaxable(), createdBy);
@@ -244,7 +269,6 @@ public class CreateCommunicationEventCommand
                         }
 
                         if(!hasExecutionErrors()) {
-                            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                             var documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_COMMUNICATION_EVENT_EMAIL);
                             var mimeType = mimeTypeControl.getMimeTypeByName(MimeTypes.MESSAGE_RFC822.mimeTypeName());
 
@@ -260,7 +284,7 @@ public class CreateCommunicationEventCommand
                                     partyContactMechanism, document, createdBy);
 
                             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(communicationEvent.getPrimaryKey());
-                            var workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
+                            var workEffort = workEffortLogic.createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
 
                             var senderRoleType = communicationControl.getCommunicationEventRoleTypeByName(CommunicationConstants.CommunicationEventRoleType_SENDER);
                             communicationControl.createCommunicationEventRole(communicationEvent, party, senderRoleType, createdBy);

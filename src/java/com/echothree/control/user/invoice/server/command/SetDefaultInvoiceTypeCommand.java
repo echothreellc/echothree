@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultInvoiceTypeCommand
@@ -52,6 +52,10 @@ public class SetDefaultInvoiceTypeCommand
                 new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of SetDefaultInvoiceTypeCommand */
     public SetDefaultInvoiceTypeCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultInvoiceTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceTypeName = form.getInvoiceTypeName();
         var invoiceTypeDetailValue = invoiceControl.getInvoiceTypeDetailValueByNameForUpdate(invoiceTypeName);
         

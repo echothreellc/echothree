@@ -25,9 +25,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContactMechanismPurposeCommand
@@ -43,6 +43,13 @@ public class GetContactMechanismPurposeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactMechanismPurposeLogic contactMechanismPurposeLogic;
+
     
     /** Creates a new instance of GetContactMechanismPurposeCommand */
     public GetContactMechanismPurposeCommand() {
@@ -51,7 +58,7 @@ public class GetContactMechanismPurposeCommand
 
     @Override
     protected ContactMechanismPurpose getEntity() {
-        return ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByUniversalSpec(this, form);
+        return contactMechanismPurposeLogic.getContactMechanismPurposeByUniversalSpec(this, form);
     }
 
     @Override
@@ -59,8 +66,6 @@ public class GetContactMechanismPurposeCommand
         var result = ContactResultFactory.getGetContactMechanismPurposeResult();
 
         if(contactMechanismPurpose != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
-
             result.setContactMechanismPurpose(contactControl.getContactMechanismPurposeTransfer(getUserVisit(), contactMechanismPurpose));
         }
 

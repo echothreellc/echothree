@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetQueueTypeCommand
@@ -61,6 +61,13 @@ public class GetQueueTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    QueueControl queueControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of GetQueueTypeCommand */
     public GetQueueTypeCommand() {
@@ -72,13 +79,11 @@ public class GetQueueTypeCommand
     protected QueueType getEntity() {
         var queueTypeName = form.getQueueTypeName();
         QueueType queueType = null;
-        var parameterCount = (queueTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (queueTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var queueControl = Session.getModelController(QueueControl.class);
-
             if(queueTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.QueueType.name());
 
                 if(!hasExecutionErrors()) {
@@ -100,7 +105,6 @@ public class GetQueueTypeCommand
 
     @Override
     protected BaseResult getResult(QueueType queueType) {
-        var queueControl = Session.getModelController(QueueControl.class);
         var result = QueueResultFactory.getGetQueueTypeResult();
 
         if(queueType != null) {

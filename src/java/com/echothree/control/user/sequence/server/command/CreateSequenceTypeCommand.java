@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSequenceTypeCommand
@@ -62,6 +62,10 @@ public class CreateSequenceTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of CreateSequenceTypeCommand */
     public CreateSequenceTypeCommand() {
@@ -71,7 +75,6 @@ public class CreateSequenceTypeCommand
     @Override
     protected BaseResult execute() {
         var result = SequenceResultFactory.getCreateSequenceTypeResult();
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeName = form.getSequenceTypeName();
         var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         

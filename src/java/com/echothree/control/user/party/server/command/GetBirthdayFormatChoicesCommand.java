@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBirthdayFormatChoicesCommand
@@ -54,6 +54,10 @@ public class GetBirthdayFormatChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetBirthdayFormatChoicesCommand */
     public GetBirthdayFormatChoicesCommand() {
@@ -62,7 +66,6 @@ public class GetBirthdayFormatChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetBirthdayFormatChoicesResult();
         var defaultBirthdayFormatChoice = form.getDefaultBirthdayFormatChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

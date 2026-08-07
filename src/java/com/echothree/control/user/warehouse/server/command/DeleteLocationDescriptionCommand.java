@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteLocationDescriptionCommand
@@ -56,6 +56,13 @@ public class DeleteLocationDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of DeleteLocationDescriptionCommand */
     public DeleteLocationDescriptionCommand() {
@@ -64,7 +71,6 @@ public class DeleteLocationDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
@@ -74,7 +80,6 @@ public class DeleteLocationDescriptionCommand
             var location = warehouseControl.getLocationByName(warehouseParty, locationName);
             
             if(location != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartyPaymentMethodCommand
@@ -55,6 +55,13 @@ public class DeletePartyPaymentMethodCommand
                 new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    PartyPaymentMethodLogic partyPaymentMethodLogic;
+
     
     /** Creates a new instance of DeletePartyPaymentMethodCommand */
     public DeletePartyPaymentMethodCommand() {
@@ -74,7 +81,6 @@ public class DeletePartyPaymentMethodCommand
 
             // If the executing Party is a CUSTOMER...
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-                var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
                 var partyPaymentMethodName = form.getPartyPaymentMethodName();
                 var partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
 
@@ -95,7 +101,7 @@ public class DeletePartyPaymentMethodCommand
     protected BaseResult execute() {
         var partyPaymentMethodName = form.getPartyPaymentMethodName();
 
-        PartyPaymentMethodLogic.getInstance().deletePartyPaymentMethod(this, partyPaymentMethodName, getPartyPK());
+        partyPaymentMethodLogic.deletePartyPaymentMethod(this, partyPaymentMethodName, getPartyPK());
 
         return null;
     }

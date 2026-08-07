@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandMessageTypeDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommandMessageTypeDescriptionCommand
@@ -55,6 +54,10 @@ public class GetCommandMessageTypeDescriptionCommand
                 new FieldDefinition("CommandMessageTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetCommandMessageTypeDescriptionCommand */
     public GetCommandMessageTypeDescriptionCommand() {
@@ -63,13 +66,11 @@ public class GetCommandMessageTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var commandControl = Session.getModelController(CommandControl.class);
         var result = CoreResultFactory.getGetCommandMessageTypeDescriptionResult();
         var commandMessageTypeName = form.getCommandMessageTypeName();
         var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

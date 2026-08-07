@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnKindDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetReturnKindDescriptionsCommand
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
     
     /** Creates a new instance of GetReturnKindDescriptionsCommand */
     public GetReturnKindDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetReturnKindDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var result = ReturnPolicyResultFactory.getGetReturnKindDescriptionsResult();
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);

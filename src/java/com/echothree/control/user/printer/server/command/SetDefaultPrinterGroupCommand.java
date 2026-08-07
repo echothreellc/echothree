@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultPrinterGroupCommand
@@ -40,6 +40,9 @@ public class SetDefaultPrinterGroupCommand
                 );
     }
 
+    @Inject
+    PrinterControl printerControl;
+
     /** Creates a new instance of SetDefaultPrinterGroupCommand */
     public SetDefaultPrinterGroupCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -47,7 +50,6 @@ public class SetDefaultPrinterGroupCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
        var printerGroupName = form.getPrinterGroupName();
        var printerGroupDetailValue = printerControl.getPrinterGroupDetailValueByNameForUpdate(printerGroupName);
         

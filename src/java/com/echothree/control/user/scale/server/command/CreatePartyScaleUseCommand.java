@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyScaleUseCommand
@@ -58,6 +58,12 @@ public class CreatePartyScaleUseCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
     /** Creates a new instance of CreatePartyScaleUseCommand */
     public CreatePartyScaleUseCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -69,8 +75,6 @@ public class CreatePartyScaleUseCommand
         Party party;
 
         if(partyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             party = partyControl.getPartyByName(partyName);
             if(party == null) {
                 addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
@@ -80,7 +84,6 @@ public class CreatePartyScaleUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            var scaleControl = Session.getModelController(ScaleControl.class);
             var scaleUseTypeName = form.getScaleUseTypeName();
             var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 

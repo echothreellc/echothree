@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPaymentProcessorResultCodeDescriptionCommand
@@ -65,6 +65,13 @@ public class EditPaymentProcessorResultCodeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
+
     
     /** Creates a new instance of EditPaymentProcessorResultCodeDescriptionCommand */
     public EditPaymentProcessorResultCodeDescriptionCommand() {
@@ -73,13 +80,11 @@ public class EditPaymentProcessorResultCodeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var result = PaymentResultFactory.getEditPaymentProcessorResultCodeDescriptionResult();
         var paymentProcessorResultCodeName = spec.getPaymentProcessorResultCodeName();
         var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCode != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

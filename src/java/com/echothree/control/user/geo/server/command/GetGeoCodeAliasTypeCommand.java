@@ -55,14 +55,15 @@ public class GetGeoCodeAliasTypeCommand
                 new FieldDefinition("GeoCodeAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of GetGeoCodeAliasTypeCommand */
     public GetGeoCodeAliasTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-
-    @Inject
-    GeoControl geoControl;
 
     @Override
     protected GeoCodeAliasType getEntity() {

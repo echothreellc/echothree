@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTaxClassificationTranslationCommand
@@ -62,6 +62,19 @@ public class CreateTaxClassificationTranslationCommand
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TaxControl taxControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateTaxClassificationTranslationCommand */
     public CreateTaxClassificationTranslationCommand() {
@@ -70,23 +83,20 @@ public class CreateTaxClassificationTranslationCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var countryName = form.getCountryName();
         var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            var taxControl = Session.getModelController(TaxControl.class);
             var taxClassificationName = form.getTaxClassificationName();
             var taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
             
             if(taxClassification != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     var overview = form.getOverview();
-                    var overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
+                    var overviewMimeType = mimeTypeLogic.checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
                             ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                             ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
 

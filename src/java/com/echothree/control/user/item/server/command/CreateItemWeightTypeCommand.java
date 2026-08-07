@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemWeightTypeCommand
@@ -55,6 +56,10 @@ public class CreateItemWeightTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemWeightTypeLogic itemWeightTypeLogic;
+
     
     /** Creates a new instance of CreateItemWeightTypeCommand */
     public CreateItemWeightTypeCommand() {
@@ -72,7 +77,7 @@ public class CreateItemWeightTypeCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            itemWeightType = ItemWeightTypeLogic.getInstance().createItemWeightType(this, itemWeightTypeName,
+            itemWeightType = itemWeightTypeLogic.createItemWeightType(this, itemWeightTypeName,
                     isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         }
 

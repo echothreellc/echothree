@@ -54,12 +54,13 @@ public class GetHarmonizedTariffScheduleCodeUnitCommand
                 new FieldDefinition("HarmonizedTariffScheduleCodeUnitName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ItemControl itemControl;
 
     @Inject
     HarmonizedTariffScheduleCodeLogic harmonizedTariffScheduleCodeLogic;
+
 
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeUnitCommand */
     public GetHarmonizedTariffScheduleCodeUnitCommand() {

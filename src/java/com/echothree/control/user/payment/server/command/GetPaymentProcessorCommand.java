@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorCommand
@@ -59,6 +59,12 @@ public class GetPaymentProcessorCommand
         );
     }
 
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
+    @Inject
+    PaymentProcessorLogic paymentProcessorLogic;
+
     /** Creates a new instance of GetPaymentProcessorCommand */
     public GetPaymentProcessorCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetPaymentProcessorCommand
 
     @Override
     protected PaymentProcessor getEntity() {
-        var paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByUniversalSpec(this, form, true);
+        var paymentProcessor = paymentProcessorLogic.getPaymentProcessorByUniversalSpec(this, form, true);
 
         if(paymentProcessor != null) {
             sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetPaymentProcessorCommand
 
     @Override
     protected BaseResult getResult(PaymentProcessor paymentProcessor) {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorResult();
 
         if(paymentProcessor != null) {

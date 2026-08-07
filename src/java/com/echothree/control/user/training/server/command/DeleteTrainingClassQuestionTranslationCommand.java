@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTrainingClassQuestionTranslationCommand
@@ -57,6 +57,13 @@ public class DeleteTrainingClassQuestionTranslationCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
     
     /** Creates a new instance of DeleteTrainingClassQuestionTranslationCommand */
     public DeleteTrainingClassQuestionTranslationCommand() {
@@ -65,7 +72,6 @@ public class DeleteTrainingClassQuestionTranslationCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -78,7 +84,6 @@ public class DeleteTrainingClassQuestionTranslationCommand
                 var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = form.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
 

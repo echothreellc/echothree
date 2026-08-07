@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetCustomerStatusCommand
@@ -54,6 +54,13 @@ public class SetCustomerStatusCommand
                 new FieldDefinition("CustomerStatusChoice", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    CustomerLogic customerLogic;
+
     
     /** Creates a new instance of SetCustomerStatusCommand */
     public SetCustomerStatusCommand() {
@@ -62,14 +69,13 @@ public class SetCustomerStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerName = form.getCustomerName();
         var customer = customerControl.getCustomerByName(customerName);
         
         if(customer != null) {
             var customerStatusChoice = form.getCustomerStatusChoice();
             
-            CustomerLogic.getInstance().setCustomerStatus(session, this, customer.getParty(), customerStatusChoice, getPartyPK());
+            customerLogic.setCustomerStatus(session, this, customer.getParty(), customerStatusChoice, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
         }

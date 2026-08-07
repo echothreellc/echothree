@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLicenseTypeCommand
@@ -56,6 +56,10 @@ public class CreateLicenseTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    LicenseControl licenseControl;
+
     
     /** Creates a new instance of CreateLicenseTypeCommand */
     public CreateLicenseTypeCommand() {
@@ -64,7 +68,6 @@ public class CreateLicenseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         var licenseTypeName = form.getLicenseTypeName();
         var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
         

@@ -74,6 +74,7 @@ public class CreatePartyInventoryLevelCommand
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 

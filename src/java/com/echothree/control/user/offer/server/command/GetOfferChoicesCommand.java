@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferChoicesCommand
@@ -54,6 +54,10 @@ public class GetOfferChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    OfferControl offerControl;
+
     
     /** Creates a new instance of GetOfferChoicesCommand */
     public GetOfferChoicesCommand() {
@@ -62,7 +66,6 @@ public class GetOfferChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getGetOfferChoicesResult();
         var defaultOfferChoice = form.getDefaultOfferChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemPurchasingCategoryCommand
@@ -74,6 +74,15 @@ public class EditItemPurchasingCategoryCommand
                 );
     }
 
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemPurchasingCategoryLogic itemPurchasingCategoryLogic;
+
     /** Creates a new instance of EditItemPurchasingCategoryCommand */
     public EditItemPurchasingCategoryCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -91,21 +100,20 @@ public class EditItemPurchasingCategoryCommand
 
     @Override
     public ItemPurchasingCategory getEntity(EditItemPurchasingCategoryResult result) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         ItemPurchasingCategory itemPurchasingCategory = null;
         var itemPurchasingCategoryName = spec.getItemPurchasingCategoryName();
-        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             if(itemPurchasingCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ItemPurchasingCategory.name());
 
                 if(!hasExecutionErrors()) {
                     itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByEntityInstance(entityInstance, editModeToEntityPermission(editMode));
                 }
             } else {
-                itemPurchasingCategory = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByName(this, itemPurchasingCategoryName, editModeToEntityPermission(editMode));
+                itemPurchasingCategory = itemPurchasingCategoryLogic.getItemPurchasingCategoryByName(this, itemPurchasingCategoryName, editModeToEntityPermission(editMode));
             }
 
             if(itemPurchasingCategory != null) {
@@ -125,8 +133,6 @@ public class EditItemPurchasingCategoryCommand
 
     @Override
     public void fillInResult(EditItemPurchasingCategoryResult result, ItemPurchasingCategory itemPurchasingCategory) {
-        var vendorControl = Session.getModelController(VendorControl.class);
-
         result.setItemPurchasingCategory(vendorControl.getItemPurchasingCategoryTransfer(getUserVisit(), itemPurchasingCategory));
     }
 
@@ -134,7 +140,6 @@ public class EditItemPurchasingCategoryCommand
 
     @Override
     public void doLock(ItemPurchasingCategoryEdit edit, ItemPurchasingCategory itemPurchasingCategory) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, getPreferredLanguage());
         var itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
 
@@ -152,7 +157,6 @@ public class EditItemPurchasingCategoryCommand
 
     @Override
     public void canUpdate(ItemPurchasingCategory itemPurchasingCategory) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var itemPurchasingCategoryName = edit.getItemPurchasingCategoryName();
         var duplicateItemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
 
@@ -177,7 +181,6 @@ public class EditItemPurchasingCategoryCommand
 
     @Override
     public void doUpdate(ItemPurchasingCategory itemPurchasingCategory) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var partyPK = getPartyPK();
         var itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueForUpdate(itemPurchasingCategory);
         var itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescriptionForUpdate(itemPurchasingCategory, getPreferredLanguage());

@@ -25,6 +25,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRecoveryQuestionCommand
@@ -40,6 +41,7 @@ public class CreateRecoveryQuestionCommand
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
     
     /** Creates a new instance of CreateRecoveryQuestionCommand */
     public CreateRecoveryQuestionCommand() {
@@ -48,7 +50,6 @@ public class CreateRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var recoveryQuestionName = form.getRecoveryQuestionName();
         var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         

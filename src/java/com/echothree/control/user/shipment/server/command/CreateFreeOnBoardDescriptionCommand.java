@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFreeOnBoardDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateFreeOnBoardDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateFreeOnBoardDescriptionCommand */
     public CreateFreeOnBoardDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateFreeOnBoardDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoardName = form.getFreeOnBoardName();
         var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
         
         if(freeOnBoard != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

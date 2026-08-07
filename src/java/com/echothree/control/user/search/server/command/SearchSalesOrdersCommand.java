@@ -31,10 +31,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchSalesOrdersCommand
@@ -57,6 +57,15 @@ public class SearchSalesOrdersCommand
                 );
     }
 
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    OrderLogic orderLogic;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of SearchSalesOrdersCommand */
     public SearchSalesOrdersCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -64,7 +73,6 @@ public class SearchSalesOrdersCommand
     
     @Override
     protected BaseResult execute() {
-        var searchLogic = SearchLogic.getInstance();
         var result = SearchResultFactory.getSearchSalesOrdersResult();
         var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.SALES_ORDER.name());
 
@@ -73,13 +81,11 @@ public class SearchSalesOrdersCommand
             var searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
 
             if(!hasExecutionErrors()) {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var salesOrderStatusChoice = form.getSalesOrderStatusChoice();
                 var salesOrderStatusWorkflowStep = salesOrderStatusChoice == null ? null :
                     workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS), salesOrderStatusChoice);
 
                 if(salesOrderStatusChoice == null || salesOrderStatusChoice != null) {
-                    var orderLogic = OrderLogic.getInstance();
                     var orderType = orderLogic.getOrderTypeByName(this, OrderTypes.SALES_ORDER.name());
 
                     if(!hasExecutionErrors()) {

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentProcessorCommand
@@ -59,6 +59,13 @@ public class CreatePaymentProcessorCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
+    @Inject
+    PaymentProcessorTypeLogic paymentProcessorTypeLogic;
+
     
     /** Creates a new instance of CreatePaymentProcessorCommand */
     public CreatePaymentProcessorCommand() {
@@ -67,14 +74,13 @@ public class CreatePaymentProcessorCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var result = PaymentResultFactory.getCreatePaymentProcessorResult();
         var paymentProcessorName = form.getPaymentProcessorName();
         var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor == null) {
             var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
-            var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(this, paymentProcessorTypeName);
+            var paymentProcessorType = paymentProcessorTypeLogic.getPaymentProcessorTypeByName(this, paymentProcessorTypeName);
             
             if(!hasExecutionErrors()) {
                 var partyPK = getPartyPK();

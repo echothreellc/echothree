@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCommunicationEventTypeCommand
@@ -41,6 +41,9 @@ public class CreateCommunicationEventTypeCommand
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    CommunicationControl communicationControl;
     
     /** Creates a new instance of CreateCommunicationEventTypeCommand */
     public CreateCommunicationEventTypeCommand() {
@@ -49,7 +52,6 @@ public class CreateCommunicationEventTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = Session.getModelController(CommunicationControl.class);
         var communicationEventTypeName = form.getCommunicationEventTypeName();
         var communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
         

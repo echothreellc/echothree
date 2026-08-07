@@ -20,7 +20,6 @@ import com.echothree.control.user.document.common.form.CreatePartyDocumentForm;
 import com.echothree.control.user.document.common.result.CreatePartyDocumentResult;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.document.server.logic.DocumentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -40,9 +39,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyDocumentCommand
@@ -69,6 +68,16 @@ public class CreatePartyDocumentCommand
                 new FieldDefinition("Clob", FieldType.STRING, false, 1L, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    DocumentLogic documentLogic;
+
     
     /** Creates a new instance of CreatePartyDocumentCommand */
     public CreatePartyDocumentCommand() {
@@ -80,7 +89,7 @@ public class CreatePartyDocumentCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var partyDocument = DocumentLogic.getInstance().createPartyDocument(this, party, documentType, mimeType, isDefault, sortOrder,
+        var partyDocument = documentLogic.createPartyDocument(this, party, documentType, mimeType, isDefault, sortOrder,
                 getPreferredLanguage(), description, blob, clob, getPartyPK());
 
         if(!hasExecutionErrors()) {
@@ -93,13 +102,11 @@ public class CreatePartyDocumentCommand
 
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = DocumentResultFactory.getCreatePartyDocumentResult();
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var documentControl = Session.getModelController(DocumentControl.class);
             var documentTypeName = form.getDocumentTypeName();
             var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
@@ -138,7 +145,6 @@ public class CreatePartyDocumentCommand
                     }
 
                     if(!hasExecutionErrors()) {
-                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                         var mimeTypeName = form.getMimeTypeName();
                         var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 

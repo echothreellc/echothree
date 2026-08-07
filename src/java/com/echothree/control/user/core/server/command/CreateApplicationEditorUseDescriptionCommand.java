@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateApplicationEditorUseDescriptionCommand
@@ -58,6 +58,16 @@ public class CreateApplicationEditorUseDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
     
     /** Creates a new instance of CreateApplicationEditorUseDescriptionCommand */
     public CreateApplicationEditorUseDescriptionCommand() {
@@ -67,19 +77,17 @@ public class CreateApplicationEditorUseDescriptionCommand
     @Override
     protected BaseResult execute() {
         var applicationName = form.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
             var applicationEditorUseName = form.getApplicationEditorUseName();
-            var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+            var applicationEditorUse = applicationLogic.getApplicationEditorUseByName(this, application, applicationEditorUseName);
 
             if(!hasExecutionErrors()) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var applicationControl = Session.getModelController(ApplicationControl.class);
                     var applicationEditorUseDescription = applicationControl.getApplicationEditorUseDescription(applicationEditorUse, language);
 
                     if(applicationEditorUseDescription == null) {

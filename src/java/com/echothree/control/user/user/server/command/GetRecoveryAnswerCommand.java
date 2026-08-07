@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRecoveryAnswerCommand
@@ -49,6 +49,19 @@ public class GetRecoveryAnswerCommand
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of GetRecoveryAnswerCommand */
     public GetRecoveryAnswerCommand() {
@@ -65,19 +78,15 @@ public class GetRecoveryAnswerCommand
         var parameterCount = (partyName == null ? 0 : 1) + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
         
         if(parameterCount < 2) {
-            var userControl = getUserControl();
             var self = getParty();
             Party party = null;
             
             if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                
                 party = partyControl.getPartyByName(partyName);
                 if(party == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(employeeName != null) {
-                var employeeControl = Session.getModelController(EmployeeControl.class);
                 var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                 
                 if(partyEmployee != null) {
@@ -86,7 +95,6 @@ public class GetRecoveryAnswerCommand
                     addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else if(customerName != null) {
-                var customerControl = Session.getModelController(CustomerControl.class);
                 var customer = customerControl.getCustomerByName(customerName);
                 
                 if(customer != null) {
@@ -95,7 +103,6 @@ public class GetRecoveryAnswerCommand
                     addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
                 }
             } else if(vendorName != null) {
-                var vendorControl = Session.getModelController(VendorControl.class);
                 var vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {

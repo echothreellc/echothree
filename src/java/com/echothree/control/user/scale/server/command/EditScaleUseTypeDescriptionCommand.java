@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditScaleUseTypeDescriptionCommand
@@ -68,6 +68,12 @@ public class EditScaleUseTypeDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
     /** Creates a new instance of EditScaleUseTypeDescriptionCommand */
     public EditScaleUseTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditScaleUseTypeDescriptionCommand
 
     @Override
     public ScaleUseTypeDescription getEntity(EditScaleUseTypeDescriptionResult result) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         ScaleUseTypeDescription scaleUseTypeDescription = null;
         var scaleUseTypeName = spec.getScaleUseTypeName();
         var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
         if(scaleUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditScaleUseTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditScaleUseTypeDescriptionResult result, ScaleUseTypeDescription scaleUseTypeDescription) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
-
         result.setScaleUseTypeDescription(scaleControl.getScaleUseTypeDescriptionTransfer(getUserVisit(), scaleUseTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditScaleUseTypeDescriptionCommand
 
     @Override
     public void doUpdate(ScaleUseTypeDescription scaleUseTypeDescription) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var scaleUseTypeDescriptionValue = scaleControl.getScaleUseTypeDescriptionValue(scaleUseTypeDescription);
 
         scaleUseTypeDescriptionValue.setDescription(edit.getDescription());

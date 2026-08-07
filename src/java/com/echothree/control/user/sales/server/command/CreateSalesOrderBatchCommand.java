@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSalesOrderBatchCommand
@@ -59,6 +59,16 @@ public class CreateSalesOrderBatchCommand
                 new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    SalesOrderBatchLogic salesOrderBatchLogic;
+
     
     /** Creates a new instance of CreateSalesOrderBatchCommand */
     public CreateSalesOrderBatchCommand() {
@@ -68,13 +78,11 @@ public class CreateSalesOrderBatchCommand
     @Override
     protected BaseResult execute() {
         var result = SalesResultFactory.getCreateSalesOrderBatchResult();
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = form.getCurrencyIsoName();
 
         var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency != null) {
-            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
             var paymentMethodName = form.getPaymentMethodName();
             var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
@@ -84,7 +92,7 @@ public class CreateSalesOrderBatchCommand
                 var strAmount = form.getAmount();
                 var amount = strAmount == null ? null : Long.valueOf(strAmount);
 
-                var batch = SalesOrderBatchLogic.getInstance().createBatch(this, currency, paymentMethod, count, amount, getPartyPK());
+                var batch = salesOrderBatchLogic.createBatch(this, currency, paymentMethod, count, amount, getPartyPK());
 
                 if(!hasExecutionErrors()) {
                     result.setBatchName(batch.getLastDetail().getBatchName());

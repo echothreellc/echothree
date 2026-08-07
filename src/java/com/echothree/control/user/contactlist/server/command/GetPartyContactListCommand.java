@@ -58,12 +58,14 @@ public class GetPartyContactListCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
     @Inject
     ContactListControl contactListControl;
 
     @Inject
     PartyContactListLogic partyContactListLogic;
+
+
     
     /** Creates a new instance of GetPartyContactListCommand */
     public GetPartyContactListCommand() {

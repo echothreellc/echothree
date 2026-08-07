@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -60,20 +59,19 @@ public class GetFilterEntranceStepCommand
         );
     }
 
-    /** Creates a new instance of GetFilterEntranceStepCommand */
-    public GetFilterEntranceStepCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
-
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterStepLogic filterStepLogic;
 
+    /** Creates a new instance of GetFilterEntranceStepCommand */
+    public GetFilterEntranceStepCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+
     @Override
     protected FilterEntranceStep getEntity() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
         var filterTypeName = form.getFilterTypeName();
         var filterName = form.getFilterName();

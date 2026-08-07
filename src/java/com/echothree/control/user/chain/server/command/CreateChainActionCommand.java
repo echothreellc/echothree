@@ -42,10 +42,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateChainActionCommand
@@ -90,6 +90,16 @@ public class CreateChainActionCommand
                 new FieldDefinition("DelayTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    LetterControl letterControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of CreateChainActionCommand */
     public CreateChainActionCommand() {
@@ -136,7 +146,7 @@ public class CreateChainActionCommand
     private abstract class LetterComponentChainActionType
             extends BaseChainActionType {
 
-        protected LetterControl letterControl = Session.getModelController(LetterControl.class);
+        protected LetterControl letterControl = CreateChainActionCommand.this.letterControl;
 
         public LetterComponentChainActionType(ChainControl chainControl, String chainActionTypeName) {
             super(chainControl, chainActionTypeName);
@@ -181,7 +191,6 @@ public class CreateChainActionCommand
                 nextChainActionSet = chainControl.getChainActionSetByName(chain, nextChainActionSetName);
                 
                 if(nextChainActionSet != null) {
-                    var uomControl = Session.getModelController(UomControl.class);
                     var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                     if(timeUnitOfMeasureKind != null) {
@@ -210,7 +219,6 @@ public class CreateChainActionCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
 

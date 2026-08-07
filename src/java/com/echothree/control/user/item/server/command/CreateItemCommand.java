@@ -50,9 +50,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemCommand
@@ -97,6 +97,40 @@ public class CreateItemCommand
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    WorkflowSecurityLogic workflowSecurityLogic;
+
     
     /** Creates a new instance of CreateItemCommand */
     public CreateItemCommand() {
@@ -106,7 +140,6 @@ public class CreateItemCommand
     @Override
     protected BaseResult execute() {
         var result = ItemResultFactory.getCreateItemResult();
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemName == null ? null : itemControl.getItemByNameThenAlias(itemName);
         
@@ -135,8 +168,6 @@ public class CreateItemCommand
                                 addExecutionError(ExecutionErrors.NotPermittedItemAccountingCategory.name(), itemAccountingCategoryName);
                             }
                         } else {
-                            var accountingControl = Session.getModelController(AccountingControl.class);
-                            
                             itemAccountingCategory = itemAccountingCategoryName == null? null: accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
                             
                             if(itemAccountingCategoryName == null) {
@@ -155,8 +186,6 @@ public class CreateItemCommand
                                     addExecutionError(ExecutionErrors.NotPermittedItemPurchasingCategory.name(), itemPurchasingCategoryName);
                                 }
                             } else {
-                                var vendorControl = Session.getModelController(VendorControl.class);
-                                
                                 itemPurchasingCategory = itemPurchasingCategoryName == null? null: vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
                                 
                                 if(itemPurchasingCategoryName == null) {
@@ -167,7 +196,6 @@ public class CreateItemCommand
                             }
                             
                             if(!hasExecutionErrors()) {
-                                var partyControl = Session.getModelController(PartyControl.class);
                                 var companyName = form.getCompanyName();
                                 var partyCompany = partyControl.getPartyCompanyByName(companyName);
                                 
@@ -208,7 +236,6 @@ public class CreateItemCommand
                                         }
 
                                         if(!hasExecutionErrors()) {
-                                            var uomControl = Session.getModelController(UomControl.class);
                                             var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                                             var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
 
@@ -221,7 +248,6 @@ public class CreateItemCommand
                                                     CancellationPolicy cancellationPolicy = null;
 
                                                     if(cancellationPolicyName != null) {
-                                                        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                                                         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                                                         cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -232,7 +258,6 @@ public class CreateItemCommand
                                                         ReturnPolicy returnPolicy = null;
 
                                                         if(returnPolicyName != null) {
-                                                            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                                                             var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                                                             returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
@@ -243,13 +268,12 @@ public class CreateItemCommand
                                                             var inventorySerialized = rawInventorySerialized == null? null: Boolean.valueOf(rawInventorySerialized);
 
                                                             if(isKitOrStyle ? inventorySerialized == null : inventorySerialized != null) {
-                                                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                                                 var itemStatusChoice = form.getItemStatus();
                                                                 var itemStatus = workflowControl.getWorkflowEntranceUsingNames(this, ItemStatusConstants.Workflow_ITEM_STATUS,
                                                                         itemStatusChoice);
                                                                 var createdBy = getPartyPK();
 
-                                                                if(!hasExecutionErrors() && WorkflowSecurityLogic.getInstance().checkAddEntityToWorkflow(this, itemStatus, createdBy)) {
+                                                                if(!hasExecutionErrors() && workflowSecurityLogic.checkAddEntityToWorkflow(this, itemStatus, createdBy)) {
                                                                     var shippingChargeExempt = Boolean.valueOf(form.getShippingChargeExempt());
                                                                     var strShippingStartTime = form.getShippingStartTime();
                                                                     var shippingStartTime = strShippingStartTime == null ? session.getStartTime() : Long.valueOf(strShippingStartTime);
@@ -268,7 +292,7 @@ public class CreateItemCommand
                                                                     var allowAssociatePayments = Boolean.valueOf(form.getAllowAssociatePayments());
 
                                                                     // TODO: SerialNumberSequenceName is currently ignored.
-                                                                    item = ItemLogic.getInstance().createItem(this, itemName, itemType, itemUseType, itemCategory,
+                                                                    item = itemLogic.createItem(this, itemName, itemType, itemUseType, itemCategory,
                                                                             itemAccountingCategory, itemPurchasingCategory, partyCompany.getParty(),
                                                                             itemDeliveryType, itemInventoryType, inventorySerialized, null, shippingChargeExempt,
                                                                             shippingStartTime, shippingEndTime, salesOrderStartTime, salesOrderEndTime,
@@ -277,7 +301,6 @@ public class CreateItemCommand
                                                                             returnPolicy, null, createdBy);
 
                                                                     if(!hasExecutionErrors()) {
-                                                                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                                                         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
 
                                                                         workflowControl.addEntityToWorkflow(itemStatus, entityInstance, null, null, createdBy);

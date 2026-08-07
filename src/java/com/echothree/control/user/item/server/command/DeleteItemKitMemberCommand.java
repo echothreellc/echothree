@@ -26,9 +26,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemKitMemberCommand
@@ -46,6 +46,16 @@ public class DeleteItemKitMemberCommand
             new FieldDefinition("MemberUnitOfMeasureTypeName", FieldType.PERCENT, true, null, null)
         );
     }
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of DeleteItemKitMemberCommand */
     public DeleteItemKitMemberCommand() {
@@ -54,7 +64,6 @@ public class DeleteItemKitMemberCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
@@ -63,12 +72,10 @@ public class DeleteItemKitMemberCommand
             var itemTypeName = itemDetail.getItemType().getItemTypeName();
             
             if(itemTypeName.equals(ItemTypes.KIT.name())) {
-                var inventoryControl = Session.getModelController(InventoryControl.class);
                 var inventoryConditionName = form.getInventoryConditionName();
                 var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
-                    var uomControl = Session.getModelController(UomControl.class);
                     var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                     var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
                     

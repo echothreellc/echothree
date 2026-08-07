@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetCustomerCreditStatusCommand
@@ -41,6 +41,13 @@ public class SetCustomerCreditStatusCommand
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    PartyChainLogic partyChainLogic;
+
     
     /** Creates a new instance of SetCustomerCreditStatusCommand */
     public SetCustomerCreditStatusCommand() {
@@ -49,7 +56,6 @@ public class SetCustomerCreditStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerName = form.getCustomerName();
         var customer = customerControl.getCustomerByName(customerName);
         
@@ -62,7 +68,7 @@ public class SetCustomerCreditStatusCommand
             
             if(!hasExecutionErrors()) {
                 // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                PartyChainLogic.getInstance().createPartyCreditStatusChangedChainInstance(null, party, updatedBy);
+                partyChainLogic.createPartyCreditStatusChangedChainInstance(null, party, updatedBy);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);

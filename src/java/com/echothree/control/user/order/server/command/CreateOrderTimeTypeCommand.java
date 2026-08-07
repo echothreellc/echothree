@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOrderTimeTypeCommand
@@ -58,6 +59,13 @@ public class CreateOrderTimeTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    OrderTimeTypeLogic orderTimeTypeLogic;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
     
     /** Creates a new instance of CreateOrderTimeTypeCommand */
     public CreateOrderTimeTypeCommand() {
@@ -68,7 +76,7 @@ public class CreateOrderTimeTypeCommand
     protected BaseResult execute() {
         var result = OrderResultFactory.getCreateOrderTimeTypeResult();
         var orderTypeName = form.getOrderTypeName();
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, orderTypeName);
+        var orderType = orderTypeLogic.getOrderTypeByName(this, orderTypeName);
         OrderTimeType orderTimeType = null;
 
         if(!hasExecutionErrors()) {
@@ -78,7 +86,7 @@ public class CreateOrderTimeTypeCommand
             var description = form.getDescription();
             var partyPK = getPartyPK();
 
-            orderTimeType = OrderTimeTypeLogic.getInstance().createOrderTimeType(this, orderType, orderTimeTypeName,
+            orderTimeType = orderTimeTypeLogic.createOrderTimeType(this, orderType, orderTimeTypeName,
                     isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
         }
 

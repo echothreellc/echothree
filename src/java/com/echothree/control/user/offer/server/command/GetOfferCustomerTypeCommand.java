@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferCustomerTypeCommand
@@ -57,6 +57,13 @@ public class GetOfferCustomerTypeCommand
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    OfferControl offerControl;
+
     
     /** Creates a new instance of GetOfferCustomerTypeCommand */
     public GetOfferCustomerTypeCommand() {
@@ -65,13 +72,11 @@ public class GetOfferCustomerTypeCommand
     
     @Override
     protected OfferCustomerType getEntity() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         OfferCustomerType offerCustomerType = null;
 
         if(offer != null) {
-            var customerControl = Session.getModelController(CustomerControl.class);
             var customerTypeName = form.getCustomerTypeName();
             var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
@@ -94,7 +99,6 @@ public class GetOfferCustomerTypeCommand
     
     @Override
     protected BaseResult getResult(OfferCustomerType offerCustomerType) {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getGetOfferCustomerTypeResult();
 
         if(offerCustomerType != null) {

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypeCommand
@@ -59,6 +59,12 @@ public class GetCustomerTypeCommand
         );
     }
 
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
     /** Creates a new instance of GetCustomerTypeCommand */
     public GetCustomerTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetCustomerTypeCommand
 
     @Override
     protected CustomerType getEntity() {
-        var customerType = CustomerTypeLogic.getInstance().getCustomerTypeByUniversalSpec(this, form, true);
+        var customerType = customerTypeLogic.getCustomerTypeByUniversalSpec(this, form, true);
 
         if(customerType != null) {
             sendEvent(customerType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetCustomerTypeCommand
 
     @Override
     protected BaseResult getResult(CustomerType customerType) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var result = CustomerResultFactory.getGetCustomerTypeResult();
 
         if(customerType != null) {

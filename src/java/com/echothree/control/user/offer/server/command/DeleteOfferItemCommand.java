@@ -33,6 +33,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteOfferItemCommand
@@ -54,6 +55,16 @@ public class DeleteOfferItemCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    OfferItemLogic offerItemLogic;
+
+    @Inject
+    OfferLogic offerLogic;
+
     
     /** Creates a new instance of DeleteOfferItemCommand */
     public DeleteOfferItemCommand() {
@@ -62,14 +73,14 @@ public class DeleteOfferItemCommand
     
     @Override
     protected BaseResult execute() {
-        var offer = OfferLogic.getInstance().getOfferByName(this, form.getOfferName());
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+        var offer = offerLogic.getOfferByName(this, form.getOfferName());
+        var item = itemLogic.getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
-            var offerItem = OfferItemLogic.getInstance().getOfferItemForUpdate(this, offer, item);
+            var offerItem = offerItemLogic.getOfferItemForUpdate(this, offer, item);
 
             if(!hasExecutionErrors()) {
-                OfferItemLogic.getInstance().deleteOfferItem(this, offerItem, getPartyPK());
+                offerItemLogic.deleteOfferItem(this, offerItem, getPartyPK());
             }
         }
 

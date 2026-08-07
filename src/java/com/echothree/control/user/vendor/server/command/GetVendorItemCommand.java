@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorItemCommand
@@ -60,6 +60,12 @@ public class GetVendorItemCommand
         );
     }
 
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    VendorItemLogic vendorItemLogic;
+
     /** Creates a new instance of GetVendorItemCommand */
     public GetVendorItemCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -67,7 +73,7 @@ public class GetVendorItemCommand
 
     @Override
     protected VendorItem getEntity() {
-        return VendorItemLogic.getInstance().getVendorItemByUniversalSpec(this, form);
+        return vendorItemLogic.getVendorItemByUniversalSpec(this, form);
     }
 
     @Override
@@ -75,8 +81,6 @@ public class GetVendorItemCommand
         var result = VendorResultFactory.getGetVendorItemResult();
 
         if(entity != null) {
-            var vendorControl = Session.getModelController(VendorControl.class);
-
             result.setVendorItem(vendorControl.getVendorItemTransfer(getUserVisit(), entity));
         }
 

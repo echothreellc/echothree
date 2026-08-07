@@ -24,10 +24,10 @@ import com.echothree.model.data.item.server.factory.ItemDeliveryTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemDeliveryTypesCommand
@@ -39,6 +39,9 @@ public class GetItemDeliveryTypesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ItemControl itemControl;
 
     /** Creates a new instance of GetItemDeliveryTypesCommand */
     public GetItemDeliveryTypesCommand() {
@@ -52,15 +55,11 @@ public class GetItemDeliveryTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.countItemDeliveryTypes();
     }
 
     @Override
     protected Collection<ItemDeliveryType> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.getItemDeliveryTypes();
     }
 
@@ -69,8 +68,6 @@ public class GetItemDeliveryTypesCommand
         var result = ItemResultFactory.getGetItemDeliveryTypesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             if(session.hasLimit(ItemDeliveryTypeFactory.class)) {
                 result.setItemDeliveryTypeCount(getTotalEntities());
             }

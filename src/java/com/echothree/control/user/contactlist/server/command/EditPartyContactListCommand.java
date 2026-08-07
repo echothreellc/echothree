@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyContactListCommand
@@ -70,6 +70,15 @@ public class EditPartyContactListCommand
                 );
     }
 
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditContactListCommand */
     public EditPartyContactListCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -89,13 +98,11 @@ public class EditPartyContactListCommand
     
     @Override
     public PartyContactList getEntity(EditPartyContactListResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyContactList partyContactList = null;
         var partyName = spec.getPartyName();
         var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
             var contactListName = spec.getContactListName();
             
             contactList = contactListControl.getContactListByName(contactListName);
@@ -127,8 +134,6 @@ public class EditPartyContactListCommand
 
     @Override
     public void fillInResult(EditPartyContactListResult result, PartyContactList partyContactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setPartyContactList(contactListControl.getPartyContactListTransfer(getUserVisit(), partyContactList));
     }
 
@@ -145,13 +150,10 @@ public class EditPartyContactListCommand
 
     @Override
     public void canUpdate(PartyContactList partyContactList) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var preferredContactMechanismPurposeName = edit.getPreferredContactMechanismPurposeName();
         var preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
 
         if(preferredContactMechanismPurposeName == null || preferredContactMechanismPurpose != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
-            
             preferredContactListContactMechanismPurpose = preferredContactMechanismPurpose == null ? null : contactListControl.getContactListContactMechanismPurpose(contactList, preferredContactMechanismPurpose);
 
             if(preferredContactMechanismPurpose != null && preferredContactListContactMechanismPurpose == null) {
@@ -165,7 +167,6 @@ public class EditPartyContactListCommand
 
     @Override
     public void doUpdate(PartyContactList partyContactList) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
         var partyContactListDetailValue = contactListControl.getPartyContactListDetailValueForUpdate(partyContactList);
 

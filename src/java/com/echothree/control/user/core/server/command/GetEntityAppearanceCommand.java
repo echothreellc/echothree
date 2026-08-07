@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAppearanceCommand
@@ -55,6 +55,13 @@ public class GetEntityAppearanceCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null)
                 );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
     
     /** Creates a new instance of GetEntityAppearanceCommand */
     public GetEntityAppearanceCommand() {
@@ -63,13 +70,11 @@ public class GetEntityAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var result = CoreResultFactory.getGetEntityAppearanceResult();
         var entityRef = form.getEntityRef();
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 
         if(entityInstance != null) {
-            var appearanceControl = Session.getModelController(AppearanceControl.class);
             var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
 
             if(entityAppearance != null) {

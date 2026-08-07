@@ -44,9 +44,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyDocumentCommand
@@ -76,6 +76,16 @@ public class EditPartyDocumentCommand
                 new FieldDefinition("Clob", FieldType.STRING, false, 1L, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    DocumentLogic documentLogic;
+
     
     /** Creates a new instance of EditPartyDocumentCommand */
     public EditPartyDocumentCommand() {
@@ -94,7 +104,6 @@ public class EditPartyDocumentCommand
 
     @Override
     public PartyDocument getEntity(EditPartyDocumentResult result) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         PartyDocument partyDocument = null;
         var documentName = spec.getDocumentName();
         var document = documentControl.getDocumentByName(documentName);
@@ -125,8 +134,6 @@ public class EditPartyDocumentCommand
 
     @Override
     public void fillInResult(EditPartyDocumentResult result, PartyDocument partyDocument) {
-        var documentControl = Session.getModelController(DocumentControl.class);
-
         result.setPartyDocument(documentControl.getPartyDocumentTransfer(getUserVisit(), partyDocument));
     }
 
@@ -134,7 +141,6 @@ public class EditPartyDocumentCommand
 
     @Override
     public void doLock(PartyDocumentEdit edit, PartyDocument partyDocument) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var document = partyDocument.getDocument();
         var documentDescription = documentControl.getDocumentDescription(document, getPreferredLanguage());
 
@@ -157,7 +163,6 @@ public class EditPartyDocumentCommand
 
     @Override
     public void canUpdate(PartyDocument partyDocument) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = edit.getMimeTypeName();
 
         mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
@@ -194,13 +199,12 @@ public class EditPartyDocumentCommand
 
     @Override
     public void doUpdate(PartyDocument partyDocument) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var partyDocumentValue = documentControl.getPartyDocumentValueForUpdate(partyDocument);
         var document = partyDocument.getDocument();
         var documentDetailValue = documentControl.getDocumentDetailValueForUpdate(document);
         var blob = edit.getBlob();
         var clob = edit.getClob();
-        var pages = DocumentLogic.getInstance().getPages(mimeType, blob, clob);
+        var pages = documentLogic.getPages(mimeType, blob, clob);
         var partyPK = getPartyPK();
 
         partyDocumentValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -218,7 +222,6 @@ public class EditPartyDocumentCommand
     }
 
     private void doLobUpdate(Document document, ByteArray blob, String clob) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentBlob documentBlob = null;
         DocumentClob documentClob = null;
         var oldEntityAttributeTypeName = document.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
@@ -253,7 +256,6 @@ public class EditPartyDocumentCommand
     }
 
     private void doDescriptionUpdate(Document document) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentDescription = documentControl.getDocumentDescriptionForUpdate(document, getPreferredLanguage());
         var description = edit.getDescription();
         var partyPK = getPartyPK();

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFreeOnBoardChoicesCommand
@@ -53,6 +53,10 @@ public class GetFreeOnBoardChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
     
     /** Creates a new instance of GetFreeOnBoardChoicesCommand */
     public GetFreeOnBoardChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetFreeOnBoardChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var result = ShipmentResultFactory.getGetFreeOnBoardChoicesResult();
         var defaultFreeOnBoardChoice = form.getDefaultFreeOnBoardChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

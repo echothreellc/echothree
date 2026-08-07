@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSelectorKindDescriptionCommand
@@ -55,6 +55,13 @@ public class DeleteSelectorKindDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of DeleteSelectorKindDescriptionCommand */
     public DeleteSelectorKindDescriptionCommand() {
@@ -63,12 +70,10 @@ public class DeleteSelectorKindDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindName = form.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBaseEncryptionKeyStatusChoicesCommand
@@ -55,6 +55,10 @@ public class GetBaseEncryptionKeyStatusChoicesCommand
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    EncryptionKeyControl encryptionKeyControl;
+
     
     /** Creates a new instance of GetBaseEncryptionKeyStatusChoicesCommand */
     public GetBaseEncryptionKeyStatusChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetBaseEncryptionKeyStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var result = CoreResultFactory.getGetBaseEncryptionKeyStatusChoicesResult();
         var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
         var baseEncryptionKey = encryptionKeyControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);

@@ -52,6 +52,7 @@ public class GetInventoryConditionUsesCommand
 
     @Inject
     InventoryConditionLogic inventoryConditionLogic;
+
     /** Creates a new instance of GetInventoryConditionUsesCommand */
     public GetInventoryConditionUsesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);

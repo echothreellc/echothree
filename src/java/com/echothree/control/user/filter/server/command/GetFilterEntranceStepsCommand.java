@@ -59,17 +59,18 @@ public class GetFilterEntranceStepsCommand
                 new FieldDefinition("FilterName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetFilterEntranceStepsCommand */
-    public GetFilterEntranceStepsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     FilterControl filterControl;
 
     @Inject
     FilterLogic filterLogic;
+
+
+    /** Creates a new instance of GetFilterEntranceStepsCommand */
+    public GetFilterEntranceStepsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private Filter filter;
 

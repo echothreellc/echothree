@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSecurityRolePartyTypeCommand
@@ -56,6 +56,13 @@ public class DeleteSecurityRolePartyTypeCommand
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of DeleteSecurityRolePartyTypeCommand */
     public DeleteSecurityRolePartyTypeCommand() {
@@ -64,7 +71,6 @@ public class DeleteSecurityRolePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroupName = form.getSecurityRoleGroupName();
         var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
@@ -73,7 +79,6 @@ public class DeleteSecurityRolePartyTypeCommand
             var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             
             if(securityRole != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var partyTypeName = form.getPartyTypeName();
                 var partyType = partyControl.getPartyTypeByName(partyTypeName);
                 

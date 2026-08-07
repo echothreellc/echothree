@@ -25,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCacheEntryCommand
@@ -40,6 +40,10 @@ public class GetCacheEntryCommand
                 new FieldDefinition("CacheEntryKey", FieldType.STRING, true, 1L, 200L)
                 );
     }
+
+    @Inject
+    CacheEntryControl cacheEntryControl;
+
     
     /** Creates a new instance of GetCacheEntryCommand */
     public GetCacheEntryCommand() {
@@ -48,7 +52,6 @@ public class GetCacheEntryCommand
     
     @Override
     protected BaseResult execute() {
-        var cacheEntryControl = Session.getModelController(CacheEntryControl.class);
         var result = CoreResultFactory.getGetCacheEntryResult();
         var cacheEntryKey = form.getCacheEntryKey();
         var cacheEntryTransfer = cacheEntryControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);

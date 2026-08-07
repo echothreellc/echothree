@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTrackCommand
@@ -57,6 +57,10 @@ public class CreateTrackCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    TrackControl trackControl;
+
     
     /** Creates a new instance of CreateTrackCommand */
     public CreateTrackCommand() {
@@ -66,7 +70,6 @@ public class CreateTrackCommand
     @Override
     protected BaseResult execute() {
         var result = TrackResultFactory.getCreateTrackResult();
-        var trackControl = Session.getModelController(TrackControl.class);
         var value = form.getValue();
         var track = trackControl.getTrackByValue(value);
         

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateChainActionSetDescriptionCommand
@@ -59,6 +59,13 @@ public class CreateChainActionSetDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateChainActionSetDescriptionCommand */
     public CreateChainActionSetDescriptionCommand() {
@@ -67,7 +74,6 @@ public class CreateChainActionSetDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -84,7 +90,6 @@ public class CreateChainActionSetDescriptionCommand
                     var chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
 
                     if(chainActionSet != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = form.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemPurchasingCategoryCommand
@@ -59,6 +59,12 @@ public class GetItemPurchasingCategoryCommand
         );
     }
 
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    ItemPurchasingCategoryLogic itemPurchasingCategoryLogic;
+
     /** Creates a new instance of GetItemPurchasingCategoryCommand */
     public GetItemPurchasingCategoryCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetItemPurchasingCategoryCommand
 
     @Override
     protected ItemPurchasingCategory getEntity() {
-        var itemPurchasingCategory = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByUniversalSpec(this, form, true);
+        var itemPurchasingCategory = itemPurchasingCategoryLogic.getItemPurchasingCategoryByUniversalSpec(this, form, true);
 
         if(itemPurchasingCategory != null) {
             sendEvent(itemPurchasingCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetItemPurchasingCategoryCommand
 
     @Override
     protected BaseResult getResult(ItemPurchasingCategory itemPurchasingCategory) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetItemPurchasingCategoryResult();
 
         if(itemPurchasingCategory != null) {

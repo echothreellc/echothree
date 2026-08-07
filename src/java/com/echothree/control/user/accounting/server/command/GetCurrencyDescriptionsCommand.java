@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCurrencyDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetCurrencyDescriptionsCommand
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, 3L)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of GetCurrencyDescriptionsCommand */
     public GetCurrencyDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetCurrencyDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetCurrencyDescriptionsResult();
         var currencyIsoName = form.getCurrencyIsoName();
         var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditIndexCommand
@@ -68,6 +68,10 @@ public class EditIndexCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    IndexControl indexControl;
+
     
     /** Creates a new instance of EditIndexCommand */
     public EditIndexCommand() {
@@ -86,7 +90,6 @@ public class EditIndexCommand
 
     @Override
     public Index getEntity(EditIndexResult result) {
-        var indexControl = Session.getModelController(IndexControl.class);
         Index index;
         var indexName = spec.getIndexName();
 
@@ -110,14 +113,11 @@ public class EditIndexCommand
 
     @Override
     public void fillInResult(EditIndexResult result, Index index) {
-        var indexControl = Session.getModelController(IndexControl.class);
-
         result.setIndex(indexControl.getIndexTransfer(getUserVisit(), index));
     }
 
     @Override
     public void doLock(IndexEdit edit, Index index) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexDescription = indexControl.getIndexDescription(index, getPreferredLanguage());
         var indexDetail = index.getLastDetail();
 
@@ -132,7 +132,6 @@ public class EditIndexCommand
 
     @Override
     public void canUpdate(Index index) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexName = edit.getIndexName();
         var duplicateIndex = indexControl.getIndexByName(indexName);
 
@@ -143,7 +142,6 @@ public class EditIndexCommand
 
     @Override
     public void doUpdate(Index index) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var partyPK = getPartyPK();
         var indexDetailValue = indexControl.getIndexDetailValueForUpdate(index);
         var indexDescription = indexControl.getIndexDescriptionForUpdate(index, getPreferredLanguage());

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetApplicationEditorUseDescriptionsCommand
@@ -56,6 +56,13 @@ public class GetApplicationEditorUseDescriptionsCommand
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
     
     /** Creates a new instance of GetApplicationEditorUseDescriptionsCommand */
     public GetApplicationEditorUseDescriptionsCommand() {
@@ -66,10 +73,9 @@ public class GetApplicationEditorUseDescriptionsCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetApplicationEditorUseDescriptionsResult();
         var applicationName = form.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
-            var applicationControl = Session.getModelController(ApplicationControl.class);
             var applicationEditorUseName = form.getApplicationEditorUseName();
             var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 

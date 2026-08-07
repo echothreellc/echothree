@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityAttributeGroupCommand
@@ -55,6 +56,10 @@ public class CreateEntityAttributeGroupCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    EntityAttributeGroupLogic entityAttributeGroupLogic;
+
     
     /** Creates a new instance of CreateEntityAttributeGroupCommand */
     public CreateEntityAttributeGroupCommand() {
@@ -68,7 +73,7 @@ public class CreateEntityAttributeGroupCommand
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
-        var entityAttributeGroup = EntityAttributeGroupLogic.getInstance().createEntityAttributeGroup(this,
+        var entityAttributeGroup = entityAttributeGroupLogic.createEntityAttributeGroup(this,
                 entityAttributeGroupName, isDefault, sortOrder, description, description == null ? null : getPreferredLanguage(),
                 getPartyPK());
 

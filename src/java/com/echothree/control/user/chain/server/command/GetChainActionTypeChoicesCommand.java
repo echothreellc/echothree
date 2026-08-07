@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetChainActionTypeChoicesCommand
@@ -53,6 +53,10 @@ public class GetChainActionTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
     
     /** Creates a new instance of GetChainActionTypeChoicesCommand */
     public GetChainActionTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetChainActionTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = ChainResultFactory.getGetChainActionTypeChoicesResult();
         var defaultChainActionTypeChoice = form.getDefaultChainActionTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

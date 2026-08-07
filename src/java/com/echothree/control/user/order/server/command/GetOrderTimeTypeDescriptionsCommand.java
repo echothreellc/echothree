@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderTimeTypeDescriptionsCommand
@@ -56,6 +56,13 @@ public class GetOrderTimeTypeDescriptionsCommand
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    OrderTimeControl orderTimeControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
     
     /** Creates a new instance of GetOrderTimeTypeDescriptionsCommand */
     public GetOrderTimeTypeDescriptionsCommand() {
@@ -64,13 +71,11 @@ public class GetOrderTimeTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var result = OrderResultFactory.getGetOrderTimeTypeDescriptionsResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
             var orderTimeTypeName = form.getOrderTimeTypeName();
             var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 

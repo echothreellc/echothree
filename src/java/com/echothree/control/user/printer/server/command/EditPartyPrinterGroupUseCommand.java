@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyPrinterGroupUseCommand
@@ -68,6 +68,13 @@ public class EditPartyPrinterGroupUseCommand
                 new FieldDefinition("PrinterGroupName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
+
     
     /** Creates a new instance of EditPartyPrinterGroupUseCommand */
     public EditPartyPrinterGroupUseCommand() {
@@ -91,8 +98,6 @@ public class EditPartyPrinterGroupUseCommand
         Party party;
 
         if(partyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             party = partyControl.getPartyByName(partyName);
             
             if(party == null) {
@@ -103,7 +108,6 @@ public class EditPartyPrinterGroupUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            var printerControl = Session.getModelController(PrinterControl.class);
             var printerGroupUseTypeName = spec.getPrinterGroupUseTypeName();
             var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
@@ -132,8 +136,6 @@ public class EditPartyPrinterGroupUseCommand
 
     @Override
     public void fillInResult(EditPartyPrinterGroupUseResult result, PartyPrinterGroupUse partyPrinterGroupUse) {
-        var printerControl = Session.getModelController(PrinterControl.class);
-
         result.setPartyPrinterGroupUse(printerControl.getPartyPrinterGroupUseTransfer(getUserVisit(), partyPrinterGroupUse));
     }
 
@@ -146,7 +148,6 @@ public class EditPartyPrinterGroupUseCommand
 
     @Override
     public void canUpdate(PartyPrinterGroupUse partyPrinterGroupUse) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerGroupName = edit.getPrinterGroupName();
 
         printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
@@ -158,7 +159,6 @@ public class EditPartyPrinterGroupUseCommand
 
     @Override
     public void doUpdate(PartyPrinterGroupUse partyPrinterGroupUse) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var partyPrinterGroupUseValue = printerControl.getPartyPrinterGroupUseValue(partyPrinterGroupUse);
 
         partyPrinterGroupUseValue.setPrinterGroupPK(printerGroup.getPrimaryKey());

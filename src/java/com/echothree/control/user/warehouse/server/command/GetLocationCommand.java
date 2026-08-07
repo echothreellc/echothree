@@ -57,17 +57,18 @@ public class GetLocationCommand
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetLocationCommand */
-    public GetLocationCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     WarehouseControl warehouseControl;
 
     @Inject
     WarehouseLogic warehouseLogic;
+
+
+    /** Creates a new instance of GetLocationCommand */
+    public GetLocationCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected Location getEntity() {

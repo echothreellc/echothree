@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartySecurityRoleTemplateChoicesCommand
@@ -53,6 +53,10 @@ public class GetPartySecurityRoleTemplateChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of GetPartySecurityRoleTemplateChoicesCommand */
     public GetPartySecurityRoleTemplateChoicesCommand() {
@@ -61,7 +65,7 @@ public class GetPartySecurityRoleTemplateChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = Session.getModelController(SecurityControl.class);
+        var coreControl = securityControl;
         var result = SecurityResultFactory.getGetPartySecurityRoleTemplateChoicesResult();
         var defaultPartySecurityRoleTemplateChoice = form.getDefaultPartySecurityRoleTemplateChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTextDecorationDescriptionCommand
@@ -55,6 +55,13 @@ public class DeleteTextDecorationDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of DeleteTextDecorationDescriptionCommand */
     public DeleteTextDecorationDescriptionCommand() {
@@ -63,12 +70,10 @@ public class DeleteTextDecorationDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var textControl = Session.getModelController(TextControl.class);
         var textDecorationName = form.getTextDecorationName();
         var textDecoration = textControl.getTextDecorationByName(textDecorationName);
         
         if(textDecoration != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

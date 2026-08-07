@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetEmployeeStatusCommand
@@ -55,6 +55,13 @@ public class SetEmployeeStatusCommand
                 new FieldDefinition("EmployeeStatusChoice", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    EmployeeLogic employeeLogic;
+
     
     /** Creates a new instance of SetEmployeeStatusCommand */
     public SetEmployeeStatusCommand() {
@@ -63,14 +70,13 @@ public class SetEmployeeStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var employeeName = form.getEmployeeName();
         var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
         
         if(partyEmployee != null) {
             var employeeStatusChoice = form.getEmployeeStatusChoice();
             
-            EmployeeLogic.getInstance().setEmployeeStatus(session, this, partyEmployee.getParty(), employeeStatusChoice, getPartyPK());
+            employeeLogic.setEmployeeStatus(session, this, partyEmployee.getParty(), employeeStatusChoice, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
         }

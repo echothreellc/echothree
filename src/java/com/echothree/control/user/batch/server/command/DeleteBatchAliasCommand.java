@@ -29,9 +29,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteBatchAliasCommand
@@ -46,6 +46,10 @@ public class DeleteBatchAliasCommand
                 new FieldDefinition("BatchAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    BatchControl batchControl;
+
     
     /** Creates a new instance of DeleteBatchAliasCommand */
     public DeleteBatchAliasCommand() {
@@ -64,7 +68,6 @@ public class DeleteBatchAliasCommand
 
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
 

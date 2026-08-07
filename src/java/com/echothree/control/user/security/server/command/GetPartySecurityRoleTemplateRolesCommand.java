@@ -57,12 +57,13 @@ public class GetPartySecurityRoleTemplateRolesCommand
                 new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     SecurityControl securityControl;
 
     @Inject
     PartySecurityRoleTemplateLogic partySecurityRoleTemplateLogic;
+
 
     /** Creates a new instance of GetPartySecurityRoleTemplateRolesCommand */
     public GetPartySecurityRoleTemplateRolesCommand() {

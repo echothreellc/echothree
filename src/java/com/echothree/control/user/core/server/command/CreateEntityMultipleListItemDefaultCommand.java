@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityMultipleListItemDefaultCommand
@@ -54,6 +55,9 @@ public class CreateEntityMultipleListItemDefaultCommand
         );
     }
 
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     /** Creates a new instance of CreateEntityListItemDefaultCommand */
     public CreateEntityMultipleListItemDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -61,15 +65,15 @@ public class CreateEntityMultipleListItemDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
+            var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, form);
 
             if(!hasExecutionErrors()) {
                 var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-                EntityAttributeLogic.getInstance().createEntityMultipleListItemDefault(this, entityAttribute,
+                entityAttributeLogic.createEntityMultipleListItemDefault(this, entityAttribute,
                         entityListItem, addMissingAttributes, getPartyPK());
             }
         }

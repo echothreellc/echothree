@@ -60,18 +60,19 @@ public class GetGeoCodeCurrenciesCommand
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of GetGeoCodeCurrenciesCommand */
     public GetGeoCodeCurrenciesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Inject
-    GeoControl geoControl;
-
-    @Inject
-    AccountingControl accountingControl;
-
     GeoCode geoCode;
     Currency currency;
 

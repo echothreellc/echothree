@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationKindChoicesCommand
@@ -53,6 +53,10 @@ public class GetCancellationKindChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
     
     /** Creates a new instance of GetCancellationKindChoicesCommand */
     public GetCancellationKindChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetCancellationKindChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var result = CancellationPolicyResultFactory.getGetCancellationKindChoicesResult();
         var defaultCancellationKindChoice = form.getDefaultCancellationKindChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

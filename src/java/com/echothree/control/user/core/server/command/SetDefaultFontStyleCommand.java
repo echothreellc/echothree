@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultFontStyleCommand
@@ -53,6 +53,10 @@ public class SetDefaultFontStyleCommand
                 new FieldDefinition("FontStyleName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    FontControl fontControl;
+
     
     /** Creates a new instance of SetDefaultFontStyleCommand */
     public SetDefaultFontStyleCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultFontStyleCommand
     
     @Override
     protected BaseResult execute() {
-        var fontControl = Session.getModelController(FontControl.class);
         var fontStyleName = form.getFontStyleName();
         var fontStyleDetailValue = fontControl.getFontStyleDetailValueByNameForUpdate(fontStyleName);
         

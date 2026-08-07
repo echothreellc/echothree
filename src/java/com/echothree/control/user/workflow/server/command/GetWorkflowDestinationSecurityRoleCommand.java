@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowDestinationSecurityRoleCommand
@@ -59,6 +59,13 @@ public class GetWorkflowDestinationSecurityRoleCommand
                 new FieldDefinition("SecurityRoleName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
     
     /** Creates a new instance of GetWorkflowDestinationSecurityRoleCommand */
     public GetWorkflowDestinationSecurityRoleCommand() {
@@ -73,7 +80,7 @@ public class GetWorkflowDestinationSecurityRoleCommand
         var partyTypeName = form.getPartyTypeName();
         var securityRoleName = form.getSecurityRoleName();
 
-        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationSecurityRoleByName(this, workflowName,
+        return workflowDestinationLogic.getWorkflowDestinationSecurityRoleByName(this, workflowName,
                 workflowStepName, workflowDestinationName, partyTypeName, securityRoleName);
     }
 
@@ -82,8 +89,6 @@ public class GetWorkflowDestinationSecurityRoleCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationSecurityRoleResult();
 
         if(entity != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowDestinationSecurityRole(workflowControl.getWorkflowDestinationSecurityRoleTransfer(getUserVisit(),
                     entity));
         }

@@ -28,9 +28,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentForumCommand
@@ -44,6 +44,13 @@ public class GetContentForumCommand
                 new FieldDefinition("ContentForumName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of GetContentForumCommand */
     public GetContentForumCommand() {
@@ -52,13 +59,11 @@ public class GetContentForumCommand
     
     @Override
     protected ContentForum getEntity() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         ContentForum contentForum = null;
         
         if(contentCollection != null) {
-            var forumControl = Session.getModelController(ForumControl.class);
             var forumName = form.getForumName();
             var forum = forumControl.getForumByName(forumName);
             
@@ -85,8 +90,6 @@ public class GetContentForumCommand
         var result = ContentResultFactory.getGetContentForumResult();
                 
         if(contentForum != null) {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         result.setContentForum(contentControl.getContentForumTransfer(getUserVisit(), contentForum));
         }
         

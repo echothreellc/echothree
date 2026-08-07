@@ -34,10 +34,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCommunicationSourceCommand
@@ -63,6 +63,18 @@ public class CreateCommunicationSourceCommand
             new FieldDefinition("ReviewEmployeeSelectorName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    CommunicationControl communicationControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    ServerControl serverControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
     
     /** Creates a new instance of CreateCommunicationSourceCommand */
     public CreateCommunicationSourceCommand() {
@@ -87,7 +99,6 @@ public class CreateCommunicationSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = Session.getModelController(CommunicationControl.class);
         var communicationSourceName = form.getCommunicationSourceName();
         var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
@@ -103,12 +114,10 @@ public class CreateCommunicationSourceCommand
                 communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
                 
                 if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)) {
-                    var serverControl = Session.getModelController(ServerControl.class);
                     var serverName = form.getServerName();
                     var server = serverControl.getServerByName(serverName);
                     
                     if(server != null) {
-                        var workEffortControl = Session.getModelController(WorkEffortControl.class);
                         var receiveWorkEffortScopeName = form.getReceiveWorkEffortScopeName();
                         var workEffortType = workEffortControl.getWorkEffortTypeByName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
                         var receiveWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, receiveWorkEffortScopeName);
@@ -124,7 +133,6 @@ public class CreateCommunicationSourceCommand
                                 Selector reviewEmployeeSelector = null;
                                 
                                 if(reviewEmployeeSelectorName != null) {
-                                    var selectorControl = Session.getModelController(SelectorControl.class);
                                     var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());
                                     
                                     if(selectorKind != null) {

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOfferChainTypeCommand
@@ -66,6 +66,13 @@ public class EditOfferChainTypeCommand
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    OfferControl offerControl;
+
     
     /** Creates a new instance of EditOfferChainTypeCommand */
     public EditOfferChainTypeCommand() {
@@ -74,13 +81,11 @@ public class EditOfferChainTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getEditOfferChainTypeResult();
         var offerName = spec.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainKindName = spec.getChainKindName();
             var chainKind = chainControl.getChainKindByName(chainKindName);
             

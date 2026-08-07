@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSearchUseTypeCommand
@@ -56,6 +56,10 @@ public class CreateSearchUseTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of CreateSearchUseTypeCommand */
     public CreateSearchUseTypeCommand() {
@@ -64,7 +68,6 @@ public class CreateSearchUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchUseTypeName = form.getSearchUseTypeName();
         var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
         

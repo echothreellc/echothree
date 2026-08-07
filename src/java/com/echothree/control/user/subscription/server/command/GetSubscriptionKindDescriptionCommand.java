@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSubscriptionKindDescriptionCommand
@@ -55,6 +55,13 @@ public class GetSubscriptionKindDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of GetSubscriptionKindDescriptionCommand */
     public GetSubscriptionKindDescriptionCommand() {
@@ -63,13 +70,11 @@ public class GetSubscriptionKindDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var result = SubscriptionResultFactory.getGetSubscriptionKindDescriptionResult();
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

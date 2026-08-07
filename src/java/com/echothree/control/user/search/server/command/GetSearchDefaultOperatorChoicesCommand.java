@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchDefaultOperatorChoicesCommand
@@ -57,6 +57,13 @@ public class GetSearchDefaultOperatorChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     
     /** Creates a new instance of GetSearchDefaultOperatorChoicesCommand */
     public GetSearchDefaultOperatorChoicesCommand() {
@@ -73,10 +80,9 @@ public class GetSearchDefaultOperatorChoicesCommand
         if(parameterCount == 0 || parameterCount == 2) {
             var defaultSearchDefaultOperatorChoice = form.getDefaultSearchDefaultOperatorChoice();
             var party = getParty();
-            var searchType = searchTypeName != null && defaultSearchDefaultOperatorChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
+            var searchType = searchTypeName != null && defaultSearchDefaultOperatorChoice == null && party != null ? searchLogic.getSearchTypeByName(this, searchKindName, searchTypeName) : null;
             
             if(!hasExecutionErrors()) {
-                var searchControl = Session.getModelController(SearchControl.class);
                 var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {

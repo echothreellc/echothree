@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTrainingClassQuestionCommand
@@ -55,6 +55,10 @@ public class DeleteTrainingClassQuestionCommand
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
     
     /** Creates a new instance of DeleteTrainingClassQuestionCommand */
     public DeleteTrainingClassQuestionCommand() {
@@ -63,7 +67,6 @@ public class DeleteTrainingClassQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyContactListStatusChoicesCommand
@@ -57,6 +57,13 @@ public class GetPartyContactListStatusChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetPartyContactListStatusChoicesCommand */
     public GetPartyContactListStatusChoicesCommand() {
@@ -65,7 +72,6 @@ public class GetPartyContactListStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = ContactListResultFactory.getGetPartyContactListStatusChoicesResult();
         var partyName = form.getPartyName();
         var contactListName = form.getContactListName();
@@ -75,7 +81,6 @@ public class GetPartyContactListStatusChoicesCommand
             var party = partyName == null ? null : partyControl.getPartyByName(partyName);
 
             if(partyName == null || party != null) {
-                var contactListControl = Session.getModelController(ContactListControl.class);
                 var contactList = contactListName == null ? null : contactListControl.getContactListByName(contactListName);
 
                 if(contactListName == null || contactList != null) {

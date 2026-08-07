@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditUseDescriptionCommand
@@ -65,6 +65,13 @@ public class EditUseDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of EditUseDescriptionCommand */
     public EditUseDescriptionCommand() {
@@ -73,13 +80,11 @@ public class EditUseDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var useControl = Session.getModelController(UseControl.class);
         var result = OfferResultFactory.getEditUseDescriptionResult();
         var useName = spec.getUseName();
         var use = useControl.getUseByName(useName);
         
         if(use != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

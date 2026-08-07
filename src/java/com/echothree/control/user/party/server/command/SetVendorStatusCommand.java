@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetVendorStatusCommand
@@ -55,6 +56,10 @@ public class SetVendorStatusCommand
                 new FieldDefinition("VendorStatusChoice", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    VendorLogic vendorLogic;
+
     
     /** Creates a new instance of SetVendorStatusCommand */
     public SetVendorStatusCommand() {
@@ -63,12 +68,12 @@ public class SetVendorStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var vendor = VendorLogic.getInstance().getVendorByUniversalSpec(this, form);
+        var vendor = vendorLogic.getVendorByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
             var vendorStatusChoice = form.getVendorStatusChoice();
             
-            VendorLogic.getInstance().setVendorStatus(session, this, vendor.getParty(), vendorStatusChoice, getPartyPK());
+            vendorLogic.setVendorStatus(session, this, vendor.getParty(), vendorStatusChoice, getPartyPK());
         }
         
         return null;

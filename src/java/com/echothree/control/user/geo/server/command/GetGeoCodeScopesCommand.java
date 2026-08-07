@@ -39,9 +39,6 @@ import javax.inject.Inject;
 public class GetGeoCodeScopesCommand
         extends BasePaginatedMultipleEntitiesCommand<GeoCodeScope, GetGeoCodeScopesForm> {
 
-    @Inject
-    GeoControl geoControl;
-
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -55,6 +52,9 @@ public class GetGeoCodeScopesCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    GeoControl geoControl;
 
     /** Creates a new instance of GetGeoCodeScopesCommand */
     public GetGeoCodeScopesCommand() {

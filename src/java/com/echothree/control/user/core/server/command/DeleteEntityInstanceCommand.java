@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityInstanceCommand
@@ -52,6 +53,10 @@ public class DeleteEntityInstanceCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of DeleteEntityInstanceCommand */
     public DeleteEntityInstanceCommand() {
@@ -60,10 +65,10 @@ public class DeleteEntityInstanceCommand
 
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityInstanceLogic.getInstance().deleteEntityInstance(this, entityInstance, getPartyPK());
+            entityInstanceLogic.deleteEntityInstance(this, entityInstance, getPartyPK());
         }
 
         return null;

@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemDescriptionTypesCommand
@@ -55,6 +55,10 @@ public class GetItemDescriptionTypesCommand
                 new FieldDefinition("ParentItemDescriptionTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetItemDescriptionTypesCommand */
     public GetItemDescriptionTypesCommand() {
@@ -65,7 +69,6 @@ public class GetItemDescriptionTypesCommand
     
     @Override
     protected void handleForm() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var parentItemDescriptionTypeName = form.getParentItemDescriptionTypeName();
 
         parentItemDescriptionType = parentItemDescriptionTypeName == null ? null : itemControl.getItemDescriptionTypeByName(parentItemDescriptionTypeName);
@@ -79,9 +82,6 @@ public class GetItemDescriptionTypesCommand
     protected Long getTotalEntities() {
         if(hasExecutionErrors())
             return null;
-
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return parentItemDescriptionType == null
                 ? itemControl.countItemDescriptionTypes()
                 : itemControl.countItemDescriptionTypesByParentItemDescriptionType(parentItemDescriptionType);
@@ -92,8 +92,6 @@ public class GetItemDescriptionTypesCommand
         Collection<ItemDescriptionType> itemDescriptionTypes = null;
         
         if(!hasExecutionErrors()) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             itemDescriptionTypes = parentItemDescriptionType == null ? itemControl.getItemDescriptionTypes()
                     : itemControl.getItemDescriptionTypesByParentItemDescriptionType(parentItemDescriptionType);
         }
@@ -106,7 +104,6 @@ public class GetItemDescriptionTypesCommand
         var result = ItemResultFactory.getGetItemDescriptionTypesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(com.echothree.model.data.item.server.factory.ItemDescriptionTypeFactory.class)) {

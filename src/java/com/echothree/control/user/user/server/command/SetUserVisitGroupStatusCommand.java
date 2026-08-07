@@ -25,6 +25,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetUserVisitGroupStatusCommand
@@ -38,6 +39,7 @@ public class SetUserVisitGroupStatusCommand
             new FieldDefinition("UserVisitGroupStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
     
     /** Creates a new instance of SetUserVisitGroupStatusCommand */
     public SetUserVisitGroupStatusCommand() {
@@ -46,7 +48,6 @@ public class SetUserVisitGroupStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var userVisitGroupName = form.getUserVisitGroupName();
         var userVisitGroup = userControl.getUserVisitGroupByName(userVisitGroupName);
         

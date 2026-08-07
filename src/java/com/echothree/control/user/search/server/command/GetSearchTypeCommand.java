@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchTypeCommand
@@ -60,6 +60,12 @@ public class GetSearchTypeCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchTypeLogic searchTypeLogic;
+
     /** Creates a new instance of GetSearchTypeCommand */
     public GetSearchTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -67,7 +73,7 @@ public class GetSearchTypeCommand
 
     @Override
     protected SearchType getEntity() {
-        var searchType = SearchTypeLogic.getInstance().getSearchTypeByUniversalSpec(this, form, true);
+        var searchType = searchTypeLogic.getSearchTypeByUniversalSpec(this, form, true);
 
         if(searchType != null) {
             sendEvent(searchType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +84,6 @@ public class GetSearchTypeCommand
 
     @Override
     protected BaseResult getResult(SearchType searchType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchTypeResult();
 
         if(searchType != null) {

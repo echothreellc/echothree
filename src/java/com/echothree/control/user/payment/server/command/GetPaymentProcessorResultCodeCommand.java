@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorResultCodeCommand
@@ -45,6 +45,13 @@ public class GetPaymentProcessorResultCodeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
+
+    @Inject
+    PaymentProcessorResultCodeLogic paymentProcessorResultCodeLogic;
+
     
     /** Creates a new instance of GetPaymentProcessorResultCodeCommand */
     public GetPaymentProcessorResultCodeCommand() {
@@ -53,7 +60,7 @@ public class GetPaymentProcessorResultCodeCommand
     
     @Override
     protected PaymentProcessorResultCode getEntity() {
-        var paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().getPaymentProcessorResultCodeByUniversalSpec(this, form, true);
+        var paymentProcessorResultCode = paymentProcessorResultCodeLogic.getPaymentProcessorResultCodeByUniversalSpec(this, form, true);
 
         if(paymentProcessorResultCode != null) {
             sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetPaymentProcessorResultCodeCommand
     
     @Override
     protected BaseResult getResult(PaymentProcessorResultCode paymentProcessorResultCode) {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorResultCodeResult();
 
         if(paymentProcessorResultCode != null) {

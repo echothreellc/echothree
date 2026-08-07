@@ -34,7 +34,6 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -43,9 +42,6 @@ import javax.inject.Inject;
 @Dependent
 public class GetItemDescriptionTypeUsesCommand
         extends BasePaginatedMultipleEntitiesCommand<ItemDescriptionTypeUse, GetItemDescriptionTypeUsesForm> {
-
-    @Inject
-    ItemControl itemControl;
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,6 +59,10 @@ public class GetItemDescriptionTypeUsesCommand
                 new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetItemDescriptionTypeUsesCommand */
     public GetItemDescriptionTypeUsesCommand() {
@@ -132,7 +132,6 @@ public class GetItemDescriptionTypeUsesCommand
         var result = ItemResultFactory.getGetItemDescriptionTypeUsesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemDescriptionTypeUseFactory.class)) {

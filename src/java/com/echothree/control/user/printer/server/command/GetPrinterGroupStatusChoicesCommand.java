@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPrinterGroupStatusChoicesCommand
@@ -42,6 +42,9 @@ public class GetPrinterGroupStatusChoicesCommand
                 );
     }
 
+    @Inject
+    PrinterControl printerControl;
+
     /** Creates a new instance of GetPrinterGroupStatusChoicesCommand */
     public GetPrinterGroupStatusChoicesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -49,7 +52,6 @@ public class GetPrinterGroupStatusChoicesCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
        var result = PrinterResultFactory.getGetPrinterGroupStatusChoicesResult();
        var printerGroupName = form.getPrinterGroupName();
        var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);

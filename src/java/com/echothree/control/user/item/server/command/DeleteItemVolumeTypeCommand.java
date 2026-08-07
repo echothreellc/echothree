@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemVolumeTypeCommand
@@ -53,6 +54,10 @@ public class DeleteItemVolumeTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ItemVolumeTypeLogic itemVolumeTypeLogic;
+
     
     /** Creates a new instance of DeleteItemVolumeTypeCommand */
     public DeleteItemVolumeTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteItemVolumeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemVolumeType = ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByUniversalSpecForUpdate(this, form, false);
+        var itemVolumeType = itemVolumeTypeLogic.getItemVolumeTypeByUniversalSpecForUpdate(this, form, false);
         
         if(!hasExecutionErrors()) {
-            ItemVolumeTypeLogic.getInstance().deleteItemVolumeType(this, itemVolumeType, getPartyPK());
+            itemVolumeTypeLogic.deleteItemVolumeType(this, itemVolumeType, getPartyPK());
         }
         
         return null;

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteChainTypeCommand
@@ -54,6 +54,10 @@ public class DeleteChainTypeCommand
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
     
     /** Creates a new instance of DeleteChainTypeCommand */
     public DeleteChainTypeCommand() {
@@ -62,7 +66,6 @@ public class DeleteChainTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
         

@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyTypeDescriptionCommand
@@ -41,6 +41,10 @@ public class CreatePartyTypeDescriptionCommand
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreatePartyTypeDescriptionCommand */
     public CreatePartyTypeDescriptionCommand() {
@@ -49,7 +53,6 @@ public class CreatePartyTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyTypeName = form.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
         

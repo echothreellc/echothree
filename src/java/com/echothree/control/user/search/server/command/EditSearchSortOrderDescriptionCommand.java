@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchSortOrderDescriptionCommand
@@ -68,6 +68,12 @@ public class EditSearchSortOrderDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
     /** Creates a new instance of EditSearchSortOrderDescriptionCommand */
     public EditSearchSortOrderDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,7 +91,6 @@ public class EditSearchSortOrderDescriptionCommand
 
     @Override
     public SearchSortOrderDescription getEntity(EditSearchSortOrderDescriptionResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchSortOrderDescription searchSortOrderDescription = null;
         var searchKindName = spec.getSearchKindName();
         var searchKind = searchControl.getSearchKindByName(searchKindName);
@@ -95,7 +100,6 @@ public class EditSearchSortOrderDescriptionCommand
             var searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
 
             if(searchSortOrder != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -129,8 +133,6 @@ public class EditSearchSortOrderDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchSortOrderDescriptionResult result, SearchSortOrderDescription searchSortOrderDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchSortOrderDescription(searchControl.getSearchSortOrderDescriptionTransfer(getUserVisit(), searchSortOrderDescription));
     }
 
@@ -141,7 +143,6 @@ public class EditSearchSortOrderDescriptionCommand
 
     @Override
     public void doUpdate(SearchSortOrderDescription searchSortOrderDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortOrderDescriptionValue = searchControl.getSearchSortOrderDescriptionValue(searchSortOrderDescription);
 
         searchSortOrderDescriptionValue.setDescription(edit.getDescription());

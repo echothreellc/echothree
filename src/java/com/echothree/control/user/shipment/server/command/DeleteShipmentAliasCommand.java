@@ -29,9 +29,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteShipmentAliasCommand
@@ -46,6 +46,10 @@ public class DeleteShipmentAliasCommand
                 new FieldDefinition("ShipmentAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ShipmentControl shipmentControl;
+
     
     /** Creates a new instance of DeleteShipmentAliasCommand */
     public DeleteShipmentAliasCommand() {
@@ -64,7 +68,6 @@ public class DeleteShipmentAliasCommand
 
     @Override
     protected BaseResult execute() {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 

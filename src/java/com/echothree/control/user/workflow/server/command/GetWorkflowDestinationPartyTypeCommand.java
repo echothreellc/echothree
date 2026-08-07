@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowDestinationPartyTypeCommand
@@ -58,6 +58,13 @@ public class GetWorkflowDestinationPartyTypeCommand
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
     
     /** Creates a new instance of GetWorkflowDestinationPartyTypeCommand */
     public GetWorkflowDestinationPartyTypeCommand() {
@@ -71,7 +78,7 @@ public class GetWorkflowDestinationPartyTypeCommand
         var workflowDestinationName = form.getWorkflowDestinationName();
         var partyTypeName = form.getPartyTypeName();
 
-        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationPartyTypeByName(this, workflowName,
+        return workflowDestinationLogic.getWorkflowDestinationPartyTypeByName(this, workflowName,
                 workflowStepName, workflowDestinationName, partyTypeName);
     }
 
@@ -80,8 +87,6 @@ public class GetWorkflowDestinationPartyTypeCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationPartyTypeResult();
 
         if(entity != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowDestinationPartyType(workflowControl.getWorkflowDestinationPartyTypeTransfer(getUserVisit(), entity));
         }
 

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSourceCommand
@@ -54,6 +54,9 @@ public class DeleteSourceCommand
         );
     }
 
+    @Inject
+    SourceControl sourceControl;
+
     /** Creates a new instance of DeleteSourceCommand */
     public DeleteSourceCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -61,7 +64,6 @@ public class DeleteSourceCommand
 
     @Override
     protected BaseResult execute() {
-        var sourceControl = Session.getModelController(SourceControl.class);
         var sourceName = form.getSourceName();
         var source = sourceControl.getSourceByNameForUpdate(sourceName);
 

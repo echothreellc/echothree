@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyCarrierAccountCommand
@@ -67,6 +67,13 @@ public class EditPartyCarrierAccountCommand
                 new FieldDefinition("AlwaysUseThirdPartyBilling", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditPartyCarrierAccountCommand */
     public EditPartyCarrierAccountCommand() {
@@ -85,13 +92,11 @@ public class EditPartyCarrierAccountCommand
 
     @Override
     public PartyCarrierAccount getEntity(EditPartyCarrierAccountResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyCarrierAccount partyCarrierAccount = null;
         var partyName = spec.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var carrierControl = Session.getModelController(CarrierControl.class);
             var carrierName = spec.getCarrierName();
             var carrier = carrierControl.getCarrierByName(carrierName);
 
@@ -126,8 +131,6 @@ public class EditPartyCarrierAccountCommand
 
     @Override
     public void fillInResult(EditPartyCarrierAccountResult result, PartyCarrierAccount partyCarrierAccount) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
-
         result.setPartyCarrierAccount(carrierControl.getPartyCarrierAccountTransfer(getUserVisit(), partyCarrierAccount));
     }
 
@@ -141,7 +144,6 @@ public class EditPartyCarrierAccountCommand
 
     @Override
     public void doUpdate(PartyCarrierAccount partyCarrierAccount) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var partyCarrierAccountDetailValue = carrierControl.getPartyCarrierAccountDetailValueForUpdate(partyCarrierAccount);
 
         partyCarrierAccountDetailValue.setAccount(edit.getAccount());

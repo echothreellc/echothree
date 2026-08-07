@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultApplicationEditorCommand
@@ -56,6 +56,16 @@ public class SetDefaultApplicationEditorCommand
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
+    @Inject
+    EditorLogic editorLogic;
+
     
     /** Creates a new instance of SetDefaultApplicationEditorCommand */
     public SetDefaultApplicationEditorCommand() {
@@ -65,14 +75,13 @@ public class SetDefaultApplicationEditorCommand
     @Override
     protected BaseResult execute() {
         var applicationName = form.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var editorName = form.getEditorName();
-            var editor = EditorLogic.getInstance().getEditorByName(this, editorName);
+            var editor = editorLogic.getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                var applicationControl = Session.getModelController(ApplicationControl.class);
                 var applicationEditorDetailValue = applicationControl.getApplicationEditorDetailValueForUpdate(application, editor);
                 
                 if(applicationEditorDetailValue != null) {

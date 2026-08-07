@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLeaveTypeChoicesCommand
@@ -55,6 +55,9 @@ public class GetLeaveTypeChoicesCommand
                 );
     }
 
+    @Inject
+    EmployeeControl employeeControl;
+
     /** Creates a new instance of GetLeaveTypeChoicesCommand */
     public GetLeaveTypeChoicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -62,7 +65,6 @@ public class GetLeaveTypeChoicesCommand
     
    @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
        var result = EmployeeResultFactory.getGetLeaveTypeChoicesResult();
        var defaultLeaveTypeChoice = form.getDefaultLeaveTypeChoice();
        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

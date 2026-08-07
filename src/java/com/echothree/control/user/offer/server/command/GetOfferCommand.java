@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferCommand
@@ -59,6 +59,16 @@ public class GetOfferCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferNameElementControl offerNameElementControl;
+
+    @Inject
+    OfferLogic offerLogic;
+
     
     /** Creates a new instance of GetOfferCommand */
     public GetOfferCommand() {
@@ -67,7 +77,7 @@ public class GetOfferCommand
     
     @Override
     protected Offer getEntity() {
-        var offer = OfferLogic.getInstance().getOfferByUniversalSpec(this, form, true);
+        var offer = offerLogic.getOfferByUniversalSpec(this, form, true);
 
         if(offer != null) {
             sendEvent(offer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,8 +91,6 @@ public class GetOfferCommand
         var result = OfferResultFactory.getGetOfferResult();
         
         if(offer != null) {
-            var offerControl = Session.getModelController(OfferControl.class);
-            var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
             var userVisit = getUserVisit();
             
             result.setOffer(offerControl.getOfferTransfer(userVisit, offer));

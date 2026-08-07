@@ -59,12 +59,13 @@ public class GetLocationCapacitiesCommand
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     WarehouseControl warehouseControl;
 
     @Inject
     WarehouseLogic warehouseLogic;
+
 
     /** Creates a new instance of GetLocationCapacitiesCommand */
     public GetLocationCapacitiesCommand() {

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchSortDirectionChoicesCommand
@@ -57,6 +57,13 @@ public class GetSearchSortDirectionChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     
     /** Creates a new instance of GetSearchSortDirectionChoicesCommand */
     public GetSearchSortDirectionChoicesCommand() {
@@ -73,10 +80,9 @@ public class GetSearchSortDirectionChoicesCommand
         if(parameterCount == 0 || parameterCount == 2) {
             var defaultSearchSortDirectionChoice = form.getDefaultSearchSortDirectionChoice();
             var party = getParty();
-            var searchType = defaultSearchSortDirectionChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
+            var searchType = defaultSearchSortDirectionChoice == null && party != null ? searchLogic.getSearchTypeByName(this, searchKindName, searchTypeName) : null;
 
             if(!hasExecutionErrors()) {
-                var searchControl = Session.getModelController(SearchControl.class);
                 var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {

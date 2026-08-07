@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRatingCommand
@@ -41,6 +41,10 @@ public class GetRatingCommand
                 new FieldDefinition("RatingName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    RatingControl ratingControl;
+
     
     /** Creates a new instance of GetRatingCommand */
     public GetRatingCommand() {
@@ -49,7 +53,6 @@ public class GetRatingCommand
     
     @Override
     protected BaseResult execute() {
-        var ratingControl = Session.getModelController(RatingControl.class);
         var result = RatingResultFactory.getGetRatingResult();
         var ratingName = form.getRatingName();
         var rating = ratingControl.getRatingByName(ratingName);

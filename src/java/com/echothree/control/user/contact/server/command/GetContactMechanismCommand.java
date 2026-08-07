@@ -34,11 +34,6 @@ import javax.inject.Inject;
 public class GetContactMechanismCommand
         extends BaseSingleEntityCommand<ContactMechanism, GetContactMechanismForm> {
     
-    @Inject
-    ContactControl contactControl;
-
-    @Inject
-    ContactMechanismLogic contactMechanismLogic;
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -49,6 +44,13 @@ public class GetContactMechanismCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactMechanismLogic contactMechanismLogic;
+
     
     /** Creates a new instance of GetContactMechanismCommand */
     public GetContactMechanismCommand() {

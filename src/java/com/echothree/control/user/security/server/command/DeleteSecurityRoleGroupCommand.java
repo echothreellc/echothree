@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSecurityRoleGroupCommand
@@ -55,6 +55,13 @@ public class DeleteSecurityRoleGroupCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    SecurityRoleGroupLogic securityRoleGroupLogic;
+
     
     /** Creates a new instance of DeleteSecurityRoleGroupCommand */
     public DeleteSecurityRoleGroupCommand() {
@@ -63,11 +70,9 @@ public class DeleteSecurityRoleGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByUniversalSpecForUpdate(this, form, false);
+        var securityRoleGroup = securityRoleGroupLogic.getSecurityRoleGroupByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            var securityControl = Session.getModelController(SecurityControl.class);
-
             securityControl.deleteSecurityRoleGroup(securityRoleGroup, getPartyPK());
         }
         

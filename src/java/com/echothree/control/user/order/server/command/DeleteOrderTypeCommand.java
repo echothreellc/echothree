@@ -53,14 +53,16 @@ public class DeleteOrderTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
     
     /** Creates a new instance of DeleteOrderTypeCommand */
     public DeleteOrderTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
-    @Inject
-    OrderTypeLogic orderTypeLogic;
     
     @Override
     protected BaseResult execute() {

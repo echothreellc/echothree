@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetApplicationEditorUseChoicesCommand
@@ -55,6 +55,13 @@ public class GetApplicationEditorUseChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
     
     /** Creates a new instance of GetApplicationEditorUseChoicesCommand */
     public GetApplicationEditorUseChoicesCommand() {
@@ -65,10 +72,9 @@ public class GetApplicationEditorUseChoicesCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetApplicationEditorUseChoicesResult();
         var applicationName = form.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            var applicationControl = Session.getModelController(ApplicationControl.class);
             var defaultApplicationEditorUseChoice = form.getDefaultApplicationEditorUseChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

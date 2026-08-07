@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEmployeeTypeDescriptionCommand
@@ -65,6 +65,13 @@ public class EditEmployeeTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditEmployeeTypeDescriptionCommand */
     public EditEmployeeTypeDescriptionCommand() {
@@ -73,13 +80,11 @@ public class EditEmployeeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var result = EmployeeResultFactory.getEditEmployeeTypeDescriptionResult();
         var employeeTypeName = spec.getEmployeeTypeName();
         var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
         
         if(employeeType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

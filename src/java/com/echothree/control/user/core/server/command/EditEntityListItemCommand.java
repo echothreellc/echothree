@@ -37,6 +37,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityListItemCommand
@@ -70,6 +71,10 @@ public class EditEntityListItemCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of EditEntityListItemCommand */
     public EditEntityListItemCommand() {
@@ -90,7 +95,7 @@ public class EditEntityListItemCommand
     
     @Override
     public EntityListItem getEntity(EditEntityListItemResult result) {
-        entityListItem = EntityAttributeLogic.getInstance().getEntityListItemByUniversalSpec(this,
+        entityListItem = entityAttributeLogic.getEntityListItemByUniversalSpec(this,
                 spec, editModeToEntityPermission(editMode));
 
         return entityListItem;
@@ -143,7 +148,7 @@ public class EditEntityListItemCommand
         entityListItemDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         entityListItemDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        EntityAttributeLogic.getInstance().updateEntityListItemFromValue(session, entityListItemDetailValue, partyPK);
+        entityAttributeLogic.updateEntityListItemFromValue(session, entityListItemDetailValue, partyPK);
 
         if(entityListItemDescription == null && description != null) {
             coreControl.createEntityListItemDescription(entityListItem, getPreferredLanguage(), description, partyPK);

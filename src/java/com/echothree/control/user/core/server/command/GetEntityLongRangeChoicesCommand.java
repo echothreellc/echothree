@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityLongRangeChoicesCommand
@@ -58,6 +58,10 @@ public class GetEntityLongRangeChoicesCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
     
     /** Creates a new instance of GetEntityLongRangeChoicesCommand */
     public GetEntityLongRangeChoicesCommand() {
@@ -74,7 +78,6 @@ public class GetEntityLongRangeChoicesCommand
                 + (entityRef == null && componentVendorName != null && entityTypeName != null? 1: 0);
         
         if(parameterCount == 1) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             EntityType entityType = null;
             
             if(entityRef == null) {

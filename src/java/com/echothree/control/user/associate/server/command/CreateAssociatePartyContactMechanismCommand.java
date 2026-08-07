@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateAssociatePartyContactMechanismCommand
@@ -49,6 +49,13 @@ public class CreateAssociatePartyContactMechanismCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    AssociateControl associateControl;
+
+    @Inject
+    ContactControl contactControl;
+
     
     /** Creates a new instance of CreateAssociatePartyContactMechanismCommand */
     public CreateAssociatePartyContactMechanismCommand() {
@@ -63,7 +70,6 @@ public class CreateAssociatePartyContactMechanismCommand
         var parameterCount = (contactMechanismName == null ? 0 : 1) + (contactMechanismAliasTypeName == null && alias == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            var associateControl = Session.getModelController(AssociateControl.class);
             var associateProgramName = form.getAssociateProgramName();
             var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
             
@@ -77,7 +83,6 @@ public class CreateAssociatePartyContactMechanismCommand
                             associatePartyContactMechanismName);
                     
                     if(associatePartyContactMechanism == null) {
-                        var contactControl = Session.getModelController(ContactControl.class);
                         ContactMechanism contactMechanism = null;
                         
                         if(contactMechanismName != null) {

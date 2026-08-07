@@ -40,10 +40,11 @@ public class GetCommunicationEventPurposeCommand
                 new FieldDefinition("CommunicationEventPurposeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     CommunicationControl communicationControl;
     
+
     /** Creates a new instance of GetCommunicationEventPurposeCommand */
     public GetCommunicationEventPurposeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);

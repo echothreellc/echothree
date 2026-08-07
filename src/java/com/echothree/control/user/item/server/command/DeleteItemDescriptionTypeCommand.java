@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemDescriptionTypeCommand
@@ -53,6 +54,10 @@ public class DeleteItemDescriptionTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ItemDescriptionTypeLogic itemDescriptionTypeLogic;
+
     
     /** Creates a new instance of DeleteItemDescriptionTypeCommand */
     public DeleteItemDescriptionTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteItemDescriptionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpecForUpdate(this, form, false);
+        var itemDescriptionType = itemDescriptionTypeLogic.getItemDescriptionTypeByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            ItemDescriptionTypeLogic.getInstance().deleteItemDescriptionType(this, itemDescriptionType, getPartyPK());
+            itemDescriptionTypeLogic.deleteItemDescriptionType(this, itemDescriptionType, getPartyPK());
         }
         
         return null;

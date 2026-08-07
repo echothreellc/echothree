@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLetterChoicesCommand
@@ -57,6 +57,13 @@ public class GetLetterChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    LetterControl letterControl;
+
     
     /** Creates a new instance of GetLetterChoicesCommand */
     public GetLetterChoicesCommand() {
@@ -65,7 +72,6 @@ public class GetLetterChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = LetterResultFactory.getGetLetterChoicesResult();
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
@@ -75,7 +81,6 @@ public class GetLetterChoicesCommand
             var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = Session.getModelController(LetterControl.class);
                 var defaultLetterChoice = form.getDefaultLetterChoice();
                 var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 

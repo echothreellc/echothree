@@ -28,9 +28,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityBlobAttributeCommand
@@ -51,6 +51,13 @@ public class DeleteEntityBlobAttributeCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteEntityBlobAttributeCommand */
     public DeleteEntityBlobAttributeCommand() {
@@ -59,7 +66,6 @@ public class DeleteEntityBlobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityRef = form.getEntityRef();
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
@@ -68,7 +74,6 @@ public class DeleteEntityBlobAttributeCommand
             var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             
             if(entityAttribute != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

@@ -87,7 +87,7 @@ public class CreateTrainingClassCommand
                 new FieldDefinition("Introduction", FieldType.STRING, false, null, null)
         );
     }
-    
+
     @Inject
     WorkEffortControl workEffortControl;
 
@@ -99,6 +99,7 @@ public class CreateTrainingClassCommand
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
 
     /** Creates a new instance of CreateTrainingClassCommand */
     public CreateTrainingClassCommand() {

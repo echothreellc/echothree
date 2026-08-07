@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLocationNameElementCommand
@@ -61,6 +61,10 @@ public class CreateLocationNameElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of CreateLocationNameElementCommand */
     public CreateLocationNameElementCommand() {
@@ -70,7 +74,6 @@ public class CreateLocationNameElementCommand
     @Override
     protected BaseResult execute() {
         var result = WarehouseResultFactory.getCreateLocationNameElementResult();
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         

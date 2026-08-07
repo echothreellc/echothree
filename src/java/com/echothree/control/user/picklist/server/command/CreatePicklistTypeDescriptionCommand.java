@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePicklistTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class CreatePicklistTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PicklistControl picklistControl;
+
     
     /** Creates a new instance of CreatePicklistTypeDescriptionCommand */
     public CreatePicklistTypeDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreatePicklistTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistTypeName = form.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
         
         if(picklistType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCurrencyChoicesCommand
@@ -41,6 +41,10 @@ public class GetCurrencyChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of GetCurrencyChoicesCommand */
     public GetCurrencyChoicesCommand() {
@@ -49,7 +53,7 @@ public class GetCurrencyChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = Session.getModelController(AccountingControl.class);
+        var coreControl = accountingControl;
         var result = AccountingResultFactory.getGetCurrencyChoicesResult();
         var defaultCurrencyChoice = form.getDefaultCurrencyChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

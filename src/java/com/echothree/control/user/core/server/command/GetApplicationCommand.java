@@ -30,9 +30,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetApplicationCommand
@@ -47,6 +47,13 @@ public class GetApplicationCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of GetApplicationCommand */
     public GetApplicationCommand() {
@@ -57,14 +64,13 @@ public class GetApplicationCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetApplicationResult();
         var applicationName = form.getApplicationName();
-        var parameterCount = (applicationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (applicationName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var applicationControl = Session.getModelController(ApplicationControl.class);
             Application application = null;
 
             if(applicationName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Application.name());
                 
                 if(!hasExecutionErrors()) {

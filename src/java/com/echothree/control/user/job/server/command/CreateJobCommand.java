@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateJobCommand
@@ -59,6 +59,19 @@ public class CreateJobCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    JobControl jobControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateJobCommand */
     public CreateJobCommand() {
@@ -67,17 +80,13 @@ public class CreateJobCommand
     
     @Override
     protected BaseResult execute() {
-        var jobControl = Session.getModelController(JobControl.class);
         var jobName = form.getJobName();
         var job = jobControl.getJobByName(jobName);
         
         if(job == null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var runAsParty = partyControl.getPartyByName(jobName);
             
             if(runAsParty == null) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

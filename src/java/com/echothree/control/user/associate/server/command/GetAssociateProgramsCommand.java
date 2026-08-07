@@ -38,9 +38,10 @@ public class GetAssociateProgramsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     AssociateControl associateControl;
+
 
     /** Creates a new instance of GetAssociateProgramsCommand */
     public GetAssociateProgramsCommand() {

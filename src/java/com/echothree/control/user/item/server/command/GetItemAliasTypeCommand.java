@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemAliasTypeCommand
@@ -45,6 +45,13 @@ public class GetItemAliasTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemAliasTypeLogic itemAliasTypeLogic;
+
     
     /** Creates a new instance of GetItemAliasTypeCommand */
     public GetItemAliasTypeCommand() {
@@ -53,7 +60,7 @@ public class GetItemAliasTypeCommand
 
     @Override
     protected ItemAliasType getEntity() {
-        var itemAliasType = ItemAliasTypeLogic.getInstance().getItemAliasTypeByUniversalSpec(this, form, true);
+        var itemAliasType = itemAliasTypeLogic.getItemAliasTypeByUniversalSpec(this, form, true);
 
         if(itemAliasType != null) {
             sendEvent(itemAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,7 @@ public class GetItemAliasTypeCommand
 
     @Override
     protected BaseResult getResult(ItemAliasType itemAliasType) {
-        var itemAliasTypeControl = Session.getModelController(ItemControl.class);
+        var itemAliasTypeControl = itemControl;
         var result = ItemResultFactory.getGetItemAliasTypeResult();
 
         if(itemAliasType != null) {

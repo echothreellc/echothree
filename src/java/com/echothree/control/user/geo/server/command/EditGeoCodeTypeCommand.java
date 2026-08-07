@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeTypeCommand
@@ -69,6 +69,9 @@ public class EditGeoCodeTypeCommand
                 );
     }
 
+    @Inject
+    GeoControl geoControl;
+
     /** Creates a new instance of EditGeoCodeTypeCommand */
     public EditGeoCodeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -86,7 +89,6 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public GeoCodeType getEntity(EditGeoCodeTypeResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeType geoCodeType;
         var geoCodeTypeName = spec.getGeoCodeTypeName();
 
@@ -112,8 +114,6 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public void fillInResult(EditGeoCodeTypeResult result, GeoCodeType geoCodeType) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         result.setGeoCodeType(geoControl.getGeoCodeTypeTransfer(getUserVisit(), geoCodeType));
     }
 
@@ -121,7 +121,6 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public void doLock(GeoCodeTypeEdit edit, GeoCodeType geoCodeType) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeTypeDescription = geoControl.getGeoCodeTypeDescription(geoCodeType, getPreferredLanguage());
         var geoCodeTypeDetail = geoCodeType.getLastDetail();
 
@@ -139,7 +138,6 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public void canUpdate(GeoCodeType geoCodeType) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeTypeName = edit.getGeoCodeTypeName();
         var duplicateGeoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
@@ -164,7 +162,6 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public void doUpdate(GeoCodeType geoCodeType) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var partyPK = getPartyPK();
         var geoCodeTypeDetailValue = geoControl.getGeoCodeTypeDetailValueForUpdate(geoCodeType);
         var geoCodeTypeDescription = geoControl.getGeoCodeTypeDescriptionForUpdate(geoCodeType, getPreferredLanguage());

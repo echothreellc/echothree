@@ -68,6 +68,7 @@ public class GetCancellationReasonTypesCommand
 
     @Inject
     CancellationKindLogic cancellationKindLogic;
+
     
     /** Creates a new instance of GetCancellationReasonTypesCommand */
     public GetCancellationReasonTypesCommand() {

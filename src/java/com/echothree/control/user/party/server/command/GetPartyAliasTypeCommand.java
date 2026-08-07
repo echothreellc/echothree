@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyAliasTypeCommand
@@ -59,6 +59,13 @@ public class GetPartyAliasTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyAliasTypeLogic partyAliasTypeLogic;
+
     
     /** Creates a new instance of GetPartyAliasTypeCommand */
     public GetPartyAliasTypeCommand() {
@@ -67,7 +74,7 @@ public class GetPartyAliasTypeCommand
 
     @Override
     protected PartyAliasType getEntity() {
-        var partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByUniversalSpec(this, form, true);
+        var partyAliasType = partyAliasTypeLogic.getPartyAliasTypeByUniversalSpec(this, form, true);
 
         if(partyAliasType != null) {
             sendEvent(partyAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +85,6 @@ public class GetPartyAliasTypeCommand
 
     @Override
     protected BaseResult getResult(PartyAliasType partyAliasType) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetPartyAliasTypeResult();
 
         if(partyAliasType != null) {

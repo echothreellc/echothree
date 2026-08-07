@@ -28,9 +28,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRatingTypeListItemChoicesCommand
@@ -48,6 +48,16 @@ public class GetRatingTypeListItemChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    RatingLogic ratingLogic;
+
+    @Inject
+    RatingTypeLogic ratingTypeLogic;
+
     
     /** Creates a new instance of GetRatingTypeListItemsCommand */
     public GetRatingTypeListItemChoicesCommand() {
@@ -67,9 +77,9 @@ public class GetRatingTypeListItemChoicesCommand
             RatingType ratingType = null;
             
             if(ratingName == null) {
-                ratingType = RatingTypeLogic.getInstance().getRatingTypeByName(this, componentVendorName, entityTypeName, ratingTypeName);
+                ratingType = ratingTypeLogic.getRatingTypeByName(this, componentVendorName, entityTypeName, ratingTypeName);
             } else {
-                var rating = RatingLogic.getInstance().getRatingByName(this, ratingName);
+                var rating = ratingLogic.getRatingByName(this, ratingName);
                 
                 if(!hasExecutionErrors()) {
                     ratingType = rating.getLastDetail().getRatingTypeListItem().getLastDetail().getRatingType();
@@ -77,7 +87,6 @@ public class GetRatingTypeListItemChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                var ratingControl = Session.getModelController(RatingControl.class);
                 var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setRatingTypeListItemChoices(ratingControl.getRatingTypeListItemChoices(form.getDefaultRatingTypeListItemChoice(), getPreferredLanguage(),

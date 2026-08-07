@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCustomerTypeContactListGroupCommand
@@ -68,6 +68,12 @@ public class EditCustomerTypeContactListGroupCommand
                 );
     }
 
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    CustomerControl customerControl;
+
     /** Creates a new instance of EditCustomerTypeContactListGroupCommand */
     public EditCustomerTypeContactListGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditCustomerTypeContactListGroupCommand
 
     @Override
     public CustomerTypeContactListGroup getEntity(EditCustomerTypeContactListGroupResult result) {
-        var customerControl = Session.getModelController(CustomerControl.class);
         CustomerTypeContactListGroup customerTypeContactListGroup = null;
         var customerTypeName = spec.getCustomerTypeName();
         var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
             var contactListGroupName = spec.getContactListGroupName();
             var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
@@ -122,8 +126,6 @@ public class EditCustomerTypeContactListGroupCommand
 
     @Override
     public void fillInResult(EditCustomerTypeContactListGroupResult result, CustomerTypeContactListGroup customerTypeContactListGroup) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setCustomerTypeContactListGroup(contactListControl.getCustomerTypeContactListGroupTransfer(getUserVisit(), customerTypeContactListGroup));
     }
 
@@ -134,7 +136,6 @@ public class EditCustomerTypeContactListGroupCommand
 
     @Override
     public void doUpdate(CustomerTypeContactListGroup customerTypeContactListGroup) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var customerTypeContactListGroupValue = contactListControl.getCustomerTypeContactListGroupValue(customerTypeContactListGroup);
 
         customerTypeContactListGroupValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSequenceChecksumTypeCommand
@@ -55,6 +55,10 @@ public class CreateSequenceChecksumTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of CreateSequenceChecksumTypeCommand */
     public CreateSequenceChecksumTypeCommand() {
@@ -63,7 +67,6 @@ public class CreateSequenceChecksumTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
         var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
         

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowEntityTypeCommand
@@ -57,6 +57,13 @@ public class GetWorkflowEntityTypeCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     
     /** Creates a new instance of GetWorkflowEntityTypeCommand */
     public GetWorkflowEntityTypeCommand() {
@@ -69,7 +76,7 @@ public class GetWorkflowEntityTypeCommand
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
 
-        return WorkflowLogic.getInstance().getWorkflowEntityTypeByName(this, workflowName, componentVendorName, entityTypeName);
+        return workflowLogic.getWorkflowEntityTypeByName(this, workflowName, componentVendorName, entityTypeName);
     }
 
     @Override
@@ -77,8 +84,6 @@ public class GetWorkflowEntityTypeCommand
         var result = WorkflowResultFactory.getGetWorkflowEntityTypeResult();
 
         if(entity != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowEntityType(workflowControl.getWorkflowEntityTypeTransfer(getUserVisit(), entity));
         }
 

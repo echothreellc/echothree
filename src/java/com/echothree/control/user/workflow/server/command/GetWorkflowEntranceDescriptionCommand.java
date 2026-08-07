@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowEntranceDescriptionCommand
@@ -57,6 +57,13 @@ public class GetWorkflowEntranceDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of GetWorkflowEntranceDescriptionCommand */
     public GetWorkflowEntranceDescriptionCommand() {
@@ -65,7 +72,6 @@ public class GetWorkflowEntranceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var result = WorkflowResultFactory.getGetWorkflowEntranceDescriptionResult();
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
@@ -75,7 +81,6 @@ public class GetWorkflowEntranceDescriptionCommand
             var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

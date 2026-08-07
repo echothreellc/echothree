@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentMethodTypePartyTypeCommand
@@ -57,6 +58,10 @@ public class CreatePaymentMethodTypePartyTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    PaymentMethodTypePartyTypeLogic paymentMethodTypePartyTypeLogic;
+
     
     /** Creates a new instance of CreatePaymentMethodTypePartyTypeCommand */
     public CreatePaymentMethodTypePartyTypeCommand() {
@@ -73,7 +78,7 @@ public class CreatePaymentMethodTypePartyTypeCommand
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 
-        var paymentMethodTypePartyType = PaymentMethodTypePartyTypeLogic.getInstance().createPaymentMethodTypePartyType(this,
+        var paymentMethodTypePartyType = paymentMethodTypePartyTypeLogic.createPaymentMethodTypePartyType(this,
                 paymentMethodTypeName, partyTypeName, partyPaymentMethodWorkflowName, contactMechanismWorkflowName,
                 isDefault, sortOrder, getPartyPK());
 

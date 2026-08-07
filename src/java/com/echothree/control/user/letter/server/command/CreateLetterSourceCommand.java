@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLetterSourceCommand
@@ -70,6 +70,16 @@ public class CreateLetterSourceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    LetterControl letterControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateLetterSourceCommand */
     public CreateLetterSourceCommand() {
@@ -78,7 +88,6 @@ public class CreateLetterSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var letterControl = Session.getModelController(LetterControl.class);
         var letterSourceName = form.getLetterSourceName();
         var letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
@@ -88,7 +97,6 @@ public class CreateLetterSourceCommand
             var parameterCount = (partyName != null? 1: 0) + (companyName != null? 1: 0);
             
             if(parameterCount == 1) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 Party companyParty = null;
                 
                 if(partyName != null) {
@@ -114,7 +122,6 @@ public class CreateLetterSourceCommand
                 }
                 
                 if(!hasExecutionErrors()) {
-                    var contactControl = Session.getModelController(ContactControl.class);
                     var letterSourceCommandUtil = LetterSourceCommandUtil.getInstance();
                     var emailAddressPartyContactMechanism = letterSourceCommandUtil.getEmailAddressContactMechanism(this, form,
                             contactControl, companyParty);

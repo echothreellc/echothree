@@ -25,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRatingTypeListItemDescriptionCommand
@@ -45,6 +45,13 @@ public class CreateRatingTypeListItemDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    RatingControl ratingControl;
+
     
     /** Creates a new instance of CreateRatingTypeListItemDescriptionCommand */
     public CreateRatingTypeListItemDescriptionCommand() {
@@ -61,7 +68,6 @@ public class CreateRatingTypeListItemDescriptionCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
                 var ratingTypeName = form.getRatingTypeName();
                 var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
@@ -70,7 +76,6 @@ public class CreateRatingTypeListItemDescriptionCommand
                     var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItem != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = form.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
                         

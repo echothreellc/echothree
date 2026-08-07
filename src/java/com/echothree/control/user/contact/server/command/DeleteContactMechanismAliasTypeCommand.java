@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteContactMechanismAliasTypeCommand
@@ -53,6 +53,10 @@ public class DeleteContactMechanismAliasTypeCommand
                 new FieldDefinition("ContactMechanismAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
     
     /** Creates a new instance of DeleteContactMechanismAliasTypeCommand */
     public DeleteContactMechanismAliasTypeCommand() {
@@ -61,7 +65,6 @@ public class DeleteContactMechanismAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
         var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByNameForUpdate(contactMechanismAliasTypeName);
         

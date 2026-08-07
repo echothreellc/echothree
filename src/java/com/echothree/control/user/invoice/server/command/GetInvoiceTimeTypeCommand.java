@@ -56,12 +56,13 @@ public class GetInvoiceTimeTypeCommand
                 new FieldDefinition("InvoiceTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
+
     @Inject
     InvoiceControl invoiceControl;
 
     @Inject
     InvoiceLogic invoiceLogic;
+
 
     /** Creates a new instance of GetInvoiceTimeTypeCommand */
     public GetInvoiceTimeTypeCommand() {

@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassSectionTranslationCommand
@@ -77,6 +77,15 @@ public class EditTrainingClassSectionTranslationCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     /** Creates a new instance of EditTrainingClassSectionTranslationCommand */
     public EditTrainingClassSectionTranslationCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -96,7 +105,6 @@ public class EditTrainingClassSectionTranslationCommand
     
     @Override
     public TrainingClassSectionTranslation getEntity(EditTrainingClassSectionTranslationResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassSectionTranslation trainingClassSectionTranslation = null;
         var trainingClassName = spec.getTrainingClassName();
         
@@ -107,7 +115,6 @@ public class EditTrainingClassSectionTranslationCommand
             var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -141,8 +148,6 @@ public class EditTrainingClassSectionTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassSectionTranslationResult result, TrainingClassSectionTranslation trainingClassSectionTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClassSectionTranslation(trainingControl.getTrainingClassSectionTranslationTransfer(getUserVisit(), trainingClassSectionTranslation));
     }
 
@@ -163,7 +168,6 @@ public class EditTrainingClassSectionTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassSectionTranslation trainingClassSectionTranslation) {
-        var mimeTypeLogic = MimeTypeLogic.getInstance();
         var overviewMimeTypeName = edit.getOverviewMimeTypeName();
         var overview = edit.getOverview();
         
@@ -183,7 +187,6 @@ public class EditTrainingClassSectionTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassSectionTranslation trainingClassSectionTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassSectionTranslationValue = trainingControl.getTrainingClassSectionTranslationValue(trainingClassSectionTranslation);
         
         trainingClassSectionTranslationValue.setDescription(edit.getDescription());

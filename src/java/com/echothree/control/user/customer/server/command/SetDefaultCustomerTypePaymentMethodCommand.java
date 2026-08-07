@@ -55,7 +55,7 @@ public class SetDefaultCustomerTypePaymentMethodCommand
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     CustomerControl customerControl;
 
@@ -64,6 +64,7 @@ public class SetDefaultCustomerTypePaymentMethodCommand
 
     @Inject
     PaymentMethodLogic paymentMethodLogic;
+
 
     /** Creates a new instance of SetDefaultCustomerTypePaymentMethodCommand */
     public SetDefaultCustomerTypePaymentMethodCommand() {

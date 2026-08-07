@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTermDescriptionsCommand
@@ -40,6 +40,10 @@ public class GetTermDescriptionsCommand
                 new FieldDefinition("TermName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of GetTermDescriptionsCommand */
     public GetTermDescriptionsCommand() {
@@ -48,7 +52,6 @@ public class GetTermDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = Session.getModelController(TermControl.class);
         var result = TermResultFactory.getGetTermDescriptionsResult();
         var termName = form.getTermName();
         var term = termControl.getTermByName(termName);

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditProtocolCommand
@@ -67,6 +67,10 @@ public class EditProtocolCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of EditProtocolCommand */
     public EditProtocolCommand() {
@@ -85,7 +89,6 @@ public class EditProtocolCommand
 
     @Override
     public Protocol getEntity(EditProtocolResult result) {
-        var serverControl = Session.getModelController(ServerControl.class);
         Protocol protocol;
         var protocolName = spec.getProtocolName();
 
@@ -111,14 +114,11 @@ public class EditProtocolCommand
 
     @Override
     public void fillInResult(EditProtocolResult result, Protocol protocol) {
-        var serverControl = Session.getModelController(ServerControl.class);
-
         result.setProtocol(serverControl.getProtocolTransfer(getUserVisit(), protocol));
     }
 
     @Override
     public void doLock(ProtocolEdit edit, Protocol protocol) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var protocolDescription = serverControl.getProtocolDescription(protocol, getPreferredLanguage());
         var protocolDetail = protocol.getLastDetail();
 
@@ -133,7 +133,6 @@ public class EditProtocolCommand
 
     @Override
     public void canUpdate(Protocol protocol) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var protocolName = edit.getProtocolName();
         var duplicateProtocol = serverControl.getProtocolByName(protocolName);
 
@@ -144,7 +143,6 @@ public class EditProtocolCommand
 
     @Override
     public void doUpdate(Protocol protocol) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var partyPK = getPartyPK();
         var protocolDetailValue = serverControl.getProtocolDetailValueForUpdate(protocol);
         var protocolDescription = serverControl.getProtocolDescriptionForUpdate(protocol, getPreferredLanguage());

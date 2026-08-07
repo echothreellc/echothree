@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContactListTypeCommand
@@ -62,6 +62,13 @@ public class CreateContactListTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
     
     /** Creates a new instance of CreateContactListTypeCommand */
     public CreateContactListTypeCommand() {
@@ -70,12 +77,10 @@ public class CreateContactListTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListTypeName = form.getContactListTypeName();
         var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(contactListType == null) {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainKind = chainControl.getChainKindByName(ChainKinds.CONTACT_LIST.name());
             var confirmationRequestChainName = form.getConfirmationRequestChainName();
             var confirmationRequestChain = confirmationRequestChainName == null ? null

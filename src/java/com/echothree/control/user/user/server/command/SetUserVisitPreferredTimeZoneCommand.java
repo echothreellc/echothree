@@ -25,6 +25,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetUserVisitPreferredTimeZoneCommand
@@ -38,6 +39,9 @@ public class SetUserVisitPreferredTimeZoneCommand
                 );
     }
 
+    @Inject
+    TimeZoneLogic timeZoneLogic;
+
     /** Creates a new instance of SetUserVisitPreferredTimeZoneCommand */
     public SetUserVisitPreferredTimeZoneCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -45,11 +49,9 @@ public class SetUserVisitPreferredTimeZoneCommand
     
     @Override
     protected BaseResult execute() {
-        var currency = TimeZoneLogic.getInstance().getTimeZoneByName(this, form.getJavaTimeZoneName());
+        var currency = timeZoneLogic.getTimeZoneByName(this, form.getJavaTimeZoneName());
 
         if(!hasExecutionErrors()) {
-            var userControl = getUserControl();
-
             userControl.setUserVisitPreferredTimeZone(getUserVisitForUpdate(), currency, getPartyPK());
         }
 

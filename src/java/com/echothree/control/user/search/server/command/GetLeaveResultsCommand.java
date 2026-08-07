@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLeaveResultsCommand
@@ -56,6 +56,12 @@ public class GetLeaveResultsCommand
                 );
     }
 
+    @Inject
+    LeaveControl leaveControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetLeaveResultsCommand */
     public GetLeaveResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,13 +71,11 @@ public class GetLeaveResultsCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetLeaveResultsResult();
         var userVisit = getUserVisit();
-        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchKinds.LEAVE.name(), form.getSearchTypeName());
+        var userVisitSearch = searchLogic.getUserVisitSearchByName(this, userVisit, SearchKinds.LEAVE.name(), form.getSearchTypeName());
         
         if(!hasExecutionErrors()) {
-            var leaveControl = Session.getModelController(LeaveControl.class);
-
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                result.setLeaveResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                result.setLeaveResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
             }
 
             result.setLeaveResults(leaveControl.getLeaveResultTransfers(userVisit, userVisitSearch));

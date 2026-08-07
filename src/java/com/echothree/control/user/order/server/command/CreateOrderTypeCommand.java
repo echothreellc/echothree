@@ -66,25 +66,36 @@ public class CreateOrderTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     
     /** Creates a new instance of CreateOrderTypeCommand */
     public CreateOrderTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
-    @Inject
-    OrderTypeLogic orderTypeLogic;
     
     @Override
     protected BaseResult execute() {
         var result = OrderResultFactory.getCreateOrderTypeResult();
         var orderSequenceTypeName = form.getOrderSequenceTypeName();
-        var orderSequenceType = orderSequenceTypeName == null ? null : SequenceTypeLogic.getInstance().getSequenceTypeByName(this, orderSequenceTypeName);
+        var orderSequenceType = orderSequenceTypeName == null ? null : sequenceTypeLogic.getSequenceTypeByName(this, orderSequenceTypeName);
         OrderType orderType = null;
 
         if(!hasExecutionErrors()) {
             var orderWorkflowName = form.getOrderWorkflowName();
-            var orderWorkflow = orderWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(
+            var orderWorkflow = orderWorkflowName == null ? null : workflowLogic.getWorkflowByName(
                     UnknownOrderWorkflowNameException.class, ExecutionErrors.UnknownOrderWorkflowName, this,
                     orderWorkflowName, EntityPermission.READ_ONLY);
 
@@ -92,7 +103,7 @@ public class CreateOrderTypeCommand
                 var orderWorkflowEntranceName = form.getOrderWorkflowEntranceName();
 
                 if(orderWorkflowEntranceName == null || orderWorkflow != null) {
-                    var orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(
+                    var orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
                             UnknownOrderWorkflowEntranceNameException.class, ExecutionErrors.UnknownOrderWorkflowEntranceName, this,
                             orderWorkflow, orderWorkflowEntranceName);
 

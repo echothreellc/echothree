@@ -61,17 +61,18 @@ public class GetGeoCodeDateTimeFormatsCommand
                 new FieldDefinition("DateTimeFormatName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
-    
-    /** Creates a new instance of GetGeoCodeDateTimeFormatsCommand */
-    public GetGeoCodeDateTimeFormatsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     GeoControl geoControl;
 
     @Inject
     PartyControl partyControl;
+
+
+    /** Creates a new instance of GetGeoCodeDateTimeFormatsCommand */
+    public GetGeoCodeDateTimeFormatsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     GeoCode geoCode;
     DateTimeFormat dateTimeFormat;

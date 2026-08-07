@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyTypeContactListCommand
@@ -56,6 +56,13 @@ public class CreatePartyTypeContactListCommand
                 new FieldDefinition("AddWhenCreated", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreatePartyTypeContactListCommand */
     public CreatePartyTypeContactListCommand() {
@@ -64,12 +71,10 @@ public class CreatePartyTypeContactListCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyTypeName = form.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
             var contactListName = form.getContactListName();
             var contactList = contactListControl.getContactListByName(contactListName);
             

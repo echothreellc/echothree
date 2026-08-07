@@ -25,6 +25,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSalesOrderTimeCommand
@@ -38,6 +39,10 @@ public class DeleteSalesOrderTimeCommand
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SalesOrderTimeLogic salesOrderTimeLogic;
+
     
     /** Creates a new instance of DeleteSalesOrderTimeCommand */
     public DeleteSalesOrderTimeCommand() {
@@ -49,7 +54,7 @@ public class DeleteSalesOrderTimeCommand
         var orderName = form.getOrderName();
         var orderTimeTypeName = form.getOrderTimeTypeName();
         
-        SalesOrderTimeLogic.getInstance().deleteOrderTime(this, orderName, orderTimeTypeName, getPartyPK());
+        salesOrderTimeLogic.deleteOrderTime(this, orderName, orderTimeTypeName, getPartyPK());
         
         return null;
     }

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditServerCommand
@@ -67,6 +67,10 @@ public class EditServerCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of EditServerCommand */
     public EditServerCommand() {
@@ -85,7 +89,6 @@ public class EditServerCommand
 
     @Override
     public Server getEntity(EditServerResult result) {
-        var serverControl = Session.getModelController(ServerControl.class);
         Server server;
         var serverName = spec.getServerName();
 
@@ -111,14 +114,11 @@ public class EditServerCommand
 
     @Override
     public void fillInResult(EditServerResult result, Server server) {
-        var serverControl = Session.getModelController(ServerControl.class);
-
         result.setServer(serverControl.getServerTransfer(getUserVisit(), server));
     }
 
     @Override
     public void doLock(ServerEdit edit, Server server) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var serverDescription = serverControl.getServerDescription(server, getPreferredLanguage());
         var serverDetail = server.getLastDetail();
 
@@ -133,7 +133,6 @@ public class EditServerCommand
 
     @Override
     public void canUpdate(Server server) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var serverName = edit.getServerName();
         var duplicateServer = serverControl.getServerByName(serverName);
 
@@ -144,7 +143,6 @@ public class EditServerCommand
 
     @Override
     public void doUpdate(Server server) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var partyPK = getPartyPK();
         var serverDetailValue = serverControl.getServerDetailValueForUpdate(server);
         var serverDescription = serverControl.getServerDescriptionForUpdate(server, getPreferredLanguage());

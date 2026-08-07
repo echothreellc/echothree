@@ -52,14 +52,15 @@ public class GetTransactionTimeTypesCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    TransactionTimeControl transactionTimeControl;
+
     
     /** Creates a new instance of GetTransactionTimeTypesCommand */
     public GetTransactionTimeTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    TransactionTimeControl transactionTimeControl;
 
     @Override
     protected void handleForm() {

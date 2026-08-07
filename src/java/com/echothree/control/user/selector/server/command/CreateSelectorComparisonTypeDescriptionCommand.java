@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSelectorComparisonTypeDescriptionCommand
@@ -49,6 +49,13 @@ public class CreateSelectorComparisonTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateSelectorComparisonTypeDescriptionCommand */
     public CreateSelectorComparisonTypeDescriptionCommand() {
@@ -57,12 +64,10 @@ public class CreateSelectorComparisonTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorComparisonTypeName = form.getSelectorComparisonTypeName();
         var selectorComparisonType = selectorControl.getSelectorComparisonTypeByName(selectorComparisonTypeName);
         
         if(selectorComparisonType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

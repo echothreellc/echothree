@@ -25,6 +25,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetUserVisitPreferredCurrencyCommand
@@ -38,6 +39,9 @@ public class SetUserVisitPreferredCurrencyCommand
                 );
     }
 
+    @Inject
+    CurrencyLogic currencyLogic;
+
     /** Creates a new instance of SetUserVisitPreferredCurrencyCommand */
     public SetUserVisitPreferredCurrencyCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -45,11 +49,9 @@ public class SetUserVisitPreferredCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        var currency = CurrencyLogic.getInstance().getCurrencyByName(this, form.getCurrencyIsoName());
+        var currency = currencyLogic.getCurrencyByName(this, form.getCurrencyIsoName());
 
         if(!hasExecutionErrors()) {
-            var userControl = getUserControl();
-
             userControl.setUserVisitPreferredCurrency(getUserVisitForUpdate(), currency, getPartyPK());
         }
 

@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUnitOfMeasureKindUseCommand
@@ -43,6 +43,13 @@ public class GetUnitOfMeasureKindUseCommand
             new FieldDefinition("UnitOfMeasureKindUseTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    UnitOfMeasureKindUseLogic unitOfMeasureKindUseLogic;
+
     
     /** Creates a new instance of GetUnitOfMeasureKindUseCommand */
     public GetUnitOfMeasureKindUseCommand() {
@@ -51,7 +58,7 @@ public class GetUnitOfMeasureKindUseCommand
     
     @Override
     protected UnitOfMeasureKindUse getEntity() {
-        var unitOfMeasureKindUse = UnitOfMeasureKindUseLogic.getInstance().getUnitOfMeasureKindUse(this,
+        var unitOfMeasureKindUse = unitOfMeasureKindUseLogic.getUnitOfMeasureKindUse(this,
                 form.getUnitOfMeasureKindUseTypeName(), form.getUnitOfMeasureKindName());
         
         if(!hasExecutionErrors()) {
@@ -63,7 +70,6 @@ public class GetUnitOfMeasureKindUseCommand
     
     @Override
     protected BaseResult getResult(UnitOfMeasureKindUse unitOfMeasureKindUse) {
-        var uomControl = Session.getModelController(UomControl.class);
         var result = UomResultFactory.getGetUnitOfMeasureKindUseResult();
         
         if(unitOfMeasureKindUse != null) {

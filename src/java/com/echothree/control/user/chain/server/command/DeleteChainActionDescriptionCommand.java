@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteChainActionDescriptionCommand
@@ -59,6 +59,13 @@ public class DeleteChainActionDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteChainActionDescriptionCommand */
     public DeleteChainActionDescriptionCommand() {
@@ -67,7 +74,6 @@ public class DeleteChainActionDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -88,7 +94,6 @@ public class DeleteChainActionDescriptionCommand
                         var chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
                         if(chainAction != null) {
-                            var partyControl = Session.getModelController(PartyControl.class);
                             var languageIsoName = form.getLanguageIsoName();
                             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

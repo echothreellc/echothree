@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteLetterCommand
@@ -56,6 +56,13 @@ public class DeleteLetterCommand
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    LetterControl letterControl;
+
     
     /** Creates a new instance of DeleteLetterCommand */
     public DeleteLetterCommand() {
@@ -64,7 +71,6 @@ public class DeleteLetterCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -73,7 +79,6 @@ public class DeleteLetterCommand
             var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = Session.getModelController(LetterControl.class);
                 var letterName = form.getLetterName();
                 var letter = letterControl.getLetterByNameForUpdate(chainType, letterName);
                 

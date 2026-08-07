@@ -62,11 +62,6 @@ public class GetVendorItemsCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetVendorItemsCommand */
-    public GetVendorItemsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     ItemControl itemControl;
@@ -79,6 +74,12 @@ public class GetVendorItemsCommand
 
     @Inject
     VendorLogic vendorLogic;
+
+
+    /** Creates a new instance of GetVendorItemsCommand */
+    public GetVendorItemsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private Vendor vendor;
     private Item item;

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartyCancellationPolicyCommand
@@ -58,6 +58,12 @@ public class DeletePartyCancellationPolicyCommand
                 );
     }
 
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of DeletePartyCancellationPolicyCommand */
     public DeletePartyCancellationPolicyCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,13 +71,11 @@ public class DeletePartyCancellationPolicyCommand
 
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = CancellationPolicyResultFactory.getGetPartyCancellationPolicyResult();
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var cancellationKindName = form.getCancellationKindName();
             var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 

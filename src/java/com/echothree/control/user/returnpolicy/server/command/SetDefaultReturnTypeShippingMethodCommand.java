@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultReturnTypeShippingMethodCommand
@@ -55,6 +55,13 @@ public class SetDefaultReturnTypeShippingMethodCommand
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
     
     /** Creates a new instance of SetDefaultReturnTypeShippingMethodCommand */
     public SetDefaultReturnTypeShippingMethodCommand() {
@@ -63,7 +70,6 @@ public class SetDefaultReturnTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
@@ -72,7 +78,6 @@ public class SetDefaultReturnTypeShippingMethodCommand
             var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
-                var shippingControl = Session.getModelController(ShippingControl.class);
                 var shippingMethodName = form.getShippingMethodName();
                 var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 

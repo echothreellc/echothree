@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCarrierTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateCarrierTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateCarrierTypeDescriptionCommand */
     public CreateCarrierTypeDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateCarrierTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierTypeName = form.getCarrierTypeName();
         var carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
         
         if(carrierType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

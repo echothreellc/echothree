@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -57,17 +56,18 @@ public class GetEntityInstanceCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetEntityInstanceCommand */
-    public GetEntityInstanceCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     EntityInstanceControl entityInstanceControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+
+    /** Creates a new instance of GetEntityInstanceCommand */
+    public GetEntityInstanceCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected EntityInstance getEntity() {

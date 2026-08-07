@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainKindDescriptionCommand
@@ -68,6 +68,12 @@ public class EditChainKindDescriptionCommand
                 );
     }
 
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditChainKindDescriptionCommand */
     public EditChainKindDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public ChainKindDescription getEntity(EditChainKindDescriptionResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainKindDescription chainKindDescription = null;
         var chainKindName = spec.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public void fillInResult(EditChainKindDescriptionResult result, ChainKindDescription chainKindDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainKindDescription(chainControl.getChainKindDescriptionTransfer(getUserVisit(), chainKindDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public void doUpdate(ChainKindDescription chainKindDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindDescriptionValue = chainControl.getChainKindDescriptionValue(chainKindDescription);
 
         chainKindDescriptionValue.setDescription(edit.getDescription());

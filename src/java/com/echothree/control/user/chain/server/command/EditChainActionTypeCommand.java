@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainActionTypeCommand
@@ -69,6 +69,9 @@ public class EditChainActionTypeCommand
                 );
     }
 
+    @Inject
+    ChainControl chainControl;
+
     /** Creates a new instance of EditChainActionTypeCommand */
     public EditChainActionTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -86,7 +89,6 @@ public class EditChainActionTypeCommand
 
     @Override
     public ChainActionType getEntity(EditChainActionTypeResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainActionType chainActionType;
         var chainActionTypeName = spec.getChainActionTypeName();
 
@@ -110,14 +112,11 @@ public class EditChainActionTypeCommand
 
     @Override
     public void fillInResult(EditChainActionTypeResult result, ChainActionType chainActionType) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainActionType(chainControl.getChainActionTypeTransfer(getUserVisit(), chainActionType));
     }
 
     @Override
     public void doLock(ChainActionTypeEdit edit, ChainActionType chainActionType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainActionTypeDescription = chainControl.getChainActionTypeDescription(chainActionType, getPreferredLanguage());
         var chainActionTypeDetail = chainActionType.getLastDetail();
 
@@ -133,7 +132,6 @@ public class EditChainActionTypeCommand
 
     @Override
     public void canUpdate(ChainActionType chainActionType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainActionTypeName = edit.getChainActionTypeName();
         var duplicateChainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
 
@@ -144,7 +142,6 @@ public class EditChainActionTypeCommand
 
     @Override
     public void doUpdate(ChainActionType chainActionType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
         var chainActionTypeDetailValue = chainControl.getChainActionTypeDetailValueForUpdate(chainActionType);
         var chainActionTypeDescription = chainControl.getChainActionTypeDescriptionForUpdate(chainActionType, getPreferredLanguage());

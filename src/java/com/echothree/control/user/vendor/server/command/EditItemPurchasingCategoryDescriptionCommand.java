@@ -65,17 +65,18 @@ public class EditItemPurchasingCategoryDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
-    
-    /** Creates a new instance of EditItemPurchasingCategoryDescriptionCommand */
-    public EditItemPurchasingCategoryDescriptionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     PartyControl partyControl;
 
     @Inject
     VendorControl vendorControl;
+
+
+    /** Creates a new instance of EditItemPurchasingCategoryDescriptionCommand */
+    public EditItemPurchasingCategoryDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditItemPurchasingCategoryDescriptionResult getResult() {

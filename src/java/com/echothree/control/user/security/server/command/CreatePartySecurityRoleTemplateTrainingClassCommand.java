@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartySecurityRoleTemplateTrainingClassCommand
@@ -56,6 +56,16 @@ public class CreatePartySecurityRoleTemplateTrainingClassCommand
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartySecurityRoleTemplateLogic partySecurityRoleTemplateLogic;
+
     
     /** Creates a new instance of CreatePartySecurityRoleTemplateTrainingClassCommand */
     public CreatePartySecurityRoleTemplateTrainingClassCommand() {
@@ -64,12 +74,10 @@ public class CreatePartySecurityRoleTemplateTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
         var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
         if(partySecurityRoleTemplate != null) {
-            var trainingControl = Session.getModelController(TrainingControl.class);
             var trainingClassName = form.getTrainingClassName();
             var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
             
@@ -77,11 +85,11 @@ public class CreatePartySecurityRoleTemplateTrainingClassCommand
                 var partySecurityRoleTemplateTrainingClass = securityControl.getPartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplate, trainingClass);
 
                 if(partySecurityRoleTemplateTrainingClass == null) {
-                    var preparedPartySecurityRoleTemplateTrainingClass = PartySecurityRoleTemplateLogic.getInstance().preparePartySecurityRoleTemplateTrainingClass(this,
+                    var preparedPartySecurityRoleTemplateTrainingClass = partySecurityRoleTemplateLogic.preparePartySecurityRoleTemplateTrainingClass(this,
                         partySecurityRoleTemplate, trainingClass);
 
                     if(!hasExecutionErrors()) {
-                        PartySecurityRoleTemplateLogic.getInstance().createPartySecurityRoleTemplateTrainingClass(session, preparedPartySecurityRoleTemplateTrainingClass, getPartyPK());
+                        partySecurityRoleTemplateLogic.createPartySecurityRoleTemplateTrainingClass(session, preparedPartySecurityRoleTemplateTrainingClass, getPartyPK());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.DuplicatePartySecurityRoleTemplateTrainingClass.name(), partySecurityRoleTemplateName, trainingClassName);

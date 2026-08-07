@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePurchaseOrderCommand
@@ -61,6 +62,9 @@ public class CreatePurchaseOrderCommand
                 );
     }
 
+    @Inject
+    PurchaseOrderLogic purchaseOrderLogic;
+
     /** Creates a new instance of CreatePurchaseOrderCommand */
     public CreatePurchaseOrderCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -79,7 +83,7 @@ public class CreatePurchaseOrderCommand
         var freeOnBoardName = form.getFreeOnBoardName();
         var workflowEntranceName = form.getWorkflowEntranceName();
 
-        var order = PurchaseOrderLogic.getInstance().createPurchaseOrder(session, this, getUserVisit(), vendorName,
+        var order = purchaseOrderLogic.createPurchaseOrder(session, this, getUserVisit(), vendorName,
                 termName, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, reference,
                 freeOnBoardName, workflowEntranceName, getParty());
 

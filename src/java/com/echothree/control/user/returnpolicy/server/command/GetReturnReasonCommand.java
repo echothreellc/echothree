@@ -62,6 +62,7 @@ public class GetReturnReasonCommand
 
     @Inject
     ReturnKindLogic returnKindLogic;
+
     
     /** Creates a new instance of GetReturnReasonCommand */
     public GetReturnReasonCommand() {

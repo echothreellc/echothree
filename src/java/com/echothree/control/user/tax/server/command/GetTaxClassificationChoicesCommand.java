@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTaxClassificationChoicesCommand
@@ -56,6 +56,13 @@ public class GetTaxClassificationChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    TaxControl taxControl;
+
     
     /** Creates a new instance of GetTaxClassificationChoicesCommand */
     public GetTaxClassificationChoicesCommand() {
@@ -64,13 +71,11 @@ public class GetTaxClassificationChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var result = TaxResultFactory.getGetTaxClassificationChoicesResult();
         var countryName = form.getCountryName();
         var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            var taxControl = Session.getModelController(TaxControl.class);
             var defaultTaxClassificationChoice = form.getDefaultTaxClassificationChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             

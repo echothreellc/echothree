@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnReasonDescriptionsCommand
@@ -55,6 +55,10 @@ public class GetReturnReasonDescriptionsCommand
                 new FieldDefinition("ReturnReasonName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
     
     /** Creates a new instance of GetReturnReasonDescriptionsCommand */
     public GetReturnReasonDescriptionsCommand() {
@@ -63,7 +67,6 @@ public class GetReturnReasonDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var result = ReturnPolicyResultFactory.getGetReturnReasonDescriptionsResult();
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);

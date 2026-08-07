@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCancellationKindCommand
@@ -58,6 +59,13 @@ public class CreateCancellationKindCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
     
     /** Creates a new instance of CreateCancellationKindCommand */
     public CreateCancellationKindCommand() {
@@ -70,14 +78,14 @@ public class CreateCancellationKindCommand
         CancellationKind cancellationKind = null;
         var cancellationKindName = form.getCancellationKindName();
         var cancellationSequenceTypeName = form.getCancellationSequenceTypeName();
-        var cancellationSequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, cancellationSequenceTypeName);
+        var cancellationSequenceType = sequenceTypeLogic.getSequenceTypeByName(this, cancellationSequenceTypeName);
 
         if(!hasExecutionErrors()) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            cancellationKind = CancellationKindLogic.getInstance().createCancellationKind(this, cancellationKindName,
+            cancellationKind = cancellationKindLogic.createCancellationKind(this, cancellationKindName,
                     cancellationSequenceType, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         }
 

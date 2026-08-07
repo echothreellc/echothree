@@ -27,9 +27,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePrinterCommand
@@ -46,6 +46,15 @@ public class CreatePrinterCommand
                 );
     }
 
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     /** Creates a new instance of CreatePrinterCommand */
     public CreatePrinterCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -53,8 +62,6 @@ public class CreatePrinterCommand
     
    @Override
     protected BaseResult execute() {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerName = form.getPrinterName();
         var printer = printerControl.getPrinterByName(printerName);
         
@@ -63,7 +70,6 @@ public class CreatePrinterCommand
             var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
             
             if(printerGroup != null) {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var priority = Integer.valueOf(form.getPriority());
                 var description = form.getDescription();
                 var createdBy = getPartyPK();

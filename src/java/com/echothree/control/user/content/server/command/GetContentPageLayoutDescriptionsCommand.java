@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageLayoutDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetContentPageLayoutDescriptionsCommand
                 new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of GetContentPageLayoutDescriptionsCommand */
     public GetContentPageLayoutDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetContentPageLayoutDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var result = ContentResultFactory.getGetContentPageLayoutDescriptionsResult();
         var contentPageLayoutName = form.getContentPageLayoutName();
         var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);

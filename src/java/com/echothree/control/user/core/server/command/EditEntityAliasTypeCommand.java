@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityAliasTypeCommand
@@ -72,6 +72,13 @@ public class EditEntityAliasTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
     
     /** Creates a new instance of EditEntityAliasTypeCommand */
     public EditEntityAliasTypeCommand() {
@@ -92,7 +99,7 @@ public class EditEntityAliasTypeCommand
     
     @Override
     public EntityAliasType getEntity(EditEntityAliasTypeResult result) {
-        entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this,
+        entityAliasType = entityAliasTypeLogic.getEntityAliasTypeByUniversalSpec(this,
                 spec, editModeToEntityPermission(editMode));
 
         return entityAliasType;
@@ -105,14 +112,11 @@ public class EditEntityAliasTypeCommand
 
     @Override
     public void fillInResult(EditEntityAliasTypeResult result, EntityAliasType entityAliasType) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
         result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType));
     }
 
     @Override
     public void doLock(EntityAliasTypeEdit edit, EntityAliasType entityAliasType) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescription(entityAliasType, getPreferredLanguage());
         var entityAliasTypeDetail = entityAliasType.getLastDetail();
 
@@ -128,7 +132,6 @@ public class EditEntityAliasTypeCommand
 
     @Override
     public void canUpdate(EntityAliasType entityAliasType) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityAliasTypeName = edit.getEntityAliasTypeName();
         var duplicateEntityAliasType = entityAliasControl.getEntityAliasTypeByName(entityAliasType.getLastDetail().getEntityType(),
                 entityAliasTypeName);
@@ -140,7 +143,6 @@ public class EditEntityAliasTypeCommand
 
     @Override
     public void doUpdate(EntityAliasType entityAliasType) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var partyPK = getPartyPK();
         var entityAliasTypeDetailValue = entityAliasControl.getEntityAliasTypeDetailValueForUpdate(entityAliasType);
         var entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescriptionForUpdate(entityAliasType, getPreferredLanguage());
@@ -151,7 +153,7 @@ public class EditEntityAliasTypeCommand
         entityAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         entityAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        EntityAliasTypeLogic.getInstance().updateEntityAliasTypeFromValue(session, entityAliasTypeDetailValue, partyPK);
+        entityAliasTypeLogic.updateEntityAliasTypeFromValue(session, entityAliasTypeDetailValue, partyPK);
 
         if(entityAliasTypeDescription == null && description != null) {
             entityAliasControl.createEntityAliasTypeDescription(entityAliasType, getPreferredLanguage(), description, partyPK);

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSearchTypeDescriptionCommand
@@ -57,6 +57,13 @@ public class CreateSearchTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of CreateSearchTypeDescriptionCommand */
     public CreateSearchTypeDescriptionCommand() {
@@ -65,7 +72,6 @@ public class CreateSearchTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKindName = form.getSearchKindName();
         var searchKind = searchControl.getSearchKindByName(searchKindName);
         
@@ -74,7 +80,6 @@ public class CreateSearchTypeDescriptionCommand
             var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

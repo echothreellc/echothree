@@ -30,9 +30,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditNameSuffixCommand
@@ -52,6 +52,10 @@ public class EditNameSuffixCommand
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditNameSuffixCommand */
     public EditNameSuffixCommand() {
@@ -60,7 +64,6 @@ public class EditNameSuffixCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getEditNameSuffixResult();
         
         if(editMode.equals(EditMode.LOCK)) {

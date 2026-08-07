@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditHarmonizedTariffScheduleCodeUnitDescriptionCommand
@@ -68,6 +68,12 @@ public class EditHarmonizedTariffScheduleCodeUnitDescriptionCommand
                 );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditHarmonizedTariffScheduleCodeUnitDescriptionCommand */
     public EditHarmonizedTariffScheduleCodeUnitDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditHarmonizedTariffScheduleCodeUnitDescriptionCommand
 
     @Override
     public HarmonizedTariffScheduleCodeUnitDescription getEntity(EditHarmonizedTariffScheduleCodeUnitDescriptionResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = null;
         var harmonizedTariffScheduleCodeUnitName = spec.getHarmonizedTariffScheduleCodeUnitName();
         var harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
 
         if(harmonizedTariffScheduleCodeUnit != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditHarmonizedTariffScheduleCodeUnitDescriptionCommand
 
     @Override
     public void fillInResult(EditHarmonizedTariffScheduleCodeUnitDescriptionResult result, HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setHarmonizedTariffScheduleCodeUnitDescription(itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionTransfer(getUserVisit(), harmonizedTariffScheduleCodeUnitDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditHarmonizedTariffScheduleCodeUnitDescriptionCommand
 
     @Override
     public void doUpdate(HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUnitDescriptionValue = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionValue(harmonizedTariffScheduleCodeUnitDescription);
 
         harmonizedTariffScheduleCodeUnitDescriptionValue.setDescription(edit.getDescription());

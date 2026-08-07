@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetServerChoicesCommand
@@ -53,6 +53,10 @@ public class GetServerChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of GetServerChoicesCommand */
     public GetServerChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetServerChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var serverControl = Session.getModelController(ServerControl.class);
         var result = CoreResultFactory.getGetServerChoicesResult();
         var defaultServerChoice = form.getDefaultServerChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

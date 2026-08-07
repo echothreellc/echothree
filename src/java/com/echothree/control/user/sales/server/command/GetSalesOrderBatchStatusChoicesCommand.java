@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSalesOrderBatchStatusChoicesCommand
@@ -53,6 +54,10 @@ public class GetSalesOrderBatchStatusChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    SalesOrderBatchLogic salesOrderBatchLogic;
+
     
     /** Creates a new instance of GetSalesOrderBatchStatusChoicesCommand */
     public GetSalesOrderBatchStatusChoicesCommand() {
@@ -63,13 +68,13 @@ public class GetSalesOrderBatchStatusChoicesCommand
     protected BaseResult execute() {
         var result = SalesResultFactory.getGetSalesOrderBatchStatusChoicesResult();
         var batchName = form.getBatchName();
-        var batch = batchName == null? null: SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
+        var batch = batchName == null? null: salesOrderBatchLogic.getBatchByName(this, batchName);
 
         if(!hasExecutionErrors()) {
             var defaultSalesOrderBatchStatusChoice = form.getDefaultSalesOrderBatchStatusChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-            result.setSalesOrderBatchStatusChoices(SalesOrderBatchLogic.getInstance().getSalesOrderBatchStatusChoices(defaultSalesOrderBatchStatusChoice,
+            result.setSalesOrderBatchStatusChoices(salesOrderBatchLogic.getSalesOrderBatchStatusChoices(defaultSalesOrderBatchStatusChoice,
                     getPreferredLanguage(), allowNullChoice, batch, getPartyPK()));
         }
 

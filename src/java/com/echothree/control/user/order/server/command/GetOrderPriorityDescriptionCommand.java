@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderPriorityDescriptionCommand
@@ -58,6 +58,16 @@ public class GetOrderPriorityDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    OrderPriorityControl orderPriorityControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetOrderPriorityDescriptionCommand */
     public GetOrderPriorityDescriptionCommand() {
@@ -66,18 +76,15 @@ public class GetOrderPriorityDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var result = OrderResultFactory.getGetOrderPriorityDescriptionResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
             var orderPriorityName = form.getOrderPriorityName();
             var orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
             if(orderPriority != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 

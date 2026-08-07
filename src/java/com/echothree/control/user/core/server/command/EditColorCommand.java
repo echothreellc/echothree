@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditColorCommand
@@ -70,6 +70,10 @@ public class EditColorCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ColorControl colorControl;
+
     
     /** Creates a new instance of EditColorCommand */
     public EditColorCommand() {
@@ -88,7 +92,6 @@ public class EditColorCommand
 
     @Override
     public Color getEntity(EditColorResult result) {
-        var colorControl = Session.getModelController(ColorControl.class);
         Color color;
         var colorName = spec.getColorName();
 
@@ -112,14 +115,11 @@ public class EditColorCommand
 
     @Override
     public void fillInResult(EditColorResult result, Color color) {
-        var colorControl = Session.getModelController(ColorControl.class);
-
         result.setColor(colorControl.getColorTransfer(getUserVisit(), color));
     }
 
     @Override
     public void doLock(ColorEdit edit, Color color) {
-        var colorControl = Session.getModelController(ColorControl.class);
         var colorDescription = colorControl.getColorDescription(color, getPreferredLanguage());
         var colorDetail = color.getLastDetail();
 
@@ -137,7 +137,6 @@ public class EditColorCommand
 
     @Override
     public void canUpdate(Color color) {
-        var colorControl = Session.getModelController(ColorControl.class);
         var colorName = edit.getColorName();
         var duplicateColor = colorControl.getColorByName(colorName);
 
@@ -148,7 +147,6 @@ public class EditColorCommand
 
     @Override
     public void doUpdate(Color color) {
-        var colorControl = Session.getModelController(ColorControl.class);
         var partyPK = getPartyPK();
         var colorDetailValue = colorControl.getColorDetailValueForUpdate(color);
         var colorDescription = colorControl.getColorDescriptionForUpdate(color, getPreferredLanguage());

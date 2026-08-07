@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPicklistAliasTypeDescriptionCommand
@@ -69,6 +69,12 @@ public class EditPicklistAliasTypeDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PicklistControl picklistControl;
+
     /** Creates a new instance of EditPicklistAliasTypeDescriptionCommand */
     public EditPicklistAliasTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -86,7 +92,6 @@ public class EditPicklistAliasTypeDescriptionCommand
 
     @Override
     public PicklistAliasTypeDescription getEntity(EditPicklistAliasTypeDescriptionResult result) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAliasTypeDescription picklistAliasTypeDescription = null;
         var picklistTypeName = spec.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
@@ -96,7 +101,6 @@ public class EditPicklistAliasTypeDescriptionCommand
             var picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
             if(picklistAliasType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -130,8 +134,6 @@ public class EditPicklistAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditPicklistAliasTypeDescriptionResult result, PicklistAliasTypeDescription picklistAliasTypeDescription) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
-
         result.setPicklistAliasTypeDescription(picklistControl.getPicklistAliasTypeDescriptionTransfer(getUserVisit(), picklistAliasTypeDescription));
     }
 
@@ -142,7 +144,6 @@ public class EditPicklistAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(PicklistAliasTypeDescription picklistAliasTypeDescription) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistAliasTypeDescriptionValue = picklistControl.getPicklistAliasTypeDescriptionValue(picklistAliasTypeDescription);
 
         picklistAliasTypeDescriptionValue.setDescription(edit.getDescription());

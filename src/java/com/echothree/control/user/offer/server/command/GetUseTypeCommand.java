@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUseTypeCommand
@@ -58,6 +58,13 @@ public class GetUseTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    UseTypeControl useTypeControl;
+
+    @Inject
+    UseTypeLogic useTypeLogic;
+
     
     /** Creates a new instance of GetUseTypeCommand */
     public GetUseTypeCommand() {
@@ -66,7 +73,7 @@ public class GetUseTypeCommand
     
     @Override
     protected UseType getEntity() {
-        var useType = UseTypeLogic.getInstance().getUseTypeByUniversalSpec(this, form, true);
+        var useType = useTypeLogic.getUseTypeByUniversalSpec(this, form, true);
 
         if(useType != null) {
             sendEvent(useType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetUseTypeCommand
     
     @Override
     protected BaseResult getResult(UseType useType) {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var result = OfferResultFactory.getGetUseTypeResult();
 
         if(useType != null) {

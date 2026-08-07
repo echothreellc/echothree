@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOfferItemPriceCommand
@@ -59,6 +60,10 @@ public class CreateOfferItemPriceCommand
                 new FieldDefinition("UnitPriceIncrement:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_UNIT, false, null, null)
                 );
     }
+
+    @Inject
+    OfferItemLogic offerItemLogic;
+
     
     /** Creates a new instance of CreateOfferItemPriceCommand */
     public CreateOfferItemPriceCommand() {
@@ -77,7 +82,7 @@ public class CreateOfferItemPriceCommand
         var strMaximumUnitPrice = form.getMaximumUnitPrice();
         var strUnitPriceIncrement = form.getUnitPriceIncrement();
 
-        OfferItemLogic.getInstance().createOfferItemPrice(this, offerName, itemName, inventoryConditionName,
+        offerItemLogic.createOfferItemPrice(this, offerName, itemName, inventoryConditionName,
                 unitOfMeasureTypeName, currencyIsoName, strUnitPrice, strMinimumUnitPrice, strMaximumUnitPrice,
                 strUnitPriceIncrement, getPartyPK());
 

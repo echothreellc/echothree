@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainCommand
@@ -75,6 +75,12 @@ public class EditChainCommand
                 );
     }
 
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     /** Creates a new instance of EditChainCommand */
     public EditChainCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -94,7 +100,6 @@ public class EditChainCommand
 
     @Override
     public Chain getEntity(EditChainResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         Chain chain = null;
         var chainKindName = spec.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
@@ -133,8 +138,6 @@ public class EditChainCommand
 
     @Override
     public void fillInResult(EditChainResult result, Chain chain) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChain(chainControl.getChainTransfer(getUserVisit(), chain));
     }
 
@@ -142,7 +145,6 @@ public class EditChainCommand
     
     @Override
     public void doLock(ChainEdit edit, Chain chain) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainDescription = chainControl.getChainDescription(chain, getPreferredLanguage());
         var chainDetail = chain.getLastDetail();
         
@@ -160,7 +162,6 @@ public class EditChainCommand
 
     @Override
     public void canUpdate(Chain chain) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainTypeDetail = chainType.getLastDetail();
         var chainName = edit.getChainName();
         var duplicateChain = chainControl.getChainByName(chainType, chainName);
@@ -168,7 +169,6 @@ public class EditChainCommand
         if(duplicateChain != null && !chain.equals(duplicateChain)) {
             addExecutionError(ExecutionErrors.DuplicateChainName.name(), chainTypeDetail.getChainTypeName(), chainName);
         } else {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.name());
             var chainInstanceSequenceName = edit.getChainInstanceSequenceName();
 
@@ -182,7 +182,6 @@ public class EditChainCommand
 
     @Override
     public void doUpdate(Chain chain) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
         var chainDetailValue = chainControl.getChainDetailValueForUpdate(chain);
         var chainDescription = chainControl.getChainDescriptionForUpdate(chain, getPreferredLanguage());

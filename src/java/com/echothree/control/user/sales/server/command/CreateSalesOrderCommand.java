@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSalesOrderCommand
@@ -66,6 +67,9 @@ public class CreateSalesOrderCommand
                 );
     }
 
+    @Inject
+    SalesOrderLogic salesOrderLogic;
+
     /** Creates a new instance of CreateSalesOrderCommand */
     public CreateSalesOrderCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -89,7 +93,7 @@ public class CreateSalesOrderCommand
         var strTaxable = form.getTaxable();
         var workflowEntranceName = form.getWorkflowEntranceName();
 
-        var order = SalesOrderLogic.getInstance().createSalesOrder(session, this, getUserVisit(), batchName, sourceName,
+        var order = salesOrderLogic.createSalesOrder(session, this, getUserVisit(), batchName, sourceName,
                 billToPartyName, orderPriorityName, currencyIsoName, termName, holdUntilComplete, allowBackorders,
                 allowSubstitutions, allowCombiningShipments, reference, freeOnBoardName, strTaxable, workflowEntranceName,
                 getParty());

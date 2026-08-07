@@ -52,7 +52,7 @@ public class GetEntityMessagesCommand
             new FieldDefinition("MessageName", FieldType.TAG, false, null, null)
         );
     }
-    
+
     @Inject
     EntityInstanceControl entityInstanceControl;
 
@@ -67,6 +67,7 @@ public class GetEntityMessagesCommand
 
     @Inject
     EntityTypeLogic entityTypeLogic;
+
 
     /** Creates a new instance of GetEntityMessagesCommand */
     public GetEntityMessagesCommand() {

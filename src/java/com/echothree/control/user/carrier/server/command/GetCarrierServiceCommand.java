@@ -56,9 +56,11 @@ public class GetCarrierServiceCommand
                 new FieldDefinition("CarrierServiceName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     CarrierControl carrierControl;
+
+
     
     /** Creates a new instance of GetCarrierServiceCommand */
     public GetCarrierServiceCommand() {

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemWeightTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateItemWeightTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateItemWeightTypeDescriptionCommand */
     public CreateItemWeightTypeDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateItemWeightTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemWeightTypeName = form.getItemWeightTypeName();
         var itemWeightType = itemControl.getItemWeightTypeByName(itemWeightTypeName);
         
         if(itemWeightType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteVendorItemCommand
@@ -57,6 +57,13 @@ public class DeleteVendorItemCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    VendorItemLogic vendorItemLogic;
+
     
     /** Creates a new instance of DeleteVendorItemCommand */
     public DeleteVendorItemCommand() {
@@ -65,8 +72,7 @@ public class DeleteVendorItemCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        var vendorItem = VendorItemLogic.getInstance().getVendorItemByUniversalSpecForUpdate(this, form);
+        var vendorItem = vendorItemLogic.getVendorItemByUniversalSpecForUpdate(this, form);
             
         if(!hasExecutionErrors()) {
             vendorControl.deleteVendorItem(vendorItem, getPartyPK());

@@ -25,6 +25,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteNameSuffixCommand
@@ -37,6 +38,10 @@ public class DeleteNameSuffixCommand
                 new FieldDefinition("NameSuffixId", FieldType.ID, true, null, null)
                 );
     }
+
+    @Inject
+    NameSuffixLogic nameSuffixLogic;
+
     
     /** Creates a new instance of DeleteNameSuffixCommand */
     public DeleteNameSuffixCommand() {
@@ -47,7 +52,7 @@ public class DeleteNameSuffixCommand
     protected BaseResult execute() {
         var nameSuffixId = form.getNameSuffixId();
 
-        NameSuffixLogic.getInstance().deleteNameSuffix(this, nameSuffixId, getPartyPK());
+        nameSuffixLogic.deleteNameSuffix(this, nameSuffixId, getPartyPK());
 
         return null;
     }

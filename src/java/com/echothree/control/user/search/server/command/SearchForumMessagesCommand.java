@@ -31,10 +31,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchForumMessagesCommand
@@ -61,6 +61,21 @@ public class SearchForumMessagesCommand
                 );
     }
 
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    ForumRoleTypeLogic forumRoleTypeLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of SearchForumMessagesCommand */
     public SearchForumMessagesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -69,7 +84,6 @@ public class SearchForumMessagesCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchForumMessagesResult();
-        var searchLogic = SearchLogic.getInstance();
         var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.FORUM_MESSAGE.name());
 
         if(!hasExecutionErrors()) {
@@ -78,10 +92,9 @@ public class SearchForumMessagesCommand
 
             if(!hasExecutionErrors()) {
                 var languageIsoName = form.getLanguageIsoName();
-                var language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                var language = languageIsoName == null ? null : languageLogic.getLanguageByName(this, languageIsoName);
                 
                 if(!hasExecutionErrors()) {
-                    var searchControl = Session.getModelController(SearchControl.class);
                     var partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
                     var partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
                     boolean rememberPreferences = Boolean.valueOf(form.getRememberPreferences());
@@ -104,15 +117,14 @@ public class SearchForumMessagesCommand
 
                             if(!hasExecutionErrors()) {
                                 var searchUseTypeName = form.getSearchUseTypeName();
-                                var searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
+                                var searchUseType = searchUseTypeName == null ? null : searchLogic.getSearchUseTypeByName(this, searchUseTypeName);
 
                                 if(!hasExecutionErrors()) {
-                                    var forumControl = Session.getModelController(ForumControl.class);
                                     var forumName = form.getForumName();
                                     var forum = forumControl.getForumByName(forumName);
 
                                     if(forum != null) {
-                                        if(ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+                                        if(forumRoleTypeLogic.isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                                             var forumMessageTypeName = form.getForumMessageTypeName();
                                             var forumMessageType = forumMessageTypeName == null ? null : forumControl.getForumMessageTypeByName(forumMessageTypeName);
 

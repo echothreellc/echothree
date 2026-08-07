@@ -29,9 +29,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageCommand
@@ -50,6 +50,13 @@ public class GetContentPageCommand
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    AssociateReferralLogic associateReferralLogic;
+
     
     /** Creates a new instance of GetContentPageCommand */
     public GetContentPageCommand() {
@@ -64,7 +71,6 @@ public class GetContentPageCommand
         ContentPage contentPage = null;
 
         if(parameterCount == 1) {
-            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -96,7 +102,7 @@ public class GetContentPageCommand
                             : contentControl.getContentPageByName(contentSection, contentPageName);
 
                     if(contentPage != null) {
-                        AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
+                        associateReferralLogic.handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
                                 contentPage.getPrimaryKey(), partyPK);
 
                         if(!hasExecutionErrors()) {
@@ -123,8 +129,6 @@ public class GetContentPageCommand
         var result = ContentResultFactory.getGetContentPageResult();
 
         if (contentPage != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             result.setContentPage(contentControl.getContentPageTransfer(getUserVisit(), contentPage));
         }
 

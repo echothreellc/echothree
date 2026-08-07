@@ -21,7 +21,6 @@ import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.user.common.UserConstants;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.command.BaseResult;
@@ -29,10 +28,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PasswordGeneratorUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class RecoverPasswordCommand
@@ -47,6 +46,15 @@ public class RecoverPasswordCommand
                 new FieldDefinition("Answer", FieldType.STRING, false, 1L, 40L)
                 );
     }
+
+    @Inject
+    PartyChainLogic partyChainLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    UserLoginLogic userLoginLogic;
 
     /** Creates a new instance of RecoverPasswordCommand */
     public RecoverPasswordCommand() {
@@ -64,11 +72,11 @@ public class RecoverPasswordCommand
             Party party = null;
 
             if(partyName != null) {
-                party = PartyLogic.getInstance().getPartyByName(this, partyName);
+                party = partyLogic.getPartyByName(this, partyName);
             }
 
             if(username != null) {
-                var userLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
+                var userLogin = userLoginLogic.getUserLoginByUsername(this, username);
 
                 if(!hasExecutionErrors()) {
                     party = userLogin.getParty();
@@ -76,7 +84,6 @@ public class RecoverPasswordCommand
             }
 
             if(!hasExecutionErrors()) {
-                var userControl = Session.getModelController(UserControl.class);
                 var recoveryAnswer = userControl.getRecoveryAnswer(party);
                 var answer = form.getAnswer();
                 
@@ -106,7 +113,7 @@ public class RecoverPasswordCommand
                     userControl.createUserLoginPasswordString(userLoginPassword, password, session.getStartTime(), false, createdBy);
                     
                     // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                    PartyChainLogic.getInstance().createPartyPasswordRecoveryChainInstance(null, party, createdBy);
+                    partyChainLogic.createPartyPasswordRecoveryChainInstance(null, party, createdBy);
                 }
             }
         } else {

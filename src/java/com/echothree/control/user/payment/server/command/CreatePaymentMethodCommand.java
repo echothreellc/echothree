@@ -38,10 +38,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePaymentMethodCommand
@@ -94,6 +94,19 @@ public class CreatePaymentMethodCommand
                 new FieldDefinition("RequireIssuer", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    PaymentMethodTypeLogic paymentMethodTypeLogic;
+
     
     /** Creates a new instance of CreatePaymentMethodCommand */
     public CreatePaymentMethodCommand() {
@@ -120,22 +133,19 @@ public class CreatePaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         var result = PaymentResultFactory.getCreatePaymentMethodResult();
         var paymentMethodName = form.getPaymentMethodName();
         var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
         if(paymentMethod == null) {
             var paymentMethodTypeName = form.getPaymentMethodTypeName();
-            var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
+            var paymentMethodType = paymentMethodTypeLogic.getPaymentMethodTypeByName(this, paymentMethodTypeName);
 
             if(!hasExecutionErrors()) {
-                var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
                 var paymentProcessorName = form.getPaymentProcessorName();
                 var paymentProcessor = paymentProcessorName == null ? null : paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
                 if(paymentProcessorName == null || paymentProcessor != null) {
-                    var selectorControl = Session.getModelController(SelectorControl.class);
                     var itemSelectorName = form.getItemSelectorName();
                     var itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorKinds.ITEM.name(),
                             SelectorTypes.PAYMENT_METHOD.name(), itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());

@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderTypeDescriptionCommand
@@ -67,6 +67,13 @@ public class EditOrderTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditOrderTypeDescriptionCommand */
     public EditOrderTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public OrderTypeDescription getEntity(EditOrderTypeDescriptionResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderTypeDescription orderTypeDescription = null;
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderTypeDescriptionResult result, OrderTypeDescription orderTypeDescription) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-
         result.setOrderTypeDescription(orderTypeControl.getOrderTypeDescriptionTransfer(getUserVisit(), orderTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderTypeDescription orderTypeDescription) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeDescriptionValue = orderTypeControl.getOrderTypeDescriptionValue(orderTypeDescription);
         orderTypeDescriptionValue.setDescription(edit.getDescription());
 

@@ -28,9 +28,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateInvoiceRoleTypeDescriptionCommand
@@ -50,6 +50,13 @@ public class CreateInvoiceRoleTypeDescriptionCommand
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateInvoiceRoleTypeDescriptionCommand */
     public CreateInvoiceRoleTypeDescriptionCommand() {
@@ -58,12 +65,10 @@ public class CreateInvoiceRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceRoleTypeName = form.getInvoiceRoleTypeName();
         var invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
         if(invoiceRoleType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

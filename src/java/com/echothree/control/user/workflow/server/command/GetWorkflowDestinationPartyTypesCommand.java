@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowDestinationPartyTypesCommand
@@ -55,6 +55,13 @@ public class GetWorkflowDestinationPartyTypesCommand
 
         FORM_FIELD_DEFINITIONS = List.of(new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null), new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null), new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null));
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
     
     /** Creates a new instance of GetWorkflowDestinationPartyTypesCommand */
     public GetWorkflowDestinationPartyTypesCommand() {
@@ -69,14 +76,12 @@ public class GetWorkflowDestinationPartyTypesCommand
         var workflowStepName = form.getWorkflowStepName();
         var workflowDestinationName = form.getWorkflowDestinationName();
 
-        workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowName,
+        workflowDestination = workflowDestinationLogic.getWorkflowDestinationByName(this, workflowName,
                 workflowStepName, workflowDestinationName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return hasExecutionErrors() ? null :
                 workflowControl.countWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination);
     }
@@ -86,8 +91,6 @@ public class GetWorkflowDestinationPartyTypesCommand
         Collection<WorkflowDestinationPartyType> workflowDestinationPartyTypes = null;
 
         if(!hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowDestinationPartyTypes = workflowControl.getWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination);
         }
 
@@ -99,7 +102,6 @@ public class GetWorkflowDestinationPartyTypesCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationPartyTypesResult();
 
         if(entities != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestination));

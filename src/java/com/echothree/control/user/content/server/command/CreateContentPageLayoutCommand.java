@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentPageLayoutCommand
@@ -55,6 +56,10 @@ public class CreateContentPageLayoutCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContentPageLayoutLogic contentPageLayoutLogic;
+
     
     /** Creates a new instance of CreateContentPageLayoutCommand */
     public CreateContentPageLayoutCommand() {
@@ -69,7 +74,7 @@ public class CreateContentPageLayoutCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
+        var contentPageLayout = contentPageLayoutLogic.createContentPageLayout(this,
                 contentPageLayoutName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(contentPageLayout != null && !hasExecutionErrors()) {

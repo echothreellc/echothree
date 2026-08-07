@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultContentPageCommand
@@ -54,6 +54,10 @@ public class SetDefaultContentPageCommand
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of SetDefaultContentPageCommand */
     public SetDefaultContentPageCommand() {
@@ -62,7 +66,6 @@ public class SetDefaultContentPageCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         

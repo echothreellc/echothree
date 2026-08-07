@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateColorCommand
@@ -63,6 +63,16 @@ public class CreateColorCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ColorControl colorControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateColorCommand */
     public CreateColorCommand() {
@@ -72,14 +82,12 @@ public class CreateColorCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateColorResult();
-        var colorControl = Session.getModelController(ColorControl.class);
         var colorName = form.getColorName();
         
         if(colorName == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COLOR.name());
             
-            colorName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+            colorName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         }
 
         var color = colorControl.getColorByName(colorName);

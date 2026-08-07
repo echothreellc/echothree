@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.EntityInstanceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityTagCommand
@@ -57,6 +57,13 @@ public class DeleteEntityTagCommand
                 new FieldDefinition("TagName", FieldType.TAG, true, null, null)
                 );
     }
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of DeleteEntityTagCommand */
     public DeleteEntityTagCommand() {
@@ -65,13 +72,12 @@ public class DeleteEntityTagCommand
     
     @Override
     protected BaseResult execute() {
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(possibleEntitySpecs == 1) {
-            var taggedEntityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+            var taggedEntityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
-                var tagControl = Session.getModelController(TagControl.class);
                 var tagScopeName = form.getTagScopeName();
                 var tagScope = tagControl.getTagScopeByName(tagScopeName);
 

@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteFreeOnBoardCommand
@@ -51,6 +52,10 @@ public class DeleteFreeOnBoardCommand
                 new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    FreeOnBoardLogic freeOnBoardLogic;
+
     
     /** Creates a new instance of DeleteFreeOnBoardCommand */
     public DeleteFreeOnBoardCommand() {
@@ -60,10 +65,10 @@ public class DeleteFreeOnBoardCommand
     @Override
     protected BaseResult execute() {
         var freeOnBoardName = form.getFreeOnBoardName();
-        var freeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByNameForUpdate(this, freeOnBoardName);
+        var freeOnBoard = freeOnBoardLogic.getFreeOnBoardByNameForUpdate(this, freeOnBoardName);
         
         if(!hasExecutionErrors()) {
-            FreeOnBoardLogic.getInstance().deleteFreeOnBoard(this, freeOnBoard, getPartyPK());
+            freeOnBoardLogic.deleteFreeOnBoard(this, freeOnBoard, getPartyPK());
         }
         
         return null;

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetPaymentProcessorDescriptionsCommand
                 new FieldDefinition("PaymentProcessorName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
     
     /** Creates a new instance of GetPaymentProcessorDescriptionsCommand */
     public GetPaymentProcessorDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetPaymentProcessorDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorDescriptionsResult();
         var paymentProcessorName = form.getPaymentProcessorName();
         var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteGeoCodeScopeDescriptionCommand
@@ -55,6 +55,13 @@ public class DeleteGeoCodeScopeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteGeoCodeScopeDescriptionCommand */
     public DeleteGeoCodeScopeDescriptionCommand() {
@@ -63,12 +70,10 @@ public class DeleteGeoCodeScopeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScopeName = form.getGeoCodeScopeName();
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

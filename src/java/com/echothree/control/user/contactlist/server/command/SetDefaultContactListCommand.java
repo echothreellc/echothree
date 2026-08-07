@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultContactListCommand
@@ -52,6 +52,10 @@ public class SetDefaultContactListCommand
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
     
     /** Creates a new instance of SetDefaultContactListCommand */
     public SetDefaultContactListCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultContactListCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListName = form.getContactListName();
         var contactListDetailValue = contactListControl.getContactListDetailValueByNameForUpdate(contactListName);
         

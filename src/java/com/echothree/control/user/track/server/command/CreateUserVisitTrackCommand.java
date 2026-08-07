@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUserVisitTrackCommand
@@ -41,6 +41,10 @@ public class CreateUserVisitTrackCommand
                 new FieldDefinition("TrackValue", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    TrackControl trackControl;
+
     
     /** Creates a new instance of CreateTrackCommand */
     public CreateUserVisitTrackCommand() {
@@ -53,7 +57,6 @@ public class CreateUserVisitTrackCommand
         var parameterCount = trackValue == null ? 0 : 1;
 
         if(parameterCount > 0) {
-            var trackControl = Session.getModelController(TrackControl.class);
             Track track = null;
             
             if(trackValue != null) {

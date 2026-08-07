@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetOfferDescriptionsCommand
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    OfferControl offerControl;
+
     
     /** Creates a new instance of GetOfferDescriptionsCommand */
     public GetOfferDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetOfferDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getGetOfferDescriptionsResult();
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);

@@ -17,7 +17,6 @@
 package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumMessagePartTypeForm;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -25,9 +24,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateForumMessagePartTypeCommand
@@ -42,6 +41,10 @@ public class CreateForumMessagePartTypeCommand
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of CreateForumMessagePartTypeCommand */
     public CreateForumMessagePartTypeCommand() {
@@ -50,12 +53,10 @@ public class CreateForumMessagePartTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessagePartTypeName = form.getForumMessagePartTypeName();
         var forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
         
         if(forumMessagePartType == null) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
             var mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
             

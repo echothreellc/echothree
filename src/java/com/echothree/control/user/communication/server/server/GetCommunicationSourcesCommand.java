@@ -43,7 +43,7 @@ public class GetCommunicationSourcesCommand
                 new FieldDefinition("CommunicationSourceTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     CommunicationControl communicationControl;
 

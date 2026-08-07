@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteWishlistTypeCommand
@@ -53,6 +54,10 @@ public class DeleteWishlistTypeCommand
             new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
+
     
     /** Creates a new instance of DeleteWishlistTypeCommand */
     public DeleteWishlistTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteWishlistTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByUniversalSpecForUpdate(this, form, false);
+        var wishlistType = wishlistTypeLogic.getWishlistTypeByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            WishlistTypeLogic.getInstance().deleteWishlistType(this, wishlistType, getPartyPK());
+            wishlistTypeLogic.deleteWishlistType(this, wishlistType, getPartyPK());
         }
 
         return null;

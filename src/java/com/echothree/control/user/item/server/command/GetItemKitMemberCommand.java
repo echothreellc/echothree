@@ -44,17 +44,19 @@ public class GetItemKitMemberCommand
                 new FieldDefinition("MemberUnitOfMeasureTypeName", FieldType.PERCENT, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetItemKitMemberCommand */
-    public GetItemKitMemberCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
-    }
 
     @Inject
     ItemControl itemControl;
 
     @Inject
     ItemKitMemberLogic itemKitMemberLogic;
+
+
+    /** Creates a new instance of GetItemKitMemberCommand */
+    public GetItemKitMemberCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
+
     
     @Override
     protected BaseResult execute() {

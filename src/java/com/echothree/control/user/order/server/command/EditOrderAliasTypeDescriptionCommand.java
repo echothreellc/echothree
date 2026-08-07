@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderAliasTypeDescriptionCommand
@@ -70,6 +70,15 @@ public class EditOrderAliasTypeDescriptionCommand
                 );
     }
 
+    @Inject
+    OrderAliasControl orderAliasControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditOrderAliasTypeDescriptionCommand */
     public EditOrderAliasTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -87,18 +96,15 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public OrderAliasTypeDescription getEntity(EditOrderAliasTypeDescriptionResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAliasTypeDescription orderAliasTypeDescription = null;
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderAliasControl = Session.getModelController(OrderAliasControl.class);
             var orderAliasTypeName = spec.getOrderAliasTypeName();
             var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
             if(orderAliasType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,8 +138,6 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderAliasTypeDescriptionResult result, OrderAliasTypeDescription orderAliasTypeDescription) {
-        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
-
         result.setOrderAliasTypeDescription(orderAliasControl.getOrderAliasTypeDescriptionTransfer(getUserVisit(), orderAliasTypeDescription));
     }
 
@@ -144,7 +148,6 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderAliasTypeDescription orderAliasTypeDescription) {
-        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         var orderAliasTypeDescriptionValue = orderAliasControl.getOrderAliasTypeDescriptionValue(orderAliasTypeDescription);
 
         orderAliasTypeDescriptionValue.setDescription(edit.getDescription());

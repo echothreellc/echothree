@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnKindCommand
@@ -59,6 +59,12 @@ public class GetReturnKindCommand
         );
     }
 
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ReturnKindLogic returnKindLogic;
+
     /** Creates a new instance of GetReturnKindCommand */
     public GetReturnKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetReturnKindCommand
 
     @Override
     protected ReturnKind getEntity() {
-        var returnKind = ReturnKindLogic.getInstance().getReturnKindByUniversalSpec(this, form, true);
+        var returnKind = returnKindLogic.getReturnKindByUniversalSpec(this, form, true);
 
         if(returnKind != null) {
             sendEvent(returnKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,7 @@ public class GetReturnKindCommand
 
     @Override
     protected BaseResult getResult(ReturnKind returnKind) {
-        var returnControl = Session.getModelController(ReturnPolicyControl.class);
+        var returnControl = returnPolicyControl;
         var result = ReturnPolicyResultFactory.getGetReturnKindResult();
 
         if(returnKind != null) {

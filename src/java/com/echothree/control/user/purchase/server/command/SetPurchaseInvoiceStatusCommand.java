@@ -29,6 +29,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetPurchaseInvoiceStatusCommand
@@ -48,6 +49,10 @@ public class SetPurchaseInvoiceStatusCommand
             new FieldDefinition("InvoiceStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PurchaseInvoiceLogic purchaseInvoiceLogic;
+
     
     /** Creates a new instance of SetPurchaseInvoiceStatusCommand */
     public SetPurchaseInvoiceStatusCommand() {
@@ -56,7 +61,6 @@ public class SetPurchaseInvoiceStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
         var invoiceName = form.getInvoiceName();
         var invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);
         

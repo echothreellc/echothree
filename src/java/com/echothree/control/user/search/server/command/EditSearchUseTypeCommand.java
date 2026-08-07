@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchUseTypeCommand
@@ -67,6 +67,10 @@ public class EditSearchUseTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of EditSearchUseTypeCommand */
     public EditSearchUseTypeCommand() {
@@ -85,7 +89,6 @@ public class EditSearchUseTypeCommand
 
     @Override
     public SearchUseType getEntity(EditSearchUseTypeResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchUseType searchUseType;
         var searchUseTypeName = spec.getSearchUseTypeName();
 
@@ -109,14 +112,11 @@ public class EditSearchUseTypeCommand
 
     @Override
     public void fillInResult(EditSearchUseTypeResult result, SearchUseType searchUseType) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchUseType(searchControl.getSearchUseTypeTransfer(getUserVisit(), searchUseType));
     }
 
     @Override
     public void doLock(SearchUseTypeEdit edit, SearchUseType searchUseType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchUseTypeDescription = searchControl.getSearchUseTypeDescription(searchUseType, getPreferredLanguage());
         var searchUseTypeDetail = searchUseType.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditSearchUseTypeCommand
 
     @Override
     public void canUpdate(SearchUseType searchUseType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchUseTypeName = edit.getSearchUseTypeName();
         var duplicateSearchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
@@ -142,7 +141,6 @@ public class EditSearchUseTypeCommand
 
     @Override
     public void doUpdate(SearchUseType searchUseType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
         var searchUseTypeDetailValue = searchControl.getSearchUseTypeDetailValueForUpdate(searchUseType);
         var searchUseTypeDescription = searchControl.getSearchUseTypeDescriptionForUpdate(searchUseType, getPreferredLanguage());

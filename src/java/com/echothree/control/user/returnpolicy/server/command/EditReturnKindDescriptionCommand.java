@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditReturnKindDescriptionCommand
@@ -68,6 +68,12 @@ public class EditReturnKindDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
     /** Creates a new instance of EditReturnKindDescriptionCommand */
     public EditReturnKindDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditReturnKindDescriptionCommand
 
     @Override
     public ReturnKindDescription getEntity(EditReturnKindDescriptionResult result) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnKindDescription returnKindDescription = null;
         var returnKindName = spec.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditReturnKindDescriptionCommand
 
     @Override
     public void fillInResult(EditReturnKindDescriptionResult result, ReturnKindDescription returnKindDescription) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
         result.setReturnKindDescription(returnPolicyControl.getReturnKindDescriptionTransfer(getUserVisit(), returnKindDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditReturnKindDescriptionCommand
 
     @Override
     public void doUpdate(ReturnKindDescription returnKindDescription) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindDescriptionValue = returnPolicyControl.getReturnKindDescriptionValue(returnKindDescription);
 
         returnKindDescriptionValue.setDescription(edit.getDescription());

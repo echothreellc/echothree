@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteContactMechanismAliasCommand
@@ -41,6 +41,10 @@ public class DeleteContactMechanismAliasCommand
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
     
     /** Creates a new instance of DeleteContactMechanismAliasCommand */
     public DeleteContactMechanismAliasCommand() {
@@ -49,7 +53,6 @@ public class DeleteContactMechanismAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
         var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
         

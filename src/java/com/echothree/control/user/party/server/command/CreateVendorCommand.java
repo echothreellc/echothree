@@ -54,10 +54,10 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateVendorCommand
@@ -100,6 +100,49 @@ public class CreateVendorCommand
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyFreeOnBoardControl partyFreeOnBoardControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ContactEmailAddressLogic contactEmailAddressLogic;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
+    @Inject
+    VendorLogic vendorLogic;
+
     
     /** Creates a new instance of CreateVendorCommand */
     public CreateVendorCommand() {
@@ -109,7 +152,6 @@ public class CreateVendorCommand
     @Override
     protected BaseResult execute() {
         var result = PartyResultFactory.getCreateVendorResult();
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorName = form.getVendorName();
         var vendor = vendorName == null ? null : vendorControl.getVendorByName(vendorName);
 
@@ -122,7 +164,6 @@ public class CreateVendorCommand
                 CancellationPolicy cancellationPolicy = null;
 
                 if(cancellationPolicyName != null) {
-                    var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                     var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
 
                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -133,14 +174,12 @@ public class CreateVendorCommand
                     ReturnPolicy returnPolicy = null;
 
                     if(returnPolicyName != null) {
-                        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                         var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
 
                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                     }
 
                     if(returnPolicyName == null || returnPolicy != null) {
-                        var accountingControl = Session.getModelController(AccountingControl.class);
                         var apGlAccountName = form.getApGlAccountName();
                         var apGlAccount = apGlAccountName == null ? null : accountingControl.getGlAccountByName(apGlAccountName);
 
@@ -149,13 +188,11 @@ public class CreateVendorCommand
                                     : apGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
-                                var itemControl = Session.getModelController(ItemControl.class);
                                 var defaultItemAliasTypeName = form.getDefaultItemAliasTypeName();
                                 var defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
 
                                 if(defaultItemAliasTypeName == null || defaultItemAliasType != null) {
                                     if(defaultItemAliasType == null || !defaultItemAliasType.getLastDetail().getAllowMultiple()) {
-                                        var partyControl = Session.getModelController(PartyControl.class);
                                         var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
                                         var preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
@@ -178,11 +215,6 @@ public class CreateVendorCommand
                                                     }
 
                                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                                        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                                                        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-                                                        var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
-                                                        var termControl = Session.getModelController(TermControl.class);
-                                                        var workflowControl = Session.getModelController(WorkflowControl.class);
                                                         var vendorTypeDetail = vendorType.getLastDetail();
                                                         var soundex = new Soundex();
                                                         var partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
@@ -244,7 +276,7 @@ public class CreateVendorCommand
                                                             partyControl.createPartyGroup(party, name, createdBy);
                                                         }
 
-                                                        vendor = VendorLogic.getInstance().createVendor(this, party, vendorName, vendorType, minimumPurchaseOrderLines,
+                                                        vendor = vendorLogic.createVendor(this, party, vendorName, vendorType, minimumPurchaseOrderLines,
                                                                 maximumPurchaseOrderLines, minimumPurchaseOrderAmount, maximumPurchaseOrderAmount,
                                                                 useItemPurchasingCategories, defaultItemAliasType, cancellationPolicy, returnPolicy, apGlAccount,
                                                                 vendorTypeDetail.getDefaultHoldUntilComplete(), vendorTypeDetail.getDefaultAllowBackorders(),
@@ -253,7 +285,7 @@ public class CreateVendorCommand
                                                                 vendorTypeDetail.getDefaultReferenceValidationPattern(), null, null, createdBy);
 
                                                         if(emailAddress != null) {
-                                                            ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
+                                                            contactEmailAddressLogic.createContactEmailAddress(party,
                                                                     emailAddress, allowSolicitation, null,
                                                                     ContactMechanismPurposes.PRIMARY_EMAIL.name(), createdBy);
                                                         }
@@ -262,7 +294,7 @@ public class CreateVendorCommand
 
                                                         partyFreeOnBoardControl.createPartyFreeOnBoard(party, freeOnBoardControl.getDefaultFreeOnBoard(), createdBy);
 
-                                                        ContactListLogic.getInstance().setupInitialContactLists(this, party, createdBy);
+                                                        contactListLogic.setupInitialContactLists(this, party, createdBy);
 
                                                         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                                         workflowControl.addEntityToWorkflowUsingNames(null, VendorStatusConstants.Workflow_VENDOR_STATUS,

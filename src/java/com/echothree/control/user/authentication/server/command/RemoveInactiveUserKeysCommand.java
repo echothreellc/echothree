@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class RemoveInactiveUserKeysCommand
@@ -45,6 +46,10 @@ public class RemoveInactiveUserKeysCommand
                 new FieldDefinition("InactiveTime", FieldType.UNSIGNED_LONG, true, null, null)
                 );
     }
+
+    @Inject
+    UserKeyLogic userKeyLogic;
+
     
     /** Creates a new instance of RemoveInactiveUserKeysCommand */
     public RemoveInactiveUserKeysCommand() {
@@ -56,7 +61,7 @@ public class RemoveInactiveUserKeysCommand
         Long maximumTime = 2L * 60 * 1000; // 2 minutes
         var inactiveTime = Long.valueOf(form.getInactiveTime());
         
-        UserKeyLogic.getInstance().removeInactiveUserKeys(maximumTime, inactiveTime);
+        userKeyLogic.removeInactiveUserKeys(maximumTime, inactiveTime);
         
         return null;
     }

@@ -66,7 +66,7 @@ public class GetTrainingClassSectionsCommand
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     TrainingControl trainingControl;
 
@@ -75,6 +75,7 @@ public class GetTrainingClassSectionsCommand
 
     @Inject
     TrainingClassLogic trainingClassLogic;
+
 
     /** Creates a new instance of GetTrainingClassSectionsCommand */
     public GetTrainingClassSectionsCommand() {

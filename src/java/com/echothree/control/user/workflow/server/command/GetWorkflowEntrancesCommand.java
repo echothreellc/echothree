@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowEntrancesCommand
@@ -58,6 +58,12 @@ public class GetWorkflowEntrancesCommand
         );
     }
 
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     /** Creates a new instance of GetWorkflowEntrancesCommand */
     public GetWorkflowEntrancesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -69,13 +75,11 @@ public class GetWorkflowEntrancesCommand
     protected void handleForm() {
         var workflowName = form.getWorkflowName();
 
-        workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+        workflow = workflowLogic.getWorkflowByName(this, workflowName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return hasExecutionErrors() ? null :
                 workflowControl.countWorkflowEntrancesByWorkflow(workflow);
     }
@@ -85,8 +89,6 @@ public class GetWorkflowEntrancesCommand
         Collection<WorkflowEntrance> workflowEntrances = null;
 
         if(!hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowEntrances = workflowControl.getWorkflowEntrancesByWorkflow(workflow);
         }
 
@@ -98,7 +100,6 @@ public class GetWorkflowEntrancesCommand
         var result = WorkflowResultFactory.getGetWorkflowEntrancesResult();
 
         if(entities != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflow(workflowControl.getWorkflowTransfer(userVisit, workflow));

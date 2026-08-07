@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteWorkEffortTypeDescriptionCommand
@@ -41,6 +41,13 @@ public class DeleteWorkEffortTypeDescriptionCommand
             new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
     
     /** Creates a new instance of DeleteWorkEffortTypeDescriptionCommand */
     public DeleteWorkEffortTypeDescriptionCommand() {
@@ -49,12 +56,10 @@ public class DeleteWorkEffortTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

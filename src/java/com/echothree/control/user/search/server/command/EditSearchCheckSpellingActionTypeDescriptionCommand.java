@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchCheckSpellingActionTypeDescriptionCommand
@@ -67,6 +67,13 @@ public class EditSearchCheckSpellingActionTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of EditSearchCheckSpellingActionTypeDescriptionCommand */
     public EditSearchCheckSpellingActionTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditSearchCheckSpellingActionTypeDescriptionCommand
 
     @Override
     public SearchCheckSpellingActionTypeDescription getEntity(EditSearchCheckSpellingActionTypeDescriptionResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = null;
         var searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
         var searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
 
         if(searchCheckSpellingActionType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditSearchCheckSpellingActionTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchCheckSpellingActionTypeDescriptionResult result, SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchCheckSpellingActionTypeDescription(searchControl.getSearchCheckSpellingActionTypeDescriptionTransfer(getUserVisit(), searchCheckSpellingActionTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditSearchCheckSpellingActionTypeDescriptionCommand
 
     @Override
     public void doUpdate(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchCheckSpellingActionTypeDescriptionValue = searchControl.getSearchCheckSpellingActionTypeDescriptionValue(searchCheckSpellingActionTypeDescription);
         searchCheckSpellingActionTypeDescriptionValue.setDescription(edit.getDescription());
 

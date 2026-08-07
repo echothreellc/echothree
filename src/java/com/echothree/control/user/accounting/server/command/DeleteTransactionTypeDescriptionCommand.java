@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTransactionTypeDescriptionCommand
@@ -55,6 +55,13 @@ public class DeleteTransactionTypeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteTransactionTypeDescriptionCommand */
     public DeleteTransactionTypeDescriptionCommand() {
@@ -63,12 +70,10 @@ public class DeleteTransactionTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionTypeName = form.getTransactionTypeName();
         var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

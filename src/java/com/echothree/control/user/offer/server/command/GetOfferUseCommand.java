@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferUseCommand
@@ -57,6 +57,13 @@ public class GetOfferUseCommand
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    OfferUseLogic offerUseLogic;
+
     
     /** Creates a new instance of GetOfferUseCommand */
     public GetOfferUseCommand() {
@@ -67,7 +74,7 @@ public class GetOfferUseCommand
     protected OfferUse getEntity() {
         var offerName = form.getOfferName();
         var useName = form.getUseName();
-        var offerUse = OfferUseLogic.getInstance().getOfferUseByName(this, offerName, useName);;
+        var offerUse = offerUseLogic.getOfferUseByName(this, offerName, useName);;
         
         if(!hasExecutionErrors()) {
             sendEvent(offerUse.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,8 +88,6 @@ public class GetOfferUseCommand
         var result = OfferResultFactory.getGetOfferUseResult();
 
         if(offerUse != null) {
-            var offerUseControl = Session.getModelController(OfferUseControl.class);
-
             result.setOfferUse(offerUseControl.getOfferUseTransfer(getUserVisit(), offerUse));
         }
         

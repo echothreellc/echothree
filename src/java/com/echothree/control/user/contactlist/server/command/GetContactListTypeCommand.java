@@ -63,6 +63,7 @@ public class GetContactListTypeCommand
 
     @Inject
     ContactListTypeLogic contactListTypeLogic;
+
     
     /** Creates a new instance of GetContactListTypeCommand */
     public GetContactListTypeCommand() {

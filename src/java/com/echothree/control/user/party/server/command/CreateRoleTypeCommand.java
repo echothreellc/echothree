@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRoleTypeCommand
@@ -40,6 +40,10 @@ public class CreateRoleTypeCommand
                 new FieldDefinition("ParentRoleTypeName", FieldType.STRING, false, null, 40L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateRoleTypeCommand */
     public CreateRoleTypeCommand() {
@@ -48,7 +52,6 @@ public class CreateRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var roleTypeName = form.getRoleTypeName();
         var roleType = partyControl.getRoleTypeByName(roleTypeName);
         

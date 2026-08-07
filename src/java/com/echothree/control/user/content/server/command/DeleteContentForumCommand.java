@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteContentForumCommand
@@ -55,6 +55,13 @@ public class DeleteContentForumCommand
                 new FieldDefinition("ForumName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of DeleteContentForumCommand */
     public DeleteContentForumCommand() {
@@ -63,12 +70,10 @@ public class DeleteContentForumCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            var forumControl = Session.getModelController(ForumControl.class);
             var forumName = form.getForumName();
             var forum = forumControl.getForumByName(forumName);
             

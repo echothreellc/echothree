@@ -65,6 +65,7 @@ public class GetDepartmentsCommand
 
     @Inject
     DivisionLogic divisionLogic;
+
     
     /** Creates a new instance of GetDepartmentsCommand */
     public GetDepartmentsCommand() {

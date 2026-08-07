@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSymbolPositionsCommand
@@ -52,6 +52,10 @@ public class GetSymbolPositionsCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of GetSymbolPositionsCommand */
     public GetSymbolPositionsCommand() {
@@ -65,23 +69,17 @@ public class GetSymbolPositionsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         return accountingControl.countSymbolPositions();
     }
 
     @Override
     protected Collection<SymbolPosition> getEntities() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        
         return accountingControl.getSymbolPositions();
     }
     
     @Override
     protected BaseResult getResult(Collection<SymbolPosition> entities) {
         var result = AccountingResultFactory.getGetSymbolPositionsResult();
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         if(entities != null) {
             result.setSymbolPositions(accountingControl.getSymbolPositionTransfers(getUserVisit(), entities));
         }

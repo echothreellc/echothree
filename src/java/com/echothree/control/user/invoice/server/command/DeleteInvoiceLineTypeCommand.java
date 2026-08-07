@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteInvoiceLineTypeCommand
@@ -54,6 +54,10 @@ public class DeleteInvoiceLineTypeCommand
                 new FieldDefinition("InvoiceLineTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of DeleteInvoiceLineTypeCommand */
     public DeleteInvoiceLineTypeCommand() {
@@ -62,7 +66,6 @@ public class DeleteInvoiceLineTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceTypeName = form.getInvoiceTypeName();
         var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         

@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyAliasTypeDescriptionCommand
@@ -67,6 +67,10 @@ public class EditPartyAliasTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditPartyAliasTypeDescriptionCommand */
     public EditPartyAliasTypeDescriptionCommand() {
@@ -85,7 +89,6 @@ public class EditPartyAliasTypeDescriptionCommand
 
     @Override
     public PartyAliasTypeDescription getEntity(EditPartyAliasTypeDescriptionResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyAliasTypeDescription partyAliasTypeDescription = null;
         var partyTypeName = spec.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -128,8 +131,6 @@ public class EditPartyAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditPartyAliasTypeDescriptionResult result, PartyAliasTypeDescription partyAliasTypeDescription) {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         result.setPartyAliasTypeDescription(partyControl.getPartyAliasTypeDescriptionTransfer(getUserVisit(), partyAliasTypeDescription));
     }
 
@@ -140,7 +141,6 @@ public class EditPartyAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(PartyAliasTypeDescription partyAliasTypeDescription) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyAliasTypeDescriptionValue = partyControl.getPartyAliasTypeDescriptionValue(partyAliasTypeDescription);
         
         partyAliasTypeDescriptionValue.setDescription(edit.getDescription());

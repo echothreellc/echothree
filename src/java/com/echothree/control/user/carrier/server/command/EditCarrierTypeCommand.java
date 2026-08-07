@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCarrierTypeCommand
@@ -67,6 +67,10 @@ public class EditCarrierTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
     
     /** Creates a new instance of EditCarrierTypeCommand */
     public EditCarrierTypeCommand() {
@@ -85,7 +89,6 @@ public class EditCarrierTypeCommand
     
     @Override
     public CarrierType getEntity(EditCarrierTypeResult result) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierType carrierType;
         var carrierTypeName = spec.getCarrierTypeName();
 
@@ -111,14 +114,11 @@ public class EditCarrierTypeCommand
     
     @Override
     public void fillInResult(EditCarrierTypeResult result, CarrierType carrierType) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
-        
         result.setCarrierType(carrierControl.getCarrierTypeTransfer(getUserVisit(), carrierType));
     }
     
     @Override
     public void doLock(CarrierTypeEdit edit, CarrierType carrierType) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierTypeDescription = carrierControl.getCarrierTypeDescription(carrierType, getPreferredLanguage());
         var carrierTypeDetail = carrierType.getLastDetail();
 
@@ -133,7 +133,6 @@ public class EditCarrierTypeCommand
         
     @Override
     public void canUpdate(CarrierType carrierType) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierTypeName = edit.getCarrierTypeName();
         var duplicateCarrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
 
@@ -144,7 +143,6 @@ public class EditCarrierTypeCommand
     
     @Override
     public void doUpdate(CarrierType carrierType) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
         var carrierTypeDetailValue = carrierControl.getCarrierTypeDetailValueForUpdate(carrierType);
         var carrierTypeDescription = carrierControl.getCarrierTypeDescriptionForUpdate(carrierType, getPreferredLanguage());

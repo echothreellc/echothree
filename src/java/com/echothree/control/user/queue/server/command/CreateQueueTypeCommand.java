@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateQueueTypeCommand
@@ -56,6 +56,10 @@ public class CreateQueueTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    QueueControl queueControl;
+
     
     /** Creates a new instance of CreateQueueTypeCommand */
     public CreateQueueTypeCommand() {
@@ -64,7 +68,6 @@ public class CreateQueueTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var queueControl = Session.getModelController(QueueControl.class);
         var queueTypeName = form.getQueueTypeName();
         var queueType = queueControl.getQueueTypeByName(queueTypeName);
         

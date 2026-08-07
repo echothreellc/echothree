@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditShipmentTimeTypeDescriptionCommand
@@ -66,6 +66,13 @@ public class EditShipmentTimeTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ShipmentControl shipmentControl;
+
     
     /** Creates a new instance of EditShipmentTimeTypeDescriptionCommand */
     public EditShipmentTimeTypeDescriptionCommand() {
@@ -84,7 +91,6 @@ public class EditShipmentTimeTypeDescriptionCommand
 
     @Override
     public ShipmentTimeTypeDescription getEntity(EditShipmentTimeTypeDescriptionResult result) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentTimeTypeDescription shipmentTimeTypeDescription = null;
         var shipmentTypeName = spec.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
@@ -94,7 +100,6 @@ public class EditShipmentTimeTypeDescriptionCommand
             var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -128,8 +133,6 @@ public class EditShipmentTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditShipmentTimeTypeDescriptionResult result, ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
-
         result.setShipmentTimeTypeDescription(shipmentControl.getShipmentTimeTypeDescriptionTransfer(getUserVisit(), shipmentTimeTypeDescription));
     }
 
@@ -140,7 +143,6 @@ public class EditShipmentTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentTimeTypeDescriptionValue = shipmentControl.getShipmentTimeTypeDescriptionValue(shipmentTimeTypeDescription);
         shipmentTimeTypeDescriptionValue.setDescription(edit.getDescription());
 

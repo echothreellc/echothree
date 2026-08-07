@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditQueueTypeDescriptionCommand
@@ -67,6 +67,13 @@ public class EditQueueTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    QueueControl queueControl;
+
     
     /** Creates a new instance of EditQueueTypeDescriptionCommand */
     public EditQueueTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditQueueTypeDescriptionCommand
 
     @Override
     public QueueTypeDescription getEntity(EditQueueTypeDescriptionResult result) {
-        var queueControl = Session.getModelController(QueueControl.class);
         QueueTypeDescription queueTypeDescription = null;
         var queueTypeName = spec.getQueueTypeName();
         var queueType = queueControl.getQueueTypeByName(queueTypeName);
 
         if(queueType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditQueueTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditQueueTypeDescriptionResult result, QueueTypeDescription queueTypeDescription) {
-        var queueControl = Session.getModelController(QueueControl.class);
-
         result.setQueueTypeDescription(queueControl.getQueueTypeDescriptionTransfer(getUserVisit(), queueTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditQueueTypeDescriptionCommand
 
     @Override
     public void doUpdate(QueueTypeDescription queueTypeDescription) {
-        var queueControl = Session.getModelController(QueueControl.class);
         var queueTypeDescriptionValue = queueControl.getQueueTypeDescriptionValue(queueTypeDescription);
         queueTypeDescriptionValue.setDescription(edit.getDescription());
 

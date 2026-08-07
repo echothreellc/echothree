@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLocationTypeDescriptionCommand
@@ -57,6 +57,13 @@ public class CreateLocationTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of CreateLocationTypeDescriptionCommand */
     public CreateLocationTypeDescriptionCommand() {
@@ -65,7 +72,6 @@ public class CreateLocationTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
@@ -75,7 +81,6 @@ public class CreateLocationTypeDescriptionCommand
             var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

@@ -44,11 +44,11 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOfferItemPriceCommand
@@ -81,6 +81,31 @@ public class EditOfferItemPriceCommand
                 new FieldDefinition("UnitPriceIncrement", FieldType.UNSIGNED_PRICE_UNIT, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    OfferItemLogic offerItemLogic;
+
+    @Inject
+    OfferLogic offerLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of EditOfferItemPriceCommand */
     public EditOfferItemPriceCommand() {
@@ -89,7 +114,6 @@ public class EditOfferItemPriceCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
@@ -99,7 +123,7 @@ public class EditOfferItemPriceCommand
     protected BaseResult execute() {
         var result = OfferResultFactory.getEditOfferItemPriceResult();
         var offerName = spec.getOfferName();
-        var offer = OfferLogic.getInstance().getOfferByName(this, offerName);
+        var offer = offerLogic.getOfferByName(this, offerName);
 
         if(!hasExecutionErrors()) {
             final var offerDetail = offer.getLastDetail();
@@ -109,18 +133,17 @@ public class EditOfferItemPriceCommand
             var inventoryConditionName = spec.getInventoryConditionName();
             var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
             var currencyIsoName = spec.getCurrencyIsoName();
-            var item = ItemLogic.getInstance().getItemByName(this, itemName);
-            var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(this, inventoryConditionName);
-            var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+            var item = itemLogic.getItemByName(this, itemName);
+            var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
+            var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
             if(!hasExecutionErrors()) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
                 var offerItem = offerItemControl.getOfferItem(offer, item);
 
                 if(offerItem != null) {
                     var itemDetail = item.getLastDetail();
                     var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-                    var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                    var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this,
                             unitOfMeasureKind, unitOfMeasureTypeName);
 
                     if(!hasExecutionErrors()) {
@@ -169,7 +192,7 @@ public class EditOfferItemPriceCommand
 
                                                 offerItemFixedPriceValue.setUnitPrice(unitPrice);
 
-                                                OfferItemLogic.getInstance().updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, getPartyPK());
+                                                offerItemLogic.updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, getPartyPK());
                                             } finally {
                                                 unlockEntity(offerItem);
                                             }
@@ -214,7 +237,7 @@ public class EditOfferItemPriceCommand
                                                 offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);
                                                 offerItemVariablePriceValue.setUnitPriceIncrement(unitPriceIncrement);
 
-                                                OfferItemLogic.getInstance().updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, getPartyPK());
+                                                offerItemLogic.updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, getPartyPK());
                                             } finally {
                                                 unlockEntity(offerItem);
                                             }

@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCarrierServiceOptionCommand
@@ -69,6 +69,13 @@ public class CreateCarrierServiceOptionCommand
                 new FieldDefinition("RequiredShipmentSelectorName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateCarrierServiceOptionCommand */
     public CreateCarrierServiceOptionCommand() {
@@ -77,7 +84,6 @@ public class CreateCarrierServiceOptionCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierName = form.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
         
@@ -94,7 +100,6 @@ public class CreateCarrierServiceOptionCommand
                     var carrierServiceOption = carrierControl.getCarrierServiceOption(carrierService, carrierOption);
                     
                     if(carrierServiceOption == null) {
-                        var selectorControl = Session.getModelController(SelectorControl.class);
                         var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                         if(selectorKind != null) {

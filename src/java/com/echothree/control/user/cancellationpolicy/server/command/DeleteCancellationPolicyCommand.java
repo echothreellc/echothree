@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteCancellationPolicyCommand
@@ -55,6 +55,13 @@ public class DeleteCancellationPolicyCommand
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CancellationPolicyLogic cancellationPolicyLogic;
+
     
     /** Creates a new instance of DeleteCancellationPolicyCommand */
     public DeleteCancellationPolicyCommand() {
@@ -63,7 +70,6 @@ public class DeleteCancellationPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationKindName = form.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
@@ -72,8 +78,6 @@ public class DeleteCancellationPolicyCommand
             var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByNameForUpdate(cancellationKind, cancellationPolicyName);
             
             if(cancellationPolicy != null) {
-                var cancellationPolicyLogic = CancellationPolicyLogic.getInstance();
-
                 cancellationPolicyLogic.checkDeleteCancellationPolicy(this, cancellationPolicy);
 
                 if(!hasExecutionErrors()) {

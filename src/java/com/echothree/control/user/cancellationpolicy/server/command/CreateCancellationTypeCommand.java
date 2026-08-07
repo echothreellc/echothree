@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCancellationTypeCommand
@@ -60,6 +60,13 @@ public class CreateCancellationTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of CreateCancellationTypeCommand */
     public CreateCancellationTypeCommand() {
@@ -68,7 +75,6 @@ public class CreateCancellationTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationKindName = form.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
@@ -77,7 +83,6 @@ public class CreateCancellationTypeCommand
             var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
             
             if(cancellationType == null) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var cancellationSequenceName = form.getCancellationSequenceName();
                 Sequence cancellationSequence = null;
                 

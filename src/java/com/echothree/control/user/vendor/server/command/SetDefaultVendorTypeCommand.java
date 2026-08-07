@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultVendorTypeCommand
@@ -52,6 +52,10 @@ public class SetDefaultVendorTypeCommand
                 new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of SetDefaultVendorTypeCommand */
     public SetDefaultVendorTypeCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultVendorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorTypeName = form.getVendorTypeName();
         var vendorTypeDetailValue = vendorControl.getVendorTypeDetailValueByNameForUpdate(vendorTypeName);
         

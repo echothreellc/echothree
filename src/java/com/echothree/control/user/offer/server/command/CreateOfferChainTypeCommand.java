@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOfferChainTypeCommand
@@ -57,6 +57,13 @@ public class CreateOfferChainTypeCommand
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    OfferControl offerControl;
+
     
     /** Creates a new instance of CreateOfferChainTypeCommand */
     public CreateOfferChainTypeCommand() {
@@ -65,12 +72,10 @@ public class CreateOfferChainTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainKindName = form.getChainKindName();
             var chainKind = chainControl.getChainKindByName(chainKindName);
             

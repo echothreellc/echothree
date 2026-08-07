@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteRelatedItemTypeCommand
@@ -54,6 +55,9 @@ public class DeleteRelatedItemTypeCommand
         );
     }
 
+    @Inject
+    RelatedItemTypeLogic relatedItemTypeLogic;
+
     /** Creates a new instance of DeleteRelatedItemTypeCommand */
     public DeleteRelatedItemTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -61,10 +65,10 @@ public class DeleteRelatedItemTypeCommand
 
     @Override
     protected BaseResult execute() {
-        var relatedItemType = RelatedItemTypeLogic.getInstance().getRelatedItemTypeByUniversalSpecForUpdate(this, form, false);
+        var relatedItemType = relatedItemTypeLogic.getRelatedItemTypeByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            RelatedItemTypeLogic.getInstance().deleteRelatedItemType(this, relatedItemType, getPartyPK());
+            relatedItemTypeLogic.deleteRelatedItemType(this, relatedItemType, getPartyPK());
         }
 
         return null;

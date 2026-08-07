@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentSourceCommand
@@ -56,6 +56,10 @@ public class CreateFilterAdjustmentSourceCommand
                 new FieldDefinition("AllowedForInitialAmount", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    FilterControl filterControl;
+
     
     /** Creates a new instance of CreateFilterAdjustmentSourceCommand */
     public CreateFilterAdjustmentSourceCommand() {
@@ -65,7 +69,6 @@ public class CreateFilterAdjustmentSourceCommand
     @Override
     protected BaseResult execute() {
         var filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
         
         if(filterAdjustmentSource == null) {

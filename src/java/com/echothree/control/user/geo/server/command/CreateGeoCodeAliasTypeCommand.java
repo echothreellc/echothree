@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateGeoCodeAliasTypeCommand
@@ -60,6 +60,10 @@ public class CreateGeoCodeAliasTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of CreateGeoCodeAliasTypeCommand */
     public CreateGeoCodeAliasTypeCommand() {
@@ -69,7 +73,6 @@ public class CreateGeoCodeAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var result = GeoResultFactory.getCreateGeoCodeAliasTypeResult();
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeTypeName = form.getGeoCodeTypeName();
         var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
         GeoCodeAliasType geoCodeAliasType = null;

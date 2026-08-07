@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPeriodKindCommand
@@ -55,6 +55,10 @@ public class GetPeriodKindCommand
             new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PeriodControl periodControl;
+
     
     /** Creates a new instance of GetPeriodKindCommand */
     public GetPeriodKindCommand() {
@@ -63,7 +67,6 @@ public class GetPeriodKindCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var result = PeriodResultFactory.getGetPeriodKindResult();
         var periodKindName = form.getPeriodKindName();
         var periodKind = periodControl.getPeriodKindByName(periodKindName);

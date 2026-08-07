@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnKindChoicesCommand
@@ -53,6 +53,10 @@ public class GetReturnKindChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
     
     /** Creates a new instance of GetReturnKindChoicesCommand */
     public GetReturnKindChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetReturnKindChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var result = ReturnPolicyResultFactory.getGetReturnKindChoicesResult();
         var defaultReturnKindChoice = form.getDefaultReturnKindChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

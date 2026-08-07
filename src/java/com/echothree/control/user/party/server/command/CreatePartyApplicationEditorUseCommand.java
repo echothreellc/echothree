@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyApplicationEditorUseCommand
@@ -61,6 +61,19 @@ public class CreatePartyApplicationEditorUseCommand
                 new FieldDefinition("PreferredWidth", FieldType.UNSIGNED_INTEGER, false, null, null)
                 );
     }
+
+    @Inject
+    PartyApplicationEditorUseControl partyApplicationEditorUseControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
+    @Inject
+    EditorLogic editorLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     
     /** Creates a new instance of CreatePartyApplicationEditorUseCommand */
     public CreatePartyApplicationEditorUseCommand() {
@@ -70,26 +83,25 @@ public class CreatePartyApplicationEditorUseCommand
     @Override
     protected BaseResult execute() {
         var partyName = form.getPartyName();
-        var party = PartyLogic.getInstance().getPartyByName(this, partyName);
+        var party = partyLogic.getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
             var applicationName = form.getApplicationName();
-            var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+            var application = applicationLogic.getApplicationByName(this, applicationName);
             
             if(!hasExecutionErrors()) {
                 var applicationEditorUseName = form.getApplicationEditorUseName();
-                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                var applicationEditorUse = applicationLogic.getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
                     var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse == null) {
                         var editorName = form.getEditorName();
-                        var editor = editorName == null ? null : EditorLogic.getInstance().getEditorByName(this, editorName);
+                        var editor = editorName == null ? null : editorLogic.getEditorByName(this, editorName);
                         
                         if(!hasExecutionErrors()) {
-                            var applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
+                            var applicationEditor = editor == null ? null : applicationLogic.getApplicationEditor(this, application, editor);
                             
                             if(!hasExecutionErrors()) {
                                 var strPreferredHeight = form.getPreferredHeight();

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateReturnTypeShippingMethodCommand
@@ -59,6 +59,16 @@ public class CreateReturnTypeShippingMethodCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ShipmentControl shipmentControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
     
     /** Creates a new instance of CreateReturnTypeShippingMethodCommand */
     public CreateReturnTypeShippingMethodCommand() {
@@ -67,7 +77,6 @@ public class CreateReturnTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
@@ -76,12 +85,10 @@ public class CreateReturnTypeShippingMethodCommand
             var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
-                var shippingControl = Session.getModelController(ShippingControl.class);
                 var shippingMethodName = form.getShippingMethodName();
                 var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 
                 if(shippingMethod != null) {
-                    var shipmentControl = Session.getModelController(ShipmentControl.class);
                     var shipmentType = shipmentControl.getShipmentTypeByName(ShipmentTypes.CUSTOMER_RETURN.name());
                     
                     if(shipmentType != null) {

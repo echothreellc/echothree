@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSequenceEncoderTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateSequenceEncoderTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of CreateSequenceEncoderTypeDescriptionCommand */
     public CreateSequenceEncoderTypeDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateSequenceEncoderTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
         var sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
         
         if(sequenceEncoderType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

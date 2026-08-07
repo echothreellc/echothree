@@ -27,10 +27,10 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemUnitOfMeasureTypesCommand
@@ -44,6 +44,13 @@ public class GetItemUnitOfMeasureTypesCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
     
     /** Creates a new instance of GetItemUnitOfMeasureTypesCommand */
     public GetItemUnitOfMeasureTypesCommand() {
@@ -56,13 +63,11 @@ public class GetItemUnitOfMeasureTypesCommand
     protected void handleForm() {
         var itemName = form.getItemName();
 
-        item = ItemLogic.getInstance().getItemByName(this, itemName);
+        item = itemLogic.getItemByName(this, itemName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return hasExecutionErrors() ? null :
                 itemControl.countItemUnitOfMeasureTypesByItem(item);
     }
@@ -72,8 +77,6 @@ public class GetItemUnitOfMeasureTypesCommand
         Collection<ItemUnitOfMeasureType> entities = null;
 
         if(!hasExecutionErrors()) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             entities = itemControl.getItemUnitOfMeasureTypesByItem(item);
         }
 
@@ -85,7 +88,6 @@ public class GetItemUnitOfMeasureTypesCommand
         var result = ItemResultFactory.getGetItemUnitOfMeasureTypesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemUnitOfMeasureTypeFactory.class)) {

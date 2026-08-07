@@ -24,7 +24,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -33,9 +32,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemPriceCommand
@@ -52,6 +51,22 @@ public class GetItemPriceCommand
                 new FieldDefinition("IncludeHistory", FieldType.BOOLEAN, false, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of GetItemPriceCommand */
     public GetItemPriceCommand() {
@@ -61,20 +76,19 @@ public class GetItemPriceCommand
     @Override
     protected boolean checkOptionalSecurityRoles() {
         // This occurs before validation, and parseBoolean is more lax than our validation of what's permitted for a FieldType.BOOLEAN.
-        return Boolean.parseBoolean(form.getIncludeHistory()) ? SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(),
+        return Boolean.parseBoolean(form.getIncludeHistory()) ? securityRoleLogic.hasSecurityRoleUsingNames(this, getParty(),
                 SecurityRoleGroups.ItemPrice.name(), SecurityRoles.History.name()) : true;
     }
 
     @Override
     protected ItemPrice getEntity() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
-        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(this, form.getInventoryConditionName());
-        var currency = CurrencyLogic.getInstance().getCurrencyByName(this, form.getCurrencyIsoName());
+        var item = itemLogic.getItemByName(this, form.getItemName());
+        var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, form.getInventoryConditionName());
+        var currency = currencyLogic.getCurrencyByName(this, form.getCurrencyIsoName());
         ItemPrice itemPrice = null;
 
         if(!hasExecutionErrors()) {
-            var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this, item.getLastDetail().getUnitOfMeasureKind(), form.getUnitOfMeasureTypeName());
+            var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, item.getLastDetail().getUnitOfMeasureKind(), form.getUnitOfMeasureTypeName());
 
             if(!hasExecutionErrors()) {
                 itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
@@ -96,7 +110,6 @@ public class GetItemPriceCommand
         var result = ItemResultFactory.getGetItemPriceResult();
 
         if(entity != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             result.setItemPrice(itemControl.getItemPriceTransfer(userVisit, entity));

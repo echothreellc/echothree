@@ -30,9 +30,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommentStatusChoicesCommand
@@ -48,6 +48,13 @@ public class GetCommentStatusChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of GetCommentStatusChoicesCommand */
     public GetCommentStatusChoicesCommand() {
@@ -57,7 +64,6 @@ public class GetCommentStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var result = CommentResultFactory.getGetCommentStatusChoicesResult();
-        var commentControl = Session.getModelController(CommentControl.class);
         var commentTypeName = form.getCommentTypeName();
         var commentName = form.getCommentName();
         var parameterCount = (commentTypeName == null ? 0 : 1) + (commentName == null ? 0 : 1);
@@ -67,7 +73,7 @@ public class GetCommentStatusChoicesCommand
             Comment comment = null;
             
             if(commentTypeName != null) {
-                var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHO_THREE.name(), EntityTypes.Comment.name());
+                var entityType = entityTypeLogic.getEntityTypeByName(this, ComponentVendors.ECHO_THREE.name(), EntityTypes.Comment.name());
                 
                 if(!hasExecutionErrors()) {
                     commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);

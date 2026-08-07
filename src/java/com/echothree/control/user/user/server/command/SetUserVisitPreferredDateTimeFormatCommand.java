@@ -25,6 +25,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetUserVisitPreferredDateTimeFormatCommand
@@ -38,6 +39,9 @@ public class SetUserVisitPreferredDateTimeFormatCommand
                 );
     }
 
+    @Inject
+    DateTimeFormatLogic dateTimeFormatLogic;
+
     /** Creates a new instance of SetUserVisitPreferredDateTimeFormatCommand */
     public SetUserVisitPreferredDateTimeFormatCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -45,11 +49,9 @@ public class SetUserVisitPreferredDateTimeFormatCommand
     
     @Override
     protected BaseResult execute() {
-        var currency = DateTimeFormatLogic.getInstance().getDateTimeFormatByName(this, form.getDateTimeFormatName());
+        var currency = dateTimeFormatLogic.getDateTimeFormatByName(this, form.getDateTimeFormatName());
 
         if(!hasExecutionErrors()) {
-            var userControl = getUserControl();
-
             userControl.setUserVisitPreferredDateTimeFormat(getUserVisitForUpdate(), currency, getPartyPK());
         }
 

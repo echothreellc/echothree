@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOrderPriorityCommand
@@ -59,6 +60,13 @@ public class CreateOrderPriorityCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    OrderPriorityLogic orderPriorityLogic;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
     
     /** Creates a new instance of CreateOrderPriorityCommand */
     public CreateOrderPriorityCommand() {
@@ -69,7 +77,7 @@ public class CreateOrderPriorityCommand
     protected BaseResult execute() {
         var result = OrderResultFactory.getCreateOrderPriorityResult();
         var orderTypeName = form.getOrderTypeName();
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, orderTypeName);
+        var orderType = orderTypeLogic.getOrderTypeByName(this, orderTypeName);
         OrderPriority orderPriority = null;
 
         if(!hasExecutionErrors()) {
@@ -80,7 +88,7 @@ public class CreateOrderPriorityCommand
             var description = form.getDescription();
             var partyPK = getPartyPK();
 
-            orderPriority = OrderPriorityLogic.getInstance().createOrderPriority(this, orderType, orderPriorityName,
+            orderPriority = orderPriorityLogic.createOrderPriority(this, orderType, orderPriorityName,
                     priority, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
         }
         

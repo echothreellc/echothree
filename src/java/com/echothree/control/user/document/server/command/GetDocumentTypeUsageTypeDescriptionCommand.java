@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDocumentTypeUsageTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class GetDocumentTypeUsageTypeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetDocumentTypeUsageTypeDescriptionCommand */
     public GetDocumentTypeUsageTypeDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetDocumentTypeUsageTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var result = DocumentResultFactory.getGetDocumentTypeUsageTypeDescriptionResult();
         var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
         
         if(documentTypeUsageType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

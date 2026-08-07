@@ -25,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateScaleCommand
@@ -47,6 +47,12 @@ public class CreateScaleCommand
                 );
     }
 
+    @Inject
+    ScaleControl scaleControl;
+
+    @Inject
+    ServerControl serverControl;
+
     /** Creates a new instance of CreateScaleCommand */
     public CreateScaleCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -54,7 +60,6 @@ public class CreateScaleCommand
     
    @Override
     protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
        var scaleName = form.getScaleName();
        var scale = scaleControl.getScaleByName(scaleName);
 
@@ -63,7 +68,6 @@ public class CreateScaleCommand
             var scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
 
             if(scaleType != null) {
-                var serverControl = Session.getModelController(ServerControl.class);
                 var serverName = form.getServerName();
                 var server = serverControl.getServerByName(serverName);
 

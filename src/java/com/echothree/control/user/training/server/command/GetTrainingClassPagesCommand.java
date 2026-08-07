@@ -68,6 +68,7 @@ public class GetTrainingClassPagesCommand
 
     @Inject
     private TrainingClassSectionLogic trainingClassSectionLogic;
+
     
     /** Creates a new instance of GetTrainingClassPagesCommand */
     public GetTrainingClassPagesCommand() {

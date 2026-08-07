@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWishlistPriorityCommand
@@ -58,6 +59,13 @@ public class CreateWishlistPriorityCommand
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    WishlistPriorityLogic wishlistPriorityLogic;
+
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
+
     
     /** Creates a new instance of CreateWishlistPriorityCommand */
     public CreateWishlistPriorityCommand() {
@@ -68,7 +76,7 @@ public class CreateWishlistPriorityCommand
     protected BaseResult execute() {
         var result = WishlistResultFactory.getCreateWishlistPriorityResult();
         var wishlistTypeName = form.getWishlistTypeName();
-        var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(this, wishlistTypeName);
+        var wishlistType = wishlistTypeLogic.getWishlistTypeByName(this, wishlistTypeName);
         WishlistPriority wishlistPriority = null;
 
         if(!hasExecutionErrors()) {
@@ -78,7 +86,7 @@ public class CreateWishlistPriorityCommand
             var description = form.getDescription();
             var createdBy = getPartyPK();
 
-            wishlistPriority = WishlistPriorityLogic.getInstance().createWishlistPriority(this, wishlistType,
+            wishlistPriority = wishlistPriorityLogic.createWishlistPriority(this, wishlistType,
                     wishlistPriorityName, isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
         }
 

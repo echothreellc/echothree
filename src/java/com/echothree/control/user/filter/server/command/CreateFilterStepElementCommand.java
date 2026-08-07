@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterStepElementCommand
@@ -65,6 +65,13 @@ public class CreateFilterStepElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateFilterStepElementCommand */
     public CreateFilterStepElementCommand() {
@@ -74,7 +81,6 @@ public class CreateFilterStepElementCommand
     @Override
     protected BaseResult execute() {
         var result = FilterResultFactory.getCreateFilterStepElementResult();
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
         var filterKind = filterControl.getFilterKindByName(filterKindName);
         FilterStepElement filterStepElement = null;
@@ -101,7 +107,6 @@ public class CreateFilterStepElementCommand
                             Selector filterItemSelector = null;
                             
                             if(filterItemSelectorName != null) {
-                                var selectorControl = Session.getModelController(SelectorControl.class);
                                 var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                                 
                                 if(selectorKind != null) {

@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePrinterGroupUseTypeDescriptionCommand
@@ -43,6 +43,12 @@ public class CreatePrinterGroupUseTypeDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
+
     /** Creates a new instance of CreatePrinterGroupUseTypeDescriptionCommand */
     public CreatePrinterGroupUseTypeDescriptionCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -50,12 +56,10 @@ public class CreatePrinterGroupUseTypeDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
        var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
        var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

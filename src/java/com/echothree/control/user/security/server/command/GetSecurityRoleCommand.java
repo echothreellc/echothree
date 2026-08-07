@@ -23,7 +23,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -33,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSecurityRoleCommand
@@ -59,6 +58,10 @@ public class GetSecurityRoleCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of GetSecurityRoleCommand */
     public GetSecurityRoleCommand() {
@@ -67,7 +70,7 @@ public class GetSecurityRoleCommand
 
     @Override
     protected SecurityRole getEntity() {
-        var securityRole = SecurityRoleLogic.getInstance().getSecurityRoleByUniversalSpec(this, form, true);
+        var securityRole = securityRoleLogic.getSecurityRoleByUniversalSpec(this, form, true);
 
         if(securityRole != null) {
             sendEvent(securityRole.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -81,8 +84,6 @@ public class GetSecurityRoleCommand
         var result = SecurityResultFactory.getGetSecurityRoleResult();
 
         if(securityRole != null) {
-            var securityControl = Session.getModelController(SecurityControl.class);
-
             result.setSecurityRole(securityControl.getSecurityRoleTransfer(getUserVisit(), securityRole));
         }
 

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLicenseTypeCommand
@@ -67,6 +67,10 @@ public class EditLicenseTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    LicenseControl licenseControl;
+
     
     /** Creates a new instance of EditLicenseTypeCommand */
     public EditLicenseTypeCommand() {
@@ -85,7 +89,6 @@ public class EditLicenseTypeCommand
 
     @Override
     public LicenseType getEntity(EditLicenseTypeResult result) {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         LicenseType licenseType;
         var licenseTypeName = spec.getLicenseTypeName();
 
@@ -109,14 +112,11 @@ public class EditLicenseTypeCommand
 
     @Override
     public void fillInResult(EditLicenseTypeResult result, LicenseType licenseType) {
-        var licenseControl = Session.getModelController(LicenseControl.class);
-
         result.setLicenseType(licenseControl.getLicenseTypeTransfer(getUserVisit(), licenseType));
     }
 
     @Override
     public void doLock(LicenseTypeEdit edit, LicenseType licenseType) {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         var licenseTypeDescription = licenseControl.getLicenseTypeDescription(licenseType, getPreferredLanguage());
         var licenseTypeDetail = licenseType.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditLicenseTypeCommand
 
     @Override
     public void canUpdate(LicenseType licenseType) {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         var licenseTypeName = edit.getLicenseTypeName();
         var duplicateLicenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
 
@@ -142,7 +141,6 @@ public class EditLicenseTypeCommand
 
     @Override
     public void doUpdate(LicenseType licenseType) {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         var partyPK = getPartyPK();
         var licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueForUpdate(licenseType);
         var licenseTypeDescription = licenseControl.getLicenseTypeDescriptionForUpdate(licenseType, getPreferredLanguage());

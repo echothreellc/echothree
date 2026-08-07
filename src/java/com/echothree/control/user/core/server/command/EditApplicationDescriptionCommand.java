@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditApplicationDescriptionCommand
@@ -67,6 +67,13 @@ public class EditApplicationDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditApplicationDescriptionCommand */
     public EditApplicationDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditApplicationDescriptionCommand
 
     @Override
     public ApplicationDescription getEntity(EditApplicationDescriptionResult result) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         ApplicationDescription applicationDescription = null;
         var applicationName = spec.getApplicationName();
         var application = applicationControl.getApplicationByName(applicationName);
 
         if(application != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditApplicationDescriptionCommand
 
     @Override
     public void fillInResult(EditApplicationDescriptionResult result, ApplicationDescription applicationDescription) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
-
         result.setApplicationDescription(applicationControl.getApplicationDescriptionTransfer(getUserVisit(), applicationDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditApplicationDescriptionCommand
 
     @Override
     public void doUpdate(ApplicationDescription applicationDescription) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationDescriptionValue = applicationControl.getApplicationDescriptionValue(applicationDescription);
         applicationDescriptionValue.setDescription(edit.getDescription());
 

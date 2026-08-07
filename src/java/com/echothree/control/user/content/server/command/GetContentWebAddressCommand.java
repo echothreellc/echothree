@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentWebAddressCommand
@@ -42,6 +42,10 @@ public class GetContentWebAddressCommand
                 new FieldDefinition("ContentWebAddressName", FieldType.HOST_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of GetContentWebAddressCommand */
     public GetContentWebAddressCommand() {
@@ -50,7 +54,6 @@ public class GetContentWebAddressCommand
     
     @Override
     protected ContentWebAddress getEntity() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentWebAddressName = form.getContentWebAddressName();
         var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
@@ -68,8 +71,6 @@ public class GetContentWebAddressCommand
         var result = ContentResultFactory.getGetContentWebAddressResult();
         
         if(contentWebAddress != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-            
             result.setContentWebAddress(contentControl.getContentWebAddressTransfer(getUserVisit(), contentWebAddress));
         }
         

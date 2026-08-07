@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditProtocolDescriptionCommand
@@ -67,6 +67,13 @@ public class EditProtocolDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of EditProtocolDescriptionCommand */
     public EditProtocolDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditProtocolDescriptionCommand
 
     @Override
     public ProtocolDescription getEntity(EditProtocolDescriptionResult result) {
-        var serverControl = Session.getModelController(ServerControl.class);
         ProtocolDescription protocolDescription = null;
         var protocolName = spec.getProtocolName();
         var protocol = serverControl.getProtocolByName(protocolName);
 
         if(protocol != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditProtocolDescriptionCommand
 
     @Override
     public void fillInResult(EditProtocolDescriptionResult result, ProtocolDescription protocolDescription) {
-        var serverControl = Session.getModelController(ServerControl.class);
-
         result.setProtocolDescription(serverControl.getProtocolDescriptionTransfer(getUserVisit(), protocolDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditProtocolDescriptionCommand
 
     @Override
     public void doUpdate(ProtocolDescription protocolDescription) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var protocolDescriptionValue = serverControl.getProtocolDescriptionValue(protocolDescription);
         protocolDescriptionValue.setDescription(edit.getDescription());
 

@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMimeTypeDescriptionCommand
@@ -56,6 +55,10 @@ public class GetMimeTypeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetMimeTypeDescriptionCommand */
     public GetMimeTypeDescriptionCommand() {
@@ -64,13 +67,11 @@ public class GetMimeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var result = CoreResultFactory.getGetMimeTypeDescriptionResult();
         var mimeTypeName = form.getMimeTypeName();
         var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

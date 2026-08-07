@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateVendorItemCostCommand
@@ -59,6 +59,16 @@ public class CreateVendorItemCostCommand
                 new FieldDefinition("UnitCost:VendorName,VendorName", FieldType.UNSIGNED_COST_UNIT, true, null, null)
                 );
     }
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of CreateVendorItemCostCommand */
     public CreateVendorItemCostCommand() {
@@ -67,7 +77,6 @@ public class CreateVendorItemCostCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorName = form.getVendorName();
         var vendor = vendorControl.getVendorByName(vendorName);
         
@@ -77,7 +86,6 @@ public class CreateVendorItemCostCommand
             var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
             
             if(vendorItem != null) {
-                var inventoryControl = Session.getModelController(InventoryControl.class);
                 var inventoryConditionName = form.getInventoryConditionName();
                 var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
@@ -87,7 +95,6 @@ public class CreateVendorItemCostCommand
                             inventoryCondition);
                     
                     if(inventoryConditionUse != null) {
-                        var uomControl = Session.getModelController(UomControl.class);
                         var unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
                         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);

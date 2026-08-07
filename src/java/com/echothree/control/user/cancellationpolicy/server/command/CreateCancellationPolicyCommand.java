@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCancellationPolicyCommand
@@ -57,6 +58,10 @@ public class CreateCancellationPolicyCommand
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    CancellationPolicyLogic cancellationPolicyLogic;
+
     
     /** Creates a new instance of CreateCancellationPolicyCommand */
     public CreateCancellationPolicyCommand() {
@@ -74,7 +79,7 @@ public class CreateCancellationPolicyCommand
         var policy = form.getPolicy();
         var partyPK = getPartyPK();
 
-        CancellationPolicyLogic.getInstance().createCancellationPolicy(this, cancellationKindName, cancellationPolicyName,
+        cancellationPolicyLogic.createCancellationPolicy(this, cancellationKindName, cancellationPolicyName,
                 isDefault, sortOrder, getPreferredLanguage(), description, policyMimeTypeName, policy, partyPK);
 
         return null;

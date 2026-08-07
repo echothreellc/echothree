@@ -57,12 +57,13 @@ public class GetPeriodTypesCommand
                 new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     PeriodControl periodControl;
 
     @Inject
     PeriodKindLogic periodKindLogic;
+
 
     /** Creates a new instance of GetPeriodTypesCommand */
     public GetPeriodTypesCommand() {

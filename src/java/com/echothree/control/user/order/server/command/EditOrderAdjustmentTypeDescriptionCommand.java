@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderAdjustmentTypeDescriptionCommand
@@ -69,6 +69,16 @@ public class EditOrderAdjustmentTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    OrderAdjustmentControl orderAdjustmentControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditOrderAdjustmentTypeDescriptionCommand */
     public EditOrderAdjustmentTypeDescriptionCommand() {
@@ -87,18 +97,15 @@ public class EditOrderAdjustmentTypeDescriptionCommand
 
     @Override
     public OrderAdjustmentTypeDescription getEntity(EditOrderAdjustmentTypeDescriptionResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = null;
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
             var orderAdjustmentTypeName = spec.getOrderAdjustmentTypeName();
             var orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,8 +139,6 @@ public class EditOrderAdjustmentTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderAdjustmentTypeDescriptionResult result, OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
-        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
-
         result.setOrderAdjustmentTypeDescription(orderAdjustmentControl.getOrderAdjustmentTypeDescriptionTransfer(getUserVisit(), orderAdjustmentTypeDescription));
     }
 
@@ -144,7 +149,6 @@ public class EditOrderAdjustmentTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
-        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
         var orderAdjustmentTypeDescriptionValue = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionValue(orderAdjustmentTypeDescription);
         orderAdjustmentTypeDescriptionValue.setDescription(edit.getDescription());
 

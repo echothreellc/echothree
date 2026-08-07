@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTagScopeCommand
@@ -60,6 +60,16 @@ public class CreateTagScopeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateTagScopeCommand */
     public CreateTagScopeCommand() {
@@ -69,14 +79,12 @@ public class CreateTagScopeCommand
     @Override
     protected BaseResult execute() {
         var result = TagResultFactory.getCreateTagScopeResult();
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeName = form.getTagScopeName();
         
         if(tagScopeName == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.name());
             
-            tagScopeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+            tagScopeName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
         }
 
         var tagScope = tagControl.getTagScopeByName(tagScopeName);

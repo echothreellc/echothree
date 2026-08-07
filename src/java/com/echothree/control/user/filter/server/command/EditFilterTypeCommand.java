@@ -67,13 +67,13 @@ public class EditFilterTypeCommand
                 );
     }
 
+    @Inject
+    FilterControl filterControl;
+
     /** Creates a new instance of EditFilterTypeCommand */
     public EditFilterTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-
-    @Inject
-    FilterControl filterControl;
 
     @Override
     public EditFilterTypeResult getResult() {

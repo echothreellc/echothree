@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCancellationPolicyTranslationCommand
@@ -75,6 +75,15 @@ public class EditCancellationPolicyTranslationCommand
                 );
     }
 
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     /** Creates a new instance of EditCancellationPolicyTranslationCommand */
     public EditCancellationPolicyTranslationCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -94,7 +103,6 @@ public class EditCancellationPolicyTranslationCommand
     
     @Override
     public CancellationPolicyTranslation getEntity(EditCancellationPolicyTranslationResult result) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         CancellationPolicyTranslation cancellationPolicyTranslation = null;
         var cancellationKindName = spec.getCancellationKindName();
         
@@ -105,7 +113,6 @@ public class EditCancellationPolicyTranslationCommand
             var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
             if(cancellationPolicy != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -139,8 +146,6 @@ public class EditCancellationPolicyTranslationCommand
 
     @Override
     public void fillInResult(EditCancellationPolicyTranslationResult result, CancellationPolicyTranslation cancellationPolicyTranslation) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-
         result.setCancellationPolicyTranslation(cancellationPolicyControl.getCancellationPolicyTranslationTransfer(getUserVisit(), cancellationPolicyTranslation));
     }
 
@@ -158,7 +163,6 @@ public class EditCancellationPolicyTranslationCommand
 
     @Override
     protected void canUpdate(CancellationPolicyTranslation cancellationPolicyTranslation) {
-        var mimeTypeLogic = MimeTypeLogic.getInstance();
         var policyMimeTypeName = edit.getPolicyMimeTypeName();
         var policy = edit.getPolicy();
         
@@ -169,7 +173,6 @@ public class EditCancellationPolicyTranslationCommand
     
     @Override
     public void doUpdate(CancellationPolicyTranslation cancellationPolicyTranslation) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationPolicyTranslationValue = cancellationPolicyControl.getCancellationPolicyTranslationValue(cancellationPolicyTranslation);
         
         cancellationPolicyTranslationValue.setDescription(edit.getDescription());

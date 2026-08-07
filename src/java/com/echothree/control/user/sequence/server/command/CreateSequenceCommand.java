@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSequenceCommand
@@ -61,6 +62,13 @@ public class CreateSequenceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SequenceLogic sequenceLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
     
     /** Creates a new instance of CreateSequenceCommand */
     public CreateSequenceCommand() {
@@ -71,7 +79,7 @@ public class CreateSequenceCommand
     protected BaseResult execute() {
         var result = SequenceResultFactory.getCreateSequenceResult();
         var sequenceTypeName = form.getSequenceTypeName();
-        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, sequenceTypeName);
+        var sequenceType = sequenceTypeLogic.getSequenceTypeByName(this, sequenceTypeName);
         Sequence sequence = null;
 
         if(!hasExecutionErrors()) {
@@ -84,7 +92,7 @@ public class CreateSequenceCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            sequence = SequenceLogic.getInstance().createSequence(this, sequenceType, sequenceName, value, mask, chunkSize, isDefault,
+            sequence = sequenceLogic.createSequence(this, sequenceType, sequenceName, value, mask, chunkSize, isDefault,
                     sortOrder, description, getPreferredLanguage(), getPartyPK());
         }
 

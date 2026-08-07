@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyReturnPolicyStatusChoicesCommand
@@ -59,6 +59,16 @@ public class GetPartyReturnPolicyStatusChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    PartyReturnPolicyLogic partyReturnPolicyLogic;
+
     
     /** Creates a new instance of GetPartyReturnPolicyStatusChoicesCommand */
     public GetPartyReturnPolicyStatusChoicesCommand() {
@@ -67,13 +77,11 @@ public class GetPartyReturnPolicyStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = ReturnPolicyResultFactory.getGetPartyReturnPolicyStatusChoicesResult();
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             var returnKindName = form.getReturnKindName();
             var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
@@ -88,7 +96,7 @@ public class GetPartyReturnPolicyStatusChoicesCommand
                         var defaultPartyReturnPolicyStatusChoice = form.getDefaultPartyReturnPolicyStatusChoice();
                         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-                        result.setPartyReturnPolicyStatusChoices(PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusChoices(defaultPartyReturnPolicyStatusChoice,
+                        result.setPartyReturnPolicyStatusChoices(partyReturnPolicyLogic.getPartyReturnPolicyStatusChoices(defaultPartyReturnPolicyStatusChoice,
                                 getPreferredLanguage(), allowNullChoice, partyReturnPolicy, getPartyPK()));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartyReturnPolicy.name(), partyName, returnKindName, returnPolicyName);

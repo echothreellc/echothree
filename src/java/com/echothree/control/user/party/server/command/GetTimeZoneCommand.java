@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTimeZoneCommand
@@ -49,6 +49,16 @@ public class GetTimeZoneCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    TimeZoneLogic timeZoneLogic;
+
     
     /** Creates a new instance of GetTimeZoneCommand */
     public GetTimeZoneCommand() {
@@ -57,23 +67,22 @@ public class GetTimeZoneCommand
     
     @Override
     protected TimeZone getEntity() {
-        var partyControl = Session.getModelController(PartyControl.class);
         TimeZone timeZone = null;
         var timeZoneName = form.getJavaTimeZoneName();
-        var parameterCount = (timeZoneName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (timeZoneName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
             case 0 -> timeZone = partyControl.getDefaultTimeZone();
             case 1 -> {
                 if(timeZoneName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TimeZone.name());
 
                     if(!hasExecutionErrors()) {
                         timeZone = partyControl.getTimeZoneByEntityInstance(entityInstance);
                     }
                 } else {
-                    timeZone = TimeZoneLogic.getInstance().getTimeZoneByName(this, timeZoneName);
+                    timeZone = timeZoneLogic.getTimeZoneByName(this, timeZoneName);
                 }
             }
             default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -88,7 +97,6 @@ public class GetTimeZoneCommand
     
     @Override
     protected BaseResult getResult(TimeZone timeZone) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetTimeZoneResult();
 
         if(timeZone != null) {

@@ -43,7 +43,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -80,17 +79,27 @@ public class EditOrderTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditOrderTypeCommand */
-    public EditOrderTypeCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     OrderTypeControl orderTypeControl;
 
     @Inject
     OrderTypeLogic orderTypeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
+
+    /** Creates a new instance of EditOrderTypeCommand */
+    public EditOrderTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditOrderTypeResult getResult() {
@@ -154,7 +163,6 @@ public class EditOrderTypeCommand
 
     @Override
     public void canUpdate(OrderType orderType) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = edit.getOrderTypeName();
         var duplicateOrderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
@@ -162,12 +170,12 @@ public class EditOrderTypeCommand
             var orderSequenceTypeName = edit.getOrderSequenceTypeName();
 
             orderSequenceType = orderSequenceTypeName == null ? null :
-                    SequenceTypeLogic.getInstance().getSequenceTypeByName(this, orderSequenceTypeName);
+                    sequenceTypeLogic.getSequenceTypeByName(this, orderSequenceTypeName);
 
             if(!hasExecutionErrors()) {
                 var orderWorkflowName = edit.getOrderWorkflowName();
 
-                orderWorkflow = orderWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(
+                orderWorkflow = orderWorkflowName == null ? null : workflowLogic.getWorkflowByName(
                         UnknownOrderWorkflowNameException.class, ExecutionErrors.UnknownOrderWorkflowName, this,
                         orderWorkflowName, EntityPermission.READ_ONLY);
 
@@ -175,7 +183,7 @@ public class EditOrderTypeCommand
                     var orderWorkflowEntranceName = edit.getOrderWorkflowEntranceName();
 
                     if(orderWorkflowEntranceName == null || orderWorkflow != null) {
-                            orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(
+                            orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
                                     UnknownOrderWorkflowEntranceNameException.class, ExecutionErrors.UnknownOrderWorkflowEntranceName, this,
                                     orderWorkflow, orderWorkflowEntranceName);
                     } else {

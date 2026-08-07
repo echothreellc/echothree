@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTransactionTimeTypeCommand
@@ -55,6 +56,10 @@ public class CreateTransactionTimeTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    TransactionTimeTypeLogic transactionTimeTypeLogic;
+
     
     /** Creates a new instance of CreateTransactionTimeTypeCommand */
     public CreateTransactionTimeTypeCommand() {
@@ -70,7 +75,7 @@ public class CreateTransactionTimeTypeCommand
         var description = form.getDescription();
         var partyPK = getPartyPK();
 
-        var transactionTimeType = TransactionTimeTypeLogic.getInstance().createTransactionTimeType(this, transactionTimeTypeName,
+        var transactionTimeType = transactionTimeTypeLogic.createTransactionTimeType(this, transactionTimeTypeName,
                 isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
 
         if(transactionTimeType != null) {

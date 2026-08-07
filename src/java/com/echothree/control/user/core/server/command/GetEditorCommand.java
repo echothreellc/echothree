@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEditorCommand
@@ -55,6 +55,10 @@ public class GetEditorCommand
             new FieldDefinition("EditorName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EditorControl editorControl;
+
     
     /** Creates a new instance of GetEditorCommand */
     public GetEditorCommand() {
@@ -63,7 +67,6 @@ public class GetEditorCommand
     
     @Override
     protected BaseResult execute() {
-        var editorControl = Session.getModelController(EditorControl.class);
         var result = CoreResultFactory.getGetEditorResult();
         var editorName = form.getEditorName();
         var editor = editorControl.getEditorByName(editorName);

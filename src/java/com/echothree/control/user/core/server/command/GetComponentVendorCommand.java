@@ -33,6 +33,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetComponentVendorCommand
@@ -55,6 +56,10 @@ public class GetComponentVendorCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ComponentVendorLogic componentVendorLogic;
+
     
     /** Creates a new instance of GetComponentVendorCommand */
     public GetComponentVendorCommand() {
@@ -63,7 +68,7 @@ public class GetComponentVendorCommand
     
     @Override
     protected ComponentVendor getEntity() {
-        var componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByUniversalSpec(this, form);
+        var componentVendor = componentVendorLogic.getComponentVendorByUniversalSpec(this, form);
         
         return componentVendor;
     }

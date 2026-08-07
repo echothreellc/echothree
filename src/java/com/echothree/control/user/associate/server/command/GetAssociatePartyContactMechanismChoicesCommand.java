@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAssociatePartyContactMechanismChoicesCommand
@@ -43,6 +43,10 @@ public class GetAssociatePartyContactMechanismChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    AssociateControl associateControl;
+
     
     /** Creates a new instance of GetAssociatePartyContactMechanismChoicesCommand */
     public GetAssociatePartyContactMechanismChoicesCommand() {
@@ -51,7 +55,6 @@ public class GetAssociatePartyContactMechanismChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = Session.getModelController(AssociateControl.class);
         var result = AssociateResultFactory.getGetAssociatePartyContactMechanismChoicesResult();
         var associateProgramName = form.getAssociateProgramName();
         var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);

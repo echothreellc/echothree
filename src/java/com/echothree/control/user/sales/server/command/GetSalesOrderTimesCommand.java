@@ -44,7 +44,7 @@ public class GetSalesOrderTimesCommand
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     OrderControl orderControl;
 
@@ -53,6 +53,8 @@ public class GetSalesOrderTimesCommand
 
     @Inject
     SalesOrderLogic salesOrderLogic;
+
+
     
     /** Creates a new instance of GetSalesOrderTimesCommand */
     public GetSalesOrderTimesCommand() {

@@ -62,7 +62,7 @@ public class GetPartyTrainingClassesCommand
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     PartyControl partyControl;
 
@@ -74,6 +74,7 @@ public class GetPartyTrainingClassesCommand
 
     @Inject
     TrainingClassLogic trainingClassLogic;
+
 
     /** Creates a new instance of GetPartyTrainingClassesCommand */
     public GetPartyTrainingClassesCommand() {

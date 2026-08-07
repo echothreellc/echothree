@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumMessageAttachmentForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -27,9 +26,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateForumMessageAttachmentCommand
@@ -46,6 +45,10 @@ public class CreateForumMessageAttachmentCommand
                 new FieldDefinition("String", FieldType.STRING, false, 1L, 512L)
                 );
     }
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of CreateForumMessageAttachmentCommand */
     public CreateForumMessageAttachmentCommand() {
@@ -54,12 +57,10 @@ public class CreateForumMessageAttachmentCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessageName = form.getForumMessageName();
         var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = form.getMimeTypeName();
             var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 

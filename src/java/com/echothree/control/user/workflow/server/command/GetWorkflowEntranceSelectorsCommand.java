@@ -58,17 +58,18 @@ public class GetWorkflowEntranceSelectorsCommand
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
-    /** Creates a new instance of GetWorkflowEntranceSelectorsCommand */
-    public GetWorkflowEntranceSelectorsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     WorkflowControl workflowControl;
 
     @Inject
     WorkflowEntranceLogic workflowEntranceLogic;
+
+
+    /** Creates a new instance of GetWorkflowEntranceSelectorsCommand */
+    public GetWorkflowEntranceSelectorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     WorkflowEntrance workflowEntrance;
 

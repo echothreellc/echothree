@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyAliasTypeDescriptionsCommand
@@ -55,6 +55,10 @@ public class GetPartyAliasTypeDescriptionsCommand
                 new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetPartyAliasTypeDescriptionsCommand */
     public GetPartyAliasTypeDescriptionsCommand() {
@@ -63,7 +67,6 @@ public class GetPartyAliasTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetPartyAliasTypeDescriptionsResult();
         var partyTypeName = form.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);

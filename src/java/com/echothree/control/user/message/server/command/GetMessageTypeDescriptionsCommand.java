@@ -25,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMessageTypeDescriptionsCommand
@@ -42,6 +42,10 @@ public class GetMessageTypeDescriptionsCommand
             new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    MessageControl messageControl;
+
     
     /** Creates a new instance of GetMessageTypeDescriptionsCommand */
     public GetMessageTypeDescriptionsCommand() {
@@ -59,7 +63,6 @@ public class GetMessageTypeDescriptionsCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var messageControl = Session.getModelController(MessageControl.class);
                 var messageTypeName = form.getMessageTypeName();
                 var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 

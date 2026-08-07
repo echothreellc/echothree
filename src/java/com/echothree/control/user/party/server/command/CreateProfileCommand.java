@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateProfileForm;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -28,9 +27,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateProfileCommand
@@ -77,6 +76,13 @@ public class CreateProfileCommand
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
                 );
     }
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateProfileCommand */
     public CreateProfileCommand() {
@@ -100,7 +106,6 @@ public class CreateProfileCommand
         var signatureParameterCount = (signatureMimeTypeName == null ? 0 : 1) + (signature == null ? 0 : 1);
         
         if((bioParameterCount == 0 || bioParameterCount == 2) && (signatureParameterCount == 0 || signatureParameterCount == 2)) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyTypeName = getPartyTypeName();
             var partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name())? null: form.getPartyName();
             var party = partyName == null? null: partyControl.getPartyByName(partyName);
@@ -114,7 +119,6 @@ public class CreateProfileCommand
                 }
                 
                 if(profile == null) {
-                    var iconControl = Session.getModelController(IconControl.class);
                     var iconName = form.getIconName();
                     var icon = iconName == null? null: iconControl.getIconByName(iconName);
                     
@@ -137,7 +141,6 @@ public class CreateProfileCommand
                                 var birthdayFormat = birthdayFormatName == null? null: partyControl.getBirthdayFormatByName(birthdayFormatName);
 
                                 if(birthdayFormat != null) {
-                                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                                     var bioMimeType = bioMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(bioMimeTypeName);
 
                                     if(bioMimeTypeName == null || bioMimeType != null) {

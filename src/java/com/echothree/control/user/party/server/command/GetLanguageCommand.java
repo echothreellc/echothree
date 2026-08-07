@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLanguageCommand
@@ -49,6 +49,16 @@ public class GetLanguageCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     
     /** Creates a new instance of GetLanguageCommand */
     public GetLanguageCommand() {
@@ -57,23 +67,22 @@ public class GetLanguageCommand
     
     @Override
     protected Language getEntity() {
-        var partyControl = Session.getModelController(PartyControl.class);
         Language language = null;
         var languageIsoName = form.getLanguageIsoName();
-        var parameterCount = (languageIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (languageIsoName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
             case 0 -> language = partyControl.getDefaultLanguage();
             case 1 -> {
                 if(languageIsoName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Language.name());
 
                     if(!hasExecutionErrors()) {
                         language = partyControl.getLanguageByEntityInstance(entityInstance);
                     }
                 } else {
-                    language = LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                    language = languageLogic.getLanguageByName(this, languageIsoName);
                 }
             }
             default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -88,7 +97,6 @@ public class GetLanguageCommand
     
     @Override
     protected BaseResult getResult(Language language) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetLanguageResult();
 
         if(language != null) {

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultQueueTypeCommand
@@ -53,6 +53,10 @@ public class SetDefaultQueueTypeCommand
                 new FieldDefinition("QueueTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    QueueControl queueControl;
+
     
     /** Creates a new instance of SetDefaultQueueTypeCommand */
     public SetDefaultQueueTypeCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultQueueTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var queueControl = Session.getModelController(QueueControl.class);
         var queueTypeName = form.getQueueTypeName();
         var queueTypeDetailValue = queueControl.getQueueTypeDetailValueByNameForUpdate(queueTypeName);
         

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultPartyTypeDocumentTypeUsageTypeCommand
@@ -54,6 +54,13 @@ public class SetDefaultPartyTypeDocumentTypeUsageTypeCommand
                 new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of SetDefaultPartyTypeDocumentTypeUsageTypeCommand */
     public SetDefaultPartyTypeDocumentTypeUsageTypeCommand() {
@@ -62,12 +69,10 @@ public class SetDefaultPartyTypeDocumentTypeUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyTypeName = form.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            var documentControl = Session.getModelController(DocumentControl.class);
             var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
             var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 

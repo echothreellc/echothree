@@ -35,9 +35,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRecoveryQuestionCommand
@@ -58,6 +58,25 @@ public class GetRecoveryQuestionCommand
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    RecoveryQuestionLogic recoveryQuestionLogic;
+
     
     /** Creates a new instance of GetRecoveryQuestionCommand */
     public GetRecoveryQuestionCommand() {
@@ -73,24 +92,23 @@ public class GetRecoveryQuestionCommand
         var employeeName = form.getEmployeeName();
         var customerName = form.getCustomerName();
         var vendorName = form.getVendorName();
-        var nameOrEntitySpecsCount = (recoveryQuestionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var nameOrEntitySpecsCount = (recoveryQuestionName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
         var parameterCount = nameOrEntitySpecsCount + (username == null ? 0 : 1) + (partyName == null ? 0 : 1)
                 + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
 
         if(parameterCount < 2) {
-            var userControl = getUserControl();
             var self = getParty();
             
             if(nameOrEntitySpecsCount == 1) {
                 if(recoveryQuestionName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.RecoveryQuestion.name());
 
                     if(!hasExecutionErrors()) {
                         recoveryQuestion = userControl.getRecoveryQuestionByEntityInstance(entityInstance);
                     }
                 } else {
-                    recoveryQuestion = RecoveryQuestionLogic.getInstance().getRecoveryQuestionByName(this, recoveryQuestionName);
+                    recoveryQuestion = recoveryQuestionLogic.getRecoveryQuestionByName(this, recoveryQuestionName);
                 }
 
                 if(recoveryQuestion != null) {
@@ -108,14 +126,11 @@ public class GetRecoveryQuestionCommand
                         addExecutionError(ExecutionErrors.UnknownUsername.name(), username);
                     }
                 } else if(partyName != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
-                    
                     party = partyControl.getPartyByName(partyName);
                     if(party == null) {
                         addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                     }
                 } else if(employeeName != null) {
-                    var employeeControl = Session.getModelController(EmployeeControl.class);
                     var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                     
                     if(partyEmployee != null) {
@@ -124,7 +139,6 @@ public class GetRecoveryQuestionCommand
                         addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                     }
                 } else if(customerName != null) {
-                    var customerControl = Session.getModelController(CustomerControl.class);
                     var customer = customerControl.getCustomerByName(customerName);
                     
                     if(customer != null) {
@@ -133,7 +147,6 @@ public class GetRecoveryQuestionCommand
                         addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
                     }
                 } else if(vendorName != null) {
-                    var vendorControl = Session.getModelController(VendorControl.class);
                     var vendor = vendorControl.getVendorByName(vendorName);
                     
                     if(vendor != null) {
@@ -168,7 +181,6 @@ public class GetRecoveryQuestionCommand
     
     @Override
     protected BaseResult getResult(RecoveryQuestion recoveryQuestion) {
-        var userControl = getUserControl();
         var result = UserResultFactory.getGetRecoveryQuestionResult();
 
         if(recoveryQuestion != null) {

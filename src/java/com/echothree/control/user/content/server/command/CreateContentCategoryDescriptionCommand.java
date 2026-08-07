@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentCategoryDescriptionCommand
@@ -58,6 +58,13 @@ public class CreateContentCategoryDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateContentCategoryDescriptionCommand */
     public CreateContentCategoryDescriptionCommand() {
@@ -66,7 +73,6 @@ public class CreateContentCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -79,7 +85,6 @@ public class CreateContentCategoryDescriptionCommand
                 var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = form.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
                     

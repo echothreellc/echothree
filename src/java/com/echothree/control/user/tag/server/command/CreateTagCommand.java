@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTagCommand
@@ -56,6 +56,10 @@ public class CreateTagCommand
                 new FieldDefinition("TagName", FieldType.TAG, true, null, null)
                 );
     }
+
+    @Inject
+    TagControl tagControl;
+
     
     /** Creates a new instance of CreateTagCommand */
     public CreateTagCommand() {
@@ -65,7 +69,6 @@ public class CreateTagCommand
     @Override
     protected BaseResult execute() {
         var result = TagResultFactory.getCreateTagResult();
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeName = form.getTagScopeName();
         var tagScope = tagControl.getTagScopeByName(tagScopeName);
         Tag tag = null;

@@ -18,7 +18,6 @@ package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.CreateMessageForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.message.server.entity.Message;
@@ -31,9 +30,9 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateMessageCommand
@@ -56,6 +55,10 @@ public class CreateMessageCommand
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    MessageControl messageControl;
+
     
     /** Creates a new instance of CreateMessageCommand */
     public CreateMessageCommand() {
@@ -89,7 +92,6 @@ public class CreateMessageCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var messageControl = Session.getModelController(MessageControl.class);
                 var messageTypeName = form.getMessageTypeName();
                 var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
@@ -115,7 +117,6 @@ public class CreateMessageCommand
                                 addExecutionError(ExecutionErrors.MissingStringMessage.name());
                             }
                         } else {
-                            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                             var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
                             
                             if(mimeType != null) {

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTextTransformationDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateTextTransformationDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of CreateTextTransformationDescriptionCommand */
     public CreateTextTransformationDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateTextTransformationDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var textControl = Session.getModelController(TextControl.class);
         var textTransformationName = form.getTextTransformationName();
         var textTransformation = textControl.getTextTransformationByName(textTransformationName);
         
         if(textTransformation != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

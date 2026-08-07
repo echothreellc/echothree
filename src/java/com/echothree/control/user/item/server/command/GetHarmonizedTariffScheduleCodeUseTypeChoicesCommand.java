@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand
@@ -53,6 +53,10 @@ public class GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand */
     public GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetHarmonizedTariffScheduleCodeUseTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUseTypeChoicesResult();
         var defaultHarmonizedTariffScheduleCodeUseTypeChoice = form.getDefaultHarmonizedTariffScheduleCodeUseTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

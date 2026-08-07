@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGeoCodeScopeChoicesCommand
@@ -53,6 +53,10 @@ public class GetGeoCodeScopeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of GetGeoCodeScopeChoicesCommand */
     public GetGeoCodeScopeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetGeoCodeScopeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var result = GeoResultFactory.getGetGeoCodeScopeChoicesResult();
         var defaultGeoCodeScopeChoice = form.getDefaultGeoCodeScopeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

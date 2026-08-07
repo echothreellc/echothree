@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowStepTypesCommand
@@ -54,6 +54,9 @@ public class GetWorkflowStepTypesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    WorkflowControl workflowControl;
+
     /** Creates a new instance of GetWorkflowStepTypesCommand */
     public GetWorkflowStepTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,23 +69,17 @@ public class GetWorkflowStepTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return workflowControl.countWorkflowStepTypes();
     }
 
     @Override
     protected Collection<WorkflowStepType> getEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return workflowControl.getWorkflowStepTypes();
     }
 
     @Override
     protected BaseResult getResult(Collection<WorkflowStepType> entities) {
         var result = WorkflowResultFactory.getGetWorkflowStepTypesResult();
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         if(session.hasLimit(WorkflowStepTypeFactory.class)) {
             result.setWorkflowStepTypeCount(getTotalEntities());
         }

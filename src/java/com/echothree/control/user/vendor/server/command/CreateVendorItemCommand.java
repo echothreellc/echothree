@@ -43,9 +43,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateVendorItemCommand
@@ -72,6 +72,25 @@ public class CreateVendorItemCommand
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateVendorItemCommand */
     public CreateVendorItemCommand() {
@@ -82,12 +101,10 @@ public class CreateVendorItemCommand
     protected BaseResult execute() {
         var result = VendorResultFactory.getCreateVendorItemResult();
         VendorItem vendorItem = null;
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorName = form.getVendorName();
         var vendor = vendorControl.getVendorByName(vendorName);
         
         if(vendor != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var itemName = form.getItemName();
             var item = itemControl.getItemByNameThenAlias(itemName);
             
@@ -130,7 +147,6 @@ public class CreateVendorItemCommand
                         CancellationPolicy cancellationPolicy = null;
                         
                         if(cancellationPolicyName != null) {
-                            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                             var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
                             
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -141,15 +157,12 @@ public class CreateVendorItemCommand
                             ReturnPolicy returnPolicy = null;
                             
                             if(returnPolicyName != null) {
-                                var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                                 var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
                                 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                             }
                             
                             if(returnPolicyName == null || returnPolicy != null) {
-                                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                 var description = form.getDescription();
                                 var priority = Integer.valueOf(form.getPriority());
                                 BasePK createdBy = getPartyPK();

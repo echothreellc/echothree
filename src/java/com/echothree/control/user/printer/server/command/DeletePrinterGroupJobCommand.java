@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePrinterGroupJobCommand
@@ -41,6 +41,12 @@ public class DeletePrinterGroupJobCommand
                 );
     }
 
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    PrinterGroupJobLogic printerGroupJobLogic;
+
     /** Creates a new instance of DeletePrinterGroupJobCommand */
     public DeletePrinterGroupJobCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -48,12 +54,11 @@ public class DeletePrinterGroupJobCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
        var printerGroupJobName = form.getPrinterGroupJobName();
        var printerGroupJob = printerControl.getPrinterGroupJobByNameForUpdate(printerGroupJobName);
         
         if(printerGroupJob != null) {
-            PrinterGroupJobLogic.getInstance().deletePrinterGroupJob(this, printerGroupJob, getPartyPK());
+            printerGroupJobLogic.deletePrinterGroupJob(this, printerGroupJob, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPrinterGroupJobName.name(), printerGroupJobName);
         }

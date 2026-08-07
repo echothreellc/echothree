@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageLayoutDescriptionCommand
@@ -56,6 +56,13 @@ public class GetContentPageLayoutDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetContentPageLayoutDescriptionCommand */
     public GetContentPageLayoutDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetContentPageLayoutDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var result = ContentResultFactory.getGetContentPageLayoutDescriptionResult();
         var contentPageLayoutName = form.getContentPageLayoutName();
         var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

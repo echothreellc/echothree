@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactListTypeDescriptionCommand
@@ -68,6 +68,12 @@ public class EditContactListTypeDescriptionCommand
                 );
     }
 
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditContactListTypeDescriptionCommand */
     public EditContactListTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditContactListTypeDescriptionCommand
 
     @Override
     public ContactListTypeDescription getEntity(EditContactListTypeDescriptionResult result) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListTypeDescription contactListTypeDescription = null;
         var contactListTypeName = spec.getContactListTypeName();
         var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(contactListType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditContactListTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditContactListTypeDescriptionResult result, ContactListTypeDescription contactListTypeDescription) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setContactListTypeDescription(contactListControl.getContactListTypeDescriptionTransfer(getUserVisit(), contactListTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditContactListTypeDescriptionCommand
 
     @Override
     public void doUpdate(ContactListTypeDescription contactListTypeDescription) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListTypeDescriptionValue = contactListControl.getContactListTypeDescriptionValue(contactListTypeDescription);
 
         contactListTypeDescriptionValue.setDescription(edit.getDescription());

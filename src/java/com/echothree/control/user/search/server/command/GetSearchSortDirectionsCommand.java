@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchSortDirectionsCommand
@@ -54,6 +54,9 @@ public class GetSearchSortDirectionsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    SearchControl searchControl;
+
     /** Creates a new instance of GetSearchSortDirectionsCommand */
     public GetSearchSortDirectionsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,15 +69,11 @@ public class GetSearchSortDirectionsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         return searchControl.countSearchSortDirections();
     }
 
     @Override
     protected Collection<SearchSortDirection> getEntities() {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         return searchControl.getSearchSortDirections();
     }
 
@@ -83,8 +82,6 @@ public class GetSearchSortDirectionsCommand
         var result = SearchResultFactory.getGetSearchSortDirectionsResult();
 
         if(entities != null) {
-            var searchControl = Session.getModelController(SearchControl.class);
-
             if(session.hasLimit(SearchSortDirectionFactory.class)) {
                 result.setSearchSortDirectionCount(getTotalEntities());
             }

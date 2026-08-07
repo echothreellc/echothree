@@ -25,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommentUsageTypeDescriptionsCommand
@@ -43,6 +43,10 @@ public class GetCommentUsageTypeDescriptionsCommand
             new FieldDefinition("CommentUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    CommentControl commentControl;
+
     
     /** Creates a new instance of GetCommentUsageTypeDescriptionsCommand */
     public GetCommentUsageTypeDescriptionsCommand() {
@@ -60,7 +64,6 @@ public class GetCommentUsageTypeDescriptionsCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var commentControl = Session.getModelController(CommentControl.class);
                 var commentTypeName = form.getCommentTypeName();
                 var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 

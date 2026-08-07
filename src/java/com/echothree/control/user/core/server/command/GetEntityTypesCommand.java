@@ -36,6 +36,7 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityTypesCommand
@@ -56,6 +57,10 @@ public class GetEntityTypesCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    ComponentVendorLogic componentVendorLogic;
+
     
     /** Creates a new instance of GetEntityTypesCommand */
     public GetEntityTypesCommand() {
@@ -69,7 +74,7 @@ public class GetEntityTypesCommand
         var componentVendorName = form.getComponentVendorName();
 
         if(componentVendorName != null) {
-            componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByName(this, componentVendorName);
+            componentVendor = componentVendorLogic.getComponentVendorByName(this, componentVendorName);
         }
     }
 

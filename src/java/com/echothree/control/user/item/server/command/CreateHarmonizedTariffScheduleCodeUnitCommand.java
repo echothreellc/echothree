@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateHarmonizedTariffScheduleCodeUnitCommand
@@ -56,6 +56,10 @@ public class CreateHarmonizedTariffScheduleCodeUnitCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of CreateHarmonizedTariffScheduleCodeUnitCommand */
     public CreateHarmonizedTariffScheduleCodeUnitCommand() {
@@ -64,7 +68,6 @@ public class CreateHarmonizedTariffScheduleCodeUnitCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUnitName = form.getHarmonizedTariffScheduleCodeUnitName();
         var harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
         

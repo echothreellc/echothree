@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCampaignContentDescriptionCommand
@@ -67,6 +67,13 @@ public class EditCampaignContentDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCampaignContentDescriptionCommand */
     public EditCampaignContentDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditCampaignContentDescriptionCommand
 
     @Override
     public CampaignContentDescription getEntity(EditCampaignContentDescriptionResult result) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignContentDescription campaignContentDescription = null;
         var campaignContentName = spec.getCampaignContentName();
         var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
 
         if(campaignContent != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditCampaignContentDescriptionCommand
 
     @Override
     public void fillInResult(EditCampaignContentDescriptionResult result, CampaignContentDescription campaignContentDescription) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-
         result.setCampaignContentDescription(campaignControl.getCampaignContentDescriptionTransfer(getUserVisit(), campaignContentDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditCampaignContentDescriptionCommand
 
     @Override
     public void doUpdate(CampaignContentDescription campaignContentDescription) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var campaignContentDescriptionValue = campaignControl.getCampaignContentDescriptionValue(campaignContentDescription);
         campaignContentDescriptionValue.setDescription(edit.getDescription());
 

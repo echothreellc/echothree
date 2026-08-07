@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteCarrierOptionCommand
@@ -54,6 +54,10 @@ public class DeleteCarrierOptionCommand
                 new FieldDefinition("CarrierOptionName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
     
     /** Creates a new instance of DeleteCarrierOptionCommand */
     public DeleteCarrierOptionCommand() {
@@ -62,7 +66,6 @@ public class DeleteCarrierOptionCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierName = form.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
         

@@ -55,6 +55,7 @@ public class GetHarmonizedTariffScheduleCodeUnitsCommand
 
     @Inject
     ItemControl itemControl;
+
     
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeUnitsCommand */
     public GetHarmonizedTariffScheduleCodeUnitsCommand() {

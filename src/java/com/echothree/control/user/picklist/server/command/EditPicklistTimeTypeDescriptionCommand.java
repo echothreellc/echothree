@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPicklistTimeTypeDescriptionCommand
@@ -68,6 +68,13 @@ public class EditPicklistTimeTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PicklistControl picklistControl;
+
     
     /** Creates a new instance of EditPicklistTimeTypeDescriptionCommand */
     public EditPicklistTimeTypeDescriptionCommand() {
@@ -86,7 +93,6 @@ public class EditPicklistTimeTypeDescriptionCommand
 
     @Override
     public PicklistTimeTypeDescription getEntity(EditPicklistTimeTypeDescriptionResult result) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistTimeTypeDescription picklistTimeTypeDescription = null;
         var picklistTypeName = spec.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
@@ -96,7 +102,6 @@ public class EditPicklistTimeTypeDescriptionCommand
             var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
             if(picklistTimeType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -130,8 +135,6 @@ public class EditPicklistTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditPicklistTimeTypeDescriptionResult result, PicklistTimeTypeDescription picklistTimeTypeDescription) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
-
         result.setPicklistTimeTypeDescription(picklistControl.getPicklistTimeTypeDescriptionTransfer(getUserVisit(), picklistTimeTypeDescription));
     }
 
@@ -142,7 +145,6 @@ public class EditPicklistTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(PicklistTimeTypeDescription picklistTimeTypeDescription) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistTimeTypeDescriptionValue = picklistControl.getPicklistTimeTypeDescriptionValue(picklistTimeTypeDescription);
         picklistTimeTypeDescriptionValue.setDescription(edit.getDescription());
 

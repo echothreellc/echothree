@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFontWeightDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetFontWeightDescriptionsCommand
                 new FieldDefinition("FontWeightName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    FontControl fontControl;
+
     
     /** Creates a new instance of GetFontWeightDescriptionsCommand */
     public GetFontWeightDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetFontWeightDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var fontControl = Session.getModelController(FontControl.class);
         var result = CoreResultFactory.getGetFontWeightDescriptionsResult();
         var fontWeightName = form.getFontWeightName();
         var fontWeight = fontControl.getFontWeightByName(fontWeightName);

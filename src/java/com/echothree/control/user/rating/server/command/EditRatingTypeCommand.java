@@ -32,9 +32,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditRatingTypeCommand
@@ -57,6 +57,13 @@ public class EditRatingTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of EditRatingTypeCommand */
     public EditRatingTypeCommand() {
@@ -74,8 +81,6 @@ public class EditRatingTypeCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
-                
                 if(editMode.equals(EditMode.LOCK)) {
                     var ratingTypeName = spec.getRatingTypeName();
                     var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
@@ -117,7 +122,6 @@ public class EditRatingTypeCommand
                             Sequence ratingSequence = null;
                             
                             if(ratingSequenceName != null) {
-                                var sequenceControl = Session.getModelController(SequenceControl.class);
                                 var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
                                 
                                 if(sequenceType != null) {

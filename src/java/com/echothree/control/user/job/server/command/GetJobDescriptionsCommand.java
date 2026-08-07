@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetJobDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetJobDescriptionsCommand
                 new FieldDefinition("JobName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    JobControl jobControl;
+
     
     /** Creates a new instance of GetJobDescriptionsCommand */
     public GetJobDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetJobDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var jobControl = Session.getModelController(JobControl.class);
         var result = JobResultFactory.getGetJobDescriptionsResult();
         var jobName = form.getJobName();
         var job = jobControl.getJobByName(jobName);

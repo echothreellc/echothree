@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSelectorKindCommand
@@ -53,6 +53,10 @@ public class DeleteSelectorKindCommand
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of DeleteSelectorKindCommand */
     public DeleteSelectorKindCommand() {
@@ -61,7 +65,6 @@ public class DeleteSelectorKindCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindName = form.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByNameForUpdate(selectorKindName);
         

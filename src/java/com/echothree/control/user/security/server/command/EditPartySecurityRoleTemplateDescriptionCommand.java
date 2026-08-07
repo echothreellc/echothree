@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartySecurityRoleTemplateDescriptionCommand
@@ -67,6 +67,13 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of EditPartySecurityRoleTemplateDescriptionCommand */
     public EditPartySecurityRoleTemplateDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
 
     @Override
     public PartySecurityRoleTemplateDescription getEntity(EditPartySecurityRoleTemplateDescriptionResult result) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = null;
         var partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
         var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
 
         if(partySecurityRoleTemplate != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
 
     @Override
     public void fillInResult(EditPartySecurityRoleTemplateDescriptionResult result, PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
-        var securityControl = Session.getModelController(SecurityControl.class);
-
         result.setPartySecurityRoleTemplateDescription(securityControl.getPartySecurityRoleTemplateDescriptionTransfer(getUserVisit(), partySecurityRoleTemplateDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
 
     @Override
     public void doUpdate(PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var partySecurityRoleTemplateDescriptionValue = securityControl.getPartySecurityRoleTemplateDescriptionValue(partySecurityRoleTemplateDescription);
         
         partySecurityRoleTemplateDescriptionValue.setDescription(edit.getDescription());

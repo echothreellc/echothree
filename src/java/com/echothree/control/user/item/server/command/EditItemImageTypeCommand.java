@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemImageTypeCommand
@@ -74,6 +74,19 @@ public class EditItemImageTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    ItemDescriptionLogic itemDescriptionLogic;
+
+    @Inject
+    ItemImageTypeLogic itemImageTypeLogic;
+
     
     /** Creates a new instance of EditItemImageTypeCommand */
     public EditItemImageTypeCommand() {
@@ -92,7 +105,7 @@ public class EditItemImageTypeCommand
     
     @Override
     public ItemImageType getEntity(EditItemImageTypeResult result) {
-        return ItemImageTypeLogic.getInstance().getItemImageTypeByUniversalSpec(this,
+        return itemImageTypeLogic.getItemImageTypeByUniversalSpec(this,
                 spec, false, editModeToEntityPermission(editMode));
     }
     
@@ -103,8 +116,6 @@ public class EditItemImageTypeCommand
     
     @Override
     public void fillInResult(EditItemImageTypeResult result, ItemImageType itemImageType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        
         result.setItemImageType(itemControl.getItemImageTypeTransfer(getUserVisit(), itemImageType));
     }
 
@@ -112,7 +123,6 @@ public class EditItemImageTypeCommand
 
     @Override
     public void doLock(ItemImageTypeEdit edit, ItemImageType itemImageType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, getPreferredLanguage());
         var itemImageTypeDetail = itemImageType.getLastDetail();
         var quality = itemImageTypeDetail.getQuality();
@@ -132,12 +142,10 @@ public class EditItemImageTypeCommand
         
     @Override
     public void canUpdate(ItemImageType itemImageType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemImageTypeName = edit.getItemImageTypeName();
         var duplicateItemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
         if(duplicateItemImageType == null || itemImageType.equals(duplicateItemImageType)) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var preferredMimeTypeName = edit.getPreferredMimeTypeName();
 
             preferredMimeType = preferredMimeTypeName == null ? null : mimeTypeControl.getMimeTypeByName(preferredMimeTypeName);
@@ -152,7 +160,6 @@ public class EditItemImageTypeCommand
     
     @Override
     public void doUpdate(ItemImageType itemImageType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
         var itemImageTypeDetailValue = itemControl.getItemImageTypeDetailValueForUpdate(itemImageType);
         var itemImageTypeDescription = itemControl.getItemImageTypeDescriptionForUpdate(itemImageType, getPreferredLanguage());
@@ -165,7 +172,7 @@ public class EditItemImageTypeCommand
         itemImageTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemImageTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        ItemDescriptionLogic.getInstance().updateItemImageTypeFromValue(itemImageTypeDetailValue, partyPK);
+        itemDescriptionLogic.updateItemImageTypeFromValue(itemImageTypeDetailValue, partyPK);
 
         if(itemImageTypeDescription == null && description != null) {
             itemControl.createItemImageTypeDescription(itemImageType, getPreferredLanguage(), description, partyPK);

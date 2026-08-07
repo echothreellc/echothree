@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLetterSourceCommand
@@ -76,6 +76,13 @@ public class EditLetterSourceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    LetterControl letterControl;
+
     
     /** Creates a new instance of EditLetterSourceCommand */
     public EditLetterSourceCommand() {
@@ -84,7 +91,6 @@ public class EditLetterSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var letterControl = Session.getModelController(LetterControl.class);
         var result = LetterResultFactory.getEditLetterSourceResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -126,7 +132,6 @@ public class EditLetterSourceCommand
                 var duplicateLetterSource = letterControl.getLetterSourceByName(letterSourceName);
                 
                 if(duplicateLetterSource == null || letterSource.equals(duplicateLetterSource)) {
-                    var contactControl = Session.getModelController(ContactControl.class);
                     var companyParty = letterSource.getLastDetail().getCompanyParty();
                     var letterSourceCommandUtil = LetterSourceCommandUtil.getInstance();
                     var emailAddressPartyContactMechanism = letterSourceCommandUtil.getEmailAddressContactMechanism(this, edit, contactControl,

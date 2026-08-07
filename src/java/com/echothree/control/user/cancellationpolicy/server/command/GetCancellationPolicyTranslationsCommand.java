@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationPolicyTranslationsCommand
@@ -55,6 +55,10 @@ public class GetCancellationPolicyTranslationsCommand
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
     
     /** Creates a new instance of GetCancellationPolicyTranslationsCommand */
     public GetCancellationPolicyTranslationsCommand() {
@@ -63,7 +67,6 @@ public class GetCancellationPolicyTranslationsCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var result = CancellationPolicyResultFactory.getGetCancellationPolicyTranslationsResult();
         var cancellationKindName = form.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);

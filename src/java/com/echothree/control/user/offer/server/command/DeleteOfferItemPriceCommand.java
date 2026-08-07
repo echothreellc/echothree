@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteOfferItemPriceCommand
@@ -55,6 +56,10 @@ public class DeleteOfferItemPriceCommand
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    OfferItemLogic offerItemLogic;
+
     
     /** Creates a new instance of DeleteOfferItemPriceCommand */
     public DeleteOfferItemPriceCommand() {
@@ -69,7 +74,7 @@ public class DeleteOfferItemPriceCommand
         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
         var currencyIsoName = form.getCurrencyIsoName();
 
-        OfferItemLogic.getInstance().deleteOfferItemPrice(this, offerName, itemName, inventoryConditionName,
+        offerItemLogic.deleteOfferItemPrice(this, offerName, itemName, inventoryConditionName,
                 unitOfMeasureTypeName, currencyIsoName, getPartyPK());
 
         return null;

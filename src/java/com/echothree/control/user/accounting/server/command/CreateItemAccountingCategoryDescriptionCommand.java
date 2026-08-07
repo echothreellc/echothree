@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemAccountingCategoryDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateItemAccountingCategoryDescriptionCommand
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateItemAccountingCategoryDescriptionCommand */
     public CreateItemAccountingCategoryDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateItemAccountingCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var itemAccountingCategoryName = form.getItemAccountingCategoryName();
         var itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
         
         if(itemAccountingCategory != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

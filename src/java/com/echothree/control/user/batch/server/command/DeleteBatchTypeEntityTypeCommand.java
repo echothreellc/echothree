@@ -24,9 +24,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteBatchTypeEntityTypeCommand
@@ -41,6 +41,10 @@ public class DeleteBatchTypeEntityTypeCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    BatchControl batchControl;
+
     
     /** Creates a new instance of DeleteBatchTypeEntityTypeCommand */
     public DeleteBatchTypeEntityTypeCommand() {
@@ -49,7 +53,6 @@ public class DeleteBatchTypeEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
         

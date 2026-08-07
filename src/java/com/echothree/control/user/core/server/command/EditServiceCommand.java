@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditServiceCommand
@@ -70,6 +70,10 @@ public class EditServiceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ServerControl serverControl;
+
     
     /** Creates a new instance of EditServiceCommand */
     public EditServiceCommand() {
@@ -88,7 +92,6 @@ public class EditServiceCommand
 
     @Override
     public Service getEntity(EditServiceResult result) {
-        var serverControl = Session.getModelController(ServerControl.class);
         Service service;
         var serviceName = spec.getServiceName();
 
@@ -114,14 +117,11 @@ public class EditServiceCommand
 
     @Override
     public void fillInResult(EditServiceResult result, Service service) {
-        var serverControl = Session.getModelController(ServerControl.class);
-
         result.setService(serverControl.getServiceTransfer(getUserVisit(), service));
     }
 
     @Override
     public void doLock(ServiceEdit edit, Service service) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var serviceDescription = serverControl.getServiceDescription(service, getPreferredLanguage());
         var serviceDetail = service.getLastDetail();
 
@@ -140,7 +140,6 @@ public class EditServiceCommand
 
     @Override
     public void canUpdate(Service service) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var serviceName = edit.getServiceName();
         var duplicateService = serverControl.getServiceByName(serviceName);
 
@@ -159,7 +158,6 @@ public class EditServiceCommand
 
     @Override
     public void doUpdate(Service service) {
-        var serverControl = Session.getModelController(ServerControl.class);
         var partyPK = getPartyPK();
         var serviceDetailValue = serverControl.getServiceDetailValueForUpdate(service);
         var serviceDescription = serverControl.getServiceDescriptionForUpdate(service, getPreferredLanguage());

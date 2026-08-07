@@ -32,11 +32,11 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCustomerTypeCreditLimitCommand
@@ -56,6 +56,16 @@ public class EditCustomerTypeCreditLimitCommand
                 new FieldDefinition("PotentialCreditLimit", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of EditCustomerTypeCreditLimitCommand */
     public EditCustomerTypeCreditLimitCommand() {
@@ -64,26 +74,21 @@ public class EditCustomerTypeCreditLimitCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = spec.getCurrencyIsoName();
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
     }
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var result = TermResultFactory.getEditCustomerTypeCreditLimitResult();
         var customerTypeName= spec.getCustomerTypeName();
         var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
             var currencyIsoName = spec.getCurrencyIsoName();
             var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
-                var termControl = Session.getModelController(TermControl.class);
-                
                 if(editMode.equals(EditMode.LOCK)) {
                     var customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency);
                     

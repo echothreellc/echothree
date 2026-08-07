@@ -53,6 +53,7 @@ public class GetPartyCreditLimitsCommand
 
     @Inject
     PartyLogic partyLogic;
+
     
     /** Creates a new instance of GetPartyCreditLimitsCommand */
     public GetPartyCreditLimitsCommand() {

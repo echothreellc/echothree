@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLetterSourceChoicesCommand
@@ -53,6 +53,10 @@ public class GetLetterSourceChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    LetterControl letterControl;
+
     
     /** Creates a new instance of GetLetterSourceChoicesCommand */
     public GetLetterSourceChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetLetterSourceChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var letterControl = Session.getModelController(LetterControl.class);
         var result = LetterResultFactory.getGetLetterSourceChoicesResult();
         var defaultLetterSourceChoice = form.getDefaultLetterSourceChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

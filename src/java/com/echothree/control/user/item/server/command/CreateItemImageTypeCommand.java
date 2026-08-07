@@ -18,7 +18,6 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.server.logic.ItemImageTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemImageTypeCommand
@@ -61,6 +60,10 @@ public class CreateItemImageTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    ItemImageTypeLogic itemImageTypeLogic;
+
     
     /** Creates a new instance of CreateItemImageTypeCommand */
     public CreateItemImageTypeCommand() {
@@ -70,7 +73,6 @@ public class CreateItemImageTypeCommand
     @Override
     protected BaseResult execute() {
         var result = ItemResultFactory.getCreateItemImageTypeResult();
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var preferredMimeTypeName = form.getPreferredMimeTypeName();
         var preferredMimeType = preferredMimeTypeName == null ? null : mimeTypeControl.getMimeTypeByName(preferredMimeTypeName);
         ItemImageType itemImageType = null;
@@ -83,7 +85,7 @@ public class CreateItemImageTypeCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            itemImageType = ItemImageTypeLogic.getInstance().createItemImageType(this, itemImageTypeName, preferredMimeType,
+            itemImageType = itemImageTypeLogic.createItemImageType(this, itemImageTypeName, preferredMimeType,
                     quality, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPreferredMimeTypeName.name(), preferredMimeTypeName);

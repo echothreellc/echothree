@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPostalAddressStatusChoicesCommand
@@ -43,6 +43,9 @@ public class GetPostalAddressStatusChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null));
     }
 
+    @Inject
+    ContactControl contactControl;
+
     /** Creates a new instance of GetPostalAddressStatusChoicesCommand */
     public GetPostalAddressStatusChoicesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -50,7 +53,6 @@ public class GetPostalAddressStatusChoicesCommand
 
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var result = ContactResultFactory.getGetPostalAddressStatusChoicesResult();
         var contactMechanismName = form.getContactMechanismName();
         var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);

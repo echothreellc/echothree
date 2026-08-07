@@ -48,9 +48,10 @@ public class GetShipmentAliasCommand
                 new FieldDefinition("ShipmentAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ShipmentControl shipmentControl;
+
 
     /** Creates a new instance of GetShipmentAliasCommand */
     public GetShipmentAliasCommand() {

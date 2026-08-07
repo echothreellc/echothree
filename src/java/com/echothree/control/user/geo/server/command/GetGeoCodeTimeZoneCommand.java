@@ -56,17 +56,18 @@ public class GetGeoCodeTimeZoneCommand
                 new FieldDefinition("JavaTimeZoneName", FieldType.TIME_ZONE_NAME, true, null, null)
                 );
     }
-    
-    /** Creates a new instance of GetGeoCodeTimeZoneCommand */
-    public GetGeoCodeTimeZoneCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
-    
+
     @Inject
     GeoControl geoControl;
 
     @Inject
     PartyControl partyControl;
+
+
+    /** Creates a new instance of GetGeoCodeTimeZoneCommand */
+    public GetGeoCodeTimeZoneCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected GeoCodeTimeZone getEntity() {

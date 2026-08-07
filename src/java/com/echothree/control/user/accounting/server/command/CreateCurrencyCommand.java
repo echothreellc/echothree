@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCurrencyCommand
@@ -71,6 +71,13 @@ public class CreateCurrencyCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    SymbolPositionLogic symbolPositionLogic;
+
     
     /** Creates a new instance of CreateCurrencyCommand */
     public CreateCurrencyCommand() {
@@ -79,12 +86,11 @@ public class CreateCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = form.getCurrencyIsoName();
         var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
         
         if(currency == null) {
-            var symbolPosition = SymbolPositionLogic.getInstance().getSymbolPositionByName(this, form.getSymbolPositionName());
+            var symbolPosition = symbolPositionLogic.getSymbolPositionByName(this, form.getSymbolPositionName());
             
             if(!hasExecutionErrors()) {
                 var groupingSeparator = form.getGroupingSeparator();

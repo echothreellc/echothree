@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkflowEntityTypeCommand
@@ -55,6 +55,10 @@ public class CreateWorkflowEntityTypeCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateWorkflowEntityTypeCommand */
     public CreateWorkflowEntityTypeCommand() {
@@ -63,7 +67,6 @@ public class CreateWorkflowEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         

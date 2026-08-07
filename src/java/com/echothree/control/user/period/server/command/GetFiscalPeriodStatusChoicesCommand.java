@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFiscalPeriodStatusChoicesCommand
@@ -55,6 +55,13 @@ public class GetFiscalPeriodStatusChoicesCommand
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    PeriodControl periodControl;
+
+    @Inject
+    FiscalPeriodLogic fiscalPeriodLogic;
+
     
     /** Creates a new instance of GetFiscalPeriodStatusChoicesCommand */
     public GetFiscalPeriodStatusChoicesCommand() {
@@ -64,10 +71,9 @@ public class GetFiscalPeriodStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         var result = PeriodResultFactory.getGetFiscalPeriodStatusChoicesResult();
-        var period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
+        var period = fiscalPeriodLogic.getFiscalPeriodByName(this, form.getPeriodName());
         
         if(!hasExecutionErrors()) {
-            var periodControl = Session.getModelController(PeriodControl.class);
             var defaultFiscalPeriodStatusChoice = form.getDefaultFiscalPeriodStatusChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

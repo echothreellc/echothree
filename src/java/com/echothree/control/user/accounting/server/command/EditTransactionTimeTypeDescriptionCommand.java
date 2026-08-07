@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTransactionTimeTypeDescriptionCommand
@@ -67,6 +67,13 @@ public class EditTransactionTimeTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TransactionTimeControl transactionTimeControl;
+
     
     /** Creates a new instance of EditTransactionTimeTypeDescriptionCommand */
     public EditTransactionTimeTypeDescriptionCommand() {
@@ -86,12 +93,10 @@ public class EditTransactionTimeTypeDescriptionCommand
     @Override
     public TransactionTimeTypeDescription getEntity(EditTransactionTimeTypeDescriptionResult result) {
         TransactionTimeTypeDescription transactionTimeTypeDescription = null;
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeTypeName = spec.getTransactionTimeTypeName();
         var transactionTimeType = transactionTimeControl.getTransactionTimeTypeByName(transactionTimeTypeName);
 
         if(transactionTimeType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditTransactionTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditTransactionTimeTypeDescriptionResult result, TransactionTimeTypeDescription transactionTimeTypeDescription) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
-
         result.setTransactionTimeTypeDescription(transactionTimeControl.getTransactionTimeTypeDescriptionTransfer(getUserVisit(), transactionTimeTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditTransactionTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(TransactionTimeTypeDescription transactionTimeTypeDescription) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeTypeDescriptionValue = transactionTimeControl.getTransactionTimeTypeDescriptionValue(transactionTimeTypeDescription);
         
         transactionTimeTypeDescriptionValue.setDescription(edit.getDescription());

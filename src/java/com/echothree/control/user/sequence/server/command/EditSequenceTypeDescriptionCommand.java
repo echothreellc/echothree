@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSequenceTypeDescriptionCommand
@@ -67,6 +67,13 @@ public class EditSequenceTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of EditSequenceTypeDescriptionCommand */
     public EditSequenceTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public SequenceTypeDescription getEntity(EditSequenceTypeDescriptionResult result) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceTypeDescription sequenceTypeDescription = null;
         var sequenceTypeName = spec.getSequenceTypeName();
         var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(sequenceType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSequenceTypeDescriptionResult result, SequenceTypeDescription sequenceTypeDescription) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-
         result.setSequenceTypeDescription(sequenceControl.getSequenceTypeDescriptionTransfer(getUserVisit(), sequenceTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public void doUpdate(SequenceTypeDescription sequenceTypeDescription) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeDescriptionValue = sequenceControl.getSequenceTypeDescriptionValue(sequenceTypeDescription);
         
         sequenceTypeDescriptionValue.setDescription(edit.getDescription());

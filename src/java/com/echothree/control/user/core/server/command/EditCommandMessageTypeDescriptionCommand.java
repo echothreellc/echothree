@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditCommandMessageTypeDescrip
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandMessageTypeDescriptionResult;
 import com.echothree.control.user.core.common.spec.CommandMessageTypeDescriptionSpec;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -38,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommandMessageTypeDescriptionCommand
@@ -67,6 +66,10 @@ public class EditCommandMessageTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCommandMessageTypeDescriptionCommand */
     public EditCommandMessageTypeDescriptionCommand() {
@@ -85,13 +88,11 @@ public class EditCommandMessageTypeDescriptionCommand
 
     @Override
     public CommandMessageTypeDescription getEntity(EditCommandMessageTypeDescriptionResult result) {
-        var commandControl = Session.getModelController(CommandControl.class);
         CommandMessageTypeDescription commandMessageTypeDescription = null;
         var commandMessageTypeName = spec.getCommandMessageTypeName();
         var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +123,6 @@ public class EditCommandMessageTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditCommandMessageTypeDescriptionResult result, CommandMessageTypeDescription commandMessageTypeDescription) {
-        var commandControl = Session.getModelController(CommandControl.class);
-
         result.setCommandMessageTypeDescription(commandControl.getCommandMessageTypeDescriptionTransfer(getUserVisit(), commandMessageTypeDescription));
     }
 
@@ -134,7 +133,6 @@ public class EditCommandMessageTypeDescriptionCommand
 
     @Override
     public void doUpdate(CommandMessageTypeDescription commandMessageTypeDescription) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTypeDescriptionValue = commandControl.getCommandMessageTypeDescriptionValue(commandMessageTypeDescription);
         commandMessageTypeDescriptionValue.setDescription(edit.getDescription());
 

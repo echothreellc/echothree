@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterTypeCommand
@@ -56,6 +57,10 @@ public class CreateFilterTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterTypeLogic filterTypeLogic;
+
     
     /** Creates a new instance of CreateFilterTypeCommand */
     public CreateFilterTypeCommand() {
@@ -72,7 +77,7 @@ public class CreateFilterTypeCommand
         var description = form.getDescription();
         var partyPK = getPartyPK();
 
-        var filterType = FilterTypeLogic.getInstance().createFilterType(this, filterKindName, filterTypeName, isDefault, sortOrder,
+        var filterType = filterTypeLogic.createFilterType(this, filterKindName, filterTypeName, isDefault, sortOrder,
                 getPreferredLanguage(), description, partyPK);
 
         if(filterType != null) {

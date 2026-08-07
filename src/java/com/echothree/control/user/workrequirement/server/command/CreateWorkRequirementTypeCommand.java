@@ -33,9 +33,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkRequirementTypeCommand
@@ -59,6 +59,22 @@ public class CreateWorkRequirementTypeCommand
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateWorkRequirementTypeCommand */
     public CreateWorkRequirementTypeCommand() {
@@ -67,17 +83,14 @@ public class CreateWorkRequirementTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
             var workRequirementTypeName = form.getWorkRequirementTypeName();
             var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType == null) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var workRequirementSequenceName = form.getWorkRequirementSequenceName();
                 var workRequirementSequence = resolveWorkRequirementSequence(sequenceControl, workRequirementSequenceName);
                 
@@ -87,7 +100,6 @@ public class CreateWorkRequirementTypeCommand
                     var workflowStep  = resolveWorkflowStep(workflowStepName, workflowName);
 
                     if(!hasExecutionErrors()) {
-                        var uomControl = Session.getModelController(UomControl.class);
                         var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {
@@ -174,7 +186,6 @@ public class CreateWorkRequirementTypeCommand
         WorkflowStep workflowStep = null;
         
         if(workflowName != null && workflowStepName != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var workflow = workflowControl.getWorkflowByName(workflowName);
             
             if(workflow != null) {

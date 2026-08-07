@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTrackDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateTrackDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrackControl trackControl;
+
     
     /** Creates a new instance of CreateTrackDescriptionCommand */
     public CreateTrackDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateTrackDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var trackControl = Session.getModelController(TrackControl.class);
         var trackName = form.getTrackName();
         var track = trackControl.getTrackByName(trackName);
         
         if(track != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

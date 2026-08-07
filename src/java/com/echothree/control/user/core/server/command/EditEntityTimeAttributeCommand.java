@@ -38,6 +38,7 @@ import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityTimeAttributeCommand
@@ -64,6 +65,13 @@ public class EditEntityTimeAttributeCommand
                 new FieldDefinition("TimeAttribute", FieldType.DATE_TIME, true, null, null)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of EditEntityTimeAttributeCommand */
     public EditEntityTimeAttributeCommand() {
@@ -73,10 +81,10 @@ public class EditEntityTimeAttributeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityTimeAttributeResult();
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -86,8 +94,8 @@ public class EditEntityTimeAttributeCommand
 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
+                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
@@ -116,7 +124,7 @@ public class EditEntityTimeAttributeCommand
                                     }
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownEntityTimeAttribute.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
                                 entityTimeAttribute = coreControl.getEntityTimeAttributeForUpdate(entityAttribute, entityInstance);
@@ -138,7 +146,7 @@ public class EditEntityTimeAttributeCommand
                                     }
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownEntityTimeAttribute.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                 }
                             }
 

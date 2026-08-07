@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFontWeightCommand
@@ -67,6 +67,10 @@ public class EditFontWeightCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    FontControl fontControl;
+
     
     /** Creates a new instance of EditFontWeightCommand */
     public EditFontWeightCommand() {
@@ -85,7 +89,6 @@ public class EditFontWeightCommand
 
     @Override
     public FontWeight getEntity(EditFontWeightResult result) {
-        var fontControl = Session.getModelController(FontControl.class);
         FontWeight fontWeight;
         var fontWeightName = spec.getFontWeightName();
 
@@ -109,14 +112,11 @@ public class EditFontWeightCommand
 
     @Override
     public void fillInResult(EditFontWeightResult result, FontWeight fontWeight) {
-        var fontControl = Session.getModelController(FontControl.class);
-
         result.setFontWeight(fontControl.getFontWeightTransfer(getUserVisit(), fontWeight));
     }
 
     @Override
     public void doLock(FontWeightEdit edit, FontWeight fontWeight) {
-        var fontControl = Session.getModelController(FontControl.class);
         var fontWeightDescription = fontControl.getFontWeightDescription(fontWeight, getPreferredLanguage());
         var fontWeightDetail = fontWeight.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditFontWeightCommand
 
     @Override
     public void canUpdate(FontWeight fontWeight) {
-        var fontControl = Session.getModelController(FontControl.class);
         var fontWeightName = edit.getFontWeightName();
         var duplicateFontWeight = fontControl.getFontWeightByName(fontWeightName);
 
@@ -142,7 +141,6 @@ public class EditFontWeightCommand
 
     @Override
     public void doUpdate(FontWeight fontWeight) {
-        var fontControl = Session.getModelController(FontControl.class);
         var partyPK = getPartyPK();
         var fontWeightDetailValue = fontControl.getFontWeightDetailValueForUpdate(fontWeight);
         var fontWeightDescription = fontControl.getFontWeightDescriptionForUpdate(fontWeight, getPreferredLanguage());

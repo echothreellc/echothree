@@ -34,11 +34,11 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyCreditLimitCommand
@@ -58,6 +58,19 @@ public class EditPartyCreditLimitCommand
                 new FieldDefinition("PotentialCreditLimit", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    PartyChainLogic partyChainLogic;
+
     
     /** Creates a new instance of EditPartyCreditLimitCommand */
     public EditPartyCreditLimitCommand() {
@@ -66,26 +79,21 @@ public class EditPartyCreditLimitCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = spec.getCurrencyIsoName();
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
     }
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = TermResultFactory.getEditPartyCreditLimitResult();
         var partyName = spec.getPartyName();
         var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
             var currencyIsoName = spec.getCurrencyIsoName();
             var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
-                var termControl = Session.getModelController(TermControl.class);
-                
                 if(editMode.equals(EditMode.LOCK)) {
                     var partyCreditLimit = termControl.getPartyCreditLimit(party, currency);
                     
@@ -128,7 +136,7 @@ public class EditPartyCreditLimitCommand
                                     
                                     if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
                                         // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                                        PartyChainLogic.getInstance().createPartyCreditLimitChangedChainInstance(null, party, updatedBy);
+                                        partyChainLogic.createPartyCreditLimitChangedChainInstance(null, party, updatedBy);
                                     }
                                 }
                             } finally {

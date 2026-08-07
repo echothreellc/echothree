@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEditorChoicesCommand
@@ -53,6 +53,10 @@ public class GetEditorChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    EditorControl editorControl;
+
     
     /** Creates a new instance of GetEditorChoicesCommand */
     public GetEditorChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetEditorChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var editorControl = Session.getModelController(EditorControl.class);
         var result = CoreResultFactory.getGetEditorChoicesResult();
         var defaultEditorChoice = form.getDefaultEditorChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

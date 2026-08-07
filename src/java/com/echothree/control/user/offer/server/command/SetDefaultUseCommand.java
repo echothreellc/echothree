@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultUseCommand
@@ -53,6 +53,10 @@ public class SetDefaultUseCommand
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of SetDefaultUseCommand */
     public SetDefaultUseCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultUseCommand
     
     @Override
     protected BaseResult execute() {
-        var useControl = Session.getModelController(UseControl.class);
         var useName = form.getUseName();
         var useDetailValue = useControl.getUseDetailValueByNameForUpdate(useName);
         

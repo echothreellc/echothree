@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateForumTypeDescriptionCommand
@@ -42,6 +42,13 @@ public class CreateForumTypeDescriptionCommand
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateForumTypeDescriptionCommand */
     public CreateForumTypeDescriptionCommand() {
@@ -50,12 +57,10 @@ public class CreateForumTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumTypeName = form.getForumTypeName();
         var forumType = forumControl.getForumTypeByName(forumTypeName);
         
         if(forumType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -31,6 +31,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityMultipleListItemAttributeCommand
@@ -54,6 +55,13 @@ public class DeleteEntityMultipleListItemAttributeCommand
                 new FieldDefinition("EntityListItemUuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of DeleteEntityMultipleListItemAttributeCommand */
     public DeleteEntityMultipleListItemAttributeCommand() {
@@ -62,14 +70,14 @@ public class DeleteEntityMultipleListItemAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.MULTIPLELISTITEM);
 
             if(!hasExecutionErrors()) {
-                var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
+                var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, form);
 
                 if(!hasExecutionErrors()) {
                     var entityListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute, entityInstance, entityListItem);

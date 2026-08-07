@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePrinterDescriptionCommand
@@ -42,6 +42,12 @@ public class DeletePrinterDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
+
     /** Creates a new instance of DeletePrinterDescriptionCommand */
     public DeletePrinterDescriptionCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -49,12 +55,10 @@ public class DeletePrinterDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
        var printerName = form.getPrinterName();
        var printer = printerControl.getPrinterByName(printerName);
         
         if(printer != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

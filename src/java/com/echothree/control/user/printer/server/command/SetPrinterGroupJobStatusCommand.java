@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetPrinterGroupJobStatusCommand
@@ -41,6 +41,9 @@ public class SetPrinterGroupJobStatusCommand
                 );
     }
 
+    @Inject
+    PrinterControl printerControl;
+
     /** Creates a new instance of SetPrinterGroupJobStatusCommand */
     public SetPrinterGroupJobStatusCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -48,7 +51,6 @@ public class SetPrinterGroupJobStatusCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
        var printerGroupJobName = form.getPrinterGroupJobName();
        var printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
         

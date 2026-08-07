@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkflowEntranceCommand
@@ -59,6 +59,10 @@ public class CreateWorkflowEntranceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateWorkflowEntranceCommand */
     public CreateWorkflowEntranceCommand() {
@@ -68,7 +72,6 @@ public class CreateWorkflowEntranceCommand
     @Override
     protected BaseResult execute() {
         var result = WorkflowResultFactory.getCreateWorkflowEntranceResult();
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         WorkflowEntrance workflowEntrance = null;

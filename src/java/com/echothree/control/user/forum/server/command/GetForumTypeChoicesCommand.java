@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumTypeChoicesCommand
@@ -40,6 +40,10 @@ public class GetForumTypeChoicesCommand
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of GetForumTypeChoicesCommand */
     public GetForumTypeChoicesCommand() {
@@ -48,7 +52,6 @@ public class GetForumTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var result = ForumResultFactory.getGetForumTypeChoicesResult();
         var defaultForumTypeChoice = form.getDefaultForumTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

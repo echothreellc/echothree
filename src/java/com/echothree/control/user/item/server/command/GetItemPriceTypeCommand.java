@@ -31,9 +31,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemPriceTypeCommand
@@ -50,6 +50,15 @@ public class GetItemPriceTypeCommand
         );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemPriceTypeLogic itemPriceTypeLogic;
+
     /** Creates a new instance of GetItemPriceTypeCommand */
     public GetItemPriceTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -57,21 +66,20 @@ public class GetItemPriceTypeCommand
 
     @Override
     protected ItemPriceType getEntity() {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemPriceType itemPriceType = null;
         var itemPriceTypeName = form.getItemPriceTypeName();
-        var parameterCount = (itemPriceTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (itemPriceTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(itemPriceTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemPriceType.name());
 
                 if(!hasExecutionErrors()) {
                     itemPriceType = itemControl.getItemPriceTypeByEntityInstance(entityInstance);
                 }
             } else {
-                itemPriceType = ItemPriceTypeLogic.getInstance().getItemPriceTypeByName(this, itemPriceTypeName);
+                itemPriceType = itemPriceTypeLogic.getItemPriceTypeByName(this, itemPriceTypeName);
             }
 
             if(itemPriceType != null) {
@@ -86,7 +94,6 @@ public class GetItemPriceTypeCommand
 
     @Override
     protected BaseResult getResult(ItemPriceType itemPriceType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemPriceTypeResult();
 
         if(itemPriceType != null) {

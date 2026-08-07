@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEmploymentCommand
@@ -45,6 +45,13 @@ public class CreateEmploymentCommand
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateEmploymentCommand */
     public CreateEmploymentCommand() {
@@ -53,7 +60,6 @@ public class CreateEmploymentCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
@@ -62,7 +68,6 @@ public class CreateEmploymentCommand
             var partyCompany = partyControl.getPartyCompanyByName(companyName);
 
             if(partyCompany != null) {
-                var employeeControl = Session.getModelController(EmployeeControl.class);
                 var terminationTypeName = form.getTerminationTypeName();
                 var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
 

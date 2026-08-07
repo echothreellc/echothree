@@ -17,16 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteCommandForm;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteCommandCommand
@@ -40,6 +39,7 @@ public class DeleteCommandCommand
             new FieldDefinition("CommandName", FieldType.COMMAND_NAME, true, null, null)
         );
     }
+
     
     /** Creates a new instance of DeleteCommandCommand */
     public DeleteCommandCommand() {
@@ -48,7 +48,6 @@ public class DeleteCommandCommand
     
     @Override
     protected BaseResult execute() {
-        var commandControl = Session.getModelController(CommandControl.class);
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         

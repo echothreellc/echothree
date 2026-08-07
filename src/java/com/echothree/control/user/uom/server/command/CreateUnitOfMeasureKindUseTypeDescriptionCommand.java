@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUnitOfMeasureKindUseTypeDescriptionCommand
@@ -42,6 +42,13 @@ public class CreateUnitOfMeasureKindUseTypeDescriptionCommand
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of CreateUnitOfMeasureKindUseTypeDescriptionCommand */
     public CreateUnitOfMeasureKindUseTypeDescriptionCommand() {
@@ -50,12 +57,10 @@ public class CreateUnitOfMeasureKindUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
         var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         
         if(unitOfMeasureKindUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartySecurityRoleTemplateDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetPartySecurityRoleTemplateDescriptionsCommand
                 new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of GetPartySecurityRoleTemplateDescriptionsCommand */
     public GetPartySecurityRoleTemplateDescriptionsCommand() {
@@ -62,8 +66,6 @@ public class GetPartySecurityRoleTemplateDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = Session.getModelController(SecurityControl.class);
-
         var result = SecurityResultFactory.getGetPartySecurityRoleTemplateDescriptionsResult();
         var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
         var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);

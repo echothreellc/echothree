@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeTimeZoneCommand
@@ -66,6 +66,13 @@ public class EditGeoCodeTimeZoneCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditGeoCodeTimeZoneCommand */
     public EditGeoCodeTimeZoneCommand() {
@@ -74,13 +81,11 @@ public class EditGeoCodeTimeZoneCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var result = GeoResultFactory.getEditGeoCodeTimeZoneResult();
         var geoCodeName = spec.getGeoCodeName();
         var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var javaTimeZoneName = spec.getJavaTimeZoneName();
             var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             

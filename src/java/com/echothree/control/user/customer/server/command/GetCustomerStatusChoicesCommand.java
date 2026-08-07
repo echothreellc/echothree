@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerStatusChoicesCommand
@@ -55,6 +55,10 @@ public class GetCustomerStatusChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
     
     /** Creates a new instance of GetCustomerStatusChoicesCommand */
     public GetCustomerStatusChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetCustomerStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var result = CustomerResultFactory.getGetCustomerStatusChoicesResult();
         var customerName = form.getCustomerName();
         var customer = customerName == null? null: customerControl.getCustomerByName(customerName);

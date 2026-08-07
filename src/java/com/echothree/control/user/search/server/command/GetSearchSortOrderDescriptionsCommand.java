@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchSortOrderDescriptionsCommand
@@ -55,6 +55,10 @@ public class GetSearchSortOrderDescriptionsCommand
                 new FieldDefinition("SearchSortOrderName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of GetSearchSortOrderDescriptionsCommand */
     public GetSearchSortOrderDescriptionsCommand() {
@@ -63,7 +67,6 @@ public class GetSearchSortOrderDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchSortOrderDescriptionsResult();
         var searchKindName = form.getSearchKindName();
         var searchKind = searchControl.getSearchKindByName(searchKindName);

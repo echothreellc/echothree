@@ -29,9 +29,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentSectionCommand
@@ -50,6 +50,13 @@ public class GetContentSectionCommand
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    AssociateReferralLogic associateReferralLogic;
+
     
     /** Creates a new instance of GetContentSectionCommand */
     public GetContentSectionCommand() {
@@ -64,7 +71,6 @@ public class GetContentSectionCommand
         ContentSection contentSection = null;
 
         if(parameterCount == 1) {
-            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -92,7 +98,7 @@ public class GetContentSectionCommand
                         : contentControl.getContentSectionByName(contentCollection, contentSectionName);
 
                 if(contentSection != null) {
-                    AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentSection.getPrimaryKey(), partyPK);
+                    associateReferralLogic.handleAssociateReferral(session, this, form, userVisit, contentSection.getPrimaryKey(), partyPK);
 
                     if(!hasExecutionErrors()) {
                         sendEvent(contentSection.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
@@ -113,8 +119,6 @@ public class GetContentSectionCommand
         var result = ContentResultFactory.getGetContentSectionResult();
         
         if(contentSection != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-            
             result.setContentSection(contentControl.getContentSectionTransfer(getUserVisit(), contentSection));
         }
         

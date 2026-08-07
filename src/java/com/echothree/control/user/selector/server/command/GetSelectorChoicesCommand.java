@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorChoicesCommand
@@ -43,6 +43,10 @@ public class GetSelectorChoicesCommand
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of GetSelectorChoicesCommand */
     public GetSelectorChoicesCommand() {
@@ -51,7 +55,6 @@ public class GetSelectorChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorChoicesResult();
         var selectorKindName = form.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);

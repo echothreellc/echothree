@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSequenceTypeCommand
@@ -59,6 +59,12 @@ public class GetSequenceTypeCommand
         );
     }
 
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
     /** Creates a new instance of GetSequenceTypeCommand */
     public GetSequenceTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetSequenceTypeCommand
 
     @Override
     protected SequenceType getEntity() {
-        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByUniversalSpec(this, form, true);
+        var sequenceType = sequenceTypeLogic.getSequenceTypeByUniversalSpec(this, form, true);
 
         if(sequenceType != null) {
             sendEvent(sequenceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetSequenceTypeCommand
 
     @Override
     protected BaseResult getResult(SequenceType sequenceType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceTypeResult();
 
         if(sequenceType != null) {

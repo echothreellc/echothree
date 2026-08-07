@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentWebAddressDescriptionCommand
@@ -67,6 +67,13 @@ public class EditContentWebAddressDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContentWebAddressDescriptionCommand */
     public EditContentWebAddressDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditContentWebAddressDescriptionCommand
     
     @Override
     public ContentWebAddressDescription getEntity(EditContentWebAddressDescriptionResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentWebAddressDescription contentWebAddressDescription = null;
         var contentWebAddressName = spec.getContentWebAddressName();
         var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,8 +129,6 @@ public class EditContentWebAddressDescriptionCommand
     
     @Override
     public void fillInResult(EditContentWebAddressDescriptionResult result, ContentWebAddressDescription contentWebAddressDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentWebAddressDescription(contentControl.getContentWebAddressDescriptionTransfer(getUserVisit(), contentWebAddressDescription));
     }
     
@@ -136,7 +139,6 @@ public class EditContentWebAddressDescriptionCommand
     
     @Override
     public void doUpdate(ContentWebAddressDescription contentWebAddressDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentWebAddressDescriptionValue = contentControl.getContentWebAddressDescriptionValue(contentWebAddressDescription);
         contentWebAddressDescriptionValue.setDescription(edit.getDescription());
 

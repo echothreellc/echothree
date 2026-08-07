@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchDefaultOperatorsCommand
@@ -54,6 +54,9 @@ public class GetSearchDefaultOperatorsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    SearchControl searchControl;
+
     /** Creates a new instance of GetSearchDefaultOperatorsCommand */
     public GetSearchDefaultOperatorsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,15 +69,11 @@ public class GetSearchDefaultOperatorsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         return searchControl.countSearchDefaultOperators();
     }
 
     @Override
     protected Collection<SearchDefaultOperator> getEntities() {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         return searchControl.getSearchDefaultOperators();
     }
 
@@ -83,8 +82,6 @@ public class GetSearchDefaultOperatorsCommand
         var result = SearchResultFactory.getGetSearchDefaultOperatorsResult();
 
         if(entities != null) {
-            var searchControl = Session.getModelController(SearchControl.class);
-
             if(session.hasLimit(SearchDefaultOperatorFactory.class)) {
                 result.setSearchDefaultOperatorCount(getTotalEntities());
             }

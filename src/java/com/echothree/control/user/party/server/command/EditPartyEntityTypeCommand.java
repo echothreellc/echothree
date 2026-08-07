@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyEntityTypeCommand
@@ -68,6 +68,13 @@ public class EditPartyEntityTypeCommand
                 new FieldDefinition("ConfirmDelete", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyEntityTypeControl partyEntityTypeControl;
+
     
     /** Creates a new instance of EditPartyEntityTypeCommand */
     public EditPartyEntityTypeCommand() {
@@ -86,7 +93,6 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public PartyEntityType getEntity(EditPartyEntityTypeResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyEntityType partyEntityType = null;
         var partyName = spec.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
@@ -100,8 +106,6 @@ public class EditPartyEntityTypeCommand
                 var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                 if(entityType != null) {
-                    var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
-
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                         partyEntityType = partyEntityTypeControl.getPartyEntityType(party, entityType);
                     } else { // EditMode.UPDATE
@@ -131,8 +135,6 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public void fillInResult(EditPartyEntityTypeResult result, PartyEntityType partyEntityType) {
-        var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
-
         result.setPartyEntityType(partyEntityTypeControl.getPartyEntityTypeTransfer(getUserVisit(), partyEntityType));
     }
 
@@ -143,7 +145,6 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public void doUpdate(PartyEntityType partyEntityType) {
-        var partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
         var partyEntityTypeValue = partyEntityTypeControl.getPartyEntityTypeValue(partyEntityType);
         
         partyEntityTypeValue.setConfirmDelete(Boolean.valueOf(edit.getConfirmDelete()));

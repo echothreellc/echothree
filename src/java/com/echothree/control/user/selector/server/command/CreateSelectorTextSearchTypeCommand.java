@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSelectorTextSearchTypeCommand
@@ -48,6 +48,10 @@ public class CreateSelectorTextSearchTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateSelectorTextSearchTypeCommand */
     public CreateSelectorTextSearchTypeCommand() {
@@ -57,7 +61,6 @@ public class CreateSelectorTextSearchTypeCommand
     @Override
     protected BaseResult execute() {
         var selectorTextSearchTypeName = form.getSelectorTextSearchTypeName();
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorTextSearchType = selectorControl.getSelectorTextSearchTypeByName(selectorTextSearchTypeName);
         
         if(selectorTextSearchType == null) {

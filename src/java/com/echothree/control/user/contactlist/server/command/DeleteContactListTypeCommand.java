@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteContactListTypeCommand
@@ -53,6 +53,10 @@ public class DeleteContactListTypeCommand
                 new FieldDefinition("ContactListTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
     
     /** Creates a new instance of DeleteContactListTypeCommand */
     public DeleteContactListTypeCommand() {
@@ -61,7 +65,6 @@ public class DeleteContactListTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListTypeName = form.getContactListTypeName();
         var contactListType = contactListControl.getContactListTypeByNameForUpdate(contactListTypeName);
         

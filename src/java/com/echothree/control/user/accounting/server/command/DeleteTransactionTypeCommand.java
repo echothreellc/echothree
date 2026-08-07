@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTransactionTypeCommand
@@ -53,6 +53,10 @@ public class DeleteTransactionTypeCommand
                 new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of DeleteTransactionTypeCommand */
     public DeleteTransactionTypeCommand() {
@@ -61,7 +65,6 @@ public class DeleteTransactionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionTypeName = form.getTransactionTypeName();
         var transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
         

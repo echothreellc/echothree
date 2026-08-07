@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteGenderCommand
@@ -39,6 +39,10 @@ public class DeleteGenderCommand
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteGenderCommand */
     public DeleteGenderCommand() {
@@ -47,7 +51,6 @@ public class DeleteGenderCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var genderName = form.getGenderName();
         var gender = partyControl.getGenderByNameForUpdate(genderName);
         

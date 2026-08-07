@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePaymentProcessorTypeCommand
@@ -51,6 +52,10 @@ public class DeletePaymentProcessorTypeCommand
                 new FieldDefinition("PaymentProcessorTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PaymentProcessorTypeLogic paymentProcessorTypeLogic;
+
     
     /** Creates a new instance of DeletePaymentProcessorTypeCommand */
     public DeletePaymentProcessorTypeCommand() {
@@ -60,10 +65,10 @@ public class DeletePaymentProcessorTypeCommand
     @Override
     protected BaseResult execute() {
         var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
-        var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByNameForUpdate(this, paymentProcessorTypeName);
+        var paymentProcessorType = paymentProcessorTypeLogic.getPaymentProcessorTypeByNameForUpdate(this, paymentProcessorTypeName);
         
         if(!hasExecutionErrors()) {
-            PaymentProcessorTypeLogic.getInstance().deletePaymentProcessorType(this, paymentProcessorType, getPartyPK());
+            paymentProcessorTypeLogic.deletePaymentProcessorType(this, paymentProcessorType, getPartyPK());
         }
         
         return null;

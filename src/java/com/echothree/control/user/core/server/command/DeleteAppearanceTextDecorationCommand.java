@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteAppearanceTextDecorationCommand
@@ -56,6 +56,16 @@ public class DeleteAppearanceTextDecorationCommand
                 new FieldDefinition("TextDecorationName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    AppearanceLogic appearanceLogic;
+
+    @Inject
+    TextLogic textLogic;
+
     
     /** Creates a new instance of DeleteAppearanceTextDecorationCommand */
     public DeleteAppearanceTextDecorationCommand() {
@@ -65,14 +75,13 @@ public class DeleteAppearanceTextDecorationCommand
     @Override
     protected BaseResult execute() {
         var appearanceName = form.getAppearanceName();
-        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var appearance = appearanceLogic.getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
             var textDecorationName = form.getTextDecorationName();
-            var textDecoration = TextLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+            var textDecoration = textLogic.getTextDecorationByName(this, textDecorationName);
             
             if(!hasExecutionErrors()) {
-                var appearanceControl = Session.getModelController(AppearanceControl.class);
                 var appearanceTextDecoration = appearanceControl.getAppearanceTextDecorationForUpdate(appearance, textDecoration);
                 
                 if(appearanceTextDecoration != null) {

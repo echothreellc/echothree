@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemAliasTypeCommand
@@ -73,6 +73,13 @@ public class EditItemAliasTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemAliasTypeLogic itemAliasTypeLogic;
+
     
     /** Creates a new instance of EditItemAliasTypeCommand */
     public EditItemAliasTypeCommand() {
@@ -91,7 +98,7 @@ public class EditItemAliasTypeCommand
     
     @Override
     public ItemAliasType getEntity(EditItemAliasTypeResult result) {
-        return ItemAliasTypeLogic.getInstance().getItemAliasTypeByUniversalSpec(this,
+        return itemAliasTypeLogic.getItemAliasTypeByUniversalSpec(this,
                 spec, false, editModeToEntityPermission(editMode));
     }
     
@@ -102,8 +109,6 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void fillInResult(EditItemAliasTypeResult result, ItemAliasType itemAliasType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
-        
         result.setItemAliasType(itemControl.getItemAliasTypeTransfer(getUserVisit(), itemAliasType));
     }
     
@@ -111,7 +116,6 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void doLock(ItemAliasTypeEdit edit, ItemAliasType itemAliasType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, getPreferredLanguage());
         final var itemAliasTypeDetail = itemAliasType.getLastDetail();
         
@@ -129,7 +133,6 @@ public class EditItemAliasTypeCommand
         
     @Override
     public void canUpdate(ItemAliasType itemAliasType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var itemAliasTypeName = edit.getItemAliasTypeName();
         final var duplicateItemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
@@ -148,7 +151,6 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void doUpdate(ItemAliasType itemAliasType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var partyPK = getPartyPK();
         final var itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueForUpdate(itemAliasType);
         final var itemAliasTypeDescription = itemControl.getItemAliasTypeDescriptionForUpdate(itemAliasType, getPreferredLanguage());
@@ -161,7 +163,7 @@ public class EditItemAliasTypeCommand
         itemAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        ItemAliasTypeLogic.getInstance().updateItemAliasTypeFromValue(session, itemAliasTypeDetailValue, partyPK);
+        itemAliasTypeLogic.updateItemAliasTypeFromValue(session, itemAliasTypeDetailValue, partyPK);
 
         if(itemAliasTypeDescription == null && description != null) {
             itemControl.createItemAliasTypeDescription(itemAliasType, getPreferredLanguage(), description, partyPK);

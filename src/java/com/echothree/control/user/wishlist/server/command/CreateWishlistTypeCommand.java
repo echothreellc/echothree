@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWishlistTypeCommand
@@ -55,6 +56,10 @@ public class CreateWishlistTypeCommand
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
+
     
     /** Creates a new instance of CreateWishlistTypeCommand */
     public CreateWishlistTypeCommand() {
@@ -70,7 +75,7 @@ public class CreateWishlistTypeCommand
         var description = form.getDescription();
         var createdBy = getPartyPK();
 
-        var wishlistType = WishlistTypeLogic.getInstance().createWishlistType(this, wishlistTypeName, isDefault,
+        var wishlistType = wishlistTypeLogic.createWishlistType(this, wishlistTypeName, isDefault,
                 sortOrder, getPreferredLanguage(),  description, createdBy);
 
         if(wishlistType != null) {

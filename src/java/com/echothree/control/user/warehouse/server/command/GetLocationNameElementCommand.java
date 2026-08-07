@@ -58,17 +58,18 @@ public class GetLocationNameElementCommand
                 new FieldDefinition("LocationNameElementName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetLocationNameElementCommand */
-    public GetLocationNameElementCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     WarehouseControl warehouseControl;
 
     @Inject
     WarehouseLogic warehouseLogic;
+
+
+    /** Creates a new instance of GetLocationNameElementCommand */
+    public GetLocationNameElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected LocationNameElement getEntity() {

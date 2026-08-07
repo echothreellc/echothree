@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDivisionChoicesCommand
@@ -45,6 +45,10 @@ public class GetDivisionChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetDivisionChoicesCommand */
     public GetDivisionChoicesCommand() {
@@ -59,7 +63,6 @@ public class GetDivisionChoicesCommand
         var parameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            var partyControl = Session.getModelController(PartyControl.class);
             Party party = null;
             
             if(companyName != null) {

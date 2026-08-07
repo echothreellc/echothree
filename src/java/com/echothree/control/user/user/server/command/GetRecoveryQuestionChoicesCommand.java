@@ -25,6 +25,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRecoveryQuestionChoicesCommand
@@ -38,6 +39,7 @@ public class GetRecoveryQuestionChoicesCommand
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
     
     /** Creates a new instance of GetRecoveryQuestionChoicesCommand */
     public GetRecoveryQuestionChoicesCommand() {
@@ -46,7 +48,6 @@ public class GetRecoveryQuestionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var result = UserResultFactory.getGetRecoveryQuestionChoicesResult();
         var defaultRecoveryQuestionChoice = form.getDefaultRecoveryQuestionChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

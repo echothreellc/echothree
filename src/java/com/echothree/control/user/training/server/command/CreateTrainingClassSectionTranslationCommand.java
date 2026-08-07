@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTrainingClassSectionTranslationCommand
@@ -63,6 +63,16 @@ public class CreateTrainingClassSectionTranslationCommand
                 new FieldDefinition("Introduction", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateTrainingClassSectionTranslationCommand */
     public CreateTrainingClassSectionTranslationCommand() {
@@ -71,7 +81,6 @@ public class CreateTrainingClassSectionTranslationCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -80,7 +89,6 @@ public class CreateTrainingClassSectionTranslationCommand
             var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -88,7 +96,6 @@ public class CreateTrainingClassSectionTranslationCommand
                     var trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslation(trainingClassSection, language);
 
                     if(trainingClassSectionTranslation == null) {
-                        var mimeTypeLogic = MimeTypeLogic.getInstance();
                         var overviewMimeTypeName = form.getOverviewMimeTypeName();
                         var overview = form.getOverview();
 

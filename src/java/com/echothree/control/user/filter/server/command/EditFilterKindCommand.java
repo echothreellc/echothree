@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFilterKindCommand
@@ -68,6 +68,9 @@ public class EditFilterKindCommand
                 );
     }
 
+    @Inject
+    FilterControl filterControl;
+
     /** Creates a new instance of EditFilterKindCommand */
     public EditFilterKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,7 +88,6 @@ public class EditFilterKindCommand
 
     @Override
     public FilterKind getEntity(EditFilterKindResult result) {
-        var filterControl = Session.getModelController(FilterControl.class);
         FilterKind filterKind;
         var filterKindName = spec.getFilterKindName();
 
@@ -109,14 +111,11 @@ public class EditFilterKindCommand
 
     @Override
     public void fillInResult(EditFilterKindResult result, FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
-
         result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
     }
 
     @Override
     public void doLock(FilterKindEdit edit, FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindDescription = filterControl.getFilterKindDescription(filterKind, getPreferredLanguage());
         var filterKindDetail = filterKind.getLastDetail();
 
@@ -131,7 +130,6 @@ public class EditFilterKindCommand
 
     @Override
     public void canUpdate(FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = edit.getFilterKindName();
         var duplicateFilterKind = filterControl.getFilterKindByName(filterKindName);
 
@@ -142,7 +140,6 @@ public class EditFilterKindCommand
 
     @Override
     public void doUpdate(FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var partyPK = getPartyPK();
         var filterKindDetailValue = filterControl.getFilterKindDetailValueForUpdate(filterKind);
         var filterKindDescription = filterControl.getFilterKindDescriptionForUpdate(filterKind, getPreferredLanguage());

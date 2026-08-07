@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFontStyleDescriptionCommand
@@ -67,6 +67,13 @@ public class EditFontStyleDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    FontControl fontControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditFontStyleDescriptionCommand */
     public EditFontStyleDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public FontStyleDescription getEntity(EditFontStyleDescriptionResult result) {
-        var fontControl = Session.getModelController(FontControl.class);
         FontStyleDescription fontStyleDescription = null;
         var fontStyleName = spec.getFontStyleName();
         var fontStyle = fontControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public void fillInResult(EditFontStyleDescriptionResult result, FontStyleDescription fontStyleDescription) {
-        var fontControl = Session.getModelController(FontControl.class);
-
         result.setFontStyleDescription(fontControl.getFontStyleDescriptionTransfer(getUserVisit(), fontStyleDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public void doUpdate(FontStyleDescription fontStyleDescription) {
-        var fontControl = Session.getModelController(FontControl.class);
         var fontStyleDescriptionValue = fontControl.getFontStyleDescriptionValue(fontStyleDescription);
         fontStyleDescriptionValue.setDescription(edit.getDescription());
 

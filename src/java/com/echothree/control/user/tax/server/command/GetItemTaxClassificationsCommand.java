@@ -74,6 +74,7 @@ public class GetItemTaxClassificationsCommand
 
     @Inject
     ItemLogic itemLogic;
+
     
     /** Creates a new instance of GetItemTaxClassificationsCommand */
     public GetItemTaxClassificationsCommand() {

@@ -32,6 +32,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityClobAttributeCommand
@@ -57,6 +58,19 @@ public class CreateEntityClobAttributeCommand
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateEntityClobAttributeCommand */
     public CreateEntityClobAttributeCommand() {
@@ -65,14 +79,14 @@ public class CreateEntityClobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
-        var language = LanguageLogic.getInstance().getLanguage(this, form, form);
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
+        var language = languageLogic.getLanguage(this, form, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                 EntityAttributeTypes.CLOB);
-        var mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, form.getMimeTypeName());
+        var mimeType = mimeTypeLogic.getMimeTypeByName(this, form.getMimeTypeName());
 
         if(!hasExecutionErrors()) {
-            EntityAttributeLogic.getInstance().createEntityClobAttribute(this, entityAttribute, entityInstance, language,
+            entityAttributeLogic.createEntityClobAttribute(this, entityAttribute, entityInstance, language,
                     form.getClobAttribute(), mimeType, getPartyPK());
         }
 

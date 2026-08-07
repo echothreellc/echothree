@@ -42,11 +42,11 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContactTelephoneCommand
@@ -75,6 +75,25 @@ public class CreateContactTelephoneCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateContactTelephoneCommand */
     public CreateContactTelephoneCommand() {
@@ -91,12 +110,10 @@ public class CreateContactTelephoneCommand
     @Override
     protected BaseResult execute() {
         var result = ContactResultFactory.getCreateContactTelephoneResult();
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var countryName = form.getCountryName();
             var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
             var countryGeoCode = geoControl.getCountryByAlias(countryAlias);
@@ -116,14 +133,11 @@ public class CreateContactTelephoneCommand
                         pattern = telephoneNumberPattern == null? null: Pattern.compile(telephoneNumberPattern);
                         
                         if(pattern == null || pattern.matcher(telephoneNumber).matches()) {
-                            var contactControl = Session.getModelController(ContactControl.class);
-                            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                            var workflowControl = Session.getModelController(WorkflowControl.class);
                             BasePK createdBy = getPartyPK();
                             var telephoneExtension = form.getTelephoneExtension();
                             var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
                             var description = form.getDescription();
-                            var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+                            var contactMechanismName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
 
                             var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.TELECOM_ADDRESS.name());
                             var contactMechanism = contactControl.createContactMechanism(contactMechanismName,

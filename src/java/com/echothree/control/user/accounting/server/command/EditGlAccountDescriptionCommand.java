@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGlAccountDescriptionCommand
@@ -65,6 +65,13 @@ public class EditGlAccountDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditGlAccountDescriptionCommand */
     public EditGlAccountDescriptionCommand() {
@@ -73,13 +80,11 @@ public class EditGlAccountDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getEditGlAccountDescriptionResult();
         var glAccountName = spec.getGlAccountName();
         var glAccount = accountingControl.getGlAccountByName(glAccountName);
         
         if(glAccount != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

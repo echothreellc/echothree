@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateForumMessageTypePartTypeCommand
@@ -43,6 +43,10 @@ public class CreateForumMessageTypePartTypeCommand
                 new FieldDefinition("ForumMessagePartTypeName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of CreateForumMessageTypePartTypeCommand */
     public CreateForumMessageTypePartTypeCommand() {
@@ -51,7 +55,6 @@ public class CreateForumMessageTypePartTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessageTypeName = form.getForumMessageTypeName();
         var forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
         

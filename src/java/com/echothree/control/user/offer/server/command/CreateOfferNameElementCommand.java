@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOfferNameElementCommand
@@ -56,6 +57,10 @@ public class CreateOfferNameElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    OfferNameElementLogic offerNameElementLogic;
+
     
     /** Creates a new instance of CreateOfferNameElementCommand */
     public CreateOfferNameElementCommand() {
@@ -71,7 +76,7 @@ public class CreateOfferNameElementCommand
         var validationPattern = form.getValidationPattern();
         var description = form.getDescription();
 
-        var offerNameElement = OfferNameElementLogic.getInstance().createOfferNameElement(this,
+        var offerNameElement = offerNameElementLogic.createOfferNameElement(this,
                 offerNameElementName, offset, length, validationPattern, getPreferredLanguage(), description,
                 getPartyPK());
 

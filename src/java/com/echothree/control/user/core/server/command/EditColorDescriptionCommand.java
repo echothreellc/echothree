@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditColorDescriptionCommand
@@ -67,6 +67,13 @@ public class EditColorDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ColorControl colorControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditColorDescriptionCommand */
     public EditColorDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditColorDescriptionCommand
 
     @Override
     public ColorDescription getEntity(EditColorDescriptionResult result) {
-        var colorControl = Session.getModelController(ColorControl.class);
         ColorDescription colorDescription = null;
         var colorName = spec.getColorName();
         var color = colorControl.getColorByName(colorName);
 
         if(color != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditColorDescriptionCommand
 
     @Override
     public void fillInResult(EditColorDescriptionResult result, ColorDescription colorDescription) {
-        var colorControl = Session.getModelController(ColorControl.class);
-
         result.setColorDescription(colorControl.getColorDescriptionTransfer(getUserVisit(), colorDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditColorDescriptionCommand
 
     @Override
     public void doUpdate(ColorDescription colorDescription) {
-        var colorControl = Session.getModelController(ColorControl.class);
         var colorDescriptionValue = colorControl.getColorDescriptionValue(colorDescription);
         colorDescriptionValue.setDescription(edit.getDescription());
 

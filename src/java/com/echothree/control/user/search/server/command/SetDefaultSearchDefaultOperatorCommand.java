@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultSearchDefaultOperatorCommand
@@ -53,6 +53,10 @@ public class SetDefaultSearchDefaultOperatorCommand
                 new FieldDefinition("SearchDefaultOperatorName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of SetDefaultSearchDefaultOperatorCommand */
     public SetDefaultSearchDefaultOperatorCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultSearchDefaultOperatorCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchDefaultOperatorName = form.getSearchDefaultOperatorName();
         var searchDefaultOperatorDetailValue = searchControl.getSearchDefaultOperatorDetailValueByNameForUpdate(searchDefaultOperatorName);
         

@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePurchaseInvoiceCommand
@@ -76,6 +76,28 @@ public class CreatePurchaseInvoiceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    FreeOnBoardLogic freeOnBoardLogic;
+
+    @Inject
+    PurchaseInvoiceLogic purchaseInvoiceLogic;
+
+    @Inject
+    TermLogic termLogic;
+
     
     /** Creates a new instance of CreatePurchaseInvoiceCommand */
     public CreatePurchaseInvoiceCommand() {
@@ -86,24 +108,21 @@ public class CreatePurchaseInvoiceCommand
     protected BaseResult execute() {
         var result = PurchaseResultFactory.getCreatePurchaseInvoiceResult();
         Invoice invoice = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = form.getCurrencyIsoName();
         var currency = currencyIsoName == null ? null : accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currencyIsoName == null || currency != null) {
             var termName = form.getTermName();
             var freeOnBoardName = form.getFreeOnBoardName();
-            var term = termName == null ? null : TermLogic.getInstance().getTermByName(this, termName);
-            var freeOnBoard = freeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, freeOnBoardName);
+            var term = termName == null ? null : termLogic.getTermByName(this, termName);
+            var freeOnBoard = freeOnBoardName == null ? null : freeOnBoardLogic.getFreeOnBoardByName(this, freeOnBoardName);
 
             if(!hasExecutionErrors()) {
-                var vendorControl = Session.getModelController(VendorControl.class);
                 var vendorName = form.getVendorName();
                 var billFromPartyName = form.getBillFromPartyName();
                 var parameterCount = (vendorName == null ? 0 : 1) + (billFromPartyName == null ? 0 : 1);
 
                 if(parameterCount == 1) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     Party billFrom = null;
                     
                     if(vendorName == null) {
@@ -127,7 +146,6 @@ public class CreatePurchaseInvoiceCommand
                     }
                     
                     if(!hasExecutionErrors()) {
-                        var contactControl = Session.getModelController(ContactControl.class);
                         var billFromContactMechanismName = form.getBillFromContactMechanismName();
                         var billFromContactMechanism = billFromContactMechanismName == null? null: contactControl.getPartyContactMechanismByContactMechanismName(this, billFrom, billFromContactMechanismName);
                         
@@ -176,7 +194,7 @@ public class CreatePurchaseInvoiceCommand
                                         var reference = form.getReference();
                                         var description = form.getDescription();
 
-                                        invoice = PurchaseInvoiceLogic.getInstance().createInvoice(session, this, billFrom, billFromContactMechanism, billTo,
+                                        invoice = purchaseInvoiceLogic.createInvoice(session, this, billFrom, billFromContactMechanism, billTo,
                                                 billToContactMechanism, currency, term, freeOnBoard, reference, description, invoicedTime, dueTime, paidTime,
                                                 PurchaseInvoiceStatusConstants.WorkflowEntrance_NEW_ENTRY, getPartyPK());
                                     }

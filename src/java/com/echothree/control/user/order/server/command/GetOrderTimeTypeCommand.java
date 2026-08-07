@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderTimeTypeCommand
@@ -59,6 +59,13 @@ public class GetOrderTimeTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    OrderTimeControl orderTimeControl;
+
+    @Inject
+    OrderTimeTypeLogic orderTimeTypeLogic;
+
     
     /** Creates a new instance of GetOrderTimeTypeCommand */
     public GetOrderTimeTypeCommand() {
@@ -67,7 +74,7 @@ public class GetOrderTimeTypeCommand
 
     @Override
     protected OrderTimeType getEntity() {
-        var orderTimeType = OrderTimeTypeLogic.getInstance().getOrderTimeTypeByUniversalSpec(this, form, true);
+        var orderTimeType = orderTimeTypeLogic.getOrderTimeTypeByUniversalSpec(this, form, true);
 
         if(orderTimeType != null) {
             sendEvent(orderTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +85,6 @@ public class GetOrderTimeTypeCommand
 
     @Override
     protected BaseResult getResult(OrderTimeType orderTimeType) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var result = OrderResultFactory.getGetOrderTimeTypeResult();
 
         if(orderTimeType != null) {

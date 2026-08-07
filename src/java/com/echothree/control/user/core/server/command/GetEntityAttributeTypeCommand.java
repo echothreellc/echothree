@@ -28,6 +28,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributeTypeCommand
@@ -41,6 +42,10 @@ public class GetEntityAttributeTypeCommand
                 new FieldDefinition("EntityAttributeTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of GetEntityAttributeTypeCommand */
     public GetEntityAttributeTypeCommand() {
@@ -52,7 +57,7 @@ public class GetEntityAttributeTypeCommand
     protected EntityAttributeType getEntity() {
         var entityAttributeTypeName = form.getEntityAttributeTypeName();
         
-        return EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, entityAttributeTypeName);
+        return entityAttributeLogic.getEntityAttributeTypeByName(this, entityAttributeTypeName);
     }
     
     @Override

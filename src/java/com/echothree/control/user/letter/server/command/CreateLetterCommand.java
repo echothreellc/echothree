@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLetterCommand
@@ -62,6 +62,16 @@ public class CreateLetterCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    LetterControl letterControl;
+
     
     /** Creates a new instance of CreateLetterCommand */
     public CreateLetterCommand() {
@@ -70,7 +80,6 @@ public class CreateLetterCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -79,7 +88,6 @@ public class CreateLetterCommand
             var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = Session.getModelController(LetterControl.class);
                 var letterName = form.getLetterName();
                 var letter = letterControl.getLetterByName(chainType, letterName);
                 
@@ -88,7 +96,6 @@ public class CreateLetterCommand
                     var letterSource = letterControl.getLetterSourceByName(letterSourceName);
                     
                     if(letterSource != null) {
-                        var contactListControl = Session.getModelController(ContactListControl.class);
                         var contactListName = form.getContactListName();
                         var contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
                         

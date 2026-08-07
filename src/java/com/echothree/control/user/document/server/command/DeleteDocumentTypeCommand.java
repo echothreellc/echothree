@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteDocumentTypeCommand
@@ -53,6 +53,10 @@ public class DeleteDocumentTypeCommand
                 new FieldDefinition("DocumentTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of DeleteDocumentTypeCommand */
     public DeleteDocumentTypeCommand() {
@@ -61,7 +65,6 @@ public class DeleteDocumentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeName = form.getDocumentTypeName();
         var documentType = documentControl.getDocumentTypeByNameForUpdate(documentTypeName);
         

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemImageTypeCommand
@@ -60,6 +60,12 @@ public class GetItemImageTypeCommand
         );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemImageTypeLogic itemImageTypeLogic;
+
     /** Creates a new instance of GetItemImageTypeCommand */
     public GetItemImageTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -67,7 +73,7 @@ public class GetItemImageTypeCommand
 
     @Override
     protected ItemImageType getEntity() {
-        var itemImageType = ItemImageTypeLogic.getInstance().getItemImageTypeByUniversalSpec(this, form, true);
+        var itemImageType = itemImageTypeLogic.getItemImageTypeByUniversalSpec(this, form, true);
 
         if(itemImageType != null) {
             sendEvent(itemImageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +84,7 @@ public class GetItemImageTypeCommand
 
     @Override
     protected BaseResult getResult(ItemImageType itemImageType) {
-        var itemImageTypeControl = Session.getModelController(ItemControl.class);
+        var itemImageTypeControl = itemControl;
         var result = ItemResultFactory.getGetItemImageTypeResult();
 
         if(itemImageType != null) {

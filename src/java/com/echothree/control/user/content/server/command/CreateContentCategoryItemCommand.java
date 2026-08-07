@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentCategoryItemCommand
@@ -66,6 +66,25 @@ public class CreateContentCategoryItemCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ContentLogic contentLogic;
+
     
     /** Creates a new instance of CreateContentCategoryItemCommand */
     public CreateContentCategoryItemCommand() {
@@ -74,7 +93,6 @@ public class CreateContentCategoryItemCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -87,24 +105,20 @@ public class CreateContentCategoryItemCommand
                 var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
-                    var itemControl = Session.getModelController(ItemControl.class);
                     var itemName = form.getItemName();
                     var item = itemControl.getItemByName(itemName);
                     
                     if(item != null) {
-                        var inventoryControl = Session.getModelController(InventoryControl.class);
                         var inventoryConditionName = form.getInventoryConditionName();
                         var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                         
                         if(inventoryCondition != null) {
-                            var uomControl = Session.getModelController(UomControl.class);
                             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             var itemDetail = item.getLastDetail();
                             var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
-                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 var currencyIsoName = form.getCurrencyIsoName();
                                 var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
@@ -112,7 +126,7 @@ public class CreateContentCategoryItemCommand
                                     var isDefault = Boolean.valueOf(form.getIsDefault());
                                     var sortOrder = Integer.valueOf(form.getSortOrder());
 
-                                    ContentLogic.getInstance().createContentCategoryItem(this, contentCategory, item, inventoryCondition, unitOfMeasureType,
+                                    contentLogic.createContentCategoryItem(this, contentCategory, item, inventoryCondition, unitOfMeasureType,
                                             currency, isDefault, sortOrder, getPartyPK());
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);

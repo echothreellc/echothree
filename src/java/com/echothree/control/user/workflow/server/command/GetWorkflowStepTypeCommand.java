@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowStepTypeCommand
@@ -59,6 +59,12 @@ public class GetWorkflowStepTypeCommand
         );
     }
 
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowStepTypeLogic workflowStepTypeLogic;
+
     /** Creates a new instance of GetWorkflowStepTypeCommand */
     public GetWorkflowStepTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetWorkflowStepTypeCommand
 
     @Override
     protected WorkflowStepType getEntity() {
-        var workflowStepType = WorkflowStepTypeLogic.getInstance().getWorkflowStepTypeByUniversalSpec(this, form, true);
+        var workflowStepType = workflowStepTypeLogic.getWorkflowStepTypeByUniversalSpec(this, form, true);
 
         if(workflowStepType != null) {
             sendEvent(workflowStepType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,8 +84,6 @@ public class GetWorkflowStepTypeCommand
     @Override
     protected BaseResult getResult(WorkflowStepType workflowStepType) {
         var result = WorkflowResultFactory.getGetWorkflowStepTypeResult();
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         if(workflowStepType != null) {
             result.setWorkflowStepType(workflowControl.getWorkflowStepTypeTransfer(getUserVisit(), workflowStepType));
         }

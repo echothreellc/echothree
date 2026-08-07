@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTagsCommand
@@ -57,6 +57,13 @@ public class GetTagsCommand
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    TagScopeLogic tagScopeLogic;
+
     
     /** Creates a new instance of GetTagsCommand */
     public GetTagsCommand() {
@@ -69,13 +76,11 @@ public class GetTagsCommand
     protected void handleForm() {
         var tagScopeName = form.getTagScopeName();
 
-        tagScope = TagScopeLogic.getInstance().getTagScopeByName(this, tagScopeName);
+        tagScope = tagScopeLogic.getTagScopeByName(this, tagScopeName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var tagControl = Session.getModelController(TagControl.class);
-
         return hasExecutionErrors() ? null :
                 tagControl.countTagsByTagScope(tagScope);
     }
@@ -85,8 +90,6 @@ public class GetTagsCommand
         Collection<Tag> entities = null;
 
         if(!hasExecutionErrors()) {
-            var tagControl = Session.getModelController(TagControl.class);
-
             entities = tagControl.getTags(tagScope);
         }
 
@@ -98,7 +101,6 @@ public class GetTagsCommand
         var result = TagResultFactory.getGetTagsResult();
 
         if(entities != null) {
-            var tagControl = Session.getModelController(TagControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(TagFactory.class)) {

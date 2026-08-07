@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateInvoiceLineUseTypeCommand
@@ -47,6 +47,10 @@ public class CreateInvoiceLineUseTypeCommand
             new FieldDefinition("InvoiceLineUseTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of CreateInvoiceLineUseTypeCommand */
     public CreateInvoiceLineUseTypeCommand() {
@@ -55,7 +59,6 @@ public class CreateInvoiceLineUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceLineUseTypeName = form.getInvoiceLineUseTypeName();
         var invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(invoiceLineUseTypeName);
         

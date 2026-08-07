@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetInvoiceTypeChoicesCommand
@@ -53,6 +53,10 @@ public class GetInvoiceTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of GetInvoiceTypeChoicesCommand */
     public GetInvoiceTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetInvoiceTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var result = InvoiceResultFactory.getGetInvoiceTypeChoicesResult();
         var defaultInvoiceTypeChoice = form.getDefaultInvoiceTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

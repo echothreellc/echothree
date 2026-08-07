@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTermTypeChoicesCommand
@@ -40,6 +40,10 @@ public class GetTermTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of GetTermTypeChoicesCommand */
     public GetTermTypeChoicesCommand() {
@@ -48,7 +52,6 @@ public class GetTermTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = Session.getModelController(TermControl.class);
         var result = TermResultFactory.getGetTermTypeChoicesResult();
         var defaultTermTypeChoice = form.getDefaultTermTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

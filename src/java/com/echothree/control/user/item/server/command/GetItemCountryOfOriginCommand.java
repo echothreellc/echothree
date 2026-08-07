@@ -42,12 +42,7 @@ public class GetItemCountryOfOriginCommand
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetItemCountryOfOriginCommand */
-    public GetItemCountryOfOriginCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
-    }
-    
+
     @Inject
     GeoControl geoControl;
 
@@ -56,6 +51,12 @@ public class GetItemCountryOfOriginCommand
 
     @Inject
     ItemLogic itemLogic;
+
+
+    /** Creates a new instance of GetItemCountryOfOriginCommand */
+    public GetItemCountryOfOriginCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected BaseResult execute() {

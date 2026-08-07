@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateInvoiceRoleTypeCommand
@@ -48,6 +48,10 @@ public class CreateInvoiceRoleTypeCommand
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of CreateInvoiceRoleTypeCommand */
     public CreateInvoiceRoleTypeCommand() {
@@ -56,7 +60,6 @@ public class CreateInvoiceRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceRoleTypeName = form.getInvoiceRoleTypeName();
         var invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
         

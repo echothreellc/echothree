@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditIndexFieldCommand
@@ -69,6 +69,9 @@ public class EditIndexFieldCommand
                 );
     }
 
+    @Inject
+    IndexControl indexControl;
+
     /** Creates a new instance of EditIndexFieldCommand */
     public EditIndexFieldCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -88,7 +91,6 @@ public class EditIndexFieldCommand
 
     @Override
     public IndexField getEntity(EditIndexFieldResult result) {
-        var indexControl = Session.getModelController(IndexControl.class);
         IndexField indexField = null;
         var indexTypeName = spec.getIndexTypeName();
 
@@ -120,14 +122,11 @@ public class EditIndexFieldCommand
 
     @Override
     public void fillInResult(EditIndexFieldResult result, IndexField indexField) {
-        var indexControl = Session.getModelController(IndexControl.class);
-
         result.setIndexField(indexControl.getIndexFieldTransfer(getUserVisit(), indexField));
     }
 
     @Override
     public void doLock(IndexFieldEdit edit, IndexField indexField) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexFieldDescription = indexControl.getIndexFieldDescription(indexField, getPreferredLanguage());
         var indexFieldDetail = indexField.getLastDetail();
 
@@ -142,7 +141,6 @@ public class EditIndexFieldCommand
 
     @Override
     public void canUpdate(IndexField indexField) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexTypeDetail = indexType.getLastDetail();
         var indexFieldName = edit.getIndexFieldName();
         var duplicateIndexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
@@ -154,7 +152,6 @@ public class EditIndexFieldCommand
 
     @Override
     public void doUpdate(IndexField indexField) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var partyPK = getPartyPK();
         var indexFieldDetailValue = indexControl.getIndexFieldDetailValueForUpdate(indexField);
         var indexFieldDescription = indexControl.getIndexFieldDescriptionForUpdate(indexField, getPreferredLanguage());

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteWorkflowEntranceSelectorCommand
@@ -56,6 +56,13 @@ public class DeleteWorkflowEntranceSelectorCommand
                 new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of DeleteWorkflowEntranceSelectorCommand */
     public DeleteWorkflowEntranceSelectorCommand() {
@@ -64,7 +71,6 @@ public class DeleteWorkflowEntranceSelectorCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
@@ -76,7 +82,6 @@ public class DeleteWorkflowEntranceSelectorCommand
                 var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
                 
                 if(workflowEntrance != null) {
-                    var selectorControl = Session.getModelController(SelectorControl.class);
                     var selectorName = form.getSelectorName();
                     var selector = selectorControl.getSelectorByName(selectorType, selectorName);
                     

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchResultActionTypeCommand
@@ -58,6 +58,13 @@ public class GetSearchResultActionTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchResultActionTypeLogic searchResultActionTypeLogic;
+
     
     /** Creates a new instance of GetSearchResultActionTypeCommand */
     public GetSearchResultActionTypeCommand() {
@@ -66,7 +73,7 @@ public class GetSearchResultActionTypeCommand
 
     @Override
     protected SearchResultActionType getEntity() {
-        var searchResultActionType = SearchResultActionTypeLogic.getInstance().getSearchResultActionTypeByUniversalSpec(this, form, true);
+        var searchResultActionType = searchResultActionTypeLogic.getSearchResultActionTypeByUniversalSpec(this, form, true);
 
         if(searchResultActionType != null) {
             sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetSearchResultActionTypeCommand
 
     @Override
     protected BaseResult getResult(SearchResultActionType searchResultActionType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchResultActionTypeResult();
 
         if(searchResultActionType != null) {

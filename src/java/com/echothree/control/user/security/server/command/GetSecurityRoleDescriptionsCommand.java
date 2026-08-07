@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSecurityRoleDescriptionsCommand
@@ -55,6 +55,10 @@ public class GetSecurityRoleDescriptionsCommand
                 new FieldDefinition("SecurityRoleName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of GetSecurityRoleDescriptionsCommand */
     public GetSecurityRoleDescriptionsCommand() {
@@ -63,7 +67,6 @@ public class GetSecurityRoleDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var result = SecurityResultFactory.getGetSecurityRoleDescriptionsResult();
         var securityRoleGroupName = form.getSecurityRoleGroupName();
         var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCampaignTermDescriptionCommand
@@ -55,6 +55,13 @@ public class GetCampaignTermDescriptionCommand
                 new FieldDefinition("CampaignTermName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetCampaignTermDescriptionCommand */
     public GetCampaignTermDescriptionCommand() {
@@ -63,13 +70,11 @@ public class GetCampaignTermDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var result = CampaignResultFactory.getGetCampaignTermDescriptionResult();
         var campaignTermName = form.getCampaignTermName();
         var campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
 
         if(campaignTerm != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -28,9 +28,9 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CheckItemSpellingCommand
@@ -47,6 +47,15 @@ public class CheckItemSpellingCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of CheckItemSpellingCommand */
     public CheckItemSpellingCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -55,7 +64,6 @@ public class CheckItemSpellingCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getCheckItemSpellingResult();
-        var searchLogic = SearchLogic.getInstance();
         var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ITEM.name());
 
         if(!hasExecutionErrors()) {
@@ -64,10 +72,9 @@ public class CheckItemSpellingCommand
 
             if(!hasExecutionErrors()) {
                 var languageIsoName = form.getLanguageIsoName();
-                var language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                var language = languageIsoName == null ? null : languageLogic.getLanguageByName(this, languageIsoName);
 
                 if(!hasExecutionErrors()) {
-                    var searchControl = Session.getModelController(SearchControl.class);
                     var partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
                     var partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
                     var searchDefaultOperatorName = form.getSearchDefaultOperatorName();

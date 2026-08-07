@@ -59,13 +59,13 @@ public class GetLocationTypesCommand
         );
     }
 
+    @Inject
+    WarehouseControl warehouseControl;
+
     /** Creates a new instance of GetLocationTypesCommand */
     public GetLocationTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    WarehouseControl warehouseControl;
 
     private Warehouse warehouse;
     private Party warehouseParty;

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateBatchTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateBatchTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateBatchTypeDescriptionCommand */
     public CreateBatchTypeDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateBatchTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
         
         if(batchType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

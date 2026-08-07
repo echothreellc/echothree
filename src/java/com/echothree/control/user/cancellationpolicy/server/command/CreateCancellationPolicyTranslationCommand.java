@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCancellationPolicyTranslationCommand
@@ -61,6 +61,16 @@ public class CreateCancellationPolicyTranslationCommand
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateCancellationPolicyTranslationCommand */
     public CreateCancellationPolicyTranslationCommand() {
@@ -69,7 +79,6 @@ public class CreateCancellationPolicyTranslationCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationKindName = form.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
@@ -78,7 +87,6 @@ public class CreateCancellationPolicyTranslationCommand
             var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
             if(cancellationPolicy != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -86,7 +94,6 @@ public class CreateCancellationPolicyTranslationCommand
                     var cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslation(cancellationPolicy, language);
 
                     if(cancellationPolicyTranslation == null) {
-                        var mimeTypeLogic = MimeTypeLogic.getInstance();
                         var policyMimeTypeName = form.getPolicyMimeTypeName();
                         var policy = form.getPolicy();
 

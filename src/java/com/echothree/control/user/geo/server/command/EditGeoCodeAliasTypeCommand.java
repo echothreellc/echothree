@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeAliasTypeCommand
@@ -72,6 +72,9 @@ public class EditGeoCodeAliasTypeCommand
                 );
     }
 
+    @Inject
+    GeoControl geoControl;
+
     /** Creates a new instance of EditGeoCodeAliasTypeCommand */
     public EditGeoCodeAliasTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -91,7 +94,6 @@ public class EditGeoCodeAliasTypeCommand
 
     @Override
     public GeoCodeAliasType getEntity(EditGeoCodeAliasTypeResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAliasType geoAliasType = null;
         var geoCodeTypeName = spec.getGeoCodeTypeName();
 
@@ -125,14 +127,11 @@ public class EditGeoCodeAliasTypeCommand
 
     @Override
     public void fillInResult(EditGeoCodeAliasTypeResult result, GeoCodeAliasType geoAliasType) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         result.setGeoCodeAliasType(geoControl.getGeoCodeAliasTypeTransfer(getUserVisit(), geoAliasType));
     }
 
     @Override
     public void doLock(GeoCodeAliasTypeEdit edit, GeoCodeAliasType geoAliasType) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescription(geoAliasType, getPreferredLanguage());
         var geoAliasTypeDetail = geoAliasType.getLastDetail();
 
@@ -149,7 +148,6 @@ public class EditGeoCodeAliasTypeCommand
 
     @Override
     public void canUpdate(GeoCodeAliasType geoAliasType) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoAliasTypeName = edit.getGeoCodeAliasTypeName();
         var duplicateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
@@ -160,7 +158,6 @@ public class EditGeoCodeAliasTypeCommand
 
     @Override
     public void doUpdate(GeoCodeAliasType geoAliasType) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var partyPK = getPartyPK();
         var geoAliasTypeDetailValue = geoControl.getGeoCodeAliasTypeDetailValueForUpdate(geoAliasType);
         var geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescriptionForUpdate(geoAliasType, getPreferredLanguage());

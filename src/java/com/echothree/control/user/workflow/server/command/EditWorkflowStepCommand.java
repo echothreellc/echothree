@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWorkflowStepCommand
@@ -73,6 +73,16 @@ public class EditWorkflowStepCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
+
+    @Inject
+    WorkflowStepTypeLogic workflowStepTypeLogic;
+
     
     /** Creates a new instance of EditWorkflowStepCommand */
     public EditWorkflowStepCommand() {
@@ -91,7 +101,7 @@ public class EditWorkflowStepCommand
 
     @Override
     public WorkflowStep getEntity(EditWorkflowStepResult result) {
-        return WorkflowStepLogic.getInstance().getWorkflowStepByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return workflowStepLogic.getWorkflowStepByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -101,14 +111,13 @@ public class EditWorkflowStepCommand
 
     @Override
     public void fillInResult(EditWorkflowStepResult result, WorkflowStep freeOnBoard) {
-        var workflow = Session.getModelController(WorkflowControl.class);
+        var workflow = workflowControl;
 
         result.setWorkflowStep(workflow.getWorkflowStepTransfer(getUserVisit(), freeOnBoard));
     }
 
     @Override
     public void doLock(WorkflowStepEdit edit, WorkflowStep workflowStep) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowStepDescription = workflowControl.getWorkflowStepDescription(workflowStep, getPreferredLanguage());
         var workflowStepDetail = workflowStep.getLastDetail();
 
@@ -126,7 +135,6 @@ public class EditWorkflowStepCommand
 
     @Override
     public void canUpdate(WorkflowStep workflowStep) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = workflowStep.getLastDetail().getWorkflow();
         var workflowStepName = edit.getWorkflowStepName();
         var duplicateWorkflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
@@ -136,13 +144,12 @@ public class EditWorkflowStepCommand
         } else {
             var workflowStepTypeName = edit.getWorkflowStepTypeName();
 
-            workflowStepType = WorkflowStepTypeLogic.getInstance().getWorkflowStepTypeByName(this, workflowStepTypeName);
+            workflowStepType = workflowStepTypeLogic.getWorkflowStepTypeByName(this, workflowStepTypeName);
         }
     }
 
     @Override
     public void doUpdate(WorkflowStep workflowStep) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyPK = getPartyPK();
         var workflowStepDetailValue = workflowControl.getWorkflowStepDetailValueForUpdate(workflowStep);
         var workflowStepDescription = workflowControl.getWorkflowStepDescriptionForUpdate(workflowStep, getPreferredLanguage());

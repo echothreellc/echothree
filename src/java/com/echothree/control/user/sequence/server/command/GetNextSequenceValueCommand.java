@@ -57,16 +57,16 @@ public class GetNextSequenceValueCommand
          );
     }
 
-    /** Creates a new instance of SetSequenceValueCommand */
-    public GetNextSequenceValueCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
 
     @Inject
     SequenceLogic sequenceLogic;
 
-    @Inject
-    SequenceGeneratorLogic sequenceGeneratorLogic;
+    /** Creates a new instance of SetSequenceValueCommand */
+    public GetNextSequenceValueCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected BaseResult execute() {

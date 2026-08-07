@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultCustomerTypeCommand
@@ -52,6 +52,10 @@ public class SetDefaultCustomerTypeCommand
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
     
     /** Creates a new instance of SetDefaultCustomerTypeCommand */
     public SetDefaultCustomerTypeCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultCustomerTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerTypeName = form.getCustomerTypeName();
         var customerTypeDetailValue = customerControl.getCustomerTypeDetailValueByNameForUpdate(customerTypeName);
         

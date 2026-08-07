@@ -33,6 +33,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPurchaseInvoiceStatusChoicesCommand
@@ -54,6 +55,10 @@ public class GetPurchaseInvoiceStatusChoicesCommand
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    PurchaseInvoiceLogic purchaseInvoiceLogic;
+
     
     /** Creates a new instance of GetPurchaseInvoiceStatusChoicesCommand */
     public GetPurchaseInvoiceStatusChoicesCommand() {
@@ -62,7 +67,6 @@ public class GetPurchaseInvoiceStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var purchaseInvoiceLogic = PurchaseInvoiceLogic.getInstance();
         var result = PurchaseResultFactory.getGetPurchaseInvoiceStatusChoicesResult();
         var invoiceName = form.getInvoiceName();
         var invoice = purchaseInvoiceLogic.getInvoiceByName(invoiceName);

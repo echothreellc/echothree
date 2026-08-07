@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactListGroupCommand
@@ -68,6 +68,9 @@ public class EditContactListGroupCommand
                 );
     }
 
+    @Inject
+    ContactListControl contactListControl;
+
     /** Creates a new instance of EditContactListGroupCommand */
     public EditContactListGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,7 +88,6 @@ public class EditContactListGroupCommand
 
     @Override
     public ContactListGroup getEntity(EditContactListGroupResult result) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListGroup contactListGroup;
         var contactListGroupName = spec.getContactListGroupName();
 
@@ -109,14 +111,11 @@ public class EditContactListGroupCommand
 
     @Override
     public void fillInResult(EditContactListGroupResult result, ContactListGroup contactListGroup) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setContactListGroup(contactListControl.getContactListGroupTransfer(getUserVisit(), contactListGroup));
     }
 
     @Override
     public void doLock(ContactListGroupEdit edit, ContactListGroup contactListGroup) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListGroupDescription = contactListControl.getContactListGroupDescription(contactListGroup, getPreferredLanguage());
         var contactListGroupDetail = contactListGroup.getLastDetail();
 
@@ -131,7 +130,6 @@ public class EditContactListGroupCommand
 
     @Override
     public void canUpdate(ContactListGroup contactListGroup) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListGroupName = edit.getContactListGroupName();
         var duplicateContactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
@@ -142,7 +140,6 @@ public class EditContactListGroupCommand
 
     @Override
     public void doUpdate(ContactListGroup contactListGroup) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
         var contactListGroupDetailValue = contactListControl.getContactListGroupDetailValueForUpdate(contactListGroup);
         var contactListGroupDescription = contactListControl.getContactListGroupDescriptionForUpdate(contactListGroup, getPreferredLanguage());

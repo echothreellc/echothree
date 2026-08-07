@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeScopeDescriptionCommand
@@ -68,6 +68,12 @@ public class EditGeoCodeScopeDescriptionCommand
                 );
     }
 
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditGeoCodeScopeDescriptionCommand */
     public EditGeoCodeScopeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditGeoCodeScopeDescriptionCommand
 
     @Override
     public GeoCodeScopeDescription getEntity(EditGeoCodeScopeDescriptionResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScopeDescription geoCodeScopeDescription = null;
         var geoCodeScopeName = spec.getGeoCodeScopeName();
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
         if(geoCodeScope != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditGeoCodeScopeDescriptionCommand
 
     @Override
     public void fillInResult(EditGeoCodeScopeDescriptionResult result, GeoCodeScopeDescription geoCodeScopeDescription) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         result.setGeoCodeScopeDescription(geoControl.getGeoCodeScopeDescriptionTransfer(getUserVisit(), geoCodeScopeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditGeoCodeScopeDescriptionCommand
 
     @Override
     public void doUpdate(GeoCodeScopeDescription geoCodeScopeDescription) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScopeDescriptionValue = geoControl.getGeoCodeScopeDescriptionValue(geoCodeScopeDescription);
         geoCodeScopeDescriptionValue.setDescription(edit.getDescription());
 

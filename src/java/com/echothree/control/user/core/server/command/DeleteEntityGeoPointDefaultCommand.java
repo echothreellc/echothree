@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityGeoPointDefaultCommand
@@ -51,6 +52,9 @@ public class DeleteEntityGeoPointDefaultCommand
                 );
     }
 
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     /** Creates a new instance of CreateEntityGeoPointDefaultCommand */
     public DeleteEntityGeoPointDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -58,10 +62,10 @@ public class DeleteEntityGeoPointDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttributeLogic.getInstance().deleteEntityGeoPointDefault(this, entityAttribute, getPartyPK());
+            entityAttributeLogic.deleteEntityGeoPointDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

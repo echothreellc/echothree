@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentPageLayoutCommand
@@ -69,6 +69,13 @@ public class EditContentPageLayoutCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    ContentPageLayoutLogic contentPageLayoutLogic;
+
     
     /** Creates a new instance of EditContentPageLayoutCommand */
     public EditContentPageLayoutCommand() {
@@ -87,7 +94,7 @@ public class EditContentPageLayoutCommand
     
     @Override
     public ContentPageLayout getEntity(EditContentPageLayoutResult result) {
-        return ContentPageLayoutLogic.getInstance().getContentPageLayoutByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return contentPageLayoutLogic.getContentPageLayoutByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -97,14 +104,11 @@ public class EditContentPageLayoutCommand
     
     @Override
     public void fillInResult(EditContentPageLayoutResult result, ContentPageLayout contentPageLayout) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));
     }
     
     @Override
     public void doLock(ContentPageLayoutEdit edit, ContentPageLayout contentPageLayout) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, getPreferredLanguage());
         var contentPageLayoutDetail = contentPageLayout.getLastDetail();
         
@@ -119,7 +123,6 @@ public class EditContentPageLayoutCommand
         
     @Override
     public void canUpdate(ContentPageLayout contentPageLayout) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageLayoutName = edit.getContentPageLayoutName();
         var duplicateContentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
 
@@ -130,7 +133,6 @@ public class EditContentPageLayoutCommand
     
     @Override
     public void doUpdate(ContentPageLayout contentPageLayout) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         var contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueForUpdate(contentPageLayout);
         var contentPageLayoutDescription = contentControl.getContentPageLayoutDescriptionForUpdate(contentPageLayout, getPreferredLanguage());

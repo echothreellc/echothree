@@ -32,6 +32,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityClobAttributeCommand
@@ -55,6 +56,16 @@ public class DeleteEntityClobAttributeCommand
                 new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     
     /** Creates a new instance of DeleteEntityClobAttributeCommand */
     public DeleteEntityClobAttributeCommand() {
@@ -63,9 +74,9 @@ public class DeleteEntityClobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
-        var language = LanguageLogic.getInstance().getLanguage(this, form, form);
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
+        var language = languageLogic.getLanguage(this, form, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                 EntityAttributeTypes.CLOB);
 
         if(!hasExecutionErrors()) {

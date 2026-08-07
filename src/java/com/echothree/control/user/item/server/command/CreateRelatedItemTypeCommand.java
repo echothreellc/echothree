@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRelatedItemTypeCommand
@@ -56,6 +57,9 @@ public class CreateRelatedItemTypeCommand
         );
     }
 
+    @Inject
+    RelatedItemTypeLogic relatedItemTypeLogic;
+
     /** Creates a new instance of CreateRelatedItemTypeCommand */
     public CreateRelatedItemTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -69,7 +73,7 @@ public class CreateRelatedItemTypeCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var relatedItemType = RelatedItemTypeLogic.getInstance().createRelatedItemType(this, relatedItemTypeName,
+        var relatedItemType = relatedItemTypeLogic.createRelatedItemType(this, relatedItemTypeName,
                     isDefault, sortOrder, getPreferredLanguage(), description,
                     getPartyPK());
 

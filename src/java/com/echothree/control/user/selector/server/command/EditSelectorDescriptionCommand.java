@@ -67,17 +67,18 @@ public class EditSelectorDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditSelectorDescriptionCommand */
-    public EditSelectorDescriptionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     PartyControl partyControl;
 
     @Inject
     SelectorControl selectorControl;
+
+
+    /** Creates a new instance of EditSelectorDescriptionCommand */
+    public EditSelectorDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditSelectorDescriptionResult getResult() {

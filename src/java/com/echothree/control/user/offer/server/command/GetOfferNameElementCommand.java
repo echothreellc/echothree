@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferNameElementCommand
@@ -58,6 +58,13 @@ public class GetOfferNameElementCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    OfferNameElementControl offerNameElementControl;
+
+    @Inject
+    OfferNameElementLogic offerNameElementLogic;
+
     
     /** Creates a new instance of GetOfferNameElementCommand */
     public GetOfferNameElementCommand() {
@@ -66,7 +73,7 @@ public class GetOfferNameElementCommand
     
     @Override
     protected OfferNameElement getEntity() {
-        var offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByUniversalSpec(this, form);
+        var offerNameElement = offerNameElementLogic.getOfferNameElementByUniversalSpec(this, form);
 
         if(offerNameElement != null) {
             sendEvent(offerNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetOfferNameElementCommand
     
     @Override
     protected BaseResult getResult(OfferNameElement offerNameElement) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var result = OfferResultFactory.getGetOfferNameElementResult();
 
         if(offerNameElement != null) {

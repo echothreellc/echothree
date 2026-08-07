@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUseNameElementCommand
@@ -58,6 +58,13 @@ public class GetUseNameElementCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    UseNameElementControl useNameElementControl;
+
+    @Inject
+    UseNameElementLogic useNameElementLogic;
+
     
     /** Creates a new instance of GetUseNameElementCommand */
     public GetUseNameElementCommand() {
@@ -66,7 +73,7 @@ public class GetUseNameElementCommand
     
     @Override
     protected UseNameElement getEntity() {
-        var useNameElement = UseNameElementLogic.getInstance().getUseNameElementByUniversalSpec(this, form);
+        var useNameElement = useNameElementLogic.getUseNameElementByUniversalSpec(this, form);
 
         if(useNameElement != null) {
             sendEvent(useNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetUseNameElementCommand
     
     @Override
     protected BaseResult getResult(UseNameElement useNameElement) {
-        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var result = OfferResultFactory.getGetUseNameElementResult();
 
         if(useNameElement != null) {

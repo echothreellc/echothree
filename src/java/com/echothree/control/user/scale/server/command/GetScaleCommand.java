@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetScaleCommand
@@ -53,6 +53,10 @@ public class GetScaleCommand
                 new FieldDefinition("ScaleName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ScaleControl scaleControl;
+
     
     /** Creates a new instance of GetScaleCommand */
     public GetScaleCommand() {
@@ -61,7 +65,6 @@ public class GetScaleCommand
     
     @Override
     protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var result = ScaleResultFactory.getGetScaleResult();
         var scaleName = form.getScaleName();
         var scale = scaleControl.getScaleByName(scaleName);

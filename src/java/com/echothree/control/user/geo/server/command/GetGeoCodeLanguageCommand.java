@@ -56,17 +56,18 @@ public class GetGeoCodeLanguageCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
-    /** Creates a new instance of GetGeoCodeLanguageCommand */
-    public GetGeoCodeLanguageCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
-    
+
     @Inject
     GeoControl geoControl;
 
     @Inject
     PartyControl partyControl;
+
+
+    /** Creates a new instance of GetGeoCodeLanguageCommand */
+    public GetGeoCodeLanguageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected GeoCodeLanguage getEntity() {

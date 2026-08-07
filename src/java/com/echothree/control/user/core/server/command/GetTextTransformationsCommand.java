@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTextTransformationsCommand
@@ -53,6 +53,10 @@ public class GetTextTransformationsCommand
 
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of GetTextTransformationsCommand */
     public GetTextTransformationsCommand() {
@@ -66,22 +70,17 @@ public class GetTextTransformationsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var textControl = Session.getModelController(TextControl.class);
-
         return textControl.countTextTransformations();
     }
 
     @Override
     protected Collection<TextTransformation> getEntities() {
-        var textControl = Session.getModelController(TextControl.class);
-        
         return textControl.getTextTransformations();
     }
     
     @Override
     protected BaseResult getResult(Collection<TextTransformation> entities) {
         var result = CoreResultFactory.getGetTextTransformationsResult();
-        var textControl = Session.getModelController(TextControl.class);
         var userVisit = getUserVisit();
         
         result.setTextTransformations(textControl.getTextTransformationTransfers(userVisit, entities));

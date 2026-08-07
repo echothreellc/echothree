@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorTypeChoicesCommand
@@ -53,6 +53,10 @@ public class GetPaymentProcessorTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PaymentProcessorTypeControl paymentProcessorTypeControl;
+
     
     /** Creates a new instance of GetPaymentProcessorTypeChoicesCommand */
     public GetPaymentProcessorTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetPaymentProcessorTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorTypeChoicesResult();
         var defaultPaymentProcessorTypeChoice = form.getDefaultPaymentProcessorTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -57,12 +57,13 @@ public class GetApplicationEditorsCommand
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     protected ApplicationControl applicationControl;
 
     @Inject
     protected ApplicationLogic applicationLogic;
+
 
     /** Creates a new instance of GetApplicationEditorsCommand */
     public GetApplicationEditorsCommand() {

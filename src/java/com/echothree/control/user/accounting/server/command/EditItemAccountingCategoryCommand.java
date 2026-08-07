@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemAccountingCategoryCommand
@@ -71,6 +71,12 @@ public class EditItemAccountingCategoryCommand
                 );
     }
 
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ItemAccountingCategoryLogic itemAccountingCategoryLogic;
+
     /** Creates a new instance of EditItemAccountingCategoryCommand */
     public EditItemAccountingCategoryCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -88,7 +94,7 @@ public class EditItemAccountingCategoryCommand
 
     @Override
     public ItemAccountingCategory getEntity(EditItemAccountingCategoryResult result) {
-        return ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return itemAccountingCategoryLogic.getItemAccountingCategoryByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -98,8 +104,6 @@ public class EditItemAccountingCategoryCommand
 
     @Override
     public void fillInResult(EditItemAccountingCategoryResult result, ItemAccountingCategory itemAccountingCategory) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         result.setItemAccountingCategory(accountingControl.getItemAccountingCategoryTransfer(getUserVisit(), itemAccountingCategory));
     }
 
@@ -107,7 +111,6 @@ public class EditItemAccountingCategoryCommand
 
     @Override
     public void doLock(ItemAccountingCategoryEdit edit, ItemAccountingCategory itemAccountingCategory) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, getPreferredLanguage());
         var itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
 
@@ -125,7 +128,6 @@ public class EditItemAccountingCategoryCommand
 
     @Override
     public void canUpdate(ItemAccountingCategory itemAccountingCategory) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var itemAccountingCategoryName = edit.getItemAccountingCategoryName();
         var duplicateItemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
 
@@ -150,7 +152,6 @@ public class EditItemAccountingCategoryCommand
 
     @Override
     public void doUpdate(ItemAccountingCategory itemAccountingCategory) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var partyPK = getPartyPK();
         var itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueForUpdate(itemAccountingCategory);
         var itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescriptionForUpdate(itemAccountingCategory, getPreferredLanguage());
@@ -161,7 +162,7 @@ public class EditItemAccountingCategoryCommand
         itemAccountingCategoryDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemAccountingCategoryDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        ItemAccountingCategoryLogic.getInstance().updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, partyPK);
+        itemAccountingCategoryLogic.updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, partyPK);
 
         if(itemAccountingCategoryDescription == null && description != null) {
             accountingControl.createItemAccountingCategoryDescription(itemAccountingCategory, getPreferredLanguage(), description, partyPK);

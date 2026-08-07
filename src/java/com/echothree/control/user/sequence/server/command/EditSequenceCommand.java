@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSequenceCommand
@@ -71,6 +71,10 @@ public class EditSequenceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of EditSequenceCommand */
     public EditSequenceCommand() {
@@ -91,7 +95,6 @@ public class EditSequenceCommand
     
     @Override
     public Sequence getEntity(EditSequenceResult result) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = null;
         var sequenceTypeName = spec.getSequenceTypeName();
         
@@ -125,14 +128,11 @@ public class EditSequenceCommand
     
     @Override
     public void fillInResult(EditSequenceResult result, Sequence sequence) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-        
         result.setSequence(sequenceControl.getSequenceTransfer(getUserVisit(), sequence));
     }
     
     @Override
     public void doLock(SequenceEdit edit, Sequence sequence) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceDescription = sequenceControl.getSequenceDescription(sequence, getPreferredLanguage());
         var sequenceDetail = sequence.getLastDetail();
         var chunkSize = sequenceDetail.getChunkSize();
@@ -150,7 +150,6 @@ public class EditSequenceCommand
     
     @Override
     public void canUpdate(Sequence sequence) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceName = edit.getSequenceName();
         var duplicateSequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
 
@@ -161,7 +160,6 @@ public class EditSequenceCommand
     
     @Override
     public void doUpdate(Sequence sequence) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var partyPK = getPartyPK();
         var sequenceDetailValue = sequenceControl.getSequenceDetailValueForUpdate(sequence);
         var sequenceDescription = sequenceControl.getSequenceDescriptionForUpdate(sequence, getPreferredLanguage());

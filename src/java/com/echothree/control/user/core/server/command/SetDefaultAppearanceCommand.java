@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultAppearanceCommand
@@ -53,6 +53,10 @@ public class SetDefaultAppearanceCommand
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
     
     /** Creates a new instance of SetDefaultAppearanceCommand */
     public SetDefaultAppearanceCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceName = form.getAppearanceName();
         var appearanceDetailValue = appearanceControl.getAppearanceDetailValueByNameForUpdate(appearanceName);
         

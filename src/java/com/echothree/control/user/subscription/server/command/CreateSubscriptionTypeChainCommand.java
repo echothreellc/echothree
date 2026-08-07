@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSubscriptionTypeChainCommand
@@ -63,6 +63,16 @@ public class CreateSubscriptionTypeChainCommand
                 new FieldDefinition("RemainingTime", FieldType.UNSIGNED_LONG, false, null, null)
         );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of CreateSubscriptionTypeChainCommand */
     public CreateSubscriptionTypeChainCommand() {
@@ -71,7 +81,6 @@ public class CreateSubscriptionTypeChainCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -80,7 +89,6 @@ public class CreateSubscriptionTypeChainCommand
             var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
-                var chainControl = Session.getModelController(ChainControl.class);
                 var chainKind = chainControl.getChainKindByName(ChainKinds.SUBSCRIPTION.name());
                 var chainTypeName = form.getChainTypeName();
                 var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
@@ -93,7 +101,6 @@ public class CreateSubscriptionTypeChainCommand
                         var subscriptionTypeChain = subscriptionControl.getSubscriptionTypeChain(subscriptionType, chain);
                         
                         if(subscriptionTypeChain == null) {
-                            var uomControl = Session.getModelController(UomControl.class);
                             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             UnitOfMeasureType unitOfMeasureType = null;
                             

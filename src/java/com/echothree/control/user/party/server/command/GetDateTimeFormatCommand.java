@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDateTimeFormatCommand
@@ -49,6 +49,16 @@ public class GetDateTimeFormatCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    DateTimeFormatLogic dateTimeFormatLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of GetDateTimeFormatCommand */
     public GetDateTimeFormatCommand() {
@@ -57,23 +67,22 @@ public class GetDateTimeFormatCommand
     
     @Override
     protected DateTimeFormat getEntity() {
-        var partyControl = Session.getModelController(PartyControl.class);
         DateTimeFormat dateTimeFormat = null;
         var dateTimeFormatName = form.getDateTimeFormatName();
-        var parameterCount = (dateTimeFormatName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (dateTimeFormatName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
             case 0 -> dateTimeFormat = partyControl.getDefaultDateTimeFormat();
             case 1 -> {
                 if(dateTimeFormatName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.DateTimeFormat.name());
 
                     if(!hasExecutionErrors()) {
                         dateTimeFormat = partyControl.getDateTimeFormatByEntityInstance(entityInstance);
                     }
                 } else {
-                    dateTimeFormat = DateTimeFormatLogic.getInstance().getDateTimeFormatByName(this, dateTimeFormatName);
+                    dateTimeFormat = dateTimeFormatLogic.getDateTimeFormatByName(this, dateTimeFormatName);
                 }
             }
             default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -88,7 +97,6 @@ public class GetDateTimeFormatCommand
     
     @Override
     protected BaseResult getResult(DateTimeFormat dateTimeFormat) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetDateTimeFormatResult();
 
         if(dateTimeFormat != null) {

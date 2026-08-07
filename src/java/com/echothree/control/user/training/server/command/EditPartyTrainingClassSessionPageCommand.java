@@ -71,7 +71,7 @@ public class EditPartyTrainingClassSessionPageCommand
                 new FieldDefinition("ReadingEndTime", FieldType.DATE_TIME, false, null, null)
                 );
     }
-    
+
     @Inject
     private TrainingControl trainingControl;
 
@@ -83,6 +83,8 @@ public class EditPartyTrainingClassSessionPageCommand
 
     @Inject
     private TrainingClassPageLogic trainingClassPageLogic;
+
+
     
     /** Creates a new instance of EditPartyTrainingClassSessionPageCommand */
     public EditPartyTrainingClassSessionPageCommand() {

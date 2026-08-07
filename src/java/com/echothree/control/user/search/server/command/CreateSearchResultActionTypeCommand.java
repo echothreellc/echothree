@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSearchResultActionTypeCommand
@@ -55,6 +56,10 @@ public class CreateSearchResultActionTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SearchResultActionTypeLogic searchResultActionTypeLogic;
+
     
     /** Creates a new instance of CreateSearchResultActionTypeCommand */
     public CreateSearchResultActionTypeCommand() {
@@ -69,7 +74,7 @@ public class CreateSearchResultActionTypeCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var searchResultActionType = SearchResultActionTypeLogic.getInstance().createSearchResultActionType(this, searchResultActionTypeName,
+        var searchResultActionType = searchResultActionTypeLogic.createSearchResultActionType(this, searchResultActionTypeName,
                 isDefault, sortOrder, getPreferredLanguage(), description,
                 getPartyPK());
 

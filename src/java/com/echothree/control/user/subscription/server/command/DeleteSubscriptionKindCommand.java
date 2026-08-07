@@ -29,9 +29,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSubscriptionKindCommand
@@ -52,6 +52,10 @@ public class DeleteSubscriptionKindCommand
                 new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of DeleteSubscriptionKindCommand */
     public DeleteSubscriptionKindCommand() {
@@ -60,7 +64,6 @@ public class DeleteSubscriptionKindCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByNameForUpdate(subscriptionKindName);
         

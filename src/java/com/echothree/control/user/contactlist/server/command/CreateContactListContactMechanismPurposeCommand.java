@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContactListContactMechanismPurposeCommand
@@ -58,6 +58,16 @@ public class CreateContactListContactMechanismPurposeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
+    @Inject
+    ContactMechanismPurposeLogic contactMechanismPurposeLogic;
+
     
     /** Creates a new instance of CreateContactListContactMechanismPurposeCommand */
     public CreateContactListContactMechanismPurposeCommand() {
@@ -67,14 +77,13 @@ public class CreateContactListContactMechanismPurposeCommand
     @Override
     protected BaseResult execute() {
         var contactListName = form.getContactListName();
-        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var contactList = contactListLogic.getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
             var contactMechanismPurposeName = form.getContactMechanismPurposeName();
-            var contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
+            var contactMechanismPurpose = contactMechanismPurposeLogic.getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
-                var contactListControl = Session.getModelController(ContactListControl.class);
                 var contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurpose == null) {

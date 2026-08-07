@@ -34,10 +34,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageLayoutsCommand
@@ -57,6 +57,10 @@ public class GetContentPageLayoutsCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of GetContentPageLayoutsCommand */
     public GetContentPageLayoutsCommand() {
@@ -70,15 +74,11 @@ public class GetContentPageLayoutsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return contentControl.countContentPageLayouts();
     }
 
     @Override
     protected Collection<ContentPageLayout> getEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return contentControl.getContentPageLayouts();
     }
 
@@ -87,8 +87,6 @@ public class GetContentPageLayoutsCommand
         var result = ContentResultFactory.getGetContentPageLayoutsResult();
 
         if(entities != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             if(session.hasLimit(ContentPageLayoutFactory.class)) {
                 result.setContentPageLayoutCount(getTotalEntities());
             }

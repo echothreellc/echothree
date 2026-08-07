@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultFreeOnBoardCommand
@@ -52,6 +52,10 @@ public class SetDefaultFreeOnBoardCommand
                 new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
     
     /** Creates a new instance of SetDefaultFreeOnBoardCommand */
     public SetDefaultFreeOnBoardCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultFreeOnBoardCommand
     
     @Override
     protected BaseResult execute() {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoardName = form.getFreeOnBoardName();
         var freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueByNameForUpdate(freeOnBoardName);
         

@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteResponsibilityTypeDescriptionCommand
@@ -41,6 +41,13 @@ public class DeleteResponsibilityTypeDescriptionCommand
             new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteResponsibilityTypeDescriptionCommand */
     public DeleteResponsibilityTypeDescriptionCommand() {
@@ -49,12 +56,10 @@ public class DeleteResponsibilityTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var responsibilityTypeName = form.getResponsibilityTypeName();
         var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
         
         if(responsibilityType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

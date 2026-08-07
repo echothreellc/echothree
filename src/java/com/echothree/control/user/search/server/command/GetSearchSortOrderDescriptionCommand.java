@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchSortOrderDescriptionCommand
@@ -57,6 +57,13 @@ public class GetSearchSortOrderDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of GetSearchSortOrderDescriptionCommand */
     public GetSearchSortOrderDescriptionCommand() {
@@ -65,7 +72,6 @@ public class GetSearchSortOrderDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchSortOrderDescriptionResult();
         var searchKindName = form.getSearchKindName();
         var searchKind = searchControl.getSearchKindByName(searchKindName);
@@ -75,7 +81,6 @@ public class GetSearchSortOrderDescriptionCommand
             var searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
 
             if(searchSortOrder != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultPartyPaymentMethodCommand
@@ -53,6 +53,10 @@ public class SetDefaultPartyPaymentMethodCommand
                 new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
     
     /** Creates a new instance of SetDefaultPartyPaymentMethodCommand */
     public SetDefaultPartyPaymentMethodCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultPartyPaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         var partyPaymentMethodName = form.getPartyPaymentMethodName();
         var partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueByNameForUpdate(partyPaymentMethodName);
         

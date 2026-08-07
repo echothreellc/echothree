@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSecurityRolePartyTypeCommand
@@ -60,6 +60,16 @@ public class CreateSecurityRolePartyTypeCommand
                 new FieldDefinition("PartySelectorName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateSecurityRolePartyTypeCommand */
     public CreateSecurityRolePartyTypeCommand() {
@@ -68,7 +78,6 @@ public class CreateSecurityRolePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroupName = form.getSecurityRoleGroupName();
         var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
@@ -77,7 +86,6 @@ public class CreateSecurityRolePartyTypeCommand
             var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             
             if(securityRole != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var partyTypeName = form.getPartyTypeName();
                 var partyType = partyControl.getPartyTypeByName(partyTypeName);
                 
@@ -90,7 +98,6 @@ public class CreateSecurityRolePartyTypeCommand
                         
                         if(partySelectorName != null) {
                             if(partyType.getAllowUserLogins()) {
-                                var selectorControl = Session.getModelController(SelectorControl.class);
                                 var selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
 
                                 if(selectorKind != null) {

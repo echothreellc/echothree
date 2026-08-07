@@ -41,9 +41,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditAppearanceCommand
@@ -76,6 +76,16 @@ public class EditAppearanceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    ColorControl colorControl;
+
+    @Inject
+    FontLogic fontLogic;
+
     
     /** Creates a new instance of EditAppearanceCommand */
     public EditAppearanceCommand() {
@@ -94,7 +104,6 @@ public class EditAppearanceCommand
 
     @Override
     public Appearance getEntity(EditAppearanceResult result) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         Appearance appearance;
         var appearanceName = spec.getAppearanceName();
 
@@ -118,8 +127,6 @@ public class EditAppearanceCommand
 
     @Override
     public void fillInResult(EditAppearanceResult result, Appearance appearance) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
-
         result.setAppearance(appearanceControl.getAppearanceTransfer(getUserVisit(), appearance));
     }
 
@@ -130,7 +137,6 @@ public class EditAppearanceCommand
 
     @Override
     public void doLock(AppearanceEdit edit, Appearance appearance) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceDescription = appearanceControl.getAppearanceDescription(appearance, getPreferredLanguage());
         var appearanceDetail = appearance.getLastDetail();
 
@@ -154,14 +160,12 @@ public class EditAppearanceCommand
 
     @Override
     public void canUpdate(Appearance appearance) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var appearanceName = edit.getAppearanceName();
         var duplicateAppearance = appearanceControl.getAppearanceByName(appearanceName);
 
         if(duplicateAppearance != null && !appearance.equals(duplicateAppearance)) {
             addExecutionError(ExecutionErrors.DuplicateAppearanceName.name(), appearanceName);
         } else {
-            var colorControl = Session.getModelController(ColorControl.class);
             var textColorName = edit.getTextColorName();
             
             textColor = textColorName == null ? null : colorControl.getColorByName(textColorName);
@@ -174,12 +178,12 @@ public class EditAppearanceCommand
                 if(backgroundColorName == null || backgroundColor != null) {
                     var fontStyleName = edit.getFontStyleName();
                     
-                    fontStyle = fontStyleName == null ? null : FontLogic.getInstance().getFontStyleByName(this, fontStyleName);
+                    fontStyle = fontStyleName == null ? null : fontLogic.getFontStyleByName(this, fontStyleName);
                     
                     if(!hasExecutionErrors()) {
                         var fontWeightName = edit.getFontWeightName();
                         
-                        fontWeight = fontWeightName == null ? null : FontLogic.getInstance().getFontWeightByName(this, fontWeightName);
+                        fontWeight = fontWeightName == null ? null : fontLogic.getFontWeightByName(this, fontWeightName);
                     }
                 } else {
                 addExecutionError(ExecutionErrors.UnknownBackgroundColorName.name(), backgroundColorName);
@@ -192,7 +196,6 @@ public class EditAppearanceCommand
 
     @Override
     public void doUpdate(Appearance appearance) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var partyPK = getPartyPK();
         var appearanceDetailValue = appearanceControl.getAppearanceDetailValueForUpdate(appearance);
         var appearanceDescription = appearanceControl.getAppearanceDescriptionForUpdate(appearance, getPreferredLanguage());

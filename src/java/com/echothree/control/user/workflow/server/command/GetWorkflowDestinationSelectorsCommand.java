@@ -60,17 +60,19 @@ public class GetWorkflowDestinationSelectorsCommand
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
-    
-    /** Creates a new instance of GetWorkflowDestinationSelectorsCommand */
-    public GetWorkflowDestinationSelectorsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     WorkflowControl workflowControl;
 
     @Inject
     WorkflowDestinationLogic workflowDestinationLogic;
+
+
+    /** Creates a new instance of GetWorkflowDestinationSelectorsCommand */
+    public GetWorkflowDestinationSelectorsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
     
     WorkflowDestination workflowDestination;
 

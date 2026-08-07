@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorNodeDescriptionsCommand
@@ -43,6 +43,10 @@ public class GetSelectorNodeDescriptionsCommand
             new FieldDefinition("SelectorNodeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of GetSelectorNodeDescriptionsCommand */
     public GetSelectorNodeDescriptionsCommand() {
@@ -51,7 +55,6 @@ public class GetSelectorNodeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorNodeDescriptionsResult();
         var selectorKindName = form.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);

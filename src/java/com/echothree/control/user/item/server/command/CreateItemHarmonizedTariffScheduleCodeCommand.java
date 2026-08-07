@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemHarmonizedTariffScheduleCodeCommand
@@ -57,6 +57,13 @@ public class CreateItemHarmonizedTariffScheduleCodeCommand
                 new FieldDefinition("HarmonizedTariffScheduleCodeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of CreateItemHarmonizedTariffScheduleCodeCommand */
     public CreateItemHarmonizedTariffScheduleCodeCommand() {
@@ -65,12 +72,10 @@ public class CreateItemHarmonizedTariffScheduleCodeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var countryName = form.getCountryName();
             var countryGeoCode = geoControl.getCountryByAlias(countryName);
             

@@ -68,7 +68,7 @@ public class EditCustomerTypePaymentMethodCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
-    
+
     @Inject
     CustomerControl customerControl;
 
@@ -77,6 +77,7 @@ public class EditCustomerTypePaymentMethodCommand
 
     @Inject
     PaymentMethodLogic paymentMethodLogic;
+
 
     /** Creates a new instance of EditCustomerTypePaymentMethodCommand */
     public EditCustomerTypePaymentMethodCommand() {

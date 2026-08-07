@@ -52,9 +52,10 @@ public class GetTrainingClassesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     TrainingControl trainingControl;
+
 
     /** Creates a new instance of GetTrainingClassesCommand */
     public GetTrainingClassesCommand() {

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetChainActionSetDescriptionsCommand
@@ -57,6 +57,10 @@ public class GetChainActionSetDescriptionsCommand
                 new FieldDefinition("ChainActionSetName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ChainControl chainControl;
+
     
     /** Creates a new instance of GetChainActionSetDescriptionsCommand */
     public GetChainActionSetDescriptionsCommand() {
@@ -65,7 +69,6 @@ public class GetChainActionSetDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = ChainResultFactory.getGetChainActionSetDescriptionsResult();
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);

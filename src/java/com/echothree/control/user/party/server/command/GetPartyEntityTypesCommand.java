@@ -58,7 +58,7 @@ public class GetPartyEntityTypesCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     PartyControl partyControl;
 
@@ -67,6 +67,7 @@ public class GetPartyEntityTypesCommand
 
     @Inject
     PartyLogic partyLogic;
+
 
     /** Creates a new instance of GetPartyEntityTypesCommand */
     public GetPartyEntityTypesCommand() {

@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCarrierServiceOptionCommand
@@ -79,6 +79,13 @@ public class EditCarrierServiceOptionCommand
                 new FieldDefinition("RequiredShipmentSelectorName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of EditCarrierServiceOptionCommand */
     public EditCarrierServiceOptionCommand() {
@@ -97,7 +104,6 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public CarrierServiceOption getEntity(EditCarrierServiceOptionResult result) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierServiceOption carrierServiceOption = null;
         var carrierName = spec.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
@@ -143,8 +149,6 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void fillInResult(EditCarrierServiceOptionResult result, CarrierServiceOption carrierServiceOption) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
-
         result.setCarrierServiceOption(carrierControl.getCarrierServiceOptionTransfer(getUserVisit(), carrierServiceOption));
     }
 
@@ -182,7 +186,6 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void canUpdate(CarrierServiceOption carrierServiceOption) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
         if(selectorKind != null) {
@@ -319,7 +322,6 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void doUpdate(CarrierServiceOption carrierServiceOption) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
         var carrierServiceOptionValue = carrierControl.getCarrierServiceOptionValue(carrierServiceOption);
     

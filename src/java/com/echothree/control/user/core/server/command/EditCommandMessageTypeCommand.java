@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditCommandMessageTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandMessageTypeResult;
 import com.echothree.control.user.core.common.spec.CommandMessageTypeSpec;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -36,9 +35,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommandMessageTypeCommand
@@ -67,6 +66,7 @@ public class EditCommandMessageTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
     
     /** Creates a new instance of EditCommandMessageTypeCommand */
     public EditCommandMessageTypeCommand() {
@@ -85,7 +85,6 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public CommandMessageType getEntity(EditCommandMessageTypeResult result) {
-        var commandControl = Session.getModelController(CommandControl.class);
         CommandMessageType commandMessageType;
         var commandMessageTypeName = spec.getCommandMessageTypeName();
 
@@ -111,14 +110,11 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void fillInResult(EditCommandMessageTypeResult result, CommandMessageType commandMessageType) {
-        var commandControl = Session.getModelController(CommandControl.class);
-
         result.setCommandMessageType(commandControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
     }
 
     @Override
     public void doLock(CommandMessageTypeEdit edit, CommandMessageType commandMessageType) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTypeDescription = commandControl.getCommandMessageTypeDescription(commandMessageType, getPreferredLanguage());
         var commandMessageTypeDetail = commandMessageType.getLastDetail();
 
@@ -133,7 +129,6 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void canUpdate(CommandMessageType commandMessageType) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTypeName = edit.getCommandMessageTypeName();
         var duplicateCommandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
 
@@ -144,7 +139,6 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void doUpdate(CommandMessageType commandMessageType) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var partyPK = getPartyPK();
         var commandMessageTypeDetailValue = commandControl.getCommandMessageTypeDetailValueForUpdate(commandMessageType);
         var commandMessageTypeDescription = commandControl.getCommandMessageTypeDescriptionForUpdate(commandMessageType, getPreferredLanguage());

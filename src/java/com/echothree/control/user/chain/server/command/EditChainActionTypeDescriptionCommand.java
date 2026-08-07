@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainActionTypeDescriptionCommand
@@ -68,6 +68,12 @@ public class EditChainActionTypeDescriptionCommand
                 );
     }
 
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditChainActionTypeDescriptionCommand */
     public EditChainActionTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditChainActionTypeDescriptionCommand
 
     @Override
     public ChainActionTypeDescription getEntity(EditChainActionTypeDescriptionResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainActionTypeDescription chainActionTypeDescription = null;
         var chainActionTypeName = spec.getChainActionTypeName();
         var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
 
         if(chainActionType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditChainActionTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditChainActionTypeDescriptionResult result, ChainActionTypeDescription chainActionTypeDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainActionTypeDescription(chainControl.getChainActionTypeDescriptionTransfer(getUserVisit(), chainActionTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditChainActionTypeDescriptionCommand
 
     @Override
     public void doUpdate(ChainActionTypeDescription chainActionTypeDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainActionTypeDescriptionValue = chainControl.getChainActionTypeDescriptionValue(chainActionTypeDescription);
 
         chainActionTypeDescriptionValue.setDescription(edit.getDescription());

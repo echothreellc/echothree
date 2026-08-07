@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditIndexTypeDescriptionCommand
@@ -67,6 +67,13 @@ public class EditIndexTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditIndexTypeDescriptionCommand */
     public EditIndexTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditIndexTypeDescriptionCommand
 
     @Override
     public IndexTypeDescription getEntity(EditIndexTypeDescriptionResult result) {
-        var indexControl = Session.getModelController(IndexControl.class);
         IndexTypeDescription indexTypeDescription = null;
         var indexTypeName = spec.getIndexTypeName();
         var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditIndexTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditIndexTypeDescriptionResult result, IndexTypeDescription indexTypeDescription) {
-        var indexControl = Session.getModelController(IndexControl.class);
-
         result.setIndexTypeDescription(indexControl.getIndexTypeDescriptionTransfer(getUserVisit(), indexTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditIndexTypeDescriptionCommand
 
     @Override
     public void doUpdate(IndexTypeDescription indexTypeDescription) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexTypeDescriptionValue = indexControl.getIndexTypeDescriptionValue(indexTypeDescription);
         indexTypeDescriptionValue.setDescription(edit.getDescription());
 

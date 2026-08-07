@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTextTransformationChoicesCommand
@@ -53,6 +53,10 @@ public class GetTextTransformationChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of GetTextTransformationChoicesCommand */
     public GetTextTransformationChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetTextTransformationChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var textControl = Session.getModelController(TextControl.class);
         var result = CoreResultFactory.getGetTextTransformationChoicesResult();
         var defaultTextTransformationChoice = form.getDefaultTextTransformationChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

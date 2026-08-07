@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentTypeCommand
@@ -55,6 +55,10 @@ public class CreateFilterAdjustmentTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    FilterControl filterControl;
+
     
     /** Creates a new instance of CreateFilterAdjustmentTypeCommand */
     public CreateFilterAdjustmentTypeCommand() {
@@ -64,7 +68,6 @@ public class CreateFilterAdjustmentTypeCommand
     @Override
     protected BaseResult execute() {
         var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType == null) {

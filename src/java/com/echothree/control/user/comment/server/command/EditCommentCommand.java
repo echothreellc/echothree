@@ -37,9 +37,9 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommentCommand
@@ -62,6 +62,16 @@ public class EditCommentCommand
                 // BlobComment is not validated
         );
     }
+
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCommentCommand */
     public EditCommentCommand() {
@@ -133,7 +143,6 @@ public class EditCommentCommand
     
     @Override
     protected BaseResult execute() {
-        var commentControl = Session.getModelController(CommentControl.class);
         var result = CommentResultFactory.getEditCommentResult();
         var commentName = spec.getCommentName();
         var comment = commentControl.getCommentByName(commentName);
@@ -178,7 +187,6 @@ public class EditCommentCommand
             } else if(editMode.equals(EditMode.ABANDON)) {
                 unlockEntity(comment);
             } else if(editMode.equals(EditMode.UPDATE)) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = edit.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -202,7 +210,6 @@ public class EditCommentCommand
                             addExecutionError(ExecutionErrors.InvalidMimeType.name());
                         }
                     } else {
-                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                         var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {

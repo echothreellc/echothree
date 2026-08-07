@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class InvalidateAbandonedUserVisitsCommand
@@ -45,6 +46,10 @@ public class InvalidateAbandonedUserVisitsCommand
                 new FieldDefinition("AbandonedTime", FieldType.UNSIGNED_LONG, true, null, null)
                 );
     }
+
+    @Inject
+    UserVisitLogic userVisitLogic;
+
     
     /** Creates a new instance of InvalidateAbandonedUserVisitsCommand */
     public InvalidateAbandonedUserVisitsCommand() {
@@ -55,7 +60,7 @@ public class InvalidateAbandonedUserVisitsCommand
     protected BaseResult execute() {
         var abandonedTime = Long.valueOf(form.getAbandonedTime());
         
-        UserVisitLogic.getInstance().invalidateAbandonedUserVisits(abandonedTime, getPartyPK());
+        userVisitLogic.invalidateAbandonedUserVisits(abandonedTime, getPartyPK());
         
         return null;
     }

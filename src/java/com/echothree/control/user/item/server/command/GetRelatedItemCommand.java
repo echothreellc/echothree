@@ -27,9 +27,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRelatedItemCommand
@@ -45,6 +45,13 @@ public class GetRelatedItemCommand
             new FieldDefinition("ToItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    RelatedItemTypeLogic relatedItemTypeLogic;
+
     
     /** Creates a new instance of GetRelatedItemCommand */
     public GetRelatedItemCommand() {
@@ -54,11 +61,10 @@ public class GetRelatedItemCommand
 
     @Override
     protected RelatedItem getEntity() {
-        var relatedItemType = RelatedItemTypeLogic.getInstance().getRelatedItemTypeByName(this, form.getRelatedItemTypeName());
+        var relatedItemType = relatedItemTypeLogic.getRelatedItemTypeByName(this, form.getRelatedItemTypeName());
         RelatedItem relatedItem = null;
 
         if(relatedItemType != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var fromItemName = form.getFromItemName();
             var fromItem = itemControl.getItemByName(fromItemName);
 
@@ -90,8 +96,6 @@ public class GetRelatedItemCommand
         var result = ItemResultFactory.getGetRelatedItemResult();
 
         if(relatedItem != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             result.setRelatedItem(itemControl.getRelatedItemTransfer(getUserVisit(), relatedItem));
         }
 

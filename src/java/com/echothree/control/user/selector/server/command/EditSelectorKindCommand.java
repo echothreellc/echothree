@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSelectorKindCommand
@@ -68,6 +68,9 @@ public class EditSelectorKindCommand
                 );
     }
 
+    @Inject
+    SelectorControl selectorControl;
+
     /** Creates a new instance of EditSelectorKindCommand */
     public EditSelectorKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,7 +88,6 @@ public class EditSelectorKindCommand
 
     @Override
     public SelectorKind getEntity(EditSelectorKindResult result) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorKind selectorKind;
         var selectorKindName = spec.getSelectorKindName();
 
@@ -109,14 +111,11 @@ public class EditSelectorKindCommand
 
     @Override
     public void fillInResult(EditSelectorKindResult result, SelectorKind selectorKind) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-
         result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));
     }
 
     @Override
     public void doLock(SelectorKindEdit edit, SelectorKind selectorKind) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindDescription = selectorControl.getSelectorKindDescription(selectorKind, getPreferredLanguage());
         var selectorKindDetail = selectorKind.getLastDetail();
 
@@ -131,7 +130,6 @@ public class EditSelectorKindCommand
 
     @Override
     public void canUpdate(SelectorKind selectorKind) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindName = edit.getSelectorKindName();
         var duplicateSelectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
@@ -142,7 +140,6 @@ public class EditSelectorKindCommand
 
     @Override
     public void doUpdate(SelectorKind selectorKind) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var partyPK = getPartyPK();
         var selectorKindDetailValue = selectorControl.getSelectorKindDetailValueForUpdate(selectorKind);
         var selectorKindDescription = selectorControl.getSelectorKindDescriptionForUpdate(selectorKind, getPreferredLanguage());

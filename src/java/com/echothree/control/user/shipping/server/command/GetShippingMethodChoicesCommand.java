@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetShippingMethodChoicesCommand
@@ -55,6 +55,13 @@ public class GetShippingMethodChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ShipmentControl shipmentControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
     
     /** Creates a new instance of GetShippingMethodChoicesCommand */
     public GetShippingMethodChoicesCommand() {
@@ -63,8 +70,6 @@ public class GetShippingMethodChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var result = ShippingResultFactory.getGetShippingMethodChoicesResult();
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentTypeName == null? null: shipmentControl.getShipmentTypeByName(shipmentTypeName);

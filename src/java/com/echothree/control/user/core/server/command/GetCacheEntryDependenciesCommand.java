@@ -57,9 +57,10 @@ public class GetCacheEntryDependenciesCommand
                 new FieldDefinition("CacheEntryKey", FieldType.STRING, true, 1L, 200L)
         );
     }
-    
+
     @Inject
     CacheEntryControl cacheEntryControl;
+
 
     /** Creates a new instance of GetCacheEntryDependenciesCommand */
     public GetCacheEntryDependenciesCommand() {

@@ -62,11 +62,6 @@ public class GetWorkflowSelectorKindsCommand
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetWorkflowSelectorKindsCommand */
-    public GetWorkflowSelectorKindsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     SelectorControl selectorControl;
@@ -75,10 +70,16 @@ public class GetWorkflowSelectorKindsCommand
     WorkflowControl workflowControl;
 
     @Inject
-    WorkflowLogic workflowLogic;
+    SelectorKindLogic selectorKindLogic;
 
     @Inject
-    SelectorKindLogic selectorKindLogic;
+    WorkflowLogic workflowLogic;
+
+
+    /** Creates a new instance of GetWorkflowSelectorKindsCommand */
+    public GetWorkflowSelectorKindsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     Workflow workflow;
     SelectorKind selectorKind;

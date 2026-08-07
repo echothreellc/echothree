@@ -19,7 +19,6 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -36,10 +35,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemDescriptionTypeCommand
@@ -82,6 +81,10 @@ public class CreateItemDescriptionTypeCommand
                 new FieldDefinition("ScaleFromParent", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of CreateItemDescriptionTypeCommand */
     public CreateItemDescriptionTypeCommand() {
@@ -109,7 +112,6 @@ public class CreateItemDescriptionTypeCommand
     @Override
     protected BaseResult execute() {
         var result = ItemResultFactory.getCreateItemDescriptionTypeResult();
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionTypeName = form.getItemDescriptionTypeName();
         var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
         
@@ -122,7 +124,6 @@ public class CreateItemDescriptionTypeCommand
             }
             
             if(parentItemDescriptionTypeName == null || parentItemDescriptionType != null) {
-                var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                 MimeTypeUsageType mimeTypeUsageType = null;
                 var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 

@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAliasTypeResultsCommand
@@ -58,6 +58,15 @@ public class GetEntityAliasTypeResultsCommand
         );
     }
 
+    @Inject
+    EntityAliasTypeControl entityAliasTypeControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetEntityAliasTypeResultsCommand */
     public GetEntityAliasTypeResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +75,6 @@ public class GetEntityAliasTypeResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetEntityAliasTypeResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.ENTITY_ALIAS_TYPE.name());
         
         if(searchKind != null) {
@@ -78,10 +86,8 @@ public class GetEntityAliasTypeResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityAliasTypeControl = Session.getModelController(EntityAliasTypeControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setEntityAliasTypeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setEntityAliasTypeResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setEntityAliasTypeResults(entityAliasTypeControl.getEntityAliasTypeResultTransfers(userVisit, userVisitSearch));

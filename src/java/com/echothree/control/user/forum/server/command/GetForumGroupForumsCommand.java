@@ -47,7 +47,7 @@ public class GetForumGroupForumsCommand
                 new FieldDefinition("ForumName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     ForumControl forumControl;
 
@@ -56,6 +56,8 @@ public class GetForumGroupForumsCommand
 
     @Inject
     ForumLogic forumLogic;
+
+
     
     /** Creates a new instance of GetForumGroupForumsCommand */
     public GetForumGroupForumsCommand() {

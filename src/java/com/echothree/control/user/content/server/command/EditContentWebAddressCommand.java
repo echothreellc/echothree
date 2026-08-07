@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentWebAddressCommand
@@ -67,6 +67,10 @@ public class EditContentWebAddressCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of EditContentWebAddressCommand */
     public EditContentWebAddressCommand() {
@@ -85,7 +89,6 @@ public class EditContentWebAddressCommand
     
     @Override
     public ContentWebAddress getEntity(EditContentWebAddressResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentWebAddress contentWebAddress;
         var contentWebAddressName = spec.getContentWebAddressName();
 
@@ -111,14 +114,11 @@ public class EditContentWebAddressCommand
     
     @Override
     public void fillInResult(EditContentWebAddressResult result, ContentWebAddress contentWebAddress) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentWebAddress(contentControl.getContentWebAddressTransfer(getUserVisit(), contentWebAddress));
     }
     
     @Override
     public void doLock(ContentWebAddressEdit edit, ContentWebAddress contentWebAddress) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentWebAddressDescription = contentControl.getContentWebAddressDescription(contentWebAddress, getPreferredLanguage());
         var contentWebAddressDetail = contentWebAddress.getLastDetail();
 
@@ -134,7 +134,6 @@ public class EditContentWebAddressCommand
     
     @Override
     public void canUpdate(ContentWebAddress contentWebAddress) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentWebAddressName = edit.getContentWebAddressName();
         var duplicateContentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
@@ -153,7 +152,6 @@ public class EditContentWebAddressCommand
     
     @Override
     public void doUpdate(ContentWebAddress contentWebAddress) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         var contentWebAddressDetailValue = contentControl.getContentWebAddressDetailValueForUpdate(contentWebAddress);
         var contentWebAddressDescription = contentControl.getContentWebAddressDescriptionForUpdate(contentWebAddress, getPreferredLanguage());

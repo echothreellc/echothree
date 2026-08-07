@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteContactMechanismCommand
@@ -56,6 +56,13 @@ public class DeleteContactMechanismCommand
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactMechanismLogic contactMechanismLogic;
+
     
     /** Creates a new instance of DeleteContactMechanismCommand */
     public DeleteContactMechanismCommand() {
@@ -73,7 +80,6 @@ public class DeleteContactMechanismCommand
             // If the executing Party's PartyType is CUSTOMER or VENDOR, then the specified ContactMechanism
             // MUST belong to the executing Party.
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
-                var contactControl = Session.getModelController(ContactControl.class);
                 var contactMechanismName = form.getContactMechanismName();
                 var contactMechanism = contactControl.getContactMechanismByNameForUpdate(contactMechanismName);
 
@@ -96,7 +102,7 @@ public class DeleteContactMechanismCommand
     protected BaseResult execute() {
         var contactMechanismName = form.getContactMechanismName();
 
-        ContactMechanismLogic.getInstance().deleteContactMechanism(this, contactMechanismName, getPartyPK());
+        contactMechanismLogic.deleteContactMechanism(this, contactMechanismName, getPartyPK());
         
         return null;
     }

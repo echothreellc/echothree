@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditBatchTypeDescriptionCommand
@@ -67,6 +67,13 @@ public class EditBatchTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditBatchTypeDescriptionCommand */
     public EditBatchTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditBatchTypeDescriptionCommand
 
     @Override
     public BatchTypeDescription getEntity(EditBatchTypeDescriptionResult result) {
-        var batchControl = Session.getModelController(BatchControl.class);
         BatchTypeDescription batchTypeDescription = null;
         var batchTypeName = spec.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditBatchTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditBatchTypeDescriptionResult result, BatchTypeDescription batchTypeDescription) {
-        var batchControl = Session.getModelController(BatchControl.class);
-
         result.setBatchTypeDescription(batchControl.getBatchTypeDescriptionTransfer(getUserVisit(), batchTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditBatchTypeDescriptionCommand
 
     @Override
     public void doUpdate(BatchTypeDescription batchTypeDescription) {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchTypeDescriptionValue = batchControl.getBatchTypeDescriptionValue(batchTypeDescription);
         batchTypeDescriptionValue.setDescription(edit.getDescription());
 

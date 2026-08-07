@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTypePasswordStringPolicyCommand
@@ -70,6 +70,13 @@ public class EditPartyTypePasswordStringPolicyCommand
                 new FieldDefinition("MinimumCharacterTypes", FieldType.UNSIGNED_INTEGER, false, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditPartyTypePasswordStringPolicyCommand */
     public EditPartyTypePasswordStringPolicyCommand() {
@@ -78,7 +85,6 @@ public class EditPartyTypePasswordStringPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getEditPartyTypePasswordStringPolicyResult();
         var partyTypeName = spec.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -87,7 +93,6 @@ public class EditPartyTypePasswordStringPolicyCommand
             var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
             
             if(partyTypePasswordStringPolicy != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                 
                 if(timeUnitOfMeasureKind != null) {

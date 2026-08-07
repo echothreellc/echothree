@@ -31,9 +31,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumCommand
@@ -48,6 +48,16 @@ public class GetForumCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ForumRoleTypeLogic forumRoleTypeLogic;
+
     
     /** Creates a new instance of GetForumCommand */
     public GetForumCommand() {
@@ -58,14 +68,13 @@ public class GetForumCommand
     protected BaseResult execute() {
         var result = ForumResultFactory.getGetForumResult();
         var forumName = form.getForumName();
-        var parameterCount = (forumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (forumName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var forumControl = Session.getModelController(ForumControl.class);
             Forum forum = null;
 
             if(forumName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Forum.name());
                 
                 if(!hasExecutionErrors()) {
@@ -81,7 +90,7 @@ public class GetForumCommand
 
             // If the UUID for the Forum is specified, then bypass the ForumRoleType check.
             if(!hasExecutionErrors()) {
-                if(form.getUuid() != null || ForumRoleTypeLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+                if(form.getUuid() != null || forumRoleTypeLogic.isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                     result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
                     sendEvent(forum.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }

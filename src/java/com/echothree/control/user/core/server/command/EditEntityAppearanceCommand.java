@@ -39,9 +39,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityAppearanceCommand
@@ -67,6 +67,16 @@ public class EditEntityAppearanceCommand
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    AppearanceLogic appearanceLogic;
+
     
     /** Creates a new instance of EditEntityAppearanceCommand */
     public EditEntityAppearanceCommand() {
@@ -75,7 +85,6 @@ public class EditEntityAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var result = CoreResultFactory.getEditEntityAppearanceResult();
         var entityRef = spec.getEntityRef();
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
@@ -85,8 +94,6 @@ public class EditEntityAppearanceCommand
             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                var appearanceControl = Session.getModelController(AppearanceControl.class);
-
                 entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
 
                 if(entityAppearance != null) {
@@ -111,11 +118,9 @@ public class EditEntityAppearanceCommand
             } else {
                 if(editMode.equals(EditMode.UPDATE)) {
                     var appearanceName = edit.getAppearanceName();
-                    var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+                    var appearance = appearanceLogic.getAppearanceByName(this, appearanceName);
 
                     if(!hasExecutionErrors()) {
-                        var appearanceControl = Session.getModelController(AppearanceControl.class);
-
                         entityAppearance = appearanceControl.getEntityAppearanceForUpdate(entityInstance);
 
                         if(entityAppearance != null) {
@@ -145,8 +150,6 @@ public class EditEntityAppearanceCommand
             }
 
             if(entityAppearance != null) {
-                var appearanceControl = Session.getModelController(AppearanceControl.class);
-
                 result.setEntityAppearance(appearanceControl.getEntityAppearanceTransfer(getUserVisit(), entityAppearance));
             }
         } else {

@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUseTypeCommand
@@ -55,6 +56,10 @@ public class CreateUseTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    UseTypeLogic useTypeLogic;
+
     
     /** Creates a new instance of CreateUseTypeCommand */
     public CreateUseTypeCommand() {
@@ -69,7 +74,7 @@ public class CreateUseTypeCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var useType = UseTypeLogic.getInstance().createUseType(this,
+        var useType = useTypeLogic.createUseType(this,
                 useTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(useType != null && !hasExecutionErrors()) {

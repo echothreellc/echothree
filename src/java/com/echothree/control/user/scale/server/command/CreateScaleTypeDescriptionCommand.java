@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateScaleTypeDescriptionCommand
@@ -43,6 +43,12 @@ public class CreateScaleTypeDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
     /** Creates a new instance of CreateScaleTypeDescriptionCommand */
     public CreateScaleTypeDescriptionCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -50,12 +56,10 @@ public class CreateScaleTypeDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
        var scaleTypeName = form.getScaleTypeName();
        var scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
         
         if(scaleType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

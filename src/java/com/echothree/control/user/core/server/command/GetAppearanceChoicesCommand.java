@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAppearanceChoicesCommand
@@ -53,6 +53,10 @@ public class GetAppearanceChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
     
     /** Creates a new instance of GetAppearanceChoicesCommand */
     public GetAppearanceChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetAppearanceChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
         var result = CoreResultFactory.getGetAppearanceChoicesResult();
         var defaultAppearanceChoice = form.getDefaultAppearanceChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

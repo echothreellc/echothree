@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOrderLineAdjustmentTypeCommand
@@ -58,6 +58,13 @@ public class CreateOrderLineAdjustmentTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    OrderLineAdjustmentControl orderLineAdjustmentControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
     
     /** Creates a new instance of CreateOrderLineAdjustmentTypeCommand */
     public CreateOrderLineAdjustmentTypeCommand() {
@@ -66,12 +73,10 @@ public class CreateOrderLineAdjustmentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
             var orderLineAdjustmentTypeName = form.getOrderLineAdjustmentTypeName();
             var orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 

@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class LockEntityCommand
@@ -42,6 +42,13 @@ public class LockEntityCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    EntityLockControl entityLockControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of LockEntityCommand */
     public LockEntityCommand() {
@@ -50,13 +57,12 @@ public class LockEntityCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form, null);
 
         if(!hasExecutionErrors()) {
             var partyPK = getPartyPK();
             
             if(partyPK != null) {
-                var entityLockControl = Session.getModelController(EntityLockControl.class);
                 var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                 if(entityLockControl.lockEntity(basePK, partyPK) == 0) {

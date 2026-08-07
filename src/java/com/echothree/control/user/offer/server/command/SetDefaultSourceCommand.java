@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultSourceCommand
@@ -53,6 +53,10 @@ public class SetDefaultSourceCommand
                 new FieldDefinition("SourceName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SourceControl sourceControl;
+
     
     /** Creates a new instance of SetDefaultSourceCommand */
     public SetDefaultSourceCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var sourceControl = Session.getModelController(SourceControl.class);
         var sourceName = form.getSourceName();
         var sourceDetailValue = sourceControl.getSourceDetailValueByNameForUpdate(sourceName);
         

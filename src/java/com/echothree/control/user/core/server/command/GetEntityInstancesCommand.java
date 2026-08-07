@@ -57,14 +57,18 @@ public class GetEntityInstancesCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of GetEntityInstancesCommand */
     public GetEntityInstancesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    EntityInstanceControl entityInstanceControl;
 
     EntityType entityType;
 
@@ -73,7 +77,7 @@ public class GetEntityInstancesCommand
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
 
-        entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
     }
 
     @Override

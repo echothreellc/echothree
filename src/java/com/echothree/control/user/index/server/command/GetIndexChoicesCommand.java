@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetIndexChoicesCommand
@@ -53,6 +53,10 @@ public class GetIndexChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    IndexControl indexControl;
+
     
     /** Creates a new instance of GetIndexChoicesCommand */
     public GetIndexChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetIndexChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = Session.getModelController(IndexControl.class);
         var result = IndexResultFactory.getGetIndexChoicesResult();
         var defaultIndexChoice = form.getDefaultIndexChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

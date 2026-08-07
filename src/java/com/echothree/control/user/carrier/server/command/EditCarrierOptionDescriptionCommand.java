@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCarrierOptionDescriptionCommand
@@ -69,6 +69,12 @@ public class EditCarrierOptionDescriptionCommand
                 );
     }
 
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditCarrierOptionDescriptionCommand */
     public EditCarrierOptionDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -86,7 +92,6 @@ public class EditCarrierOptionDescriptionCommand
 
     @Override
     public CarrierOptionDescription getEntity(EditCarrierOptionDescriptionResult result) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierOptionDescription carrierOptionDescription = null;
         var carrierName = spec.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
@@ -97,7 +102,6 @@ public class EditCarrierOptionDescriptionCommand
             var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
 
             if(carrierOption != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -131,8 +135,6 @@ public class EditCarrierOptionDescriptionCommand
 
     @Override
     public void fillInResult(EditCarrierOptionDescriptionResult result, CarrierOptionDescription carrierOptionDescription) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
-
         result.setCarrierOptionDescription(carrierControl.getCarrierOptionDescriptionTransfer(getUserVisit(), carrierOptionDescription));
     }
 
@@ -143,7 +145,6 @@ public class EditCarrierOptionDescriptionCommand
 
     @Override
     public void doUpdate(CarrierOptionDescription carrierOptionDescription) {
-        var carrierControl = Session.getModelController(CarrierControl.class);
         var carrierOptionDescriptionValue = carrierControl.getCarrierOptionDescriptionValue(carrierOptionDescription);
 
         carrierOptionDescriptionValue.setDescription(edit.getDescription());

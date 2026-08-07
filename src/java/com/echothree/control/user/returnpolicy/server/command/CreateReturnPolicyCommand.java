@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateReturnPolicyCommand
@@ -57,6 +58,10 @@ public class CreateReturnPolicyCommand
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    ReturnPolicyLogic returnPolicyLogic;
+
     
     /** Creates a new instance of CreateReturnPolicyCommand */
     public CreateReturnPolicyCommand() {
@@ -74,7 +79,7 @@ public class CreateReturnPolicyCommand
         var policy = form.getPolicy();
         var partyPK = getPartyPK();
 
-        ReturnPolicyLogic.getInstance().createReturnPolicy(this, returnKindName, returnPolicyName,
+        returnPolicyLogic.createReturnPolicy(this, returnKindName, returnPolicyName,
                 isDefault, sortOrder, getPreferredLanguage(), description, policyMimeTypeName, policy, partyPK);
 
         return null;

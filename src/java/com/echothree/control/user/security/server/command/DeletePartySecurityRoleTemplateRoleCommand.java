@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartySecurityRoleTemplateRoleCommand
@@ -56,6 +56,13 @@ public class DeletePartySecurityRoleTemplateRoleCommand
                 new FieldDefinition("SecurityRoleName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    PartySecurityRoleTemplateLogic partySecurityRoleTemplateLogic;
+
     
     /** Creates a new instance of DeletePartySecurityRoleTemplateRoleCommand */
     public DeletePartySecurityRoleTemplateRoleCommand() {
@@ -64,7 +71,6 @@ public class DeletePartySecurityRoleTemplateRoleCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
         var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         
@@ -80,7 +86,7 @@ public class DeletePartySecurityRoleTemplateRoleCommand
                     var partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRoleForUpdate(partySecurityRoleTemplate, securityRole);
                     
                     if(partySecurityRoleTemplateRole != null) {
-                        PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateRole(partySecurityRoleTemplateRole, getPartyPK());
+                        partySecurityRoleTemplateLogic.deletePartySecurityRoleTemplateRole(partySecurityRoleTemplateRole, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartySecurityRoleTemplateRole.name(), partySecurityRoleTemplateName, securityRoleGroupName,
                                 securityRoleName);

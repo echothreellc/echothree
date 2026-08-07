@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyAliasCommand
@@ -56,6 +56,10 @@ public class EditPartyAliasCommand
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditPartyAliasCommand */
     public EditPartyAliasCommand() {
@@ -86,7 +90,6 @@ public class EditPartyAliasCommand
     
     @Override
     public PartyAlias getEntity(EditPartyAliasResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyAlias partyAlias = null;
         var partyName = spec.getPartyName();
         var party = partyControl.getPartyByName(partyName);
@@ -126,8 +129,6 @@ public class EditPartyAliasCommand
 
     @Override
     public void fillInResult(EditPartyAliasResult result, PartyAlias partyAlias) {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         result.setPartyAlias(partyControl.getPartyAliasTransfer(getUserVisit(), partyAlias));
     }
 
@@ -138,7 +139,6 @@ public class EditPartyAliasCommand
 
     @Override
     public void canUpdate(PartyAlias partyAlias) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var alias = edit.getAlias();
         var duplicatePartyAlias = partyControl.getPartyAliasByAlias(partyAliasType, alias);
 
@@ -152,7 +152,6 @@ public class EditPartyAliasCommand
 
     @Override
     public void doUpdate(PartyAlias partyAlias) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyAliasValue = partyControl.getPartyAliasValue(partyAlias);
 
         partyAliasValue.setAlias(edit.getAlias());

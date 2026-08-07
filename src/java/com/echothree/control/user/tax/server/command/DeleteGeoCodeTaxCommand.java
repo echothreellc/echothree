@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteGeoCodeTaxCommand
@@ -41,6 +41,13 @@ public class DeleteGeoCodeTaxCommand
                 new FieldDefinition("TaxName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    TaxControl taxControl;
+
     
     /** Creates a new instance of DeleteGeoCodeTaxCommand */
     public DeleteGeoCodeTaxCommand() {
@@ -49,12 +56,10 @@ public class DeleteGeoCodeTaxCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeName = form.getGeoCodeName();
         var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            var taxControl = Session.getModelController(TaxControl.class);
             var taxName = form.getTaxName();
             var tax = taxControl.getTaxByName(taxName);
             

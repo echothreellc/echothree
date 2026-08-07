@@ -18,7 +18,6 @@ package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetTagScopeEntityTypesForm;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
-import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,11 +62,6 @@ public class GetTagScopeEntityTypesCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null)
                 );
     }
-    
-    /** Creates a new instance of GetTagScopeEntityTypesCommand */
-    public GetTagScopeEntityTypesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     TagControl tagControl;
@@ -77,6 +71,12 @@ public class GetTagScopeEntityTypesCommand
 
     @Inject
     TagScopeLogic tagScopeLogic;
+
+
+    /** Creates a new instance of GetTagScopeEntityTypesCommand */
+    public GetTagScopeEntityTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private TagScope tagScope;
     private EntityType entityType;

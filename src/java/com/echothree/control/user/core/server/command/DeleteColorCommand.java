@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteColorCommand
@@ -53,6 +53,10 @@ public class DeleteColorCommand
                 new FieldDefinition("ColorName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    ColorControl colorControl;
+
     
     /** Creates a new instance of DeleteColorCommand */
     public DeleteColorCommand() {
@@ -61,7 +65,6 @@ public class DeleteColorCommand
     
     @Override
     protected BaseResult execute() {
-        var colorControl = Session.getModelController(ColorControl.class);
         var colorName = form.getColorName();
         var color = colorControl.getColorByNameForUpdate(colorName);
         

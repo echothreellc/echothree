@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchUseTypeDescriptionCommand
@@ -67,6 +67,13 @@ public class EditSearchUseTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of EditSearchUseTypeDescriptionCommand */
     public EditSearchUseTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditSearchUseTypeDescriptionCommand
 
     @Override
     public SearchUseTypeDescription getEntity(EditSearchUseTypeDescriptionResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchUseTypeDescription searchUseTypeDescription = null;
         var searchUseTypeName = spec.getSearchUseTypeName();
         var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
         if(searchUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditSearchUseTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchUseTypeDescriptionResult result, SearchUseTypeDescription searchUseTypeDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchUseTypeDescription(searchControl.getSearchUseTypeDescriptionTransfer(getUserVisit(), searchUseTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditSearchUseTypeDescriptionCommand
 
     @Override
     public void doUpdate(SearchUseTypeDescription searchUseTypeDescription) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchUseTypeDescriptionValue = searchControl.getSearchUseTypeDescriptionValue(searchUseTypeDescription);
         searchUseTypeDescriptionValue.setDescription(edit.getDescription());
 

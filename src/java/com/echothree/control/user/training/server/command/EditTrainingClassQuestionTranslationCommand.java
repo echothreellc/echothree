@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassQuestionTranslationCommand
@@ -75,6 +75,15 @@ public class EditTrainingClassQuestionTranslationCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     /** Creates a new instance of EditTrainingClassQuestionTranslationCommand */
     public EditTrainingClassQuestionTranslationCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -94,7 +103,6 @@ public class EditTrainingClassQuestionTranslationCommand
     
     @Override
     public TrainingClassQuestionTranslation getEntity(EditTrainingClassQuestionTranslationResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassQuestionTranslation trainingClassQuestionTranslation = null;
         var trainingClassName = spec.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -109,7 +117,6 @@ public class EditTrainingClassQuestionTranslationCommand
                 var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = spec.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -147,8 +154,6 @@ public class EditTrainingClassQuestionTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassQuestionTranslationResult result, TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClassQuestionTranslation(trainingControl.getTrainingClassQuestionTranslationTransfer(getUserVisit(), trainingClassQuestionTranslation));
     }
 
@@ -164,7 +169,6 @@ public class EditTrainingClassQuestionTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        var mimeTypeLogic = MimeTypeLogic.getInstance();
         var questionMimeTypeName = edit.getQuestionMimeTypeName();
         var question = edit.getQuestion();
         
@@ -175,7 +179,6 @@ public class EditTrainingClassQuestionTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassQuestionTranslationValue = trainingControl.getTrainingClassQuestionTranslationValue(trainingClassQuestionTranslation);
         
         trainingClassQuestionTranslationValue.setQuestionMimeTypePK(questionMimeType.getPrimaryKey());

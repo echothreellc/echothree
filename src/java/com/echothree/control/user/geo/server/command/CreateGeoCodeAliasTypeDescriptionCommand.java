@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateGeoCodeAliasTypeDescriptionCommand
@@ -57,6 +57,13 @@ public class CreateGeoCodeAliasTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateGeoCodeAliasTypeDescriptionCommand */
     public CreateGeoCodeAliasTypeDescriptionCommand() {
@@ -65,7 +72,6 @@ public class CreateGeoCodeAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeTypeName = form.getGeoCodeTypeName();
         var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
@@ -74,7 +80,6 @@ public class CreateGeoCodeAliasTypeDescriptionCommand
             var geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
             if(geoAliasType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 

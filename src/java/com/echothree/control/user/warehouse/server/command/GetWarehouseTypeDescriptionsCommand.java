@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWarehouseTypeDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetWarehouseTypeDescriptionsCommand
                 new FieldDefinition("WarehouseTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of GetWarehouseTypeDescriptionsCommand */
     public GetWarehouseTypeDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetWarehouseTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var result = WarehouseResultFactory.getGetWarehouseTypeDescriptionsResult();
         var warehouseTypeName = form.getWarehouseTypeName();
         var warehouseType = warehouseControl.getWarehouseTypeByName(warehouseTypeName);

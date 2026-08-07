@@ -33,9 +33,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentCatalogItemCommand
@@ -58,6 +58,25 @@ public class GetContentCatalogItemCommand
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    AssociateReferralLogic associateReferralLogic;
+
     
     /** Creates a new instance of GetContentCatalogItemCommand */
     public GetContentCatalogItemCommand() {
@@ -72,7 +91,6 @@ public class GetContentCatalogItemCommand
         ContentCatalogItem contentCatalogItem = null;
 
         if(parameterCount == 1) {
-            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -92,18 +110,15 @@ public class GetContentCatalogItemCommand
             }
 
             if(!hasExecutionErrors()) {
-                var itemControl = Session.getModelController(ItemControl.class);
                 var itemName = form.getItemName();
                 var item = itemControl.getItemByName(itemName);
 
                 if(item != null) {
-                    var inventoryControl = Session.getModelController(InventoryControl.class);
                     var inventoryConditionName = form.getInventoryConditionName();
                     var inventoryCondition = inventoryConditionName == null ? inventoryControl.getDefaultInventoryCondition()
                             : inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
-                        var uomControl = Session.getModelController(UomControl.class);
                         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         var itemDetail = item.getLastDetail();
                         var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
@@ -111,7 +126,6 @@ public class GetContentCatalogItemCommand
                                 : uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                         if(unitOfMeasureType != null) {
-                            var accountingControl = Session.getModelController(AccountingControl.class);
                             var currencyIsoName = form.getCurrencyIsoName();
                             var currency = currencyIsoName == null ? accountingControl.getDefaultCurrency()
                                     : accountingControl.getCurrencyByIsoName(currencyIsoName);
@@ -129,7 +143,7 @@ public class GetContentCatalogItemCommand
                                             unitOfMeasureType, currency);
 
                                     if(contentCatalogItem != null) {
-                                        AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCatalog.getPrimaryKey(), partyPK);
+                                        associateReferralLogic.handleAssociateReferral(session, this, form, userVisit, contentCatalog.getPrimaryKey(), partyPK);
 
                                         if(!hasExecutionErrors()) {
                                             sendEvent(contentCatalog.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
@@ -185,8 +199,6 @@ public class GetContentCatalogItemCommand
         var result = ContentResultFactory.getGetContentCatalogItemResult();
 
         if (contentCatalogItem != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             result.setContentCatalogItem(contentControl.getContentCatalogItemTransfer(getUserVisit(), contentCatalogItem));
         }
 

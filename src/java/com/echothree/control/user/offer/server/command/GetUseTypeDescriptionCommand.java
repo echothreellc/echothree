@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUseTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class GetUseTypeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UseTypeControl useTypeControl;
+
     
     /** Creates a new instance of GetUseTypeDescriptionCommand */
     public GetUseTypeDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var result = OfferResultFactory.getGetUseTypeDescriptionResult();
         var useTypeName = form.getUseTypeName();
         var useType = useTypeControl.getUseTypeByName(useTypeName);
         
         if(useType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

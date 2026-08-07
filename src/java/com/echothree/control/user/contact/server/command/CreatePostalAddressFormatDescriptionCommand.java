@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePostalAddressFormatDescriptionCommand
@@ -42,6 +42,13 @@ public class CreatePostalAddressFormatDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreatePostalAddressFormatDescriptionCommand */
     public CreatePostalAddressFormatDescriptionCommand() {
@@ -50,12 +57,10 @@ public class CreatePostalAddressFormatDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var postalAddressFormatName = form.getPostalAddressFormatName();
         var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

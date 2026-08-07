@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkEffortScopeCommand
@@ -58,6 +58,19 @@ public class CreateWorkEffortScopeCommand
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
     
     /** Creates a new instance of CreateWorkEffortScopeCommand */
     public CreateWorkEffortScopeCommand() {
@@ -66,7 +79,6 @@ public class CreateWorkEffortScopeCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
@@ -79,7 +91,6 @@ public class CreateWorkEffortScopeCommand
                 Sequence workEffortSequence = null;
                 
                 if(workEffortSequenceName != null) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
                     
                     if(sequenceType != null) {
@@ -90,7 +101,6 @@ public class CreateWorkEffortScopeCommand
                 }
                 
                 if(workEffortSequenceName == null || workEffortSequence != null) {
-                    var uomControl = Session.getModelController(UomControl.class);
                     var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                     
                     if(timeUnitOfMeasureKind != null) {
@@ -145,7 +155,6 @@ public class CreateWorkEffortScopeCommand
                                 }
                                 
                                 if(!hasExecutionErrors()) {
-                                    var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
                                     var scheduledTimeConversion = scheduledTimeUnitOfMeasureType == null? null:
                                         new Conversion(uomControl, scheduledTimeUnitOfMeasureType,
                                             Long.valueOf(scheduledTime)).convertToLowestUnitOfMeasureType();

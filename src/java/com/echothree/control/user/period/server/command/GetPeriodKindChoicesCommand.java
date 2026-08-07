@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPeriodKindChoicesCommand
@@ -53,6 +53,10 @@ public class GetPeriodKindChoicesCommand
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    PeriodControl periodControl;
+
     
     /** Creates a new instance of GetPeriodKindChoicesCommand */
     public GetPeriodKindChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetPeriodKindChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var result = PeriodResultFactory.getGetPeriodKindChoicesResult();
         var defaultPeriodKindChoice = form.getDefaultPeriodKindChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

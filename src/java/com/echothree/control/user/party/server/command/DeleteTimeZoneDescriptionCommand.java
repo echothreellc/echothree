@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTimeZoneDescriptionCommand
@@ -40,6 +40,10 @@ public class DeleteTimeZoneDescriptionCommand
             new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteTimeZoneDescriptionCommand */
     public DeleteTimeZoneDescriptionCommand() {
@@ -48,7 +52,6 @@ public class DeleteTimeZoneDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var javaTimeZoneName = form.getJavaTimeZoneName();
         var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         

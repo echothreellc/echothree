@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLocationCommand
@@ -67,6 +67,25 @@ public class CreateLocationCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    LocationLogic locationLogic;
+
+    @Inject
+    LocationUseTypeLogic locationUseTypeLogic;
+
     
     /** Creates a new instance of CreateLocationCommand */
     public CreateLocationCommand() {
@@ -76,7 +95,6 @@ public class CreateLocationCommand
     @Override
     protected BaseResult execute() {
         var result = WarehouseResultFactory.getCreateLocationResult();
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
@@ -90,11 +108,11 @@ public class CreateLocationCommand
                 var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
                 
                 if(locationType != null) {
-                    LocationLogic.getInstance().validateLocationName(this, locationType, locationName);
+                    locationLogic.validateLocationName(this, locationType, locationName);
 
                     if(!hasExecutionErrors()) {
                         var locationUseTypeName = form.getLocationUseTypeName();
-                        var locationUseType = LocationUseTypeLogic.getInstance().getLocationUseTypeByName(this, locationUseTypeName, null, false);
+                        var locationUseType = locationUseTypeLogic.getLocationUseTypeByName(this, locationUseTypeName, null, false);
                         
                         if(!hasExecutionErrors()) {
                             var multipleUseError = false;
@@ -105,14 +123,11 @@ public class CreateLocationCommand
                             }
                             
                             if(!multipleUseError) {
-                                var inventoryControl = Session.getModelController(InventoryControl.class);
                                 var inventoryLocationGroupName = form.getInventoryLocationGroupName();
                                 var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                                 
                                 if(inventoryLocationGroup != null) {
-                                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                     var velocity = Integer.valueOf(form.getVelocity());
-                                    var workflowControl = Session.getModelController(WorkflowControl.class);
                                     var createdBy = getPartyPK();
                                     var description = form.getDescription();
                                     

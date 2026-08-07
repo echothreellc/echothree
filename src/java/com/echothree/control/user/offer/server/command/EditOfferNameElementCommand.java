@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOfferNameElementCommand
@@ -70,6 +70,13 @@ public class EditOfferNameElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    OfferNameElementControl offerNameElementControl;
+
+    @Inject
+    OfferNameElementLogic offerNameElementLogic;
+
     
     /** Creates a new instance of EditOfferNameElementCommand */
     public EditOfferNameElementCommand() {
@@ -88,7 +95,7 @@ public class EditOfferNameElementCommand
     
     @Override
     public OfferNameElement getEntity(EditOfferNameElementResult result) {
-        return OfferNameElementLogic.getInstance().getOfferNameElementByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+        return offerNameElementLogic.getOfferNameElementByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -98,14 +105,11 @@ public class EditOfferNameElementCommand
     
     @Override
     public void fillInResult(EditOfferNameElementResult result, OfferNameElement offerNameElement) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-        
         result.setOfferNameElement(offerNameElementControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));
     }
     
     @Override
     public void doLock(OfferNameElementEdit edit, OfferNameElement offerNameElement) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, getPreferredLanguage());
         var offerNameElementDetail = offerNameElement.getLastDetail();
         
@@ -121,7 +125,6 @@ public class EditOfferNameElementCommand
         
     @Override
     public void canUpdate(OfferNameElement offerNameElement) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElementName = edit.getOfferNameElementName();
         var duplicateOfferNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
 
@@ -132,7 +135,6 @@ public class EditOfferNameElementCommand
     
     @Override
     public void doUpdate(OfferNameElement offerNameElement) {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var partyPK = getPartyPK();
         var offerNameElementDetailValue = offerNameElementControl.getOfferNameElementDetailValueForUpdate(offerNameElement);
         var offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, getPreferredLanguage());

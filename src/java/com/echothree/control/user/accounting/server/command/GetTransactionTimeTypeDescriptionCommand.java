@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTransactionTimeTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class GetTransactionTimeTypeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TransactionTimeControl transactionTimeControl;
+
     
     /** Creates a new instance of GetTransactionTimeTypeDescriptionCommand */
     public GetTransactionTimeTypeDescriptionCommand() {
@@ -65,12 +72,10 @@ public class GetTransactionTimeTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var result = AccountingResultFactory.getGetTransactionTimeTypeDescriptionResult();
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var transactionTimeTypeName = form.getTransactionTimeTypeName();
         var transactionTimeType = transactionTimeControl.getTransactionTimeTypeByName(transactionTimeTypeName);
 
         if(transactionTimeType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

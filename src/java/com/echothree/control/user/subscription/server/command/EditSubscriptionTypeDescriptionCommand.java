@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSubscriptionTypeDescriptionCommand
@@ -64,6 +64,13 @@ public class EditSubscriptionTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of EditSubscriptionTypeDescriptionCommand */
     public EditSubscriptionTypeDescriptionCommand() {
@@ -72,7 +79,6 @@ public class EditSubscriptionTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var result = SubscriptionResultFactory.getEditSubscriptionTypeDescriptionResult();
         var subscriptionKindName = spec.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
@@ -82,7 +88,6 @@ public class EditSubscriptionTypeDescriptionCommand
             var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

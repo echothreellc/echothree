@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateShipmentAliasTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateShipmentAliasTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ShipmentControl shipmentControl;
+
     
     /** Creates a new instance of CreateShipmentAliasTypeDescriptionCommand */
     public CreateShipmentAliasTypeDescriptionCommand() {
@@ -64,7 +71,6 @@ public class CreateShipmentAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
@@ -73,7 +79,6 @@ public class CreateShipmentAliasTypeDescriptionCommand
             var shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
             if(shipmentAliasType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateForumGroupCommand
@@ -44,6 +44,13 @@ public class CreateForumGroupCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    IconControl iconControl;
+
     
     /** Creates a new instance of CreateForumGroupCommand */
     public CreateForumGroupCommand() {
@@ -52,12 +59,10 @@ public class CreateForumGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumGroupName = form.getForumGroupName();
         var forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroup == null) {
-            var iconControl = Session.getModelController(IconControl.class);
             var iconName = form.getIconName();
             var icon = iconName == null? null: iconControl.getIconByName(iconName);
             

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemImageTypeDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetItemImageTypeDescriptionsCommand
             new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetItemImageTypeDescriptionsCommand */
     public GetItemImageTypeDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetItemImageTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemImageTypeDescriptionsResult();
         var itemImageTypeName = form.getItemImageTypeName();
         var itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);

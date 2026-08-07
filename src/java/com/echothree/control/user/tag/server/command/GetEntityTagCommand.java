@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityTagCommand
@@ -59,6 +59,16 @@ public class GetEntityTagCommand
                 new FieldDefinition("TagName", FieldType.TAG, true, null, null)
                 );
     }
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    TagLogic tagLogic;
+
     
     /** Creates a new instance of GetEntityTagCommand */
     public GetEntityTagCommand() {
@@ -67,13 +77,11 @@ public class GetEntityTagCommand
 
     @Override
     protected EntityTag getEntity() {
-        var taggedEntityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
-        var tag = TagLogic.getInstance().getTagByName(this, form.getTagScopeName(), form.getTagName());
+        var taggedEntityInstance = entityInstanceLogic.getEntityInstance(this, form);
+        var tag = tagLogic.getTagByName(this, form.getTagScopeName(), form.getTagName());
         EntityTag entityTag = null;
 
         if(!hasExecutionErrors()) {
-            var tagControl = Session.getModelController(TagControl.class);
-
             entityTag = tagControl.getEntityTag(taggedEntityInstance, tag);
         }
 
@@ -85,8 +93,6 @@ public class GetEntityTagCommand
         var result = TagResultFactory.getGetEntityTagResult();
 
         if(entityTag != null) {
-            var tagControl = Session.getModelController(TagControl.class);
-
             result.setEntityTag(tagControl.getEntityTagTransfer(getUserVisit(), entityTag));
         }
 

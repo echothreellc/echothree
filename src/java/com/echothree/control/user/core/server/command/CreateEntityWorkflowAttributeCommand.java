@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityWorkflowAttributeCommand
@@ -57,6 +57,19 @@ public class CreateEntityWorkflowAttributeCommand
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
     
     /** Creates a new instance of CreateEntityWorkflowAttributeCommand */
     public CreateEntityWorkflowAttributeCommand() {
@@ -65,14 +78,13 @@ public class CreateEntityWorkflowAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.WORKFLOW);
 
             if(!hasExecutionErrors()) {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
                 var workflow = entityAttributeWorkflow.getWorkflow();
 
@@ -83,7 +95,7 @@ public class CreateEntityWorkflowAttributeCommand
                     if(workflowEntranceName == null) {
                         workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
                     } else {
-                        workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(this, workflow, workflowEntranceName);
+                        workflowEntrance = workflowEntranceLogic.getWorkflowEntranceByName(this, workflow, workflowEntranceName);
                     }
 
                     if(!hasExecutionErrors()) {
@@ -97,7 +109,7 @@ public class CreateEntityWorkflowAttributeCommand
                     }
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateEntityWorkflowAttribute.name(),
-                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                             entityAttribute.getLastDetail().getEntityAttributeName());
                 }
             }

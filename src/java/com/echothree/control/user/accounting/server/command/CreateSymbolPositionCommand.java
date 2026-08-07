@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSymbolPositionCommand
@@ -56,6 +56,10 @@ public class CreateSymbolPositionCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of CreateSymbolPositionCommand */
     public CreateSymbolPositionCommand() {
@@ -64,7 +68,6 @@ public class CreateSymbolPositionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var symbolPositionName = form.getSymbolPositionName();
         var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
         

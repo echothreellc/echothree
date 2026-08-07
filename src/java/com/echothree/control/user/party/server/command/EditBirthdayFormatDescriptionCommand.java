@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditBirthdayFormatDescriptionCommand
@@ -67,6 +67,9 @@ public class EditBirthdayFormatDescriptionCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditBirthdayFormatDescriptionCommand */
     public EditBirthdayFormatDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -84,7 +87,6 @@ public class EditBirthdayFormatDescriptionCommand
 
     @Override
     public BirthdayFormatDescription getEntity(EditBirthdayFormatDescriptionResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         BirthdayFormatDescription birthdayFormatDescription = null;
         var birthdayFormatName = spec.getBirthdayFormatName();
         var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
@@ -120,8 +122,6 @@ public class EditBirthdayFormatDescriptionCommand
 
     @Override
     public void fillInResult(EditBirthdayFormatDescriptionResult result, BirthdayFormatDescription birthdayFormatDescription) {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         result.setBirthdayFormatDescription(partyControl.getBirthdayFormatDescriptionTransfer(getUserVisit(), birthdayFormatDescription));
     }
 
@@ -132,7 +132,6 @@ public class EditBirthdayFormatDescriptionCommand
 
     @Override
     public void doUpdate(BirthdayFormatDescription birthdayFormatDescription) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var birthdayFormatDescriptionValue = partyControl.getBirthdayFormatDescriptionValue(birthdayFormatDescription);
         birthdayFormatDescriptionValue.setDescription(edit.getDescription());
 

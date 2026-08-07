@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateShippingMethodCommand
@@ -61,6 +61,13 @@ public class CreateShippingMethodCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
     
     /** Creates a new instance of CreateShippingMethodCommand */
     public CreateShippingMethodCommand() {
@@ -69,7 +76,6 @@ public class CreateShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var shippingMethodName = form.getShippingMethodName();
         var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
         
@@ -78,7 +84,6 @@ public class CreateShippingMethodCommand
             Selector geoCodeSelector = null;
 
             if(geoCodeSelectorName != null) {
-                var selectorControl = Session.getModelController(SelectorControl.class);
                 var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                 if(selectorKind != null) {
@@ -100,7 +105,6 @@ public class CreateShippingMethodCommand
                 Selector itemSelector = null;
 
                 if(itemSelectorName != null) {
-                    var selectorControl = Session.getModelController(SelectorControl.class);
                     var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                     if(selectorKind != null) {

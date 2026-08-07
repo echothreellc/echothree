@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultLeaveTypeCommand
@@ -54,6 +54,9 @@ public class SetDefaultLeaveTypeCommand
                 );
     }
 
+    @Inject
+    EmployeeControl employeeControl;
+
     /** Creates a new instance of SetDefaultLeaveTypeCommand */
     public SetDefaultLeaveTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -61,7 +64,6 @@ public class SetDefaultLeaveTypeCommand
     
    @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
        var leaveTypeName = form.getLeaveTypeName();
        var leaveTypeDetailValue = employeeControl.getLeaveTypeDetailValueByNameForUpdate(leaveTypeName);
         

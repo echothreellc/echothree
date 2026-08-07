@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultDocumentTypeCommand
@@ -52,6 +52,10 @@ public class SetDefaultDocumentTypeCommand
                 new FieldDefinition("DocumentTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of SetDefaultDocumentTypeCommand */
     public SetDefaultDocumentTypeCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultDocumentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeName = form.getDocumentTypeName();
         var documentTypeDetailValue = documentControl.getDocumentTypeDetailValueByNameForUpdate(documentTypeName);
         

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAliasTypeDescriptionsCommand
@@ -56,6 +56,10 @@ public class GetEntityAliasTypeDescriptionsCommand
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EntityAliasControl entityAliasControl;
+
     
     /** Creates a new instance of GetEntityAliasTypeDescriptionsCommand */
     public GetEntityAliasTypeDescriptionsCommand() {
@@ -64,7 +68,6 @@ public class GetEntityAliasTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var result = CoreResultFactory.getGetEntityAliasTypeDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);

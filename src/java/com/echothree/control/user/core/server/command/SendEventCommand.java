@@ -19,7 +19,6 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.SendEventForm;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.EventTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -35,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SendEventCommand
@@ -61,6 +60,12 @@ public class SendEventCommand
         );
     }
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    EventTypeLogic eventTypeLogic;
+
     /** Creates a new instance of SendEventCommand */
     public SendEventCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -68,8 +73,8 @@ public class SendEventCommand
 
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
-        var eventType = EventTypeLogic.getInstance().getEventTypeByName(this, form.getEventTypeName());
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
+        var eventType = eventTypeLogic.getEventTypeByName(this, form.getEventTypeName());
 
         if(!hasExecutionErrors()) {
             var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
@@ -80,8 +85,6 @@ public class SendEventCommand
 
                 switch(eventTypeEnum) {
                     case READ, MODIFY, TOUCH -> {
-                        var coreControl = Session.getModelController(CoreControl.class);
-
                         coreControl.sendEvent(entityInstance, eventTypeEnum, (EntityInstance)null, null, getPartyPK());
                     }
                     default -> addExecutionError(ExecutionErrors.InvalidEventType.name(), eventTypeName);

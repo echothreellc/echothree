@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLocationVolumeCommand
@@ -63,6 +63,13 @@ public class CreateLocationVolumeCommand
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
                 );
     }
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of CreateLocationVolumeCommand */
     public CreateLocationVolumeCommand() {
@@ -71,7 +78,6 @@ public class CreateLocationVolumeCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
@@ -83,7 +89,6 @@ public class CreateLocationVolumeCommand
                 var locationVolume = warehouseControl.getLocationVolume(location);
                 
                 if(locationVolume == null) {
-                    var uomControl = Session.getModelController(UomControl.class);
                     var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
                     
                     if(volumeUnitOfMeasureKind != null) {

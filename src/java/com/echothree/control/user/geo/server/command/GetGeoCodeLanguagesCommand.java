@@ -60,17 +60,18 @@ public class GetGeoCodeLanguagesCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
-    
-    /** Creates a new instance of GetGeoCodeLanguagesCommand */
-    public GetGeoCodeLanguagesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     GeoControl geoControl;
 
     @Inject
     PartyControl partyControl;
+
+
+    /** Creates a new instance of GetGeoCodeLanguagesCommand */
+    public GetGeoCodeLanguagesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     GeoCode geoCode;
     Language language;

@@ -30,9 +30,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRatingTypeCommand
@@ -50,6 +50,16 @@ public class CreateRatingTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of CreateRatingTypeCommand */
     public CreateRatingTypeCommand() {
@@ -61,14 +71,13 @@ public class CreateRatingTypeCommand
         var result = RatingResultFactory.getCreateRatingTypeResult();
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
         RatingType ratingType = null;
 
         if(!hasExecutionErrors()) {
             var entityTypeDetail = entityType.getLastDetail();
 
             if(entityTypeDetail.getIsExtensible()) {
-                var ratingControl = Session.getModelController(RatingControl.class);
                 var ratingTypeName = form.getRatingTypeName();
                 
                 ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
@@ -78,7 +87,6 @@ public class CreateRatingTypeCommand
                     Sequence ratingSequence = null;
                     
                     if(ratingSequenceName != null) {
-                        var sequenceControl = Session.getModelController(SequenceControl.class);
                         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
                         
                         if(sequenceType != null) {

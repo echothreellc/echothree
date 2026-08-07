@@ -35,6 +35,7 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSalesOrderLineCommand
@@ -67,6 +68,15 @@ public class CreateSalesOrderLineCommand
                 );
     }
 
+    @Inject
+    OrderLogic orderLogic;
+
+    @Inject
+    SalesOrderLineLogic salesOrderLineLogic;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
+
     /** Creates a new instance of CreateSalesOrderLineCommand */
     public CreateSalesOrderLineCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -75,10 +85,10 @@ public class CreateSalesOrderLineCommand
     @Override
     protected void setupValidator(Validator validator) {
         var orderName = form.getOrderName();
-        var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var order = orderName == null ? null : salesOrderLogic.getOrderByName(this, orderName);
         
         if(order != null) {
-            validator.setCurrency(OrderLogic.getInstance().getOrderCurrency(order));
+            validator.setCurrency(orderLogic.getOrderCurrency(order));
         }
     }
     
@@ -98,7 +108,7 @@ public class CreateSalesOrderLineCommand
         var description = form.getDescription();
         var taxable = form.getTaxable();
 
-        var orderLine = SalesOrderLineLogic.getInstance().createOrderLine(session, this, getUserVisit(), orderName,
+        var orderLine = salesOrderLineLogic.createOrderLine(session, this, getUserVisit(), orderName,
                 itemName, inventoryConditionName, cancellationPolicyName, returnPolicyName, unitOfMeasureTypeName,
                 sourceName, orderLineSequence, quantity, unitAmount, description, taxable, getParty());
 

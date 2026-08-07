@@ -60,14 +60,15 @@ public class GetCountiesCommand
                 new FieldDefinition("StateName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of GetCountiesCommand */
     public GetCountiesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    GeoControl geoControl;
 
     GeoCode stateGeoCode;
     GeoCodeScope countiesGeoCodeScope;

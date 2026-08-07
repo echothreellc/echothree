@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditDocumentTypeUsageCommand
@@ -68,6 +68,10 @@ public class EditDocumentTypeUsageCommand
                 new FieldDefinition("MaximumInstances", FieldType.SIGNED_INTEGER, false, null, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of EditDocumentTypeUsageCommand */
     public EditDocumentTypeUsageCommand() {
@@ -86,7 +90,6 @@ public class EditDocumentTypeUsageCommand
 
     @Override
     public DocumentTypeUsage getEntity(EditDocumentTypeUsageResult result) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeUsage documentTypeUsage = null;
         var documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
         var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
@@ -122,8 +125,6 @@ public class EditDocumentTypeUsageCommand
 
     @Override
     public void fillInResult(EditDocumentTypeUsageResult result, DocumentTypeUsage documentTypeUsage) {
-        var documentControl = Session.getModelController(DocumentControl.class);
-
         result.setDocumentTypeUsage(documentControl.getDocumentTypeUsageTransfer(getUserVisit(), documentTypeUsage));
     }
 
@@ -136,7 +137,6 @@ public class EditDocumentTypeUsageCommand
 
     @Override
     public void doUpdate(DocumentTypeUsage documentTypeUsage) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeUsageValue = documentControl.getDocumentTypeUsageValueForUpdate(documentTypeUsage);
 
         documentTypeUsageValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

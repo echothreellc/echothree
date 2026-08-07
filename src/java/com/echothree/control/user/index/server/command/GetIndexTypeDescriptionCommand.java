@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetIndexTypeDescriptionCommand
@@ -55,6 +55,13 @@ public class GetIndexTypeDescriptionCommand
                 new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetIndexTypeDescriptionCommand */
     public GetIndexTypeDescriptionCommand() {
@@ -63,13 +70,11 @@ public class GetIndexTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = Session.getModelController(IndexControl.class);
         var result = IndexResultFactory.getGetIndexTypeDescriptionResult();
         var indexTypeName = form.getIndexTypeName();
         var indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

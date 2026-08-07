@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyAliasTypeCommand
@@ -57,6 +58,10 @@ public class CreatePartyAliasTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyAliasTypeLogic partyAliasTypeLogic;
+
     
     /** Creates a new instance of CreatePartyAliasTypeCommand */
     public CreatePartyAliasTypeCommand() {
@@ -73,7 +78,7 @@ public class CreatePartyAliasTypeCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
         var createdBy = getPartyPK();
-        var partyAliasType = PartyAliasTypeLogic.getInstance().createPartyAliasType(this, partyTypeName,
+        var partyAliasType = partyAliasTypeLogic.createPartyAliasType(this, partyTypeName,
                 partyAliasTypeName, validationPattern, isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
 
         if(partyAliasType != null) {

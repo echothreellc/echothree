@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchResultActionTypeChoicesCommand
@@ -53,6 +53,10 @@ public class GetSearchResultActionTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of GetSearchResultActionTypeChoicesCommand */
     public GetSearchResultActionTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetSearchResultActionTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchResultActionTypeChoicesResult();
         var defaultSearchResultActionTypeChoice = form.getDefaultSearchResultActionTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

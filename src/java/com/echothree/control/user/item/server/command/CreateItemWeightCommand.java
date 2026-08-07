@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemWeightCommand
@@ -60,6 +60,16 @@ public class CreateItemWeightCommand
                 new FieldDefinition("Weight", FieldType.UNSIGNED_LONG, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ItemWeightTypeLogic itemWeightTypeLogic;
+
     
     /** Creates a new instance of CreateItemWeightCommand */
     public CreateItemWeightCommand() {
@@ -68,12 +78,10 @@ public class CreateItemWeightCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(),
                     unitOfMeasureTypeName);
@@ -82,7 +90,7 @@ public class CreateItemWeightCommand
                 var itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
                 
                 if(itemUnitOfMeasureType != null) {
-                    var itemWeightType = ItemWeightTypeLogic.getInstance().getItemWeightTypeByName(this, form.getItemWeightTypeName());
+                    var itemWeightType = itemWeightTypeLogic.getItemWeightTypeByName(this, form.getItemWeightTypeName());
 
                     if(!hasExecutionErrors()) {
                         var itemWeight = itemControl.getItemWeight(item, unitOfMeasureType, itemWeightType);

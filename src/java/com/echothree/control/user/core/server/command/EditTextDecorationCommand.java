@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTextDecorationCommand
@@ -67,6 +67,10 @@ public class EditTextDecorationCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of EditTextDecorationCommand */
     public EditTextDecorationCommand() {
@@ -85,7 +89,6 @@ public class EditTextDecorationCommand
 
     @Override
     public TextDecoration getEntity(EditTextDecorationResult result) {
-        var textControl = Session.getModelController(TextControl.class);
         TextDecoration textDecoration;
         var textDecorationName = spec.getTextDecorationName();
 
@@ -109,14 +112,11 @@ public class EditTextDecorationCommand
 
     @Override
     public void fillInResult(EditTextDecorationResult result, TextDecoration textDecoration) {
-        var textControl = Session.getModelController(TextControl.class);
-
         result.setTextDecoration(textControl.getTextDecorationTransfer(getUserVisit(), textDecoration));
     }
 
     @Override
     public void doLock(TextDecorationEdit edit, TextDecoration textDecoration) {
-        var textControl = Session.getModelController(TextControl.class);
         var textDecorationDescription = textControl.getTextDecorationDescription(textDecoration, getPreferredLanguage());
         var textDecorationDetail = textDecoration.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditTextDecorationCommand
 
     @Override
     public void canUpdate(TextDecoration textDecoration) {
-        var textControl = Session.getModelController(TextControl.class);
         var textDecorationName = edit.getTextDecorationName();
         var duplicateTextDecoration = textControl.getTextDecorationByName(textDecorationName);
 
@@ -142,7 +141,6 @@ public class EditTextDecorationCommand
 
     @Override
     public void doUpdate(TextDecoration textDecoration) {
-        var textControl = Session.getModelController(TextControl.class);
         var partyPK = getPartyPK();
         var textDecorationDetailValue = textControl.getTextDecorationDetailValueForUpdate(textDecoration);
         var textDecorationDescription = textControl.getTextDecorationDescriptionForUpdate(textDecoration, getPreferredLanguage());

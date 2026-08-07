@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityAttributeEntityAttributeGroupCommand
@@ -56,6 +57,10 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of CreateEntityAttributeEntityAttributeGroupCommand */
     public CreateEntityAttributeEntityAttributeGroupCommand() {
@@ -64,10 +69,10 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);

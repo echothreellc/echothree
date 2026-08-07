@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteLocationNameElementCommand
@@ -55,6 +55,10 @@ public class DeleteLocationNameElementCommand
                 new FieldDefinition("LocationNameElementName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of DeleteLocationNameElementCommand */
     public DeleteLocationNameElementCommand() {
@@ -63,7 +67,6 @@ public class DeleteLocationNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
         

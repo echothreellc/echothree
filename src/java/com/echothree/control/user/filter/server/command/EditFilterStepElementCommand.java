@@ -74,26 +74,27 @@ public class EditFilterStepElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditFilterStepElementCommand */
-    public EditFilterStepElementCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     FilterControl filterControl;
 
     @Inject
-    FilterStepLogic filterStepLogic;
+    FilterAdjustmentLogic filterAdjustmentLogic;
 
     @Inject
     FilterStepElementLogic filterStepElementLogic;
 
     @Inject
-    FilterAdjustmentLogic filterAdjustmentLogic;
+    FilterStepLogic filterStepLogic;
 
     @Inject
     SelectorLogic selectorLogic;
+
+
+    /** Creates a new instance of EditFilterStepElementCommand */
+    public EditFilterStepElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     protected EditFilterStepElementResult getResult() {

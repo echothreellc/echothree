@@ -28,9 +28,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GenerateUuidCommand
@@ -51,6 +51,13 @@ public class GenerateUuidCommand
                 new FieldDefinition("ForceRegeneration", FieldType.BOOLEAN, false, null, null)
                 );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of GenerateUuidCommand */
     public GenerateUuidCommand() {
@@ -60,11 +67,9 @@ public class GenerateUuidCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getGenerateUuidResult();
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form, null);
         
         if(!hasExecutionErrors()) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
             result.setUuid(entityInstanceControl.ensureUuidForEntityInstance(entityInstance, Boolean.valueOf(form.getForceRegeneration())).getUuid());
         }
         

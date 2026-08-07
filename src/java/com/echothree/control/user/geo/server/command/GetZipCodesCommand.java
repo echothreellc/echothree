@@ -60,13 +60,13 @@ public class GetZipCodesCommand
                 );
     }
 
+    @Inject
+    GeoControl geoControl;
+
     /** Creates a new instance of GetZipCodesCommand */
     public GetZipCodesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    GeoControl geoControl;
 
     GeoCode countryGeoCode;
     GeoCodeScope postalCodeGeoCodeScope;

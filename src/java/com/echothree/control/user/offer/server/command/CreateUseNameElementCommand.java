@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUseNameElementCommand
@@ -56,6 +57,10 @@ public class CreateUseNameElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    UseNameElementLogic useNameElementLogic;
+
     
     /** Creates a new instance of CreateUseNameElementCommand */
     public CreateUseNameElementCommand() {
@@ -71,7 +76,7 @@ public class CreateUseNameElementCommand
         var validationPattern = form.getValidationPattern();
         var description = form.getDescription();
 
-        var useNameElement = UseNameElementLogic.getInstance().createUseNameElement(this,
+        var useNameElement = useNameElementLogic.createUseNameElement(this,
                 useNameElementName, offset, length, validationPattern, getPreferredLanguage(), description,
                 getPartyPK());
 

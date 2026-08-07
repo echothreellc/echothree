@@ -57,20 +57,24 @@ public class GetFilterTypesCommand
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
     
     /** Creates a new instance of GetFilterTypesCommand */
     public GetFilterTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    @Inject
-    FilterControl filterControl;
-
     FilterKind filterKind;
     
     @Override
     protected void handleForm() {
-        filterKind = FilterKindLogic.getInstance().getFilterKindByName(this, form.getFilterKindName());
+        filterKind = filterKindLogic.getFilterKindByName(this, form.getFilterKindName());
     }
 
     @Override

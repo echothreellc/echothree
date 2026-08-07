@@ -34,6 +34,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUseCommand
@@ -58,6 +59,13 @@ public class CreateUseCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    UseLogic useLogic;
+
+    @Inject
+    UseTypeLogic useTypeLogic;
+
     
     /** Creates a new instance of CreateUseCommand */
     public CreateUseCommand() {
@@ -68,7 +76,7 @@ public class CreateUseCommand
     protected BaseResult execute() {
         var result = OfferResultFactory.getCreateUseResult();
         var useTypeName = form.getUseTypeName();
-        var useType = UseTypeLogic.getInstance().getUseTypeByName(this, useTypeName);
+        var useType = useTypeLogic.getUseTypeByName(this, useTypeName);
         Use use = null;
 
         if(!hasExecutionErrors()) {
@@ -77,7 +85,7 @@ public class CreateUseCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            use = UseLogic.getInstance().createUse(this, useName, useType, isDefault, sortOrder,
+            use = useLogic.createUse(this, useName, useType, isDefault, sortOrder,
                     getPreferredLanguage(), description, getPartyPK());
         }
 

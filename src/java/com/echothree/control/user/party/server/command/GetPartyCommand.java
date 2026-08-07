@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyCommand
@@ -64,6 +64,15 @@ public class GetPartyCommand
         );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of GetPartyCommand */
     public GetPartyCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -80,7 +89,7 @@ public class GetPartyCommand
         partyName = form.getPartyName();
         universalEntitySpec = form;
         parameterCount = (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+                entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(!canSpecifyParty() && parameterCount != 0) {
             securityResult = getInsufficientSecurityResult();
@@ -96,7 +105,7 @@ public class GetPartyCommand
         if(parameterCount == 0) {
             party = getParty();
         } else {
-            party = PartyLogic.getInstance().getPartyByName(this, partyName, universalEntitySpec);
+            party = partyLogic.getPartyByName(this, partyName, universalEntitySpec);
         }
 
         if(party != null) {
@@ -111,8 +120,6 @@ public class GetPartyCommand
         var result = PartyResultFactory.getGetPartyResult();
 
         if(party != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
         }
 

@@ -39,10 +39,10 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityAliasCommand
@@ -72,6 +72,15 @@ public class EditEntityAliasCommand
         );
     }
 
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     /** Creates a new instance of EditEntityAliasCommand */
     public EditEntityAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -80,10 +89,10 @@ public class EditEntityAliasCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityAliasResult();
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
                 var entityAliasTypeName = spec.getEntityAliasTypeName();
@@ -93,12 +102,11 @@ public class EditEntityAliasCommand
 
                 if(parameterCount == 1) {
                     var entityAliasType = entityAliasTypeName == null ?
-                            EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUuid(this, entityAliasTypeUuid) :
-                            EntityAliasTypeLogic.getInstance().getEntityAliasTypeByName(this, entityInstance.getEntityType(), entityAliasTypeName);
+                            entityAliasTypeLogic.getEntityAliasTypeByUuid(this, entityAliasTypeUuid) :
+                            entityAliasTypeLogic.getEntityAliasTypeByName(this, entityInstance.getEntityType(), entityAliasTypeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                             EntityAlias entityAlias = null;
                             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
@@ -123,7 +131,7 @@ public class EditEntityAliasCommand
                                     }
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownEntityAlias.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAliasTypeName);
+                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAliasTypeName);
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
                                 var validationPattern = entityAliasType.getLastDetail().getValidationPattern();
@@ -147,7 +155,7 @@ public class EditEntityAliasCommand
 
                                         if(duplicateEntityAlias != null && !entityAlias.equals(duplicateEntityAlias)) {
                                             addExecutionError(ExecutionErrors.DuplicateEntityAlias.name(),
-                                                    EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                                     entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
                                         } else {
                                             if(lockEntityForUpdate(basePK)) {
@@ -167,7 +175,7 @@ public class EditEntityAliasCommand
                                         }
                                     } else {
                                         addExecutionError(ExecutionErrors.UnknownEntityAlias.name(),
-                                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAliasTypeName);
+                                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAliasTypeName);
                                     }
                                 }
                             }

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTagScopeCommand
@@ -58,6 +58,13 @@ public class GetTagScopeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    TagScopeLogic tagScopeLogic;
+
     
     /** Creates a new instance of GetTagScopeCommand */
     public GetTagScopeCommand() {
@@ -66,7 +73,7 @@ public class GetTagScopeCommand
 
     @Override
     protected TagScope getEntity() {
-        var tagScope = TagScopeLogic.getInstance().getTagScopeByUniversalSpec(this, form, true);
+        var tagScope = tagScopeLogic.getTagScopeByUniversalSpec(this, form, true);
 
         if(tagScope != null) {
             sendEvent(tagScope.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetTagScopeCommand
 
     @Override
     protected BaseResult getResult(TagScope tagScope) {
-        var tagControl = Session.getModelController(TagControl.class);
         var result = TagResultFactory.getGetTagScopeResult();
 
         if(tagScope != null) {

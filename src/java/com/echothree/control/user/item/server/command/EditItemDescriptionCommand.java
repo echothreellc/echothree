@@ -48,9 +48,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemDescriptionCommand
@@ -81,6 +81,19 @@ public class EditItemDescriptionCommand
             new FieldDefinition("StringDescription", FieldType.STRING, false, 1L, 512L)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ItemDescriptionLogic itemDescriptionLogic;
+
     
     /** Creates a new instance of EditItemDescriptionCommand */
     public EditItemDescriptionCommand() {
@@ -102,7 +115,6 @@ public class EditItemDescriptionCommand
 
     @Override
     public ItemDescription getEntity(EditItemDescriptionResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescription itemDescription = null;
         var itemDescriptionTypeName = spec.getItemDescriptionTypeName();
 
@@ -114,7 +126,6 @@ public class EditItemDescriptionCommand
             item = itemControl.getItemByName(itemName);
 
             if(item != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -148,8 +159,6 @@ public class EditItemDescriptionCommand
 
     @Override
     public void fillInResult(EditItemDescriptionResult result, ItemDescription itemDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemDescription(itemControl.getItemDescriptionTransfer(getUserVisit(), itemDescription));
     }
 
@@ -157,8 +166,6 @@ public class EditItemDescriptionCommand
 
     @Override
     public void doLock(ItemDescriptionEdit edit, ItemDescription itemDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        
         mimeType = itemDescription.getLastDetail().getMimeType();
 
         edit.setMimeTypeName(mimeType == null? null: mimeType.getLastDetail().getMimeTypeName());
@@ -202,8 +209,6 @@ public class EditItemDescriptionCommand
                 addExecutionError(ExecutionErrors.InvalidMimeType.name());
             }
         } else {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-
             mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
             if(mimeType != null) {
@@ -229,12 +234,10 @@ public class EditItemDescriptionCommand
                                     var itemImageTypeName = edit.getItemImageTypeName();
 
                                     if(itemImageTypeName != null) {
-                                        var itemControl = Session.getModelController(ItemControl.class);
-
                                         itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
                                         if(itemImageType != null) {
-                                            imageDimensions = ItemDescriptionLogic.getInstance().getImageDimensions(mimeTypeDetail.getMimeTypeName(), blobDescription);
+                                            imageDimensions = itemDescriptionLogic.getImageDimensions(mimeTypeDetail.getMimeTypeName(), blobDescription);
 
                                             if(imageDimensions == null) {
                                                 addExecutionError(ExecutionErrors.InvalidImage.name());
@@ -299,7 +302,6 @@ public class EditItemDescriptionCommand
 
     @Override
     public void doUpdate(ItemDescription itemDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
 
         if(mimeType == null) {
@@ -353,7 +355,7 @@ public class EditItemDescriptionCommand
                 }
 
                 if(itemBlobDescriptionValue.hasBeenModified()) {
-                    ItemDescriptionLogic.getInstance().deleteItemImageDescriptionChildren(itemDescription, updatedBy);
+                    itemDescriptionLogic.deleteItemImageDescriptionChildren(itemDescription, updatedBy);
                 }
             }
         } else if(blobDescription != null) {
@@ -364,7 +366,7 @@ public class EditItemDescriptionCommand
                         updatedBy);
             }
 
-            ItemDescriptionLogic.getInstance().deleteItemImageDescriptionChildren(itemDescription, updatedBy);
+            itemDescriptionLogic.deleteItemImageDescriptionChildren(itemDescription, updatedBy);
         }
 
         var itemClobDescription = itemControl.getItemClobDescriptionForUpdate(itemDescription);

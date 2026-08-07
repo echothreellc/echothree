@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetScaleUseTypeDescriptionsCommand
@@ -41,6 +41,9 @@ public class GetScaleUseTypeDescriptionsCommand
                 );
     }
 
+    @Inject
+    ScaleControl scaleControl;
+
     /** Creates a new instance of GetScaleUseTypeDescriptionsCommand */
     public GetScaleUseTypeDescriptionsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -48,7 +51,6 @@ public class GetScaleUseTypeDescriptionsCommand
     
    @Override
     protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
        var result = ScaleResultFactory.getGetScaleUseTypeDescriptionsResult();
        var scaleUseTypeName = form.getScaleUseTypeName();
        var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);

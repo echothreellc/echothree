@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassPageTranslationCommand
@@ -76,6 +76,15 @@ public class EditTrainingClassPageTranslationCommand
                 );
     }
 
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     /** Creates a new instance of EditTrainingClassPageTranslationCommand */
     public EditTrainingClassPageTranslationCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -95,7 +104,6 @@ public class EditTrainingClassPageTranslationCommand
     
     @Override
     public TrainingClassPageTranslation getEntity(EditTrainingClassPageTranslationResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassPageTranslation trainingClassPageTranslation = null;
         var trainingClassName = spec.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -110,7 +118,6 @@ public class EditTrainingClassPageTranslationCommand
                 var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
                 if(trainingClassPage != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = spec.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -148,8 +155,6 @@ public class EditTrainingClassPageTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassPageTranslationResult result, TrainingClassPageTranslation trainingClassPageTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClassPageTranslation(trainingControl.getTrainingClassPageTranslationTransfer(getUserVisit(), trainingClassPageTranslation));
     }
 
@@ -167,7 +172,6 @@ public class EditTrainingClassPageTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassPageTranslation trainingClassPageTranslation) {
-        var mimeTypeLogic = MimeTypeLogic.getInstance();
         var pageMimeTypeName = edit.getPageMimeTypeName();
         var page = edit.getPage();
         
@@ -178,7 +182,6 @@ public class EditTrainingClassPageTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassPageTranslation trainingClassPageTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassPageTranslationValue = trainingControl.getTrainingClassPageTranslationValue(trainingClassPageTranslation);
         
         trainingClassPageTranslationValue.setDescription(edit.getDescription());

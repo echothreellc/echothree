@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFreeOnBoardCommand
@@ -55,6 +56,10 @@ public class CreateFreeOnBoardCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    FreeOnBoardLogic freeOnBoardLogic;
+
     
     /** Creates a new instance of CreateFreeOnBoardCommand */
     public CreateFreeOnBoardCommand() {
@@ -69,7 +74,7 @@ public class CreateFreeOnBoardCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var freeOnBoard = FreeOnBoardLogic.getInstance().createFreeOnBoard(this,
+        var freeOnBoard = freeOnBoardLogic.createFreeOnBoard(this,
                 freeOnBoardName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(freeOnBoard != null && !hasExecutionErrors()) {

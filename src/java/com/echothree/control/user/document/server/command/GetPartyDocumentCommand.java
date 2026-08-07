@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyDocumentCommand
@@ -41,6 +41,13 @@ public class GetPartyDocumentCommand
                 new FieldDefinition("DocumentName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    ContentLogic contentLogic;
+
     
     /** Creates a new instance of GetPartyDocumentCommand */
     public GetPartyDocumentCommand() {
@@ -50,10 +57,9 @@ public class GetPartyDocumentCommand
     @Override
     protected BaseResult execute() {
         var result = DocumentResultFactory.getGetPartyDocumentResult();
-        ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
+        contentLogic.checkReferrer(this, form.getReferrer());
         
         if(!hasExecutionErrors()) {
-            var documentControl = Session.getModelController(DocumentControl.class);
             var documentName = form.getDocumentName();
             var document = documentControl.getDocumentByName(documentName);
 

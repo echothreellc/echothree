@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCancellationKindCommand
@@ -69,6 +69,13 @@ public class EditCancellationKindCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of EditCancellationKindCommand */
     public EditCancellationKindCommand() {
@@ -77,7 +84,6 @@ public class EditCancellationKindCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var result = CancellationPolicyResultFactory.getEditCancellationKindResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -118,7 +124,6 @@ public class EditCancellationKindCommand
                 var duplicateCancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
                 
                 if(duplicateCancellationKind == null || cancellationKind.equals(duplicateCancellationKind)) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     var cancellationSequenceTypeName = edit.getCancellationSequenceTypeName();
                     SequenceType cancellationSequenceType = null;
                     

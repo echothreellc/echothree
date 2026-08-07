@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEditorDescriptionCommand
@@ -55,6 +55,13 @@ public class GetEditorDescriptionCommand
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EditorControl editorControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetEditorDescriptionCommand */
     public GetEditorDescriptionCommand() {
@@ -63,13 +70,11 @@ public class GetEditorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var editorControl = Session.getModelController(EditorControl.class);
         var result = CoreResultFactory.getGetEditorDescriptionResult();
         var editorName = form.getEditorName();
         var editor = editorControl.getEditorByName(editorName);
 
         if(editor != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

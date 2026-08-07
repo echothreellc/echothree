@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTermTypeDescriptionCommand
@@ -42,6 +42,13 @@ public class CreateTermTypeDescriptionCommand
         new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of CreateTermTypeDescriptionCommand */
     public CreateTermTypeDescriptionCommand() {
@@ -50,12 +57,10 @@ public class CreateTermTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = Session.getModelController(TermControl.class);
         var termTypeName = form.getTermTypeName();
         var termType = termControl.getTermTypeByName(termTypeName);
         
         if(termType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

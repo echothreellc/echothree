@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAliasTypeChoicesCommand
@@ -56,6 +56,13 @@ public class GetEntityAliasTypeChoicesCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     
     /** Creates a new instance of GetEntityAliasTypeChoicesCommand */
     public GetEntityAliasTypeChoicesCommand() {
@@ -65,10 +72,9 @@ public class GetEntityAliasTypeChoicesCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetEntityAliasTypeChoicesResult();
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
+        var entityType = entityTypeLogic.getEntityTypeByUniversalSpec(this, form);
             
         if(!hasExecutionErrors()) {
-            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
             var defaultEntityAliasTypeChoice = form.getDefaultEntityAliasTypeChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

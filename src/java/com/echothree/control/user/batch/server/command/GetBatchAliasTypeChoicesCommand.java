@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBatchAliasTypeChoicesCommand
@@ -55,6 +55,10 @@ public class GetBatchAliasTypeChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    BatchControl batchControl;
+
     
     /** Creates a new instance of GetBatchAliasTypeChoicesCommand */
     public GetBatchAliasTypeChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetBatchAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
         var result = BatchResultFactory.getGetBatchAliasTypeChoicesResult();
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);

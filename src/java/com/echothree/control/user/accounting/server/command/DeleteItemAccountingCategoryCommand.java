@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemAccountingCategoryCommand
@@ -53,6 +54,10 @@ public class DeleteItemAccountingCategoryCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    ItemAccountingCategoryLogic itemAccountingCategoryLogic;
+
     
     /** Creates a new instance of DeleteItemAccountingCategoryCommand */
     public DeleteItemAccountingCategoryCommand() {
@@ -61,10 +66,10 @@ public class DeleteItemAccountingCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var itemAccountingCategory = ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByUniversalSpecForUpdate(this, form, false);
+        var itemAccountingCategory = itemAccountingCategoryLogic.getItemAccountingCategoryByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            ItemAccountingCategoryLogic.getInstance().deleteItemAccountingCategory(this, itemAccountingCategory, getPartyPK());
+            itemAccountingCategoryLogic.deleteItemAccountingCategory(this, itemAccountingCategory, getPartyPK());
         }
 
         return null;

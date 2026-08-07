@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOfferCustomerTypeCommand
@@ -66,6 +66,13 @@ public class EditOfferCustomerTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
                 );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    OfferControl offerControl;
+
     
     /** Creates a new instance of EditOfferCustomerTypeCommand */
     public EditOfferCustomerTypeCommand() {
@@ -74,13 +81,11 @@ public class EditOfferCustomerTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getEditOfferCustomerTypeResult();
         var offerName = spec.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var customerControl = Session.getModelController(CustomerControl.class);
             var customerTypeName = spec.getCustomerTypeName();
             var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 

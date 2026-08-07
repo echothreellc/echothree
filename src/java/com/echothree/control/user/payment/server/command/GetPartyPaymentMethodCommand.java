@@ -56,17 +56,19 @@ public class GetPartyPaymentMethodCommand
                 new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    PartyPaymentMethodLogic partyPaymentMethodLogic;
+
     
     /** Creates a new instance of GetPartyPaymentMethodCommand */
     public GetPartyPaymentMethodCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Inject
-    PartyPaymentMethodControl partyPaymentMethodControl;
-
-    @Inject
-    PartyPaymentMethodLogic partyPaymentMethodLogic;
     
     @Override
     protected BaseResult execute() {

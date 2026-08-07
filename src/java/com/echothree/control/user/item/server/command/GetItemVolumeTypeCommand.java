@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemVolumeTypeCommand
@@ -45,6 +45,13 @@ public class GetItemVolumeTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemVolumeTypeLogic itemVolumeTypeLogic;
+
     
     /** Creates a new instance of GetItemVolumeTypeCommand */
     public GetItemVolumeTypeCommand() {
@@ -53,7 +60,7 @@ public class GetItemVolumeTypeCommand
 
     @Override
     protected ItemVolumeType getEntity() {
-        var itemVolumeType = ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByUniversalSpec(this, form, true);
+        var itemVolumeType = itemVolumeTypeLogic.getItemVolumeTypeByUniversalSpec(this, form, true);
 
         if(itemVolumeType != null) {
             sendEvent(itemVolumeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,7 @@ public class GetItemVolumeTypeCommand
 
     @Override
     protected BaseResult getResult(ItemVolumeType itemVolumeType) {
-        var itemVolumeTypeControl = Session.getModelController(ItemControl.class);
+        var itemVolumeTypeControl = itemControl;
         var result = ItemResultFactory.getGetItemVolumeTypeResult();
 
         if(itemVolumeType != null) {

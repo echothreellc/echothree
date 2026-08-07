@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartyAliasTypeCommand
@@ -54,6 +55,10 @@ public class DeletePartyAliasTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    PartyAliasTypeLogic partyAliasTypeLogic;
+
     
     /** Creates a new instance of DeletePartyAliasTypeCommand */
     public DeletePartyAliasTypeCommand() {
@@ -62,10 +67,10 @@ public class DeletePartyAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByUniversalSpecForUpdate(this, form, false);
+        var partyAliasType = partyAliasTypeLogic.getPartyAliasTypeByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            PartyAliasTypeLogic.getInstance().deletePartyAliasType(this, partyAliasType, getPartyPK());
+            partyAliasTypeLogic.deletePartyAliasType(this, partyAliasType, getPartyPK());
         }
 
         return null;

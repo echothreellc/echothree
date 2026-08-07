@@ -28,9 +28,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSecurityRoleResultsCommand
@@ -44,6 +44,15 @@ public class GetSecurityRoleResultsCommand
                 );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SecurityRoleControl securityRoleControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetSecurityRoleResultsCommand */
     public GetSecurityRoleResultsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -52,7 +61,6 @@ public class GetSecurityRoleResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetSecurityRoleResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.SECURITY_ROLE.name());
         
         if(searchKind != null) {
@@ -64,10 +72,8 @@ public class GetSecurityRoleResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var securityRoleControl = Session.getModelController(SecurityRoleControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setSecurityRoleResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setSecurityRoleResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setSecurityRoleResults(securityRoleControl.getSecurityRoleResultTransfers(userVisit, userVisitSearch));

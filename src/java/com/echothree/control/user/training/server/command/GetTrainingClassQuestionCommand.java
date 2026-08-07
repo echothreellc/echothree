@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTrainingClassQuestionCommand
@@ -58,6 +58,13 @@ public class GetTrainingClassQuestionCommand
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    PartyTrainingClassSessionLogic partyTrainingClassSessionLogic;
+
     
     /** Creates a new instance of GetTrainingClassQuestionCommand */
     public GetTrainingClassQuestionCommand() {
@@ -66,7 +73,6 @@ public class GetTrainingClassQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var result = TrainingResultFactory.getGetTrainingClassQuestionResult();
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -82,7 +88,7 @@ public class GetTrainingClassQuestionCommand
                 if(trainingClassQuestion != null) {
                     var partyTrainingClassName = form.getPartyTrainingClassName();
                     var partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
-                            : PartyTrainingClassSessionLogic.getInstance().getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
+                            : partyTrainingClassSessionLogic.getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
                     
                     if(!hasExecutionErrors()) {
                         var partyTrainingClassSession = partyTrainingClassSessionStatus == null ? null
@@ -115,7 +121,7 @@ public class GetTrainingClassQuestionCommand
                                 var partyTrainingClassSessionAnswer = trainingControl.createPartyTrainingClassSessionAnswer(partyTrainingClassSessionQuestion,
                                         null, session.getStartTime(), null, partyPK);
 
-                                PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
+                                partyTrainingClassSessionLogic.updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
                                         null, null, partyTrainingClassSessionQuestion);
                                 
                                 result.setPartyTrainingClassSessionAnswer(trainingControl.getPartyTrainingClassSessionAnswerTransfer(userVisit, partyTrainingClassSessionAnswer));

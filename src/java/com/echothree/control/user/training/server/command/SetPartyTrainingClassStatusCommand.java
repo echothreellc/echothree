@@ -54,17 +54,19 @@ public class SetPartyTrainingClassStatusCommand
                 new FieldDefinition("PartyTrainingClassStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of SetPartyTrainingClassStatusCommand */
-    public SetPartyTrainingClassStatusCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
-    }
 
     @Inject
     TrainingControl trainingControl;
 
     @Inject
     PartyTrainingClassLogic partyTrainingClassLogic;
+
+
+    /** Creates a new instance of SetPartyTrainingClassStatusCommand */
+    public SetPartyTrainingClassStatusCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
+    }
+
     
     @Override
     public SetPartyTrainingClassStatusResult getResult() {

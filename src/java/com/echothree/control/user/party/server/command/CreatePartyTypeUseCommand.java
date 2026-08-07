@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyTypeUseCommand
@@ -41,6 +41,10 @@ public class CreatePartyTypeUseCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreatePartyTypeUseCommand */
     public CreatePartyTypeUseCommand() {
@@ -49,7 +53,6 @@ public class CreatePartyTypeUseCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyTypeUseTypeName = form.getPartyTypeUseTypeName();
         var partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
         

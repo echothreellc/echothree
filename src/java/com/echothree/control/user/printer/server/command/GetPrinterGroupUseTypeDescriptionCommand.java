@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPrinterGroupUseTypeDescriptionCommand
@@ -56,6 +56,13 @@ public class GetPrinterGroupUseTypeDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
+
     
     /** Creates a new instance of GetPrinterGroupUseTypeDescriptionCommand */
     public GetPrinterGroupUseTypeDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetPrinterGroupUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var result = PrinterResultFactory.getGetPrinterGroupUseTypeDescriptionResult();
         var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
         var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePicklistAliasTypeCommand
@@ -54,6 +54,10 @@ public class DeletePicklistAliasTypeCommand
                 new FieldDefinition("PicklistAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PicklistControl picklistControl;
+
     
     /** Creates a new instance of DeletePicklistAliasTypeCommand */
     public DeletePicklistAliasTypeCommand() {
@@ -62,7 +66,6 @@ public class DeletePicklistAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistTypeName = form.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteGeoCodeTypeCommand
@@ -53,6 +53,10 @@ public class DeleteGeoCodeTypeCommand
                 new FieldDefinition("GeoCodeTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of DeleteGeoCodeTypeCommand */
     public DeleteGeoCodeTypeCommand() {
@@ -61,7 +65,6 @@ public class DeleteGeoCodeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeTypeName = form.getGeoCodeTypeName();
         var geoCodeType = geoControl.getGeoCodeTypeByNameForUpdate(geoCodeTypeName);
         

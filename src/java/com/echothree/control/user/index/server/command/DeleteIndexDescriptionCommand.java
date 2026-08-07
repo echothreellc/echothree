@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteIndexDescriptionCommand
@@ -55,6 +55,13 @@ public class DeleteIndexDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteIndexDescriptionCommand */
     public DeleteIndexDescriptionCommand() {
@@ -63,12 +70,10 @@ public class DeleteIndexDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexName = form.getIndexName();
         var index = indexControl.getIndexByName(indexName);
         
         if(index != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

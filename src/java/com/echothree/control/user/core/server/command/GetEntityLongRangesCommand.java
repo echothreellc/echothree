@@ -19,7 +19,6 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityLongRangesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,15 +60,16 @@ public class GetEntityLongRangesCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of GetEntityLongRangesCommand */
     public GetEntityLongRangesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Inject
-    EntityAttributeLogic entityAttributeLogic;
-
     private EntityAttribute entityAttribute;
 
     @Override

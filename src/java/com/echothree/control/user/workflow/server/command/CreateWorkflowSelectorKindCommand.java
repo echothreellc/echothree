@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkflowSelectorKindCommand
@@ -55,6 +55,13 @@ public class CreateWorkflowSelectorKindCommand
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of CreateWorkflowSelectorKindCommand */
     public CreateWorkflowSelectorKindCommand() {
@@ -63,12 +70,10 @@ public class CreateWorkflowSelectorKindCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            var selectorControl = Session.getModelController(SelectorControl.class);
             var selectorKindName = form.getSelectorKindName();
             var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
             

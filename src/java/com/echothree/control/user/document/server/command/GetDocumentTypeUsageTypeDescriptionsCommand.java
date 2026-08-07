@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDocumentTypeUsageTypeDescriptionsCommand
@@ -54,6 +54,10 @@ public class GetDocumentTypeUsageTypeDescriptionsCommand
                 new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of GetDocumentTypeUsageTypeDescriptionsCommand */
     public GetDocumentTypeUsageTypeDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetDocumentTypeUsageTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var result = DocumentResultFactory.getGetDocumentTypeUsageTypeDescriptionsResult();
         var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);

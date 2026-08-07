@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultFilterAdjustmentCommand
@@ -54,6 +54,10 @@ public class SetDefaultFilterAdjustmentCommand
                 new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
     
     /** Creates a new instance of SetDefaultFilterAdjustmentCommand */
     public SetDefaultFilterAdjustmentCommand() {
@@ -62,7 +66,6 @@ public class SetDefaultFilterAdjustmentCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
         var filterKind = filterControl.getFilterKindByName(filterKindName);
         

@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemTaxClassificationCommand
@@ -70,6 +70,15 @@ public class EditItemTaxClassificationCommand
                 );
     }
 
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    TaxControl taxControl;
+
     /** Creates a new instance of EditItemTaxClassificationCommand */
     public EditItemTaxClassificationCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -89,20 +98,16 @@ public class EditItemTaxClassificationCommand
 
     @Override
     public ItemTaxClassification getEntity(EditItemTaxClassificationResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemTaxClassification itemTaxClassification = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var countryName = spec.getCountryName();
             
             countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
-                var taxControl = Session.getModelController(TaxControl.class);
-                
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     itemTaxClassification = taxControl.getItemTaxClassification(item, countryGeoCode);
                 } else { // EditMode.UPDATE
@@ -129,8 +134,6 @@ public class EditItemTaxClassificationCommand
 
     @Override
     public void fillInResult(EditItemTaxClassificationResult result, ItemTaxClassification itemTaxClassification) {
-        var taxControl = Session.getModelController(TaxControl.class);
-
         result.setItemTaxClassification(taxControl.getItemTaxClassificationTransfer(getUserVisit(), itemTaxClassification));
     }
 
@@ -145,7 +148,6 @@ public class EditItemTaxClassificationCommand
     
     @Override
     public void canUpdate(ItemTaxClassification itemTaxClassification) {
-        var taxControl = Session.getModelController(TaxControl.class);
         var harmonizedTariffScheduleCodeName = edit.getTaxClassificationName();
         
         harmonizedTariffScheduleCode = taxControl.getTaxClassificationByName(countryGeoCode, harmonizedTariffScheduleCodeName);
@@ -157,7 +159,6 @@ public class EditItemTaxClassificationCommand
 
     @Override
     public void doUpdate(ItemTaxClassification itemTaxClassification) {
-        var taxControl = Session.getModelController(TaxControl.class);
         var itemTaxClassificationDetailValue = taxControl.getItemTaxClassificationDetailValueForUpdate(itemTaxClassification);
         
         itemTaxClassificationDetailValue.setTaxClassificationPK(harmonizedTariffScheduleCode.getPrimaryKey());

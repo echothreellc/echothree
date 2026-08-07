@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTypeContactListGroupCommand
@@ -68,6 +68,12 @@ public class EditPartyTypeContactListGroupCommand
                 );
     }
 
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditPartyTypeContactListGroupCommand */
     public EditPartyTypeContactListGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,13 +91,11 @@ public class EditPartyTypeContactListGroupCommand
 
     @Override
     public PartyTypeContactListGroup getEntity(EditPartyTypeContactListGroupResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyTypeContactListGroup partyTypeContactListGroup = null;
         var partyTypeName = spec.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
             var contactListGroupName = spec.getContactListGroupName();
             var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
@@ -122,8 +126,6 @@ public class EditPartyTypeContactListGroupCommand
 
     @Override
     public void fillInResult(EditPartyTypeContactListGroupResult result, PartyTypeContactListGroup partyTypeContactListGroup) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setPartyTypeContactListGroup(contactListControl.getPartyTypeContactListGroupTransfer(getUserVisit(), partyTypeContactListGroup));
     }
 
@@ -134,7 +136,6 @@ public class EditPartyTypeContactListGroupCommand
 
     @Override
     public void doUpdate(PartyTypeContactListGroup partyTypeContactListGroup) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyTypeContactListGroupValue = contactListControl.getPartyTypeContactListGroupValue(partyTypeContactListGroup);
 
         partyTypeContactListGroupValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));

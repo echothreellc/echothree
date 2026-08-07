@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemPurchasingCategoryCommand
@@ -60,6 +60,16 @@ public class DeleteItemPurchasingCategoryCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemPurchasingCategoryLogic itemPurchasingCategoryLogic;
+
     
     /** Creates a new instance of DeleteItemPurchasingCategoryCommand */
     public DeleteItemPurchasingCategoryCommand() {
@@ -69,26 +79,23 @@ public class DeleteItemPurchasingCategoryCommand
     @Override
     protected BaseResult execute() {
         var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
-        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var vendorControl = Session.getModelController(VendorControl.class);
             ItemPurchasingCategory itemPurchasingCategory = null;
 
             if(itemPurchasingCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ItemPurchasingCategory.name());
 
                 if(!hasExecutionErrors()) {
                     itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByEntityInstanceForUpdate(entityInstance);
                 }
             } else {
-                itemPurchasingCategory = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByNameForUpdate(this, itemPurchasingCategoryName);
+                itemPurchasingCategory = itemPurchasingCategoryLogic.getItemPurchasingCategoryByNameForUpdate(this, itemPurchasingCategoryName);
             }
 
             if(!hasExecutionErrors()) {
-                var itemPurchasingCategoryLogic = ItemPurchasingCategoryLogic.getInstance();
-
                 itemPurchasingCategoryLogic.checkDeleteItemPurchasingCategory(this, itemPurchasingCategory);
 
                 if(!hasExecutionErrors()) {

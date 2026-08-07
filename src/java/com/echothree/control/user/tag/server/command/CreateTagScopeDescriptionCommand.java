@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTagScopeDescriptionCommand
@@ -56,6 +56,13 @@ public class CreateTagScopeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TagControl tagControl;
+
     
     /** Creates a new instance of CreateTagScopeDescriptionCommand */
     public CreateTagScopeDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateTagScopeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeName = form.getTagScopeName();
         var tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

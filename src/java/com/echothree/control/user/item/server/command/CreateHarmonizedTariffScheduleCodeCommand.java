@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateHarmonizedTariffScheduleCodeCommand
@@ -64,6 +64,16 @@ public class CreateHarmonizedTariffScheduleCodeCommand
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null)
                 );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateHarmonizedTariffScheduleCodeCommand */
     public CreateHarmonizedTariffScheduleCodeCommand() {
@@ -72,12 +82,10 @@ public class CreateHarmonizedTariffScheduleCodeCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var countryName = form.getCountryName();
         var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
             var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
             
@@ -91,7 +99,7 @@ public class CreateHarmonizedTariffScheduleCodeCommand
 
                     if(secondHarmonizedTariffScheduleCodeUnitName == null || secondHarmonizedTariffScheduleCodeUnit != null) {
                         var overview = form.getOverview();
-                        var overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
+                        var overviewMimeType = mimeTypeLogic.checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
                                 ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                                 ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
 

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditApplicationCommand
@@ -67,6 +67,10 @@ public class EditApplicationCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
     
     /** Creates a new instance of EditApplicationCommand */
     public EditApplicationCommand() {
@@ -85,7 +89,6 @@ public class EditApplicationCommand
 
     @Override
     public Application getEntity(EditApplicationResult result) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         Application application;
         var applicationName = spec.getApplicationName();
 
@@ -109,14 +112,11 @@ public class EditApplicationCommand
 
     @Override
     public void fillInResult(EditApplicationResult result, Application application) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
-
         result.setApplication(applicationControl.getApplicationTransfer(getUserVisit(), application));
     }
 
     @Override
     public void doLock(ApplicationEdit edit, Application application) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationDescription = applicationControl.getApplicationDescription(application, getPreferredLanguage());
         var applicationDetail = application.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditApplicationCommand
 
     @Override
     public void canUpdate(Application application) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationName = edit.getApplicationName();
         var duplicateApplication = applicationControl.getApplicationByName(applicationName);
 
@@ -142,7 +141,6 @@ public class EditApplicationCommand
 
     @Override
     public void doUpdate(Application application) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var partyPK = getPartyPK();
         var applicationDetailValue = applicationControl.getApplicationDetailValueForUpdate(application);
         var applicationDescription = applicationControl.getApplicationDescriptionForUpdate(application, getPreferredLanguage());

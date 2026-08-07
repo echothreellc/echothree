@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRelatedItemTypeCommand
@@ -45,6 +45,13 @@ public class GetRelatedItemTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    RelatedItemTypeLogic relatedItemTypeLogic;
+
     
     /** Creates a new instance of GetRelatedItemTypeCommand */
     public GetRelatedItemTypeCommand() {
@@ -53,7 +60,7 @@ public class GetRelatedItemTypeCommand
 
     @Override
     protected RelatedItemType getEntity() {
-        var relatedItemType = RelatedItemTypeLogic.getInstance().getRelatedItemTypeByUniversalSpec(this, form, true);
+        var relatedItemType = relatedItemTypeLogic.getRelatedItemTypeByUniversalSpec(this, form, true);
 
         if(relatedItemType != null) {
             sendEvent(relatedItemType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetRelatedItemTypeCommand
 
     @Override
     protected BaseResult getResult(RelatedItemType relatedItemType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetRelatedItemTypeResult();
 
         if(relatedItemType != null) {

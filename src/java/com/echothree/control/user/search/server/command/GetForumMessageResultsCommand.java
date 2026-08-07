@@ -28,9 +28,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumMessageResultsCommand
@@ -44,6 +44,15 @@ public class GetForumMessageResultsCommand
                 );
     }
 
+    @Inject
+    ForumMessageControl forumMessageControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetForumMessageResultsCommand */
     public GetForumMessageResultsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -56,7 +65,6 @@ public class GetForumMessageResultsCommand
         setupPreferredClobMimeType();
         
         if(!hasExecutionErrors()) {
-            var searchControl = Session.getModelController(SearchControl.class);
             var searchKind = searchControl.getSearchKindByName(SearchKinds.FORUM_MESSAGE.name());
 
             if(searchKind != null) {
@@ -68,10 +76,8 @@ public class GetForumMessageResultsCommand
                     var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
 
                     if(userVisitSearch != null) {
-                        var forumMessageControl = Session.getModelController(ForumMessageControl.class);
-
                         if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                            result.setForumMessageResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                            result.setForumMessageResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                         }
 
                         result.setForumMessageResults(forumMessageControl.getForumMessageResultTransfers(userVisit, userVisitSearch));

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemPurchasingCategoryDescriptionCommand
@@ -56,6 +56,13 @@ public class GetItemPurchasingCategoryDescriptionCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of GetItemPurchasingCategoryDescriptionCommand */
     public GetItemPurchasingCategoryDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetItemPurchasingCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetItemPurchasingCategoryDescriptionResult();
         var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
         var itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
         
         if(itemPurchasingCategory != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

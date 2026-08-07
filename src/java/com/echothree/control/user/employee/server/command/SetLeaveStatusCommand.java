@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSetStatusCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetLeaveStatusCommand
@@ -55,6 +55,10 @@ public class SetLeaveStatusCommand
                 new FieldDefinition("LeaveStatusChoice", FieldType.ENTITY_NAME, true, null, null)
                 );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
     
     /** Creates a new instance of SetLeaveStatusCommand */
     public SetLeaveStatusCommand() {
@@ -68,7 +72,6 @@ public class SetLeaveStatusCommand
 
     @Override
     public Leave getEntity() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var leaveName = form.getLeaveName();
         var leave = employeeControl.getLeaveByNameForUpdate(leaveName);
 
@@ -86,7 +89,6 @@ public class SetLeaveStatusCommand
 
     @Override
     public void doUpdate(Leave leave) {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var leaveStatusChoice = form.getLeaveStatusChoice();
 
         employeeControl.setLeaveStatus(this, leave, leaveStatusChoice, getPartyPK());

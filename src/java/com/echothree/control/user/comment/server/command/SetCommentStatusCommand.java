@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetCommentStatusCommand
@@ -40,6 +40,10 @@ public class SetCommentStatusCommand
             new FieldDefinition("CommentStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    CommentControl commentControl;
+
     
     /** Creates a new instance of SetCommentStatusCommand */
     public SetCommentStatusCommand() {
@@ -48,7 +52,6 @@ public class SetCommentStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var commentControl = Session.getModelController(CommentControl.class);
         var commentName = form.getCommentName();
         var comment = commentControl.getCommentByName(commentName);
         

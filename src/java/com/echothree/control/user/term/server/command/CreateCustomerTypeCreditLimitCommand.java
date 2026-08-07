@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCustomerTypeCreditLimitCommand
@@ -44,6 +44,16 @@ public class CreateCustomerTypeCreditLimitCommand
                 new FieldDefinition("PotentialCreditLimit:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of CreateCustomerTypeCreditLimitCommand */
     public CreateCustomerTypeCreditLimitCommand() {
@@ -52,17 +62,14 @@ public class CreateCustomerTypeCreditLimitCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerTypeName = form.getCustomerTypeName();
         var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
             var currencyIsoName = form.getCurrencyIsoName();
             var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
-                var termControl = Session.getModelController(TermControl.class);
                 var customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency);
                 
                 if(customerTypeCreditLimit == null) {

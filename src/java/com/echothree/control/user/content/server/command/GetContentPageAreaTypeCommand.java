@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageAreaTypeCommand
@@ -45,6 +45,13 @@ public class GetContentPageAreaTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
                 );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    ContentPageAreaTypeLogic contentPageAreaTypeLogic;
+
     
     /** Creates a new instance of GetContentPageAreaTypeCommand */
     public GetContentPageAreaTypeCommand() {
@@ -53,7 +60,7 @@ public class GetContentPageAreaTypeCommand
     
     @Override
     protected ContentPageAreaType getEntity() {
-        var contentPageAreaType = ContentPageAreaTypeLogic.getInstance().getContentPageAreaTypeByUniversalSpec(this, form);
+        var contentPageAreaType = contentPageAreaTypeLogic.getContentPageAreaTypeByUniversalSpec(this, form);
 
         if(contentPageAreaType != null) {
             sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetContentPageAreaTypeCommand
     
     @Override
     protected BaseResult getResult(ContentPageAreaType contentPageAreaType) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var result = ContentResultFactory.getGetContentPageAreaTypeResult();
 
         if(contentPageAreaType != null) {

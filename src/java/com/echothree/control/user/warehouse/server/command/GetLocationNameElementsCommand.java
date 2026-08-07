@@ -59,14 +59,15 @@ public class GetLocationNameElementsCommand
                 new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null)
             );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of GetLocationNameElementsCommand */
     public GetLocationNameElementsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    WarehouseControl warehouseControl;
 
     private Warehouse warehouse;
     private LocationType locationType;

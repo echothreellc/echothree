@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCampaignMediumDescriptionCommand
@@ -67,6 +67,13 @@ public class EditCampaignMediumDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 );
     }
+
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCampaignMediumDescriptionCommand */
     public EditCampaignMediumDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditCampaignMediumDescriptionCommand
 
     @Override
     public CampaignMediumDescription getEntity(EditCampaignMediumDescriptionResult result) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignMediumDescription campaignMediumDescription = null;
         var campaignMediumName = spec.getCampaignMediumName();
         var campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
 
         if(campaignMedium != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditCampaignMediumDescriptionCommand
 
     @Override
     public void fillInResult(EditCampaignMediumDescriptionResult result, CampaignMediumDescription campaignMediumDescription) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-
         result.setCampaignMediumDescription(campaignControl.getCampaignMediumDescriptionTransfer(getUserVisit(), campaignMediumDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditCampaignMediumDescriptionCommand
 
     @Override
     public void doUpdate(CampaignMediumDescription campaignMediumDescription) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var campaignMediumDescriptionValue = campaignControl.getCampaignMediumDescriptionValue(campaignMediumDescription);
         campaignMediumDescriptionValue.setDescription(edit.getDescription());
 

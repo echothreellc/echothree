@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorStatusChoicesCommand
@@ -55,6 +55,10 @@ public class GetVendorStatusChoicesCommand
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of GetVendorStatusChoicesCommand */
     public GetVendorStatusChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetVendorStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var result = PartyResultFactory.getGetVendorStatusChoicesResult();
         var vendorName = form.getVendorName();
         var vendor = vendorControl.getVendorByName(vendorName);

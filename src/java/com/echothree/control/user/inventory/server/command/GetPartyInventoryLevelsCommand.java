@@ -87,6 +87,7 @@ public class GetPartyInventoryLevelsCommand
 
     @Inject
     ItemLogic itemLogic;
+
     @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 

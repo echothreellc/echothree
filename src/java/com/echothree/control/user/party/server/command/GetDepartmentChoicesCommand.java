@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDepartmentChoicesCommand
@@ -45,6 +45,16 @@ public class GetDepartmentChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    CompanyLogic companyLogic;
+
+    @Inject
+    DivisionLogic divisionLogic;
+
     
     /** Creates a new instance of GetDepartmentChoicesCommand */
     public GetDepartmentChoicesCommand() {
@@ -55,15 +65,14 @@ public class GetDepartmentChoicesCommand
     protected BaseResult execute() {
         var result = PartyResultFactory.getGetDepartmentChoicesResult();
         var companyName = form.getCompanyName();
-        var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
+        var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, null, null, false);
 
         if(!hasExecutionErrors()) {
             var divisionName = form.getDivisionName();
             var partyName = form.getPartyName();
-            var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null, true);
+            var partyDivision = divisionLogic.getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null, true);
 
             if(!hasExecutionErrors()) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var defaultDepartmentChoice = form.getDefaultDepartmentChoice();
                 var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteAssociateReferralCommand
@@ -39,6 +39,10 @@ public class DeleteAssociateReferralCommand
             new FieldDefinition("AssociateReferralName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    AssociateControl associateControl;
+
     
     /** Creates a new instance of DeleteAssociateReferralCommand */
     public DeleteAssociateReferralCommand() {
@@ -47,7 +51,6 @@ public class DeleteAssociateReferralCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = Session.getModelController(AssociateControl.class);
         var associateReferralName = form.getAssociateReferralName();
         var associateReferral = associateControl.getAssociateReferralByNameForUpdate(associateReferralName);
         

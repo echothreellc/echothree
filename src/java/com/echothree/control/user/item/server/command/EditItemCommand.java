@@ -46,10 +46,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemCommand
@@ -90,6 +90,22 @@ public class EditItemCommand
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of EditItemCommand */
     public EditItemCommand() {
@@ -108,7 +124,6 @@ public class EditItemCommand
 
     @Override
     public Item getEntity(EditItemResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         Item item;
         var itemName = spec.getItemName();
 
@@ -134,8 +149,6 @@ public class EditItemCommand
 
     @Override
     public void fillInResult(EditItemResult result, Item item) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItem(itemControl.getItemTransfer(getUserVisit(), item));
     }
 
@@ -179,7 +192,6 @@ public class EditItemCommand
 
     @Override
     public void canUpdate(Item item) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = edit.getItemName();
         var duplicateItem = itemControl.getItemByName(itemName);
 
@@ -199,8 +211,6 @@ public class EditItemCommand
                         addExecutionError(ExecutionErrors.NotPermittedItemAccountingCategory.name(), itemAccountingCategoryName);
                     }
                 } else {
-                    var accountingControl = Session.getModelController(AccountingControl.class);
-
                     itemAccountingCategory = itemAccountingCategoryName == null? null: accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
 
                     if(itemAccountingCategoryName == null) {
@@ -218,8 +228,6 @@ public class EditItemCommand
                             addExecutionError(ExecutionErrors.NotPermittedItemPurchasingCategory.name(), itemPurchasingCategoryName);
                         }
                     } else {
-                        var vendorControl = Session.getModelController(VendorControl.class);
-
                         itemPurchasingCategory = itemPurchasingCategoryName == null? null: vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
 
                         if(itemPurchasingCategoryName == null) {
@@ -233,7 +241,6 @@ public class EditItemCommand
                         var cancellationPolicyName = edit.getCancellationPolicyName();
 
                         if(cancellationPolicyName != null) {
-                            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                             var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -243,7 +250,6 @@ public class EditItemCommand
                             var returnPolicyName = edit.getReturnPolicyName();
 
                             if(returnPolicyName != null) {
-                                var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                                 var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
@@ -267,7 +273,6 @@ public class EditItemCommand
 
     @Override
     public void doUpdate(Item item) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
         var itemDetailValue = itemControl.getItemDetailValueForUpdate(item);
         var shippingChargeExempt = Boolean.valueOf(edit.getShippingChargeExempt());

@@ -17,16 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCommandForm;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCommandCommand
@@ -42,6 +41,7 @@ public class CreateCommandCommand
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
     
     /** Creates a new instance of CreateCommandCommand */
     public CreateCommandCommand() {
@@ -50,7 +50,6 @@ public class CreateCommandCommand
     
     @Override
     protected BaseResult execute() {
-        var commandControl = Session.getModelController(CommandControl.class);
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         

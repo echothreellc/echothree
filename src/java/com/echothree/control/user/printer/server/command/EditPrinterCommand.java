@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPrinterCommand
@@ -68,6 +68,9 @@ public class EditPrinterCommand
                 );
     }
 
+    @Inject
+    PrinterControl printerControl;
+
     /** Creates a new instance of EditPrinterCommand */
     public EditPrinterCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -85,7 +88,6 @@ public class EditPrinterCommand
 
     @Override
     public Printer getEntity(EditPrinterResult result) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         Printer printer;
         var printerName = spec.getPrinterName();
 
@@ -111,14 +113,11 @@ public class EditPrinterCommand
 
     @Override
     public void fillInResult(EditPrinterResult result, Printer printer) {
-        var printerControl = Session.getModelController(PrinterControl.class);
-
         result.setPrinter(printerControl.getPrinterTransfer(getUserVisit(), printer));
     }
 
     @Override
     public void doLock(PrinterEdit edit, Printer printer) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerDescription = printerControl.getPrinterDescription(printer, getPreferredLanguage());
         var printerDetail = printer.getLastDetail();
 
@@ -135,7 +134,6 @@ public class EditPrinterCommand
 
     @Override
     public void canUpdate(Printer printer) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerName = edit.getPrinterName();
         var duplicatePrinter = printerControl.getPrinterByName(printerName);
 
@@ -154,7 +152,6 @@ public class EditPrinterCommand
 
     @Override
     public void doUpdate(Printer printer) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var partyPK = getPartyPK();
         var printerDetailValue = printerControl.getPrinterDetailValueForUpdate(printer);
         var printerDescription = printerControl.getPrinterDescriptionForUpdate(printer, getPreferredLanguage());

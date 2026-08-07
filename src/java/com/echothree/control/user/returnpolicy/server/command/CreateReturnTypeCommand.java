@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateReturnTypeCommand
@@ -59,6 +59,13 @@ public class CreateReturnTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of CreateReturnTypeCommand */
     public CreateReturnTypeCommand() {
@@ -67,7 +74,6 @@ public class CreateReturnTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
@@ -76,7 +82,6 @@ public class CreateReturnTypeCommand
             var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType == null) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var returnSequenceName = form.getReturnSequenceName();
                 var returnSequenceType = returnKind.getLastDetail().getReturnSequenceType();
                 var returnSequence = returnSequenceName == null ? null : sequenceControl.getSequenceByName(returnSequenceType, returnSequenceName);

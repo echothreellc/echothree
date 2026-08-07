@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentFixedAmountCommand
@@ -65,6 +65,18 @@ public class GetFilterAdjustmentFixedAmountCommand
         );
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     /** Creates a new instance of DeleteFilterAdjustmentFixedAmountCommand */
     public GetFilterAdjustmentFixedAmountCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -74,7 +86,7 @@ public class GetFilterAdjustmentFixedAmountCommand
     protected FilterAdjustmentFixedAmount getEntity() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
-        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
+        var filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
         FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = null;
 
         if(!hasExecutionErrors()) {
@@ -82,16 +94,14 @@ public class GetFilterAdjustmentFixedAmountCommand
                 var unitOfMeasureName = form.getUnitOfMeasureName();
                 var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this,
                         unitOfMeasureName, unitOfMeasureKindName, unitOfMeasureTypeName);
 
                 if(!hasExecutionErrors()) {
                     var currencyIsoName = form.getCurrencyIsoName();
-                    var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+                    var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        var filterControl = Session.getModelController(FilterControl.class);
-
                         filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
 
                         if(filterAdjustmentFixedAmount == null) {
@@ -112,8 +122,6 @@ public class GetFilterAdjustmentFixedAmountCommand
         var result = FilterResultFactory.getGetFilterAdjustmentFixedAmountResult();
 
         if(entity != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
             result.setFilterAdjustmentFixedAmount(filterControl.getFilterAdjustmentFixedAmountTransfer(getUserVisit(), entity));
         }
 

@@ -26,6 +26,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import java.util.List;
+import javax.inject.Inject;
 
 public abstract class BaseCountResultsCommand<F extends BaseCountResultsForm, R extends BaseCountResultsResult>
         extends BaseSimpleCommand<F> {
@@ -38,13 +39,16 @@ public abstract class BaseCountResultsCommand<F extends BaseCountResultsForm, R 
                 );
     }
 
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of BaseCountResultsCommand */
     protected BaseCountResultsCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected BaseResult execute(String searchKindName, BaseCountResultsResult result) {
-        result.setCount(SearchLogic.getInstance().countUserVisitSearchResults(this, getUserVisit(), searchKindName, form.getSearchTypeName()));
+        result.setCount(searchLogic.countUserVisitSearchResults(this, getUserVisit(), searchKindName, form.getSearchTypeName()));
 
         return result;
     }
