@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.model.control.content.common.ContentPageAreaTypes;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.MimeTypeObject;
@@ -56,16 +55,6 @@ public class ContentPageAreaObject
         }
         
         return contentPageAreaDetail;
-    }
-    
-    String contentPageAreaTypeName;
-
-    private String getContentPageAreaTypeName() {
-        if(contentPageAreaTypeName == null) {
-            contentPageAreaTypeName = getContentPageAreaDetail().getContentPageLayoutArea().getContentPageAreaType().getContentPageAreaTypeName();
-        }
-
-        return contentPageAreaTypeName;
     }
     
     ContentPageAreaClob contentPageAreaClob;
