@@ -44,6 +44,8 @@ public interface ParameterConstants {
     String FROM_FILTER_STEP_NAME = "FromFilterStepName";
     String ORIGINAL_INVENTORY_CONDITION_NAME = "OriginalInventoryConditionName";
     String INVENTORY_CONDITION_NAME = "InventoryConditionName";
+    String ORIGINAL_INVENTORY_COSTING_METHOD_NAME = "OriginalInventoryCostingMethodName";
+    String INVENTORY_COSTING_METHOD_NAME = "InventoryCostingMethodName";
     String INVENTORY_LOCATION_GROUP_NAME = "InventoryLocationGroupName";
     String LANGUAGE_ISO_NAME = "LanguageIsoName";
     String LOCATION_NAME = "LocationName";

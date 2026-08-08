@@ -18,8 +18,12 @@ package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.control.user.inventory.server.command.GetAllocationPrioritiesCommand;
 import com.echothree.control.user.inventory.server.command.GetAllocationPriorityCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
@@ -59,6 +63,22 @@ public interface InventorySecurityUtils {
 
     static boolean getHasInventoryLocationGroupsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryLocationGroupsCommand.class);
+    }
+
+    static boolean getHasInventoryCostingMethodAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryCostingMethodCommand.class);
+    }
+
+    static boolean getHasInventoryCostingMethodsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryCostingMethodsCommand.class);
+    }
+
+    static boolean getHasInventoryAdjustmentTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryAdjustmentTypeCommand.class);
+    }
+
+    static boolean getHasInventoryAdjustmentTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryAdjustmentTypesCommand.class);
     }
 
 }
