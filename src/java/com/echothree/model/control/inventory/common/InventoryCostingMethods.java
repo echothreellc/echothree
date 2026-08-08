@@ -18,8 +18,6 @@ package com.echothree.model.control.inventory.common;
 
 public enum InventoryCostingMethods {
 
-    SET,
-    PLUS,
-    MINUS,
+    FIFO,
     
 }
