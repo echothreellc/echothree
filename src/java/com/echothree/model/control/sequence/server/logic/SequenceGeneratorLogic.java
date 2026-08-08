@@ -99,31 +99,22 @@ public class SequenceGeneratorLogic
     private String encode(SequenceTypeDetail sequenceTypeDetail, String value) {
         var sequenceEncoderTypeName = sequenceTypeDetail.getSequenceEncoderType().getSequenceEncoderTypeName();
         var sequenceEncoderType = SequenceEncoderTypes.valueOf(sequenceEncoderTypeName);
-        String encodedValue;
 
-        switch(sequenceEncoderType) {
-            case NONE -> encodedValue = NoneSequenceEncoder.getInstance().encode(value);
-            case REVERSE -> encodedValue = ReverseSequenceEncoder.getInstance().encode(value);
-            case REVERSE_SWAP -> encodedValue = ReverseSwapSequenceEncoder.getInstance().encode(value);
+        return switch(sequenceEncoderType) {
+            case NONE -> NoneSequenceEncoder.getInstance().encode(value);
+            case REVERSE -> ReverseSequenceEncoder.getInstance().encode(value);
+            case REVERSE_SWAP -> ReverseSwapSequenceEncoder.getInstance().encode(value);
             default -> throw new UnimplementedSequenceEncoderTypeException();
-        }
-
-        return encodedValue;
+        };
     }
 
     private SequenceChecksum getSequenceChecksum(SequenceChecksumTypes sequenceChecksumType) {
-        switch(sequenceChecksumType) {
-            case NONE -> {
-                return NoneSequenceChecksum.getInstance();
-            }
-            case MOD_10 -> {
-                return Mod10SequenceChecksum.getInstance();
-            }
-            case MOD_36 -> {
-                return Mod36SequenceChecksum.getInstance();
-            }
+        return switch(sequenceChecksumType) {
+            case NONE -> NoneSequenceChecksum.getInstance();
+            case MOD_10 -> Mod10SequenceChecksum.getInstance();
+            case MOD_36 -> Mod36SequenceChecksum.getInstance();
             default -> throw new UnimplementedSequenceChecksumTypeException();
-        }
+        };
     }
 
     private SequenceChecksum getSequenceChecksum(SequenceTypeDetail sequenceTypeDetail) {
