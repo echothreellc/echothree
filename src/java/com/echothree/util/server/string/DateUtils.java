@@ -111,34 +111,30 @@ public class DateUtils {
     
     public DateFormatter getDateFormatter(final UserVisit userVisit, final DateTimeFormatType dtft) {
         var dtfd = getDateTimeFormat(userVisit).getLastDetail();
-        String pattern;
-
-        switch(dtft) {
-            case SHORT_DATE -> pattern = dtfd.getJavaShortDateFormat();
-            case ABBREV_DATE -> pattern = dtfd.getJavaAbbrevDateFormat();
-            case ABBREV_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaAbbrevDateFormatWeekday();
-            case LONG_DATE -> pattern = dtfd.getJavaLongDateFormat();
-            case LONG_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaLongDateFormatWeekday();
+        var pattern = switch(dtft) {
+            case SHORT_DATE -> dtfd.getJavaShortDateFormat();
+            case ABBREV_DATE -> dtfd.getJavaAbbrevDateFormat();
+            case ABBREV_DATE_WITH_WEEKDAY -> dtfd.getJavaAbbrevDateFormatWeekday();
+            case LONG_DATE -> dtfd.getJavaLongDateFormat();
+            case LONG_DATE_WITH_WEEKDAY -> dtfd.getJavaLongDateFormatWeekday();
             default -> throw new IllegalArgumentException();
-        }
+        };
 
         return new DateFormatter(pattern);
     }
     
     public DateTimeFormatter getDateTimeFormatter(final UserVisit userVisit, final DateTimeFormatType dtft) {
         var dtfd = getDateTimeFormat(userVisit).getLastDetail();
-        String pattern;
-
-        switch(dtft) {
-            case SHORT_DATE -> pattern = dtfd.getJavaShortDateFormat();
-            case ABBREV_DATE -> pattern = dtfd.getJavaAbbrevDateFormat();
-            case ABBREV_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaAbbrevDateFormatWeekday();
-            case LONG_DATE -> pattern = dtfd.getJavaLongDateFormat();
-            case LONG_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaLongDateFormatWeekday();
-            case TIME -> pattern = dtfd.getJavaTimeFormat();
-            case TIME_WITH_SECONDS -> pattern = dtfd.getJavaTimeFormatSeconds();
+        var pattern = switch(dtft) {
+            case SHORT_DATE -> dtfd.getJavaShortDateFormat();
+            case ABBREV_DATE -> dtfd.getJavaAbbrevDateFormat();
+            case ABBREV_DATE_WITH_WEEKDAY -> dtfd.getJavaAbbrevDateFormatWeekday();
+            case LONG_DATE -> dtfd.getJavaLongDateFormat();
+            case LONG_DATE_WITH_WEEKDAY -> dtfd.getJavaLongDateFormatWeekday();
+            case TIME -> dtfd.getJavaTimeFormat();
+            case TIME_WITH_SECONDS -> dtfd.getJavaTimeFormatSeconds();
             default -> throw new IllegalArgumentException();
-        }
+        };
 
         return new DateTimeFormatter(getJavaTimeZoneName(userVisit), pattern);
     }
