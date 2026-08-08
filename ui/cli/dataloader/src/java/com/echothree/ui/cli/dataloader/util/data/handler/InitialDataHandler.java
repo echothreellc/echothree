@@ -106,6 +106,7 @@ import com.echothree.ui.cli.dataloader.util.data.handler.inventory.AllocationPri
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryAdjustmentTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryConditionUseTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryConditionsHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryCostingMethodsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryTransactionTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.LotAliasTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.LotTimeTypesHandler;
@@ -437,6 +438,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new InventoryConditionsHandler(initialDataParser, this));
         } else if(localName.equals("inventoryAdjustmentTypes")) {
             initialDataParser.pushHandler(new InventoryAdjustmentTypesHandler(initialDataParser, this));
+        } else if(localName.equals("inventoryCostingMethods")) {
+            initialDataParser.pushHandler(new InventoryCostingMethodsHandler(initialDataParser, this));
         } else if(localName.equals("inventoryTransactionTypes")) {
             initialDataParser.pushHandler(new InventoryTransactionTypesHandler(initialDataParser, this));
         } else if(localName.equals("allocationPriorities")) {

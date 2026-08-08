@@ -39,70 +39,133 @@ public class InventoryBean
     public String ping() {
         return "InventoryBean is alive!";
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Inventory Costing Methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateInventoryCostingMethodResult> createInventoryCostingMethod(UserVisitPK userVisitPK, CreateInventoryCostingMethodForm form) {
+        return CDI.current().select(CreateInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryCostingMethodsResult> getInventoryCostingMethods(UserVisitPK userVisitPK, GetInventoryCostingMethodsForm form) {
+        return CDI.current().select(GetInventoryCostingMethodsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryCostingMethodResult> getInventoryCostingMethod(UserVisitPK userVisitPK, GetInventoryCostingMethodForm form) {
+        return CDI.current().select(GetInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryCostingMethodChoicesResult> getInventoryCostingMethodChoices(UserVisitPK userVisitPK, GetInventoryCostingMethodChoicesForm form) {
+        return CDI.current().select(GetInventoryCostingMethodChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultInventoryCostingMethod(UserVisitPK userVisitPK, SetDefaultInventoryCostingMethodForm form) {
+        return CDI.current().select(SetDefaultInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryCostingMethodResult> editInventoryCostingMethod(UserVisitPK userVisitPK, EditInventoryCostingMethodForm form) {
+        return CDI.current().select(EditInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryCostingMethod(UserVisitPK userVisitPK, DeleteInventoryCostingMethodForm form) {
+        return CDI.current().select(DeleteInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Costing Method Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createInventoryCostingMethodDescription(UserVisitPK userVisitPK, CreateInventoryCostingMethodDescriptionForm form) {
+        return CDI.current().select(CreateInventoryCostingMethodDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryCostingMethodDescriptionsResult> getInventoryCostingMethodDescriptions(UserVisitPK userVisitPK, GetInventoryCostingMethodDescriptionsForm form) {
+        return CDI.current().select(GetInventoryCostingMethodDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryCostingMethodDescriptionResult> editInventoryCostingMethodDescription(UserVisitPK userVisitPK, EditInventoryCostingMethodDescriptionForm form) {
+        return CDI.current().select(EditInventoryCostingMethodDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryCostingMethodDescription(UserVisitPK userVisitPK, DeleteInventoryCostingMethodDescriptionForm form) {
+        return CDI.current().select(DeleteInventoryCostingMethodDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
     // -------------------------------------------------------------------------
     //   Inventory Conditions
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult<CreateInventoryConditionResult> createInventoryCondition(UserVisitPK userVisitPK, CreateInventoryConditionForm form) {
         return CDI.current().select(CreateInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<GetInventoryConditionsResult> getInventoryConditions(UserVisitPK userVisitPK, GetInventoryConditionsForm form) {
         return CDI.current().select(GetInventoryConditionsCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<GetInventoryConditionResult> getInventoryCondition(UserVisitPK userVisitPK, GetInventoryConditionForm form) {
         return CDI.current().select(GetInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<GetInventoryConditionChoicesResult> getInventoryConditionChoices(UserVisitPK userVisitPK, GetInventoryConditionChoicesForm form) {
         return CDI.current().select(GetInventoryConditionChoicesCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<VoidResult> setDefaultInventoryCondition(UserVisitPK userVisitPK, SetDefaultInventoryConditionForm form) {
         return CDI.current().select(SetDefaultInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<EditInventoryConditionResult> editInventoryCondition(UserVisitPK userVisitPK, EditInventoryConditionForm form) {
         return CDI.current().select(EditInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<VoidResult> deleteInventoryCondition(UserVisitPK userVisitPK, DeleteInventoryConditionForm form) {
         return CDI.current().select(DeleteInventoryConditionCommand.class).get().run(userVisitPK, form);
     }
-    
+
     // -------------------------------------------------------------------------
     //   Inventory Condition Descriptions
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult<VoidResult> createInventoryConditionDescription(UserVisitPK userVisitPK, CreateInventoryConditionDescriptionForm form) {
         return CDI.current().select(CreateInventoryConditionDescriptionCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<GetInventoryConditionDescriptionsResult> getInventoryConditionDescriptions(UserVisitPK userVisitPK, GetInventoryConditionDescriptionsForm form) {
         return CDI.current().select(GetInventoryConditionDescriptionsCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<EditInventoryConditionDescriptionResult> editInventoryConditionDescription(UserVisitPK userVisitPK, EditInventoryConditionDescriptionForm form) {
         return CDI.current().select(EditInventoryConditionDescriptionCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult<VoidResult> deleteInventoryConditionDescription(UserVisitPK userVisitPK, DeleteInventoryConditionDescriptionForm form) {
         return CDI.current().select(DeleteInventoryConditionDescriptionCommand.class).get().run(userVisitPK, form);
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Condition Use Types
     // --------------------------------------------------------------------------------
