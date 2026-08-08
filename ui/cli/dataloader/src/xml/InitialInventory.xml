@@ -50,6 +50,11 @@
             <inventoryAdjustmentTypeDescription languageIsoName="en" description="Minus" />
         </inventoryAdjustmentType>
     </inventoryAdjustmentTypes>
+    <inventoryCostingMethods>
+        <inventoryCostingMethod inventoryCostingMethodName="FIFO" isDefault="true" sortOrder="10">
+            <inventoryCostingMethodDescription languageIsoName="en" description="First In, First Out (FIFO)" />
+        </inventoryCostingMethod>
+    </inventoryCostingMethods>
     <inventoryTransactionTypes>
         <inventoryTransactionType inventoryTransactionTypeName="TEST_INVENTORY_TRANSACTION_TYPE" isDefault="true" sortOrder="0">
             <inventoryTransactionTypeDescription languageIsoName="en" description="Test Inventory Transaction Type" />

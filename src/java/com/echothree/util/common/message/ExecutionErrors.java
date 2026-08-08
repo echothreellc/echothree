@@ -2394,5 +2394,10 @@ public enum ExecutionErrors {
     CannotDeleteTrainingClassInUse,
     UnknownWorkRequirementScope,
     InvalidBatchType,
+    DuplicateInventoryCostingMethodName,
+    UnknownInventoryCostingMethodName,
+    DuplicateInventoryCostingMethodDescription,
+    UnknownInventoryCostingMethodDescription,
+    UnknownDefaultInventoryCostingMethod,
 
 }

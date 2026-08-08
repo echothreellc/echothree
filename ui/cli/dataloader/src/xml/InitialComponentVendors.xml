@@ -988,6 +988,12 @@
             <entityType entityTypeName="BirthdayFormatDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Birthday Format Description" />
             </entityType>
+            <entityType entityTypeName="InventoryCostingMethod" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Costing Method" />
+            </entityType>
+            <entityType entityTypeName="InventoryCostingMethodDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Costing Method Description" />
+            </entityType>
             <entityType entityTypeName="InventoryCondition" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Condition" />
             </entityType>
