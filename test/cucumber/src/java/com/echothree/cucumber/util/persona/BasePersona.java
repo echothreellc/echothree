@@ -123,22 +123,26 @@ import com.echothree.control.user.filter.common.spec.FilterStepSpec;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
 import com.echothree.control.user.inventory.common.edit.AllocationPriorityEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryAdjustmentTypeEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryBucketTypeEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryCostingMethodEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryAdjustmentTypeForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryBucketTypeForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryCostingMethodForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryAdjustmentTypeForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryBucketTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryCostingMethodForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
 import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryAdjustmentTypeUniversalSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryBucketTypeUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryCostingMethodUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
@@ -545,11 +549,17 @@ public class BasePersona {
     public InventoryCostingMethodUniversalSpec inventoryCostingMethodSpec;
     public InventoryCostingMethodEdit inventoryCostingMethodEdit;
 
+    public CreateInventoryBucketTypeForm createInventoryBucketTypeForm;
+    public DeleteInventoryBucketTypeForm deleteInventoryBucketTypeForm;
+    public InventoryBucketTypeUniversalSpec inventoryBucketTypeSpec;
+    public InventoryBucketTypeEdit inventoryBucketTypeEdit;
+
     public String lastInventoryLocationGroupName;
     public String lastInventoryConditionName;
     public String lastAllocationPriorityName;
     public String lastInventoryAdjustmentTypeName;
     public String lastInventoryCostingMethodName;
+    public String lastInventoryBucketTypeName;
 
     // Item
     public CreateItemForm createItemForm;

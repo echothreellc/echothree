@@ -20,6 +20,8 @@ import com.echothree.model.control.inventory.server.transfer.AllocationPriorityD
 import com.echothree.model.control.inventory.server.transfer.AllocationPriorityTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeDescriptionTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionDescriptionTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionGlAccountTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionTransferCache;
@@ -130,5 +132,11 @@ public abstract class BaseInventoryControl
 
     @Inject
     InventoryCostingMethodDescriptionTransferCache inventoryCostingMethodDescriptionTransferCache;
+
+    @Inject
+    InventoryBucketTypeTransferCache inventoryBucketTypeTransferCache;
+
+    @Inject
+    InventoryBucketTypeDescriptionTransferCache inventoryBucketTypeDescriptionTransferCache;
 
 }

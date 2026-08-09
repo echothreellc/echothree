@@ -2399,5 +2399,10 @@ public enum ExecutionErrors {
     DuplicateInventoryCostingMethodDescription,
     UnknownInventoryCostingMethodDescription,
     UnknownDefaultInventoryCostingMethod,
+    DuplicateInventoryBucketTypeName,
+    UnknownInventoryBucketTypeName,
+    DuplicateInventoryBucketTypeDescription,
+    UnknownInventoryBucketTypeDescription,
+    UnknownDefaultInventoryBucketType,
 
 }

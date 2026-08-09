@@ -46,6 +46,8 @@ public interface ParameterConstants {
     String INVENTORY_CONDITION_NAME = "InventoryConditionName";
     String ORIGINAL_INVENTORY_COSTING_METHOD_NAME = "OriginalInventoryCostingMethodName";
     String INVENTORY_COSTING_METHOD_NAME = "InventoryCostingMethodName";
+    String ORIGINAL_INVENTORY_BUCKET_TYPE_NAME = "OriginalInventoryBucketTypeName";
+    String INVENTORY_BUCKET_TYPE_NAME = "InventoryBucketTypeName";
     String INVENTORY_LOCATION_GROUP_NAME = "InventoryLocationGroupName";
     String LANGUAGE_ISO_NAME = "LanguageIsoName";
     String LOCATION_NAME = "LocationName";

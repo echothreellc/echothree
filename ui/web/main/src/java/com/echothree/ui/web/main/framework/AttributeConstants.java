@@ -81,6 +81,12 @@ public interface AttributeConstants {
     String INVENTORY_COSTING_METHOD_NAME = "inventoryCostingMethodName";
     String INVENTORY_COSTING_METHOD_DESCRIPTION = "inventoryCostingMethodDescription";
     String INVENTORY_COSTING_METHOD_DESCRIPTIONS = "inventoryCostingMethodDescriptions";
+    String INVENTORY_BUCKET_TYPE = "inventoryBucketType";
+    String INVENTORY_BUCKET_TYPES = "inventoryBucketTypes";
+    String ORIGINAL_INVENTORY_BUCKET_TYPE_NAME = "originalInventoryBucketTypeName";
+    String INVENTORY_BUCKET_TYPE_NAME = "inventoryBucketTypeName";
+    String INVENTORY_BUCKET_TYPE_DESCRIPTION = "inventoryBucketTypeDescription";
+    String INVENTORY_BUCKET_TYPE_DESCRIPTIONS = "inventoryBucketTypeDescriptions";
     String INVENTORY_LOCATION_GROUP = "inventoryLocationGroup";
     String INVENTORY_LOCATION_GROUPS = "inventoryLocationGroups";
     String LANGUAGE_ISO_NAME = "languageIsoName";
