@@ -1,0 +1,104 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2026 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.inventory.server.command;
+
+import com.echothree.control.user.inventory.common.form.CreateInventoryBucketTypeForm;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransactionWorkflowEntranceNameException;
+import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransactionWorkflowNameException;
+import com.echothree.model.control.inventory.server.logic.InventoryBucketTypeLogic;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
+import java.util.List;
+import javax.inject.Inject;
+import javax.enterprise.context.Dependent;
+
+@Dependent
+public class CreateInventoryBucketTypeCommand
+        extends BaseSimpleCommand<CreateInventoryBucketTypeForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.InventoryBucketType.name(), SecurityRoles.Create.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("InventoryBucketTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+        );
+    }
+
+    @Inject
+    InventoryBucketTypeLogic inventoryBucketTypeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
+    /** Creates a new instance of CreateInventoryBucketTypeCommand */
+    public CreateInventoryBucketTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+
+    @Override
+    protected BaseResult execute() {
+        var result = InventoryResultFactory.getCreateInventoryBucketTypeResult();
+        var inventoryBucketTypeName = form.getInventoryBucketTypeName();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var partyPK = getPartyPK();
+
+        var inventoryBucketType = inventoryBucketTypeLogic.createInventoryBucketType(this,
+                inventoryBucketTypeName, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
+
+        if(inventoryBucketType != null) {
+            result.setEntityRef(inventoryBucketType.getPrimaryKey().getEntityRef());
+            result.setInventoryBucketTypeName(inventoryBucketType.getLastDetail().getInventoryBucketTypeName());
+        }
+
+        return result;
+    }
+
+}

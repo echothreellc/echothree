@@ -55,6 +55,20 @@
             <inventoryCostingMethodDescription languageIsoName="en" description="First In, First Out (FIFO)" />
         </inventoryCostingMethod>
     </inventoryCostingMethods>
+    <inventoryBucketTypes>
+        <inventoryBucketType inventoryBucketTypeName="TOTAL_SOH" isDefault="true" sortOrder="10">
+            <inventoryBucketTypeDescription languageIsoName="en" description="Total Stock On Hand" />
+        </inventoryBucketType>
+        <inventoryBucketType inventoryBucketTypeName="AVAILABLE_SOH" isDefault="false" sortOrder="20">
+            <inventoryBucketTypeDescription languageIsoName="en" description="Available Stock On Hand" />
+        </inventoryBucketType>
+        <inventoryBucketType inventoryBucketTypeName="UNAVAILABLE_SOH" isDefault="false" sortOrder="30">
+            <inventoryBucketTypeDescription languageIsoName="en" description="Unavailable Stock On Hand" />
+        </inventoryBucketType>
+        <inventoryBucketType inventoryBucketTypeName="SALES_ORDER_RESERVE" isDefault="false" sortOrder="40">
+            <inventoryBucketTypeDescription languageIsoName="en" description="Sales Order Reserve" />
+        </inventoryBucketType>
+    </inventoryBucketTypes>
     <inventoryTransactionTypes>
         <inventoryTransactionType inventoryTransactionTypeName="TEST_INVENTORY_TRANSACTION_TYPE" isDefault="true" sortOrder="0">
             <inventoryTransactionTypeDescription languageIsoName="en" description="Test Inventory Transaction Type" />

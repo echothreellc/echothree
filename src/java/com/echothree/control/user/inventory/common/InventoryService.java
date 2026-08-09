@@ -367,4 +367,34 @@ public interface InventoryService
 
     CommandResult<VoidResult> deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form);
 
+    // -------------------------------------------------------------------------
+    //   Inventory Bucket Types
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateInventoryBucketTypeResult> createInventoryBucketType(UserVisitPK userVisitPK, CreateInventoryBucketTypeForm form);
+
+    CommandResult<GetInventoryBucketTypesResult> getInventoryBucketTypes(UserVisitPK userVisitPK, GetInventoryBucketTypesForm form);
+
+    CommandResult<GetInventoryBucketTypeResult> getInventoryBucketType(UserVisitPK userVisitPK, GetInventoryBucketTypeForm form);
+
+    CommandResult<GetInventoryBucketTypeChoicesResult> getInventoryBucketTypeChoices(UserVisitPK userVisitPK, GetInventoryBucketTypeChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultInventoryBucketType(UserVisitPK userVisitPK, SetDefaultInventoryBucketTypeForm form);
+
+    CommandResult<EditInventoryBucketTypeResult> editInventoryBucketType(UserVisitPK userVisitPK, EditInventoryBucketTypeForm form);
+
+    CommandResult<VoidResult> deleteInventoryBucketType(UserVisitPK userVisitPK, DeleteInventoryBucketTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Bucket Type Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryBucketTypeDescription(UserVisitPK userVisitPK, CreateInventoryBucketTypeDescriptionForm form);
+
+    CommandResult<GetInventoryBucketTypeDescriptionsResult> getInventoryBucketTypeDescriptions(UserVisitPK userVisitPK, GetInventoryBucketTypeDescriptionsForm form);
+
+    CommandResult<EditInventoryBucketTypeDescriptionResult> editInventoryBucketTypeDescription(UserVisitPK userVisitPK, EditInventoryBucketTypeDescriptionForm form);
+
+    CommandResult<VoidResult> deleteInventoryBucketTypeDescription(UserVisitPK userVisitPK, DeleteInventoryBucketTypeDescriptionForm form);
+
 }

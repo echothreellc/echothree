@@ -20,6 +20,8 @@ import com.echothree.control.user.inventory.server.command.GetAllocationPrioriti
 import com.echothree.control.user.inventory.server.command.GetAllocationPriorityCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypesCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryBucketTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryBucketTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodCommand;
@@ -79,6 +81,14 @@ public interface InventorySecurityUtils {
 
     static boolean getHasInventoryAdjustmentTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryAdjustmentTypesCommand.class);
+    }
+
+    static boolean getHasInventoryBucketTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryBucketTypeCommand.class);
+    }
+
+    static boolean getHasInventoryBucketTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryBucketTypesCommand.class);
     }
 
 }
