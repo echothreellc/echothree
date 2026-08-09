@@ -213,6 +213,7 @@ import java.io.IOException;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryBucketTypesHandler;
 
 public class InitialDataHandler
         extends BaseHandler {
@@ -440,6 +441,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new InventoryAdjustmentTypesHandler(initialDataParser, this));
         } else if(localName.equals("inventoryCostingMethods")) {
             initialDataParser.pushHandler(new InventoryCostingMethodsHandler(initialDataParser, this));
+        } else if(localName.equals("inventoryBucketTypes")) {
+            initialDataParser.pushHandler(new InventoryBucketTypesHandler(initialDataParser, this));
         } else if(localName.equals("inventoryTransactionTypes")) {
             initialDataParser.pushHandler(new InventoryTransactionTypesHandler(initialDataParser, this));
         } else if(localName.equals("allocationPriorities")) {
@@ -657,5 +660,4 @@ public class InitialDataHandler
             initialDataParser.popHandler();
         }
     }
-    
 }

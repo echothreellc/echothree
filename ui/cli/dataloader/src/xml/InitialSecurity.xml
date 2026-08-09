@@ -1072,6 +1072,30 @@
                 <securityRoleDescription languageIsoName="en" description="Inventory Costing Method Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="InventoryBucketType" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Inventory Bucket Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Bucket Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Bucket Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Bucket Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Bucket Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Bucket Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Bucket Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Bucket Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="InventoryTransactionType" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Inventory Transaction Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8432,6 +8456,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCostingMethod" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCostingMethod" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCostingMethod" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionType" securityRoleName="Delete" />
