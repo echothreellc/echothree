@@ -736,4 +736,67 @@ public class InventoryBean
         return CDI.current().select(DeleteInventoryTransactionTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
 
+    // -------------------------------------------------------------------------
+    //   Inventory Bucket Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateInventoryBucketTypeResult> createInventoryBucketType(UserVisitPK userVisitPK, CreateInventoryBucketTypeForm form) {
+        return CDI.current().select(CreateInventoryBucketTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryBucketTypesResult> getInventoryBucketTypes(UserVisitPK userVisitPK, GetInventoryBucketTypesForm form) {
+        return CDI.current().select(GetInventoryBucketTypesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryBucketTypeResult> getInventoryBucketType(UserVisitPK userVisitPK, GetInventoryBucketTypeForm form) {
+        return CDI.current().select(GetInventoryBucketTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryBucketTypeChoicesResult> getInventoryBucketTypeChoices(UserVisitPK userVisitPK, GetInventoryBucketTypeChoicesForm form) {
+        return CDI.current().select(GetInventoryBucketTypeChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultInventoryBucketType(UserVisitPK userVisitPK, SetDefaultInventoryBucketTypeForm form) {
+        return CDI.current().select(SetDefaultInventoryBucketTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryBucketTypeResult> editInventoryBucketType(UserVisitPK userVisitPK, EditInventoryBucketTypeForm form) {
+        return CDI.current().select(EditInventoryBucketTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryBucketType(UserVisitPK userVisitPK, DeleteInventoryBucketTypeForm form) {
+        return CDI.current().select(DeleteInventoryBucketTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Bucket Type Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createInventoryBucketTypeDescription(UserVisitPK userVisitPK, CreateInventoryBucketTypeDescriptionForm form) {
+        return CDI.current().select(CreateInventoryBucketTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryBucketTypeDescriptionsResult> getInventoryBucketTypeDescriptions(UserVisitPK userVisitPK, GetInventoryBucketTypeDescriptionsForm form) {
+        return CDI.current().select(GetInventoryBucketTypeDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryBucketTypeDescriptionResult> editInventoryBucketTypeDescription(UserVisitPK userVisitPK, EditInventoryBucketTypeDescriptionForm form) {
+        return CDI.current().select(EditInventoryBucketTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryBucketTypeDescription(UserVisitPK userVisitPK, DeleteInventoryBucketTypeDescriptionForm form) {
+        return CDI.current().select(DeleteInventoryBucketTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
 }

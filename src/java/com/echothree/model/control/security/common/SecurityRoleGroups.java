@@ -156,6 +156,7 @@ public enum SecurityRoleGroups {
     IndexField,
     IndexType,
     InventoryAdjustmentType,
+    InventoryBucketType,
     InventoryCondition,
     InventoryCostingMethod,
     InventoryLocationGroup,
@@ -403,5 +404,5 @@ public enum SecurityRoleGroups {
     WorkRequirementType,
     WorkRequirementScope,
     ZipCode,
-    
+
 }

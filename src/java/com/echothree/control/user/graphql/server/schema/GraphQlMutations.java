@@ -84,9 +84,7 @@ import com.echothree.control.user.core.common.result.EditEntityTimeDefaultResult
 import com.echothree.control.user.core.common.result.EditEntityTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.result.CreateCustomerTypeResult;
-import com.echothree.control.user.customer.common.result.EditCustomerTypePaymentMethodResult;
 import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
-import com.echothree.control.user.customer.common.result.EditCustomerTypeShippingMethodResult;
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.result.CreateFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.CreateFilterResult;
@@ -110,12 +108,14 @@ import com.echothree.control.user.geo.common.result.EditGeoCodeTimeZoneResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryAdjustmentTypeResult;
+import com.echothree.control.user.inventory.common.result.CreateInventoryBucketTypeResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryCostingMethodResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryLocationGroupResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionTypeResult;
 import com.echothree.control.user.inventory.common.result.EditAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryAdjustmentTypeResult;
+import com.echothree.control.user.inventory.common.result.EditInventoryBucketTypeResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryCostingMethodResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
@@ -4336,6 +4336,114 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(InventoryUtil.getHome().deleteInventoryCostingMethod(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createInventoryBucketType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryBucketTypeName") @GraphQLNonNull final String inventoryBucketTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getCreateInventoryBucketTypeForm();
+
+            commandForm.setInventoryBucketTypeName(inventoryBucketTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = InventoryUtil.getHome().createInventoryBucketType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateInventoryBucketTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editInventoryBucketType(final DataFetchingEnvironment env,
+            @GraphQLName("originalInventoryBucketTypeName") final String originalInventoryBucketTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("inventoryBucketTypeName") final String inventoryBucketTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = InventoryUtil.getHome().getInventoryBucketTypeUniversalSpec();
+
+            spec.setInventoryBucketTypeName(originalInventoryBucketTypeName);
+            spec.setUuid(id);
+
+            var commandForm = InventoryUtil.getHome().getEditInventoryBucketTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = InventoryUtil.getHome().editInventoryBucketType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditInventoryBucketTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getInventoryBucketType().getEntityInstance());
+
+                if(arguments.containsKey("inventoryBucketTypeName"))
+                    edit.setInventoryBucketTypeName(inventoryBucketTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = InventoryUtil.getHome().editInventoryBucketType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteInventoryBucketType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryBucketTypeName") final String inventoryBucketTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getDeleteInventoryBucketTypeForm();
+
+            commandForm.setInventoryBucketTypeName(inventoryBucketTypeName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(InventoryUtil.getHome().deleteInventoryBucketType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
