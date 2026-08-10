@@ -22,20 +22,22 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
+import com.echothree.model.data.document.server.factory.DocumentTypeUsageTypeFactory;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetDocumentTypeUsageTypesCommand
-        extends BaseSimpleCommand<GetDocumentTypeUsageTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<DocumentTypeUsageType, GetDocumentTypeUsageTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -54,18 +56,38 @@ public class GetDocumentTypeUsageTypesCommand
     @Inject
     DocumentControl documentControl;
 
-    
     /** Creates a new instance of GetDocumentTypeUsageTypesCommand */
     public GetDocumentTypeUsageTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return documentControl.countDocumentTypeUsageTypes();
+    }
+
+    @Override
+    protected Collection<DocumentTypeUsageType> getEntities() {
+        return documentControl.getDocumentTypeUsageTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<DocumentTypeUsageType> entities) {
         var result = DocumentResultFactory.getGetDocumentTypeUsageTypesResult();
-        
-        result.setDocumentTypeUsageTypes(documentControl.getDocumentTypeUsageTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(DocumentTypeUsageTypeFactory.class)) {
+                result.setDocumentTypeUsageTypeCount(getTotalEntities());
+            }
+
+            result.setDocumentTypeUsageTypes(documentControl.getDocumentTypeUsageTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
