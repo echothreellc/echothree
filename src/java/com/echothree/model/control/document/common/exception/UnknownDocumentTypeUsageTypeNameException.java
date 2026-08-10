@@ -14,23 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.document.common.result;
+package com.echothree.model.control.document.common.exception;
 
-import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.util.common.message.Message;
 
-public interface GetPartyDocumentsResult
-        extends BaseResult {
+public class UnknownDocumentTypeUsageTypeNameException
+        extends BaseDocumentException {
 
-    PartyTransfer getParty();
-    void setParty(PartyTransfer party);
+    public UnknownDocumentTypeUsageTypeNameException() { super(); }
+    public UnknownDocumentTypeUsageTypeNameException(String message) { super(message); }
+    public UnknownDocumentTypeUsageTypeNameException(Throwable cause) { super(cause); }
+    public UnknownDocumentTypeUsageTypeNameException(Message message) { super(message); }
 
-    Long getPartyDocumentCount();
-    void setPartyDocumentCount(Long partyDocumentCount);
-
-    List<PartyDocumentTransfer> getPartyDocuments();
-    void setPartyDocuments(List<PartyDocumentTransfer> partyDocuments);
-    
 }

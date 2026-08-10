@@ -21,24 +21,27 @@ import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.document.server.entity.PartyDocument;
+import com.echothree.model.data.document.server.factory.PartyDocumentFactory;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetPartyDocumentsCommand
-        extends BaseSimpleCommand<GetPartyDocumentsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyDocument, GetPartyDocumentsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,27 +65,47 @@ public class GetPartyDocumentsCommand
     @Inject
     PartyControl partyControl;
 
-    
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of GetPartyDocumentsCommand */
     public GetPartyDocumentsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Override
-    protected BaseResult execute() {
-        var result = DocumentResultFactory.getGetPartyDocumentsResult();
-        var partyName = form.getPartyName();
-        var party = partyControl.getPartyByName(partyName);
+    private Party party;
 
-        if(party != null) {
+    @Override
+    protected void handleForm() {
+        party = partyLogic.getPartyByName(this, form.getPartyName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : documentControl.countPartyDocumentsByParty(party);
+    }
+
+    @Override
+    protected Collection<PartyDocument> getEntities() {
+        return hasExecutionErrors() ? null : documentControl.getPartyDocumentsByParty(party);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PartyDocument> entities) {
+        var result = DocumentResultFactory.getGetPartyDocumentsResult();
+
+        if(entities != null) {
             var userVisit = getUserVisit();
 
             result.setParty(partyControl.getPartyTransfer(userVisit, party));
-            result.setPartyDocuments(documentControl.getPartyDocumentTransfersByParty(userVisit, party));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
+
+            if(session.hasLimit(PartyDocumentFactory.class)) {
+                result.setPartyDocumentCount(getTotalEntities());
+            }
+
+            result.setPartyDocuments(documentControl.getPartyDocumentTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
     
