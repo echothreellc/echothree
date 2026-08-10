@@ -31,6 +31,9 @@ public interface GetDocumentTypeUsagesResult
     DocumentTypeTransfer getDocumentType();
     void setDocumentType(DocumentTypeTransfer documentType);
 
+    Long getDocumentTypeUsageCount();
+    void setDocumentTypeUsageCount(Long documentTypeUsageCount);
+
     List<DocumentTypeUsageTransfer> getDocumentTypeUsages();
     void setDocumentTypeUsages(List<DocumentTypeUsageTransfer> documentTypeUsages);
     
