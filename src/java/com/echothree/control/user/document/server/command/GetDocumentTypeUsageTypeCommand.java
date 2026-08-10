@@ -20,15 +20,15 @@ import com.echothree.control.user.document.common.form.GetDocumentTypeUsageTypeF
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.server.control.DocumentControl;
+import com.echothree.model.control.document.server.logic.DocumentTypeUsageTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetDocumentTypeUsageTypeCommand
-        extends BaseSimpleCommand<GetDocumentTypeUsageTypeForm> {
+        extends BaseSingleEntityCommand<DocumentTypeUsageType, GetDocumentTypeUsageTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -52,33 +52,44 @@ public class GetDocumentTypeUsageTypeCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
 
     @Inject
     DocumentControl documentControl;
 
-    
+    @Inject
+    DocumentTypeUsageTypeLogic documentTypeUsageTypeLogic;
+
     /** Creates a new instance of GetDocumentTypeUsageTypeCommand */
     public GetDocumentTypeUsageTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = DocumentResultFactory.getGetDocumentTypeUsageTypeResult();
-        var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
-        
+    protected DocumentTypeUsageType getEntity() {
+        var documentTypeUsageType = documentTypeUsageTypeLogic.getDocumentTypeUsageTypeByUniversalSpec(this, form,
+                true);
+
         if(documentTypeUsageType != null) {
-            result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(getUserVisit(), documentTypeUsageType));
-            
             sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownDocumentTypeUsageTypeName.name(), documentTypeUsageTypeName);
         }
-        
+
+        return documentTypeUsageType;
+    }
+
+    @Override
+    protected BaseResult getResult(DocumentTypeUsageType documentTypeUsageType) {
+        var result = DocumentResultFactory.getGetDocumentTypeUsageTypeResult();
+
+        if(documentTypeUsageType != null) {
+            result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(getUserVisit(),
+                    documentTypeUsageType));
+        }
+
         return result;
     }
     
