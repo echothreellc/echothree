@@ -17,97 +17,31 @@
 package com.echothree.model.control.filter.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.common.choice.FilterAdjustmentChoicesBean;
-import com.echothree.model.control.filter.common.choice.FilterAdjustmentSourceChoicesBean;
-import com.echothree.model.control.filter.common.choice.FilterAdjustmentTypeChoicesBean;
-import com.echothree.model.control.filter.common.choice.FilterChoicesBean;
-import com.echothree.model.control.filter.common.choice.FilterKindChoicesBean;
 import com.echothree.model.control.filter.common.choice.FilterStepChoicesBean;
-import com.echothree.model.control.filter.common.choice.FilterTypeChoicesBean;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentAmountTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentDescriptionTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentFixedAmountTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentPercentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentSourceTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTypeTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterDescriptionTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterEntranceStepTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindDescriptionTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterStepDescriptionTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterStepDestinationTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterStepElementDescriptionTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterStepElementTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterStepTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterTypeDescriptionTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
-import com.echothree.model.control.filter.server.transfer.FilterAdjustmentAmountTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterAdjustmentDescriptionTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterAdjustmentFixedAmountTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterAdjustmentPercentTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterAdjustmentSourceTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterAdjustmentTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterAdjustmentTypeTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterDescriptionTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterEntranceStepTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterKindDescriptionTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterKindTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterStepDescriptionTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterStepDestinationTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterStepElementDescriptionTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterStepElementTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterStepTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterTypeDescriptionTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterTypeTransferCache;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.filter.common.pk.FilterAdjustmentPK;
-import com.echothree.model.data.filter.common.pk.FilterKindPK;
-import com.echothree.model.data.filter.common.pk.FilterPK;
 import com.echothree.model.data.filter.common.pk.FilterStepElementPK;
 import com.echothree.model.data.filter.common.pk.FilterStepPK;
-import com.echothree.model.data.filter.common.pk.FilterTypePK;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentDescription;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentSourceDescription;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentTypeDescription;
-import com.echothree.model.data.filter.server.entity.FilterDescription;
 import com.echothree.model.data.filter.server.entity.FilterEntranceStep;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterKindDescription;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterStepDescription;
 import com.echothree.model.data.filter.server.entity.FilterStepDestination;
 import com.echothree.model.data.filter.server.entity.FilterStepElement;
 import com.echothree.model.data.filter.server.entity.FilterStepElementDescription;
-import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.filter.server.entity.FilterTypeDescription;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentAmountFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentDescriptionFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentDetailFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentFixedAmountFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentPercentFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentSourceDescriptionFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentSourceFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentTypeDescriptionFactory;
-import com.echothree.model.data.filter.server.factory.FilterAdjustmentTypeFactory;
-import com.echothree.model.data.filter.server.factory.FilterDescriptionFactory;
-import com.echothree.model.data.filter.server.factory.FilterDetailFactory;
 import com.echothree.model.data.filter.server.factory.FilterEntranceStepFactory;
-import com.echothree.model.data.filter.server.factory.FilterFactory;
-import com.echothree.model.data.filter.server.factory.FilterKindDescriptionFactory;
-import com.echothree.model.data.filter.server.factory.FilterKindDetailFactory;
-import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.filter.server.factory.FilterStepDescriptionFactory;
 import com.echothree.model.data.filter.server.factory.FilterStepDestinationFactory;
 import com.echothree.model.data.filter.server.factory.FilterStepDetailFactory;
@@ -115,27 +49,12 @@ import com.echothree.model.data.filter.server.factory.FilterStepElementDescripti
 import com.echothree.model.data.filter.server.factory.FilterStepElementDetailFactory;
 import com.echothree.model.data.filter.server.factory.FilterStepElementFactory;
 import com.echothree.model.data.filter.server.factory.FilterStepFactory;
-import com.echothree.model.data.filter.server.factory.FilterTypeDescriptionFactory;
-import com.echothree.model.data.filter.server.factory.FilterTypeDetailFactory;
-import com.echothree.model.data.filter.server.factory.FilterTypeFactory;
-import com.echothree.model.data.filter.server.value.FilterAdjustmentAmountValue;
-import com.echothree.model.data.filter.server.value.FilterAdjustmentDescriptionValue;
-import com.echothree.model.data.filter.server.value.FilterAdjustmentDetailValue;
-import com.echothree.model.data.filter.server.value.FilterAdjustmentFixedAmountValue;
-import com.echothree.model.data.filter.server.value.FilterAdjustmentPercentValue;
-import com.echothree.model.data.filter.server.value.FilterDescriptionValue;
-import com.echothree.model.data.filter.server.value.FilterDetailValue;
-import com.echothree.model.data.filter.server.value.FilterKindDescriptionValue;
-import com.echothree.model.data.filter.server.value.FilterKindDetailValue;
 import com.echothree.model.data.filter.server.value.FilterStepDescriptionValue;
 import com.echothree.model.data.filter.server.value.FilterStepDetailValue;
 import com.echothree.model.data.filter.server.value.FilterStepElementDescriptionValue;
 import com.echothree.model.data.filter.server.value.FilterStepElementDetailValue;
-import com.echothree.model.data.filter.server.value.FilterTypeDescriptionValue;
-import com.echothree.model.data.filter.server.value.FilterTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -150,7 +69,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
@@ -1061,9 +979,6 @@ public class FilterStepControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected FilterFactory filterFactory;
-
-    @Inject
     protected FilterStepElementDetailFactory filterStepElementDetailFactory;
 
     @Inject
@@ -1257,16 +1172,16 @@ public class FilterStepControl
         getFilterStepElementsByFilterAdjustmentQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private List<Filter> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment, EntityPermission entityPermission) {
-        return filterFactory.getEntitiesFromQuery(entityPermission, getFilterStepElementsByFilterAdjustmentQueries,
+    private List<FilterStepElement> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment, EntityPermission entityPermission) {
+        return filterStepElementFactory.getEntitiesFromQuery(entityPermission, getFilterStepElementsByFilterAdjustmentQueries,
                 filterAdjustment);
     }
 
-    public List<Filter> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+    public List<FilterStepElement> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
         return getFilterStepElementsByFilterAdjustment(filterAdjustment, EntityPermission.READ_ONLY);
     }
 
-    public List<Filter> getFilterStepElementsByFilterAdjustmentForUpdate(FilterAdjustment filterAdjustment) {
+    public List<FilterStepElement> getFilterStepElementsByFilterAdjustmentForUpdate(FilterAdjustment filterAdjustment) {
         return getFilterStepElementsByFilterAdjustment(filterAdjustment, EntityPermission.READ_WRITE);
     }
 
