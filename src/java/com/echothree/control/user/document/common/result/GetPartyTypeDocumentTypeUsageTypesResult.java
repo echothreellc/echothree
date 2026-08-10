@@ -31,6 +31,9 @@ public interface GetPartyTypeDocumentTypeUsageTypesResult
     DocumentTypeUsageTypeTransfer getDocumentTypeUsageType();
     void setDocumentTypeUsageType(DocumentTypeUsageTypeTransfer documentTypeUsageType);
 
+    Long getPartyTypeDocumentTypeUsageTypeCount();
+    void setPartyTypeDocumentTypeUsageTypeCount(Long partyTypeDocumentTypeUsageTypeCount);
+
     List<PartyTypeDocumentTypeUsageTypeTransfer> getPartyTypeDocumentTypeUsageTypes();
     void setPartyTypeDocumentTypeUsageTypes(List<PartyTypeDocumentTypeUsageTypeTransfer> partyTypeDocumentTypeUsageTypes);
     
