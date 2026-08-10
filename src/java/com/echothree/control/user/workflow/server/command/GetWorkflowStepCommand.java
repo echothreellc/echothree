@@ -26,9 +26,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowStepCommand
@@ -45,6 +45,13 @@ public class GetWorkflowStepCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
+
     
     /** Creates a new instance of GetWorkflowStepCommand */
     public GetWorkflowStepCommand() {
@@ -53,7 +60,7 @@ public class GetWorkflowStepCommand
     
     @Override
     protected WorkflowStep getEntity() {
-        return WorkflowStepLogic.getInstance().getWorkflowStepByUniversalSpec(this, form, true);
+        return workflowStepLogic.getWorkflowStepByUniversalSpec(this, form, true);
     }
 
     @Override
@@ -61,8 +68,6 @@ public class GetWorkflowStepCommand
         var result = WorkflowResultFactory.getGetWorkflowStepResult();
 
         if(workflowStep != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowStep(workflowControl.getWorkflowStepTransfer(getUserVisit(), workflowStep));
         }
 

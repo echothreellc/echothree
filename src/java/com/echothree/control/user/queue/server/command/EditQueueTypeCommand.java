@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditQueueTypeCommand
@@ -53,20 +53,24 @@ public class EditQueueTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.QueueType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("QueueTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("QueueTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    QueueControl queueControl;
+
     
     /** Creates a new instance of EditQueueTypeCommand */
     public EditQueueTypeCommand() {
@@ -85,7 +89,6 @@ public class EditQueueTypeCommand
 
     @Override
     public QueueType getEntity(EditQueueTypeResult result) {
-        var queueControl = Session.getModelController(QueueControl.class);
         QueueType queueType;
         var queueTypeName = spec.getQueueTypeName();
 
@@ -109,14 +112,11 @@ public class EditQueueTypeCommand
 
     @Override
     public void fillInResult(EditQueueTypeResult result, QueueType queueType) {
-        var queueControl = Session.getModelController(QueueControl.class);
-
         result.setQueueType(queueControl.getQueueTypeTransfer(getUserVisit(), queueType));
     }
 
     @Override
     public void doLock(QueueTypeEdit edit, QueueType queueType) {
-        var queueControl = Session.getModelController(QueueControl.class);
         var queueTypeDescription = queueControl.getQueueTypeDescription(queueType, getPreferredLanguage());
         var queueTypeDetail = queueType.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditQueueTypeCommand
 
     @Override
     public void canUpdate(QueueType queueType) {
-        var queueControl = Session.getModelController(QueueControl.class);
         var queueTypeName = edit.getQueueTypeName();
         var duplicateQueueType = queueControl.getQueueTypeByName(queueTypeName);
 
@@ -142,7 +141,6 @@ public class EditQueueTypeCommand
 
     @Override
     public void doUpdate(QueueType queueType) {
-        var queueControl = Session.getModelController(QueueControl.class);
         var partyPK = getPartyPK();
         var queueTypeDetailValue = queueControl.getQueueTypeDetailValueForUpdate(queueType);
         var queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, getPreferredLanguage());

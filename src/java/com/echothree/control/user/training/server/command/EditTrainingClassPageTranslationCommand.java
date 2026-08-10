@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassPageTranslationCommand
@@ -59,22 +59,31 @@ public class EditTrainingClassPageTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassPage.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassPageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("PageMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Page", FieldType.STRING, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
 
     /** Creates a new instance of EditTrainingClassPageTranslationCommand */
     public EditTrainingClassPageTranslationCommand() {
@@ -95,7 +104,6 @@ public class EditTrainingClassPageTranslationCommand
     
     @Override
     public TrainingClassPageTranslation getEntity(EditTrainingClassPageTranslationResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassPageTranslation trainingClassPageTranslation = null;
         var trainingClassName = spec.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -110,7 +118,6 @@ public class EditTrainingClassPageTranslationCommand
                 var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
                 if(trainingClassPage != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = spec.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -148,8 +155,6 @@ public class EditTrainingClassPageTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassPageTranslationResult result, TrainingClassPageTranslation trainingClassPageTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClassPageTranslation(trainingControl.getTrainingClassPageTranslationTransfer(getUserVisit(), trainingClassPageTranslation));
     }
 
@@ -167,7 +172,6 @@ public class EditTrainingClassPageTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassPageTranslation trainingClassPageTranslation) {
-        var mimeTypeLogic = MimeTypeLogic.getInstance();
         var pageMimeTypeName = edit.getPageMimeTypeName();
         var page = edit.getPage();
         
@@ -178,7 +182,6 @@ public class EditTrainingClassPageTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassPageTranslation trainingClassPageTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassPageTranslationValue = trainingControl.getTrainingClassPageTranslationValue(trainingClassPageTranslation);
         
         trainingClassPageTranslationValue.setDescription(edit.getDescription());

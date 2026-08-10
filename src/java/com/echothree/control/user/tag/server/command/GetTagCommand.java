@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTagCommand
@@ -49,16 +49,23 @@ public class GetTagCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Tag.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TagName", FieldType.TAG, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    TagLogic tagLogic;
+
     
     /** Creates a new instance of GetTagCommand */
     public GetTagCommand() {
@@ -67,7 +74,7 @@ public class GetTagCommand
 
     @Override
     protected Tag getEntity() {
-        var tag = TagLogic.getInstance().getTagByUniversalSpec(this, form);
+        var tag = tagLogic.getTagByUniversalSpec(this, form);
 
         if(tag != null) {
             sendEvent(tag.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +85,6 @@ public class GetTagCommand
 
     @Override
     protected BaseResult getResult(Tag tag) {
-        var tagControl = Session.getModelController(TagControl.class);
         var result = TagResultFactory.getGetTagResult();
 
         if(tag != null) {

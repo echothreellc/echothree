@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteVendorItemCostCommand
@@ -48,16 +48,26 @@ public class DeleteVendorItemCostCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.VendorItemCost.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of DeleteVendorItemCostCommand */
     public DeleteVendorItemCostCommand() {
@@ -66,7 +76,6 @@ public class DeleteVendorItemCostCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorName = form.getVendorName();
         var vendor = vendorControl.getVendorByName(vendorName);
         
@@ -76,7 +85,6 @@ public class DeleteVendorItemCostCommand
             var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
             
             if(vendorItem != null) {
-                var inventoryControl = Session.getModelController(InventoryControl.class);
                 var inventoryConditionName = form.getInventoryConditionName();
                 var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
@@ -86,7 +94,6 @@ public class DeleteVendorItemCostCommand
                             inventoryCondition);
                     
                     if(inventoryConditionUse != null) {
-                        var uomControl = Session.getModelController(UomControl.class);
                         var unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
                         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);

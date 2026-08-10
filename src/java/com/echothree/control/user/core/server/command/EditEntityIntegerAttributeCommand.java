@@ -37,6 +37,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityIntegerAttributeCommand
@@ -57,12 +58,19 @@ public class EditEntityIntegerAttributeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IntegerAttribute", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of EditEntityIntegerAttributeCommand */
     public EditEntityIntegerAttributeCommand() {
@@ -72,10 +80,10 @@ public class EditEntityIntegerAttributeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityIntegerAttributeResult();
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -85,8 +93,8 @@ public class EditEntityIntegerAttributeCommand
                 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
+                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
@@ -114,7 +122,7 @@ public class EditEntityIntegerAttributeCommand
                                     }
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownEntityIntegerAttribute.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
                                 var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
@@ -155,7 +163,7 @@ public class EditEntityIntegerAttributeCommand
                                         }
                                     } else {
                                         addExecutionError(ExecutionErrors.UnknownEntityIntegerAttribute.name(),
-                                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                                 entityAttribute.getLastDetail().getEntityAttributeName());
                                     }
                                 }

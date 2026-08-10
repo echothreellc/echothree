@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterKindDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterKindDescriptionCommand
@@ -47,15 +47,22 @@ public class CreateFilterKindDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateFilterKindDescriptionCommand */
     public CreateFilterKindDescriptionCommand() {
@@ -64,22 +71,20 @@ public class CreateFilterKindDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var filterKindDescription = filterControl.getFilterKindDescription(filterKind, language);
+                var filterKindDescription = filterKindControl.getFilterKindDescription(filterKind, language);
                 
                 if(filterKindDescription == null) {
                     var description = form.getDescription();
                     
-                    filterControl.createFilterKindDescription(filterKind, language, description, getPartyPK());
+                    filterKindControl.createFilterKindDescription(filterKind, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateFilterKindDescription.name());
                 }

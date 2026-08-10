@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateDocumentTypeUsageCommand
@@ -46,8 +46,8 @@ public class CreateDocumentTypeUsageCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.DocumentTypeUsage.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -55,8 +55,12 @@ public class CreateDocumentTypeUsageCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("MaximumInstances", FieldType.SIGNED_INTEGER, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of CreateDocumentTypeUsageCommand */
     public CreateDocumentTypeUsageCommand() {
@@ -65,7 +69,6 @@ public class CreateDocumentTypeUsageCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
         

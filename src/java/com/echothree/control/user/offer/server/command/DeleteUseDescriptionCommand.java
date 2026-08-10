@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteUseDescriptionCommand
@@ -47,14 +47,21 @@ public class DeleteUseDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Use.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of DeleteUseDescriptionCommand */
     public DeleteUseDescriptionCommand() {
@@ -63,12 +70,10 @@ public class DeleteUseDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var useControl = Session.getModelController(UseControl.class);
         var useName = form.getUseName();
         var use = useControl.getUseByName(useName);
         
         if(use != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

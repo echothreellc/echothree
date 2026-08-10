@@ -29,7 +29,7 @@ public interface TrainingService
     //   Training Classes
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form);
+    CommandResult<CreateTrainingClassResult> createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form);
     
     CommandResult<GetTrainingClassesResult> getTrainingClasses(UserVisitPK userVisitPK, GetTrainingClassesForm form);
     

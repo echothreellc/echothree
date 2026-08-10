@@ -49,7 +49,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,10 +56,29 @@ import java.util.Map;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkflowDestinationLogic
         extends BaseLogic {
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    SecurityRoleLogic securityRoleLogic;
+
+    @Inject
+    SelectorLogic selectorLogic;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
 
     protected WorkflowDestinationLogic() {
         super();
@@ -72,7 +90,6 @@ public class WorkflowDestinationLogic
     
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep,
             final String workflowDestinationName, final EntityPermission entityPermission) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName,
                 entityPermission);
 
@@ -98,7 +115,7 @@ public class WorkflowDestinationLogic
 
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName,
             final String workflowDestinationName) {
-        var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflow, workflowStepName);
+        var workflowStep = workflowStepLogic.getWorkflowStepByName(eea, workflow, workflowStepName);
         WorkflowDestination workflowDestination = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -110,7 +127,7 @@ public class WorkflowDestinationLogic
 
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName,
             final String workflowDestinationName) {
-        var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflowName, workflowStepName);
+        var workflowStep = workflowStepLogic.getWorkflowStepByName(eea, workflowName, workflowStepName);
         WorkflowDestination workflowDestination = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -122,19 +139,18 @@ public class WorkflowDestinationLogic
 
     public WorkflowDestination getWorkflowDestinationByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowDestinationUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = universalSpec.getWorkflowName();
         var workflowStepName = universalSpec.getWorkflowStepName();
         var workflowDestinationName = universalSpec.getWorkflowDestinationName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(workflowName, workflowStepName, workflowDestinationName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         WorkflowDestination workflowDestination = null;
 
         if(nameParameterCount < 4 && possibleEntitySpecs == 0) {
             WorkflowStep workflowStep = null;
 
             if(workflowName != null && workflowStepName != null) {
-                workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflowName, workflowStepName);
+                workflowStep = workflowStepLogic.getWorkflowStepByName(eea, workflowName, workflowStepName);
             } else {
                 if(workflowName != null) {
                     handleExecutionError(MissingRequiredWorkflowNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowName.name());
@@ -145,7 +161,7 @@ public class WorkflowDestinationLogic
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(workflowDestinationName == null) {
                     if(allowDefault) {
                         workflowDestination = workflowControl.getDefaultWorkflowDestination(workflowStep, entityPermission);
@@ -161,10 +177,10 @@ public class WorkflowDestinationLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowDestination.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 workflowDestination = workflowControl.getWorkflowDestinationByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -185,7 +201,6 @@ public class WorkflowDestinationLogic
     }
 
     public Set<WorkflowStep> getWorkflowDestinationStepsAsSet(final WorkflowDestination workflowDestination) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Set<WorkflowStep> workflowSteps = new HashSet<>(workflowDestinationSteps.size());
         
@@ -197,7 +212,6 @@ public class WorkflowDestinationLogic
     }
     
     public Map<String, Set<String>> getWorkflowDestinationsAsMap(final WorkflowDestination workflowDestination) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Map<String, Set<String>> map = new HashMap<>();
         
@@ -239,8 +253,6 @@ public class WorkflowDestinationLogic
         WorkflowDestinationPartyType workflowDestinationPartyType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType, entityPermission);
 
             if(workflowDestinationPartyType == null) {
@@ -269,7 +281,7 @@ public class WorkflowDestinationLogic
     public WorkflowDestinationPartyType getWorkflowDestinationPartyTypeByName(final ExecutionErrorAccumulator eea, final String workflowName,
             final String workflowStepName, final String workflowDestinationName, final String partyTypeName, final EntityPermission entityPermission) {
         var workflowDestination = getWorkflowDestinationByName(eea, workflowName, workflowStepName, workflowDestinationName);
-        var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+        var partyType = partyLogic.getPartyTypeByName(eea, partyTypeName);
 
         return getWorkflowDestinationPartyType(eea, workflowDestination, partyType, entityPermission);
     }
@@ -291,21 +303,19 @@ public class WorkflowDestinationLogic
             final String workflowStepName, final String workflowDestinationName, final String partyTypeName, final String securityRoleName,
             final EntityPermission entityPermission) {
         var workflowDestination = getWorkflowDestinationByName(eea, workflowName, workflowStepName, workflowDestinationName);
-        var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+        var partyType = partyLogic.getPartyTypeByName(eea, partyTypeName);
         WorkflowDestinationSecurityRole workflowDestinationSecurityRole = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var securityRoleGroup = workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflow().getLastDetail().getSecurityRoleGroup();
 
             if(securityRoleGroup != null) {
-                var securityRole = SecurityRoleLogic.getInstance().getSecurityRoleByName(eea, securityRoleGroup, securityRoleName);
+                var securityRole = securityRoleLogic.getSecurityRoleByName(eea, securityRoleGroup, securityRoleName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
                     var workflowDestinationPartyType = getWorkflowDestinationPartyType(eea, workflowDestination, partyType);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
-
                         workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRole(workflowDestinationPartyType,
                                 securityRole, entityPermission);
 
@@ -355,11 +365,9 @@ public class WorkflowDestinationLogic
             var selectorType = workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflow().getLastDetail().getSelectorType();
 
             if(selectorType != null) {
-                var selector = SelectorLogic.getInstance().getSelectorByName(eea, selectorType, selectorName);
+                var selector = selectorLogic.getSelectorByName(eea, selectorType, selectorName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    var workflowControl = Session.getModelController(WorkflowControl.class);
-
                     workflowDestinationSelector = workflowControl.getWorkflowDestinationSelector(workflowDestination,
                             selector, entityPermission);
 
@@ -400,7 +408,7 @@ public class WorkflowDestinationLogic
 
     public WorkflowStep getDestinationWorkflowStep(final ExecutionErrorAccumulator eea, final String destinationWorkflowName,
             final String destinationWorkflowStepName) {
-        return WorkflowStepLogic.getInstance().getWorkflowStepByName(
+        return workflowStepLogic.getWorkflowStepByName(
                 UnknownDestinationWorkflowNameException.class, ExecutionErrors.UnknownDestinationWorkflowName,
                 UnknownDestinationWorkflowStepNameException.class, ExecutionErrors.UnknownDestinationWorkflowStepName,
                 eea, destinationWorkflowName, destinationWorkflowStepName);
@@ -408,7 +416,6 @@ public class WorkflowDestinationLogic
 
     public WorkflowDestinationStep getWorkflowDestinationStep(final ExecutionErrorAccumulator eea,
             WorkflowDestination workflowDestination, WorkflowStep destinationWorkflowStep) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowDestinationStep = workflowControl.getWorkflowDestinationStep(workflowDestination, destinationWorkflowStep);
 
         if(workflowDestinationStep == null) {

@@ -37,7 +37,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.cdi.CommandScopeExtension;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.EmptyStackException;
@@ -47,10 +46,17 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SequenceGeneratorLogic
         extends BaseLogic {
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
 
     protected SequenceGeneratorLogic() {
         super();
@@ -93,31 +99,22 @@ public class SequenceGeneratorLogic
     private String encode(SequenceTypeDetail sequenceTypeDetail, String value) {
         var sequenceEncoderTypeName = sequenceTypeDetail.getSequenceEncoderType().getSequenceEncoderTypeName();
         var sequenceEncoderType = SequenceEncoderTypes.valueOf(sequenceEncoderTypeName);
-        String encodedValue;
 
-        switch(sequenceEncoderType) {
-            case NONE -> encodedValue = NoneSequenceEncoder.getInstance().encode(value);
-            case REVERSE -> encodedValue = ReverseSequenceEncoder.getInstance().encode(value);
-            case REVERSE_SWAP -> encodedValue = ReverseSwapSequenceEncoder.getInstance().encode(value);
+        return switch(sequenceEncoderType) {
+            case NONE -> NoneSequenceEncoder.getInstance().encode(value);
+            case REVERSE -> ReverseSequenceEncoder.getInstance().encode(value);
+            case REVERSE_SWAP -> ReverseSwapSequenceEncoder.getInstance().encode(value);
             default -> throw new UnimplementedSequenceEncoderTypeException();
-        }
-
-        return encodedValue;
+        };
     }
 
     private SequenceChecksum getSequenceChecksum(SequenceChecksumTypes sequenceChecksumType) {
-        switch(sequenceChecksumType) {
-            case NONE -> {
-                return NoneSequenceChecksum.getInstance();
-            }
-            case MOD_10 -> {
-                return Mod10SequenceChecksum.getInstance();
-            }
-            case MOD_36 -> {
-                return Mod36SequenceChecksum.getInstance();
-            }
+        return switch(sequenceChecksumType) {
+            case NONE -> NoneSequenceChecksum.getInstance();
+            case MOD_10 -> Mod10SequenceChecksum.getInstance();
+            case MOD_36 -> Mod36SequenceChecksum.getInstance();
             default -> throw new UnimplementedSequenceChecksumTypeException();
-        }
+        };
     }
 
     private SequenceChecksum getSequenceChecksum(SequenceTypeDetail sequenceTypeDetail) {
@@ -164,7 +161,6 @@ public class SequenceGeneratorLogic
                 result = sequenceDeque.removeFirst();
             } catch (NoSuchElementException nsee1) {
                 try(var ignored = CommandScopeExtension.getCommandScopeContext().push()) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     var sequenceValue = sequenceControl.getSequenceValueForUpdate(sequence);
 
                     if(sequenceValue != null) {
@@ -297,7 +293,6 @@ public class SequenceGeneratorLogic
     }
 
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceType);
 
         if(sequence == null) {
@@ -308,7 +303,7 @@ public class SequenceGeneratorLogic
     }
 
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final String sequenceTypeName) {
-        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+        var sequenceType = sequenceTypeLogic.getSequenceTypeByName(eea, sequenceTypeName);
         Sequence sequence = null;
 
         if(!hasExecutionErrors(eea)) {
@@ -362,7 +357,6 @@ public class SequenceGeneratorLogic
     }
 
     public SequenceType identifySequenceType(final String value) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypes = sequenceControl.getSequenceTypes();
         SequenceType result = null;
 

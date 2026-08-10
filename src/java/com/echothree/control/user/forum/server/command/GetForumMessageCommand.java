@@ -24,7 +24,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.util.common.command.BaseResult;
@@ -54,7 +54,10 @@ public class GetForumMessageCommand
     ForumControl forumControl;
 
     @Inject
-    ForumLogic forumLogic;
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ForumRoleTypeLogic forumLogic;
 
     /** Creates a new instance of GetForumMessageCommand */
     public GetForumMessageCommand() {
@@ -65,13 +68,13 @@ public class GetForumMessageCommand
     protected BaseResult execute() {
         var result = ForumResultFactory.getGetForumMessageResult();
         var forumMessageName = form.getForumMessageName();
-        var parameterCount = (forumMessageName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (forumMessageName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             ForumMessage forumMessage = null;
 
             if(forumMessageName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ForumMessage.name());
                 
                 if(!hasExecutionErrors()) {

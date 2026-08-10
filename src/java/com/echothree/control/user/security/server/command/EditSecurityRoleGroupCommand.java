@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSecurityRoleGroupCommand
@@ -53,12 +53,12 @@ public class EditSecurityRoleGroupCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SecurityRoleGroup.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SecurityRoleGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SecurityRoleGroupName", FieldType.ENTITY_NAME, true, null, null),
@@ -66,8 +66,12 @@ public class EditSecurityRoleGroupCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    SecurityControl securityControl;
+
     
     /** Creates a new instance of EditSecurityRoleGroupCommand */
     public EditSecurityRoleGroupCommand() {
@@ -86,7 +90,6 @@ public class EditSecurityRoleGroupCommand
     
     @Override
     public SecurityRoleGroup getEntity(EditSecurityRoleGroupResult result) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRoleGroup securityRoleGroup;
         var securityRoleGroupName = spec.getSecurityRoleGroupName();
 
@@ -112,8 +115,6 @@ public class EditSecurityRoleGroupCommand
     
     @Override
     public void fillInResult(EditSecurityRoleGroupResult result, SecurityRoleGroup securityRoleGroup) {
-        var securityControl = Session.getModelController(SecurityControl.class);
-        
         result.setSecurityRoleGroup(securityControl.getSecurityRoleGroupTransfer(getUserVisit(), securityRoleGroup));
     }
     
@@ -121,7 +122,6 @@ public class EditSecurityRoleGroupCommand
     
     @Override
     public void doLock(SecurityRoleGroupEdit edit, SecurityRoleGroup securityRoleGroup) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescription(securityRoleGroup, getPreferredLanguage());
         var securityRoleGroupDetail = securityRoleGroup.getLastDetail();
         
@@ -142,7 +142,6 @@ public class EditSecurityRoleGroupCommand
         
     @Override
     public void canUpdate(SecurityRoleGroup securityRoleGroup) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroupName = edit.getSecurityRoleGroupName();
         var duplicateSecurityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
@@ -165,7 +164,6 @@ public class EditSecurityRoleGroupCommand
     
     @Override
     public void doUpdate(SecurityRoleGroup securityRoleGroup) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var partyPK = getPartyPK();
         var securityRoleGroupDetailValue = securityControl.getSecurityRoleGroupDetailValueForUpdate(securityRoleGroup);
         var securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescriptionForUpdate(securityRoleGroup, getPreferredLanguage());

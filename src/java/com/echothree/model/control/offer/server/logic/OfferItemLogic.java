@@ -61,15 +61,45 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class OfferItemLogic
         extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ContentLogic contentLogic;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    OfferLogic offerLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
     protected OfferItemLogic() {
         super();
@@ -85,8 +115,6 @@ public class OfferItemLogic
 
     // This one is intended to be used internally to ensure any dependent actions occur.
     public OfferItem createOfferItem(final Offer offer, final Item item, final BasePK createdBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
-
         return offerItemControl.createOfferItem(offer, item, createdBy);
     }
 
@@ -98,14 +126,11 @@ public class OfferItemLogic
         final var offerDetail = offer.getLastDetail();
 
         if(offerDetail.getOfferItemSelector() == null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var partyDepartment = partyControl.getPartyDepartment(offerDetail.getDepartmentParty());
             var partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
             var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
 
             if(partyCompany.getParty().equals(item.getLastDetail().getCompanyParty())) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
-
                 offerItem = offerItemControl.getOfferItem(offer, item);
 
                 if(offerItem == null) {
@@ -130,7 +155,6 @@ public class OfferItemLogic
 
     public OfferItem getOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item,
             final EntityPermission entityPermission) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var offerItem = offerItemControl.getOfferItem(offer, item, entityPermission);
 
         if(offerItem == null) {
@@ -154,23 +178,21 @@ public class OfferItemLogic
         var offerName = universalSpec.getOfferName();
         var itemName = universalSpec.getItemName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(offerName, itemName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         OfferItem offerItem = null;
 
         if(nameParameterCount == 2 && possibleEntitySpecs == 0) {
-            var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
-            var item = ItemLogic.getInstance().getItemByName(eea, itemName);
+            var offer = offerLogic.getOfferByName(eea, offerName);
+            var item = itemLogic.getItemByName(eea, itemName);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 offerItem = getOfferItem(eea, offer, item);
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.OfferItem.name());
 
-            if(!eea.hasExecutionErrors()) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
-
+            if(eea == null || !eea.hasExecutionErrors()) {
                 offerItem = offerItemControl.getOfferItemByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -189,8 +211,6 @@ public class OfferItemLogic
     }
 
     public void deleteOfferItem(final OfferItem offerItem, final BasePK deletedBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
-
         offerItemControl.deleteOfferItem(offerItem, deletedBy);
     }
 
@@ -213,8 +233,6 @@ public class OfferItemLogic
     }
 
     public void deleteOfferItemsByOffer(Offer offer, BasePK deletedBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
-
         deleteOfferItems(offerItemControl.getOfferItemsByOfferForUpdate(offer), deletedBy);
     }
 
@@ -230,36 +248,32 @@ public class OfferItemLogic
 
     public OfferItemPrice createOfferItemPrice(final OfferItem offerItem, final InventoryCondition inventoryCondition,
             final UnitOfMeasureType unitOfMeasureType, final Currency currency, final BasePK createdBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
-
         return offerItemControl.createOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency, createdBy);
     }
 
     public void createOfferItemPrice(final ExecutionErrorAccumulator eea, final String offerName, final String itemName, final String inventoryConditionName,
             final String unitOfMeasureTypeName, final String currencyIsoName, final String strUnitPrice, final String strMinimumUnitPrice,
             final String strMaximumUnitPrice, final String strUnitPriceIncrement, final BasePK createdBy) {
-        var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
+        var offer = offerLogic.getOfferByName(eea, offerName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             final var offerDetail = offer.getLastDetail();
 
             if(offerDetail.getOfferItemPriceFilter() == null) {
-                var item = ItemLogic.getInstance().getItemByName(eea, itemName);
-                var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
-                var currency = CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
+                var item = itemLogic.getItemByName(eea, itemName);
+                var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(eea, inventoryConditionName);
+                var currency = currencyLogic.getCurrencyByName(eea, currencyIsoName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
                     var itemDetail = item.getLastDetail();
                     var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-                    var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea,
+                    var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(eea,
                             unitOfMeasureKind, unitOfMeasureTypeName);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var offerItemControl = Session.getModelController(OfferItemControl.class);
                         var offerItem = offerItemControl.getOfferItem(offer, item);
 
                         if(offerItem != null) {
-                            var itemControl = Session.getModelController(ItemControl.class);
                             var itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
 
                             if(itemPrice != null) {
@@ -273,9 +287,9 @@ public class OfferItemLogic
                                         if(strUnitPrice != null) {
                                             var unitPrice = Long.valueOf(strUnitPrice);
 
-                                            offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
+                                            offerItemPrice = this.createOfferItemPrice(offerItem, inventoryCondition,
                                                     unitOfMeasureType, currency, createdBy);
-                                            OfferItemLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
+                                            this.createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
                                         } else {
                                             handleExecutionError(MissingUnitPriceException.class, eea, ExecutionErrors.MissingUnitPrice.name());
                                         }
@@ -303,9 +317,9 @@ public class OfferItemLogic
                                         }
 
                                         if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
-                                            offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
+                                            offerItemPrice = this.createOfferItemPrice(offerItem, inventoryCondition,
                                                     unitOfMeasureType, currency, createdBy);
-                                            OfferItemLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
+                                            this.createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
                                                     unitPriceIncrement, createdBy);
                                         }
                                     } else {
@@ -332,7 +346,6 @@ public class OfferItemLogic
 
     public OfferItemPrice getOfferItemPrice(final ExecutionErrorAccumulator eea, final Offer offer, final Item item,
             final InventoryCondition inventoryCondition, final UnitOfMeasureType unitOfMeasureType, final Currency currency) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var offerItem = offerItemControl.getOfferItem(offer, item);
         OfferItemPrice offerItemPrice = null;
 
@@ -354,11 +367,10 @@ public class OfferItemLogic
 
     // This one is intended to be used internally to ensure any dependent actions occur.
     public void deleteOfferItemPrice(final OfferItemPrice offerItemPrice, final BasePK deletedBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var offerItem = offerItemPrice.getOfferItemForUpdate();
         var item = offerItem.getItem();
 
-        ContentLogic.getInstance().deleteContentCategoryItemByOfferItemPrice(offerItemPrice, deletedBy);
+        contentLogic.deleteContentCategoryItemByOfferItemPrice(offerItemPrice, deletedBy);
 
         offerItemControl.deleteOfferItemPrice(offerItemPrice, deletedBy);
 
@@ -373,23 +385,22 @@ public class OfferItemLogic
     public void deleteOfferItemPrice(final ExecutionErrorAccumulator eea, final String offerName, final String itemName,
             final String inventoryConditionName, final String unitOfMeasureTypeName, final String currencyIsoName,
             final BasePK deletedBy) {
-        var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
+        var offer = offerLogic.getOfferByName(eea, offerName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             final var offerDetail = offer.getLastDetail();
 
             if(offerDetail.getOfferItemPriceFilter() == null) {
-                var item = ItemLogic.getInstance().getItemByName(eea, itemName);
-                var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
-                var currency = CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
+                var item = itemLogic.getItemByName(eea, itemName);
+                var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(eea, inventoryConditionName);
+                var currency = currencyLogic.getCurrencyByName(eea, currencyIsoName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
                     var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-                    var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea,
+                    var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(eea,
                             unitOfMeasureKind, unitOfMeasureTypeName);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var offerItemControl = Session.getModelController(OfferItemControl.class);
                         var offerItem = offerItemControl.getOfferItem(offer, item);
 
                         if(offerItem != null) {
@@ -423,14 +434,10 @@ public class OfferItemLogic
     }
 
     public void deleteOfferItemPricesByOfferItem(OfferItem offerItem, BasePK deletedBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
-
         deleteOfferItemPrices(offerItemControl.getOfferItemPricesByOfferItemForUpdate(offerItem), deletedBy);
     }
 
     public void deleteOfferItemPricesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
-
         deleteOfferItemPrices(offerItemControl.getOfferItemPricesByItemAndUnitOfMeasureTypeForUpdate(item, unitOfMeasureType), deletedBy);
     }
 
@@ -439,17 +446,14 @@ public class OfferItemLogic
     // --------------------------------------------------------------------------------
 
     public OfferItemFixedPrice createOfferItemFixedPrice(final OfferItemPrice offerItemPrice, final Long unitPrice, final BasePK createdBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
-
         return offerItemControl.createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
     }
 
     public void updateOfferItemFixedPriceFromValue(final OfferItemFixedPriceValue offerItemFixedPriceValue, final BasePK updatedBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var offerItemFixedPrice = offerItemControl.updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, updatedBy);
 
         if(offerItemFixedPrice != null) {
-            ContentLogic.getInstance().updateContentCatalogItemPricesByOfferItemPrice(offerItemFixedPrice.getOfferItemPrice(), updatedBy);
+            contentLogic.updateContentCatalogItemPricesByOfferItemPrice(offerItemFixedPrice.getOfferItemPrice(), updatedBy);
         }
     }
 
@@ -459,17 +463,14 @@ public class OfferItemLogic
 
     public OfferItemVariablePrice createOfferItemVariablePrice(final OfferItemPrice offerItemPrice, final Long minimumUnitPrice,
             final Long maximumUnitPrice, final Long unitPriceIncrement, final BasePK createdBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
-
         return offerItemControl.createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, createdBy);
     }
 
     public void updateOfferItemVariablePriceFromValue(final OfferItemVariablePriceValue offerItemVariablePriceValue, final BasePK updatedBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var offerItemVariablePrice = offerItemControl.updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, updatedBy);
 
         if(offerItemVariablePrice != null) {
-            ContentLogic.getInstance().updateContentCatalogItemPricesByOfferItemPrice(offerItemVariablePrice.getOfferItemPrice(), updatedBy);
+            contentLogic.updateContentCatalogItemPricesByOfferItemPrice(offerItemVariablePrice.getOfferItemPrice(), updatedBy);
         }
     }
 

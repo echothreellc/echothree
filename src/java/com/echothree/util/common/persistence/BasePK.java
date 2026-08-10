@@ -17,6 +17,7 @@
 package com.echothree.util.common.persistence;
 
 import java.io.Serializable;
+import javax.annotation.Nonnull;
 
 public class BasePK
         implements Serializable {
@@ -30,7 +31,7 @@ public class BasePK
     private transient String _stringValue;
     
     /** Creates a new instance of BasePK */
-    public BasePK(String componentVendorName, String entityTypeName, Long entityId) {
+    public BasePK(final String componentVendorName, final String entityTypeName, final Long entityId) {
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
         this.entityId = entityId;
@@ -46,7 +47,7 @@ public class BasePK
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if(obj instanceof BasePK that) {
             return componentVendorName.equals(that.componentVendorName)
                     && entityTypeName.equals(that.entityTypeName)
@@ -60,6 +61,7 @@ public class BasePK
      * Returns String representation of this PK in the form of "componentVendorName.entityTypeName.entityId"..
      * @return String representation of this PK in the form of "componentVendorName.entityTypeName.entityId".
      */
+    @Nonnull
     public String getEntityRef() {
         if(_entityRef == null) {
             _entityRef = getComponentVendorName() + "." + getEntityTypeName() + "." + getEntityId();
@@ -73,6 +75,7 @@ public class BasePK
      * @return String representation of this PK in the form of "[.componentVendorName.entityTypeName.entityId]".
      */
     @Override
+    @Nonnull
     public String toString() {
         if( _stringValue == null ) {
             _stringValue = "[." + getEntityRef() + ']';
@@ -81,11 +84,12 @@ public class BasePK
         return _stringValue;
     }
     
-     /**
+    /**
      * Returns the componentVendorName.
      * @return the componentVendorName
      */
-   public String getComponentVendorName() {
+    @Nonnull
+    public String getComponentVendorName() {
         return componentVendorName;
     }
     
@@ -93,6 +97,7 @@ public class BasePK
      * Returns the entityTypeName.
      * @return the entityTypeName
      */
+    @Nonnull
     public String getEntityTypeName() {
         return entityTypeName;
     }
@@ -101,6 +106,7 @@ public class BasePK
      * Returns the entityId.
      * @return the entityId
      */
+    @Nonnull
     public Long getEntityId() {
         return entityId;
     }

@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
@@ -27,10 +26,10 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMimeTypesCommand
@@ -45,6 +44,9 @@ public class GetMimeTypesCommand
         );
     }
 
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     /** Creates a new instance of GetMimeTypesCommand */
     public GetMimeTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -57,13 +59,11 @@ public class GetMimeTypesCommand
         var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
         mimeTypeUsageType = mimeTypeUsageTypeName == null ? null :
-                MimeTypeLogic.getInstance().getMimeTypeUsageTypeByName(this, mimeTypeUsageTypeName);
+                mimeTypeLogic.getMimeTypeUsageTypeByName(this, mimeTypeUsageTypeName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-
         return hasExecutionErrors() ? null :
                 mimeTypeUsageType == null ? mimeTypeControl.countMimeTypes() :
                         mimeTypeControl.countMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
@@ -71,7 +71,6 @@ public class GetMimeTypesCommand
 
     @Override
     protected Collection<MimeType> getEntities() {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         Collection<MimeType> mimeTypes = null;
 
         if(!hasExecutionErrors()) {
@@ -90,8 +89,6 @@ public class GetMimeTypesCommand
         var result = CoreResultFactory.getGetMimeTypesResult();
 
         if(entities != null) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-
             result.setMimeTypes(mimeTypeControl.getMimeTypeTransfers(getUserVisit(), entities));
         }
 

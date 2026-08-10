@@ -43,9 +43,10 @@ public class GetPostalAddressLinesCommand
                 new FieldDefinition("PostalAddressFormatName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ContactControl contactControl;
+
 
     /** Creates a new instance of GetPostalAddressLinesCommand */
     public GetPostalAddressLinesCommand() {

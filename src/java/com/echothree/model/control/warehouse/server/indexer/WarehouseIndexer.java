@@ -17,6 +17,7 @@
 package com.echothree.model.control.warehouse.server.indexer;
 
 import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
@@ -25,19 +26,22 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
+@Dependent
 public class WarehouseIndexer
         extends PartyIndexer {
 
-    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+    @Inject
+    WarehouseControl warehouseControl;
 
-    /** Creates a new instance of WarehouseIndexer */
-    public WarehouseIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index, PartyTypes.WAREHOUSE.name(), IndexFields.warehouseName.name());
+    @Override
+    public BaseIndexer<Party> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index, PartyTypes.WAREHOUSE.name(), IndexFields.warehouseName.name());
     }
 
     @Override

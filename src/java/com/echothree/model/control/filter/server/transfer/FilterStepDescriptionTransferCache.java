@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterStepDescriptionTransfer;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.data.filter.server.entity.FilterStepDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class FilterStepDescriptionTransferCache
         extends BaseFilterDescriptionTransferCache<FilterStepDescription, FilterStepDescriptionTransfer> {
 
     @Inject
-    FilterControl filterControl;
+    FilterStepControl filterStepControl;
 
     /** Creates a new instance of FilterStepDescriptionTransferCache */
     protected FilterStepDescriptionTransferCache() {
@@ -40,7 +40,7 @@ public class FilterStepDescriptionTransferCache
         var filterStepDescriptionTransfer = get(filterStepDescription);
         
         if(filterStepDescriptionTransfer == null) {
-            var filterStepTransfer = filterControl.getFilterStepTransfer(userVisit, filterStepDescription.getFilterStep());
+            var filterStepTransfer = filterStepControl.getFilterStepTransfer(userVisit, filterStepDescription.getFilterStep());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, filterStepDescription.getLanguage());
             
             filterStepDescriptionTransfer = new FilterStepDescriptionTransfer(languageTransfer, filterStepTransfer, filterStepDescription.getDescription());

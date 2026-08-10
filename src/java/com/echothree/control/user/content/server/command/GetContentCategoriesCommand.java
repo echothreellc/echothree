@@ -30,10 +30,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentCategoriesCommand
@@ -51,8 +51,15 @@ public class GetContentCategoriesCommand
                 new FieldDefinition("AssociateProgramName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociateName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    AssociateReferralLogic associateReferralLogic;
+
     
     /** Creates a new instance of GetContentCategoriesCommand */
     public GetContentCategoriesCommand() {
@@ -69,7 +76,6 @@ public class GetContentCategoriesCommand
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -126,15 +132,13 @@ public class GetContentCategoriesCommand
         }
 
         if(!hasExecutionErrors()) {
-            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
+            associateReferralLogic.handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
                     contentCatalog.getPrimaryKey(), getPartyPK());
         }
     }
 
     @Override
     protected Long getTotalEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return hasExecutionErrors() ? null :
                 parentContentCategory == null ?
                         contentControl.countContentCategoriesByContentCatalog(contentCatalog) :
@@ -147,8 +151,6 @@ public class GetContentCategoriesCommand
         Collection<ContentCategory> contentCategories = null;
 
         if(!hasExecutionErrors()) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             if(parentContentCategory == null) {
                 contentCategories = contentControl.getContentCategories(contentCatalog);
             } else {
@@ -164,7 +166,6 @@ public class GetContentCategoriesCommand
         var result = ContentResultFactory.getGetContentCategoriesResult();
 
         if(entities != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
 
             result.setContentCatalog(contentControl.getContentCatalogTransfer(userVisit, contentCatalog));

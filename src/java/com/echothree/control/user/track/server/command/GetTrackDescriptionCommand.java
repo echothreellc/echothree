@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTrackDescriptionCommand
@@ -48,13 +48,20 @@ public class GetTrackDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Track.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrackName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrackControl trackControl;
+
     
     /** Creates a new instance of GetTrackDescriptionCommand */
     public GetTrackDescriptionCommand() {
@@ -63,13 +70,11 @@ public class GetTrackDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var trackControl = Session.getModelController(TrackControl.class);
         var result = TrackResultFactory.getGetTrackDescriptionResult();
         var trackName = form.getTrackName();
         var track = trackControl.getTrackByName(trackName);
 
         if(track != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

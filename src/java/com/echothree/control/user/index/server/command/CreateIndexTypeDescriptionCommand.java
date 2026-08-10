@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateIndexTypeDescriptionCommand
@@ -47,15 +47,22 @@ public class CreateIndexTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.IndexType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateIndexTypeDescriptionCommand */
     public CreateIndexTypeDescriptionCommand() {
@@ -64,12 +71,10 @@ public class CreateIndexTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexTypeName = form.getIndexTypeName();
         var indexType = indexControl.getIndexTypeByName(indexTypeName);
         
         if(indexType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

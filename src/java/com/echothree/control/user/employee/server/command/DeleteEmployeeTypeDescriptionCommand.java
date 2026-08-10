@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEmployeeTypeDescriptionCommand
@@ -47,14 +47,21 @@ public class DeleteEmployeeTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EmployeeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EmployeeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteEmployeeTypeDescriptionCommand */
     public DeleteEmployeeTypeDescriptionCommand() {
@@ -63,12 +70,10 @@ public class DeleteEmployeeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var employeeTypeName = form.getEmployeeTypeName();
         var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
         
         if(employeeType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

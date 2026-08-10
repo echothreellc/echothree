@@ -17,18 +17,19 @@
 package com.echothree.model.control.forum.server.indexer;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.forum.server.analyzer.ForumMessageAnalyzer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.forum.server.analyzer.ForumMessageAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -36,14 +37,16 @@ import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class ForumMessageIndexer
         extends BaseIndexer<ForumMessage> {
-    
-    ForumControl forumControl = Session.getModelController(ForumControl.class);
-    
-    /** Creates a new instance of ForumMessageIndexer */
-    public ForumMessageIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+
+    @Inject
+    ForumControl forumControl;
+
+    @Override
+    public BaseIndexer<ForumMessage> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override

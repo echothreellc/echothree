@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTypeDocumentTypeUsageTypesCommand
@@ -48,14 +48,21 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTypeDocumentTypeUsageType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetPartyTypeDocumentTypeUsageTypesCommand */
     public GetPartyTypeDocumentTypeUsageTypesCommand() {
@@ -70,11 +77,9 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
         var parameterCount = (partyTypeName == null ? 0 : 1) + (documentTypeUsageTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            var documentControl = Session.getModelController(DocumentControl.class);
             var userVisit = getUserVisit();
 
             if(partyTypeName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
                 if(partyType != null) {

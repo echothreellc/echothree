@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteGeoCodeTimeZoneCommand
@@ -47,14 +47,21 @@ public class DeleteGeoCodeTimeZoneCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeTimeZone.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("JavaTimeZoneName", FieldType.TIME_ZONE_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteGeoCodeTimeZoneCommand */
     public DeleteGeoCodeTimeZoneCommand() {
@@ -63,12 +70,10 @@ public class DeleteGeoCodeTimeZoneCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeName = form.getGeoCodeName();
         var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var javaTimeZoneName = form.getJavaTimeZoneName();
             var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             

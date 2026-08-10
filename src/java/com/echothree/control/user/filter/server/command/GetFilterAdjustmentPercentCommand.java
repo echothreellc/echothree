@@ -20,7 +20,7 @@ import com.echothree.control.user.filter.common.form.GetFilterAdjustmentPercentF
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentPercentCommand
@@ -65,6 +65,18 @@ public class GetFilterAdjustmentPercentCommand
         );
     }
 
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     /** Creates a new instance of DeleteFilterAdjustmentPercentCommand */
     public GetFilterAdjustmentPercentCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -74,7 +86,7 @@ public class GetFilterAdjustmentPercentCommand
     protected FilterAdjustmentPercent getEntity() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
-        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
+        var filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
         FilterAdjustmentPercent filterAdjustmentPercent = null;
 
         if(!hasExecutionErrors()) {
@@ -82,17 +94,15 @@ public class GetFilterAdjustmentPercentCommand
                 var unitOfMeasureName = form.getUnitOfMeasureName();
                 var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this,
                         unitOfMeasureName, unitOfMeasureKindName, unitOfMeasureTypeName);
 
                 if(!hasExecutionErrors()) {
                     var currencyIsoName = form.getCurrencyIsoName();
-                    var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+                    var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        var filterControl = Session.getModelController(FilterControl.class);
-
-                        filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
+                        filterAdjustmentPercent = filterAdjustmentControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
 
                         if(filterAdjustmentPercent == null) {
                             addExecutionError(ExecutionErrors.UnknownFilterAdjustmentPercent.name());
@@ -112,9 +122,7 @@ public class GetFilterAdjustmentPercentCommand
         var result = FilterResultFactory.getGetFilterAdjustmentPercentResult();
 
         if(entity != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
-            result.setFilterAdjustmentPercent(filterControl.getFilterAdjustmentPercentTransfer(getUserVisit(), entity));
+            result.setFilterAdjustmentPercent(filterAdjustmentControl.getFilterAdjustmentPercentTransfer(getUserVisit(), entity));
         }
 
         return result;

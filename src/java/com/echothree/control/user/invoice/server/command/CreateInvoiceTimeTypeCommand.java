@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateInvoiceTimeTypeCommand
@@ -45,9 +45,9 @@ public class CreateInvoiceTimeTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.InvoiceTimeType.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.InvoiceTimeType.name(), SecurityRoles.Create.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -55,8 +55,12 @@ public class CreateInvoiceTimeTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of CreateInvoiceTimeTypeCommand */
     public CreateInvoiceTimeTypeCommand() {
@@ -65,7 +69,6 @@ public class CreateInvoiceTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceTypeName = form.getInvoiceTypeName();
         var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 

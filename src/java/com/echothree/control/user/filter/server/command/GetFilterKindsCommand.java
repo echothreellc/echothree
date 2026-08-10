@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterKindsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterKindsCommand
@@ -54,6 +54,9 @@ public class GetFilterKindsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    FilterKindControl filterKindControl;
+
     /** Creates a new instance of GetFilterKindsCommand */
     public GetFilterKindsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,16 +69,12 @@ public class GetFilterKindsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
-
-        return filterControl.countFilterKinds();
+        return filterKindControl.countFilterKinds();
     }
 
     @Override
     protected Collection<FilterKind> getEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
-
-        return filterControl.getFilterKinds();
+        return filterKindControl.getFilterKinds();
     }
 
     @Override
@@ -83,13 +82,11 @@ public class GetFilterKindsCommand
         var result = FilterResultFactory.getGetFilterKindsResult();
 
         if(entities != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
             if(session.hasLimit(FilterKindFactory.class)) {
                 result.setFilterKindCount(getTotalEntities());
             }
 
-            result.setFilterKinds(filterControl.getFilterKindTransfers(getUserVisit(), entities));
+            result.setFilterKinds(filterKindControl.getFilterKindTransfers(getUserVisit(), entities));
         }
 
         return result;

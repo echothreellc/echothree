@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityDateDefaultCommand
@@ -50,8 +51,11 @@ public class CreateEntityDateDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DateAttribute", FieldType.DATE, true, null, null),
                 new FieldDefinition("AddMissingAttributes", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
 
     /** Creates a new instance of CreateEntityDateDefaultCommand */
     public CreateEntityDateDefaultCommand() {
@@ -60,13 +64,13 @@ public class CreateEntityDateDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
             var dateAttribute = Integer.valueOf(form.getDateAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            EntityAttributeLogic.getInstance().createEntityDateDefault(this, entityAttribute,
+            entityAttributeLogic.createEntityDateDefault(this, entityAttribute,
                     dateAttribute, addMissingAttributes, getPartyPK());
         }
 

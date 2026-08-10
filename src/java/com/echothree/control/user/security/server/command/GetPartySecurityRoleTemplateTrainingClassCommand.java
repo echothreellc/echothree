@@ -57,7 +57,7 @@ public class GetPartySecurityRoleTemplateTrainingClassCommand
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     SecurityControl securityControl;
 
@@ -66,6 +66,7 @@ public class GetPartySecurityRoleTemplateTrainingClassCommand
 
     @Inject
     TrainingClassLogic trainingClassLogic;
+
 
     /** Creates a new instance of GetPartySecurityRoleTemplateTrainingClassCommand */
     public GetPartySecurityRoleTemplateTrainingClassCommand() {
@@ -80,7 +81,7 @@ public class GetPartySecurityRoleTemplateTrainingClassCommand
 
         if(!hasExecutionErrors()) {
             var trainingClassName = form.getTrainingClassName();
-            var trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName);
+            var trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, false);
 
             if(!hasExecutionErrors()) {
                 partySecurityRoleTemplateTrainingClass = securityControl.getPartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplate, trainingClass);

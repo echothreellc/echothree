@@ -30,12 +30,14 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class EntityLockControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EntityLockControl */
+
     protected EntityLockControl() {
         super();
     }
@@ -110,7 +112,6 @@ public class EntityLockControl
      */
     public long lockEntity(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         long lockExpirationTime;
         var lockTargetEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(lockTarget);
         var lockTargetEntityInstanceId = lockTargetEntityInstance.getPrimaryKey().getEntityId();
@@ -247,7 +248,6 @@ public class EntityLockControl
      */
     public boolean lockEntityForUpdate(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         boolean isLocked;
         var lockTargetEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
@@ -356,7 +356,6 @@ public class EntityLockControl
      */
     public boolean unlockEntity(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         boolean wasUnlocked;
         var lockTargetEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         
@@ -463,7 +462,6 @@ public class EntityLockControl
      */
     public boolean isEntityLocked(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         boolean isLocked;
         var lockTargetEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         

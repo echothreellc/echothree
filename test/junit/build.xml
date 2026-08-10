@@ -89,14 +89,9 @@
 
     <target name="test" depends="compile" description="Execute Unit Tests">
         <mkdir dir="${test.junit.results.dir}" />
-        <junit
-            printsummary="${test.junit.printsummary}" 
-            haltonfailure="${test.junit.haltonfailure}" 
-            haltonerror="${test.junit.haltonerror}" 
-            fork="${test.junit.fork}"
-            dir="${test.junit.classes.dir}" 
-            timeout="${test.junit.timeout}">
-            <jvmarg value="${test.junit.java.opts}" />
+        <junitlauncher
+            printSummary="${test.junit.printsummary}"
+            haltOnFailure="${test.junit.haltonfailure}">
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
@@ -125,8 +120,7 @@
                 <pathelement path="${test.junit.pathelement.10}" />
                 <pathelement path="${test.junit.component.src.metadata}" />
             </classpath>
-            <formatter type="plain" />
-            <batchtest todir="${test.junit.results.dir}">
+            <testclasses outputDir="${test.junit.results.dir}" includeEngines="junit-jupiter">
                 <fileset dir="${test.junit.classes.dir}">
                     <include name="${test.junit.classes.include.1}" />
                     <include name="${test.junit.classes.include.2}" />
@@ -139,9 +133,16 @@
                     <include name="${test.junit.classes.include.9}" />
                     <include name="${test.junit.classes.include.10}" />
                 </fileset>
-            </batchtest>
-            <formatter type="xml" />
-        </junit>
+                <fork
+                    dir="${test.junit.classes.dir}"
+                    timeout="${test.junit.timeout}"
+                    includeJUnitPlatformLibraries="false">
+                    <jvmarg line="${test.junit.java.opts}" />
+                </fork>
+                <listener type="legacy-plain" sendSysOut="true" sendSysErr="true" />
+                <listener type="legacy-xml" sendSysOut="true" sendSysErr="true" />
+            </testclasses>
+        </junitlauncher>
         <junitreport todir="${test.junit.results.dir}">
             <fileset dir="${test.junit.results.dir}">
                 <include name="${test.junit.junitreport.include}"/>

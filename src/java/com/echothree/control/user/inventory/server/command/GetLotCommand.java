@@ -32,8 +32,8 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -42,7 +42,7 @@ public class GetLotCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -56,17 +56,23 @@ public class GetLotCommand
                 new FieldDefinition("LotIdentifier", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    LotControl lotControl;
+
+    @Inject
+    LotLogic lotLogic;
+
     /** Creates a new instance of GetLotCommand */
     public GetLotCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
     protected Lot getEntity() {
-        var lot = LotLogic.getInstance().getLotByUniversalSpec(this, form);
+        var lot = lotLogic.getLotByUniversalSpec(this, form);
 
         if(lot != null) {
             sendEvent(lot.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -74,10 +80,9 @@ public class GetLotCommand
 
         return lot;
     }
-    
+
     @Override
     protected BaseResult getResult(Lot lot) {
-        var lotControl = Session.getModelController(LotControl.class);
         var result = InventoryResultFactory.getGetLotResult();
 
         if(lot != null) {
@@ -86,5 +91,5 @@ public class GetLotCommand
 
         return result;
     }
-    
+
 }

@@ -30,9 +30,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTaxDescriptionCommand
@@ -45,12 +45,19 @@ public class EditTaxDescriptionCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TaxName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TaxControl taxControl;
+
     
     /** Creates a new instance of EditTaxDescriptionCommand */
     public EditTaxDescriptionCommand() {
@@ -59,13 +66,11 @@ public class EditTaxDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var taxControl = Session.getModelController(TaxControl.class);
         var result = TaxResultFactory.getEditTaxDescriptionResult();
         var taxName = spec.getTaxName();
         var tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

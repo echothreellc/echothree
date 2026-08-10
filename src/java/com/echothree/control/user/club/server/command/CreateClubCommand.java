@@ -22,6 +22,8 @@ import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -36,9 +38,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateClubCommand
@@ -65,6 +67,25 @@ public class CreateClubCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ClubControl clubControl;
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of CreateClubCommand */
     public CreateClubCommand() {
@@ -73,12 +94,10 @@ public class CreateClubCommand
     
     @Override
     protected BaseResult execute() {
-        var clubControl = Session.getModelController(ClubControl.class);
         var clubName = form.getClubName();
         var club = clubControl.getClubByName(clubName);
         
         if(club == null) {
-            var subscriptionControl = Session.getModelController(SubscriptionControl.class);
             var subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
             var subscriptionTypeName = form.getSubscriptionTypeName();
             var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
@@ -91,9 +110,8 @@ public class CreateClubCommand
                     Filter clubPriceFilter = null;
                     
                     if(clubPriceFilterName != null) {
-                        var filterControl = Session.getModelController(FilterControl.class);
-                        var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
-                        var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
+                        var filterKind = filterKindControl.getFilterKindByName(FilterKinds.PRICE.name());
+                        var filterType = filterTypeControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
                         
                         if(filterType != null) {
                             clubPriceFilter = filterControl.getFilterByName(filterType, clubPriceFilterName);
@@ -101,7 +119,6 @@ public class CreateClubCommand
                     }
                     
                     if(clubPriceFilterName == null || clubPriceFilter != null) {
-                        var accountingControl = Session.getModelController(AccountingControl.class);
                         var currencyIsoName = form.getCurrencyIsoName();
                         var currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
                         

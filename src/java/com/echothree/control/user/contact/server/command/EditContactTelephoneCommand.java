@@ -43,11 +43,11 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactTelephoneCommand
@@ -64,13 +64,13 @@ public class EditContactTelephoneCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
@@ -79,8 +79,18 @@ public class EditContactTelephoneCommand
                 new FieldDefinition("TelephoneNumber", FieldType.STRING, true, 1L, 25L),
                 new FieldDefinition("TelephoneExtension", FieldType.NUMBERS, false, 1L, 10L),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContactTelephoneCommand */
     public EditContactTelephoneCommand() {
@@ -106,13 +116,11 @@ public class EditContactTelephoneCommand
 
     @Override
     public PartyContactMechanism getEntity(EditContactTelephoneResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyContactMechanism partyContactMechanism = null;
         var partyName = spec.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismName = spec.getContactMechanismName();
             var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
@@ -152,16 +160,12 @@ public class EditContactTelephoneCommand
 
     @Override
     public void fillInResult(EditContactTelephoneResult result, PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
-
         result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
                 partyContactMechanism.getLastDetail().getContactMechanism()));
     }
 
     @Override
     public void doLock(ContactTelephoneEdit edit, PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var geoControl = Session.getModelController(GeoControl.class);
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetail = contactMechanism.getLastDetail();
         var contactTelephone = contactControl.getContactTelephone(contactMechanism);
@@ -179,7 +183,6 @@ public class EditContactTelephoneCommand
 
     @Override
     public void canUpdate(PartyContactMechanism partyContactMechanism) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var countryName = edit.getCountryName();
         var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
 
@@ -215,7 +218,6 @@ public class EditContactTelephoneCommand
 
     @Override
     public void doUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var updatedBy = getPartyPK();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetailValue = contactControl.getContactMechanismDetailValue(contactMechanism.getLastDetail());

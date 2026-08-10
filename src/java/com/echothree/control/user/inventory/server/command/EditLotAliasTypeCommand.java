@@ -36,8 +36,8 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -53,12 +53,12 @@ public class EditLotAliasTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LotAliasType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -66,8 +66,11 @@ public class EditLotAliasTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    LotAliasControl lotAliasControl;
 
     /** Creates a new instance of EditLotAliasTypeCommand */
     public EditLotAliasTypeCommand() {
@@ -86,7 +89,6 @@ public class EditLotAliasTypeCommand
 
     @Override
     public LotAliasType getEntity(EditLotAliasTypeResult result) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         LotAliasType lotAliasType;
         var lotAliasTypeName = spec.getLotAliasTypeName();
 
@@ -112,14 +114,11 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void fillInResult(EditLotAliasTypeResult result, LotAliasType lotAliasType) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
-
         result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
     }
 
     @Override
     public void doLock(LotAliasTypeEdit edit, LotAliasType lotAliasType) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, getPreferredLanguage());
         var lotAliasTypeDetail = lotAliasType.getLastDetail();
 
@@ -135,7 +134,6 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void canUpdate(LotAliasType lotAliasType) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var lotAliasTypeName = edit.getLotAliasTypeName();
         var duplicateLotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
@@ -146,7 +144,6 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void doUpdate(LotAliasType lotAliasType) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var partyPK = getPartyPK();
         var lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueForUpdate(lotAliasType);
         var lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, getPreferredLanguage());

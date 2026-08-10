@@ -25,6 +25,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultRecoveryQuestionCommand
@@ -34,9 +35,10 @@ public class SetDefaultRecoveryQuestionCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
     
     /** Creates a new instance of SetDefaultRecoveryQuestionCommand */
     public SetDefaultRecoveryQuestionCommand() {
@@ -45,7 +47,6 @@ public class SetDefaultRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var recoveryQuestionName = form.getRecoveryQuestionName();
         var recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueByNameForUpdate(recoveryQuestionName);
         

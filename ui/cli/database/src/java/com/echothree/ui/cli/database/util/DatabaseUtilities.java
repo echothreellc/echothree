@@ -34,6 +34,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class DatabaseUtilities {
+
+    private static final int MAXIMUM_TABLE_NAME_LENGTH = 64;
+    private static final int MAXIMUM_COLUMN_NAME_LENGTH = 64;
     
     private final Log log = LogFactory.getLog(this.getClass());
     
@@ -143,8 +146,8 @@ public abstract class DatabaseUtilities {
     String getCreateTableBeginning(String tableName) {
         var dbTableName = tableName.toLowerCase(Locale.getDefault());
         
-        if(verbose && dbTableName.length() > 30)
-            log.warn("table \"" + dbTableName + "\" exceeds 30 characters");
+        if(verbose && dbTableName.length() > MAXIMUM_TABLE_NAME_LENGTH)
+            log.warn("table \"" + dbTableName + "\" exceeds " + MAXIMUM_TABLE_NAME_LENGTH + " characters");
         
         return "CREATE TABLE " + tableName.toLowerCase(Locale.getDefault()) + " ( ";
     }
@@ -204,7 +207,7 @@ public abstract class DatabaseUtilities {
             //Column destinationColumn = destinationTable.getColumn(destinationColumnName);
             var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
 
-            var referencesSelf = theColumn.getTable() == destinationTable;
+            var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
             var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
             var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
             result = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
@@ -346,7 +349,7 @@ public abstract class DatabaseUtilities {
 
         var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
 
-        var referencesSelf = theColumn.getTable() == destinationTable;
+        var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
         var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
         var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
         var fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
@@ -392,8 +395,8 @@ public abstract class DatabaseUtilities {
         throws Exception {
         var columnName = getColumnName(columnPrefix, theColumn.getName());
         
-        if(verbose && columnName.length() > 30)
-            log.warn("column \"" + columnName + "\" exceeds 30 characters");
+        if(verbose && columnName.length() > MAXIMUM_COLUMN_NAME_LENGTH)
+            log.warn("column \"" + columnName + "\" exceeds " + MAXIMUM_COLUMN_NAME_LENGTH + " characters");
         
         return getColumnDefinitionWithName(theTable, columnPrefix, columnName, theColumn, null);
     }
@@ -430,7 +433,7 @@ public abstract class DatabaseUtilities {
         var destinationColumnName = theColumn.getDestinationColumn();
         var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
 
-        var referencesSelf = theColumn.getTable() == destinationTable;
+        var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
         var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
         var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
         var fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
@@ -796,7 +799,7 @@ public abstract class DatabaseUtilities {
 
         var fkDestinationColumnName = destinationColumnPrefix + "_" + destinationColumn.getName().toLowerCase(Locale.getDefault());
 
-        var referencesSelf = theFK.getTable() == destinationTable;
+        var referencesSelf = theFK.getTable().getNamePlural().equals(destinationTable.getNamePlural());
         var differingColumnName = !referencesSelf && !theFK.getName().equals(destinationColumnName);
         var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
         var fkSourceColumnName = fkColumnPrefix + theFK.getName().toLowerCase(Locale.getDefault());

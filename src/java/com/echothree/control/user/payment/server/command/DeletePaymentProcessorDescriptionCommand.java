@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePaymentProcessorDescriptionCommand
@@ -47,14 +47,21 @@ public class DeletePaymentProcessorDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessor.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
     
     /** Creates a new instance of DeletePaymentProcessorDescriptionCommand */
     public DeletePaymentProcessorDescriptionCommand() {
@@ -63,12 +70,10 @@ public class DeletePaymentProcessorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var paymentProcessorName = form.getPaymentProcessorName();
         var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

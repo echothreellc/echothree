@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainKindDescriptionCommand
@@ -55,18 +55,24 @@ public class EditChainKindDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ChainKind.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditChainKindDescriptionCommand */
     public EditChainKindDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public ChainKindDescription getEntity(EditChainKindDescriptionResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainKindDescription chainKindDescription = null;
         var chainKindName = spec.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public void fillInResult(EditChainKindDescriptionResult result, ChainKindDescription chainKindDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainKindDescription(chainControl.getChainKindDescriptionTransfer(getUserVisit(), chainKindDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public void doUpdate(ChainKindDescription chainKindDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindDescriptionValue = chainControl.getChainKindDescriptionValue(chainKindDescription);
 
         chainKindDescriptionValue.setDescription(edit.getDescription());

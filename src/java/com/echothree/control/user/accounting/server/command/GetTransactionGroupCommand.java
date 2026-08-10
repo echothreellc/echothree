@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTransactionGroupCommand
@@ -58,6 +58,13 @@ public class GetTransactionGroupCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    TransactionGroupLogic transactionGroupLogic;
+
     
     /** Creates a new instance of GetTransactionGroupCommand */
     public GetTransactionGroupCommand() {
@@ -66,7 +73,7 @@ public class GetTransactionGroupCommand
 
     @Override
     protected TransactionGroup getEntity() {
-        var transactionGroup = TransactionGroupLogic.getInstance().getTransactionGroupByUniversalSpec(this, form);
+        var transactionGroup = transactionGroupLogic.getTransactionGroupByUniversalSpec(this, form);
 
         if(transactionGroup != null) {
             sendEvent(transactionGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetTransactionGroupCommand
 
     @Override
     protected BaseResult getResult(TransactionGroup transactionGroup) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetTransactionGroupResult();
 
         if(transactionGroup != null) {

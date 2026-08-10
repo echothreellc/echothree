@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.graphql.server.graphql.count;
 
+import com.echothree.model.control.graphql.server.graphql.BaseObject;
 import graphql.relay.DefaultPageInfo;
 import graphql.relay.Edge;
 import graphql.relay.PageInfo;
@@ -28,14 +29,14 @@ public class Connections {
     private Connections() {
     }
 
-    public static final EmptyConnection EMPTY_CONNECTION = new EmptyConnection<>();
+    public static final EmptyConnection<BaseObject> EMPTY_CONNECTION = new EmptyConnection<>();
 
     @SuppressWarnings("unchecked")
     public static <T> CountingPaginatedData<T> emptyConnection() {
         return (CountingPaginatedData<T>)EMPTY_CONNECTION;
     }
 
-    private static class EmptyConnection<T>
+    public static class EmptyConnection<T>
             implements CountingPaginatedData<T> {
 
         @Override

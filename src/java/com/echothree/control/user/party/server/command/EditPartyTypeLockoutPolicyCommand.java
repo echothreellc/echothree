@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTypeLockoutPolicyCommand
@@ -46,7 +46,7 @@ public class EditPartyTypeLockoutPolicyCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LockoutFailureCount", FieldType.UNSIGNED_INTEGER, false, null, null),
@@ -55,8 +55,15 @@ public class EditPartyTypeLockoutPolicyCommand
                 new FieldDefinition("ManualLockoutReset", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("LockoutInactiveTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("LockoutInactiveTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditPartyTypeLockoutPolicyCommand */
     public EditPartyTypeLockoutPolicyCommand() {
@@ -65,7 +72,6 @@ public class EditPartyTypeLockoutPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getEditPartyTypeLockoutPolicyResult();
         var partyTypeName = spec.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -74,7 +80,6 @@ public class EditPartyTypeLockoutPolicyCommand
             var partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
             
             if(partyTypeLockoutPolicy != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                 
                 if(timeUnitOfMeasureKind != null) {

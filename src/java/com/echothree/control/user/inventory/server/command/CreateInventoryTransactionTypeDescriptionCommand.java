@@ -31,54 +31,58 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class CreateInventoryTransactionTypeDescriptionCommand
         extends BaseSimpleCommand<CreateInventoryTransactionTypeDescriptionForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryTransactionType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of CreateInventoryTransactionTypeDescriptionCommand */
     public CreateInventoryTransactionTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var inventoryTransactionTypeName = form.getInventoryTransactionTypeName();
         var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
-        
+
         if(inventoryTransactionType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
+
             if(language != null) {
                 var inventoryTransactionTypeDescription = inventoryTransactionTypeControl.getInventoryTransactionTypeDescription(inventoryTransactionType, language);
-                
+
                 if(inventoryTransactionTypeDescription == null) {
                     var description = form.getDescription();
-                    
+
                     inventoryTransactionTypeControl.createInventoryTransactionTypeDescription(inventoryTransactionType, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateInventoryTransactionTypeDescription.name(), inventoryTransactionTypeName, languageIsoName);
@@ -89,8 +93,8 @@ public class CreateInventoryTransactionTypeDescriptionCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
         }
-        
+
         return null;
     }
-    
+
 }

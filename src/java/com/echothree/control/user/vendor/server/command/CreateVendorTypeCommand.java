@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateVendorTypeCommand
@@ -58,8 +58,8 @@ public class CreateVendorTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.VendorType.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -78,8 +78,27 @@ public class CreateVendorTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    FreeOnBoardLogic freeOnBoardLogic;
+
+    @Inject
+    TermLogic termLogic;
+
+    @Inject
+    VendorTypeLogic vendorTypeLogic;
+
     
     /** Creates a new instance of CreateVendorTypeCommand */
     public CreateVendorTypeCommand() {
@@ -92,15 +111,14 @@ public class CreateVendorTypeCommand
         VendorType vendorType = null;
         var defaultTermName = form.getDefaultTermName();
         var defaultFreeOnBoardName = form.getDefaultFreeOnBoardName();
-        var defaultTerm = defaultTermName == null ? null : TermLogic.getInstance().getTermByName(this, defaultTermName);
-        var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
+        var defaultTerm = defaultTermName == null ? null : termLogic.getTermByName(this, defaultTermName);
+        var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : freeOnBoardLogic.getFreeOnBoardByName(this, defaultFreeOnBoardName);
 
         if(!hasExecutionErrors()) {
             var defaultCancellationPolicyName = form.getDefaultCancellationPolicyName();
             CancellationPolicy defaultCancellationPolicy = null;
 
             if(defaultCancellationPolicyName != null) {
-                var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                 var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                 defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, defaultCancellationPolicyName);
@@ -111,14 +129,12 @@ public class CreateVendorTypeCommand
                 ReturnPolicy defaultReturnPolicy = null;
 
                 if(defaultReturnPolicyName != null) {
-                    var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                     var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                     defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                 }
 
                 if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                    var accountingControl = Session.getModelController(AccountingControl.class);
                     var defaultApGlAccountName = form.getDefaultApGlAccountName();
                     var defaultApGlAccount = defaultApGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultApGlAccountName);
 
@@ -139,7 +155,7 @@ public class CreateVendorTypeCommand
                             var sortOrder = Integer.valueOf(form.getSortOrder());
                             var description = form.getDescription();
 
-                            vendorType = VendorTypeLogic.getInstance().createVendorType(this, vendorTypeName, defaultTerm, defaultFreeOnBoard,
+                            vendorType = vendorTypeLogic.createVendorType(this, vendorTypeName, defaultTerm, defaultFreeOnBoard,
                                     defaultCancellationPolicy, defaultReturnPolicy, defaultApGlAccount, defaultHoldUntilComplete,
                                     defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern,

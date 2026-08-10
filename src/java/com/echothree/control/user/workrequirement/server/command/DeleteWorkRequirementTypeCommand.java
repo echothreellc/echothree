@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteWorkRequirementTypeCommand
@@ -37,10 +37,17 @@ public class DeleteWorkRequirementTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
     
     /** Creates a new instance of DeleteWorkRequirementTypeCommand */
     public DeleteWorkRequirementTypeCommand() {
@@ -49,12 +56,10 @@ public class DeleteWorkRequirementTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByNameForUpdate(workEffortTypeName);
         
         if(workEffortType != null) {
-            var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
             var workRequirementTypeName = form.getWorkRequirementTypeName();
             var workRequirementType = workRequirementControl.getWorkRequirementTypeByNameForUpdate(workEffortType, workRequirementTypeName);
             

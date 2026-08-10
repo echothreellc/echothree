@@ -45,13 +45,13 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContactPostalAddressCommand
@@ -68,8 +68,8 @@ public class CreateContactPostalAddressCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         // customerFormFieldDefinitions differs from otherFormFieldDefinitions in that when the PartyType
         // executing this command = CUSTOMER, FirstName and LastName are required fields. For all other
@@ -93,7 +93,7 @@ public class CreateContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
         
         otherFormFieldDefinitions = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -114,8 +114,27 @@ public class CreateContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateContactPostalAddressCommand */
     public CreateContactPostalAddressCommand() {
@@ -142,12 +161,10 @@ public class CreateContactPostalAddressCommand
     @Override
     protected BaseResult execute() {
         var result = ContactResultFactory.getCreateContactPostalAddressResult();
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var countryName = form.getCountryName();
             var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
             var countryGeoCode = geoControl.getCountryByAlias(countryAlias);
@@ -209,10 +226,6 @@ public class CreateContactPostalAddressCommand
 
                                         if(!geoCodeCountry.getCityGeoCodeRequired() || cityGeoCode != null) {
                                             GeoCode countyGeoCode = null;
-                                            
-                                            var contactControl = Session.getModelController(ContactControl.class);
-                                            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                                            var workflowControl = Session.getModelController(WorkflowControl.class);
                                             var soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
                                             var personalTitleId = form.getPersonalTitleId();
@@ -230,7 +243,7 @@ public class CreateContactPostalAddressCommand
                                             var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
                                             var isCommercial = Boolean.valueOf(form.getIsCommercial());
                                             var description = form.getDescription();
-                                            var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+                                            var contactMechanismName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
                                             
                                             String firstNameSdx;
                                             try {

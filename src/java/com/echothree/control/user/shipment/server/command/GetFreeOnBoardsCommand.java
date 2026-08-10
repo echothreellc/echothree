@@ -24,10 +24,10 @@ import com.echothree.model.data.shipment.server.factory.FreeOnBoardFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFreeOnBoardsCommand
@@ -39,6 +39,9 @@ public class GetFreeOnBoardsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
 
     /** Creates a new instance of GetFreeOnBoardsCommand */
     public GetFreeOnBoardsCommand() {
@@ -52,15 +55,11 @@ public class GetFreeOnBoardsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-
         return freeOnBoardControl.countFreeOnBoards();
     }
 
     @Override
     protected Collection<FreeOnBoard> getEntities() {
-        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-
         return freeOnBoardControl.getFreeOnBoards();
     }
 
@@ -69,8 +68,6 @@ public class GetFreeOnBoardsCommand
         var result = ShipmentResultFactory.getGetFreeOnBoardsResult();
 
         if(entities != null) {
-            var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-
             if(session.hasLimit(FreeOnBoardFactory.class)) {
                 result.setFreeOnBoardCount(getTotalEntities());
             }

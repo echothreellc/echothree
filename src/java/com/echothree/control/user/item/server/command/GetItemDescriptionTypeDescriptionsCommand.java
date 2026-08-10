@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemDescriptionTypeDescriptionsCommand
@@ -47,13 +47,17 @@ public class GetItemDescriptionTypeDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemDescriptionType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetItemDescriptionTypeDescriptionsCommand */
     public GetItemDescriptionTypeDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetItemDescriptionTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemDescriptionTypeDescriptionsResult();
         var itemDescriptionTypeName = form.getItemDescriptionTypeName();
         var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTrackChoicesCommand
@@ -45,14 +45,18 @@ public class GetTrackChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Track.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultTrackChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TrackControl trackControl;
+
     
     /** Creates a new instance of GetTrackChoicesCommand */
     public GetTrackChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetTrackChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var trackControl = Session.getModelController(TrackControl.class);
         var result = TrackResultFactory.getGetTrackChoicesResult();
         var defaultTrackChoice = form.getDefaultTrackChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

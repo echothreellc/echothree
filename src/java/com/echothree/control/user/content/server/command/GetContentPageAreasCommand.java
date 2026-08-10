@@ -28,10 +28,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageAreasCommand
@@ -45,8 +45,12 @@ public class GetContentPageAreasCommand
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of GetContentPageAreasCommand */
     public GetContentPageAreasCommand() {
@@ -57,7 +61,6 @@ public class GetContentPageAreasCommand
 
     @Override
     protected void handleForm() {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
@@ -83,8 +86,6 @@ public class GetContentPageAreasCommand
 
     @Override
     protected Long getTotalEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return hasExecutionErrors() ? null :
                 contentControl.countContentPageAreasByContentPage(contentPage);
     }
@@ -94,8 +95,6 @@ public class GetContentPageAreasCommand
         Collection<ContentPageArea> contentPageAreas = null;
 
         if(!hasExecutionErrors()) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             contentPageAreas = contentControl.getContentPageAreasByContentPage(contentPage);
         }
 
@@ -107,7 +106,6 @@ public class GetContentPageAreasCommand
         var result = ContentResultFactory.getGetContentPageAreasResult();
                 
         if(entities != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
 
             result.setContentPage(contentControl.getContentPageTransfer(userVisit, contentPage));

@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemImageTypeLogic
     extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ItemImageTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class ItemImageTypeLogic
     public ItemImageType createItemImageType(final ExecutionErrorAccumulator eea, final String itemImageTypeName,
             final MimeType preferredMimeType, final Integer quality, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
         if(itemImageType == null) {
@@ -71,7 +76,6 @@ public class ItemImageTypeLogic
 
     public ItemImageType getItemImageTypeByName(final ExecutionErrorAccumulator eea, final String itemImageTypeName,
             final EntityPermission entityPermission) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName, entityPermission);
 
         if(itemImageType == null) {
@@ -92,9 +96,8 @@ public class ItemImageTypeLogic
     public ItemImageType getItemImageTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ItemImageTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemImageType itemImageType = null;
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemImageTypeName = universalSpec.getItemImageTypeName();
-        var parameterCount = (itemImageTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemImageTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,10 +113,10 @@ public class ItemImageTypeLogic
             }
             case 1 -> {
                 if(itemImageTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemImageType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         itemImageType = itemControl.getItemImageTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -139,8 +142,6 @@ public class ItemImageTypeLogic
 
     public void deleteItemImageType(final ExecutionErrorAccumulator eea, final ItemImageType itemImageType,
             final BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.deleteItemImageType(itemImageType, deletedBy);
     }
 

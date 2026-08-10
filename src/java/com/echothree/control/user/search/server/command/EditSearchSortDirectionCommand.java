@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchSortDirectionCommand
@@ -53,20 +53,24 @@ public class EditSearchSortDirectionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchSortDirection.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchSortDirectionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchSortDirectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of EditSearchSortDirectionCommand */
     public EditSearchSortDirectionCommand() {
@@ -85,7 +89,6 @@ public class EditSearchSortDirectionCommand
 
     @Override
     public SearchSortDirection getEntity(EditSearchSortDirectionResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchSortDirection searchSortDirection;
         var searchSortDirectionName = spec.getSearchSortDirectionName();
 
@@ -109,14 +112,11 @@ public class EditSearchSortDirectionCommand
 
     @Override
     public void fillInResult(EditSearchSortDirectionResult result, SearchSortDirection searchSortDirection) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchSortDirection(searchControl.getSearchSortDirectionTransfer(getUserVisit(), searchSortDirection));
     }
 
     @Override
     public void doLock(SearchSortDirectionEdit edit, SearchSortDirection searchSortDirection) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortDirectionDescription = searchControl.getSearchSortDirectionDescription(searchSortDirection, getPreferredLanguage());
         var searchSortDirectionDetail = searchSortDirection.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditSearchSortDirectionCommand
 
     @Override
     public void canUpdate(SearchSortDirection searchSortDirection) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortDirectionName = edit.getSearchSortDirectionName();
         var duplicateSearchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
@@ -142,7 +141,6 @@ public class EditSearchSortDirectionCommand
 
     @Override
     public void doUpdate(SearchSortDirection searchSortDirection) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
         var searchSortDirectionDetailValue = searchControl.getSearchSortDirectionDetailValueForUpdate(searchSortDirection);
         var searchSortDirectionDescription = searchControl.getSearchSortDirectionDescriptionForUpdate(searchSortDirection, getPreferredLanguage());

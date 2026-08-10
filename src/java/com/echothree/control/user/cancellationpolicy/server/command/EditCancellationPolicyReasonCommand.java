@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCancellationPolicyReasonCommand
@@ -52,20 +52,24 @@ public class EditCancellationPolicyReasonCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CancellationPolicyReason.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationReasonName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
     
     /** Creates a new instance of EditCancellationPolicyReasonCommand */
     public EditCancellationPolicyReasonCommand() {
@@ -74,7 +78,6 @@ public class EditCancellationPolicyReasonCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var result = CancellationPolicyResultFactory.getEditCancellationPolicyReasonResult();
         var cancellationPolicyName = spec.getCancellationPolicyName();
         var cancellationKindName = spec.getCancellationKindName();

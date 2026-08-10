@@ -60,16 +60,11 @@ public class EditLocationCapacityCommand
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Capacity", FieldType.UNSIGNED_LONG, true, null, null)
-                );
-    }
-    
-    /** Creates a new instance of EditLocationCapacityCommand */
-    public EditLocationCapacityCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        );
     }
 
     @Inject
@@ -77,6 +72,12 @@ public class EditLocationCapacityCommand
 
     @Inject
     WarehouseControl warehouseControl;
+
+
+    /** Creates a new instance of EditLocationCapacityCommand */
+    public EditLocationCapacityCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditLocationCapacityResult getResult() {

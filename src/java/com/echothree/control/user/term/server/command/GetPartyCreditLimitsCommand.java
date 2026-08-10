@@ -19,51 +19,80 @@ package com.echothree.control.user.term.server.command;
 import com.echothree.control.user.term.common.form.GetPartyCreditLimitsForm;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.term.server.entity.PartyCreditLimit;
+import com.echothree.model.data.term.server.factory.PartyCreditLimitFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyCreditLimitsCommand
-        extends BaseSimpleCommand<GetPartyCreditLimitsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyCreditLimit, GetPartyCreditLimitsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
     
     /** Creates a new instance of GetPartyCreditLimitsCommand */
     public GetPartyCreditLimitsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Party party;
+
     @Override
-    protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
+    protected void handleForm() {
+        party = partyLogic.getPartyByName(this, form.getPartyName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : termControl.countPartyCreditLimitsByParty(party);
+    }
+
+    @Override
+    protected Collection<PartyCreditLimit> getEntities() {
+        return hasExecutionErrors() ? null : termControl.getPartyCreditLimitsByParty(party);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PartyCreditLimit> entities) {
         var result = TermResultFactory.getGetPartyCreditLimitsResult();
-        var partyName = form.getPartyName();
-        var party = partyControl.getPartyByName(partyName);
-        
-        if(party != null) {
-            var termControl = Session.getModelController(TermControl.class);
+
+        if(entities != null) {
             var userVisit = getUserVisit();
-            
+
             result.setParty(partyControl.getPartyTransfer(userVisit, party));
-            result.setPartyCreditLimits(termControl.getPartyCreditLimitTransfersByParty(getUserVisit(), party));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
+
+            if(session.hasLimit(PartyCreditLimitFactory.class)) {
+                result.setPartyCreditLimitCount(getTotalEntities());
+            }
+
+            result.setPartyCreditLimits(termControl.getPartyCreditLimitTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
     

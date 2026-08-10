@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditUseTypeCommand
@@ -53,22 +53,29 @@ public class EditUseTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.UseType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    UseTypeControl useTypeControl;
+
+    @Inject
+    UseTypeLogic useTypeLogic;
+
     
     /** Creates a new instance of EditUseTypeCommand */
     public EditUseTypeCommand() {
@@ -87,7 +94,7 @@ public class EditUseTypeCommand
     
     @Override
     public UseType getEntity(EditUseTypeResult result) {
-        return UseTypeLogic.getInstance().getUseTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return useTypeLogic.getUseTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -97,14 +104,11 @@ public class EditUseTypeCommand
     
     @Override
     public void fillInResult(EditUseTypeResult result, UseType useType) {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
-        
         result.setUseType(useTypeControl.getUseTypeTransfer(getUserVisit(), useType));
     }
     
     @Override
     public void doLock(UseTypeEdit edit, UseType useType) {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useTypeDescription = useTypeControl.getUseTypeDescription(useType, getPreferredLanguage());
         var useTypeDetail = useType.getLastDetail();
         
@@ -119,7 +123,6 @@ public class EditUseTypeCommand
         
     @Override
     public void canUpdate(UseType useType) {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useTypeName = edit.getUseTypeName();
         var duplicateUseType = useTypeControl.getUseTypeByName(useTypeName);
 
@@ -130,7 +133,6 @@ public class EditUseTypeCommand
     
     @Override
     public void doUpdate(UseType useType) {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var partyPK = getPartyPK();
         var useTypeDetailValue = useTypeControl.getUseTypeDetailValueForUpdate(useType);
         var useTypeDescription = useTypeControl.getUseTypeDescriptionForUpdate(useType, getPreferredLanguage());

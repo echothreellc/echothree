@@ -36,14 +36,26 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SequenceLogic
         extends BaseLogic {
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
 
     protected SequenceLogic() {
         super();
@@ -56,7 +68,7 @@ public class SequenceLogic
     public Sequence createSequence(final ExecutionErrorAccumulator eea, final String sequenceTypeName, final String sequenceName,
             final String value, final String mask, final Integer chunkSize, final Boolean isDefault, final Integer sortOrder,
             final String description, final Language language, final BasePK createdBy) {
-        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+        var sequenceType = sequenceTypeLogic.getSequenceTypeByName(eea, sequenceTypeName);
         Sequence sequence = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -73,12 +85,10 @@ public class SequenceLogic
         Sequence sequence = null;
         
         if(sequenceName == null) {
-            sequenceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.SEQUENCE.name());
+            sequenceName = sequenceGeneratorLogic.getNextSequenceValue(eea, SequenceTypes.SEQUENCE.name());
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-
             sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
     
             if(sequence == null) {
@@ -121,7 +131,6 @@ public class SequenceLogic
 
     public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final SequenceType sequenceType, final String sequenceName,
             final EntityPermission entityPermission) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName, entityPermission);
 
         if(sequence == null) {
@@ -142,10 +151,10 @@ public class SequenceLogic
 
     public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final String sequenceTypeName, final String sequenceName,
             final EntityPermission entityPermission) {
-        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+        var sequenceType = sequenceTypeLogic.getSequenceTypeByName(eea, sequenceTypeName);
         Sequence sequence = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             sequence = getSequenceByName(eea, sequenceType, sequenceName, entityPermission);
         }
 
@@ -162,11 +171,10 @@ public class SequenceLogic
 
     public Sequence getSequenceByUniversalSpec(final ExecutionErrorAccumulator eea, final SequenceUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeName = universalSpec.getSequenceTypeName();
         var sequenceName = universalSpec.getSequenceName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(sequenceTypeName, sequenceName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         Sequence sequence = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -183,10 +191,10 @@ public class SequenceLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+                sequenceType = sequenceTypeLogic.getSequenceTypeByName(eea, sequenceTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(sequenceName == null) {
                     if(allowDefault) {
                         sequence = sequenceControl.getDefaultSequence(sequenceType, entityPermission);
@@ -202,10 +210,10 @@ public class SequenceLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.Sequence.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 sequence = sequenceControl.getSequenceByEntityInstance(entityInstance, entityPermission);
             }
         } else {

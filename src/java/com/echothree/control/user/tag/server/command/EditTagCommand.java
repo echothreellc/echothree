@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTagCommand
@@ -54,18 +54,22 @@ public class EditTagCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Tag.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TagName", FieldType.TAG, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagName", FieldType.TAG, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TagControl tagControl;
+
     
     /** Creates a new instance of EditTagCommand */
     public EditTagCommand() {
@@ -86,7 +90,6 @@ public class EditTagCommand
     
     @Override
     public Tag getEntity(EditTagResult result) {
-        var tagControl = Session.getModelController(TagControl.class);
         Tag tag = null;
         var tagScopeName = spec.getTagScopeName();
         
@@ -120,8 +123,6 @@ public class EditTagCommand
 
     @Override
     public void fillInResult(EditTagResult result, Tag tag) {
-        var tagControl = Session.getModelController(TagControl.class);
-
         result.setTag(tagControl.getTagTransfer(getUserVisit(), tag));
     }
 
@@ -134,7 +135,6 @@ public class EditTagCommand
 
     @Override
     public void canUpdate(Tag tag) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagName = edit.getTagName();
         var duplicateTag = tagControl.getTagByName(tagScope, tagName);
 
@@ -145,7 +145,6 @@ public class EditTagCommand
 
     @Override
     public void doUpdate(Tag tag) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagDetailValue = tagControl.getTagDetailValueForUpdate(tag);
 
         tagDetailValue.setTagName(edit.getTagName());

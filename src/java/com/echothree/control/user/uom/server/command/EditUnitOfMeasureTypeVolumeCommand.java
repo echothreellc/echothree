@@ -57,15 +57,16 @@ public class EditUnitOfMeasureTypeVolumeCommand
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
         );
     }
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditUnitOfMeasureTypeVolumeCommand */
     public EditUnitOfMeasureTypeVolumeCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
-    @Inject
-    UomControl uomControl;
-
     @Override
     protected EditUnitOfMeasureTypeVolumeResult getResult() {
         return UomResultFactory.getEditUnitOfMeasureTypeVolumeResult();

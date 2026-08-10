@@ -17,7 +17,8 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.SetDefaultFilterTypeForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultFilterTypeCommand
@@ -44,15 +45,22 @@ public class SetDefaultFilterTypeCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.FilterType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.FilterType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
     
     /** Creates a new instance of SetDefaultFilterTypeCommand */
     public SetDefaultFilterTypeCommand() {
@@ -61,18 +69,17 @@ public class SetDefaultFilterTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterTypeDetailValue = filterControl.getFilterTypeDetailValueByNameForUpdate(filterKind,
+            var filterTypeDetailValue = filterTypeControl.getFilterTypeDetailValueByNameForUpdate(filterKind,
                     filterTypeName);
             
             if(filterTypeDetailValue != null) {
                 filterTypeDetailValue.setIsDefault(true);
-                filterControl.updateFilterTypeFromValue(filterTypeDetailValue, getPartyPK());
+                filterTypeControl.updateFilterTypeFromValue(filterTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterKindName, filterTypeName);
             }

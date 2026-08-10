@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.common.TagService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class TagServicePingTest
-        extends TestCase {
+public class TagServicePingTest {
     private TagService tagService;
     
-    /** Creates a new instance of TagServiceTest */
-    public TagServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new TagServicePingTest("testPingTagService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             tagService = TagUtil.getHome();
             assertNotNull(tagService);
@@ -54,8 +37,8 @@ public class TagServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             tagService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class TagServicePingTest
         }
     }
     
+    @Test
     public void testPingTagService() {
-        setUp();
         try {
             tagService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

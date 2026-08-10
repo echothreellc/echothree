@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityTypeDescriptionCommand
@@ -54,19 +54,23 @@ public class EditEntityTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditEntityTypeDescriptionCommand */
     public EditEntityTypeDescriptionCommand() {
@@ -94,7 +98,6 @@ public class EditEntityTypeDescriptionCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -120,7 +120,7 @@ public class EventControl
 
     @Inject
     protected EntityTimeFactory entityTimeFactory;
-    
+
     public EntityTime createEntityTime(EntityInstance entityInstance, Long createdTime, Long modifiedTime, Long deletedTime) {
         return entityTimeFactory.create(entityInstance, createdTime, modifiedTime, deletedTime);
 
@@ -131,9 +131,11 @@ public class EventControl
 
         try {
             var ps = entityTimeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM entitytimes " +
-                            "WHERE etim_eni_entityinstanceid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM entitytimes
+                    WHERE etim_eni_entityinstanceid = ?
+                    """);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
 
@@ -150,10 +152,12 @@ public class EventControl
 
         try {
             var ps = entityTimeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM entitytimes " +
-                            "WHERE etim_eni_entityinstanceid = ? " +
-                            "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitytimes
+                    WHERE etim_eni_entityinstanceid = ?
+                    FOR UPDATE
+                    """);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
 
@@ -167,16 +171,20 @@ public class EventControl
 
     public static final Integer negativeOne = -1;
 
-    public static final String selectEntityTimesByEntityType = "SELECT _ALL_ " +
-            "FROM entitytimes, entityinstances, entitytypes " +
-            "WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-            "ORDER BY etim_createdtime";
+    public static final String selectEntityTimesByEntityType = """
+                                                               SELECT _ALL_
+                                                               FROM entitytimes, entityinstances, entitytypes
+                                                               WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                                               ORDER BY etim_createdtime
+                                                               """;
 
-    public static final String selectEntityTimesByEntityTypeWithLimit = "SELECT _ALL_ " +
-            "FROM entitytimes, entityinstances, entitytypes " +
-            "WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-            "ORDER BY etim_createdtime " +
-            "LIMIT ?";
+    public static final String selectEntityTimesByEntityTypeWithLimit = """
+                                                                        SELECT _ALL_
+                                                                        FROM entitytimes, entityinstances, entitytypes
+                                                                        WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                                                        ORDER BY etim_createdtime
+                                                                        LIMIT ?
+                                                                        """;
 
     public List<EntityTime> getEntityTimesByEntityType(EntityType entityType) {
         return getEntityTimesByEntityTypeWithLimit(entityType, negativeOne);
@@ -203,17 +211,21 @@ public class EventControl
         return entityTimes;
     }
 
-    public static final String selectEntityTimesByEntityTypeCreatedAfter = "SELECT _ALL_ " +
-            "FROM entitytimes, entityinstances, entitytypes " +
-            "WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-            "AND etim_createdtime IS NOT NULL AND etim_createdtime > ? " +
-            "ORDER BY etim_createdtime";
-    public static final String selectEntityTimesByEntityTypeCreatedAfterWithLimit = "SELECT _ALL_ " +
-            "FROM entitytimes, entityinstances, entitytypes " +
-            "WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-            "AND etim_createdtime IS NOT NULL AND etim_createdtime > ? " +
-            "ORDER BY etim_createdtime " +
-            "LIMIT ?";
+    public static final String selectEntityTimesByEntityTypeCreatedAfter = """
+                                                                           SELECT _ALL_
+                                                                           FROM entitytimes, entityinstances, entitytypes
+                                                                           WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                                                           AND etim_createdtime IS NOT NULL AND etim_createdtime > ?
+                                                                           ORDER BY etim_createdtime
+                                                                           """;
+    public static final String selectEntityTimesByEntityTypeCreatedAfterWithLimit = """
+                                                                                    SELECT _ALL_
+                                                                                    FROM entitytimes, entityinstances, entitytypes
+                                                                                    WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                                                                    AND etim_createdtime IS NOT NULL AND etim_createdtime > ?
+                                                                                    ORDER BY etim_createdtime
+                                                                                    LIMIT ?
+                                                                                    """;
 
     public List<EntityTime> getEntityTimesByEntityTypeCreatedAfter(EntityType entityType, Long createdTime) {
         return getEntityTimesByEntityTypeCreatedAfterWithLimit(entityType, createdTime, negativeOne);
@@ -241,17 +253,21 @@ public class EventControl
         return entityTimes;
     }
 
-    public static final String selectEntityTimesByEntityTypeModifiedAfter = "SELECT _ALL_ " +
-            "FROM entitytimes, entityinstances, entitytypes " +
-            "WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-            "AND etim_modifiedtime IS NOT NULL AND etim_modifiedtime > ? " +
-            "ORDER BY etim_modifiedtime";
-    public static final String selectEntityTimesByEntityTypeModifiedAfterWithLimit = "SELECT _ALL_ " +
-            "FROM entitytimes, entityinstances, entitytypes " +
-            "WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-            "AND etim_modifiedtime IS NOT NULL AND etim_modifiedtime > ? " +
-            "ORDER BY etim_modifiedtime " +
-            "LIMIT ?";
+    public static final String selectEntityTimesByEntityTypeModifiedAfter = """
+                                                                            SELECT _ALL_
+                                                                            FROM entitytimes, entityinstances, entitytypes
+                                                                            WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                                                            AND etim_modifiedtime IS NOT NULL AND etim_modifiedtime > ?
+                                                                            ORDER BY etim_modifiedtime
+                                                                            """;
+    public static final String selectEntityTimesByEntityTypeModifiedAfterWithLimit = """
+                                                                                     SELECT _ALL_
+                                                                                     FROM entitytimes, entityinstances, entitytypes
+                                                                                     WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                                                                     AND etim_modifiedtime IS NOT NULL AND etim_modifiedtime > ?
+                                                                                     ORDER BY etim_modifiedtime
+                                                                                     LIMIT ?
+                                                                                     """;
 
     public List<EntityTime> getEntityTimesByEntityTypeModifiedAfter(EntityType entityType, Long modifiedTime) {
         return getEntityTimesByEntityTypeModifiedAfterWithLimit(entityType, modifiedTime, negativeOne);
@@ -279,17 +295,21 @@ public class EventControl
         return entityTimes;
     }
 
-    public static final String selectEntityTimesByEntityTypeDeletedAfter = "SELECT _ALL_ " +
-            "FROM entitytimes, entityinstances, entitytypes " +
-            "WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-            "AND etim_deletedtime IS NOT NULL AND etim_deletedtime > ? " +
-            "ORDER BY etim_deletedtime";
-    public static final String selectEntityTimesByEntityTypeDeletedAfterWithLimit = "SELECT _ALL_ " +
-            "FROM entitytimes, entityinstances, entitytypes " +
-            "WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-            "AND etim_deletedtime IS NOT NULL AND etim_deletedtime > ? " +
-            "ORDER BY etim_deletedtime " +
-            "LIMIT ?";
+    public static final String selectEntityTimesByEntityTypeDeletedAfter = """
+                                                                           SELECT _ALL_
+                                                                           FROM entitytimes, entityinstances, entitytypes
+                                                                           WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                                                           AND etim_deletedtime IS NOT NULL AND etim_deletedtime > ?
+                                                                           ORDER BY etim_deletedtime
+                                                                           """;
+    public static final String selectEntityTimesByEntityTypeDeletedAfterWithLimit = """
+                                                                                    SELECT _ALL_
+                                                                                    FROM entitytimes, entityinstances, entitytypes
+                                                                                    WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
+                                                                                    AND etim_deletedtime IS NOT NULL AND etim_deletedtime > ?
+                                                                                    ORDER BY etim_deletedtime
+                                                                                    LIMIT ?
+                                                                                    """;
 
     public List<EntityTime> getEntityTimesByEntityTypeDeletedAfter(EntityType entityType, Long deletedTime) {
         return getEntityTimesByEntityTypeDeletedAfterWithLimit(entityType, deletedTime, negativeOne);
@@ -345,18 +365,20 @@ public class EventControl
 
                 try {
                     var ps = eventGroupFactory.prepareStatement(
-                            "SELECT _ALL_ " +
-                                    "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
-                                    "eventgroups, eventgroupdetails, workflowentitystatuses, entitytimes " +
-                                    "WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid " +
-                                    "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                                    "AND ent_activedetailid = entdt_entitytypedetailid " +
-                                    "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                                    "AND entdt_entitytypename = ? " +
-                                    "AND ent_entitytypeid = eni_ent_entitytypeid AND evgrp_eventgroupid = eni_entityuniqueid " +
-                                    "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                                    "AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-                                    "ORDER BY etim_createdtime DESC");
+                            """
+                            SELECT _ALL_
+                            FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances,
+                            eventgroups, eventgroupdetails, workflowentitystatuses, entitytimes
+                            WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid
+                            AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                            AND ent_activedetailid = entdt_entitytypedetailid
+                            AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
+                            AND entdt_entitytypename = ?
+                            AND ent_entitytypeid = eni_ent_entitytypeid AND evgrp_eventgroupid = eni_entityuniqueid
+                            AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                            AND eni_entityinstanceid = etim_eni_entityinstanceid
+                            ORDER BY etim_createdtime DESC
+                            """);
 
                     ps.setString(1, ComponentVendors.ECHO_THREE.name());
                     ps.setString(2, EntityTypes.EventGroup.name());
@@ -423,7 +445,7 @@ public class EventControl
     public EventGroup getEventGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EventGroupPK(entityInstance.getEntityUniqueId());
 
-        return EventGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return eventGroupFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public EventGroup getEventGroupByEntityInstance(EntityInstance entityInstance) {
@@ -453,14 +475,18 @@ public class EventControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventgroups, eventgroupdetails " +
-                        "WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid AND evgrpdt_eventgroupname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM eventgroups, eventgroupdetails
+                        WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid AND evgrpdt_eventgroupname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventgroups, eventgroupdetails " +
-                        "WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid AND evgrpdt_eventgroupname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM eventgroups, eventgroupdetails
+                        WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid AND evgrpdt_eventgroupname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = eventGroupFactory.prepareStatement(query);
@@ -491,16 +517,20 @@ public class EventControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM eventgroups, eventgroupdetails " +
-                    "WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid " +
-                    "ORDER BY evgrpdt_eventgroupname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM eventgroups, eventgroupdetails
+                    WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid
+                    ORDER BY evgrpdt_eventgroupname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM eventgroups, eventgroupdetails " +
-                    "WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM eventgroups, eventgroupdetails
+                    WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = eventGroupFactory.prepareStatement(query);
@@ -573,7 +603,7 @@ public class EventControl
 
     @Inject
     protected EventTypeFactory eventTypeFactory;
-    
+
     public EventType createEventType(String eventTypeName) {
         return eventTypeFactory.create(eventTypeName);
     }
@@ -605,9 +635,11 @@ public class EventControl
 
         try {
             var ps = eventTypeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM eventtypes " +
-                            "WHERE evty_eventtypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM eventtypes
+                    WHERE evty_eventtypename = ?
+                    """);
 
             ps.setString(1, eventTypeName);
 
@@ -637,9 +669,11 @@ public class EventControl
 
     public List<EventType> getEventTypes() {
         var ps = eventTypeFactory.prepareStatement(
-                "SELECT _ALL_ " +
-                        "FROM eventtypes " +
-                        "ORDER BY evty_eventtypename");
+                """
+                SELECT _ALL_
+                FROM eventtypes
+                ORDER BY evty_eventtypename
+                """);
 
         return eventTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -701,7 +735,7 @@ public class EventControl
 
     @Inject
     protected EventTypeDescriptionFactory eventTypeDescriptionFactory;
-    
+
     public EventTypeDescription createEventTypeDescription(EventType eventType, Language language, String description) {
         var eventTypeDescription = eventTypeDescriptionFactory.create(eventType, language, description);
 
@@ -713,9 +747,11 @@ public class EventControl
 
         try {
             var ps = eventTypeDescriptionFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM eventtypedescriptions " +
-                            "WHERE evtyd_evty_eventtypeid = ? AND evtyd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM eventtypedescriptions
+                    WHERE evtyd_evty_eventtypeid = ? AND evtyd_lang_languageid = ?
+                    """);
 
             ps.setLong(1, eventType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -751,7 +787,7 @@ public class EventControl
 
     @Inject
     protected EventFactory eventFactory;
-    
+
     public Event createEvent(EventGroup eventGroup, Long eventTime, EntityInstance entityInstance, EventType eventType,
             EntityInstance relatedEntityInstance, EventType relatedEventType, EntityInstance createdBy) {
         var eventTimeSequence = session.getNextEventTimeSequence(entityInstance.getPrimaryKey());
@@ -762,33 +798,41 @@ public class EventControl
 
     public long countEventsByEventGroup(EventGroup eventGroup) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM events " +
-                        "WHERE ev_evgrp_eventgroupid = ?",
+                """
+                SELECT COUNT(*)
+                FROM events
+                WHERE ev_evgrp_eventgroupid = ?
+                """,
                 eventGroup);
     }
 
     public long countEventsByEntityInstance(EntityInstance entityInstance) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM events " +
-                        "WHERE ev_eni_entityinstanceid = ?",
+                """
+                SELECT COUNT(*)
+                FROM events
+                WHERE ev_eni_entityinstanceid = ?
+                """,
                 entityInstance);
     }
 
     public long countEventsByEventType(EventType eventType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM events " +
-                        "WHERE ev_evty_eventtypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM events
+                WHERE ev_evty_eventtypeid = ?
+                """,
                 eventType);
     }
 
     public long countEventsByCreatedBy(EntityInstance createdBy) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM events " +
-                        "WHERE ev_createdbyid = ?",
+                """
+                SELECT COUNT(*)
+                FROM events
+                WHERE ev_createdbyid = ?
+                """,
                 createdBy);
     }
 
@@ -798,11 +842,13 @@ public class EventControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM events "
-                        + "WHERE ev_evgrp_eventgroupid = ? "
-                        + "ORDER BY ev_eventtime, ev_eventtimesequence "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM events
+                WHERE ev_evgrp_eventgroupid = ?
+                ORDER BY ev_eventtime, ev_eventtimesequence
+                _LIMIT_
+                """);
         getEventsByEventGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -817,11 +863,13 @@ public class EventControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM events "
-                        + "WHERE ev_eni_entityinstanceid = ? "
-                        + "ORDER BY ev_eventtime, ev_eventtimesequence "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM events
+                WHERE ev_eni_entityinstanceid = ?
+                ORDER BY ev_eventtime, ev_eventtimesequence
+                _LIMIT_
+                """);
         getEventsByEntityInstanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -836,11 +884,13 @@ public class EventControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM events "
-                        + "WHERE ev_eni_entityinstanceid = ? "
-                        + "ORDER BY ev_eventtime, ev_eventtimesequence "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM events
+                WHERE ev_eni_entityinstanceid = ?
+                ORDER BY ev_eventtime, ev_eventtimesequence
+                _LIMIT_
+                """);
         getEventsByEventTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -855,11 +905,13 @@ public class EventControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM events "
-                        + "WHERE ev_createdbyid = ? "
-                        + "ORDER BY ev_eventtime, ev_eventtimesequence "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM events
+                WHERE ev_createdbyid = ?
+                ORDER BY ev_eventtime, ev_eventtimesequence
+                _LIMIT_
+                """);
         getEventsByCreatedByQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -874,11 +926,13 @@ public class EventControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM events "
-                        + "WHERE ev_eni_entityinstanceid = ? AND ev_evty_eventtypeid = ? "
-                        + "ORDER BY ev_eventtime "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM events
+                WHERE ev_eni_entityinstanceid = ? AND ev_evty_eventtypeid = ?
+                ORDER BY ev_eventtime
+                FOR UPDATE
+                """);
         getEventsByEntityInstanceAndEventTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -923,16 +977,18 @@ public class EventControl
 
     @Inject
     protected QueuedEventFactory queuedEventFactory;
-    
+
     public QueuedEvent createQueuedEvent(Event event) {
         return queuedEventFactory.create(event);
     }
 
     public List<QueuedEvent> getQueuedEventsForUpdate() {
         var ps = queuedEventFactory.prepareStatement(
-                "SELECT _ALL_ " +
-                        "FROM queuedevents " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM queuedevents
+                FOR UPDATE
+                """);
 
         return queuedEventFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
     }
@@ -947,7 +1003,7 @@ public class EventControl
 
     @Inject
     protected EntityVisitFactory entityVisitFactory;
-    
+
     public EntityVisit createEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
         return entityVisitFactory.create(entityInstance, visitedEntityInstance, session.getStartTime());
     }
@@ -992,10 +1048,10 @@ public class EventControl
 
     @Inject
     protected EventSubscriberFactory eventSubscriberFactory;
-    
+
     @Inject
     protected EventSubscriberDetailFactory eventSubscriberDetailFactory;
-    
+
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
@@ -1031,14 +1087,18 @@ public class EventControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscribers, eventsubscriberdetails " +
-                        "WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eventsubscribername = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscribers, eventsubscriberdetails
+                        WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eventsubscribername = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscribers, eventsubscriberdetails " +
-                        "WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eventsubscribername = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscribers, eventsubscriberdetails
+                        WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eventsubscribername = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = eventSubscriberFactory.prepareStatement(query);
@@ -1068,15 +1128,19 @@ public class EventControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscribers, eventsubscriberdetails " +
-                        "WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eni_entityinstanceid = ? " +
-                        "ORDER BY evsdt_sortorder, evsdt_eventsubscribername";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscribers, eventsubscriberdetails
+                        WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eni_entityinstanceid = ?
+                        ORDER BY evsdt_sortorder, evsdt_eventsubscribername
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscribers, eventsubscriberdetails " +
-                        "WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eni_entityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscribers, eventsubscriberdetails
+                        WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eni_entityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = eventSubscriberFactory.prepareStatement(query);
@@ -1143,7 +1207,7 @@ public class EventControl
 
     @Inject
     protected QueuedSubscriberEventFactory queuedSubscriberEventFactory;
-    
+
     public QueuedSubscriberEvent createQueuedSubscriberEvent(EventSubscriber eventSubscriber, Event event) {
         return queuedSubscriberEventFactory.create(eventSubscriber, event);
     }
@@ -1156,15 +1220,19 @@ public class EventControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedsubscriberevents, events " +
-                        "WHERE qsev_evs_eventsubscriberid = ? AND qsev_ev_eventid = ev_eventid " +
-                        "ORDER BY ev_eventtime";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedsubscriberevents, events
+                        WHERE qsev_evs_eventsubscriberid = ? AND qsev_ev_eventid = ev_eventid
+                        ORDER BY ev_eventtime
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedsubscriberevents " +
-                        "WHERE qsev_evs_eventsubscriberid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedsubscriberevents
+                        WHERE qsev_evs_eventsubscriberid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = queuedSubscriberEventFactory.prepareStatement(query);
@@ -1206,7 +1274,7 @@ public class EventControl
 
     @Inject
     protected EventSubscriberEventTypeFactory eventSubscriberEventTypeFactory;
-    
+
     public EventSubscriberEventType createEventSubscriberEventType(EventSubscriber eventSubscriber, EventType eventType,
             BasePK createdBy) {
         var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(
@@ -1224,16 +1292,20 @@ public class EventControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscribereventtypes, eventsubscribers, eventsubscriberdetails " +
-                        "WHERE evsevt_evty_eventtypeid = ? AND evsevt_thrutime = ? " +
-                        "AND evsevt_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid " +
-                        "ORDER BY evsdt_eventsubscribername";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscribereventtypes, eventsubscribers, eventsubscriberdetails
+                        WHERE evsevt_evty_eventtypeid = ? AND evsevt_thrutime = ?
+                        AND evsevt_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid
+                        ORDER BY evsdt_eventsubscribername
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscribereventtypes " +
-                        "WHERE evsevt_evty_eventtypeid = ? AND evsevt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscribereventtypes
+                        WHERE evsevt_evty_eventtypeid = ? AND evsevt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = eventSubscriberEventTypeFactory.prepareStatement(query);
@@ -1263,7 +1335,7 @@ public class EventControl
 
     @Inject
     protected EventSubscriberEntityTypeFactory eventSubscriberEntityTypeFactory;
-    
+
     public EventSubscriberEntityType createEventSubscriberEntityType(EventSubscriber eventSubscriber, EntityType entityType,
             EventType eventType, BasePK createdBy) {
         var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(
@@ -1282,16 +1354,20 @@ public class EventControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscriberentitytypes, eventsubscribers, eventsubscriberdetails " +
-                        "WHERE evset_ent_entitytypeid = ? AND evset_evty_eventtypeid = ? AND evset_thrutime = ? " +
-                        "AND evset_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid " +
-                        "ORDER BY evsdt_eventsubscribername";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscriberentitytypes, eventsubscribers, eventsubscriberdetails
+                        WHERE evset_ent_entitytypeid = ? AND evset_evty_eventtypeid = ? AND evset_thrutime = ?
+                        AND evset_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid
+                        ORDER BY evsdt_eventsubscribername
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscriberentitytypes " +
-                        "WHERE evset_ent_entitytypeid = ? AND evset_evty_eventtypeid = ? AND evset_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscriberentitytypes
+                        WHERE evset_ent_entitytypeid = ? AND evset_evty_eventtypeid = ? AND evset_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = eventSubscriberEntityTypeFactory.prepareStatement(query);
@@ -1322,7 +1398,7 @@ public class EventControl
 
     @Inject
     protected EventSubscriberEntityInstanceFactory eventSubscriberEntityInstanceFactory;
-    
+
     public EventSubscriberEntityInstance createEventSubscriberEntityInstance(EventSubscriber eventSubscriber,
             EntityInstance entityInstance, EventType eventType, BasePK createdBy) {
         var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(
@@ -1341,16 +1417,20 @@ public class EventControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscriberentityinstances, eventsubscribers, eventsubscriberdetails " +
-                        "WHERE evsei_eni_entityinstanceid = ? AND evsei_evty_eventtypeid = ? AND evsei_thrutime = ? " +
-                        "AND evsei_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid " +
-                        "ORDER BY evsdt_eventsubscribername";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscriberentityinstances, eventsubscribers, eventsubscriberdetails
+                        WHERE evsei_eni_entityinstanceid = ? AND evsei_evty_eventtypeid = ? AND evsei_thrutime = ?
+                        AND evsei_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid
+                        ORDER BY evsdt_eventsubscribername
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM eventsubscriberentityinstances " +
-                        "WHERE evsei_eni_entityinstanceid = ? AND evsei_evty_eventtypeid = ? AND evsei_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM eventsubscriberentityinstances
+                        WHERE evsei_eni_entityinstanceid = ? AND evsei_evty_eventtypeid = ? AND evsei_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = eventSubscriberEntityInstanceFactory.prepareStatement(query);

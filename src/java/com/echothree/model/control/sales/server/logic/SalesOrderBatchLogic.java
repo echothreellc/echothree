@@ -16,10 +16,16 @@
 
 package com.echothree.model.control.sales.server.logic;
 
-import com.echothree.model.control.batch.common.BatchConstants;
+import com.echothree.control.user.sales.common.spec.SalesOrderBatchUniversalSpec;
+import com.echothree.model.control.batch.common.BatchTypes;
+import com.echothree.model.control.batch.common.exception.InvalidBatchTypeException;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.sales.common.choice.SalesOrderBatchStatusChoicesBean;
@@ -47,16 +53,54 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SalesOrderBatchLogic
         extends BaseLogic {
+
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    OrderBatchControl orderBatchControl;
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    SalesOrderBatchControl salesOrderBatchControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    BatchLogic batchLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    SalesOrderLineLogic salesOrderLineLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
 
     protected SalesOrderBatchLogic() {
         super();
@@ -65,15 +109,12 @@ public class SalesOrderBatchLogic
     public static SalesOrderBatchLogic getInstance() {
         return CDI.current().select(SalesOrderBatchLogic.class).get();
     }
-    
+
     public Batch createBatch(final ExecutionErrorAccumulator eea, final Currency currency, final PaymentMethod paymentMethod, final Long count,
             final Long amount, final BasePK createdBy) {
-        var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
-        var batch = BatchLogic.getInstance().createBatch(eea, BatchConstants.BatchType_SALES_ORDER, createdBy);
+        var batch = batchLogic.createBatch(eea, BatchTypes.SALES_ORDER.name(), createdBy);
 
-        if(!eea.hasExecutionErrors()) {
-            var orderBatchControl = Session.getModelController(OrderBatchControl.class);
-
+        if(eea == null || !eea.hasExecutionErrors()) {
             orderBatchControl.createOrderBatch(batch, currency, count, amount, createdBy);
             salesOrderBatchControl.createSalesOrderBatch(batch, paymentMethod, createdBy);
         }
@@ -82,7 +123,7 @@ public class SalesOrderBatchLogic
     }
     
     public boolean checkBatchInWorkflowSteps(final ExecutionErrorAccumulator eea, final Batch batch, final String... workflowStepNames) {
-        return !WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
+        return !workflowStepLogic.isEntityInWorkflowSteps(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
                 getEntityInstanceByBaseEntity(batch), workflowStepNames).isEmpty();
     }
 
@@ -91,16 +132,16 @@ public class SalesOrderBatchLogic
     }
     
     public BatchEntity createBatchEntity(final ExecutionErrorAccumulator eea, final Order order, final Batch batch, final BasePK createdBy) {
-        return BatchLogic.getInstance().createBatchEntity(eea, getEntityInstanceByBaseEntity(order), batch, createdBy);
+        return batchLogic.createBatchEntity(eea, getEntityInstanceByBaseEntity(order), batch, createdBy);
     }
 
     public boolean batchEntryExists(final ExecutionErrorAccumulator eea, final Order order, final Batch batch, final String... workflowStepNames) {
         var result = false;
         
         if(workflowStepNames.length == 0) {
-            result = BatchLogic.getInstance().batchEntityExists(order, batch);
+            result = batchLogic.batchEntityExists(order, batch);
         } else {
-            if(!WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
+            if(!workflowStepLogic.isEntityInWorkflowSteps(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
                     getEntityInstanceByBaseEntity(order), workflowStepNames).isEmpty()) {
                 result = true;
             } else {
@@ -113,15 +154,10 @@ public class SalesOrderBatchLogic
     }
     
     public void deleteBatch(final ExecutionErrorAccumulator eea, final Batch batch, final BasePK deletedBy) {
-        var batchControl = Session.getModelController(BatchControl.class);
-
         if(batchControl.countBatchEntitiesByBatch(batch) == 0) {
-            BatchLogic.getInstance().deleteBatch(eea, batch, deletedBy);
+            batchLogic.deleteBatch(eea, batch, deletedBy);
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                var orderBatchControl = Session.getModelController(OrderBatchControl.class);
-                var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
-
                 orderBatchControl.deleteOrderBatch(batch, deletedBy);
                 salesOrderBatchControl.deleteSalesOrderBatch(batch, deletedBy);
             }
@@ -131,24 +167,72 @@ public class SalesOrderBatchLogic
         }
     }
 
+    public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchName, final EntityPermission entityPermission) {
+        return batchLogic.getBatchByName(eea, BatchTypes.SALES_ORDER.name(), batchName, entityPermission);
+    }
+
     public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchName) {
-        return BatchLogic.getInstance().getBatchByName(eea, BatchConstants.BatchType_SALES_ORDER, batchName);
+        return getBatchByName(eea, batchName, EntityPermission.READ_ONLY);
     }
 
     public Batch getBatchByNameForUpdate(final ExecutionErrorAccumulator eea, final String batchName) {
-        return BatchLogic.getInstance().getBatchByNameForUpdate(eea, BatchConstants.BatchType_SALES_ORDER, batchName);
+        return getBatchByName(eea, batchName, EntityPermission.READ_WRITE);
+    }
+
+    public Batch getBatchByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final SalesOrderBatchUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Batch batch = null;
+        var batchName = universalSpec.getBatchName();
+        var parameterCount = (batchName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(batchName == null) {
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Batch.name());
+
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        batch = batchControl.getBatchByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    batch = getBatchByName(eea, batchName, entityPermission);
+                }
+
+                if(!hasExecutionErrors(eea)) {
+                    var batchTypeName = batch.getLastDetail().getBatchType().getLastDetail().getBatchTypeName();
+
+                    if(!batchTypeName.equals(BatchTypes.SALES_ORDER.name())) {
+                        batch = null;
+                        // Purposefully disclose nothing about the BatchType of the Batch that was found.
+                        handleExecutionError(InvalidBatchTypeException.class, eea, ExecutionErrors.InvalidBatchType.name());
+                    }
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return batch;
+    }
+
+    public Batch getBatchByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final SalesOrderBatchUniversalSpec universalSpec) {
+        return getBatchByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Batch getBatchByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final SalesOrderBatchUniversalSpec universalSpec) {
+        return getBatchByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public SalesOrderBatchStatusChoicesBean getSalesOrderBatchStatusChoices(String defaultSalesOrderBatchStatusChoice, Language language, boolean allowNullChoice,
             Batch batch, PartyPK partyPK) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var salesOrderBatchStatusChoicesBean = new SalesOrderBatchStatusChoicesBean();
 
         if(batch == null) {
             workflowControl.getWorkflowEntranceChoices(salesOrderBatchStatusChoicesBean, defaultSalesOrderBatchStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
                     entityInstance);
@@ -161,23 +245,18 @@ public class SalesOrderBatchLogic
     }
 
     public void setSalesOrderBatchStatus(final Session session, ExecutionErrorAccumulator eea, Batch batch, String salesOrderBatchStatusChoice, PartyPK modifiedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var orderControl = Session.getModelController(OrderControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
+        var workflow = workflowLogic.getWorkflowByName(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = salesOrderBatchStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), salesOrderBatchStatusChoice);
 
         if(workflowDestination != null || salesOrderBatchStatusChoice == null) {
-            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
             
             if(currentWorkflowStepName.equals(SalesOrderBatchStatusConstants.WorkflowStep_ENTRY)) {
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS, SalesOrderBatchStatusConstants.WorkflowStep_AUDIT)) {
-                    var batchControl = Session.getModelController(BatchControl.class);
                     var batchEntities = batchControl.getBatchEntitiesByBatch(batch);
                     
                     // Verify all orders are in BATCH_AUDIT.
@@ -194,13 +273,11 @@ public class SalesOrderBatchLogic
                 }
             } else if(currentWorkflowStepName.equals(SalesOrderBatchStatusConstants.WorkflowStep_AUDIT)) {
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS, SalesOrderBatchStatusConstants.WorkflowStep_COMPLETE)) {
-                    var orderBatchControl = Session.getModelController(OrderBatchControl.class);
                     var orderBatch = orderBatchControl.getOrderBatch(batch);
                     var count = orderBatch.getCount();
                     var amount = orderBatch.getAmount();
 
                     if(count != null) {
-                        var batchControl = Session.getModelController(BatchControl.class);
                         Long batchCount = batchControl.countBatchEntitiesByBatch(batch);
 
                         if(!count.equals(batchCount)) {
@@ -232,8 +309,6 @@ public class SalesOrderBatchLogic
     }
 
     public List<Order> getBatchOrders(final Batch batch) {
-        var batchControl = Session.getModelController(BatchControl.class);
-        var orderControl = Session.getModelController(OrderControl.class);
         var batchEntities = batchControl.getBatchEntitiesByBatch(batch);
         List<Order> orders = new ArrayList<>(batchEntities.size());
 
@@ -245,7 +320,6 @@ public class SalesOrderBatchLogic
     }
 
     public Long getBatchOrderTotalsWithAdjustments(Batch batch) {
-        var salesOrderLineLogic = SalesOrderLineLogic.getInstance();
         var orders = getBatchOrders(batch);
         long total = 0;
 

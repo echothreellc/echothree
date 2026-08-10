@@ -43,17 +43,18 @@ public class GetItemPackCheckRequirementsCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetItemPackCheckRequirementsCommand */
-    public GetItemPackCheckRequirementsCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     ItemControl itemControl;
 
     @Inject
     ItemLogic itemLogic;
+
+
+    /** Creates a new instance of GetItemPackCheckRequirementsCommand */
+    public GetItemPackCheckRequirementsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
+    }
 
     Item item;
 

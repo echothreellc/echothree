@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCancellationTypeCommand
@@ -54,13 +54,13 @@ public class EditCancellationTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CancellationType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -68,8 +68,15 @@ public class EditCancellationTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of EditCancellationTypeCommand */
     public EditCancellationTypeCommand() {
@@ -78,7 +85,6 @@ public class EditCancellationTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var result = CancellationPolicyResultFactory.getEditCancellationTypeResult();
         var cancellationKindName = spec.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
@@ -122,7 +128,6 @@ public class EditCancellationTypeCommand
                     var duplicateCancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
                     
                     if(duplicateCancellationType == null || cancellationType.equals(duplicateCancellationType)) {
-                        var sequenceControl = Session.getModelController(SequenceControl.class);
                         var cancellationSequenceName = edit.getCancellationSequenceName();
                         Sequence cancellationSequence = null;
                         

@@ -19,7 +19,10 @@ package com.echothree.model.control.filter.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,7 +34,16 @@ public class FilterTransferCache
         extends BaseFilterTransferCache<Filter, FilterTransfer> {
 
     @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
 
     @Inject
     SelectorControl selectorControl;
@@ -58,9 +70,9 @@ public class FilterTransferCache
         
         if(filterTransfer == null) {
             var filterDetail = filter.getLastDetail();
-            var filterTypeTransfer = filterControl.getFilterTypeTransfer(userVisit, filterDetail.getFilterType());
+            var filterTypeTransfer = filterTypeControl.getFilterTypeTransfer(userVisit, filterDetail.getFilterType());
             var filterName = filterDetail.getFilterName();
-            var initialFilterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterDetail.getInitialFilterAdjustment());
+            var initialFilterAdjustmentTransfer = filterAdjustmentControl.getFilterAdjustmentTransfer(userVisit, filterDetail.getInitialFilterAdjustment());
             var filterItemSelector = filterDetail.getFilterItemSelector();
             var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
             var isDefault = filterDetail.getIsDefault();
@@ -72,11 +84,11 @@ public class FilterTransferCache
             put(userVisit, filter, filterTransfer);
             
             if(includeFilterEntranceSteps) {
-                filterTransfer.setFilterEntranceSteps(new ListWrapper<>(filterControl.getFilterEntranceStepTransfersByFilter(userVisit, filter)));
+                filterTransfer.setFilterEntranceSteps(new ListWrapper<>(filterStepControl.getFilterEntranceStepTransfersByFilter(userVisit, filter)));
             }
             
             if(includeFilterSteps) {
-                filterTransfer.setFilterSteps(new ListWrapper<>(filterControl.getFilterStepTransfersByFilter(userVisit, filter)));
+                filterTransfer.setFilterSteps(new ListWrapper<>(filterStepControl.getFilterStepTransfersByFilter(userVisit, filter)));
             }
         }
         return filterTransfer;

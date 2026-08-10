@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.sales.server.search;
 
-import com.echothree.model.control.batch.common.BatchConstants;
+import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
-import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.control.order.server.search.OrderBatchSearchEvaluator;
+import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
@@ -39,7 +39,7 @@ public class SalesOrderBatchSearchEvaluator
     public SalesOrderBatchSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection) {
         super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection,BatchLogic.getInstance().getBatchTypeByName(null,
-                BatchConstants.BatchType_SALES_ORDER));
+                BatchTypes.SALES_ORDER.name()));
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByPaymentMethod(PaymentMethod paymentMethod) {

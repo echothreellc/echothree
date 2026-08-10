@@ -25,13 +25,25 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentProcessorActionLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentProcessorActionControl paymentProcessorActionControl;
+
+    @Inject
+    PaymentProcessorActionTypeLogic paymentProcessorActionTypeLogic;
+
+    @Inject
+    PaymentProcessorLogic paymentProcessorLogic;
+
+    @Inject
+    PaymentProcessorTypeActionLogic paymentProcessorTypeActionLogic;
 
     protected PaymentProcessorActionLogic() {
         super();
@@ -43,17 +55,15 @@ public class PaymentProcessorActionLogic
 
     public PaymentProcessorAction createPaymentProcessorAction(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final String paymentProcessorActionTypeName, final BasePK createdBy) {
-        var paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
-        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
+        var paymentProcessor = paymentProcessorLogic.getPaymentProcessorByName(eea, paymentProcessorName);
+        var paymentProcessorActionType = paymentProcessorActionTypeLogic.getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
         PaymentProcessorAction paymentProcessorAction = null;
 
-        if(!eea.hasExecutionErrors()) {
-            var paymentProcessorTypeAction = PaymentProcessorTypeActionLogic.getInstance().getPaymentProcessorTypeAction(eea,
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var paymentProcessorTypeAction = paymentProcessorTypeActionLogic.getPaymentProcessorTypeAction(eea,
                     paymentProcessor.getLastDetail().getPaymentProcessorType(), paymentProcessorActionType);
 
-            if(!eea.hasExecutionErrors()) {
-                var paymentProcessorActionControl = Session.getModelController(PaymentProcessorActionControl.class);
-
+            if(eea == null || !eea.hasExecutionErrors()) {
                 paymentProcessorAction = paymentProcessorActionControl.getPaymentProcessorAction(paymentProcessor, paymentProcessorTypeAction);
 
                 if(paymentProcessorAction == null) {
@@ -71,17 +81,15 @@ public class PaymentProcessorActionLogic
 
     public PaymentProcessorAction getPaymentProcessorActionByNames(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final String paymentProcessorActionTypeName, final EntityPermission entityPermission) {
-        var paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByName(eea, paymentProcessorName);
-        var paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
+        var paymentProcessor = paymentProcessorLogic.getPaymentProcessorByName(eea, paymentProcessorName);
+        var paymentProcessorActionType = paymentProcessorActionTypeLogic.getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName);
         PaymentProcessorAction paymentProcessorAction = null;
 
-        if(!eea.hasExecutionErrors()) {
-            var paymentProcessorTypeAction = PaymentProcessorTypeActionLogic.getInstance().getPaymentProcessorTypeAction(eea,
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var paymentProcessorTypeAction = paymentProcessorTypeActionLogic.getPaymentProcessorTypeAction(eea,
                     paymentProcessor.getLastDetail().getPaymentProcessorType(), paymentProcessorActionType);
 
-            if(!eea.hasExecutionErrors()) {
-                var paymentProcessorActionControl = Session.getModelController(PaymentProcessorActionControl.class);
-
+            if(eea == null || !eea.hasExecutionErrors()) {
                 paymentProcessorAction = paymentProcessorActionControl.getPaymentProcessorAction(paymentProcessor, paymentProcessorTypeAction, entityPermission);
 
                 if(paymentProcessorAction == null) {
@@ -106,8 +114,6 @@ public class PaymentProcessorActionLogic
 
     public void deletePaymentProcessorAction(final ExecutionErrorAccumulator eea, final PaymentProcessorAction paymentProcessorAction,
             final BasePK deletedBy) {
-        var paymentProcessorActionControl = Session.getModelController(PaymentProcessorActionControl.class);
-
         paymentProcessorActionControl.deletePaymentProcessorAction(paymentProcessorAction, deletedBy);
     }
 }

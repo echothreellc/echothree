@@ -40,6 +40,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityGeoPointAttributeCommand
@@ -60,7 +61,7 @@ public class EditEntityGeoPointAttributeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Latitude", FieldType.LATITUDE, true, null, null),
@@ -69,9 +70,18 @@ public class EditEntityGeoPointAttributeCommand
                 new FieldDefinition("ElevationUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Altitude", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("AltitudeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of EditEntityGeoPointAttributeCommand */
     public EditEntityGeoPointAttributeCommand() {
@@ -81,10 +91,10 @@ public class EditEntityGeoPointAttributeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityGeoPointAttributeResult();
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -94,8 +104,8 @@ public class EditEntityGeoPointAttributeCommand
 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
+                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
@@ -110,7 +120,6 @@ public class EditEntityGeoPointAttributeCommand
                                         result.setEntityGeoPointAttribute(coreControl.getEntityGeoPointAttributeTransfer(getUserVisit(), entityGeoPointAttribute, entityInstance));
 
                                         if(lockEntity(basePK)) {
-                                            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
                                             var geoPointUtils = GeoPointUtils.getInstance();
                                             var edit = CoreEditFactory.getEntityGeoPointAttributeEdit();
                                             UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
@@ -133,15 +142,13 @@ public class EditEntityGeoPointAttributeCommand
                                     }
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownEntityGeoPointAttribute.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                             entityAttribute.getLastDetail().getEntityAttributeName());
                                 }
                             } else if(editMode.equals(EditMode.UPDATE)) {
                                 entityGeoPointAttribute = coreControl.getEntityGeoPointAttributeForUpdate(entityAttribute, entityInstance);
 
                                 if(entityGeoPointAttribute != null) {
-                                    var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-
                                     var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
                                             edit.getElevation(), edit.getElevationUnitOfMeasureTypeName(),
                                             null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
@@ -175,7 +182,7 @@ public class EditEntityGeoPointAttributeCommand
                                     }
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownEntityGeoPointAttribute.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                             entityAttribute.getLastDetail().getEntityAttributeName());
                                 }
                             }

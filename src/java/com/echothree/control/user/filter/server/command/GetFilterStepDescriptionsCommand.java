@@ -19,6 +19,9 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepDescriptionsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterStepDescriptionsCommand
@@ -57,6 +60,19 @@ public class GetFilterStepDescriptionsCommand
                 new FieldDefinition("FilterStepName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
+
     
     /** Creates a new instance of GetFilterStepDescriptionsCommand */
     public GetFilterStepDescriptionsCommand() {
@@ -65,33 +81,32 @@ public class GetFilterStepDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterStepDescriptionsResult();
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var userVisit = getUserVisit();
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
-            result.setFilterKind(filterControl.getFilterKindTransfer(userVisit, filterKind));
+            result.setFilterKind(filterKindControl.getFilterKindTransfer(userVisit, filterKind));
             
             if(filterType != null) {
                 var filterName = form.getFilterName();
                 var filter = filterControl.getFilterByName(filterType, filterName);
                 
-                result.setFilterType(filterControl.getFilterTypeTransfer(userVisit, filterType));
+                result.setFilterType(filterTypeControl.getFilterTypeTransfer(userVisit, filterType));
                 
                 if(filter != null) {
                     var filterStepName = form.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStep = filterStepControl.getFilterStepByName(filter, filterStepName);
                     
                     result.setFilter(filterControl.getFilterTransfer(userVisit, filter));
                     
                     if(filterStep != null) {
-                        result.setFilterStep(filterControl.getFilterStepTransfer(userVisit, filterStep));
-                        result.setFilterStepDescriptions(filterControl.getFilterStepDescriptionTransfers(userVisit, filterStep));
+                        result.setFilterStep(filterStepControl.getFilterStepTransfer(userVisit, filterStep));
+                        result.setFilterStepDescriptions(filterStepControl.getFilterStepDescriptionTransfers(userVisit, filterStep));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownFilterStepName.name(), filterStepName);
                     }

@@ -32,10 +32,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSalesOrderTimeCommand
@@ -48,12 +48,18 @@ public class EditSalesOrderTimeCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Time", FieldType.DATE_TIME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    OrderTimeControl orderTimeControl;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
 
     /** Creates a new instance of EditSalesOrderTimeCommand */
     public EditSalesOrderTimeCommand() {
@@ -73,11 +79,10 @@ public class EditSalesOrderTimeCommand
     @Override
     public OrderTime getEntity(EditSalesOrderTimeResult result) {
         var orderName = spec.getOrderName();
-        var order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var order = salesOrderLogic.getOrderByName(this, orderName);
         OrderTime orderTime = null;
         
         if(!hasExecutionErrors()) {
-            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
             var orderType = order.getLastDetail().getOrderType();
             var orderTimeTypeName = spec.getOrderTimeTypeName();
             var orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
@@ -105,8 +110,6 @@ public class EditSalesOrderTimeCommand
 
     @Override
     public void fillInResult(EditSalesOrderTimeResult result, OrderTime orderTime) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-
         result.setOrderTime(orderTimeControl.getOrderTimeTransfer(getUserVisit(), orderTime));
     }
 
@@ -117,7 +120,6 @@ public class EditSalesOrderTimeCommand
 
     @Override
     public void doUpdate(OrderTime orderTime) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var orderTimeValue = orderTimeControl.getOrderTimeValue(orderTime);
         var time = Long.valueOf(edit.getTime());
         

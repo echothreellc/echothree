@@ -69,10 +69,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.inject.Inject;
 
 @CommandScope
 public class ServerControl
         extends BaseCoreControl {
+
+    @Inject
+    protected ScaleControl scaleControl;
 
     /** Creates a new instance of ServerControl */
     protected ServerControl() {
@@ -82,6 +86,12 @@ public class ServerControl
     // --------------------------------------------------------------------------------
     //   Protocols
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ProtocolFactory protocolFactory;
+
+    @Inject
+    protected ProtocolDetailFactory protocolDetailFactory;
 
     public Protocol createProtocol(String protocolName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultProtocol = getDefaultProtocol();
@@ -96,12 +106,12 @@ public class ServerControl
             isDefault = true;
         }
 
-        var protocol = ProtocolFactory.getInstance().create();
-        var protocolDetail = ProtocolDetailFactory.getInstance().create(protocol, protocolName, isDefault, sortOrder, session.getStartTime(),
+        var protocol = protocolFactory.create();
+        var protocolDetail = protocolDetailFactory.create(protocol, protocolName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        protocol = ProtocolFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        protocol = protocolFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 protocol.getPrimaryKey());
         protocol.setActiveDetail(protocolDetail);
         protocol.setLastDetail(protocolDetail);
@@ -116,7 +126,7 @@ public class ServerControl
     public Protocol getProtocolByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ProtocolPK(entityInstance.getEntityUniqueId());
 
-        return ProtocolFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return protocolFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Protocol getProtocolByEntityInstance(EntityInstance entityInstance) {
@@ -159,7 +169,7 @@ public class ServerControl
     }
 
     private Protocol getProtocolByName(String protocolName, EntityPermission entityPermission) {
-        return ProtocolFactory.getInstance().getEntityFromQuery(entityPermission, getProtocolByNameQueries, protocolName);
+        return protocolFactory.getEntityFromQuery(entityPermission, getProtocolByNameQueries, protocolName);
     }
 
     public Protocol getProtocolByName(String protocolName) {
@@ -202,7 +212,7 @@ public class ServerControl
     }
 
     private Protocol getDefaultProtocol(EntityPermission entityPermission) {
-        return ProtocolFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultProtocolQueries);
+        return protocolFactory.getEntityFromQuery(entityPermission, getDefaultProtocolQueries);
     }
 
     public Protocol getDefaultProtocol() {
@@ -241,7 +251,7 @@ public class ServerControl
     }
 
     private List<Protocol> getProtocols(EntityPermission entityPermission) {
-        return ProtocolFactory.getInstance().getEntitiesFromQuery(entityPermission, getProtocolsQueries);
+        return protocolFactory.getEntitiesFromQuery(entityPermission, getProtocolsQueries);
     }
 
     public List<Protocol> getProtocols() {
@@ -306,7 +316,7 @@ public class ServerControl
 
     private void updateProtocolFromValue(ProtocolDetailValue protocolDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(protocolDetailValue.hasBeenModified()) {
-            var protocol = ProtocolFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var protocol = protocolFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     protocolDetailValue.getProtocolPK());
             var protocolDetail = protocol.getActiveDetailForUpdate();
 
@@ -334,7 +344,7 @@ public class ServerControl
                 }
             }
 
-            protocolDetail = ProtocolDetailFactory.getInstance().create(protocolPK, protocolName, isDefault, sortOrder, session.getStartTime(),
+            protocolDetail = protocolDetailFactory.create(protocolPK, protocolName, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             protocol.setActiveDetail(protocolDetail);
@@ -397,8 +407,11 @@ public class ServerControl
     //   Protocol Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ProtocolDescriptionFactory protocolDescriptionFactory;
+
     public ProtocolDescription createProtocolDescription(Protocol protocol, Language language, String description, BasePK createdBy) {
-        var protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
+        var protocolDescription = protocolDescriptionFactory.create(protocol, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -428,7 +441,7 @@ public class ServerControl
     }
 
     private ProtocolDescription getProtocolDescription(Protocol protocol, Language language, EntityPermission entityPermission) {
-        return ProtocolDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getProtocolDescriptionQueries,
+        return protocolDescriptionFactory.getEntityFromQuery(entityPermission, getProtocolDescriptionQueries,
                 protocol, language, Session.MAX_TIME);
     }
 
@@ -472,7 +485,7 @@ public class ServerControl
     }
 
     private List<ProtocolDescription> getProtocolDescriptionsByProtocol(Protocol protocol, EntityPermission entityPermission) {
-        return ProtocolDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getProtocolDescriptionsByProtocolQueries,
+        return protocolDescriptionFactory.getEntitiesFromQuery(entityPermission, getProtocolDescriptionsByProtocolQueries,
                 protocol, Session.MAX_TIME);
     }
 
@@ -518,7 +531,7 @@ public class ServerControl
 
     public void updateProtocolDescriptionFromValue(ProtocolDescriptionValue protocolDescriptionValue, BasePK updatedBy) {
         if(protocolDescriptionValue.hasBeenModified()) {
-            var protocolDescription = ProtocolDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var protocolDescription = protocolDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     protocolDescriptionValue.getPrimaryKey());
 
             protocolDescription.setThruTime(session.getStartTime());
@@ -528,7 +541,7 @@ public class ServerControl
             var language = protocolDescription.getLanguage();
             var description = protocolDescriptionValue.getDescription();
 
-            protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
+            protocolDescription = protocolDescriptionFactory.create(protocol, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -554,6 +567,12 @@ public class ServerControl
     //   Services
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ServiceFactory serviceFactory;
+
+    @Inject
+    protected ServiceDetailFactory serviceDetailFactory;
+
     public Service createService(String serviceName, Integer port, Protocol protocol, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultService = getDefaultService();
         var defaultFound = defaultService != null;
@@ -567,12 +586,12 @@ public class ServerControl
             isDefault = true;
         }
 
-        var service = ServiceFactory.getInstance().create();
-        var serviceDetail = ServiceDetailFactory.getInstance().create(service, serviceName, port, protocol, isDefault, sortOrder,
+        var service = serviceFactory.create();
+        var serviceDetail = serviceDetailFactory.create(service, serviceName, port, protocol, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        service = ServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        service = serviceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 service.getPrimaryKey());
         service.setActiveDetail(serviceDetail);
         service.setLastDetail(serviceDetail);
@@ -587,7 +606,7 @@ public class ServerControl
     public Service getServiceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ServicePK(entityInstance.getEntityUniqueId());
 
-        return ServiceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return serviceFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Service getServiceByEntityInstance(EntityInstance entityInstance) {
@@ -630,7 +649,7 @@ public class ServerControl
     }
 
     private Service getServiceByName(String serviceName, EntityPermission entityPermission) {
-        return ServiceFactory.getInstance().getEntityFromQuery(entityPermission, getServiceByNameQueries, serviceName);
+        return serviceFactory.getEntityFromQuery(entityPermission, getServiceByNameQueries, serviceName);
     }
 
     public Service getServiceByName(String serviceName) {
@@ -673,7 +692,7 @@ public class ServerControl
     }
 
     private Service getDefaultService(EntityPermission entityPermission) {
-        return ServiceFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultServiceQueries);
+        return serviceFactory.getEntityFromQuery(entityPermission, getDefaultServiceQueries);
     }
 
     public Service getDefaultService() {
@@ -712,7 +731,7 @@ public class ServerControl
     }
 
     private List<Service> getServices(EntityPermission entityPermission) {
-        return ServiceFactory.getInstance().getEntitiesFromQuery(entityPermission, getServicesQueries);
+        return serviceFactory.getEntitiesFromQuery(entityPermission, getServicesQueries);
     }
 
     public List<Service> getServices() {
@@ -749,7 +768,7 @@ public class ServerControl
     }
 
     private List<Service> getServicesByProtocol(Protocol protocol, EntityPermission entityPermission) {
-        return ServiceFactory.getInstance().getEntitiesFromQuery(entityPermission, getServicesByProtocolQueries,
+        return serviceFactory.getEntitiesFromQuery(entityPermission, getServicesByProtocolQueries,
                 protocol);
     }
 
@@ -815,7 +834,7 @@ public class ServerControl
 
     private void updateServiceFromValue(ServiceDetailValue serviceDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(serviceDetailValue.hasBeenModified()) {
-            var service = ServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var service = serviceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     serviceDetailValue.getServicePK());
             var serviceDetail = service.getActiveDetailForUpdate();
 
@@ -845,7 +864,7 @@ public class ServerControl
                 }
             }
 
-            serviceDetail = ServiceDetailFactory.getInstance().create(servicePK, serviceName, port, protocolPK, isDefault, sortOrder, session.getStartTime(),
+            serviceDetail = serviceDetailFactory.create(servicePK, serviceName, port, protocolPK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             service.setActiveDetail(serviceDetail);
@@ -912,8 +931,11 @@ public class ServerControl
     //   Service Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ServiceDescriptionFactory serviceDescriptionFactory;
+
     public ServiceDescription createServiceDescription(Service service, Language language, String description, BasePK createdBy) {
-        var serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
+        var serviceDescription = serviceDescriptionFactory.create(service, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -943,7 +965,7 @@ public class ServerControl
     }
 
     private ServiceDescription getServiceDescription(Service service, Language language, EntityPermission entityPermission) {
-        return ServiceDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getServiceDescriptionQueries,
+        return serviceDescriptionFactory.getEntityFromQuery(entityPermission, getServiceDescriptionQueries,
                 service, language, Session.MAX_TIME);
     }
 
@@ -987,7 +1009,7 @@ public class ServerControl
     }
 
     private List<ServiceDescription> getServiceDescriptionsByService(Service service, EntityPermission entityPermission) {
-        return ServiceDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getServiceDescriptionsByServiceQueries,
+        return serviceDescriptionFactory.getEntitiesFromQuery(entityPermission, getServiceDescriptionsByServiceQueries,
                 service, Session.MAX_TIME);
     }
 
@@ -1033,7 +1055,7 @@ public class ServerControl
 
     public void updateServiceDescriptionFromValue(ServiceDescriptionValue serviceDescriptionValue, BasePK updatedBy) {
         if(serviceDescriptionValue.hasBeenModified()) {
-            var serviceDescription = ServiceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var serviceDescription = serviceDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     serviceDescriptionValue.getPrimaryKey());
 
             serviceDescription.setThruTime(session.getStartTime());
@@ -1043,7 +1065,7 @@ public class ServerControl
             var language = serviceDescription.getLanguage();
             var description = serviceDescriptionValue.getDescription();
 
-            serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
+            serviceDescription = serviceDescriptionFactory.create(service, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1069,6 +1091,12 @@ public class ServerControl
     //   Servers
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ServerFactory serverFactory;
+
+    @Inject
+    protected ServerDetailFactory serverDetailFactory;
+
     public Server createServer(String serverName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultServer = getDefaultServer();
         var defaultFound = defaultServer != null;
@@ -1082,12 +1110,12 @@ public class ServerControl
             isDefault = true;
         }
 
-        var server = ServerFactory.getInstance().create();
-        var serverDetail = ServerDetailFactory.getInstance().create(server, serverName, isDefault, sortOrder, session.getStartTime(),
+        var server = serverFactory.create();
+        var serverDetail = serverDetailFactory.create(server, serverName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        server = ServerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, server.getPrimaryKey());
+        server = serverFactory.getEntityFromPK(EntityPermission.READ_WRITE, server.getPrimaryKey());
         server.setActiveDetail(serverDetail);
         server.setLastDetail(serverDetail);
         server.store();
@@ -1101,7 +1129,7 @@ public class ServerControl
     public Server getServerByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ServerPK(entityInstance.getEntityUniqueId());
 
-        return ServerFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return serverFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Server getServerByEntityInstance(EntityInstance entityInstance) {
@@ -1144,7 +1172,7 @@ public class ServerControl
     }
 
     private Server getServerByName(String serverName, EntityPermission entityPermission) {
-        return ServerFactory.getInstance().getEntityFromQuery(entityPermission, getServerByNameQueries, serverName);
+        return serverFactory.getEntityFromQuery(entityPermission, getServerByNameQueries, serverName);
     }
 
     public Server getServerByName(String serverName) {
@@ -1187,7 +1215,7 @@ public class ServerControl
     }
 
     private Server getDefaultServer(EntityPermission entityPermission) {
-        return ServerFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultServerQueries);
+        return serverFactory.getEntityFromQuery(entityPermission, getDefaultServerQueries);
     }
 
     public Server getDefaultServer() {
@@ -1226,7 +1254,7 @@ public class ServerControl
     }
 
     private List<Server> getServers(EntityPermission entityPermission) {
-        return ServerFactory.getInstance().getEntitiesFromQuery(entityPermission, getServersQueries);
+        return serverFactory.getEntitiesFromQuery(entityPermission, getServersQueries);
     }
 
     public List<Server> getServers() {
@@ -1291,7 +1319,7 @@ public class ServerControl
 
     private void updateServerFromValue(ServerDetailValue serverDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(serverDetailValue.hasBeenModified()) {
-            var server = ServerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var server = serverFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     serverDetailValue.getServerPK());
             var serverDetail = server.getActiveDetailForUpdate();
 
@@ -1319,7 +1347,7 @@ public class ServerControl
                 }
             }
 
-            serverDetail = ServerDetailFactory.getInstance().create(serverPK, serverName, isDefault, sortOrder, session.getStartTime(),
+            serverDetail = serverDetailFactory.create(serverPK, serverName, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
 
             server.setActiveDetail(serverDetail);
@@ -1382,8 +1410,11 @@ public class ServerControl
     //   Server Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ServerDescriptionFactory serverDescriptionFactory;
+
     public ServerDescription createServerDescription(Server server, Language language, String description, BasePK createdBy) {
-        var serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
+        var serverDescription = serverDescriptionFactory.create(server, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1413,7 +1444,7 @@ public class ServerControl
     }
 
     private ServerDescription getServerDescription(Server server, Language language, EntityPermission entityPermission) {
-        return ServerDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getServerDescriptionQueries,
+        return serverDescriptionFactory.getEntityFromQuery(entityPermission, getServerDescriptionQueries,
                 server, language, Session.MAX_TIME);
     }
 
@@ -1457,7 +1488,7 @@ public class ServerControl
     }
 
     private List<ServerDescription> getServerDescriptionsByServer(Server server, EntityPermission entityPermission) {
-        return ServerDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getServerDescriptionsByServerQueries,
+        return serverDescriptionFactory.getEntitiesFromQuery(entityPermission, getServerDescriptionsByServerQueries,
                 server, Session.MAX_TIME);
     }
 
@@ -1503,7 +1534,7 @@ public class ServerControl
 
     public void updateServerDescriptionFromValue(ServerDescriptionValue serverDescriptionValue, BasePK updatedBy) {
         if(serverDescriptionValue.hasBeenModified()) {
-            var serverDescription = ServerDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var serverDescription = serverDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     serverDescriptionValue.getPrimaryKey());
 
             serverDescription.setThruTime(session.getStartTime());
@@ -1513,7 +1544,7 @@ public class ServerControl
             var language = serverDescription.getLanguage();
             var description = serverDescriptionValue.getDescription();
 
-            serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
+            serverDescription = serverDescriptionFactory.create(server, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1539,8 +1570,11 @@ public class ServerControl
     //   Server Services
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ServerServiceFactory serverServiceFactory;
+
     public ServerService createServerService(Server server, Service service, BasePK createdBy) {
-        var serverService = ServerServiceFactory.getInstance().create(server, service, session.getStartTime(), Session.MAX_TIME);
+        var serverService = serverServiceFactory.create(server, service, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1585,7 +1619,7 @@ public class ServerControl
     }
 
     private ServerService getServerService(Server server, Service service, EntityPermission entityPermission) {
-        return ServerServiceFactory.getInstance().getEntityFromQuery(entityPermission, getServerServiceQueries,
+        return serverServiceFactory.getEntityFromQuery(entityPermission, getServerServiceQueries,
                 server, service, Session.MAX_TIME);
     }
 
@@ -1630,7 +1664,7 @@ public class ServerControl
     }
 
     private List<ServerService> getServerServicesByServer(Server server, EntityPermission entityPermission) {
-        return ServerServiceFactory.getInstance().getEntitiesFromQuery(entityPermission, getServerServicesByServerQueries,
+        return serverServiceFactory.getEntitiesFromQuery(entityPermission, getServerServicesByServerQueries,
                 server, Session.MAX_TIME);
     }
 
@@ -1667,7 +1701,7 @@ public class ServerControl
     }
 
     private List<ServerService> getServerServicesByService(Service service, EntityPermission entityPermission) {
-        return ServerServiceFactory.getInstance().getEntitiesFromQuery(entityPermission, getServerServicesByServiceQueries,
+        return serverServiceFactory.getEntitiesFromQuery(entityPermission, getServerServicesByServiceQueries,
                 service, Session.MAX_TIME);
     }
 
@@ -1695,7 +1729,6 @@ public class ServerControl
     }
 
     public void deleteServerService(ServerService serverService, BasePK deletedBy) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
 
         scaleControl.deleteScalesByServerService(serverService, deletedBy);
 

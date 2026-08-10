@@ -30,6 +30,7 @@ import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditRecoveryQuestionCommand
@@ -40,16 +41,17 @@ public class EditRecoveryQuestionCommand
     
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
     
     /** Creates a new instance of EditRecoveryQuestionCommand */
     public EditRecoveryQuestionCommand() {
@@ -58,7 +60,6 @@ public class EditRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var result = UserResultFactory.getEditRecoveryQuestionResult();
         
         if(editMode.equals(EditMode.LOCK)) {

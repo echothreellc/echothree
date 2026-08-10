@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypesCommand
@@ -53,6 +53,9 @@ public class GetCustomerTypesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    CustomerControl customerControl;
+
     /** Creates a new instance of GetCustomerTypesCommand */
     public GetCustomerTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetCustomerTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var customerControl = Session.getModelController(CustomerControl.class);
-
         return customerControl.countCustomerTypes();
     }
 
     @Override
     protected Collection<CustomerType> getEntities() {
-        var customerControl = Session.getModelController(CustomerControl.class);
-
         return customerControl.getCustomerTypes();
     }
 
@@ -82,8 +81,6 @@ public class GetCustomerTypesCommand
         var result = CustomerResultFactory.getGetCustomerTypesResult();
 
         if(entities != null) {
-            var customerControl = Session.getModelController(CustomerControl.class);
-
             if(session.hasLimit(CustomerTypeFactory.class)) {
                 result.setCustomerTypeCount(getTotalEntities());
             }

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteWorkflowDestinationSecurityRoleCommand
@@ -47,9 +47,9 @@ public class DeleteWorkflowDestinationSecurityRoleCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.SecurityRole.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.SecurityRole.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
@@ -57,8 +57,18 @@ public class DeleteWorkflowDestinationSecurityRoleCommand
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SecurityRoleName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of DeleteWorkflowDestinationSecurityRoleCommand */
     public DeleteWorkflowDestinationSecurityRoleCommand() {
@@ -67,7 +77,6 @@ public class DeleteWorkflowDestinationSecurityRoleCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
@@ -80,7 +89,6 @@ public class DeleteWorkflowDestinationSecurityRoleCommand
                 var workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var partyTypeName = form.getPartyTypeName();
                     var partyType = partyControl.getPartyTypeByName(partyTypeName);
                     
@@ -91,7 +99,6 @@ public class DeleteWorkflowDestinationSecurityRoleCommand
                             var securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
                             
                             if(securityRoleGroup != null) {
-                                var securityControl = Session.getModelController(SecurityControl.class);
                                 var securityRoleName = form.getSecurityRoleName();
                                 var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
                                 

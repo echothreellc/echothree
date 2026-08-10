@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetPartyCancellationPolicyStatusCommand
@@ -47,17 +47,27 @@ public class SetPartyCancellationPolicyStatusCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PartyCancellationPolicyStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyCancellationPolicyStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyCancellationPolicyStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyCancellationPolicyLogic partyCancellationPolicyLogic;
+
     
     /** Creates a new instance of SetPartyCancellationPolicyStatusCommand */
     public SetPartyCancellationPolicyStatusCommand() {
@@ -66,12 +76,10 @@ public class SetPartyCancellationPolicyStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var cancellationKindName = form.getCancellationKindName();
             var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
@@ -85,7 +93,7 @@ public class SetPartyCancellationPolicyStatusCommand
                     if(partyCancellationPolicy != null) {
                         var partyCancellationPolicyStatusChoice = form.getPartyCancellationPolicyStatusChoice();
 
-                        PartyCancellationPolicyLogic.getInstance().setPartyCancellationPolicyStatus(this, partyCancellationPolicy, partyCancellationPolicyStatusChoice, getPartyPK());
+                        partyCancellationPolicyLogic.setPartyCancellationPolicyStatus(this, partyCancellationPolicy, partyCancellationPolicyStatusChoice, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartyCancellationPolicy.name(), partyName, cancellationKindName, cancellationPolicyName);
                     }

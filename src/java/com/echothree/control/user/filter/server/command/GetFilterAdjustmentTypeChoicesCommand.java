@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentTypeChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentTypeChoicesCommand
@@ -51,8 +51,12 @@ public class GetFilterAdjustmentTypeChoicesCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultFilterAdjustmentTypeChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
     
     /** Creates a new instance of GetFilterAdjustmentTypeChoicesCommand */
     public GetFilterAdjustmentTypeChoicesCommand() {
@@ -61,11 +65,10 @@ public class GetFilterAdjustmentTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterAdjustmentTypeChoicesResult();
         var defaultFilterAdjustmentTypeChoice = form.getDefaultFilterAdjustmentTypeChoice();
         
-        result.setFilterAdjustmentTypeChoices(filterControl.getFilterAdjustmentTypeChoices(defaultFilterAdjustmentTypeChoice, getPreferredLanguage()));
+        result.setFilterAdjustmentTypeChoices(filterAdjustmentControl.getFilterAdjustmentTypeChoices(defaultFilterAdjustmentTypeChoice, getPreferredLanguage()));
         
         return result;
     }

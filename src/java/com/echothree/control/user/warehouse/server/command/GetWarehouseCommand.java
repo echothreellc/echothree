@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWarehouseCommand
@@ -60,6 +60,12 @@ public class GetWarehouseCommand
         );
     }
 
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WarehouseLogic warehouseLogic;
+
     /** Creates a new instance of GetWarehouseCommand */
     public GetWarehouseCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -67,7 +73,7 @@ public class GetWarehouseCommand
 
     @Override
     protected Warehouse getEntity() {
-        var entity = WarehouseLogic.getInstance().getWarehouseByUniversalSpec(this, form, true);
+        var entity = warehouseLogic.getWarehouseByUniversalSpec(this, form, true);
 
         if(entity != null) {
             sendEvent(entity.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
@@ -81,8 +87,6 @@ public class GetWarehouseCommand
         var result = WarehouseResultFactory.getGetWarehouseResult();
 
         if(entity != null) {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
-
             result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), entity));
         }
 

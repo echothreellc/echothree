@@ -35,8 +35,8 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -45,7 +45,7 @@ public class CreateInventoryLocationGroupCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -62,41 +62,49 @@ public class CreateInventoryLocationGroupCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     /** Creates a new instance of CreateInventoryLocationGroupCommand */
     public CreateInventoryLocationGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
         var result = InventoryResultFactory.getCreateInventoryLocationGroupResult();
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseName = form.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
+
         if(warehouse != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
             var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty,
                     inventoryLocationGroupName);
-            
+
             if(inventoryLocationGroup == null) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var createdBy = getPartyPK();
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
-                
+
                 inventoryLocationGroup = inventoryControl.createInventoryLocationGroup(warehouseParty, inventoryLocationGroupName,
                         isDefault, sortOrder, getPartyPK());
 
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                         InventoryLocationGroupStatusConstants.WorkflowEntrance_NEW_INVENTORY_LOCATION_GROUP, entityInstance, null, null, createdBy);
-                
+
                 if(description != null) {
                     inventoryControl.createInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage(),
                             description, createdBy);
@@ -113,8 +121,8 @@ public class CreateInventoryLocationGroupCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+
         return result;
     }
-    
+
 }

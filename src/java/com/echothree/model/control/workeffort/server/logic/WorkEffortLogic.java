@@ -27,12 +27,21 @@ import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkEffortLogic {
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
 
     protected WorkEffortLogic() {
         super();
@@ -105,8 +114,6 @@ public class WorkEffortLogic {
             workEffortSequence = workEffortTypeDetail.getWorkEffortSequence();
 
             if(workEffortSequence == null) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
-                
                 workEffortSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.WORK_EFFORT.name());
             }
         }
@@ -172,8 +179,7 @@ public class WorkEffortLogic {
     }
 
     public WorkEffort createWorkEffort(final PreparedWorkEffort preparedWorkEffort, final EntityInstance owningEntityInstance, final BasePK createdBy) {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        var workEffortName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(preparedWorkEffort.getWorkEffortSequence());
+        var workEffortName = sequenceGeneratorLogic.getNextSequenceValue(preparedWorkEffort.getWorkEffortSequence());
 
         var workEffort = workEffortControl.createWorkEffort(workEffortName, owningEntityInstance, preparedWorkEffort.getWorkEffortScope(),
                 preparedWorkEffort.getScheduledTime(), null, null, preparedWorkEffort.getEstimatedTimeAllowed(), preparedWorkEffort.getMaximumTimeAllowed(),
@@ -183,8 +189,6 @@ public class WorkEffortLogic {
     }
 
     public void deleteWorkEffort(final WorkEffort workEffort, final BasePK deletedBy) {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
-
         workEffortControl.deleteWorkEffort(workEffort, deletedBy);
     }
 

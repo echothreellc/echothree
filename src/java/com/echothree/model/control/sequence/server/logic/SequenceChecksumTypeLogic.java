@@ -22,13 +22,16 @@ import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SequenceChecksumTypeLogic
         extends BaseLogic {
+
+    @Inject
+    SequenceControl sequenceControl;
 
     protected SequenceChecksumTypeLogic() {
         super();
@@ -39,7 +42,6 @@ public class SequenceChecksumTypeLogic
     }
 
     public SequenceChecksumType getSequenceChecksumTypeByName(final ExecutionErrorAccumulator eea, final String sequenceChecksumTypeName) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
 
         if(sequenceChecksumType == null) {

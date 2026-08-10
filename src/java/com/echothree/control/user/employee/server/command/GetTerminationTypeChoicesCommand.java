@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTerminationTypeChoicesCommand
@@ -51,10 +51,14 @@ public class GetTerminationTypeChoicesCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("DefaultTerminationTypeChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("DefaultTerminationTypeChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
     
     /** Creates a new instance of GetTerminationTypeChoicesCommand */
     public GetTerminationTypeChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetTerminationTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var result = EmployeeResultFactory.getGetTerminationTypeChoicesResult();
         var defaultTerminationTypeChoice = form.getDefaultTerminationTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

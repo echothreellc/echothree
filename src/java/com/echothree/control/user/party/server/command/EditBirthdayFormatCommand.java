@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditBirthdayFormatCommand
@@ -53,20 +53,24 @@ public class EditBirthdayFormatCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.BirthdayFormat.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BirthdayFormatName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BirthdayFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditBirthdayFormatCommand */
     public EditBirthdayFormatCommand() {
@@ -85,7 +89,6 @@ public class EditBirthdayFormatCommand
 
     @Override
     public BirthdayFormat getEntity(EditBirthdayFormatResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         BirthdayFormat birthdayFormat;
         var birthdayFormatName = spec.getBirthdayFormatName();
 
@@ -111,14 +114,11 @@ public class EditBirthdayFormatCommand
 
     @Override
     public void fillInResult(EditBirthdayFormatResult result, BirthdayFormat birthdayFormat) {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         result.setBirthdayFormat(partyControl.getBirthdayFormatTransfer(getUserVisit(), birthdayFormat));
     }
 
     @Override
     public void doLock(BirthdayFormatEdit edit, BirthdayFormat birthdayFormat) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var birthdayFormatDescription = partyControl.getBirthdayFormatDescription(birthdayFormat, getPreferredLanguage());
         var birthdayFormatDetail = birthdayFormat.getLastDetail();
 
@@ -133,7 +133,6 @@ public class EditBirthdayFormatCommand
 
     @Override
     public void canUpdate(BirthdayFormat birthdayFormat) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var birthdayFormatName = edit.getBirthdayFormatName();
         var duplicateBirthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
 
@@ -144,7 +143,6 @@ public class EditBirthdayFormatCommand
 
     @Override
     public void doUpdate(BirthdayFormat birthdayFormat) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyPK = getPartyPK();
         var birthdayFormatDetailValue = partyControl.getBirthdayFormatDetailValueForUpdate(birthdayFormat);
         var birthdayFormatDescription = partyControl.getBirthdayFormatDescriptionForUpdate(birthdayFormat, getPreferredLanguage());

@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterKindForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterKindCommand
@@ -59,6 +59,12 @@ public class GetFilterKindCommand
         );
     }
 
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
     /** Creates a new instance of GetFilterKindCommand */
     public GetFilterKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetFilterKindCommand
 
     @Override
     protected FilterKind getEntity() {
-        var filterKind = FilterKindLogic.getInstance().getFilterKindByUniversalSpec(this, form, true);
+        var filterKind = filterKindLogic.getFilterKindByUniversalSpec(this, form, true);
 
         if(filterKind != null) {
             sendEvent(filterKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,11 +83,10 @@ public class GetFilterKindCommand
 
     @Override
     protected BaseResult getResult(FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterKindResult();
 
         if(filterKind != null) {
-            result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
+            result.setFilterKind(filterKindControl.getFilterKindTransfer(getUserVisit(), filterKind));
         }
 
         return result;

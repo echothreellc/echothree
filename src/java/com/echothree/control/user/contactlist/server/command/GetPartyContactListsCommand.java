@@ -62,7 +62,7 @@ public class GetPartyContactListsCommand
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     ContactListControl contactListControl;
 
@@ -74,6 +74,7 @@ public class GetPartyContactListsCommand
 
     @Inject
     PartyLogic partyLogic;
+
 
     /** Creates a new instance of GetPartyContactListsCommand */
     public GetPartyContactListsCommand() {

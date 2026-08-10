@@ -36,10 +36,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePurchaseInvoiceLineCommand
@@ -52,9 +52,9 @@ public class CreatePurchaseInvoiceLineCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PurchaseInvoiceLine.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PurchaseInvoiceLine.name(), SecurityRoles.Create.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InvoiceName", FieldType.ENTITY_NAME, true, null, null),
@@ -64,8 +64,21 @@ public class CreatePurchaseInvoiceLineCommand
                 new FieldDefinition("InvoiceLineTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    InvoiceLogic invoiceLogic;
+
+    @Inject
+    PurchaseInvoiceLogic purchaseInvoiceLogic;
+
     
     /** Creates a new instance of CreatePurchaseInvoiceLineCommand */
     public CreatePurchaseInvoiceLineCommand() {
@@ -75,16 +88,15 @@ public class CreatePurchaseInvoiceLineCommand
     @Override
     protected void setupValidator(Validator validator) {
         var invoiceName = form.getInvoiceName();
-        var invoice = invoiceName == null? null: PurchaseInvoiceLogic.getInstance().getInvoiceByName(invoiceName);
+        var invoice = invoiceName == null? null: purchaseInvoiceLogic.getInvoiceByName(invoiceName);
         
         if(invoice != null) {
-            validator.setCurrency(InvoiceLogic.getInstance().getInvoiceCurrency(invoice));
+            validator.setCurrency(invoiceLogic.getInvoiceCurrency(invoice));
         }
     }
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var result = PurchaseResultFactory.getCreatePurchaseInvoiceLineResult();
         InvoiceLine invoiceLine = null;
         var invoiceName = form.getInvoiceName();
@@ -101,7 +113,6 @@ public class CreatePurchaseInvoiceLineCommand
                 var invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceTypeName);
                 
                 if(invoiceLineType != null) {
-                    var accountingControl = Session.getModelController(AccountingControl.class);
                     var glAccountName = form.getGlAccountName();
                     var glAccount = glAccountName == null? null: accountingControl.getGlAccountByName(glAccountName);
                     
@@ -113,7 +124,7 @@ public class CreatePurchaseInvoiceLineCommand
                             var amount = Long.valueOf(form.getAmount());
                             var description = form.getDescription();
 
-                            invoiceLine = PurchaseInvoiceLogic.getInstance().createInvoiceLine(this, invoice, invoiceLineSequence, parentInvoiceLine, amount, invoiceLineType, glAccount,
+                            invoiceLine = purchaseInvoiceLogic.createInvoiceLine(this, invoice, invoiceLineSequence, parentInvoiceLine, amount, invoiceLineType, glAccount,
                                     description, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.DuplicateInvoiceLineSequence.name(), invoiceName, strInvoiceLineSequence);

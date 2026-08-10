@@ -36,10 +36,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
-import org.apache.commons.logging.Log;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetStateCommand
@@ -55,25 +54,23 @@ public class GetStateCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.State.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CountryGeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("StateName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Postal2Letter", FieldType.UPPER_LETTER_2, false, null, null)
-                );
+        );
     }
-    
-    Log log = null;
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of GetStateCommand */
     public GetStateCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-        
-        if(GeoDebugFlags.GetStateCommand) {
-            log = getLog();
-        }
     }
 
     @Override
@@ -88,8 +85,6 @@ public class GetStateCommand
         }
 
         if(parameterCount == 1) {
-            var geoControl = Session.getModelController(GeoControl.class);
-
             var countryGeoCodeName = form.getCountryGeoCodeName();
             var countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
 
@@ -148,8 +143,6 @@ public class GetStateCommand
         var result = GeoResultFactory.getGetStateResult();
 
         if(entity != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
-
             result.setState(geoControl.getStateTransfer(getUserVisit(), entity));
         }
 

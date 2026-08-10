@@ -33,9 +33,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemUnitCustomerTypeLimitCommand
@@ -50,13 +50,26 @@ public class EditItemUnitCustomerTypeLimitCommand
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CustomerTypeName", FieldType.PERCENT, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MinimumQuantity", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("MaximumQuantity", FieldType.UNSIGNED_LONG, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditItemUnitCustomerTypeLimitCommand */
     public EditItemUnitCustomerTypeLimitCommand() {
@@ -75,24 +88,20 @@ public class EditItemUnitCustomerTypeLimitCommand
 
     @Override
     public ItemUnitCustomerTypeLimit getEntity(EditItemUnitCustomerTypeLimitResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var inventoryConditionName = spec.getInventoryConditionName();
             var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var itemDetail = item.getLastDetail();
                 var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                 var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
                 if(unitOfMeasureType != null) {
-                    var customerControl = Session.getModelController(CustomerControl.class);
                     var customerTypeName = spec.getCustomerTypeName();
                     var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
@@ -130,8 +139,6 @@ public class EditItemUnitCustomerTypeLimitCommand
 
     @Override
     public void fillInResult(EditItemUnitCustomerTypeLimitResult result, ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemUnitCustomerTypeLimit(itemControl.getItemUnitCustomerTypeLimitTransfer(getUserVisit(), itemUnitCustomerTypeLimit));
     }
 
@@ -164,7 +171,6 @@ public class EditItemUnitCustomerTypeLimitCommand
 
     @Override
     public void doUpdate(ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemUnitCustomerTypeLimitValue = itemControl.getItemUnitCustomerTypeLimitValue(itemUnitCustomerTypeLimit);
 
         itemUnitCustomerTypeLimitValue.setMinimumQuantity(minimumQuantity);

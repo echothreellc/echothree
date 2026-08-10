@@ -18,7 +18,6 @@ package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.edit.PartyTrainingClassSessionPageEdit;
 import com.echothree.control.user.training.common.edit.TrainingEditFactory;
-import com.echothree.control.user.training.common.form.EditPartyTrainingClassSessionPageForm;
 import com.echothree.control.user.training.common.result.EditPartyTrainingClassSessionPageResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.control.user.training.common.spec.PartyTrainingClassSessionPageSpec;
@@ -28,22 +27,21 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassSessionLogic;
-import com.echothree.model.control.training.server.logic.TrainingClassLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassPageLogic;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionPage;
 import com.echothree.model.data.training.server.entity.TrainingClassPage;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTrainingClassSessionPageCommand
@@ -58,21 +56,35 @@ public class EditPartyTrainingClassSessionPageCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClassSessionPage.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyTrainingClassSessionSequence", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("PartyTrainingClassSessionPageSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassPageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ReadingStartTime", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("ReadingEndTime", FieldType.DATE_TIME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    private TrainingControl trainingControl;
+
+    @Inject
+    private PartyTrainingClassLogic partyTrainingClassLogic;
+
+    @Inject
+    private PartyTrainingClassSessionLogic partyTrainingClassSessionLogic;
+
+    @Inject
+    private TrainingClassPageLogic trainingClassPageLogic;
+
+
     
     /** Creates a new instance of EditPartyTrainingClassSessionPageCommand */
     public EditPartyTrainingClassSessionPageCommand() {
@@ -92,21 +104,21 @@ public class EditPartyTrainingClassSessionPageCommand
     @Override
     public PartyTrainingClassSessionPage getEntity(EditPartyTrainingClassSessionPageResult result) {
         PartyTrainingClassSessionPage partyTrainingClassSessionPage = null;
-        var partyTrainingClass = PartyTrainingClassLogic.getInstance().getPartyTrainingClassByName(this, spec.getPartyTrainingClassName());
+        var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(this, spec.getPartyTrainingClassName());
         
         if(!hasExecutionErrors()) {
             var partyTrainingClassSessionSequence = Integer.valueOf(spec.getPartyTrainingClassSessionSequence());
-            var partyTrainingClassSession = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSession(this,
+            var partyTrainingClassSession = partyTrainingClassSessionLogic.getPartyTrainingClassSession(this,
                     partyTrainingClass, partyTrainingClassSessionSequence);
             
             if(!hasExecutionErrors()) {
                 var partyTrainingClassSessionPageSequence = Integer.valueOf(spec.getPartyTrainingClassSessionPageSequence());
                 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    partyTrainingClassSessionPage = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionPage(this,
+                    partyTrainingClassSessionPage = partyTrainingClassSessionLogic.getPartyTrainingClassSessionPage(this,
                             partyTrainingClassSession, partyTrainingClassSessionPageSequence);
                 } else { // EditMode.UPDATE
-                    partyTrainingClassSessionPage = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionPageForUpdate(this,
+                    partyTrainingClassSessionPage = partyTrainingClassSessionLogic.getPartyTrainingClassSessionPageForUpdate(this,
                             partyTrainingClassSession, partyTrainingClassSessionPageSequence);
                 }
             }
@@ -122,8 +134,6 @@ public class EditPartyTrainingClassSessionPageCommand
 
     @Override
     public void fillInResult(EditPartyTrainingClassSessionPageResult result, PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setPartyTrainingClassSessionPage(trainingControl.getPartyTrainingClassSessionPageTransfer(getUserVisit(), partyTrainingClassSessionPage));
     }
     
@@ -146,7 +156,7 @@ public class EditPartyTrainingClassSessionPageCommand
     public void canUpdate(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
         var strReadingEndTime = edit.getReadingEndTime();
 
-        trainingClassPage = TrainingClassLogic.getInstance().getTrainingClassPageByName(this,
+        trainingClassPage = trainingClassPageLogic.getTrainingClassPageByName(this,
                 partyTrainingClassSessionPage.getTrainingClassPage().getLastDetail().getTrainingClassSection(), edit.getTrainingClassPageName());
         readingStartTime = Long.valueOf(edit.getReadingStartTime());
         readingEndTime = strReadingEndTime == null ? null : Long.valueOf(strReadingEndTime);
@@ -154,7 +164,6 @@ public class EditPartyTrainingClassSessionPageCommand
 
     @Override
     public void doUpdate(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         var partyTrainingClassSessionPageValue = trainingControl.getPartyTrainingClassSessionPageValue(partyTrainingClassSessionPage);
 

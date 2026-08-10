@@ -25,10 +25,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetJobUserVisitCommand
@@ -39,8 +39,12 @@ public class GetJobUserVisitCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("JobName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    JobControl jobControl;
+
     
     /** Creates a new instance of GetJobUserVisitCommand */
     public GetJobUserVisitCommand() {
@@ -54,7 +58,6 @@ public class GetJobUserVisitCommand
     
     @Override
     protected BaseResult execute() {
-        var jobControl = Session.getModelController(JobControl.class);
         var result = AuthenticationResultFactory.getGetJobUserVisitResult();
         
         try {
@@ -62,7 +65,6 @@ public class GetJobUserVisitCommand
             var job = jobControl.getJobByName(jobName);
 
             if(job != null) {
-                var userControl = getUserControl();
                 var userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
 
                 userControl.associatePartyToUserVisit(userVisit, job.getLastDetail().getRunAsParty(), null, null);
@@ -77,7 +79,7 @@ public class GetJobUserVisitCommand
 
             if(cause instanceof SQLException se) {
                 if(se.getSQLState().equals(SQL_STATE_BASE_TABLE_OR_VIEW_NOT_FOUND)) {
-                    getLog().info("Ignoring \"" + se.getMessage() + "\"");
+                    log.info("Ignoring \"" + se.getMessage() + "\"");
 
                     // The table jobs did not exist, don't pass along exception. Tested w/ MySQL only.
                     pde = null;

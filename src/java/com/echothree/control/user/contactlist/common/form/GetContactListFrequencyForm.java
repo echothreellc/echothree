@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.contactlist.common.form;
 
-import com.echothree.control.user.contactlist.common.spec.ContactListFrequencySpec;
+import com.echothree.control.user.contactlist.common.spec.ContactListFrequencyUniversalSpec;
 
 public interface GetContactListFrequencyForm
-        extends ContactListFrequencySpec {
+        extends ContactListFrequencyUniversalSpec {
     
-    // Nothing additional beyond ContactListFrequencySpec
+    // Nothing additional beyond ContactListFrequencyUniversalSpec
     
 }

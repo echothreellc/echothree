@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterStepCommand
@@ -61,6 +61,13 @@ public class GetFilterStepCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
     
     /** Creates a new instance of GetFilterStepCommand */
     public GetFilterStepCommand() {
@@ -69,7 +76,7 @@ public class GetFilterStepCommand
 
     @Override
     protected FilterStep getEntity() {
-        var filterStep = FilterStepLogic.getInstance().getFilterStepByUniversalSpec(this, form, true);
+        var filterStep = filterStepLogic.getFilterStepByUniversalSpec(this, form, true);
 
         if(filterStep != null) {
             sendEvent(filterStep.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -83,9 +90,7 @@ public class GetFilterStepCommand
         var result = FilterResultFactory.getGetFilterStepResult();
 
         if(filterStep != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
-            result.setFilterStep(filterControl.getFilterStepTransfer(getUserVisit(), filterStep));
+            result.setFilterStep(filterStepControl.getFilterStepTransfer(getUserVisit(), filterStep));
         }
 
         return result;

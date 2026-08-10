@@ -19,29 +19,32 @@ package com.echothree.model.control.security.server.indexer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.security.server.analyzer.SecurityRoleGroupAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
+import com.echothree.model.control.security.server.analyzer.SecurityRoleGroupAnalyzer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class SecurityRoleGroupIndexer
         extends BaseIndexer<SecurityRoleGroup> {
-    
-    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
 
-    /** Creates a new instance of SecurityRoleGroupIndexer */
-    public SecurityRoleGroupIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+    @Inject
+    SecurityControl securityControl;
+
+    @Override
+    public BaseIndexer<SecurityRoleGroup> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override

@@ -38,41 +38,47 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditAllocationPriorityDescriptionCommand
         extends BaseAbstractEditCommand<AllocationPriorityDescriptionSpec, AllocationPriorityDescriptionEdit, EditAllocationPriorityDescriptionResult, AllocationPriorityDescription, AllocationPriority> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.AllocationPriority.name(), SecurityRoles.Description.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
-        
+        );
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditAllocationPriorityDescriptionCommand */
     public EditAllocationPriorityDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     public EditAllocationPriorityDescriptionResult getResult() {
         return InventoryResultFactory.getEditAllocationPriorityDescriptionResult();
@@ -85,13 +91,11 @@ public class EditAllocationPriorityDescriptionCommand
 
     @Override
     public AllocationPriorityDescription getEntity(EditAllocationPriorityDescriptionResult result) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         AllocationPriorityDescription allocationPriorityDescription = null;
         var allocationPriorityName = spec.getAllocationPriorityName();
         var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditAllocationPriorityDescriptionCommand
 
     @Override
     public void fillInResult(EditAllocationPriorityDescriptionResult result, AllocationPriorityDescription allocationPriorityDescription) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-
         result.setAllocationPriorityDescription(inventoryControl.getAllocationPriorityDescriptionTransfer(getUserVisit(), allocationPriorityDescription));
     }
 
@@ -134,11 +136,10 @@ public class EditAllocationPriorityDescriptionCommand
 
     @Override
     public void doUpdate(AllocationPriorityDescription allocationPriorityDescription) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var allocationPriorityDescriptionValue = inventoryControl.getAllocationPriorityDescriptionValue(allocationPriorityDescription);
         allocationPriorityDescriptionValue.setDescription(edit.getDescription());
 
         inventoryControl.updateAllocationPriorityDescriptionFromValue(allocationPriorityDescriptionValue, getPartyPK());
     }
-    
+
 }

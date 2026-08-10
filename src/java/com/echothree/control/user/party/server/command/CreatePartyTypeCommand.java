@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyTypeCommand
@@ -38,15 +38,22 @@ public class CreatePartyTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ParentPartyTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("BillingAccountSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowUserLogins", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("AllowPartyAliases", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ParentPartyTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("BillingAccountSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowUserLogins", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("AllowPartyAliases", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of CreatePartyTypeCommand */
     public CreatePartyTypeCommand() {
@@ -55,7 +62,6 @@ public class CreatePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyTypeName = form.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
@@ -67,7 +73,6 @@ public class CreatePartyTypeCommand
                 parentPartyType = partyControl.getPartyTypeByName(parentPartyTypeName);
             }
             if(parentPartyTypeName == null || (parentPartyTypeName != null && parentPartyType != null)) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var billingAccountSequenceTypeName = form.getBillingAccountSequenceTypeName();
                 var billingAccountSequenceType = billingAccountSequenceTypeName == null ? null : sequenceControl.getSequenceTypeByName(billingAccountSequenceTypeName);
 

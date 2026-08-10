@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditShippingMethodCommand
@@ -57,12 +57,12 @@ public class EditShippingMethodCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ShippingMethod.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null),
@@ -70,8 +70,15 @@ public class EditShippingMethodCommand
                 new FieldDefinition("ItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
     
     /** Creates a new instance of EditShippingMethodCommand */
     public EditShippingMethodCommand() {
@@ -90,7 +97,6 @@ public class EditShippingMethodCommand
 
     @Override
     public ShippingMethod getEntity(EditShippingMethodResult result) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         ShippingMethod shippingMethod;
         var shippingMethodName = spec.getShippingMethodName();
 
@@ -116,8 +122,6 @@ public class EditShippingMethodCommand
 
     @Override
     public void fillInResult(EditShippingMethodResult result, ShippingMethod shippingMethod) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
-
         result.setShippingMethod(shippingControl.getShippingMethodTransfer(getUserVisit(), shippingMethod));
     }
 
@@ -126,7 +130,6 @@ public class EditShippingMethodCommand
 
     @Override
     public void doLock(ShippingMethodEdit edit, ShippingMethod shippingMethod) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var shippingMethodDescription = shippingControl.getShippingMethodDescription(shippingMethod, getPreferredLanguage());
         var shippingMethodDetail = shippingMethod.getLastDetail();
 
@@ -145,7 +148,6 @@ public class EditShippingMethodCommand
 
     @Override
     public void canUpdate(ShippingMethod shippingMethod) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var shippingMethodName = edit.getShippingMethodName();
         var duplicateShippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
@@ -153,7 +155,6 @@ public class EditShippingMethodCommand
             var geoCodeSelectorName = edit.getGeoCodeSelectorName();
 
             if(geoCodeSelectorName != null) {
-                var selectorControl = Session.getModelController(SelectorControl.class);
                 var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                 if(selectorKind != null) {
@@ -174,7 +175,6 @@ public class EditShippingMethodCommand
                 var itemSelectorName = edit.getItemSelectorName();
 
                 if(itemSelectorName != null) {
-                    var selectorControl = Session.getModelController(SelectorControl.class);
                     var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                     if(selectorKind != null) {
@@ -204,7 +204,6 @@ public class EditShippingMethodCommand
 
     @Override
     public void doUpdate(ShippingMethod shippingMethod) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var partyPK = getPartyPK();
         var shippingMethodDetailValue = shippingControl.getShippingMethodDetailValueForUpdate(shippingMethod);
         var shippingMethodDescription = shippingControl.getShippingMethodDescriptionForUpdate(shippingMethod, getPreferredLanguage());

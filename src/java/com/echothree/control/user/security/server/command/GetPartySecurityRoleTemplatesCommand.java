@@ -52,9 +52,11 @@ public class GetPartySecurityRoleTemplatesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     SecurityControl securityControl;
+
+
     
     /** Creates a new instance of GetPartySecurityRoleTemplatesCommand */
     public GetPartySecurityRoleTemplatesCommand() {

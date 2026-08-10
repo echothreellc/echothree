@@ -36,10 +36,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchWarehousesCommand
@@ -53,8 +53,8 @@ public class SearchWarehousesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -66,8 +66,17 @@ public class SearchWarehousesCommand
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of SearchWarehousesCommand */
     public SearchWarehousesCommand() {
@@ -77,7 +86,6 @@ public class SearchWarehousesCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchWarehousesResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.WAREHOUSE.name());
         
         if(searchKind != null) {
@@ -90,7 +98,6 @@ public class SearchWarehousesCommand
                 PartyAliasType partyAliasType = null;
 
                 if(partyAliasTypeName != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var partyType = partyControl.getPartyTypeByName(PartyTypes.WAREHOUSE.name());
 
                     if(partyType != null) {
@@ -105,7 +112,6 @@ public class SearchWarehousesCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    var searchLogic = SearchLogic.getInstance();
                     var userVisit = getUserVisit();
                     var warehouseSearchEvaluator = new WarehouseSearchEvaluator(userVisit, searchType,
                             searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),

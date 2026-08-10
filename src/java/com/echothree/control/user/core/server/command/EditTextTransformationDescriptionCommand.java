@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTextTransformationDescriptionCommand
@@ -55,18 +55,25 @@ public class EditTextTransformationDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TextTransformation.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TextTransformationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TextControl textControl;
+
     
     /** Creates a new instance of EditTextTransformationDescriptionCommand */
     public EditTextTransformationDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public TextTransformationDescription getEntity(EditTextTransformationDescriptionResult result) {
-        var textControl = Session.getModelController(TextControl.class);
         TextTransformationDescription textTransformationDescription = null;
         var textTransformationName = spec.getTextTransformationName();
         var textTransformation = textControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public void fillInResult(EditTextTransformationDescriptionResult result, TextTransformationDescription textTransformationDescription) {
-        var textControl = Session.getModelController(TextControl.class);
-
         result.setTextTransformationDescription(textControl.getTextTransformationDescriptionTransfer(getUserVisit(), textTransformationDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public void doUpdate(TextTransformationDescription textTransformationDescription) {
-        var textControl = Session.getModelController(TextControl.class);
         var textTransformationDescriptionValue = textControl.getTextTransformationDescriptionValue(textTransformationDescription);
 
         textTransformationDescriptionValue.setDescription(edit.getDescription());

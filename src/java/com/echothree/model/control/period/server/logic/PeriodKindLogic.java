@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PeriodKindLogic
         extends BaseLogic {
+
+    @Inject
+    PeriodControl periodControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected PeriodKindLogic() {
         super();
@@ -52,7 +58,6 @@ public class PeriodKindLogic
     public PeriodKind createPeriodKind(final ExecutionErrorAccumulator eea, final String periodKindName,
             final WorkflowEntrance workflowEntrance, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var periodKind = periodControl.getPeriodKindByName(periodKindName);
 
         if(periodKind == null) {
@@ -70,7 +75,6 @@ public class PeriodKindLogic
 
     public PeriodKind getPeriodKindByName(final ExecutionErrorAccumulator eea, final String periodKindName,
             final EntityPermission entityPermission) {
-        var periodControl = Session.getModelController(PeriodControl.class);
         var periodKind = periodControl.getPeriodKindByName(periodKindName, entityPermission);
 
         if(periodKind == null) {
@@ -91,9 +95,8 @@ public class PeriodKindLogic
     public PeriodKind getPeriodKindByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PeriodKindUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PeriodKind periodKind = null;
-        var periodControl = Session.getModelController(PeriodControl.class);
         var periodKindName = universalSpec.getPeriodKindName();
-        var parameterCount = (periodKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (periodKindName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,10 +112,10 @@ public class PeriodKindLogic
             }
             case 1 -> {
                 if(periodKindName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PeriodKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         periodKind = periodControl.getPeriodKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -138,8 +141,6 @@ public class PeriodKindLogic
 
     public void deletePeriodKind(final ExecutionErrorAccumulator eea, final PeriodKind periodKind,
             final BasePK deletedBy) {
-        var periodControl = Session.getModelController(PeriodControl.class);
-
         periodControl.deletePeriodKind(periodKind, deletedBy);
     }
 

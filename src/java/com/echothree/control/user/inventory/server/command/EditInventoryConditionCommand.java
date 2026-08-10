@@ -36,78 +36,81 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditInventoryConditionCommand
         extends BaseAbstractEditCommand<InventoryConditionUniversalSpec, InventoryConditionEdit, EditInventoryConditionResult, InventoryCondition, InventoryCondition> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
-        
+        );
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
     /** Creates a new instance of EditInventoryConditionCommand */
     public EditInventoryConditionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     public EditInventoryConditionResult getResult() {
         return InventoryResultFactory.getEditInventoryConditionResult();
     }
-    
+
     @Override
     public InventoryConditionEdit getEdit() {
         return InventoryEditFactory.getInventoryConditionEdit();
     }
-    
+
     @Override
     public InventoryCondition getEntity(EditInventoryConditionResult result) {
-        return InventoryConditionLogic.getInstance().getInventoryConditionByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return inventoryConditionLogic.getInventoryConditionByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
-    
+
     @Override
     public InventoryCondition getLockEntity(InventoryCondition inventoryCondition) {
         return inventoryCondition;
     }
-    
+
     @Override
     public void fillInResult(EditInventoryConditionResult result, InventoryCondition inventoryCondition) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-        
         result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));
     }
-    
+
     @Override
     public void doLock(InventoryConditionEdit edit, InventoryCondition inventoryCondition) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, getPreferredLanguage());
         var inventoryConditionDetail = inventoryCondition.getLastDetail();
-        
+
         edit.setInventoryConditionName(inventoryConditionDetail.getInventoryConditionName());
         edit.setIsDefault(inventoryConditionDetail.getIsDefault().toString());
         edit.setSortOrder(inventoryConditionDetail.getSortOrder().toString());
@@ -116,10 +119,9 @@ public class EditInventoryConditionCommand
             edit.setDescription(inventoryConditionDescription.getDescription());
         }
     }
-        
+
     @Override
     public void canUpdate(InventoryCondition inventoryCondition) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var inventoryConditionName = edit.getInventoryConditionName();
         var duplicateInventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
@@ -127,10 +129,9 @@ public class EditInventoryConditionCommand
             addExecutionError(ExecutionErrors.DuplicateInventoryConditionName.name(), inventoryConditionName);
         }
     }
-    
+
     @Override
     public void doUpdate(InventoryCondition inventoryCondition) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var partyPK = getPartyPK();
         var inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueForUpdate(inventoryCondition);
         var inventoryConditionDescription = inventoryControl.getInventoryConditionDescriptionForUpdate(inventoryCondition, getPreferredLanguage());
@@ -153,5 +154,5 @@ public class EditInventoryConditionCommand
             inventoryControl.updateInventoryConditionDescriptionFromValue(inventoryConditionDescriptionValue, partyPK);
         }
     }
-    
+
 }

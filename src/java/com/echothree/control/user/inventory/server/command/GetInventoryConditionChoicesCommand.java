@@ -31,47 +31,49 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetInventoryConditionChoicesCommand
         extends BaseSimpleCommand<GetInventoryConditionChoicesForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultInventoryConditionChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("InventoryConditionUseTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
     /** Creates a new instance of GetInventoryConditionChoicesCommand */
     public GetInventoryConditionChoicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var result = InventoryResultFactory.getGetInventoryConditionChoicesResult();
         var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
         var inventoryConditionUseType = inventoryConditionUseTypeName == null? null: inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
-        
+
         if(inventoryConditionUseTypeName == null || inventoryConditionUseType != null) {
             var defaultInventoryConditionChoice = form.getDefaultInventoryConditionChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
-        
+
             if(inventoryConditionUseType == null) {
                 result.setInventoryConditionChoices(inventoryControl.getInventoryConditionChoices(defaultInventoryConditionChoice,
                         getPreferredLanguage(), allowNullChoice));
@@ -82,8 +84,8 @@ public class GetInventoryConditionChoicesCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryConditionUseTypeName.name(), inventoryConditionUseTypeName);
         }
-        
+
         return result;
     }
-    
+
 }

@@ -92,11 +92,6 @@ public class EditVendorTypeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditVendorTypeCommand */
-    public EditVendorTypeCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
     AccountingControl accountingControl;
@@ -118,6 +113,12 @@ public class EditVendorTypeCommand
 
     @Inject
     VendorTypeLogic vendorTypeLogic;
+
+
+    /** Creates a new instance of EditVendorTypeCommand */
+    public EditVendorTypeCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     protected EditVendorTypeResult getResult() {

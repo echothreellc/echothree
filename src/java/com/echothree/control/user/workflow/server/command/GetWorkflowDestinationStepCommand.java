@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowDestinationStepCommand
@@ -48,8 +48,8 @@ public class GetWorkflowDestinationStepCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.WorkflowStep.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
@@ -57,8 +57,15 @@ public class GetWorkflowDestinationStepCommand
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DestinationWorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DestinationWorkflowStepName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
     
     /** Creates a new instance of GetWorkflowDestinationStepCommand */
     public GetWorkflowDestinationStepCommand() {
@@ -73,7 +80,7 @@ public class GetWorkflowDestinationStepCommand
         var destinationWorkflowName = form.getDestinationWorkflowName();
         var destinationWorkflowStepName = form.getDestinationWorkflowStepName();
 
-        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationStepByName(this, workflowName, workflowStepName,
+        return workflowDestinationLogic.getWorkflowDestinationStepByName(this, workflowName, workflowStepName,
                 workflowDestinationName, destinationWorkflowName, destinationWorkflowStepName);
     }
 
@@ -82,8 +89,6 @@ public class GetWorkflowDestinationStepCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationStepResult();
 
         if(entity != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             result.setWorkflowDestinationStep(workflowControl.getWorkflowDestinationStepTransfer(getUserVisit(), entity));
         }
 

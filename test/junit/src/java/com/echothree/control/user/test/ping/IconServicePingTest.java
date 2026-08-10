@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.icon.common.IconUtil;
 import com.echothree.control.user.icon.common.IconService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class IconServicePingTest
-        extends TestCase {
+public class IconServicePingTest {
     private IconService iconService;
     
-    /** Creates a new instance of IconServiceTest */
-    public IconServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new IconServicePingTest("testPingIconService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             iconService = IconUtil.getHome();
             assertNotNull(iconService);
@@ -54,8 +37,8 @@ public class IconServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             iconService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class IconServicePingTest
         }
     }
     
+    @Test
     public void testPingIconService() {
-        setUp();
         try {
             iconService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

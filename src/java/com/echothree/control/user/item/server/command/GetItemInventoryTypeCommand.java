@@ -31,9 +31,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemInventoryTypeCommand
@@ -50,6 +50,15 @@ public class GetItemInventoryTypeCommand
         );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemInventoryTypeLogic itemInventoryTypeLogic;
+
     /** Creates a new instance of GetItemInventoryTypeCommand */
     public GetItemInventoryTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -57,21 +66,20 @@ public class GetItemInventoryTypeCommand
 
     @Override
     protected ItemInventoryType getEntity() {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemInventoryType itemInventoryType = null;
         var itemInventoryTypeName = form.getItemInventoryTypeName();
-        var parameterCount = (itemInventoryTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (itemInventoryTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(itemInventoryTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemInventoryType.name());
 
                 if(!hasExecutionErrors()) {
                     itemInventoryType = itemControl.getItemInventoryTypeByEntityInstance(entityInstance);
                 }
             } else {
-                itemInventoryType = ItemInventoryTypeLogic.getInstance().getItemInventoryTypeByName(this, itemInventoryTypeName);
+                itemInventoryType = itemInventoryTypeLogic.getItemInventoryTypeByName(this, itemInventoryTypeName);
             }
 
             if(itemInventoryType != null) {
@@ -86,7 +94,6 @@ public class GetItemInventoryTypeCommand
 
     @Override
     protected BaseResult getResult(ItemInventoryType itemInventoryType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemInventoryTypeResult();
 
         if(itemInventoryType != null) {

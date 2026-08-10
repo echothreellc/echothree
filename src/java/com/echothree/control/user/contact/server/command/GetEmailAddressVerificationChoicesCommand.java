@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEmailAddressVerificationChoicesCommand
@@ -40,8 +40,12 @@ public class GetEmailAddressVerificationChoicesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultEmailAddressVerificationChoice", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null));
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
 
     /** Creates a new instance of GetEmailAddressVerificationChoicesCommand */
     public GetEmailAddressVerificationChoicesCommand() {
@@ -50,7 +54,6 @@ public class GetEmailAddressVerificationChoicesCommand
 
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var result = ContactResultFactory.getGetEmailAddressVerificationChoicesResult();
         var contactMechanismName = form.getContactMechanismName();
         var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);

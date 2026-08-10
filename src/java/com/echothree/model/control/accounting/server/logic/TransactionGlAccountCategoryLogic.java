@@ -33,14 +33,23 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TransactionGlAccountCategoryLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    TransactionTypeLogic transactionTypeLogic;
 
     protected TransactionGlAccountCategoryLogic() {
         super();
@@ -53,7 +62,7 @@ public class TransactionGlAccountCategoryLogic
     public TransactionGlAccountCategory createTransactionGlAccountCategory(final ExecutionErrorAccumulator eea, final String transactionTypeName,
             final String transactionGlAccountCategoryName, final GlAccountCategory glAccountCategory, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
+        var transactionType = transactionTypeLogic.getTransactionTypeByName(eea, transactionTypeName);
         TransactionGlAccountCategory transactionGlAccountCategory = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -67,7 +76,6 @@ public class TransactionGlAccountCategoryLogic
     public TransactionGlAccountCategory createTransactionGlAccountCategory(final ExecutionErrorAccumulator eea, final TransactionType transactionType,
             final String transactionGlAccountCategoryName, final GlAccountCategory glAccountCategory, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
 
         if(transactionGlAccountCategory == null) {
@@ -86,7 +94,6 @@ public class TransactionGlAccountCategoryLogic
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea,
             final TransactionType transactionType, final String transactionGlAccountCategoryName,
             final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName, entityPermission);
 
         if(transactionGlAccountCategory == null) {
@@ -110,10 +117,10 @@ public class TransactionGlAccountCategoryLogic
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(final ExecutionErrorAccumulator eea,
             final String transactionTypeName, final String transactionGlAccountCategoryName,
             final EntityPermission entityPermission) {
-        var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
+        var transactionType = transactionTypeLogic.getTransactionTypeByName(eea, transactionTypeName);
         TransactionGlAccountCategory transactionGlAccountCategory = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             transactionGlAccountCategory = getTransactionGlAccountCategoryByName(eea, transactionType, transactionGlAccountCategoryName, entityPermission);
         }
 
@@ -132,24 +139,23 @@ public class TransactionGlAccountCategoryLogic
 
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByUniversalSpec(final ExecutionErrorAccumulator eea,
             final TransactionGlAccountCategoryUniversalSpec universalSpec, final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionTypeName = universalSpec.getTransactionTypeName();
         var transactionGlAccountCategoryName = universalSpec.getTransactionGlAccountCategoryName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(transactionTypeName, transactionGlAccountCategoryName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         TransactionGlAccountCategory transactionGlAccountCategory = null;
 
         if(nameParameterCount == 2 && possibleEntitySpecs == 0) {
-            var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
+            var transactionType = transactionTypeLogic.getTransactionTypeByName(eea, transactionTypeName);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 transactionGlAccountCategory = getTransactionGlAccountCategoryByName(eea, transactionType, transactionGlAccountCategoryName, entityPermission);
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionGlAccountCategory.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -171,8 +177,6 @@ public class TransactionGlAccountCategoryLogic
 
     public void deleteTransactionGlAccountCategory(final ExecutionErrorAccumulator eea, final TransactionGlAccountCategory transactionGlAccountCategory,
             final BasePK deletedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         accountingControl.deleteTransactionGlAccountCategory(transactionGlAccountCategory, deletedBy);
     }
 

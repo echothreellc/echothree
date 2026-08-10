@@ -30,44 +30,48 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class DeleteInventoryAdjustmentTypeCommand
         extends BaseSimpleCommand<DeleteInventoryAdjustmentTypeForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryAdjustmentType.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryAdjustmentTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryAdjustmentTypeLogic inventoryAdjustmentTypeLogic;
+
     /** Creates a new instance of DeleteInventoryAdjustmentTypeCommand */
     public DeleteInventoryAdjustmentTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryAdjustmentType = InventoryAdjustmentTypeLogic.getInstance().getInventoryAdjustmentTypeByUniversalSpecForUpdate(this, form, false);
-        
+        var inventoryAdjustmentType = inventoryAdjustmentTypeLogic.getInventoryAdjustmentTypeByUniversalSpecForUpdate(this, form, false);
+
         if(!hasExecutionErrors()) {
-            InventoryAdjustmentTypeLogic.getInstance().deleteInventoryAdjustmentType(this, inventoryAdjustmentType, getPartyPK());
+            inventoryAdjustmentTypeLogic.deleteInventoryAdjustmentType(this, inventoryAdjustmentType, getPartyPK());
         }
-        
+
         return null;
     }
-    
+
 }

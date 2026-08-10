@@ -32,10 +32,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class SecurityRoleControl
         extends BaseModelControl {
+
+    @Inject
+    protected SecurityControl securityControl;
 
     /** Creates a new instance of SecurityRoleControl */
     protected SecurityRoleControl() {
@@ -45,6 +49,12 @@ public class SecurityRoleControl
     // --------------------------------------------------------------------------------
     //   Security Role Searches
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
+    @Inject
+    protected SecurityRoleFactory securityRoleFactory;
 
     public List<SecurityRoleResultTransfer> getSecurityRoleResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
@@ -57,19 +67,20 @@ public class SecurityRoleControl
         }
 
         try {
-            var securityControl = Session.getModelController(SecurityControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
+            var ps = searchResultFactory.prepareStatement(
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    var securityRole = SecurityRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRolePK(rs.getLong(1)));
+                    var securityRole = securityRoleFactory.getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRolePK(rs.getLong(1)));
                     var securityRoleDetail = securityRole.getLastDetail();
 
                     securityRoleResultTransfers.add(new SecurityRoleResultTransfer(securityRoleDetail.getSecurityRoleName(),

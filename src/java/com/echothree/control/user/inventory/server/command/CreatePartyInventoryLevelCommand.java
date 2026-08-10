@@ -42,7 +42,7 @@ public class CreatePartyInventoryLevelCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -82,28 +82,28 @@ public class CreatePartyInventoryLevelCommand
     public CreatePartyInventoryLevelCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
         var party = partyInventoryLevelUtil.getParty(this, form);
-        
+
         if(party != null) {
             var itemName = form.getItemName();
             var item = itemControl.getItemByName(itemName);
-            
+
             if(item != null) {
                 var partyTypeName = partyInventoryLevelUtil.getPartyTypeName(party);
-                
+
                 if(partyTypeName.equals(PartyTypes.COMPANY.name())) {
                     if(!party.equals(item.getLastDetail().getCompanyParty())) {
                         addExecutionError(ExecutionErrors.InvalidCompany.name());
                     }
                 }
-                
+
                 if(!hasExecutionErrors()) {
                     var inventoryConditionName = form.getInventoryConditionName();
                     var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
-                    
+
                     if(inventoryCondition != null) {
                         var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
                         var minimumInventory = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
@@ -125,7 +125,7 @@ public class CreatePartyInventoryLevelCommand
 
                                 if(!hasExecutionErrors()) {
                                     var partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
-                                    
+
                                     if(partyInventoryLevel == null) {
                                         inventoryControl.createPartyInventoryLevel(party, item, inventoryCondition, minimumInventory, maximumInventory,
                                                 reorderQuantity, getPartyPK());
@@ -144,8 +144,8 @@ public class CreatePartyInventoryLevelCommand
                 addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
             }
         }
-        
+
         return null;
     }
-    
+
 }

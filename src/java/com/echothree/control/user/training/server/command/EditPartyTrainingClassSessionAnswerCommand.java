@@ -18,7 +18,6 @@ package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.edit.PartyTrainingClassSessionAnswerEdit;
 import com.echothree.control.user.training.common.edit.TrainingEditFactory;
-import com.echothree.control.user.training.common.form.EditPartyTrainingClassSessionAnswerForm;
 import com.echothree.control.user.training.common.result.EditPartyTrainingClassSessionAnswerResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.control.user.training.common.spec.PartyTrainingClassSessionAnswerSpec;
@@ -28,22 +27,23 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassSessionLogic;
-import com.echothree.model.control.training.server.logic.TrainingClassLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassAnswerLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassQuestionLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassSectionLogic;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionAnswer;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestion;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTrainingClassSessionAnswerCommand
@@ -58,8 +58,8 @@ public class EditPartyTrainingClassSessionAnswerCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClassSessionAnswer.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -67,14 +67,34 @@ public class EditPartyTrainingClassSessionAnswerCommand
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyTrainingClassSessionAnswerSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassAnswerName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("QuestionStartTime", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("QuestionEndTime", FieldType.DATE_TIME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    private TrainingControl trainingControl;
+
+    @Inject
+    private PartyTrainingClassLogic partyTrainingClassLogic;
+
+    @Inject
+    private PartyTrainingClassSessionLogic partyTrainingClassSessionLogic;
+
+    @Inject
+    private TrainingClassAnswerLogic trainingClassAnswerLogic;
+
+    @Inject
+    private TrainingClassQuestionLogic trainingClassQuestionLogic;
+
+    @Inject
+    private TrainingClassSectionLogic trainingClassSectionLogic;
+
+
     
     /** Creates a new instance of EditPartyTrainingClassSessionAnswerCommand */
     public EditPartyTrainingClassSessionAnswerCommand() {
@@ -94,34 +114,34 @@ public class EditPartyTrainingClassSessionAnswerCommand
     @Override
     public PartyTrainingClassSessionAnswer getEntity(EditPartyTrainingClassSessionAnswerResult result) {
         PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer = null;
-        var partyTrainingClass = PartyTrainingClassLogic.getInstance().getPartyTrainingClassByName(this, spec.getPartyTrainingClassName());
+        var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(this, spec.getPartyTrainingClassName());
         
         if(!hasExecutionErrors()) {
             var partyTrainingClassSessionSequence = Integer.valueOf(spec.getPartyTrainingClassSessionSequence());
-            var partyTrainingClassSession = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSession(this,
+            var partyTrainingClassSession = partyTrainingClassSessionLogic.getPartyTrainingClassSession(this,
                     partyTrainingClass, partyTrainingClassSessionSequence);
             
             if(!hasExecutionErrors()) {
-                var trainingClassSection = TrainingClassLogic.getInstance().getTrainingClassSectionByName(this,
+                var trainingClassSection = trainingClassSectionLogic.getTrainingClassSectionByName(this,
                         partyTrainingClassSession.getLastDetail().getPartyTrainingClass().getLastDetail().getTrainingClass(),
                         spec.getTrainingClassSectionName());
                 
                 if(!hasExecutionErrors()) {
-                    var trainingClassQuestion = TrainingClassLogic.getInstance().getTrainingClassQuestionByName(this, trainingClassSection,
+                    var trainingClassQuestion = trainingClassQuestionLogic.getTrainingClassQuestionByName(this, trainingClassSection,
                             spec.getTrainingClassQuestionName());
                     
                     if(!hasExecutionErrors()) {
-                        var partyTrainingClassSessionQuestion = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionQuestion(this,
+                        var partyTrainingClassSessionQuestion = partyTrainingClassSessionLogic.getPartyTrainingClassSessionQuestion(this,
                                 partyTrainingClassSession, trainingClassQuestion);
                         
                         if(!hasExecutionErrors()) {
                             var partyTrainingClassSessionAnswerSequence = Integer.valueOf(spec.getPartyTrainingClassSessionAnswerSequence());
 
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                partyTrainingClassSessionAnswer = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionAnswer(this,
+                                partyTrainingClassSessionAnswer = partyTrainingClassSessionLogic.getPartyTrainingClassSessionAnswer(this,
                                         partyTrainingClassSessionQuestion, partyTrainingClassSessionAnswerSequence);
                             } else { // EditMode.UPDATE
-                                partyTrainingClassSessionAnswer = PartyTrainingClassSessionLogic.getInstance().getPartyTrainingClassSessionAnswerForUpdate(this,
+                                partyTrainingClassSessionAnswer = partyTrainingClassSessionLogic.getPartyTrainingClassSessionAnswerForUpdate(this,
                                         partyTrainingClassSessionQuestion, partyTrainingClassSessionAnswerSequence);
                             }
                         }
@@ -140,8 +160,6 @@ public class EditPartyTrainingClassSessionAnswerCommand
 
     @Override
     public void fillInResult(EditPartyTrainingClassSessionAnswerResult result, PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setPartyTrainingClassSessionAnswer(trainingControl.getPartyTrainingClassSessionAnswerTransfer(getUserVisit(), partyTrainingClassSessionAnswer));
     }
     
@@ -167,7 +185,7 @@ public class EditPartyTrainingClassSessionAnswerCommand
     public void canUpdate(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
         var trainingClassAnswerName = edit.getTrainingClassAnswerName();
 
-        trainingClassAnswer = trainingClassAnswerName == null ? null : TrainingClassLogic.getInstance().getTrainingClassAnswerByName(this,
+        trainingClassAnswer = trainingClassAnswerName == null ? null : trainingClassAnswerLogic.getTrainingClassAnswerByName(this,
                 partyTrainingClassSessionAnswer.getTrainingClassAnswer().getLastDetail().getTrainingClassQuestion(), trainingClassAnswerName);
         
         if(!hasExecutionErrors()) {
@@ -180,7 +198,6 @@ public class EditPartyTrainingClassSessionAnswerCommand
 
     @Override
     public void doUpdate(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         var partyTrainingClassSessionAnswerValue = trainingControl.getPartyTrainingClassSessionAnswerValue(partyTrainingClassSessionAnswer);
 

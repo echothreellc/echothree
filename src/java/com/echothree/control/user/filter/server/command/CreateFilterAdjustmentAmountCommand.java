@@ -20,7 +20,7 @@ import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentAmoun
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.common.FilterKinds;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -36,10 +36,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentAmountCommand
@@ -75,6 +75,19 @@ public class CreateFilterAdjustmentAmountCommand
                 new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.PRICE_UNIT, true, null, null)
         );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of CreateFilterAdjustmentAmountCommand */
     public CreateFilterAdjustmentAmountCommand() {
@@ -105,7 +118,7 @@ public class CreateFilterAdjustmentAmountCommand
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
-        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
+        var filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
 
         if(!hasExecutionErrors()) {
             var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
@@ -115,22 +128,21 @@ public class CreateFilterAdjustmentAmountCommand
                 var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
 
-                var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this,
                         unitOfMeasureName, unitOfMeasureKindName, unitOfMeasureTypeName);
 
                 if(!hasExecutionErrors()) {
                     var currencyIsoName = form.getCurrencyIsoName();
-                    var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+                    var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        var filterControl = Session.getModelController(FilterControl.class);
-                        var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment,
+                        var filterAdjustmentAmount = filterAdjustmentControl.getFilterAdjustmentAmount(filterAdjustment,
                                 unitOfMeasureType, currency);
 
                         if(filterAdjustmentAmount == null) {
                             var amount = Long.valueOf(form.getAmount());
 
-                            filterControl.createFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency,
+                            filterAdjustmentControl.createFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency,
                                     amount, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentAmount.name());

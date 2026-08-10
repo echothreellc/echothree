@@ -109,12 +109,22 @@ public interface ContactService
 
     CommandResult<GetContactMechanismResult> getContactMechanism(UserVisitPK userVisitPK, GetContactMechanismForm form);
 
+    CommandResult<GetContactMechanismsResult> getContactMechanisms(UserVisitPK userVisitPK, GetContactMechanismsForm form);
+
     CommandResult<VoidResult> deleteContactMechanism(UserVisitPK userVisitPK, DeleteContactMechanismForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Party Contact Mechanisms
+    // --------------------------------------------------------------------------------
+
+    CommandResult<GetPartyContactMechanismResult> getPartyContactMechanism(UserVisitPK userVisitPK, GetPartyContactMechanismForm form);
+
+    CommandResult<GetPartyContactMechanismsResult> getPartyContactMechanisms(UserVisitPK userVisitPK, GetPartyContactMechanismsForm form);
+
     // --------------------------------------------------------------------------------
     //   Contact Mechanism Aliases
     // --------------------------------------------------------------------------------
-    
+
     CommandResult<VoidResult> createContactMechanismAlias(UserVisitPK userVisitPK, CreateContactMechanismAliasForm form);
     
     CommandResult<VoidResult> deleteContactMechanismAlias(UserVisitPK userVisitPK, DeleteContactMechanismAliasForm form);

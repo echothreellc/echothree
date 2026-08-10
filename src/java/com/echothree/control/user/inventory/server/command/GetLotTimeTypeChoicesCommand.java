@@ -30,38 +30,40 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetLotTimeTypeChoicesCommand
         extends BaseSimpleCommand<GetLotTimeTypeChoicesForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LotTimeType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultLotTimeTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    LotTimeControl lotTimeControl;
+
     /** Creates a new instance of GetLotTimeTypeChoicesCommand */
     public GetLotTimeTypeChoicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var result = InventoryResultFactory.getGetLotTimeTypeChoicesResult();
         var defaultLotTimeTypeChoice = form.getDefaultLotTimeTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
@@ -70,5 +72,5 @@ public class GetLotTimeTypeChoicesCommand
 
         return result;
     }
-    
+
 }

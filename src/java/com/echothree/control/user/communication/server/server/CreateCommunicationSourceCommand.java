@@ -34,10 +34,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCommunicationSourceCommand
@@ -48,21 +48,33 @@ public class CreateCommunicationSourceCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("CommunicationSourceTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CommunicationSourceTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
         
         formEmailFieldDefinitions = List.of(
-            new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, 40L),
-            new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
-            new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
-            new FieldDefinition("ReceiveWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SendWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ReviewEmployeeSelectorName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, 40L),
+                new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
+                new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
+                new FieldDefinition("ReceiveWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SendWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ReviewEmployeeSelectorName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    CommunicationControl communicationControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    ServerControl serverControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
     
     /** Creates a new instance of CreateCommunicationSourceCommand */
     public CreateCommunicationSourceCommand() {
@@ -87,7 +99,6 @@ public class CreateCommunicationSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = Session.getModelController(CommunicationControl.class);
         var communicationSourceName = form.getCommunicationSourceName();
         var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
@@ -103,12 +114,10 @@ public class CreateCommunicationSourceCommand
                 communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
                 
                 if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)) {
-                    var serverControl = Session.getModelController(ServerControl.class);
                     var serverName = form.getServerName();
                     var server = serverControl.getServerByName(serverName);
                     
                     if(server != null) {
-                        var workEffortControl = Session.getModelController(WorkEffortControl.class);
                         var receiveWorkEffortScopeName = form.getReceiveWorkEffortScopeName();
                         var workEffortType = workEffortControl.getWorkEffortTypeByName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
                         var receiveWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, receiveWorkEffortScopeName);
@@ -124,7 +133,6 @@ public class CreateCommunicationSourceCommand
                                 Selector reviewEmployeeSelector = null;
                                 
                                 if(reviewEmployeeSelectorName != null) {
-                                    var selectorControl = Session.getModelController(SelectorControl.class);
                                     var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());
                                     
                                     if(selectorKind != null) {

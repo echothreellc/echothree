@@ -19,24 +19,23 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.SearchSalesOrderBatchesForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
-import com.echothree.model.control.batch.common.BatchConstants;
+import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
+import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.server.search.SalesOrderBatchSearchEvaluator;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchSalesOrderBatchesCommand
@@ -56,8 +55,23 @@ public class SearchSalesOrderBatchesCommand
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    BatchLogic batchLogic;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    PaymentMethodLogic paymentMethodLogic;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of SearchSalesOrderBatchesCommand */
     public SearchSalesOrderBatchesCommand() {
@@ -66,7 +80,6 @@ public class SearchSalesOrderBatchesCommand
     
     @Override
     protected BaseResult execute() {
-        var searchLogic = SearchLogic.getInstance();
         var result = SearchResultFactory.getSearchSalesOrderBatchesResult();
         var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.SALES_ORDER_BATCH.name());
 
@@ -76,21 +89,19 @@ public class SearchSalesOrderBatchesCommand
 
             if(!hasExecutionErrors()) {
                 var currencyIsoName = form.getCurrencyIsoName();
-                var currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+                var currency = currencyIsoName == null ? null : currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                 if(!hasExecutionErrors()) {
                     var paymentMethodName = form.getPaymentMethodName();
-                    var paymentMethod = paymentMethodName == null ? null : PaymentMethodLogic.getInstance().getPaymentMethodByName(this, paymentMethodName);
+                    var paymentMethod = paymentMethodName == null ? null : paymentMethodLogic.getPaymentMethodByName(this, paymentMethodName);
 
                     if(!hasExecutionErrors()) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         var salesOrderBatchStatusChoice = form.getSalesOrderBatchStatusChoice();
                         var salesOrderBatchStatusWorkflowStep = salesOrderBatchStatusChoice == null ? null :
                             workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS), salesOrderBatchStatusChoice);
 
                         if(salesOrderBatchStatusChoice == null || salesOrderBatchStatusChoice != null) {
-                            var batchLogic = BatchLogic.getInstance();
-                            var batchType = batchLogic.getBatchTypeByName(this, BatchConstants.BatchType_SALES_ORDER);
+                            var batchType = batchLogic.getBatchTypeByName(this, BatchTypes.SALES_ORDER.name());
 
                             if(!hasExecutionErrors()) {
                                 var batchAliasTypeName = form.getBatchAliasTypeName();

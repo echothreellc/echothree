@@ -18,6 +18,8 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterDescriptionForm;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterDescriptionCommand
@@ -58,6 +60,19 @@ public class CreateFilterDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateFilterDescriptionCommand */
     public CreateFilterDescriptionCommand() {
@@ -66,20 +81,18 @@ public class CreateFilterDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var filterName = form.getFilterName();
                 var filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = form.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
                     

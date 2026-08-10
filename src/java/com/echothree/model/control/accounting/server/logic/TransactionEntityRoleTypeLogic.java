@@ -33,14 +33,23 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TransactionEntityRoleTypeLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    TransactionTypeLogic transactionTypeLogic;
 
     protected TransactionEntityRoleTypeLogic() {
         super();
@@ -53,7 +62,7 @@ public class TransactionEntityRoleTypeLogic
     public TransactionEntityRoleType createTransactionEntityRoleType(final ExecutionErrorAccumulator eea, final String transactionTypeName,
             final String transactionEntityRoleTypeName, final EntityType entityType, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
+        var transactionType = transactionTypeLogic.getTransactionTypeByName(eea, transactionTypeName);
         TransactionEntityRoleType transactionEntityRoleType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -67,7 +76,6 @@ public class TransactionEntityRoleTypeLogic
     public TransactionEntityRoleType createTransactionEntityRoleType(final ExecutionErrorAccumulator eea, final TransactionType transactionType,
             final String transactionEntityRoleTypeName, final EntityType entityType, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
 
         if(transactionEntityRoleType == null) {
@@ -86,7 +94,6 @@ public class TransactionEntityRoleTypeLogic
     public TransactionEntityRoleType getTransactionEntityRoleTypeByName(final ExecutionErrorAccumulator eea,
             final TransactionType transactionType, final String transactionEntityRoleTypeName,
             final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName, entityPermission);
 
         if(transactionEntityRoleType == null) {
@@ -110,10 +117,10 @@ public class TransactionEntityRoleTypeLogic
     public TransactionEntityRoleType getTransactionEntityRoleTypeByName(final ExecutionErrorAccumulator eea,
             final String transactionTypeName, final String transactionEntityRoleTypeName,
             final EntityPermission entityPermission) {
-        var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
+        var transactionType = transactionTypeLogic.getTransactionTypeByName(eea, transactionTypeName);
         TransactionEntityRoleType transactionEntityRoleType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             transactionEntityRoleType = getTransactionEntityRoleTypeByName(eea, transactionType, transactionEntityRoleTypeName, entityPermission);
         }
 
@@ -132,24 +139,23 @@ public class TransactionEntityRoleTypeLogic
 
     public TransactionEntityRoleType getTransactionEntityRoleTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final TransactionEntityRoleTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionTypeName = universalSpec.getTransactionTypeName();
         var transactionEntityRoleTypeName = universalSpec.getTransactionEntityRoleTypeName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(transactionTypeName, transactionEntityRoleTypeName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         TransactionEntityRoleType transactionEntityRoleType = null;
 
         if(nameParameterCount == 2 && possibleEntitySpecs == 0) {
-            var transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(eea, transactionTypeName);
+            var transactionType = transactionTypeLogic.getTransactionTypeByName(eea, transactionTypeName);
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 transactionEntityRoleType = getTransactionEntityRoleTypeByName(eea, transactionType, transactionEntityRoleTypeName, entityPermission);
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionEntityRoleType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -171,8 +177,6 @@ public class TransactionEntityRoleTypeLogic
 
     public void deleteTransactionEntityRoleType(final ExecutionErrorAccumulator eea, final TransactionEntityRoleType transactionEntityRoleType,
             final BasePK deletedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         accountingControl.deleteTransactionEntityRoleType(transactionEntityRoleType, deletedBy);
     }
 

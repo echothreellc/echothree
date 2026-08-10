@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSalesOrderCommand
@@ -44,9 +45,9 @@ public class CreateSalesOrderCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SalesOrder.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SalesOrder.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, false, null, null),
@@ -63,8 +64,11 @@ public class CreateSalesOrderCommand
                 new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Taxable", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
 
     /** Creates a new instance of CreateSalesOrderCommand */
     public CreateSalesOrderCommand() {
@@ -89,7 +93,7 @@ public class CreateSalesOrderCommand
         var strTaxable = form.getTaxable();
         var workflowEntranceName = form.getWorkflowEntranceName();
 
-        var order = SalesOrderLogic.getInstance().createSalesOrder(session, this, getUserVisit(), batchName, sourceName,
+        var order = salesOrderLogic.createSalesOrder(session, this, getUserVisit(), batchName, sourceName,
                 billToPartyName, orderPriorityName, currencyIsoName, termName, holdUntilComplete, allowBackorders,
                 allowSubstitutions, allowCombiningShipments, reference, freeOnBoardName, strTaxable, workflowEntranceName,
                 getParty());

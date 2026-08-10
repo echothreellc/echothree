@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.training.common.form;
 
-import com.echothree.control.user.training.common.spec.TrainingClassSpec;
+import com.echothree.control.user.training.common.spec.TrainingClassUniversalSpec;
 
 public interface DeleteTrainingClassForm
-        extends TrainingClassSpec {
+        extends TrainingClassUniversalSpec {
     
-    // Nothing additional beyond TrainingClassSpec
+    // Nothing additional beyond TrainingClassUniversalSpec
     
 }

@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEditorDescriptionCommand
@@ -55,18 +55,25 @@ public class EditEditorDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Editor.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    EditorControl editorControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditEditorDescriptionCommand */
     public EditEditorDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditEditorDescriptionCommand
 
     @Override
     public EditorDescription getEntity(EditEditorDescriptionResult result) {
-        var editorControl = Session.getModelController(EditorControl.class);
         EditorDescription editorDescription = null;
         var editorName = spec.getEditorName();
         var editor = editorControl.getEditorByName(editorName);
 
         if(editor != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditEditorDescriptionCommand
 
     @Override
     public void fillInResult(EditEditorDescriptionResult result, EditorDescription editorDescription) {
-        var editorControl = Session.getModelController(EditorControl.class);
-
         result.setEditorDescription(editorControl.getEditorDescriptionTransfer(getUserVisit(), editorDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditEditorDescriptionCommand
 
     @Override
     public void doUpdate(EditorDescription editorDescription) {
-        var editorControl = Session.getModelController(EditorControl.class);
         var editorDescriptionValue = editorControl.getEditorDescriptionValue(editorDescription);
 
         editorDescriptionValue.setDescription(edit.getDescription());

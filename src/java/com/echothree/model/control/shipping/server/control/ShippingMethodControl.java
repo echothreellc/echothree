@@ -37,10 +37,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class ShippingMethodControl
         extends BaseShippingControl {
+
+    @Inject
+    protected SearchControl searchControl;
+
+    @Inject
+    protected ShippingControl shippingControl;
 
     /** Creates a new instance of ShippingMethodControl */
     protected ShippingMethodControl() {
@@ -51,8 +58,16 @@ public class ShippingMethodControl
     //   Shipping Method Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
+    @Inject
+    protected ShippingMethodFactory shippingMethodFactory;
+
     public List<ShippingMethodResultTransfer> getShippingMethodResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
         List<ShippingMethodResultTransfer> shippingMethodResultTransfers;
@@ -67,19 +82,20 @@ public class ShippingMethodControl
             shippingMethodResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
-                var shippingControl = Session.getModelController(ShippingControl.class);
-                var ps = SearchResultFactory.getInstance().prepareStatement(
-                        "SELECT eni_entityuniqueid "
-                                + "FROM searchresults, entityinstances "
-                                + "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid "
-                                + "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid "
-                                + "_LIMIT_");
+                var ps = searchResultFactory.prepareStatement(
+                        """
+                        SELECT eni_entityuniqueid
+                        FROM searchresults, entityinstances
+                        WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                        _LIMIT_
+                        """);
 
                 ps.setLong(1, search.getPrimaryKey().getEntityId());
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ShippingMethodPK(rs.getLong(1)));
+                        var shippingMethod = shippingMethodFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ShippingMethodPK(rs.getLong(1)));
                         var shippingMethodDetail = shippingMethod.getLastDetail();
 
                         shippingMethodResultTransfers.add(new ShippingMethodResultTransfer(shippingMethodDetail.getShippingMethodName(),
@@ -99,19 +115,20 @@ public class ShippingMethodControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
             try {
-                var shippingControl = Session.getModelController(ShippingControl.class);
-                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
-                        "SELECT eni_entityuniqueid "
-                                + "FROM cachedexecutedsearchresults, entityinstances "
-                                + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid "
-                                + "ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid "
-                                + "_LIMIT_");
+                var ps = cachedExecutedSearchResultFactory.prepareStatement(
+                        """
+                        SELECT eni_entityuniqueid
+                        FROM cachedexecutedsearchresults, entityinstances
+                        WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid
+                        _LIMIT_
+                        """);
 
                 ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ShippingMethodPK(rs.getLong(1)));
+                        var shippingMethod = shippingMethodFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ShippingMethodPK(rs.getLong(1)));
                         var shippingMethodDetail = shippingMethod.getLastDetail();
 
                         shippingMethodResultTransfers.add(new ShippingMethodResultTransfer(shippingMethodDetail.getShippingMethodName(),
@@ -129,8 +146,6 @@ public class ShippingMethodControl
     }
 
     public List<ShippingMethodObject> getShippingMethodObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
         var shippingMethodObjects = new ArrayList<ShippingMethodObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

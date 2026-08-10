@@ -42,11 +42,11 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactPostalAddressCommand
@@ -64,13 +64,13 @@ public class EditContactPostalAddressCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         // customerFormFieldDefinitions differs from otherFormFieldDefinitions in that when the PartyType
         // executing this command = CUSTOMER, FirstName and LastName are required fields. For all other
@@ -93,7 +93,7 @@ public class EditContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
         
         editOtherFieldDefinitions = List.of(
                 new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
@@ -113,8 +113,17 @@ public class EditContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditContactPostalAddressCommand */
     public EditContactPostalAddressCommand() {
@@ -147,13 +156,11 @@ public class EditContactPostalAddressCommand
 
     @Override
     public PartyContactMechanism getEntity(EditContactPostalAddressResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         PartyContactMechanism partyContactMechanism = null;
         var partyName = spec.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismName = spec.getContactMechanismName();
             var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
@@ -193,16 +200,12 @@ public class EditContactPostalAddressCommand
 
     @Override
     public void fillInResult(EditContactPostalAddressResult result, PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
-
         result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
                 partyContactMechanism.getLastDetail().getContactMechanism()));
     }
 
     @Override
     public void doLock(ContactPostalAddressEdit edit, PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var geoControl = Session.getModelController(GeoControl.class);
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetail = contactMechanism.getLastDetail();
         var contactPostalAddress = contactControl.getContactPostalAddress(contactMechanism);
@@ -253,7 +256,6 @@ public class EditContactPostalAddressCommand
 
     @Override
     public void canUpdate(PartyContactMechanism partyContactMechanism) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var countryName = edit.getCountryName();
         var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
 
@@ -342,8 +344,6 @@ public class EditContactPostalAddressCommand
 
     @Override
     public void doUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
         var soundex = new Soundex();
         var updatedBy = getPartyPK();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();

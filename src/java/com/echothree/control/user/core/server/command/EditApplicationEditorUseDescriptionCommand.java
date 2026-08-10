@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditApplicationEditorUseDescriptionCommand
@@ -56,19 +56,29 @@ public class EditApplicationEditorUseDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ApplicationEditorUse.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
     
     /** Creates a new instance of EditApplicationEditorUseDescriptionCommand */
     public EditApplicationEditorUseDescriptionCommand() {
@@ -88,16 +98,14 @@ public class EditApplicationEditorUseDescriptionCommand
     @Override
     public ApplicationEditorUseDescription getEntity(EditApplicationEditorUseDescriptionResult result) {
         ApplicationEditorUseDescription applicationEditorUseDescription = null;
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationName = spec.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
 
         if(!hasExecutionErrors()) {
             var applicationEditorUseName = spec.getApplicationEditorUseName();
             var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -129,8 +137,6 @@ public class EditApplicationEditorUseDescriptionCommand
 
     @Override
     public void fillInResult(EditApplicationEditorUseDescriptionResult result, ApplicationEditorUseDescription applicationEditorUseDescription) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
-
         result.setApplicationEditorUseDescription(applicationControl.getApplicationEditorUseDescriptionTransfer(getUserVisit(), applicationEditorUseDescription));
     }
 
@@ -141,7 +147,6 @@ public class EditApplicationEditorUseDescriptionCommand
 
     @Override
     public void doUpdate(ApplicationEditorUseDescription applicationEditorUseDescription) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationEditorUseDescriptionValue = applicationControl.getApplicationEditorUseDescriptionValue(applicationEditorUseDescription);
         applicationEditorUseDescriptionValue.setDescription(edit.getDescription());
 

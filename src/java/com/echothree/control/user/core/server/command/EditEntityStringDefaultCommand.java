@@ -37,6 +37,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityStringDefaultCommand
@@ -66,6 +67,13 @@ public class EditEntityStringDefaultCommand
                 new FieldDefinition("StringAttribute", FieldType.STRING, true, 1L, 512L)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     
     /** Creates a new instance of EditEntityStringDefaultCommand */
     public EditEntityStringDefaultCommand() {
@@ -84,8 +92,8 @@ public class EditEntityStringDefaultCommand
 
     @Override
     public EntityStringDefault getEntity(EditEntityStringDefaultResult result) {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, spec);
-        var language = LanguageLogic.getInstance().getLanguage(this, spec, spec);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
+        var language = languageLogic.getLanguage(this, spec, spec);
         EntityStringDefault entityStringDefault = null;
 
         if(!hasExecutionErrors()) {

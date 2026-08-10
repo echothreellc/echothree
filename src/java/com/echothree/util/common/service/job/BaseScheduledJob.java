@@ -22,25 +22,20 @@ import com.echothree.control.user.job.common.JobUtil;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseScheduledJob {
 
-    private Log log = null;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
     protected String jobName;
+
     protected UserVisitPK userVisitPK;
+    protected long startTime;
 
     protected BaseScheduledJob(String jobName) {
         this.jobName = jobName;
-    }
-
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-
-        return log;
     }
 
     private void startJob(UserVisitPK userVisitPK)
@@ -49,6 +44,8 @@ public abstract class BaseScheduledJob {
 
         commandForm.setJobName(jobName);
 
+        log.debug("Starting job: {}", jobName);
+        startTime = System.currentTimeMillis();
         JobUtil.getHome().startJob(userVisitPK, commandForm);
     }
 
@@ -58,7 +55,9 @@ public abstract class BaseScheduledJob {
 
         commandForm.setJobName(jobName);
 
+        log.debug("Ending job: {}", jobName);
         JobUtil.getHome().endJob(userVisitPK, commandForm);
+        log.info("Completed job: {}, elapsed: {}ms", jobName, System.currentTimeMillis() - startTime);
     }
 
     public void executeJob()
@@ -70,7 +69,7 @@ public abstract class BaseScheduledJob {
         var commandResult = AuthenticationUtil.getHome().getJobUserVisit(commandForm);
 
         if(commandResult.hasErrors()) {
-            getLog().error(commandResult);
+            log.error(commandResult.toString());
         } else {
             var executionResult = commandResult.getExecutionResult();
             var getJobUserVisitResult = (GetJobUserVisitResult)executionResult.getResult();

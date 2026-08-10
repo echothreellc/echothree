@@ -221,16 +221,19 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Line Use Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceLineUseTypeFactory invoiceLineUseTypeFactory;
+
     public InvoiceLineUseType createInvoiceLineUseType(String invoiceLineUseTypeName) {
-        return InvoiceLineUseTypeFactory.getInstance().create(invoiceLineUseTypeName);
+        return invoiceLineUseTypeFactory.create(invoiceLineUseTypeName);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceLineUseType */
     public InvoiceLineUseType getInvoiceLineUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InvoiceLineUseTypePK(entityInstance.getEntityUniqueId());
 
-        return InvoiceLineUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return invoiceLineUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InvoiceLineUseType getInvoiceLineUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -249,7 +252,7 @@ public class InvoiceControl
     }
 
     public List<InvoiceLineUseType> getInvoiceLineUseTypes() {
-        var ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
+        var ps = invoiceLineUseTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM invoicelineusetypes
@@ -257,14 +260,14 @@ public class InvoiceControl
                 _LIMIT_
                 """);
         
-        return InvoiceLineUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return invoiceLineUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public InvoiceLineUseType getInvoiceLineUseTypeByName(String invoiceLineUseTypeName) {
         InvoiceLineUseType invoiceLineUseType;
         
         try {
-            var ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
+            var ps = invoiceLineUseTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM invoicelineusetypes
@@ -273,7 +276,7 @@ public class InvoiceControl
             
             ps.setString(1, invoiceLineUseTypeName);
 
-            invoiceLineUseType = InvoiceLineUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            invoiceLineUseType = invoiceLineUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -303,16 +306,19 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Line Use Type Description
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceLineUseTypeDescriptionFactory invoiceLineUseTypeDescriptionFactory;
+
     public InvoiceLineUseTypeDescription createInvoiceLineUseTypeDescription(InvoiceLineUseType invoiceLineUseType, Language language, String description) {
-        return InvoiceLineUseTypeDescriptionFactory.getInstance().create(invoiceLineUseType, language, description);
+        return invoiceLineUseTypeDescriptionFactory.create(invoiceLineUseType, language, description);
     }
     
     public InvoiceLineUseTypeDescription getInvoiceLineUseTypeDescription(InvoiceLineUseType invoiceLineUseType, Language language) {
         InvoiceLineUseTypeDescription invoiceLineUseTypeDescription;
         
         try {
-            var ps = InvoiceLineUseTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = invoiceLineUseTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM invoicelineusetypedescriptions
@@ -322,7 +328,7 @@ public class InvoiceControl
             ps.setLong(1, invoiceLineUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            invoiceLineUseTypeDescription = InvoiceLineUseTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            invoiceLineUseTypeDescription = invoiceLineUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -350,16 +356,19 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Role Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceRoleTypeFactory invoiceRoleTypeFactory;
+
     public InvoiceRoleType createInvoiceRoleType(String invoiceRoleTypeName, Integer sortOrder) {
-        return InvoiceRoleTypeFactory.getInstance().create(invoiceRoleTypeName, sortOrder);
+        return invoiceRoleTypeFactory.create(invoiceRoleTypeName, sortOrder);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceRoleType */
     public InvoiceRoleType getInvoiceRoleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InvoiceRoleTypePK(entityInstance.getEntityUniqueId());
 
-        return InvoiceRoleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return invoiceRoleTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InvoiceRoleType getInvoiceRoleTypeByEntityInstance(EntityInstance entityInstance) {
@@ -378,7 +387,7 @@ public class InvoiceControl
     }
 
     public List<InvoiceRoleType> getInvoiceRoleTypes() {
-        var ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
+        var ps = invoiceRoleTypeFactory.prepareStatement(
                 """
                 SELECT _ALL_
                 FROM invoiceroletypes
@@ -386,14 +395,14 @@ public class InvoiceControl
                 _LIMIT_
                 """);
         
-        return InvoiceRoleTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return invoiceRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public InvoiceRoleType getInvoiceRoleTypeByName(String invoiceRoleTypeName) {
         InvoiceRoleType invoiceRoleType;
         
         try {
-            var ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
+            var ps = invoiceRoleTypeFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM invoiceroletypes
@@ -403,7 +412,7 @@ public class InvoiceControl
             ps.setString(1, invoiceRoleTypeName);
             
             
-            invoiceRoleType = InvoiceRoleTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            invoiceRoleType = invoiceRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -433,16 +442,19 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Role Type Description
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceRoleTypeDescriptionFactory invoiceRoleTypeDescriptionFactory;
+
     public InvoiceRoleTypeDescription createInvoiceRoleTypeDescription(InvoiceRoleType invoiceRoleType, Language language, String description) {
-        return InvoiceRoleTypeDescriptionFactory.getInstance().create(invoiceRoleType, language, description);
+        return invoiceRoleTypeDescriptionFactory.create(invoiceRoleType, language, description);
     }
     
     public InvoiceRoleTypeDescription getInvoiceRoleTypeDescription(InvoiceRoleType invoiceRoleType, Language language) {
         InvoiceRoleTypeDescription invoiceRoleTypeDescription;
         
         try {
-            var ps = InvoiceRoleTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = invoiceRoleTypeDescriptionFactory.prepareStatement(
                     """
                     SELECT _ALL_
                     FROM invoiceroletypedescriptions
@@ -452,7 +464,7 @@ public class InvoiceControl
             ps.setLong(1, invoiceRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            invoiceRoleTypeDescription = InvoiceRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            invoiceRoleTypeDescription = invoiceRoleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -480,7 +492,13 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceTypeFactory invoiceTypeFactory;
+
+    @Inject
+    protected InvoiceTypeDetailFactory invoiceTypeDetailFactory;
+
     public InvoiceType createInvoiceType(String invoiceTypeName, InvoiceType parentInvoiceType, SequenceType invoiceSequenceType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultInvoiceType = getDefaultInvoiceType();
@@ -495,12 +513,12 @@ public class InvoiceControl
             isDefault = true;
         }
 
-        var invoiceType = InvoiceTypeFactory.getInstance().create();
-        var invoiceTypeDetail = InvoiceTypeDetailFactory.getInstance().create(invoiceType, invoiceTypeName,
+        var invoiceType = invoiceTypeFactory.create();
+        var invoiceTypeDetail = invoiceTypeDetailFactory.create(invoiceType, invoiceTypeName,
                 parentInvoiceType, invoiceSequenceType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        invoiceType = InvoiceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        invoiceType = invoiceTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 invoiceType.getPrimaryKey());
         invoiceType.setActiveDetail(invoiceTypeDetail);
         invoiceType.setLastDetail(invoiceTypeDetail);
@@ -515,7 +533,7 @@ public class InvoiceControl
     public InvoiceType getInvoiceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InvoiceTypePK(entityInstance.getEntityUniqueId());
 
-        return InvoiceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return invoiceTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InvoiceType getInvoiceTypeByEntityInstance(EntityInstance entityInstance) {
@@ -558,7 +576,7 @@ public class InvoiceControl
     }
 
     public InvoiceType getInvoiceTypeByName(String invoiceTypeName, EntityPermission entityPermission) {
-        return InvoiceTypeFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceTypeByNameQueries, invoiceTypeName);
+        return invoiceTypeFactory.getEntityFromQuery(entityPermission, getInvoiceTypeByNameQueries, invoiceTypeName);
     }
 
     public InvoiceType getInvoiceTypeByName(String invoiceTypeName) {
@@ -601,7 +619,7 @@ public class InvoiceControl
     }
 
     private InvoiceType getDefaultInvoiceType(EntityPermission entityPermission) {
-        return InvoiceTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultInvoiceTypeQueries);
+        return invoiceTypeFactory.getEntityFromQuery(entityPermission, getDefaultInvoiceTypeQueries);
     }
 
     public InvoiceType getDefaultInvoiceType() {
@@ -640,7 +658,7 @@ public class InvoiceControl
     }
 
     private List<InvoiceType> getInvoiceTypes(EntityPermission entityPermission) {
-        return InvoiceTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceTypesQueries);
+        return invoiceTypeFactory.getEntitiesFromQuery(entityPermission, getInvoiceTypesQueries);
     }
 
     public List<InvoiceType> getInvoiceTypes() {
@@ -676,7 +694,7 @@ public class InvoiceControl
 
     private List<InvoiceType> getInvoiceTypesByParentInvoiceType(InvoiceType parentInvoiceType,
             EntityPermission entityPermission) {
-        return InvoiceTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceTypesByParentInvoiceTypeQueries,
+        return invoiceTypeFactory.getEntitiesFromQuery(entityPermission, getInvoiceTypesByParentInvoiceTypeQueries,
                 parentInvoiceType);
     }
 
@@ -765,7 +783,7 @@ public class InvoiceControl
     private void updateInvoiceTypeFromValue(InvoiceTypeDetailValue invoiceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(invoiceTypeDetailValue.hasBeenModified()) {
-            var invoiceType = InvoiceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceType = invoiceTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceTypeDetailValue.getInvoiceTypePK());
             var invoiceTypeDetail = invoiceType.getActiveDetailForUpdate();
             
@@ -795,7 +813,7 @@ public class InvoiceControl
                 }
             }
             
-            invoiceTypeDetail = InvoiceTypeDetailFactory.getInstance().create(invoiceTypePK, invoiceTypeName,
+            invoiceTypeDetail = invoiceTypeDetailFactory.create(invoiceTypePK, invoiceTypeName,
                     parentInvoiceTypePK, invoiceSequenceTypePK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -863,9 +881,12 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceTypeDescriptionFactory invoiceTypeDescriptionFactory;
+
     public InvoiceTypeDescription createInvoiceTypeDescription(InvoiceType invoiceType, Language language, String description, BasePK createdBy) {
-        var invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().create(invoiceType, language, description, session.getStartTime(),
+        var invoiceTypeDescription = invoiceTypeDescriptionFactory.create(invoiceType, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(invoiceType.getPrimaryKey(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -894,13 +915,13 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = invoiceTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            invoiceTypeDescription = invoiceTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -947,12 +968,12 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = invoiceTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            invoiceTypeDescriptions = InvoiceTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            invoiceTypeDescriptions = invoiceTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1002,7 +1023,7 @@ public class InvoiceControl
     
     public void updateInvoiceTypeDescriptionFromValue(InvoiceTypeDescriptionValue invoiceTypeDescriptionValue, BasePK updatedBy) {
         if(invoiceTypeDescriptionValue.hasBeenModified()) {
-            var invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceTypeDescriptionValue.getPrimaryKey());
+            var invoiceTypeDescription = invoiceTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, invoiceTypeDescriptionValue.getPrimaryKey());
             
             invoiceTypeDescription.setThruTime(session.getStartTime());
             invoiceTypeDescription.store();
@@ -1011,7 +1032,7 @@ public class InvoiceControl
             var language = invoiceTypeDescription.getLanguage();
             var description = invoiceTypeDescriptionValue.getDescription();
             
-            invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().create(invoiceType, language, description,
+            invoiceTypeDescription = invoiceTypeDescriptionFactory.create(invoiceType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(invoiceType.getPrimaryKey(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1036,7 +1057,13 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Alias Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceAliasTypeFactory invoiceAliasTypeFactory;
+
+    @Inject
+    protected InvoiceAliasTypeDetailFactory invoiceAliasTypeDetailFactory;
+
     public InvoiceAliasType createInvoiceAliasType(InvoiceType invoiceType, String invoiceAliasTypeName, String validationPattern,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultInvoiceAliasType = getDefaultInvoiceAliasType(invoiceType);
@@ -1051,12 +1078,12 @@ public class InvoiceControl
             isDefault = true;
         }
 
-        var invoiceAliasType = InvoiceAliasTypeFactory.getInstance().create();
-        var invoiceAliasTypeDetail = InvoiceAliasTypeDetailFactory.getInstance().create(invoiceAliasType, invoiceType, invoiceAliasTypeName,
+        var invoiceAliasType = invoiceAliasTypeFactory.create();
+        var invoiceAliasTypeDetail = invoiceAliasTypeDetailFactory.create(invoiceAliasType, invoiceType, invoiceAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        invoiceAliasType = InvoiceAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceAliasType.getPrimaryKey());
+        invoiceAliasType = invoiceAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, invoiceAliasType.getPrimaryKey());
         invoiceAliasType.setActiveDetail(invoiceAliasTypeDetail);
         invoiceAliasType.setLastDetail(invoiceAliasTypeDetail);
         invoiceAliasType.store();
@@ -1070,7 +1097,7 @@ public class InvoiceControl
     public InvoiceAliasType getInvoiceAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InvoiceAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return InvoiceAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return invoiceAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InvoiceAliasType getInvoiceAliasTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1114,7 +1141,7 @@ public class InvoiceControl
     }
     
     private InvoiceAliasType getInvoiceAliasTypeByName(InvoiceType invoiceType, String invoiceAliasTypeName, EntityPermission entityPermission) {
-        return InvoiceAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceAliasTypeByNameQueries,
+        return invoiceAliasTypeFactory.getEntityFromQuery(entityPermission, getInvoiceAliasTypeByNameQueries,
                 invoiceType, invoiceAliasTypeName);
     }
     
@@ -1159,7 +1186,7 @@ public class InvoiceControl
     }
     
     private InvoiceAliasType getDefaultInvoiceAliasType(InvoiceType invoiceType, EntityPermission entityPermission) {
-        return InvoiceAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultInvoiceAliasTypeQueries, invoiceType);
+        return invoiceAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultInvoiceAliasTypeQueries, invoiceType);
     }
     
     public InvoiceAliasType getDefaultInvoiceAliasType(InvoiceType invoiceType) {
@@ -1198,7 +1225,7 @@ public class InvoiceControl
     }
     
     private List<InvoiceAliasType> getInvoiceAliasTypes(InvoiceType invoiceType, EntityPermission entityPermission) {
-        return InvoiceAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceAliasTypesQueries, invoiceType);
+        return invoiceAliasTypeFactory.getEntitiesFromQuery(entityPermission, getInvoiceAliasTypesQueries, invoiceType);
     }
     
     public List<InvoiceAliasType> getInvoiceAliasTypes(InvoiceType invoiceType) {
@@ -1262,7 +1289,7 @@ public class InvoiceControl
     private void updateInvoiceAliasTypeFromValue(InvoiceAliasTypeDetailValue invoiceAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(invoiceAliasTypeDetailValue.hasBeenModified()) {
-            var invoiceAliasType = InvoiceAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceAliasType = invoiceAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     invoiceAliasTypeDetailValue.getInvoiceAliasTypePK());
             var invoiceAliasTypeDetail = invoiceAliasType.getActiveDetailForUpdate();
             
@@ -1293,7 +1320,7 @@ public class InvoiceControl
                 }
             }
             
-            invoiceAliasTypeDetail = InvoiceAliasTypeDetailFactory.getInstance().create(invoiceAliasTypePK, invoiceTypePK, invoiceAliasTypeName,
+            invoiceAliasTypeDetail = invoiceAliasTypeDetailFactory.create(invoiceAliasTypePK, invoiceTypePK, invoiceAliasTypeName,
                     validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             invoiceAliasType.setActiveDetail(invoiceAliasTypeDetail);
@@ -1351,8 +1378,11 @@ public class InvoiceControl
     //   Invoice Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected InvoiceAliasTypeDescriptionFactory invoiceAliasTypeDescriptionFactory;
+
     public InvoiceAliasTypeDescription createInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language, String description, BasePK createdBy) {
-        var invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language,
+        var invoiceAliasTypeDescription = invoiceAliasTypeDescriptionFactory.create(invoiceAliasType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1382,7 +1412,7 @@ public class InvoiceControl
     }
 
     private InvoiceAliasTypeDescription getInvoiceAliasTypeDescription(InvoiceAliasType invoiceAliasType, Language language, EntityPermission entityPermission) {
-        return InvoiceAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceAliasTypeDescriptionQueries,
+        return invoiceAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getInvoiceAliasTypeDescriptionQueries,
                 invoiceAliasType, language, Session.MAX_TIME);
     }
 
@@ -1426,7 +1456,7 @@ public class InvoiceControl
     }
 
     private List<InvoiceAliasTypeDescription> getInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType, EntityPermission entityPermission) {
-        return InvoiceAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeQueries,
+        return invoiceAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeQueries,
                 invoiceAliasType, Session.MAX_TIME);
     }
 
@@ -1472,7 +1502,7 @@ public class InvoiceControl
 
     public void updateInvoiceAliasTypeDescriptionFromValue(InvoiceAliasTypeDescriptionValue invoiceAliasTypeDescriptionValue, BasePK updatedBy) {
         if(invoiceAliasTypeDescriptionValue.hasBeenModified()) {
-            var invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceAliasTypeDescription = invoiceAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     invoiceAliasTypeDescriptionValue.getPrimaryKey());
 
             invoiceAliasTypeDescription.setThruTime(session.getStartTime());
@@ -1482,7 +1512,7 @@ public class InvoiceControl
             var language = invoiceAliasTypeDescription.getLanguage();
             var description = invoiceAliasTypeDescriptionValue.getDescription();
 
-            invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language, description,
+            invoiceAliasTypeDescription = invoiceAliasTypeDescriptionFactory.create(invoiceAliasType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1508,6 +1538,12 @@ public class InvoiceControl
     //   Invoice Time Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected InvoiceTimeTypeFactory invoiceTimeTypeFactory;
+
+    @Inject
+    protected InvoiceTimeTypeDetailFactory invoiceTimeTypeDetailFactory;
+
     public InvoiceTimeType createInvoiceTimeType(InvoiceType invoiceType, String invoiceTimeTypeName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultInvoiceTimeType = getDefaultInvoiceTimeType(invoiceType);
@@ -1522,12 +1558,12 @@ public class InvoiceControl
             isDefault = true;
         }
 
-        var invoiceTimeType = InvoiceTimeTypeFactory.getInstance().create();
-        var invoiceTimeTypeDetail = InvoiceTimeTypeDetailFactory.getInstance().create(invoiceTimeType, invoiceType, invoiceTimeTypeName, isDefault,
+        var invoiceTimeType = invoiceTimeTypeFactory.create();
+        var invoiceTimeTypeDetail = invoiceTimeTypeDetailFactory.create(invoiceTimeType, invoiceType, invoiceTimeTypeName, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        invoiceTimeType = InvoiceTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        invoiceTimeType = invoiceTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 invoiceTimeType.getPrimaryKey());
         invoiceTimeType.setActiveDetail(invoiceTimeTypeDetail);
         invoiceTimeType.setLastDetail(invoiceTimeTypeDetail);
@@ -1542,7 +1578,7 @@ public class InvoiceControl
     public InvoiceTimeType getInvoiceTimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InvoiceTimeTypePK(entityInstance.getEntityUniqueId());
 
-        return InvoiceTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return invoiceTimeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InvoiceTimeType getInvoiceTimeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1586,7 +1622,7 @@ public class InvoiceControl
     }
 
     private InvoiceTimeType getInvoiceTimeTypeByName(InvoiceType invoiceType, String invoiceTimeTypeName, EntityPermission entityPermission) {
-        return InvoiceTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceTimeTypeByNameQueries,
+        return invoiceTimeTypeFactory.getEntityFromQuery(entityPermission, getInvoiceTimeTypeByNameQueries,
                 invoiceType, invoiceTimeTypeName);
     }
 
@@ -1630,7 +1666,7 @@ public class InvoiceControl
     }
 
     private InvoiceTimeType getDefaultInvoiceTimeType(InvoiceType invoiceType, EntityPermission entityPermission) {
-        return InvoiceTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultInvoiceTimeTypeQueries,
+        return invoiceTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultInvoiceTimeTypeQueries,
                 invoiceType);
     }
 
@@ -1672,7 +1708,7 @@ public class InvoiceControl
     }
 
     private List<InvoiceTimeType> getInvoiceTimeTypes(InvoiceType invoiceType, EntityPermission entityPermission) {
-        return InvoiceTimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceTimeTypesQueries,
+        return invoiceTimeTypeFactory.getEntitiesFromQuery(entityPermission, getInvoiceTimeTypesQueries,
                 invoiceType);
     }
 
@@ -1740,7 +1776,7 @@ public class InvoiceControl
     private void updateInvoiceTimeTypeFromValue(InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(invoiceTimeTypeDetailValue.hasBeenModified()) {
-            var invoiceTimeType = InvoiceTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceTimeType = invoiceTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceTimeTypeDetailValue.getInvoiceTimeTypePK());
             var invoiceTimeTypeDetail = invoiceTimeType.getActiveDetailForUpdate();
 
@@ -1770,7 +1806,7 @@ public class InvoiceControl
                 }
             }
 
-            invoiceTimeTypeDetail = InvoiceTimeTypeDetailFactory.getInstance().create(invoiceTimeTypePK, invoiceTypePK, invoiceTimeTypeName, isDefault, sortOrder,
+            invoiceTimeTypeDetail = invoiceTimeTypeDetailFactory.create(invoiceTimeTypePK, invoiceTypePK, invoiceTimeTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             invoiceTimeType.setActiveDetail(invoiceTimeTypeDetail);
@@ -1818,8 +1854,11 @@ public class InvoiceControl
     //   Invoice Time Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected InvoiceTimeTypeDescriptionFactory invoiceTimeTypeDescriptionFactory;
+
     public InvoiceTimeTypeDescription createInvoiceTimeTypeDescription(InvoiceTimeType invoiceTimeType, Language language, String description, BasePK createdBy) {
-        var invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().create(invoiceTimeType, language, description,
+        var invoiceTimeTypeDescription = invoiceTimeTypeDescriptionFactory.create(invoiceTimeType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1849,7 +1888,7 @@ public class InvoiceControl
     }
 
     private InvoiceTimeTypeDescription getInvoiceTimeTypeDescription(InvoiceTimeType invoiceTimeType, Language language, EntityPermission entityPermission) {
-        return InvoiceTimeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceTimeTypeDescriptionQueries,
+        return invoiceTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getInvoiceTimeTypeDescriptionQueries,
                 invoiceTimeType, language, Session.MAX_TIME);
     }
 
@@ -1893,7 +1932,7 @@ public class InvoiceControl
     }
 
     private List<InvoiceTimeTypeDescription> getInvoiceTimeTypeDescriptionsByInvoiceTimeType(InvoiceTimeType invoiceTimeType, EntityPermission entityPermission) {
-        return InvoiceTimeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceTimeTypeDescriptionsByInvoiceTimeTypeQueries,
+        return invoiceTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getInvoiceTimeTypeDescriptionsByInvoiceTimeTypeQueries,
                 invoiceTimeType, Session.MAX_TIME);
     }
 
@@ -1939,7 +1978,7 @@ public class InvoiceControl
 
     public void updateInvoiceTimeTypeDescriptionFromValue(InvoiceTimeTypeDescriptionValue invoiceTimeTypeDescriptionValue, BasePK updatedBy) {
         if(invoiceTimeTypeDescriptionValue.hasBeenModified()) {
-            var invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceTimeTypeDescription = invoiceTimeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     invoiceTimeTypeDescriptionValue.getPrimaryKey());
 
             invoiceTimeTypeDescription.setThruTime(session.getStartTime());
@@ -1949,7 +1988,7 @@ public class InvoiceControl
             var language = invoiceTimeTypeDescription.getLanguage();
             var description = invoiceTimeTypeDescriptionValue.getDescription();
 
-            invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().create(invoiceTimeType, language, description,
+            invoiceTimeTypeDescription = invoiceTimeTypeDescriptionFactory.create(invoiceTimeType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1974,7 +2013,13 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Line Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceLineTypeFactory invoiceLineTypeFactory;
+
+    @Inject
+    protected InvoiceLineTypeDetailFactory invoiceLineTypeDetailFactory;
+
     public InvoiceLineType createInvoiceLineType(InvoiceType invoiceType, String invoiceLineTypeName,
             InvoiceLineType parentInvoiceLineType, GlAccount defaultGlAccount, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultInvoiceLineType = getDefaultInvoiceLineType(invoiceType);
@@ -1989,13 +2034,13 @@ public class InvoiceControl
             isDefault = true;
         }
 
-        var invoiceLineType = InvoiceLineTypeFactory.getInstance().create();
-        var invoiceLineTypeDetail = InvoiceLineTypeDetailFactory.getInstance().create(invoiceLineType,
+        var invoiceLineType = invoiceLineTypeFactory.create();
+        var invoiceLineTypeDetail = invoiceLineTypeDetailFactory.create(invoiceLineType,
                 invoiceType, invoiceLineTypeName, parentInvoiceLineType, defaultGlAccount, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        invoiceLineType = InvoiceLineTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        invoiceLineType = invoiceLineTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 invoiceLineType.getPrimaryKey());
         invoiceLineType.setActiveDetail(invoiceLineTypeDetail);
         invoiceLineType.setLastDetail(invoiceLineTypeDetail);
@@ -2010,7 +2055,7 @@ public class InvoiceControl
     public InvoiceLineType getInvoiceLineTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InvoiceLineTypePK(entityInstance.getEntityUniqueId());
 
-        return InvoiceLineTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return invoiceLineTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InvoiceLineType getInvoiceLineTypeByEntityInstance(EntityInstance entityInstance) {
@@ -2054,12 +2099,12 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
+            var ps = invoiceLineTypeFactory.prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             ps.setString(2, invoiceLineTypeName);
             
-            invoiceLineType = InvoiceLineTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            invoiceLineType = invoiceLineTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2107,11 +2152,11 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
+            var ps = invoiceLineTypeFactory.prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             
-            invoiceLineType = InvoiceLineTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            invoiceLineType = invoiceLineTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2156,11 +2201,11 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceLineTypeFactory.getInstance().prepareStatement(query);
+            var ps = invoiceLineTypeFactory.prepareStatement(query);
             
             ps.setLong(1, invoiceType.getPrimaryKey().getEntityId());
             
-            invoiceLineTypes = InvoiceLineTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            invoiceLineTypes = invoiceLineTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2201,7 +2246,7 @@ public class InvoiceControl
 
     private List<InvoiceLineType> getInvoiceLineTypesByParentInvoiceLineType(InvoiceLineType parentInvoiceLineType,
             EntityPermission entityPermission) {
-        return InvoiceLineTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceLineTypesByParentInvoiceLineTypeQueries,
+        return invoiceLineTypeFactory.getEntitiesFromQuery(entityPermission, getInvoiceLineTypesByParentInvoiceLineTypeQueries,
                 parentInvoiceLineType);
     }
 
@@ -2290,7 +2335,7 @@ public class InvoiceControl
     private void updateInvoiceLineTypeFromValue(InvoiceLineTypeDetailValue invoiceLineTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(invoiceLineTypeDetailValue.hasBeenModified()) {
-            var invoiceLineType = InvoiceLineTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceLineType = invoiceLineTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceLineTypeDetailValue.getInvoiceLineTypePK());
             var invoiceLineTypeDetail = invoiceLineType.getActiveDetailForUpdate();
             
@@ -2322,7 +2367,7 @@ public class InvoiceControl
                 }
             }
             
-            invoiceLineTypeDetail = InvoiceLineTypeDetailFactory.getInstance().create(invoiceLineTypePK, invoiceTypePK,
+            invoiceLineTypeDetail = invoiceLineTypeDetailFactory.create(invoiceLineTypePK, invoiceTypePK,
                     invoiceLineTypeName, parentInvoiceLineTypePK, defaultGlAccountPK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME);
             
@@ -2394,10 +2439,13 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Line Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceLineTypeDescriptionFactory invoiceLineTypeDescriptionFactory;
+
     public InvoiceLineTypeDescription createInvoiceLineTypeDescription(InvoiceLineType invoiceLineType, Language language,
             String description, BasePK createdBy) {
-        var invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(
+        var invoiceLineTypeDescription = invoiceLineTypeDescriptionFactory.create(
                 invoiceLineType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2427,13 +2475,13 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceLineTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = invoiceLineTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, invoiceLineType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            invoiceLineTypeDescription = invoiceLineTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2481,12 +2529,12 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceLineTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = invoiceLineTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, invoiceLineType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            invoiceLineTypeDescriptions = InvoiceLineTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            invoiceLineTypeDescriptions = invoiceLineTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2536,7 +2584,7 @@ public class InvoiceControl
     
     public void updateInvoiceLineTypeDescriptionFromValue(InvoiceLineTypeDescriptionValue invoiceLineTypeDescriptionValue, BasePK updatedBy) {
         if(invoiceLineTypeDescriptionValue.hasBeenModified()) {
-            var invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceLineTypeDescription = invoiceLineTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceLineTypeDescriptionValue.getPrimaryKey());
             
             invoiceLineTypeDescription.setThruTime(session.getStartTime());
@@ -2546,7 +2594,7 @@ public class InvoiceControl
             var language = invoiceLineTypeDescription.getLanguage();
             var description = invoiceLineTypeDescriptionValue.getDescription();
             
-            invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(invoiceLineType, language, description,
+            invoiceLineTypeDescription = invoiceLineTypeDescriptionFactory.create(invoiceLineType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2571,7 +2619,10 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Roles
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceRoleFactory invoiceRoleFactory;
+
     public InvoiceRole createInvoiceRoleUsingNames(Invoice invoice, Party party, PartyContactMechanism partyContactMechanism, String invoiceRoleTypeName, BasePK createdBy) {
         var invoiceRoleType = getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
@@ -2579,7 +2630,7 @@ public class InvoiceControl
     }
     
     public InvoiceRole createInvoiceRole(Invoice invoice, Party party, PartyContactMechanism partyContactMechanism, InvoiceRoleType invoiceRoleType, BasePK createdBy) {
-        var invoiceRole = InvoiceRoleFactory.getInstance().create(invoice, party, partyContactMechanism, invoiceRoleType, session.getStartTime(),
+        var invoiceRole = invoiceRoleFactory.create(invoice, party, partyContactMechanism, invoiceRoleType, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2640,13 +2691,13 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
+            var ps = invoiceRoleFactory.prepareStatement(query);
             
             ps.setLong(1, invoice.getPrimaryKey().getEntityId());
             ps.setLong(2, invoiceRoleType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            invoiceRole = InvoiceRoleFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            invoiceRole = invoiceRoleFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2701,12 +2752,12 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
+            var ps = invoiceRoleFactory.prepareStatement(query);
             
             ps.setLong(1, invoice.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            invoiceRoles = InvoiceRoleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            invoiceRoles = invoiceRoleFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2748,12 +2799,12 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceRoleFactory.getInstance().prepareStatement(query);
+            var ps = invoiceRoleFactory.prepareStatement(query);
             
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            invoiceRoles = InvoiceRoleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            invoiceRoles = invoiceRoleFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2785,7 +2836,7 @@ public class InvoiceControl
     
     public void updateInvoiceRoleFromValue(InvoiceRoleValue invoiceRoleValue, BasePK updatedBy) {
         if(invoiceRoleValue.hasBeenModified()) {
-            var invoiceRole = InvoiceRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceRole = invoiceRoleFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      invoiceRoleValue.getPrimaryKey());
             
             invoiceRole.setThruTime(session.getStartTime());
@@ -2796,7 +2847,7 @@ public class InvoiceControl
             var partyContactMechanismPK = invoiceRoleValue.getPartyContactMechanismPK();
             var invoiceRoleTypePK = invoiceRole.getInvoiceRoleTypePK(); // Not updated
             
-            invoiceRole = InvoiceRoleFactory.getInstance().create(invoicePK, partyPK, partyContactMechanismPK, invoiceRoleTypePK,
+            invoiceRole = invoiceRoleFactory.create(invoicePK, partyPK, partyContactMechanismPK, invoiceRoleTypePK,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(invoicePK, EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2824,15 +2875,21 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoices
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceFactory invoiceFactory;
+
+    @Inject
+    protected InvoiceDetailFactory invoiceDetailFactory;
+
     public Invoice createInvoice(InvoiceType invoiceType, String invoiceName, BillingAccount billingAccount, GlAccount glAccount,
             Term term, FreeOnBoard freeOnBoard, String reference, String description, BasePK createdBy) {
-        var invoice = InvoiceFactory.getInstance().create();
-        var invoiceDetail = InvoiceDetailFactory.getInstance().create(invoice, invoiceType, invoiceName, billingAccount,
+        var invoice = invoiceFactory.create();
+        var invoiceDetail = invoiceDetailFactory.create(invoice, invoiceType, invoiceName, billingAccount,
                 glAccount, term, freeOnBoard, reference, description, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        invoice = InvoiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoice.getPrimaryKey());
+        invoice = invoiceFactory.getEntityFromPK(EntityPermission.READ_WRITE, invoice.getPrimaryKey());
         invoice.setActiveDetail(invoiceDetail);
         invoice.setLastDetail(invoiceDetail);
         invoice.store();
@@ -2848,7 +2905,7 @@ public class InvoiceControl
     public Invoice getInvoiceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InvoicePK(entityInstance.getEntityUniqueId());
 
-        return InvoiceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return invoiceFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Invoice getInvoiceByEntityInstance(EntityInstance entityInstance) {
@@ -2932,7 +2989,7 @@ public class InvoiceControl
     }
     
     private List<Invoice> getInvoicesByInvoiceFrom(Party invoiceFrom, EntityPermission entityPermission) {
-        return InvoiceFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoicesByInvoiceFromQueries,
+        return invoiceFactory.getEntitiesFromQuery(entityPermission, getInvoicesByInvoiceFromQueries,
                 invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.name(), Session.MAX_TIME);
     }
     
@@ -2984,7 +3041,7 @@ public class InvoiceControl
     }
     
     private List<Invoice> getInvoicesByInvoiceTo(Party invoiceTo, EntityPermission entityPermission) {
-        return InvoiceFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoicesByInvoiceToQueries,
+        return invoiceFactory.getEntitiesFromQuery(entityPermission, getInvoicesByInvoiceToQueries,
                 invoiceTo, InvoiceRoleTypes.INVOICE_TO.name(), Session.MAX_TIME);
     }
     
@@ -3030,7 +3087,7 @@ public class InvoiceControl
     }
     
     private Invoice getInvoiceByName(InvoiceType invoiceType, String invoiceName, EntityPermission entityPermission) {
-        return InvoiceFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceByNameQueries,
+        return invoiceFactory.getEntityFromQuery(entityPermission, getInvoiceByNameQueries,
                 invoiceType, invoiceName);
     }
     
@@ -3093,9 +3150,12 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Statuses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceStatusFactory invoiceStatusFactory;
+
     public InvoiceStatus createInvoiceStatus(Invoice invoice) {
-        return InvoiceStatusFactory.getInstance().create(invoice, 0);
+        return invoiceStatusFactory.create(invoice, 0);
     }
     
     private InvoiceStatus getInvoiceStatus(Invoice invoice, EntityPermission entityPermission) {
@@ -3119,11 +3179,11 @@ public class InvoiceControl
                         """;
             }
 
-            var ps = InvoiceStatusFactory.getInstance().prepareStatement(query);
+            var ps = invoiceStatusFactory.prepareStatement(query);
             
             ps.setLong(1, invoice.getPrimaryKey().getEntityId());
             
-            invoiceStatus = InvoiceStatusFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            invoiceStatus = invoiceStatusFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3151,8 +3211,11 @@ public class InvoiceControl
     //   Invoice Times
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected InvoiceTimeFactory invoiceTimeFactory;
+
     public InvoiceTime createInvoiceTime(Invoice invoice, InvoiceTimeType invoiceTimeType, Long time, BasePK createdBy) {
-        var invoiceTime = InvoiceTimeFactory.getInstance().create(invoice, invoiceTimeType, time, session.getStartTime(), Session.MAX_TIME);
+        var invoiceTime = invoiceTimeFactory.create(invoice, invoiceTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3199,7 +3262,7 @@ public class InvoiceControl
     }
 
     private InvoiceTime getInvoiceTime(Invoice invoice, InvoiceTimeType invoiceTimeType, EntityPermission entityPermission) {
-        return InvoiceTimeFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceTimeQueries, invoice, invoiceTimeType, Session.MAX_TIME);
+        return invoiceTimeFactory.getEntityFromQuery(entityPermission, getInvoiceTimeQueries, invoice, invoiceTimeType, Session.MAX_TIME);
     }
 
     public InvoiceTime getInvoiceTime(Invoice invoice, InvoiceTimeType invoiceTimeType) {
@@ -3243,7 +3306,7 @@ public class InvoiceControl
     }
 
     private List<InvoiceTime> getInvoiceTimesByInvoice(Invoice invoice, EntityPermission entityPermission) {
-        return InvoiceTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceTimesByInvoiceQueries, invoice, Session.MAX_TIME);
+        return invoiceTimeFactory.getEntitiesFromQuery(entityPermission, getInvoiceTimesByInvoiceQueries, invoice, Session.MAX_TIME);
     }
 
     public List<InvoiceTime> getInvoiceTimesByInvoice(Invoice invoice) {
@@ -3279,7 +3342,7 @@ public class InvoiceControl
     }
 
     private List<InvoiceTime> getInvoiceTimesByInvoiceTimeType(InvoiceTimeType invoiceTimeType, EntityPermission entityPermission) {
-        return InvoiceTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceTimesByInvoiceTimeTypeQueries, invoiceTimeType, Session.MAX_TIME);
+        return invoiceTimeFactory.getEntitiesFromQuery(entityPermission, getInvoiceTimesByInvoiceTimeTypeQueries, invoiceTimeType, Session.MAX_TIME);
     }
 
     public List<InvoiceTime> getInvoiceTimesByInvoiceTimeType(InvoiceTimeType invoiceTimeType) {
@@ -3314,7 +3377,7 @@ public class InvoiceControl
 
     public void updateInvoiceTimeFromValue(InvoiceTimeValue invoiceTimeValue, BasePK updatedBy) {
         if(invoiceTimeValue.hasBeenModified()) {
-            var invoiceTime = InvoiceTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var invoiceTime = invoiceTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     invoiceTimeValue.getPrimaryKey());
 
             invoiceTime.setThruTime(session.getStartTime());
@@ -3324,7 +3387,7 @@ public class InvoiceControl
             var invoiceTimeTypePK = invoiceTime.getInvoiceTimeTypePK(); // Not updated
             var time = invoiceTimeValue.getTime();
 
-            invoiceTime = InvoiceTimeFactory.getInstance().create(invoicePK, invoiceTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
+            invoiceTime = invoiceTimeFactory.create(invoicePK, invoiceTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(invoicePK, EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3354,9 +3417,12 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Aliases
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceAliasFactory invoiceAliasFactory;
+
     public InvoiceAlias createInvoiceAlias(Invoice invoice, InvoiceAliasType invoiceAliasType, String alias, BasePK createdBy) {
-        var invoiceAlias = InvoiceAliasFactory.getInstance().create(invoice, invoiceAliasType, alias, session.getStartTime(), Session.MAX_TIME);
+        var invoiceAlias = invoiceAliasFactory.create(invoice, invoiceAliasType, alias, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3401,7 +3467,7 @@ public class InvoiceControl
     }
     
     private InvoiceAlias getInvoiceAlias(Invoice invoice, InvoiceAliasType invoiceAliasType, EntityPermission entityPermission) {
-        return InvoiceAliasFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceAliasQueries,
+        return invoiceAliasFactory.getEntityFromQuery(entityPermission, getInvoiceAliasQueries,
                 invoice, invoiceAliasType, Session.MAX_TIME);
     }
     
@@ -3446,7 +3512,7 @@ public class InvoiceControl
     }
     
     private List<InvoiceAlias> getInvoiceAliasesByInvoice(Invoice invoice, EntityPermission entityPermission) {
-        return InvoiceAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceAliasesByInvoiceQueries,
+        return invoiceAliasFactory.getEntitiesFromQuery(entityPermission, getInvoiceAliasesByInvoiceQueries,
                 invoice, Session.MAX_TIME);
     }
     
@@ -3483,7 +3549,7 @@ public class InvoiceControl
     }
     
     private List<InvoiceAlias> getInvoiceAliasesByInvoiceAliasType(InvoiceAliasType invoiceAliasType, EntityPermission entityPermission) {
-        return InvoiceAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceAliasesByInvoiceAliasTypeQueries,
+        return invoiceAliasFactory.getEntitiesFromQuery(entityPermission, getInvoiceAliasesByInvoiceAliasTypeQueries,
                 invoiceAliasType, Session.MAX_TIME);
     }
     
@@ -3512,7 +3578,7 @@ public class InvoiceControl
     
     public void updateInvoiceAliasFromValue(InvoiceAliasValue invoiceAliasValue, BasePK updatedBy) {
         if(invoiceAliasValue.hasBeenModified()) {
-            var invoiceAlias = InvoiceAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceAliasValue.getPrimaryKey());
+            var invoiceAlias = invoiceAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE, invoiceAliasValue.getPrimaryKey());
             
             invoiceAlias.setThruTime(session.getStartTime());
             invoiceAlias.store();
@@ -3521,7 +3587,7 @@ public class InvoiceControl
             var invoiceAliasTypePK = invoiceAlias.getInvoiceAliasTypePK();
             var alias  = invoiceAliasValue.getAlias();
             
-            invoiceAlias = InvoiceAliasFactory.getInstance().create(invoicePK, invoiceAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
+            invoiceAlias = invoiceAliasFactory.create(invoicePK, invoiceAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(invoicePK, EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3553,7 +3619,13 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Lines
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceLineFactory invoiceLineFactory;
+
+    @Inject
+    protected InvoiceLineDetailFactory invoiceLineDetailFactory;
+
     public InvoiceLine createInvoiceLine(Invoice invoice, Integer invoiceLineSequence, InvoiceLine parentInvoiceLine, InvoiceLineType invoiceLineType,
             InvoiceLineUseType invoiceLineUseType, Long amount, String description, BasePK createdBy) {
         if(invoiceLineSequence == null) {
@@ -3565,12 +3637,12 @@ public class InvoiceControl
             } while(invoiceLineExists(invoice, invoiceLineSequence));
         }
 
-        var invoiceLine = InvoiceLineFactory.getInstance().create();
-        var invoiceLineDetail = InvoiceLineDetailFactory.getInstance().create(invoiceLine, invoice, invoiceLineSequence, parentInvoiceLine,
+        var invoiceLine = invoiceLineFactory.create();
+        var invoiceLineDetail = invoiceLineDetailFactory.create(invoiceLine, invoice, invoiceLineSequence, parentInvoiceLine,
                 invoiceLineType, invoiceLineUseType, amount, description, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        invoiceLine = InvoiceLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceLine.getPrimaryKey());
+        invoiceLine = invoiceLineFactory.getEntityFromPK(EntityPermission.READ_WRITE, invoiceLine.getPrimaryKey());
         invoiceLine.setActiveDetail(invoiceLineDetail);
         invoiceLine.setLastDetail(invoiceLineDetail);
         invoiceLine.store();
@@ -3584,7 +3656,7 @@ public class InvoiceControl
     public InvoiceLine getInvoiceLineByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InvoiceLinePK(entityInstance.getEntityUniqueId());
 
-        return InvoiceLineFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return invoiceLineFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InvoiceLine getInvoiceLineByEntityInstance(EntityInstance entityInstance) {
@@ -3662,7 +3734,7 @@ public class InvoiceControl
     }
     
     private InvoiceLine getInvoiceLine(Invoice invoice, Integer invoiceLineSequence, EntityPermission entityPermission) {
-        return InvoiceLineFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceLineQueries,
+        return invoiceLineFactory.getEntityFromQuery(entityPermission, getInvoiceLineQueries,
                 invoice, invoiceLineSequence);
     }
     
@@ -3698,7 +3770,7 @@ public class InvoiceControl
     }
     
     private List<InvoiceLine> getInvoiceLines(Invoice invoice, EntityPermission entityPermission) {
-        return InvoiceLineFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoiceLinesQueries,
+        return invoiceLineFactory.getEntitiesFromQuery(entityPermission, getInvoiceLinesQueries,
                 invoice);
     }
     
@@ -3731,9 +3803,12 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Line Items
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceLineItemFactory invoiceLineItemFactory;
+
     public InvoiceLineItem createInvoiceLineItem(InvoiceLine invoiceLine, Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, Integer quantity, BasePK createdBy) {
-        var invoiceLineItem = InvoiceLineItemFactory.getInstance().create(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity, session.getStartTime(),
+        var invoiceLineItem = invoiceLineItemFactory.create(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(invoiceLine.getPrimaryKey(), EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3763,7 +3838,7 @@ public class InvoiceControl
     }
     
     private InvoiceLineItem getInvoiceLineItem(InvoiceLine invoiceLine, EntityPermission entityPermission) {
-        return InvoiceLineItemFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceLineItemQueries,
+        return invoiceLineItemFactory.getEntityFromQuery(entityPermission, getInvoiceLineItemQueries,
                 invoiceLine, Session.MAX_TIME);
     }
     
@@ -3789,7 +3864,7 @@ public class InvoiceControl
     
     public void updateInvoiceLineItemFromValue(InvoiceLineItemValue invoiceLineItemValue, BasePK updatedBy) {
         if(invoiceLineItemValue.hasBeenModified()) {
-            var invoiceLineItem = InvoiceLineItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceLineItemValue.getPrimaryKey());
+            var invoiceLineItem = invoiceLineItemFactory.getEntityFromPK(EntityPermission.READ_WRITE, invoiceLineItemValue.getPrimaryKey());
             
             invoiceLineItem.setThruTime(session.getStartTime());
             invoiceLineItem.store();
@@ -3800,7 +3875,7 @@ public class InvoiceControl
             var unitOfMeasureTypePK = invoiceLineItem.getUnitOfMeasureTypePK();
             var quantity = invoiceLineItem.getQuantity();
             
-            invoiceLineItem = InvoiceLineItemFactory.getInstance().create(invoiceLinePK, itemPK, inventoryConditionPK, unitOfMeasureTypePK, quantity, session.getStartTime(),
+            invoiceLineItem = invoiceLineItemFactory.create(invoiceLinePK, itemPK, inventoryConditionPK, unitOfMeasureTypePK, quantity, session.getStartTime(),
                     Session.MAX_TIME);
             
             sendEvent(invoiceLinePK, EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3824,9 +3899,12 @@ public class InvoiceControl
     // --------------------------------------------------------------------------------
     //   Invoice Line Gl Accounts
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InvoiceLineGlAccountFactory invoiceLineGlAccountFactory;
+
     public InvoiceLineGlAccount createInvoiceLineGlAccount(InvoiceLine invoiceLine, GlAccount glAccount, BasePK createdBy) {
-        var invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().create(invoiceLine, glAccount, session.getStartTime(), Session.MAX_TIME);
+        var invoiceLineGlAccount = invoiceLineGlAccountFactory.create(invoiceLine, glAccount, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(invoiceLine.getPrimaryKey(), EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3871,7 +3949,7 @@ public class InvoiceControl
     }
     
     private InvoiceLineGlAccount getInvoiceLineGlAccount(InvoiceLine invoiceLine, EntityPermission entityPermission) {
-        return InvoiceLineGlAccountFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceLineGlAccountQueries,
+        return invoiceLineGlAccountFactory.getEntityFromQuery(entityPermission, getInvoiceLineGlAccountQueries,
                 invoiceLine, Session.MAX_TIME);
     }
     
@@ -3897,7 +3975,7 @@ public class InvoiceControl
     
     public void updateInvoiceLineGlAccountFromValue(InvoiceLineGlAccountValue invoiceLineGlAccountValue, BasePK updatedBy) {
         if(invoiceLineGlAccountValue.hasBeenModified()) {
-            var invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoiceLineGlAccountValue.getPrimaryKey());
+            var invoiceLineGlAccount = invoiceLineGlAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE, invoiceLineGlAccountValue.getPrimaryKey());
             
             invoiceLineGlAccount.setThruTime(session.getStartTime());
             invoiceLineGlAccount.store();
@@ -3905,7 +3983,7 @@ public class InvoiceControl
             var invoiceLinePK = invoiceLineGlAccount.getInvoiceLinePK(); // Not updated
             var glAccountPK = invoiceLineGlAccountValue.getGlAccountPK();
             
-            invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().create(invoiceLinePK, glAccountPK, session.getStartTime(), Session.MAX_TIME);
+            invoiceLineGlAccount = invoiceLineGlAccountFactory.create(invoiceLinePK, glAccountPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(invoiceLinePK, EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

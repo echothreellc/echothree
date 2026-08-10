@@ -36,13 +36,22 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UseLogic
         extends BaseLogic {
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    UseControl useControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected UseLogic() {
         super();
@@ -55,7 +64,6 @@ public class UseLogic
     public Use createUse(final ExecutionErrorAccumulator eea, final String useName, final UseType useType,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var useControl = Session.getModelController(UseControl.class);
         var use = useControl.getUseByName(useName);
 
         if(use == null) {
@@ -73,7 +81,6 @@ public class UseLogic
 
     public Use getUseByName(final ExecutionErrorAccumulator eea, final String useName,
             final EntityPermission entityPermission) {
-        var useControl = Session.getModelController(UseControl.class);
         var use = useControl.getUseByName(useName, entityPermission);
 
         if(use == null) {
@@ -93,9 +100,8 @@ public class UseLogic
 
     public Use getUseByUniversalSpec(final ExecutionErrorAccumulator eea,
             final UseUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
-        var useControl = Session.getModelController(UseControl.class);
         var useName = universalSpec.getUseName();
-        var parameterCount = (useName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (useName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         Use use = null;
 
         switch(parameterCount) {
@@ -112,10 +118,10 @@ public class UseLogic
             }
             case 1 -> {
                 if(useName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Use.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         use = useControl.getUseByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -140,17 +146,11 @@ public class UseLogic
     }
 
     public void updateUseFromValue(UseDetailValue useDetailValue, BasePK updatedBy) {
-        var useControl = Session.getModelController(UseControl.class);
-
         useControl.updateUseFromValue(useDetailValue, updatedBy);
     }
 
     public void deleteUse(final ExecutionErrorAccumulator eea, final Use use, final BasePK deletedBy) {
-        var offerUseControl = Session.getModelController(OfferUseControl.class);
-
         if(offerUseControl.countOfferUsesByUse(use) == 0) {
-            var useControl = Session.getModelController(UseControl.class);
-
             useControl.deleteUse(use, deletedBy);
         } else {
             handleExecutionError(CannotDeleteUseInUseException.class, eea, ExecutionErrors.CannotDeleteUseInUse.name());

@@ -35,11 +35,11 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemUnitPriceLimitCommand
@@ -54,13 +54,26 @@ public class EditItemUnitPriceLimitCommand
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MinimumUnitPrice", FieldType.UNSIGNED_PRICE_UNIT, false, null, null),
                 new FieldDefinition("MaximumUnitPrice", FieldType.UNSIGNED_PRICE_UNIT, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditItemUnitPriceLimitCommand */
     public EditItemUnitPriceLimitCommand() {
@@ -69,7 +82,6 @@ public class EditItemUnitPriceLimitCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
@@ -89,24 +101,20 @@ public class EditItemUnitPriceLimitCommand
 
     @Override
     public ItemUnitPriceLimit getEntity(EditItemUnitPriceLimitResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitPriceLimit itemUnitPriceLimit = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var inventoryConditionName = spec.getInventoryConditionName();
             var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var itemDetail = item.getLastDetail();
                 var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                 var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
                 if(unitOfMeasureType != null) {
-                    var accountingControl = Session.getModelController(AccountingControl.class);
                     var currencyIsoName = spec.getCurrencyIsoName();
 
                     currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
@@ -150,8 +158,6 @@ public class EditItemUnitPriceLimitCommand
 
     @Override
     public void fillInResult(EditItemUnitPriceLimitResult result, ItemUnitPriceLimit itemUnitPriceLimit) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemUnitPriceLimit(itemControl.getItemUnitPriceLimitTransfer(getUserVisit(), itemUnitPriceLimit));
     }
 
@@ -190,7 +196,6 @@ public class EditItemUnitPriceLimitCommand
 
     @Override
     public void doUpdate(ItemUnitPriceLimit itemUnitPriceLimit) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemUnitPriceLimitValue = itemControl.getItemUnitPriceLimitValue(itemUnitPriceLimit);
 
         itemUnitPriceLimitValue.setMinimumUnitPrice(minimumUnitPrice);

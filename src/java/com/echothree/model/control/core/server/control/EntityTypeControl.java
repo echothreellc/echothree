@@ -97,10 +97,10 @@ public class EntityTypeControl
     // --------------------------------------------------------------------------------
     //   Entity Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected EntityTypeFactory entityTypeFactory;
-    
+
     @Inject
     protected EntityTypeDetailFactory entityTypeDetailFactory;
 
@@ -139,16 +139,20 @@ public class EntityTypeControl
 
     public long countEntityTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entitytypes, entitytypedetails " +
-                        "WHERE ent_activedetailid = entdt_entitytypedetailid");
+                """
+                SELECT COUNT(*)
+                FROM entitytypes, entitytypedetails
+                WHERE ent_activedetailid = entdt_entitytypedetailid
+                """);
     }
 
     public long countEntityTypesByComponentVendor(ComponentVendor componentVendor) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entitytypes, entitytypedetails " +
-                        "WHERE ent_activedetailid = entdt_entitytypedetailid AND entdt_cvnd_componentvendorid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entitytypes, entitytypedetails
+                WHERE ent_activedetailid = entdt_entitytypedetailid AND entdt_cvnd_componentvendorid = ?
+                """,
                 componentVendor);
     }
 
@@ -159,16 +163,20 @@ public class EntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypes, entitytypedetails " +
-                        "WHERE ent_activedetailid = entdt_entitytypedetailid " +
-                        "AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypes, entitytypedetails
+                        WHERE ent_activedetailid = entdt_entitytypedetailid
+                        AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypes, entitytypedetails " +
-                        "WHERE ent_activedetailid = entdt_entitytypedetailid " +
-                        "AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypes, entitytypedetails
+                        WHERE ent_activedetailid = entdt_entitytypedetailid
+                        AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityTypeFactory.prepareStatement(query);
@@ -225,18 +233,22 @@ public class EntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "AND entdt_cvnd_componentvendorid = ? "
-                        + "ORDER BY entdt_sortorder, entdt_entitytypename "
-                        + "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypes, entitytypedetails
+                        WHERE ent_activedetailid = entdt_entitytypedetailid
+                        AND entdt_cvnd_componentvendorid = ?
+                        ORDER BY entdt_sortorder, entdt_entitytypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "AND entdt_cvnd_componentvendorid = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypes, entitytypedetails
+                        WHERE ent_activedetailid = entdt_entitytypedetailid
+                        AND entdt_cvnd_componentvendorid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityTypeFactory.prepareStatement(query);
@@ -266,18 +278,22 @@ public class EntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "AND entdt_entitytypename = ? "
-                        + "ORDER BY entdt_sortorder, entdt_entitytypename "
-                        + "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypes, entitytypedetails
+                        WHERE ent_activedetailid = entdt_entitytypedetailid
+                        AND entdt_entitytypename = ?
+                        ORDER BY entdt_sortorder, entdt_entitytypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "AND entdt_entitytypename = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypes, entitytypedetails
+                        WHERE ent_activedetailid = entdt_entitytypedetailid
+                        AND entdt_entitytypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityTypeFactory.prepareStatement(query);
@@ -302,11 +318,13 @@ public class EntityTypeControl
 
     public List<EntityType> getEntityTypes() {
         var ps = entityTypeFactory.prepareStatement(
-                "SELECT _ALL_ "
-                        + "FROM entitytypes, entitytypedetails "
-                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
-                        + "ORDER BY entdt_sortorder, entdt_entitytypename "
-                        + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM entitytypes, entitytypedetails
+                WHERE ent_activedetailid = entdt_entitytypedetailid
+                ORDER BY entdt_sortorder, entdt_entitytypename
+                _LIMIT_
+                """);
 
         return entityTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -401,7 +419,7 @@ public class EntityTypeControl
 
     @Inject
     protected EntityTypeDescriptionFactory entityTypeDescriptionFactory;
-    
+
     public EntityTypeDescription createEntityTypeDescription(EntityType entityType, Language language, String description,
             BasePK createdBy) {
         var entityTypeDescription = entityTypeDescriptionFactory.create(entityType,
@@ -420,14 +438,18 @@ public class EntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypedescriptions " +
-                        "WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypedescriptions
+                        WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypedescriptions " +
-                        "WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypedescriptions
+                        WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityTypeDescriptionFactory.prepareStatement(query);
@@ -468,15 +490,19 @@ public class EntityTypeControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypedescriptions, languages " +
-                        "WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ? AND entd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypedescriptions, languages
+                        WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ? AND entd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytypedescriptions " +
-                        "WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytypedescriptions
+                        WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityTypeDescriptionFactory.prepareStatement(query);
@@ -571,11 +597,11 @@ public class EntityTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected SearchControl searchControl;
-    
-    @Inject
     protected SearchResultFactory searchResultFactory;
-    
+
+    @Inject
+    protected SearchControl searchControl;
+
     public List<EntityTypeResultTransfer> getEntityTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var entityTypeResultTransfers = new ArrayList<EntityTypeResultTransfer>();
@@ -588,11 +614,13 @@ public class EntityTypeControl
 
         try {
             try(var ps = searchResultFactory.prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_")) {
+                    """
+                    SELECT eni_entityuniqueid
+                    FROM searchresults, entityinstances
+                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                    _LIMIT_
+                    """)) {
 
                 ps.setLong(1, search.getPrimaryKey().getEntityId());
 

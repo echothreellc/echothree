@@ -18,7 +18,8 @@ package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
 import com.echothree.control.user.chain.common.result.GetChainChoicesResult;
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
+import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.common.choice.ChainChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -50,8 +51,8 @@ public class AddActionForm
             try {
                 var commandForm = ChainUtil.getHome().getGetChainChoicesForm();
 
-                commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
-                commandForm.setChainTypeName(ChainConstants.ChainType_CONFIRMATION_REQUEST);
+                commandForm.setChainKindName(ChainKinds.CONTACT_LIST.name());
+                commandForm.setChainTypeName(ChainTypes.CONFIRMATION_REQUEST.name());
                 commandForm.setDefaultChainChoice(confirmationRequestChainChoice);
                 commandForm.setAllowNullChoice(String.valueOf(true));
 
@@ -74,8 +75,8 @@ public class AddActionForm
             try {
                 var commandForm = ChainUtil.getHome().getGetChainChoicesForm();
 
-                commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
-                commandForm.setChainTypeName(ChainConstants.ChainType_SUBSCRIBE);
+                commandForm.setChainKindName(ChainKinds.CONTACT_LIST.name());
+                commandForm.setChainTypeName(ChainTypes.SUBSCRIBE.name());
                 commandForm.setDefaultChainChoice(subscribeChainChoice);
                 commandForm.setAllowNullChoice(String.valueOf(true));
 
@@ -98,8 +99,8 @@ public class AddActionForm
             try {
                 var commandForm = ChainUtil.getHome().getGetChainChoicesForm();
 
-                commandForm.setChainKindName(ChainConstants.ChainKind_CONTACT_LIST);
-                commandForm.setChainTypeName(ChainConstants.ChainType_UNSUBSCRIBE);
+                commandForm.setChainKindName(ChainKinds.CONTACT_LIST.name());
+                commandForm.setChainTypeName(ChainTypes.UNSUBSCRIBE.name());
                 commandForm.setDefaultChainChoice(unsubscribeChainChoice);
                 commandForm.setAllowNullChoice(String.valueOf(true));
 

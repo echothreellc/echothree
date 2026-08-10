@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.contact.common.form;
 
-import com.echothree.control.user.contact.common.spec.ContactMechanismAliasTypeSpec;
+import com.echothree.control.user.contact.common.spec.ContactMechanismAliasTypeUniversalSpec;
 
 public interface GetContactMechanismAliasTypeForm
-        extends ContactMechanismAliasTypeSpec {
+        extends ContactMechanismAliasTypeUniversalSpec {
     
-    // Nothing additional beyond ContactMechanismAliasTypeSpec
+    // Nothing additional beyond ContactMechanismAliasTypeUniversalSpec
     
 }

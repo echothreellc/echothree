@@ -34,6 +34,7 @@ import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditRecoveryAnswerCommand
@@ -45,13 +46,17 @@ public class EditRecoveryAnswerCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Answer", FieldType.STRING, true, 1L, 40L)
-                );
+        );
     }
+
+    @Inject
+    PartyLogic partyLogic;
+
     
     /** Creates a new instance of EditRecoveryAnswerCommand */
     public EditRecoveryAnswerCommand() {
@@ -71,14 +76,12 @@ public class EditRecoveryAnswerCommand
     @Override
     public RecoveryAnswer getEntity(EditRecoveryAnswerResult result) {
         RecoveryAnswer recoveryAnswer = null;
-        var party = PartyLogic.getInstance().getPartyByName(this, spec.getPartyName());
+        var party = partyLogic.getPartyByName(this, spec.getPartyName());
 
         if(!hasExecutionErrors()) {
-            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
+            partyLogic.checkPartyType(this, party, PartyTypes.CUSTOMER.name());
 
             if(!hasExecutionErrors()) {
-                var userControl = getUserControl();
-
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     recoveryAnswer = userControl.getRecoveryAnswer(party);
                 } else { // EditMode.UPDATE
@@ -101,8 +104,6 @@ public class EditRecoveryAnswerCommand
 
     @Override
     public void fillInResult(EditRecoveryAnswerResult result, RecoveryAnswer recoveryAnswer) {
-        var userControl = getUserControl();
-
         result.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(getUserVisit(), recoveryAnswer));
     }
 
@@ -118,7 +119,6 @@ public class EditRecoveryAnswerCommand
     
     @Override
     public void canUpdate(RecoveryAnswer recoveryAnswer) {
-        var userControl = getUserControl();
         var recoveryQuestionName = edit.getRecoveryQuestionName();
         
         recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
@@ -130,7 +130,6 @@ public class EditRecoveryAnswerCommand
 
     @Override
     public void doUpdate(RecoveryAnswer recoveryAnswer) {
-        var userControl = getUserControl();
         var recoveryAnswerDetailValue = userControl.getRecoveryAnswerDetailValueForUpdate(recoveryAnswer);
         
         recoveryAnswerDetailValue.setRecoveryQuestionPK(recoveryQuestion.getPrimaryKey());

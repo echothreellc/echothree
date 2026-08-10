@@ -27,6 +27,9 @@ public interface GetTrainingClassAnswersResult
     TrainingClassQuestionTransfer getTrainingClassQuestion();
     void setTrainingClassQuestion(TrainingClassQuestionTransfer trainingClassQuestion);
     
+    Long getTrainingClassAnswerCount();
+    void setTrainingClassAnswerCount(Long trainingClassAnswerCount);
+
     List<TrainingClassAnswerTransfer> getTrainingClassAnswers();
     void setTrainingClassAnswers(List<TrainingClassAnswerTransfer> trainingClassAnswers);
     

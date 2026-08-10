@@ -21,7 +21,8 @@ import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentSpec;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,14 +69,18 @@ public class EditFilterAdjustmentCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
     
     /** Creates a new instance of EditFilterAdjustmentCommand */
     public EditFilterAdjustmentCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-
-    @Inject
-    FilterControl filterControl;
 
     @Override
     public EditFilterAdjustmentResult getResult() {
@@ -94,15 +99,15 @@ public class EditFilterAdjustmentCommand
         FilterAdjustment filterAdjustment = null;
         var filterKindName = spec.getFilterKindName();
 
-        filterKind = filterControl.getFilterKindByName(filterKindName);
+        filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterAdjustmentName = spec.getFilterAdjustmentName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+                filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             } else { // EditMode.UPDATE
-                filterAdjustment = filterControl.getFilterAdjustmentByNameForUpdate(filterKind, filterAdjustmentName);
+                filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByNameForUpdate(filterKind, filterAdjustmentName);
             }
 
             if(filterAdjustment == null) {
@@ -123,12 +128,12 @@ public class EditFilterAdjustmentCommand
 
     @Override
     public void fillInResult(EditFilterAdjustmentResult result, FilterAdjustment filterAdjustment) {
-        result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
+        result.setFilterAdjustment(filterAdjustmentControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
     }
 
     @Override
     public void doLock(FilterAdjustmentEdit edit, FilterAdjustment filterAdjustment) {
-        var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage());
+        var filterAdjustmentDescription = filterAdjustmentControl.getFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage());
         var filterAdjustmentDetail = filterAdjustment.getLastDetail();
 
         edit.setFilterAdjustmentName(filterAdjustmentDetail.getFilterAdjustmentName());
@@ -144,13 +149,13 @@ public class EditFilterAdjustmentCommand
     @Override
     public void canUpdate(FilterAdjustment filterAdjustment) {
         var filterAdjustmentName = edit.getFilterAdjustmentName();
-        var duplicateFilterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+        var duplicateFilterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
 
         if(duplicateFilterAdjustment != null && !filterAdjustment.equals(duplicateFilterAdjustment)) {
             addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentName.name(), filterAdjustmentName);
         } else {
             var filterAdjustmentSourceName = edit.getFilterAdjustmentSourceName();
-            var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+            var filterAdjustmentSource = filterAdjustmentControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
 
             if(filterAdjustmentSource == null) {
                 addExecutionError(ExecutionErrors.UnknownFilterAdjustmentSourceName.name(), filterAdjustmentSourceName);
@@ -161,10 +166,10 @@ public class EditFilterAdjustmentCommand
     @Override
     public void doUpdate(FilterAdjustment filterAdjustment) {
         var partyPK = getPartyPK();
-        var filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueForUpdate(filterAdjustment);
-        var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, getPreferredLanguage());
+        var filterAdjustmentDetailValue = filterAdjustmentControl.getFilterAdjustmentDetailValueForUpdate(filterAdjustment);
+        var filterAdjustmentDescription = filterAdjustmentControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, getPreferredLanguage());
         var filterAdjustmentSourceName = edit.getFilterAdjustmentSourceName();
-        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var filterAdjustmentSource = filterAdjustmentControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
         var description = edit.getDescription();
 
         filterAdjustmentDetailValue.setFilterAdjustmentName(edit.getFilterAdjustmentName());
@@ -172,17 +177,17 @@ public class EditFilterAdjustmentCommand
         filterAdjustmentDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         filterAdjustmentDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        filterControl.updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, partyPK);
+        filterAdjustmentControl.updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, partyPK);
 
         if(filterAdjustmentDescription == null && description != null) {
-            filterControl.createFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage(), description, partyPK);
+            filterAdjustmentControl.createFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage(), description, partyPK);
         } else if(filterAdjustmentDescription != null && description == null) {
-            filterControl.deleteFilterAdjustmentDescription(filterAdjustmentDescription, partyPK);
+            filterAdjustmentControl.deleteFilterAdjustmentDescription(filterAdjustmentDescription, partyPK);
         } else if(filterAdjustmentDescription != null && description != null) {
-            var filterAdjustmentDescriptionValue = filterControl.getFilterAdjustmentDescriptionValue(filterAdjustmentDescription);
+            var filterAdjustmentDescriptionValue = filterAdjustmentControl.getFilterAdjustmentDescriptionValue(filterAdjustmentDescription);
 
             filterAdjustmentDescriptionValue.setDescription(description);
-            filterControl.updateFilterAdjustmentDescriptionFromValue(filterAdjustmentDescriptionValue, partyPK);
+            filterAdjustmentControl.updateFilterAdjustmentDescriptionFromValue(filterAdjustmentDescriptionValue, partyPK);
         }
     }
 

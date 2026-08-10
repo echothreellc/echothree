@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAliasesCommand
@@ -61,6 +61,13 @@ public class GetEntityAliasesCommand
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
     
     /** Creates a new instance of GetEntityAliasTypesCommand */
     public GetEntityAliasesCommand() {
@@ -71,13 +78,11 @@ public class GetEntityAliasesCommand
 
     @Override
     protected void handleForm() {
-        entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
+        entityAliasType = entityAliasTypeLogic.getEntityAliasTypeByUniversalSpec(this, form);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
         return hasExecutionErrors() ? null :
                 entityAliasControl.countEntityAliasesByEntityAliasType(entityAliasType);
     }
@@ -88,8 +93,6 @@ public class GetEntityAliasesCommand
         Collection<EntityAlias> entityAliass = null;
 
         if(!hasExecutionErrors()) {
-            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
             entityAliass = entityAliasControl.getEntityAliasesByEntityAliasType(entityAliasType);
         }
 
@@ -101,8 +104,6 @@ public class GetEntityAliasesCommand
         var result = CoreResultFactory.getGetEntityAliasesResult();
 
         if(entities != null) {
-            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
             result.setEntityAliases(entityAliasControl.getEntityAliasTransfers(getUserVisit(), entities));
         }
 

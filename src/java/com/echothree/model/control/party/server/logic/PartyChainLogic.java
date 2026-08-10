@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainEntityRoleTypeLogic;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
@@ -27,7 +27,6 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -37,13 +36,19 @@ public class PartyChainLogic
         extends BaseLogic {
 
     @Inject
-    protected ChainTypeLogic chainTypeLogic;
+    ChainControl chainControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    ChainEntityRoleTypeLogic chainEntityRoleTypeLogic;
 
     @Inject
     protected ChainInstanceLogic chainInstanceLogic;
 
     @Inject
-    ChainEntityRoleTypeLogic chainEntityRoleTypeLogic;
+    protected ChainTypeLogic chainTypeLogic;
 
     protected PartyChainLogic() {
         super();
@@ -63,7 +68,6 @@ public class PartyChainLogic
             var chainEntityRoleType = chainEntityRoleTypeLogic.getChainEntityRoleTypeByName(eea, chainType, partyTypeName);
             
             if(!hasExecutionErrors(eea)) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                 
                 if(resetChainIfRunning) {
@@ -73,8 +77,6 @@ public class PartyChainLogic
                 chainInstance = chainInstanceLogic.createChainInstance(eea, chainType, party, createdBy);
 
                 if(!hasExecutionErrors(eea) && chainInstance != null) {
-                    var chainControl = Session.getModelController(ChainControl.class);
-
                     chainControl.createChainInstanceEntityRole(chainInstance, chainEntityRoleType, entityInstance, createdBy);
                 }
             }
@@ -84,23 +86,23 @@ public class PartyChainLogic
     }
     
     public ChainInstance createPartyWelcomeChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_WELCOME, party, false, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.WELCOME.name(), party, false, createdBy);
     }
     
     public ChainInstance createPartyPasswordRecoveryChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_PASSWORD_RECOVERY, party, true, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.PASSWORD_RECOVERY.name(), party, true, createdBy);
     }
     
     public ChainInstance createPartyTermChangedChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_PARTY_TERM_CHANGED, party, false, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.PARTY_TERM_CHANGED.name(), party, false, createdBy);
     }
     
     public ChainInstance createPartyCreditLimitChangedChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_PARTY_CREDIT_LIMIT_CHANGED, party, false, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.PARTY_CREDIT_LIMIT_CHANGED.name(), party, false, createdBy);
     }
     
     public ChainInstance createPartyCreditStatusChangedChainInstance(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        return createPartyChainInstance(eea, ChainConstants.ChainType_PARTY_CREDIT_STATUS_CHANGED, party, false, createdBy);
+        return createPartyChainInstance(eea, ChainTypes.PARTY_CREDIT_STATUS_CHANGED.name(), party, false, createdBy);
     }
     
 }

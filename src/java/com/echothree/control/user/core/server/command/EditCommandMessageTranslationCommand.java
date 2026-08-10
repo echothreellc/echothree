@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditCommandMessageTranslation
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandMessageTranslationResult;
 import com.echothree.control.user.core.common.spec.CommandMessageTranslationSpec;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
@@ -32,9 +31,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommandMessageTranslationCommand
@@ -48,12 +47,16 @@ public class EditCommandMessageTranslationCommand
                 new FieldDefinition("CommandMessageTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommandMessageKey", FieldType.COMMAND_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Translation", FieldType.STRING, true, 1L, 512L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditCommandMessageTranslationCommand */
     public EditCommandMessageTranslationCommand() {
@@ -72,7 +75,6 @@ public class EditCommandMessageTranslationCommand
 
     @Override
     public CommandMessageTranslation getEntity(EditCommandMessageTranslationResult result) {
-        var commandControl = Session.getModelController(CommandControl.class);
         CommandMessageTranslation commandMessageTranslation = null;
         var commandMessageTypeName = spec.getCommandMessageTypeName();
         var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
@@ -82,7 +84,6 @@ public class EditCommandMessageTranslationCommand
             var commandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
             if(commandMessage != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -116,8 +117,6 @@ public class EditCommandMessageTranslationCommand
 
     @Override
     public void fillInResult(EditCommandMessageTranslationResult result, CommandMessageTranslation commandMessageTranslation) {
-        var commandControl = Session.getModelController(CommandControl.class);
-
         result.setCommandMessageTranslation(commandControl.getCommandMessageTranslationTransfer(getUserVisit(), commandMessageTranslation));
     }
 
@@ -128,7 +127,6 @@ public class EditCommandMessageTranslationCommand
 
     @Override
     public void doUpdate(CommandMessageTranslation commandMessageTranslation) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTranslationValue = commandControl.getCommandMessageTranslationValue(commandMessageTranslation);
         commandMessageTranslationValue.setTranslation(edit.getTranslation());
 

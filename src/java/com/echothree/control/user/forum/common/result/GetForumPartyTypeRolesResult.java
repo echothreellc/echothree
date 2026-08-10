@@ -26,6 +26,9 @@ public interface GetForumPartyTypeRolesResult
     
     ForumTransfer getForum();
     void setForum(ForumTransfer forum);
+
+    Long getForumPartyTypeRoleCount();
+    void setForumPartyTypeRoleCount(Long forumPartyTypeRoleCount);
     
     List<ForumPartyTypeRoleTransfer> getForumPartyTypeRoles();
     void setForumPartyTypeRoles(List<ForumPartyTypeRoleTransfer> forumPartyTypeRoles);

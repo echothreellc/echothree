@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditShipmentAliasTypeCommand
@@ -52,13 +52,13 @@ public class EditShipmentAliasTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ShipmentAliasType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShipmentAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -66,8 +66,11 @@ public class EditShipmentAliasTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ShipmentControl shipmentControl;
 
     /** Creates a new instance of EditShipmentAliasTypeCommand */
     public EditShipmentAliasTypeCommand() {
@@ -88,7 +91,6 @@ public class EditShipmentAliasTypeCommand
 
     @Override
     public ShipmentAliasType getEntity(EditShipmentAliasTypeResult result) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentAliasType shipmentAliasType = null;
         var shipmentTypeName = spec.getShipmentTypeName();
 
@@ -122,14 +124,11 @@ public class EditShipmentAliasTypeCommand
 
     @Override
     public void fillInResult(EditShipmentAliasTypeResult result, ShipmentAliasType shipmentAliasType) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
-
         result.setShipmentAliasType(shipmentControl.getShipmentAliasTypeTransfer(getUserVisit(), shipmentAliasType));
     }
 
     @Override
     public void doLock(ShipmentAliasTypeEdit edit, ShipmentAliasType shipmentAliasType) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentAliasTypeDescription = shipmentControl.getShipmentAliasTypeDescription(shipmentAliasType, getPreferredLanguage());
         var shipmentAliasTypeDetail = shipmentAliasType.getLastDetail();
 
@@ -145,7 +144,6 @@ public class EditShipmentAliasTypeCommand
 
     @Override
     public void canUpdate(ShipmentAliasType shipmentAliasType) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentAliasTypeName = edit.getShipmentAliasTypeName();
         var duplicateShipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
@@ -156,7 +154,6 @@ public class EditShipmentAliasTypeCommand
 
     @Override
     public void doUpdate(ShipmentAliasType shipmentAliasType) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var partyPK = getPartyPK();
         var shipmentAliasTypeDetailValue = shipmentControl.getShipmentAliasTypeDetailValueForUpdate(shipmentAliasType);
         var shipmentAliasTypeDescription = shipmentControl.getShipmentAliasTypeDescriptionForUpdate(shipmentAliasType, getPreferredLanguage());

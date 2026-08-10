@@ -42,10 +42,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSalesOrderBatchCommand
@@ -60,20 +60,35 @@ public class EditSalesOrderBatchCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderBatch.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Count", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    OrderBatchControl orderBatchControl;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    SalesOrderBatchControl salesOrderBatchControl;
+
+    @Inject
+    SalesOrderBatchLogic salesOrderBatchLogic;
 
     /** Creates a new instance of EditSalesOrderBatchCommand */
     public EditSalesOrderBatchCommand() {
@@ -96,14 +111,12 @@ public class EditSalesOrderBatchCommand
         var batchName = spec.getBatchName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
+            batch = salesOrderBatchLogic.getBatchByName(this, batchName);
         } else { // EditMode.UPDATE
-            batch = SalesOrderBatchLogic.getInstance().getBatchByNameForUpdate(this, batchName);
+            batch = salesOrderBatchLogic.getBatchByNameForUpdate(this, batchName);
         }
 
         if(!hasExecutionErrors()) {
-            var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
-            
             result.setSalesOrderBatch(salesOrderBatchControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
         }
 
@@ -117,15 +130,11 @@ public class EditSalesOrderBatchCommand
 
     @Override
     public void fillInResult(EditSalesOrderBatchResult result, Batch batch) {
-        var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
-
         result.setSalesOrderBatch(salesOrderBatchControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
     }
 
     @Override
     public void doLock(SalesOrderBatchEdit edit, Batch batch) {
-        var orderBatchControl = Session.getModelController(OrderBatchControl.class);
-        var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
         var orderBatch = orderBatchControl.getOrderBatch(batch);
         var salesOrderBatch = salesOrderBatchControl.getSalesOrderBatch(batch);
         var count = orderBatch.getCount();
@@ -143,13 +152,11 @@ public class EditSalesOrderBatchCommand
     @Override
     public void canUpdate(Batch batch) {
         // TODO: currency and payment method should be checked only if the batch has no orders in it.
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = edit.getCurrencyIsoName();
 
         currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency != null) {
-            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
             var paymentMethodName = edit.getPaymentMethodName();
 
             paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
@@ -164,8 +171,6 @@ public class EditSalesOrderBatchCommand
 
     @Override
     public void doUpdate(Batch batch) {
-        var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
-        var orderBatchControl = Session.getModelController(OrderBatchControl.class);
         var partyPK = getPartyPK();
         var strCount = edit.getCount();
         var count = strCount == null ? null : Long.valueOf(strCount);

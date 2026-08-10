@@ -33,10 +33,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowEntityStatusesCommand
@@ -57,6 +57,13 @@ public class GetWorkflowEntityStatusesCommand
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     
     /** Creates a new instance of GetWorkflowEntityStatusesCommand */
     public GetWorkflowEntityStatusesCommand() {
@@ -69,13 +76,11 @@ public class GetWorkflowEntityStatusesCommand
     protected void handleForm() {
         var workflowName = form.getWorkflowName();
 
-        workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+        workflow = workflowLogic.getWorkflowByName(this, workflowName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return hasExecutionErrors() ? null :
                 workflowControl.countWorkflowEntityStatusesByWorkflow(workflow);
     }
@@ -85,8 +90,6 @@ public class GetWorkflowEntityStatusesCommand
         Collection<WorkflowEntityStatus> workflowEntityStatuses = null;
 
         if(!hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByWorkflow(workflow);
         }
 
@@ -98,7 +101,6 @@ public class GetWorkflowEntityStatusesCommand
         var result = WorkflowResultFactory.getGetWorkflowEntityStatusesResult();
 
         if(entities != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflow(workflowControl.getWorkflowTransfer(userVisit, workflow));

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemAccountingCategoryChoicesCommand
@@ -45,14 +45,18 @@ public class GetItemAccountingCategoryChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemAccountingCategory.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("DefaultItemAccountingCategoryChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("DefaultItemAccountingCategoryChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of GetItemAccountingCategoryChoicesCommand */
     public GetItemAccountingCategoryChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetItemAccountingCategoryChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetItemAccountingCategoryChoicesResult();
         var defaultItemAccountingCategoryChoice = form.getDefaultItemAccountingCategoryChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

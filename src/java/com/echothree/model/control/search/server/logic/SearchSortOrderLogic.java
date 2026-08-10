@@ -34,14 +34,23 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SearchSortOrderLogic
         extends BaseLogic {
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    SearchKindLogic searchKindLogic;
 
     protected SearchSortOrderLogic() {
         super();
@@ -53,7 +62,7 @@ public class SearchSortOrderLogic
 
     public SearchSortOrder createSearchSortOrder(final ExecutionErrorAccumulator eea, final String searchKindName, final String searchSortOrderName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
+        var searchKind = searchKindLogic.getSearchKindByName(eea, searchKindName);
         SearchSortOrder searchSortOrder = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -65,7 +74,6 @@ public class SearchSortOrderLogic
 
     public SearchSortOrder createSearchSortOrder(final ExecutionErrorAccumulator eea, final SearchKind searchKind, final String searchSortOrderName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
 
         if(searchSortOrder == null) {
@@ -82,7 +90,6 @@ public class SearchSortOrderLogic
 
     public SearchSortOrder getSearchSortOrderByName(final ExecutionErrorAccumulator eea, final SearchKind searchKind, final String searchSortOrderName,
             final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName, entityPermission);
 
         if(searchSortOrder == null) {
@@ -103,10 +110,10 @@ public class SearchSortOrderLogic
 
     public SearchSortOrder getSearchSortOrderByName(final ExecutionErrorAccumulator eea, final String searchKindName, final String searchSortOrderName,
             final EntityPermission entityPermission) {
-        var searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
+        var searchKind = searchKindLogic.getSearchKindByName(eea, searchKindName);
         SearchSortOrder searchSortOrder = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             searchSortOrder = getSearchSortOrderByName(eea, searchKind, searchSortOrderName, entityPermission);
         }
 
@@ -123,11 +130,10 @@ public class SearchSortOrderLogic
 
     public SearchSortOrder getSearchSortOrderByUniversalSpec(final ExecutionErrorAccumulator eea, final SearchSortOrderUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKindName = universalSpec.getSearchKindName();
         var searchSortOrderName = universalSpec.getSearchSortOrderName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(searchKindName, searchSortOrderName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         SearchSortOrder searchSortOrder = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -144,10 +150,10 @@ public class SearchSortOrderLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
+                searchKind = searchKindLogic.getSearchKindByName(eea, searchKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(searchSortOrderName == null) {
                     if(allowDefault) {
                         searchSortOrder = searchControl.getDefaultSearchSortOrder(searchKind, entityPermission);
@@ -163,10 +169,10 @@ public class SearchSortOrderLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchSortOrder.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 searchSortOrder = searchControl.getSearchSortOrderByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -188,8 +194,6 @@ public class SearchSortOrderLogic
 
     public void deleteSearchSortOrder(final ExecutionErrorAccumulator eea, final SearchSortOrder searchSortOrder,
             final BasePK deletedBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         searchControl.deleteSearchSortOrder(searchSortOrder, deletedBy);
     }
 }

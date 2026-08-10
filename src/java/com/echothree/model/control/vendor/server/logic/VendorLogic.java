@@ -57,10 +57,44 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class VendorLogic
         extends BaseLogic {
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
+    @Inject
+    UserKeyLogic userKeyLogic;
+
+    @Inject
+    UserSessionLogic userSessionLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
 
     protected VendorLogic() {
         super();
@@ -72,10 +106,10 @@ public class VendorLogic
 
     private String getVendorName(final ExecutionErrorAccumulator eea) {
         String vendorName = null;
-        var vendorSequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.VENDOR.name());
+        var vendorSequence = sequenceGeneratorLogic.getDefaultSequence(eea, SequenceTypes.VENDOR.name());
 
         if(!hasExecutionErrors(eea)) {
-            vendorName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, vendorSequence);
+            vendorName = sequenceGeneratorLogic.getNextSequenceValue(eea, vendorSequence);
         } else {
             handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
                     SequenceTypes.VENDOR.name());
@@ -93,8 +127,6 @@ public class VendorLogic
             final Boolean allowCombiningShipments, final Boolean requireReference, final Boolean allowReferenceDuplicates,
             final String referenceValidationPattern, final Selector vendorItemSelector, final Filter vendorItemCostFilter,
             final BasePK createdBy) {
-        var vendorControl = Session.getModelController(VendorControl.class);
-
         if(vendorName == null) {
             vendorName = getVendorName(eea);
         }
@@ -109,13 +141,10 @@ public class VendorLogic
     public Vendor getVendorByName(final ExecutionErrorAccumulator eea, final String vendorName, final String partyName,
             final UniversalEntitySpec universalEntitySpec, final EntityPermission entityPermission) {
         var parameterCount = (vendorName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
+                entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
         Vendor vendor = null;
 
         if(parameterCount == 1) {
-            var vendorControl = Session.getModelController(VendorControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(vendorName != null) {
                 vendor = vendorControl.getVendorByName(vendorName, entityPermission);
 
@@ -126,20 +155,20 @@ public class VendorLogic
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.VENDOR.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.VENDOR.name());
 
                     vendor = vendorControl.getVendor(party, entityPermission);
                 } else {
                     handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(universalEntitySpec != null){
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalEntitySpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);
 
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.VENDOR.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.VENDOR.name());
 
                     vendor = vendorControl.getVendor(party, entityPermission);
                 }
@@ -170,23 +199,20 @@ public class VendorLogic
     }
 
     public void setVendorStatus(final Session session, ExecutionErrorAccumulator eea, Party party, String vendorStatusChoice, PartyPK modifiedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, VendorStatusConstants.Workflow_VENDOR_STATUS);
+        var workflow = workflowLogic.getWorkflowByName(eea, VendorStatusConstants.Workflow_VENDOR_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = vendorStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), vendorStatusChoice);
 
         if(workflowDestination != null || vendorStatusChoice == null) {
-            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(VendorStatusConstants.WorkflowStep_ACTIVE)) {
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, VendorStatusConstants.Workflow_VENDOR_STATUS, VendorStatusConstants.WorkflowStep_INACTIVE)) {
-                    UserKeyLogic.getInstance().clearUserKeysByParty(party);
-                    UserSessionLogic.getInstance().deleteUserSessionsByParty(party);
+                    userKeyLogic.clearUserKeysByParty(party);
+                    userSessionLogic.deleteUserSessionsByParty(party);
                 }
             } else if(currentWorkflowStepName.equals(VendorStatusConstants.WorkflowStep_INACTIVE)) {
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, VendorStatusConstants.Workflow_VENDOR_STATUS, VendorStatusConstants.WorkflowStep_ACTIVE)) {

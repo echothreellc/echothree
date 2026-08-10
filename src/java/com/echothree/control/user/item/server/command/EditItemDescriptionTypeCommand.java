@@ -43,10 +43,10 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemDescriptionTypeCommand
@@ -62,14 +62,14 @@ public class EditItemDescriptionTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemDescriptionType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -81,7 +81,7 @@ public class EditItemDescriptionTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
 
         imageFieldDefinitions = List.of(
                 new FieldDefinition("MinimumHeight", FieldType.UNSIGNED_INTEGER, false, null, null),
@@ -93,8 +93,21 @@ public class EditItemDescriptionTypeCommand
                 new FieldDefinition("PreferredMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Quality", FieldType.UNSIGNED_INTEGER, false, null, 100L),
                 new FieldDefinition("ScaleFromParent", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    ItemDescriptionLogic itemDescriptionLogic;
+
+    @Inject
+    ItemDescriptionTypeLogic itemDescriptionTypeLogic;
+
     
     /** Creates a new instance of EditItemDescriptionTypeCommand */
     public EditItemDescriptionTypeCommand() {
@@ -106,7 +119,7 @@ public class EditItemDescriptionTypeCommand
         var validationResult = validator.validate(edit, EDIT_FIELD_DEFINITIONS);
 
         if(!validationResult.getHasErrors()) {
-            var itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpec(this,
+            var itemDescriptionType = itemDescriptionTypeLogic.getItemDescriptionTypeByUniversalSpec(this,
                     spec, false, EntityPermission.READ_ONLY);
 
             if(!hasExecutionErrors()) {
@@ -137,7 +150,7 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public ItemDescriptionType getEntity(EditItemDescriptionTypeResult result) {
-        return ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpec(this,
+        return itemDescriptionTypeLogic.getItemDescriptionTypeByUniversalSpec(this,
                 spec, false, editModeToEntityPermission(editMode));
     }
     
@@ -148,8 +161,6 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public void fillInResult(EditItemDescriptionTypeResult result, ItemDescriptionType itemDescriptionType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        
         result.setItemDescriptionType(itemControl.getItemDescriptionTypeTransfer(getUserVisit(), itemDescriptionType));
     }
     
@@ -159,7 +170,6 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public void doLock(ItemDescriptionTypeEdit edit, ItemDescriptionType itemDescriptionType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescription(itemDescriptionType, getPreferredLanguage());
         var itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
 
@@ -209,7 +219,6 @@ public class EditItemDescriptionTypeCommand
 
     @Override
     public void canUpdate(ItemDescriptionType itemDescriptionType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionTypeName = edit.getItemDescriptionTypeName();
         var duplicateItemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
@@ -244,7 +253,6 @@ public class EditItemDescriptionTypeCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                     var preferredMimeTypeName = edit.getPreferredMimeTypeName();
 
                     preferredMimeType = preferredMimeTypeName == null ? null : mimeTypeControl.getMimeTypeByName(preferredMimeTypeName);
@@ -271,7 +279,6 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public void doUpdate(ItemDescriptionType itemDescriptionType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
         var itemDescriptionTypeDetailValue = itemControl.getItemDescriptionTypeDetailValueForUpdate(itemDescriptionType);
         var itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescriptionForUpdate(itemDescriptionType, getPreferredLanguage());
@@ -322,7 +329,7 @@ public class EditItemDescriptionTypeCommand
                 itemImageDescriptionTypeValue.setQuality(strQuality == null ? null : Integer.valueOf(strQuality));
                 itemImageDescriptionTypeValue.setScaleFromParent(Boolean.valueOf(edit.getScaleFromParent()));
 
-                ItemDescriptionLogic.getInstance().updateItemImageDescriptionTypeFromValue(itemImageDescriptionTypeValue, partyPK);
+                itemDescriptionLogic.updateItemImageDescriptionTypeFromValue(itemImageDescriptionTypeValue, partyPK);
             }
         }
     }

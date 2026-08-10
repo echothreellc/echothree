@@ -16,18 +16,17 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EventSubscriber;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class ProcessQueuedEventsCommand
@@ -40,6 +39,7 @@ public class ProcessQueuedEventsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
         ));
     }
+
     
     /** Creates a new instance of ProcessQueuedEventsCommand */
     public ProcessQueuedEventsCommand() {
@@ -48,8 +48,7 @@ public class ProcessQueuedEventsCommand
 
     @Override
     protected BaseResult execute() {
-        var eventControl = Session.getModelController(EventControl.class);
-        var remainingTime = 2L * 60 * 1000; // 2 minutes
+        var remainingTime = 50 * 1000; // 50 seconds
         var queuedEvents = eventControl.getQueuedEventsForUpdate();
 
         for(var queuedEvent : queuedEvents) {

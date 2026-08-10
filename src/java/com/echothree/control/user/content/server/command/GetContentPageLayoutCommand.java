@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentPageLayoutCommand
@@ -43,8 +43,15 @@ public class GetContentPageLayoutCommand
                 new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    ContentPageLayoutLogic contentPageLayoutLogic;
+
     
     /** Creates a new instance of GetContentPageLayoutCommand */
     public GetContentPageLayoutCommand() {
@@ -53,7 +60,7 @@ public class GetContentPageLayoutCommand
     
     @Override
     protected ContentPageLayout getEntity() {
-        var contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByUniversalSpec(this, form, true);
+        var contentPageLayout = contentPageLayoutLogic.getContentPageLayoutByUniversalSpec(this, form, true);
 
         if(contentPageLayout != null) {
             sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetContentPageLayoutCommand
     
     @Override
     protected BaseResult getResult(ContentPageLayout contentPageLayout) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var result = ContentResultFactory.getGetContentPageLayoutResult();
 
         if(contentPageLayout != null) {

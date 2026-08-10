@@ -56,16 +56,18 @@ public class GetPartyPrinterGroupUseCommand
                 new FieldDefinition("PrinterGroupUseTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    public GetPartyPrinterGroupUseCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
 
     @Inject
     PrinterControl printerControl;
 
     @Inject
     PartyLogic partyLogic;
+
+
+    public GetPartyPrinterGroupUseCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+
     
     @Override
     protected BaseResult execute() {

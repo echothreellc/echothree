@@ -55,12 +55,14 @@ public class GetBatchAliasTypeCommand
                 new FieldDefinition("BatchAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     BatchControl batchControl;
 
     @Inject
     BatchLogic batchLogic;
+
+
     
     /** Creates a new instance of GetBatchAliasTypeCommand */
     public GetBatchAliasTypeCommand() {

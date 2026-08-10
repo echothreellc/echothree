@@ -19,6 +19,8 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterChoicesCommand
@@ -57,6 +59,16 @@ public class GetFilterChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
     
     /** Creates a new instance of GetFilterChoicesCommand */
     public GetFilterChoicesCommand() {
@@ -65,14 +77,13 @@ public class GetFilterChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterChoicesResult();
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var defaultFilterChoice = form.getDefaultFilterChoice();

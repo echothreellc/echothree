@@ -25,6 +25,7 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemSearchResultActionCommand
@@ -37,8 +38,11 @@ public class CreateItemSearchResultActionCommand
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemLogic itemLogic;
 
     /** Creates a new instance of CreateSearchResultActionTypeCommand */
     public CreateItemSearchResultActionCommand() {
@@ -47,7 +51,7 @@ public class CreateItemSearchResultActionCommand
     
     @Override
     protected BaseResult execute() {
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+        var item = itemLogic.getItemByName(this, form.getItemName());
         BaseResult baseResult = null;
         
         if(!hasExecutionErrors()) {

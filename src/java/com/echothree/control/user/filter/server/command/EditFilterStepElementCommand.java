@@ -21,7 +21,7 @@ import com.echothree.control.user.filter.common.edit.FilterStepElementEdit;
 import com.echothree.control.user.filter.common.result.EditFilterStepElementResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterStepElementSpec;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.filter.server.logic.FilterStepElementLogic;
 import com.echothree.model.control.filter.server.logic.FilterStepLogic;
@@ -74,26 +74,27 @@ public class EditFilterStepElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditFilterStepElementCommand */
-    public EditFilterStepElementCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
 
     @Inject
-    FilterControl filterControl;
-
-    @Inject
-    FilterStepLogic filterStepLogic;
-
-    @Inject
-    FilterStepElementLogic filterStepElementLogic;
+    FilterStepElementControl filterStepElementControl;
 
     @Inject
     FilterAdjustmentLogic filterAdjustmentLogic;
 
     @Inject
+    FilterStepElementLogic filterStepElementLogic;
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
+    @Inject
     SelectorLogic selectorLogic;
+
+
+    /** Creates a new instance of EditFilterStepElementCommand */
+    public EditFilterStepElementCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     protected EditFilterStepElementResult getResult() {
@@ -130,12 +131,12 @@ public class EditFilterStepElementCommand
 
     @Override
     protected void fillInResult(EditFilterStepElementResult result, FilterStepElement filterStepElement) {
-        result.setFilterStepElement(filterControl.getFilterStepElementTransfer(getUserVisit(), filterStepElement));
+        result.setFilterStepElement(filterStepElementControl.getFilterStepElementTransfer(getUserVisit(), filterStepElement));
     }
 
     @Override
     protected void doLock(FilterStepElementEdit edit, FilterStepElement filterStepElement) {
-        var filterStepElementDescription = filterControl.getFilterStepElementDescription(filterStepElement, getPreferredLanguage());
+        var filterStepElementDescription = filterStepElementControl.getFilterStepElementDescription(filterStepElement, getPreferredLanguage());
         var filterStepElementDetail = filterStepElement.getLastDetail();
         var filterItemSelector = filterStepElementDetail.getFilterItemSelector();
 
@@ -152,7 +153,7 @@ public class EditFilterStepElementCommand
     protected void canUpdate(FilterStepElement filterStepElement) {
         var filterStep = filterStepElement.getLastDetail().getFilterStep();
         var filterStepElementName = edit.getFilterStepElementName();
-        var duplicateFilterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+        var duplicateFilterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName);
 
         if(duplicateFilterStepElement != null && !filterStepElement.equals(duplicateFilterStepElement)) {
             addExecutionError(ExecutionErrors.DuplicateFilterStepElementName.name(), filterStepElementName);
@@ -171,25 +172,25 @@ public class EditFilterStepElementCommand
 
             if(!hasExecutionErrors()) {
                 var partyPK = getPartyPK();
-                var filterStepElementDetailValue = filterControl.getFilterStepElementDetailValueForUpdate(filterStepElement);
-                var filterStepElementDescription = filterControl.getFilterStepElementDescriptionForUpdate(filterStepElement, getPreferredLanguage());
+                var filterStepElementDetailValue = filterStepElementControl.getFilterStepElementDetailValueForUpdate(filterStepElement);
+                var filterStepElementDescription = filterStepElementControl.getFilterStepElementDescriptionForUpdate(filterStepElement, getPreferredLanguage());
                 var description = edit.getDescription();
 
                 filterStepElementDetailValue.setFilterStepElementName(edit.getFilterStepElementName());
                 filterStepElementDetailValue.setFilterItemSelectorPK(filterItemSelector == null ? null : filterItemSelector.getPrimaryKey());
                 filterStepElementDetailValue.setFilterAdjustmentPK(filterAdjustment.getPrimaryKey());
 
-                filterControl.updateFilterStepElementFromValue(filterStepElementDetailValue, partyPK);
+                filterStepElementControl.updateFilterStepElementFromValue(filterStepElementDetailValue, partyPK);
 
                 if(filterStepElementDescription == null && description != null) {
-                    filterControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(), description, partyPK);
+                    filterStepElementControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(), description, partyPK);
                 } else if(filterStepElementDescription != null && description == null) {
-                    filterControl.deleteFilterStepElementDescription(filterStepElementDescription, partyPK);
+                    filterStepElementControl.deleteFilterStepElementDescription(filterStepElementDescription, partyPK);
                 } else if(filterStepElementDescription != null && description != null) {
-                    var filterStepElementDescriptionValue = filterControl.getFilterStepElementDescriptionValue(filterStepElementDescription);
+                    var filterStepElementDescriptionValue = filterStepElementControl.getFilterStepElementDescriptionValue(filterStepElementDescription);
 
                     filterStepElementDescriptionValue.setDescription(description);
-                    filterControl.updateFilterStepElementDescriptionFromValue(filterStepElementDescriptionValue, partyPK);
+                    filterStepElementControl.updateFilterStepElementDescriptionFromValue(filterStepElementDescriptionValue, partyPK);
                 }
             }
         }

@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLocationUseTypeCommand
@@ -42,12 +43,16 @@ public class CreateLocationUseTypeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("LocationUseTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("AllowMultiple", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("LocationUseTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AllowMultiple", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    LocationUseTypeLogic locationUseTypeLogic;
+
     
     /** Creates a new instance of CreateLocationUseTypeCommand */
     public CreateLocationUseTypeCommand() {
@@ -61,7 +66,7 @@ public class CreateLocationUseTypeCommand
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 
-        LocationUseTypeLogic.getInstance().createLocationUseType(this, locationUseTypeName, allowMultiple, isDefault,
+        locationUseTypeLogic.createLocationUseType(this, locationUseTypeName, allowMultiple, isDefault,
                 sortOrder, getPartyPK());
 
         return null;

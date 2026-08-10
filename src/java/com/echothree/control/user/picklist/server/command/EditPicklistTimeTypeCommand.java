@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPicklistTimeTypeCommand
@@ -52,22 +52,26 @@ public class EditPicklistTimeTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PicklistTimeType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PicklistTimeType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PicklistTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PicklistControl picklistControl;
+
     
     /** Creates a new instance of EditPicklistTimeTypeCommand */
     public EditPicklistTimeTypeCommand() {
@@ -86,7 +90,6 @@ public class EditPicklistTimeTypeCommand
 
     @Override
     public PicklistTimeType getEntity(EditPicklistTimeTypeResult result) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistTimeType picklistTimeType = null;
         var picklistTypeName = spec.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
@@ -119,14 +122,11 @@ public class EditPicklistTimeTypeCommand
 
     @Override
     public void fillInResult(EditPicklistTimeTypeResult result, PicklistTimeType picklistTimeType) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
-
         result.setPicklistTimeType(picklistControl.getPicklistTimeTypeTransfer(getUserVisit(), picklistTimeType));
     }
 
     @Override
     public void doLock(PicklistTimeTypeEdit edit, PicklistTimeType picklistTimeType) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescription(picklistTimeType, getPreferredLanguage());
         var picklistTimeTypeDetail = picklistTimeType.getLastDetail();
 
@@ -141,7 +141,6 @@ public class EditPicklistTimeTypeCommand
 
     @Override
     public void canUpdate(PicklistTimeType picklistTimeType) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var picklistTypeName = spec.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
@@ -159,7 +158,6 @@ public class EditPicklistTimeTypeCommand
 
     @Override
     public void doUpdate(PicklistTimeType picklistTimeType) {
-        var picklistControl = Session.getModelController(PicklistControl.class);
         var partyPK = getPartyPK();
         var picklistTimeTypeDetailValue = picklistControl.getPicklistTimeTypeDetailValueForUpdate(picklistTimeType);
         var picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescriptionForUpdate(picklistTimeType, getPreferredLanguage());

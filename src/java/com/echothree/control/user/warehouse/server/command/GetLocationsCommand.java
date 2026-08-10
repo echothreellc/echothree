@@ -56,17 +56,18 @@ public class GetLocationsCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of GetLocationsCommand */
     public GetLocationsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Inject
-    WarehouseControl warehouseControl;
-
     private Warehouse warehouse;
     private Party warehouseParty;
 

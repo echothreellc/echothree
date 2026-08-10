@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditShipmentAliasCommand
@@ -51,12 +51,16 @@ public class EditShipmentAliasCommand
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ShipmentControl shipmentControl;
+
     
     /** Creates a new instance of EditShipmentAliasCommand */
     public EditShipmentAliasCommand() {
@@ -87,7 +91,6 @@ public class EditShipmentAliasCommand
     
     @Override
     public ShipmentAlias getEntity(EditShipmentAliasResult result) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentAlias shipmentAlias = null;
         var shipmentTypeName = spec.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
@@ -133,8 +136,6 @@ public class EditShipmentAliasCommand
 
     @Override
     public void fillInResult(EditShipmentAliasResult result, ShipmentAlias shipmentAlias) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
-
         result.setShipmentAlias(shipmentControl.getShipmentAliasTransfer(getUserVisit(), shipmentAlias));
     }
 
@@ -145,7 +146,6 @@ public class EditShipmentAliasCommand
 
     @Override
     public void canUpdate(ShipmentAlias shipmentAlias) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var alias = edit.getAlias();
         var duplicateShipmentAlias = shipmentControl.getShipmentAliasByAlias(shipmentAliasType, alias);
 
@@ -159,7 +159,6 @@ public class EditShipmentAliasCommand
 
     @Override
     public void doUpdate(ShipmentAlias shipmentAlias) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentAliasValue = shipmentControl.getShipmentAliasValue(shipmentAlias);
 
         shipmentAliasValue.setAlias(edit.getAlias());

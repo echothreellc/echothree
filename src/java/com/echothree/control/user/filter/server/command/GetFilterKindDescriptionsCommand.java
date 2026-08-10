@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterKindDescriptionsCommand
@@ -47,13 +47,17 @@ public class GetFilterKindDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterKindControl filterKindControl;
+
     
     /** Creates a new instance of GetFilterKindDescriptionsCommand */
     public GetFilterKindDescriptionsCommand() {
@@ -62,14 +66,13 @@ public class GetFilterKindDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterKindDescriptionsResult();
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
-            result.setFilterKindDescriptions(filterControl.getFilterKindDescriptionTransfersByFilterKind(getUserVisit(), filterKind));
+            result.setFilterKind(filterKindControl.getFilterKindTransfer(getUserVisit(), filterKind));
+            result.setFilterKindDescriptions(filterKindControl.getFilterKindDescriptionTransfersByFilterKind(getUserVisit(), filterKind));
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }

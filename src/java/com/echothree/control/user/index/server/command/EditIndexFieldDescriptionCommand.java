@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditIndexFieldDescriptionCommand
@@ -55,18 +55,24 @@ public class EditIndexFieldDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.IndexField.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IndexFieldName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditIndexFieldDescriptionCommand */
     public EditIndexFieldDescriptionCommand() {
@@ -85,7 +91,6 @@ public class EditIndexFieldDescriptionCommand
 
     @Override
     public IndexFieldDescription getEntity(EditIndexFieldDescriptionResult result) {
-        var indexControl = Session.getModelController(IndexControl.class);
         IndexFieldDescription indexFieldDescription = null;
         var indexTypeName = spec.getIndexTypeName();
         var indexType = indexControl.getIndexTypeByName(indexTypeName);
@@ -95,7 +100,6 @@ public class EditIndexFieldDescriptionCommand
             var indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
 
             if(indexField != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -129,8 +133,6 @@ public class EditIndexFieldDescriptionCommand
 
     @Override
     public void fillInResult(EditIndexFieldDescriptionResult result, IndexFieldDescription indexFieldDescription) {
-        var indexControl = Session.getModelController(IndexControl.class);
-
         result.setIndexFieldDescription(indexControl.getIndexFieldDescriptionTransfer(getUserVisit(), indexFieldDescription));
     }
 
@@ -141,7 +143,6 @@ public class EditIndexFieldDescriptionCommand
 
     @Override
     public void doUpdate(IndexFieldDescription indexFieldDescription) {
-        var indexControl = Session.getModelController(IndexControl.class);
         var indexFieldDescriptionValue = indexControl.getIndexFieldDescriptionValue(indexFieldDescription);
 
         indexFieldDescriptionValue.setDescription(edit.getDescription());

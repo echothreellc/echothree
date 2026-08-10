@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.invoice.common.InvoiceUtil;
 import com.echothree.control.user.invoice.common.InvoiceService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class InvoiceServicePingTest
-        extends TestCase {
+public class InvoiceServicePingTest {
     private InvoiceService invoiceService;
     
-    /** Creates a new instance of InvoiceServiceTest */
-    public InvoiceServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new InvoiceServicePingTest("testPingInvoiceService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             invoiceService = InvoiceUtil.getHome();
             assertNotNull(invoiceService);
@@ -54,8 +37,8 @@ public class InvoiceServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             invoiceService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class InvoiceServicePingTest
         }
     }
     
+    @Test
     public void testPingInvoiceService() {
-        setUp();
         try {
             invoiceService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

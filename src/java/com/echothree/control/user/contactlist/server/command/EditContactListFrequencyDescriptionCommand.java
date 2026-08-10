@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactListFrequencyDescriptionCommand
@@ -55,18 +55,24 @@ public class EditContactListFrequencyDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactListFrequency.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListFrequencyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditContactListFrequencyDescriptionCommand */
     public EditContactListFrequencyDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditContactListFrequencyDescriptionCommand
 
     @Override
     public ContactListFrequencyDescription getEntity(EditContactListFrequencyDescriptionResult result) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListFrequencyDescription contactListFrequencyDescription = null;
         var contactListFrequencyName = spec.getContactListFrequencyName();
         var contactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
 
         if(contactListFrequency != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditContactListFrequencyDescriptionCommand
 
     @Override
     public void fillInResult(EditContactListFrequencyDescriptionResult result, ContactListFrequencyDescription contactListFrequencyDescription) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setContactListFrequencyDescription(contactListControl.getContactListFrequencyDescriptionTransfer(getUserVisit(), contactListFrequencyDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditContactListFrequencyDescriptionCommand
 
     @Override
     public void doUpdate(ContactListFrequencyDescription contactListFrequencyDescription) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListFrequencyDescriptionValue = contactListControl.getContactListFrequencyDescriptionValue(contactListFrequencyDescription);
 
         contactListFrequencyDescriptionValue.setDescription(edit.getDescription());

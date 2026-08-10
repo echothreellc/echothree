@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetShippingMethodCommand
@@ -59,6 +59,12 @@ public class GetShippingMethodCommand
         );
     }
 
+    @Inject
+    ShippingControl shippingControl;
+
+    @Inject
+    ShippingMethodLogic shippingMethodLogic;
+
     /** Creates a new instance of GetShippingMethodCommand */
     public GetShippingMethodCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetShippingMethodCommand
 
     @Override
     protected ShippingMethod getEntity() {
-        var shippingMethod = ShippingMethodLogic.getInstance().getShippingMethodByUniversalSpec(this, form);
+        var shippingMethod = shippingMethodLogic.getShippingMethodByUniversalSpec(this, form);
 
         if(shippingMethod != null) {
             sendEvent(shippingMethod.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetShippingMethodCommand
 
     @Override
     protected BaseResult getResult(ShippingMethod shippingMethod) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var result = ShippingResultFactory.getGetShippingMethodResult();
 
         if(shippingMethod != null) {

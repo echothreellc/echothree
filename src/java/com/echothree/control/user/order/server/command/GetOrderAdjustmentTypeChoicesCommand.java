@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderAdjustmentTypeChoicesCommand
@@ -47,15 +47,22 @@ public class GetOrderAdjustmentTypeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OrderAdjustmentType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultOrderAdjustmentTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    OrderAdjustmentControl orderAdjustmentControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
     
     /** Creates a new instance of GetOrderAdjustmentTypeChoicesCommand */
     public GetOrderAdjustmentTypeChoicesCommand() {
@@ -64,13 +71,11 @@ public class GetOrderAdjustmentTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var result = OrderResultFactory.getGetOrderAdjustmentTypeChoicesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
             var defaultOrderAdjustmentTypeChoice = form.getDefaultOrderAdjustmentTypeChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

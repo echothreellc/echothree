@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEventTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.logic.EventTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -57,17 +56,17 @@ public class GetEventTypeCommand
         );
     }
 
+    @Inject
+    EventTypeLogic eventTypeLogic;
+
     /** Creates a new instance of GetEventTypeCommand */
     public GetEventTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    @Inject
-    EventControl eventControl;
-
     @Override
     protected EventType getEntity() {
-        var eventType = EventTypeLogic.getInstance().getEventTypeByUniversalSpec(this, form);
+        var eventType = eventTypeLogic.getEventTypeByUniversalSpec(this, form);
 
         return eventType;
     }

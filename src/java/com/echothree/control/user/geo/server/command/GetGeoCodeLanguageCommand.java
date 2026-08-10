@@ -48,25 +48,26 @@ public class GetGeoCodeLanguageCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeLanguage.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
-    /** Creates a new instance of GetGeoCodeLanguageCommand */
-    public GetGeoCodeLanguageCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
-    
+
     @Inject
     GeoControl geoControl;
 
     @Inject
     PartyControl partyControl;
+
+
+    /** Creates a new instance of GetGeoCodeLanguageCommand */
+    public GetGeoCodeLanguageCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
 
     @Override
     protected GeoCodeLanguage getEntity() {

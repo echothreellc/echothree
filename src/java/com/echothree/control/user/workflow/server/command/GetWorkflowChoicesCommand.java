@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowChoicesCommand
@@ -53,6 +53,10 @@ public class GetWorkflowChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of GetWorkflowChoicesCommand */
     public GetWorkflowChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetWorkflowChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var result = WorkflowResultFactory.getGetWorkflowChoicesResult();
         var defaultWorkflowChoice = form.getDefaultWorkflowChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

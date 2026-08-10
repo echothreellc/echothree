@@ -19,7 +19,6 @@ package com.echothree.control.user.user.server.command;
 import com.echothree.control.user.user.common.form.GetUserVisitGroupForm;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserVisitGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUserVisitGroupCommand
@@ -59,6 +58,9 @@ public class GetUserVisitGroupCommand
         );
     }
 
+    @Inject
+    UserVisitGroupLogic userVisitGroupLogic;
+
     /** Creates a new instance of GetUserVisitGroupCommand */
     public GetUserVisitGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +68,7 @@ public class GetUserVisitGroupCommand
 
     @Override
     protected UserVisitGroup getEntity() {
-        var userVisitGroup = UserVisitGroupLogic.getInstance().getUserVisitGroupByUniversalSpec(this, form);
+        var userVisitGroup = userVisitGroupLogic.getUserVisitGroupByUniversalSpec(this, form);
 
         if(userVisitGroup != null) {
             sendEvent(userVisitGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +79,6 @@ public class GetUserVisitGroupCommand
 
     @Override
     protected BaseResult getResult(UserVisitGroup userVisitGroup) {
-        var userControl = Session.getModelController(UserControl.class);
         var result = UserResultFactory.getGetUserVisitGroupResult();
 
         if(userVisitGroup != null) {

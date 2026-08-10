@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.contactlist.common.form;
 
-import com.echothree.control.user.contactlist.common.spec.PartyContactListSpec;
+import com.echothree.control.user.contactlist.common.spec.PartyContactListUniversalSpec;
 
 public interface GetPartyContactListForm
-        extends PartyContactListSpec {
+        extends PartyContactListUniversalSpec {
     
     // Nothing additional beyond PartyContactListSpec
     

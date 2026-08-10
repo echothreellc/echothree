@@ -30,43 +30,47 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class DeleteInventoryConditionCommand
         extends BaseSimpleCommand<DeleteInventoryConditionForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
     /** Creates a new instance of DeleteInventoryConditionCommand */
     public DeleteInventoryConditionCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
         var inventoryConditionName = form.getInventoryConditionName();
-        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByNameForUpdate(this, inventoryConditionName);
-        
+        var inventoryCondition = inventoryConditionLogic.getInventoryConditionByNameForUpdate(this, inventoryConditionName);
+
         if(!hasExecutionErrors()) {
-            InventoryConditionLogic.getInstance().deleteInventoryCondition(this, inventoryCondition, getPartyPK());
+            inventoryConditionLogic.deleteInventoryCondition(this, inventoryCondition, getPartyPK());
         }
-        
+
         return null;
     }
-    
+
 }

@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchTypeCommand
@@ -54,20 +54,23 @@ public class EditSearchTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    SearchControl searchControl;
 
     /** Creates a new instance of EditSearchTypeCommand */
     public EditSearchTypeCommand() {
@@ -88,7 +91,6 @@ public class EditSearchTypeCommand
 
     @Override
     public SearchType getEntity(EditSearchTypeResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchType searchType = null;
         var searchKindName = spec.getSearchKindName();
 
@@ -120,14 +122,11 @@ public class EditSearchTypeCommand
 
     @Override
     public void fillInResult(EditSearchTypeResult result, SearchType searchType) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchType(searchControl.getSearchTypeTransfer(getUserVisit(), searchType));
     }
 
     @Override
     public void doLock(SearchTypeEdit edit, SearchType searchType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchTypeDescription = searchControl.getSearchTypeDescription(searchType, getPreferredLanguage());
         var searchTypeDetail = searchType.getLastDetail();
 
@@ -142,7 +141,6 @@ public class EditSearchTypeCommand
 
     @Override
     public void canUpdate(SearchType searchType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKindDetail = searchKind.getLastDetail();
         var searchTypeName = edit.getSearchTypeName();
         var duplicateSearchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
@@ -154,7 +152,6 @@ public class EditSearchTypeCommand
 
     @Override
     public void doUpdate(SearchType searchType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
         var searchTypeDetailValue = searchControl.getSearchTypeDetailValueForUpdate(searchType);
         var searchTypeDescription = searchControl.getSearchTypeDescriptionForUpdate(searchType, getPreferredLanguage());

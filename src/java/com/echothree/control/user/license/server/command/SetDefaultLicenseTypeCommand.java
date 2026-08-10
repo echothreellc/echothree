@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultLicenseTypeCommand
@@ -45,14 +45,18 @@ public class SetDefaultLicenseTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.LicenseType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.LicenseType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LicenseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    LicenseControl licenseControl;
+
     
     /** Creates a new instance of SetDefaultLicenseTypeCommand */
     public SetDefaultLicenseTypeCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultLicenseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         var licenseTypeName = form.getLicenseTypeName();
         var licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueByNameForUpdate(licenseTypeName);
         

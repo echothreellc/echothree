@@ -60,10 +60,10 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCustomerCommand
@@ -77,8 +77,8 @@ public class CreateCustomerCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -102,8 +102,60 @@ public class CreateCustomerCommand
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("CustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyFreeOnBoardControl partyFreeOnBoardControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    SourceControl sourceControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    UseControl useControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ContactEmailAddressLogic contactEmailAddressLogic;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
+    @Inject
+    PartyChainLogic partyChainLogic;
+
     
     /** Creates a new instance of CreateCustomerCommand */
     public CreateCustomerCommand() {
@@ -113,7 +165,6 @@ public class CreateCustomerCommand
     @Override
     protected BaseResult execute() {
         var result = PartyResultFactory.getCreateCustomerResult();
-        var customerControl = Session.getModelController(CustomerControl.class);
         Customer customer = null;
         var customerTypeName = form.getCustomerTypeName();
         var customerType = customerTypeName == null ? customerControl.getDefaultCustomerType() : customerControl.getCustomerTypeByName(customerTypeName);
@@ -123,7 +174,6 @@ public class CreateCustomerCommand
             CancellationPolicy cancellationPolicy = null;
 
             if(cancellationPolicyName != null) {
-                var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                 var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -134,14 +184,12 @@ public class CreateCustomerCommand
                 ReturnPolicy returnPolicy = null;
 
                 if(returnPolicyName != null) {
-                    var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                     var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                     returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                 }
 
                 if(returnPolicyName == null || returnPolicy != null) {
-                    var accountingControl = Session.getModelController(AccountingControl.class);
                     var arGlAccountName = form.getArGlAccountName();
                     var arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
 
@@ -150,7 +198,6 @@ public class CreateCustomerCommand
                                 : arGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                         if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
-                            var termControl = Session.getModelController(TermControl.class);
                             var customerTypeDetail = customerType.getLastDetail();
                             var term = customerTypeDetail.getDefaultTerm();
 
@@ -166,15 +213,12 @@ public class CreateCustomerCommand
                                 var invalidInitialOfferOrSourceSpecification = false;
 
                                 if(initialOfferName != null && initialUseName != null && initialSourceName == null) {
-                                    var offerControl = Session.getModelController(OfferControl.class);
                                     var initialOffer = offerControl.getOfferByName(initialOfferName);
 
                                     if(initialOffer != null) {
-                                        var useControl = Session.getModelController(UseControl.class);
                                         var initialUse = useControl.getUseByName(initialUseName);
 
                                         if(initialUse != null) {
-                                            var offerUseControl = Session.getModelController(OfferUseControl.class);
                                             initialOfferUse = offerUseControl.getOfferUse(initialOffer, initialUse);
 
                                             if(initialOfferUse == null) {
@@ -187,8 +231,6 @@ public class CreateCustomerCommand
                                         addExecutionError(ExecutionErrors.UnknownInitialOfferName.name(), initialOfferName);
                                     }
                                 } else {
-                                    var sourceControl = Session.getModelController(SourceControl.class);
-
                                     if(initialOfferName == null && initialUseName == null && initialSourceName != null) {
                                         var source = sourceControl.getSourceByName(initialSourceName);
 
@@ -215,7 +257,6 @@ public class CreateCustomerCommand
                                 }
 
                                 if(initialOfferUse != null) {
-                                    var partyControl = Session.getModelController(PartyControl.class);
                                     var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
                                     var preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
@@ -238,9 +279,6 @@ public class CreateCustomerCommand
                                                 }
 
                                                 if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                                    var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-                                                    var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
-                                                    var workflowControl = Session.getModelController(WorkflowControl.class);
                                                     var soundex = new Soundex();
                                                     var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
                                                     BasePK createdBy = getPartyPK();
@@ -300,7 +338,7 @@ public class CreateCustomerCommand
                                                             createdBy);
 
                                                     if(emailAddress != null) {
-                                                        ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
+                                                        contactEmailAddressLogic.createContactEmailAddress(party,
                                                                 emailAddress, allowSolicitation, null,
                                                                 ContactMechanismPurposes.PRIMARY_EMAIL.name(), createdBy);
                                                     }
@@ -337,16 +375,14 @@ public class CreateCustomerCommand
                                                     if(customerCreditStatusWorkflowEntrance == null) {
                                                         customerCreditStatusWorkflowEntrance = workflowControl.getDefaultWorkflowEntrance(customerCreditStatusWorkflow);
                                                     }
-
-                                                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                                     var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                                     workflowControl.addEntityToWorkflow(customerStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                                     workflowControl.addEntityToWorkflow(customerCreditStatusWorkflowEntrance, entityInstance, null, null, createdBy);
 
-                                                    ContactListLogic.getInstance().setupInitialContactLists(this, party, createdBy);
+                                                    contactListLogic.setupInitialContactLists(this, party, createdBy);
                                                     
                                                     // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                                                    PartyChainLogic.getInstance().createPartyWelcomeChainInstance(null, party, createdBy);
+                                                    partyChainLogic.createPartyWelcomeChainInstance(null, party, createdBy);
                                                 } else {
                                                     addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), preferredCurrencyIsoName);
                                                 }

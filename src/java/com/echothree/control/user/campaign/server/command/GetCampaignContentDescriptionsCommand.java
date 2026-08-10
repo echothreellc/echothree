@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCampaignContentDescriptionsCommand
@@ -47,13 +47,17 @@ public class GetCampaignContentDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CampaignContent.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CampaignContentName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    CampaignControl campaignControl;
+
     
     /** Creates a new instance of GetCampaignContentDescriptionsCommand */
     public GetCampaignContentDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetCampaignContentDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var result = CampaignResultFactory.getGetCampaignContentDescriptionsResult();
         var campaignContentName = form.getCampaignContentName();
         var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);

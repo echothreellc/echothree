@@ -22,7 +22,6 @@ import com.echothree.control.user.graphql.server.cache.GraphQlDocumentCache;
 import com.echothree.control.user.graphql.server.schema.util.GraphQlSchemaUtils;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.GraphQlExecutionContext;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.GraphQlUtils;
@@ -106,7 +105,7 @@ public class ExecuteGraphQlCommand
                 if(possibleVariables instanceof Map) {
                     parsedVariables = (Map<String, Object>)possibleVariables;
                 } else {
-                    getLog().error("Discarding parsedVariables, not an instance of Map");
+                    log.error("Discarding parsedVariables, not an instance of Map");
                 }
             }
 
@@ -121,7 +120,7 @@ public class ExecuteGraphQlCommand
                     if(possibleQuery instanceof String string) {
                         query = string;
                     } else {
-                        getLog().error("Discarding query, not an instance of String");
+                        log.error("Discarding query, not an instance of String");
                     }
                 }
 
@@ -130,7 +129,7 @@ public class ExecuteGraphQlCommand
                     if(possibleOperationName instanceof String string) {
                         operationName = string;
                     } else {
-                        getLog().error("Discarding operationName, not an instance of String");
+                        log.error("Discarding operationName, not an instance of String");
                     }
                 }
 
@@ -139,7 +138,7 @@ public class ExecuteGraphQlCommand
                     if(possibleVariables instanceof Map) {
                         parsedVariables = (Map<String, Object>)possibleVariables;
                     } else {
-                        getLog().error("Discarding parsedVariables, not an instance of Map");
+                        log.error("Discarding parsedVariables, not an instance of Map");
                     }
                 }
             }

@@ -17,7 +17,7 @@
 package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.CreateChainActionForm;
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainActionTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -29,24 +29,22 @@ import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
-import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateChainActionCommand
@@ -62,9 +60,9 @@ public class CreateChainActionCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ChainAction.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ChainAction.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -75,23 +73,32 @@ public class CreateChainActionCommand
                 new FieldDefinition("ChainActionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
         
         letterFormFieldDefinitions = List.of(
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         surveyFormFieldDefinitions = List.of(
                 new FieldDefinition("SurveyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         chainActionSetFormFieldDefinitions = List.of(
                 new FieldDefinition("NextChainActionSetName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DelayTime", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("DelayTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    LetterControl letterControl;
+
+    @Inject
+    UomControl uomControl;
+
     /** Creates a new instance of CreateChainActionCommand */
     public CreateChainActionCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -105,11 +112,11 @@ public class CreateChainActionCommand
         if(!validationResult.getHasErrors()) {
             var chainActionTypeName = form.getChainActionTypeName();
             
-            if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
+            if(chainActionTypeName.equals(ChainActionTypes.LETTER.name())) {
                 validationResult = validator.validate(form, letterFormFieldDefinitions);
-            } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {
+            } else if(chainActionTypeName.equals(ChainActionTypes.SURVEY.name())) {
                 validationResult = validator.validate(form, surveyFormFieldDefinitions);
-            } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_CHAIN_ACTION_SET)) {
+            } else if(chainActionTypeName.equals(ChainActionTypes.CHAIN_ACTION_SET.name())) {
                 validationResult = validator.validate(form, chainActionSetFormFieldDefinitions);
             }
         }
@@ -117,53 +124,26 @@ public class CreateChainActionCommand
         return validationResult;
     }
     
-    private abstract class BaseChainActionType {
-
-        ChainControl chainControl;
-        ChainActionType chainActionType;
-
-        public BaseChainActionType(ChainControl chainControl, String chainActionTypeName) {
-            this.chainControl = chainControl;
-            chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
-
-            if(chainActionType == null) {
-                addExecutionError(ExecutionErrors.UnknownChainActionTypeName.name(), chainActionTypeName);
-            }
-        }
-
-        public abstract void execute(ChainAction chainAction, PartyPK partyPK);
-    }
-    
-    private abstract class LetterComponentChainActionType
-            extends BaseChainActionType {
-
-        protected LetterControl letterControl = Session.getModelController(LetterControl.class);
-
-        public LetterComponentChainActionType(ChainControl chainControl, String chainActionTypeName) {
-            super(chainControl, chainActionTypeName);
-        }
+    private abstract static class BaseChainActionType {
+        abstract void execute(ChainAction chainAction, PartyPK partyPK);
     }
     
     private class LetterChainActionType
-        extends LetterComponentChainActionType {
+            extends BaseChainActionType {
         private Letter letter = null;
         
-        public LetterChainActionType(ChainControl chainControl, ChainType chainType) {
-            super(chainControl, ChainConstants.ChainActionType_LETTER);
-            
-            if(!hasExecutionErrors()) {
-                var letterName = form.getLetterName();
-                
-                letter = letterControl.getLetterByName(chainType, letterName);
-                
-                if(letter == null) {
-                    addExecutionError(ExecutionErrors.UnknownLetterName.name(), letterName);
-                }
+        LetterChainActionType(ChainType chainType) {
+            var letterName = form.getLetterName();
+
+            letter = letterControl.getLetterByName(chainType, letterName);
+
+            if(letter == null) {
+                addExecutionError(ExecutionErrors.UnknownLetterName.name(), letterName);
             }
         }
         
         @Override
-        public void execute(ChainAction chainAction, PartyPK partyPK) {
+        void execute(ChainAction chainAction, PartyPK partyPK) {
             chainControl.createChainActionLetter(chainAction, letter, partyPK);
         }
     }
@@ -173,45 +153,39 @@ public class CreateChainActionCommand
         ChainActionSet nextChainActionSet = null;
         Long delayTime = null;
         
-        public ChainActionSetChainActionType(ChainControl chainControl, Chain chain) {
-            super(chainControl, ChainConstants.ChainActionType_CHAIN_ACTION_SET);
-            
-            if(!hasExecutionErrors()) {
-                var nextChainActionSetName = form.getNextChainActionSetName();
-                
-                nextChainActionSet = chainControl.getChainActionSetByName(chain, nextChainActionSetName);
-                
-                if(nextChainActionSet != null) {
-                    var uomControl = Session.getModelController(UomControl.class);
-                    var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+        ChainActionSetChainActionType(Chain chain) {
+            var nextChainActionSetName = form.getNextChainActionSetName();
 
-                    if(timeUnitOfMeasureKind != null) {
-                        var delayTimeUnitOfMeasureTypeName = form.getDelayTimeUnitOfMeasureTypeName();
-                        var delayTimeUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind, delayTimeUnitOfMeasureTypeName);
+            nextChainActionSet = chainControl.getChainActionSetByName(chain, nextChainActionSetName);
 
-                        if(delayTimeUnitOfMeasureType != null) {
-                            delayTime = new Conversion(uomControl, delayTimeUnitOfMeasureType, Long.valueOf(form.getDelayTime())).convertToLowestUnitOfMeasureType().getQuantity();
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownRetainUserVisitsTimeUnitOfMeasureTypeName.name(), delayTimeUnitOfMeasureTypeName);
-                        }
+            if(nextChainActionSet != null) {
+                var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+                if(timeUnitOfMeasureKind != null) {
+                    var delayTimeUnitOfMeasureTypeName = form.getDelayTimeUnitOfMeasureTypeName();
+                    var delayTimeUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(timeUnitOfMeasureKind, delayTimeUnitOfMeasureTypeName);
+
+                    if(delayTimeUnitOfMeasureType != null) {
+                        delayTime = new Conversion(uomControl, delayTimeUnitOfMeasureType, Long.valueOf(form.getDelayTime())).convertToLowestUnitOfMeasureType().getQuantity();
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownTimeUnitOfMeasureKind.name());
+                        addExecutionError(ExecutionErrors.UnknownRetainUserVisitsTimeUnitOfMeasureTypeName.name(), delayTimeUnitOfMeasureTypeName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownNextChainActionSetName.name(), nextChainActionSetName);
+                    addExecutionError(ExecutionErrors.UnknownTimeUnitOfMeasureKind.name());
                 }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownNextChainActionSetName.name(), nextChainActionSetName);
             }
         }
         
         @Override
-        public void execute(ChainAction chainAction, PartyPK partyPK) {
+        void execute(ChainAction chainAction, PartyPK partyPK) {
             chainControl.createChainActionChainActionSet(chainAction, nextChainActionSet, delayTime, partyPK);
         }
     }
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
 
@@ -238,12 +212,12 @@ public class CreateChainActionCommand
                             if(chainActionType != null) {
                                 BaseChainActionType baseChainActionType = null;
                                 
-                                if(chainActionTypeName.equals(ChainConstants.ChainActionType_LETTER)) {
-                                    baseChainActionType = new LetterChainActionType(chainControl, chainType);
-                                } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_SURVEY)) {
+                                if(chainActionTypeName.equals(ChainActionTypes.LETTER.name())) {
+                                    baseChainActionType = new LetterChainActionType(chainType);
+                                } else if(chainActionTypeName.equals(ChainActionTypes.SURVEY.name())) {
                                     // TODO
-                                } else if(chainActionTypeName.equals(ChainConstants.ChainActionType_CHAIN_ACTION_SET)) {
-                                    baseChainActionType = new ChainActionSetChainActionType(chainControl, chain);
+                                } else if(chainActionTypeName.equals(ChainActionTypes.CHAIN_ACTION_SET.name())) {
+                                    baseChainActionType = new ChainActionSetChainActionType(chain);
                                 }
                                 
                                 if(!hasExecutionErrors()) {

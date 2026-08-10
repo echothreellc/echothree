@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultReturnTypeCommand
@@ -44,15 +44,19 @@ public class SetDefaultReturnTypeCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ReturnType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ReturnType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ReturnTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
     
     /** Creates a new instance of SetDefaultReturnTypeCommand */
     public SetDefaultReturnTypeCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultReturnTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         

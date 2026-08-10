@@ -36,6 +36,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityIntegerDefaultCommand
@@ -63,6 +64,10 @@ public class EditEntityIntegerDefaultCommand
                 new FieldDefinition("IntegerAttribute", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of EditEntityIntegerDefaultCommand */
     public EditEntityIntegerDefaultCommand() {
@@ -81,7 +86,7 @@ public class EditEntityIntegerDefaultCommand
 
     @Override
     public EntityIntegerDefault getEntity(EditEntityIntegerDefaultResult result) {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, spec);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
         EntityIntegerDefault entityIntegerDefault = null;
 
         if(!hasExecutionErrors()) {

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypeChoicesCommand
@@ -45,14 +45,18 @@ public class GetCustomerTypeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CustomerType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultCustomerTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
     
     /** Creates a new instance of GetCustomerTypeChoicesCommand */
     public GetCustomerTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetCustomerTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var result = CustomerResultFactory.getGetCustomerTypeChoicesResult();
         var defaultCustomerTypeChoice = form.getDefaultCustomerTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

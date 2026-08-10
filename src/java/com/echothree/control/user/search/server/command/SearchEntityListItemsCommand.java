@@ -28,10 +28,10 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchEntityListItemsCommand
@@ -56,6 +56,15 @@ public class SearchEntityListItemsCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of SearchEntityListItemsCommand */
     public SearchEntityListItemsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -64,7 +73,6 @@ public class SearchEntityListItemsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getSearchEntityListItemsResult();
-        var searchLogic = SearchLogic.getInstance();
         var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_LIST_ITEM.name());
 
         if(!hasExecutionErrors()) {
@@ -73,10 +81,9 @@ public class SearchEntityListItemsCommand
 
             if(!hasExecutionErrors()) {
                 var languageIsoName = form.getLanguageIsoName();
-                var language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                var language = languageIsoName == null ? null : languageLogic.getLanguageByName(this, languageIsoName);
                 
                 if(!hasExecutionErrors()) {
-                    var searchControl = Session.getModelController(SearchControl.class);
                     var partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
                     var partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
                     boolean rememberPreferences = Boolean.valueOf(form.getRememberPreferences());
@@ -99,7 +106,7 @@ public class SearchEntityListItemsCommand
 
                             if(!hasExecutionErrors()) {
                                 var searchUseTypeName = form.getSearchUseTypeName();
-                                var searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
+                                var searchUseType = searchUseTypeName == null ? null : searchLogic.getSearchUseTypeByName(this, searchUseTypeName);
 
                                 if(!hasExecutionErrors()) {
                                     var userVisit = getUserVisit();

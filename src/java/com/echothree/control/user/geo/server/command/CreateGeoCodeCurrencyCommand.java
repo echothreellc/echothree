@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateGeoCodeCurrencyCommand
@@ -47,16 +47,23 @@ public class CreateGeoCodeCurrencyCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeCurrency.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of CreateGeoCodeCurrencyCommand */
     public CreateGeoCodeCurrencyCommand() {
@@ -65,12 +72,10 @@ public class CreateGeoCodeCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeName = form.getGeoCodeName();
         var geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
             var currencyIsoName = form.getCurrencyIsoName();
             var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             

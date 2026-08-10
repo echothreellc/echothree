@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGlResourceTypeCommand
@@ -59,6 +59,12 @@ public class GetGlResourceTypeCommand
         );
     }
 
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    GlResourceTypeLogic glResourceTypeLogic;
+
     /** Creates a new instance of GetGlResourceTypeCommand */
     public GetGlResourceTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetGlResourceTypeCommand
 
     @Override
     protected GlResourceType getEntity() {
-        var glResourceType = GlResourceTypeLogic.getInstance().getGlResourceTypeByUniversalSpec(this, form, true);
+        var glResourceType = glResourceTypeLogic.getGlResourceTypeByUniversalSpec(this, form, true);
 
         if(glResourceType != null) {
             sendEvent(glResourceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetGlResourceTypeCommand
 
     @Override
     protected BaseResult getResult(GlResourceType entity) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetGlResourceTypeResult();
 
         if(entity != null) {

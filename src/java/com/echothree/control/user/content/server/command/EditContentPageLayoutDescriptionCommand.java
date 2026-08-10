@@ -64,17 +64,18 @@ public class EditContentPageLayoutDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditContentPageLayoutDescriptionCommand */
-    public EditContentPageLayoutDescriptionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
-    
+
     @Inject
     ContentControl contentControl;
 
     @Inject
     PartyControl partyControl;
+
+
+    /** Creates a new instance of EditContentPageLayoutDescriptionCommand */
+    public EditContentPageLayoutDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditContentPageLayoutDescriptionResult getResult() {

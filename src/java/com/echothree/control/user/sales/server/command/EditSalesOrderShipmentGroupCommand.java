@@ -46,9 +46,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSalesOrderShipmentGroupCommand
@@ -63,13 +63,13 @@ public class EditSalesOrderShipmentGroupCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderShipmentGroup.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderShipmentGroupSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -77,8 +77,32 @@ public class EditSalesOrderShipmentGroupCommand
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("HoldUntilComplete", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    OrderShipmentGroupControl orderShipmentGroupControl;
+
+    @Inject
+    ContactMechanismLogic contactMechanismLogic;
+
+    @Inject
+    OrderLogic orderLogic;
+
+    @Inject
+    PartyContactMechanismLogic partyContactMechanismLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
+
+    @Inject
+    SalesOrderShipmentGroupLogic salesOrderShipmentGroupLogic;
+
+    @Inject
+    ShippingMethodLogic shippingMethodLogic;
 
     /** Creates a new instance of EditSalesOrderShipmentGroupCommand */
     public EditSalesOrderShipmentGroupCommand() {
@@ -98,16 +122,16 @@ public class EditSalesOrderShipmentGroupCommand
     @Override
     public OrderShipmentGroup getEntity(EditSalesOrderShipmentGroupResult result) {
         var orderName = spec.getOrderName();
-        var order = OrderLogic.getInstance().getOrderByName(this, OrderTypes.SALES_ORDER.name(), orderName);
+        var order = orderLogic.getOrderByName(this, OrderTypes.SALES_ORDER.name(), orderName);
         OrderShipmentGroup orderShipmentGroup = null;
 
         if(!hasExecutionErrors()) {
             var orderShipmentGroupSequence = Integer.valueOf(spec.getOrderShipmentGroupSequence());
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                orderShipmentGroup = SalesOrderShipmentGroupLogic.getInstance().getOrderShipmentGroup(this, order, orderShipmentGroupSequence);
+                orderShipmentGroup = salesOrderShipmentGroupLogic.getOrderShipmentGroup(this, order, orderShipmentGroupSequence);
             } else { // EditMode.UPDATE
-                orderShipmentGroup = SalesOrderShipmentGroupLogic.getInstance().getOrderShipmentGroupForUpdate(this, order, orderShipmentGroupSequence);
+                orderShipmentGroup = salesOrderShipmentGroupLogic.getOrderShipmentGroupForUpdate(this, order, orderShipmentGroupSequence);
             }
         }
 
@@ -121,7 +145,7 @@ public class EditSalesOrderShipmentGroupCommand
 
     @Override
     public void fillInResult(EditSalesOrderShipmentGroupResult result, OrderShipmentGroup orderShipmentGroup) {
-        var salesOrderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
+        var salesOrderShipmentGroupControl = orderShipmentGroupControl;
 
         result.setOrderShipmentGroup(salesOrderShipmentGroupControl.getOrderShipmentGroupTransfer(getUserVisit(), orderShipmentGroup));
     }
@@ -147,23 +171,23 @@ public class EditSalesOrderShipmentGroupCommand
     public void canUpdate(OrderShipmentGroup orderShipmentGroup) {
         var order = orderShipmentGroup.getLastDetail().getOrder();
 
-        SalesOrderLogic.getInstance().checkOrderAvailableForModification(session, this, order, getPartyPK());
+        salesOrderLogic.checkOrderAvailableForModification(session, this, order, getPartyPK());
 
         if(!hasExecutionErrors()) {
             var partyName = edit.getPartyName();
-            var party = partyName == null ? null : PartyLogic.getInstance().getPartyByName(this, partyName);
+            var party = partyName == null ? null : partyLogic.getPartyByName(this, partyName);
             var contactMechanismName = edit.getContactMechanismName();
-            var contactMechanism = contactMechanismName == null ? null : ContactMechanismLogic.getInstance().getContactMechanismByName(this, contactMechanismName);
+            var contactMechanism = contactMechanismName == null ? null : contactMechanismLogic.getContactMechanismByName(this, contactMechanismName);
             var shippingMethodName = edit.getShippingMethodName();
 
-            shippingMethod = shippingMethodName == null ? null : ShippingMethodLogic.getInstance().getShippingMethodByName(this, shippingMethodName);
+            shippingMethod = shippingMethodName == null ? null : shippingMethodLogic.getShippingMethodByName(this, shippingMethodName);
 
             if(!hasExecutionErrors()) {
                 var parameterCount = (party == null ? 0 : 1) + (contactMechanism == null ? 0 : 1);
 
                 switch(parameterCount) {
                     case 2 ->
-                            partyContactMechanism = PartyContactMechanismLogic.getInstance().getPartyContactMechanism(this, party, contactMechanism);
+                            partyContactMechanism = partyContactMechanismLogic.getPartyContactMechanism(this, party, contactMechanism);
                     case 0 -> {
                     }
                     default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -175,7 +199,6 @@ public class EditSalesOrderShipmentGroupCommand
     @Override
     public void doUpdate(OrderShipmentGroup orderShipmentGroup) {
         var partyPK = getPartyPK();
-        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
         var orderShipmentGroupDetailValue = orderShipmentGroupControl.getOrderShipmentGroupDetailValueForUpdate(orderShipmentGroup);
 
         orderShipmentGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

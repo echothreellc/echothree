@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemVolumeTypeCommand
@@ -45,16 +46,20 @@ public class CreateItemVolumeTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemVolumeType.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ItemVolumeTypeLogic itemVolumeTypeLogic;
+
     
     /** Creates a new instance of CreateItemVolumeTypeCommand */
     public CreateItemVolumeTypeCommand() {
@@ -72,7 +77,7 @@ public class CreateItemVolumeTypeCommand
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            itemVolumeType = ItemVolumeTypeLogic.getInstance().createItemVolumeType(this, itemVolumeTypeName,
+            itemVolumeType = itemVolumeTypeLogic.createItemVolumeType(this, itemVolumeTypeName,
                     isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         }
 

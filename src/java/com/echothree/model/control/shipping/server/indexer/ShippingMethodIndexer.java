@@ -19,29 +19,32 @@ package com.echothree.model.control.shipping.server.indexer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.shipping.server.analyzer.ShippingMethodAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
+import com.echothree.model.control.shipping.server.analyzer.ShippingMethodAnalyzer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
+import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class ShippingMethodIndexer
         extends BaseIndexer<ShippingMethod> {
 
-    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
+    @Inject
+    ShippingControl shippingControl;
 
-    /** Creates a new instance of ShippingMethodIndexer */
-    public ShippingMethodIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+    @Override
+    public BaseIndexer<ShippingMethod> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override

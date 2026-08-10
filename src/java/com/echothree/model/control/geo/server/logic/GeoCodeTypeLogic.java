@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class GeoCodeTypeLogic
         extends BaseLogic {
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected GeoCodeTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class GeoCodeTypeLogic
     public GeoCodeType createGeoCodeType(final ExecutionErrorAccumulator eea, final String geoCodeTypeName,
             final GeoCodeType parentGeoCodeType, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType == null) {
@@ -71,7 +76,6 @@ public class GeoCodeTypeLogic
 
     public GeoCodeType getGeoCodeTypeByName(final ExecutionErrorAccumulator eea, final String geoCodeTypeName,
             final EntityPermission entityPermission) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName, entityPermission);
 
         if(geoCodeType == null) {
@@ -92,9 +96,8 @@ public class GeoCodeTypeLogic
     public GeoCodeType getGeoCodeTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final GeoCodeTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         GeoCodeType geoCodeType = null;
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeTypeName = universalSpec.getGeoCodeTypeName();
-        var parameterCount = (geoCodeTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (geoCodeTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,10 +113,10 @@ public class GeoCodeTypeLogic
             }
             case 1 -> {
                 if(geoCodeTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GeoCodeType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         geoCodeType = geoControl.getGeoCodeTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -138,14 +141,10 @@ public class GeoCodeTypeLogic
     }
 
     public void updateGeoCodeTypeFromValue(GeoCodeTypeDetailValue geoCodeTypeDetailValue, BasePK updatedBy) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         geoControl.updateGeoCodeTypeFromValue(geoCodeTypeDetailValue, updatedBy);
     }
 
     private void checkDeleteGeoCodeType(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         if(geoControl.countGeoCodeTypesByParentGeoCodeType(geoCodeType) != 0
                 || geoControl.countGeoCodesByGeoCodeType(geoCodeType) != 0) {
             eea.addExecutionError(ExecutionErrors.CannotDeleteGeoCodeTypeInUse.name(),
@@ -156,9 +155,7 @@ public class GeoCodeTypeLogic
     public void deleteGeoCodeType(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType, final BasePK deletedBy) {
         checkDeleteGeoCodeType(eea, geoCodeType);
 
-        if(!eea.hasExecutionErrors()) {
-            var geoControl = Session.getModelController(GeoControl.class);
-
+        if(eea == null || !eea.hasExecutionErrors()) {
             geoControl.deleteGeoCodeType(geoCodeType, deletedBy);
         }
     }

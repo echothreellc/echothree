@@ -20,11 +20,15 @@ import com.echothree.model.control.inventory.server.transfer.AllocationPriorityD
 import com.echothree.model.control.inventory.server.transfer.AllocationPriorityTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeDescriptionTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionDescriptionTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionGlAccountTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupCapacityTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupDescriptionTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupTransferCache;
@@ -122,5 +126,17 @@ public abstract class BaseInventoryControl
 
     @Inject
     InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
+
+    @Inject
+    InventoryCostingMethodTransferCache inventoryCostingMethodTransferCache;
+
+    @Inject
+    InventoryCostingMethodDescriptionTransferCache inventoryCostingMethodDescriptionTransferCache;
+
+    @Inject
+    InventoryBucketTypeTransferCache inventoryBucketTypeTransferCache;
+
+    @Inject
+    InventoryBucketTypeDescriptionTransferCache inventoryBucketTypeDescriptionTransferCache;
 
 }

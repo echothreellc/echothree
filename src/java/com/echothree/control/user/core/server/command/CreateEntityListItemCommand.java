@@ -33,6 +33,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityListItemCommand
@@ -61,6 +62,10 @@ public class CreateEntityListItemCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of CreateEntityListItemCommand */
     public CreateEntityListItemCommand() {
@@ -71,7 +76,7 @@ public class CreateEntityListItemCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateEntityListItemResult();
         EntityListItem entityListItem = null;
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
             var entityListItemName = form.getEntityListItemName();
@@ -80,7 +85,7 @@ public class CreateEntityListItemCommand
             var partyPK = getPartyPK();
             var description = form.getDescription();
 
-            entityListItem = EntityAttributeLogic.getInstance().createEntityListItem(this, entityAttribute, entityListItemName, isDefault,
+            entityListItem = entityAttributeLogic.createEntityListItem(this, entityAttribute, entityListItemName, isDefault,
                     sortOrder, partyPK, getPreferredLanguage(), description);
         }
                 

@@ -131,6 +131,12 @@ public class PicklistControl
     //   Picklist Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PicklistTypeFactory picklistTypeFactory;
+
+    @Inject
+    protected PicklistTypeDetailFactory picklistTypeDetailFactory;
+
     public PicklistType createPicklistType(String picklistTypeName, PicklistType parentPicklistType, SequenceType picklistSequenceType, Workflow picklistWorkflow,
             WorkflowEntrance picklistWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPicklistType = getDefaultPicklistType();
@@ -145,13 +151,13 @@ public class PicklistControl
             isDefault = true;
         }
 
-        var picklistType = PicklistTypeFactory.getInstance().create();
-        var picklistTypeDetail = PicklistTypeDetailFactory.getInstance().create(picklistType, picklistTypeName, parentPicklistType, picklistSequenceType,
+        var picklistType = picklistTypeFactory.create();
+        var picklistTypeDetail = picklistTypeDetailFactory.create(picklistType, picklistTypeName, parentPicklistType, picklistSequenceType,
                 picklistWorkflow, picklistWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W
-        picklistType = PicklistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        picklistType = picklistTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 picklistType.getPrimaryKey());
         picklistType.setActiveDetail(picklistTypeDetail);
         picklistType.setLastDetail(picklistTypeDetail);
@@ -166,7 +172,7 @@ public class PicklistControl
     public PicklistType getPicklistTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PicklistTypePK(entityInstance.getEntityUniqueId());
 
-        return PicklistTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return picklistTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PicklistType getPicklistTypeByEntityInstance(EntityInstance entityInstance) {
@@ -209,7 +215,7 @@ public class PicklistControl
     }
 
     private PicklistType getPicklistTypeByName(String picklistTypeName, EntityPermission entityPermission) {
-        return PicklistTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistTypeByNameQueries, picklistTypeName);
+        return picklistTypeFactory.getEntityFromQuery(entityPermission, getPicklistTypeByNameQueries, picklistTypeName);
     }
 
     public PicklistType getPicklistTypeByName(String picklistTypeName) {
@@ -252,7 +258,7 @@ public class PicklistControl
     }
 
     private PicklistType getDefaultPicklistType(EntityPermission entityPermission) {
-        return PicklistTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPicklistTypeQueries);
+        return picklistTypeFactory.getEntityFromQuery(entityPermission, getDefaultPicklistTypeQueries);
     }
 
     public PicklistType getDefaultPicklistType() {
@@ -291,7 +297,7 @@ public class PicklistControl
     }
 
     private List<PicklistType> getPicklistTypes(EntityPermission entityPermission) {
-        return PicklistTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistTypesQueries);
+        return picklistTypeFactory.getEntitiesFromQuery(entityPermission, getPicklistTypesQueries);
     }
 
     public List<PicklistType> getPicklistTypes() {
@@ -327,7 +333,7 @@ public class PicklistControl
 
     private List<PicklistType> getPicklistTypesByParentPicklistType(PicklistType parentPicklistType,
             EntityPermission entityPermission) {
-        return PicklistTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistTypesByParentPicklistTypeQueries,
+        return picklistTypeFactory.getEntitiesFromQuery(entityPermission, getPicklistTypesByParentPicklistTypeQueries,
                 parentPicklistType);
     }
 
@@ -417,7 +423,7 @@ public class PicklistControl
     private void updatePicklistTypeFromValue(PicklistTypeDetailValue picklistTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(picklistTypeDetailValue.hasBeenModified()) {
-            var picklistType = PicklistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistType = picklistTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      picklistTypeDetailValue.getPicklistTypePK());
             var picklistTypeDetail = picklistType.getActiveDetailForUpdate();
 
@@ -449,7 +455,7 @@ public class PicklistControl
                 }
             }
 
-            picklistTypeDetail = PicklistTypeDetailFactory.getInstance().create(picklistTypePK, picklistTypeName, parentPicklistTypePK, picklistSequenceTypePK,
+            picklistTypeDetail = picklistTypeDetailFactory.create(picklistTypePK, picklistTypeName, parentPicklistTypePK, picklistSequenceTypePK,
                     picklistWorkflowPK, picklistWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             picklistType.setActiveDetail(picklistTypeDetail);
@@ -518,8 +524,11 @@ public class PicklistControl
     //   Picklist Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PicklistTypeDescriptionFactory picklistTypeDescriptionFactory;
+
     public PicklistTypeDescription createPicklistTypeDescription(PicklistType picklistType, Language language, String description, BasePK createdBy) {
-        var picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().create(picklistType, language, description,
+        var picklistTypeDescription = picklistTypeDescriptionFactory.create(picklistType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(picklistType.getPrimaryKey(), EventTypes.MODIFY, picklistTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -549,7 +558,7 @@ public class PicklistControl
     }
 
     private PicklistTypeDescription getPicklistTypeDescription(PicklistType picklistType, Language language, EntityPermission entityPermission) {
-        return PicklistTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistTypeDescriptionQueries,
+        return picklistTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPicklistTypeDescriptionQueries,
                 picklistType, language, Session.MAX_TIME);
     }
 
@@ -592,7 +601,7 @@ public class PicklistControl
     }
 
     private List<PicklistTypeDescription> getPicklistTypeDescriptionsByPicklistType(PicklistType picklistType, EntityPermission entityPermission) {
-        return PicklistTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistTypeDescriptionsByPicklistTypeQueries,
+        return picklistTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPicklistTypeDescriptionsByPicklistTypeQueries,
                 picklistType, Session.MAX_TIME);
     }
 
@@ -638,7 +647,7 @@ public class PicklistControl
 
     public void updatePicklistTypeDescriptionFromValue(PicklistTypeDescriptionValue picklistTypeDescriptionValue, BasePK updatedBy) {
         if(picklistTypeDescriptionValue.hasBeenModified()) {
-            var picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistTypeDescription = picklistTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTypeDescriptionValue.getPrimaryKey());
 
             picklistTypeDescription.setThruTime(session.getStartTime());
@@ -648,7 +657,7 @@ public class PicklistControl
             var language = picklistTypeDescription.getLanguage();
             var description = picklistTypeDescriptionValue.getDescription();
 
-            picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().create(picklistType, language, description,
+            picklistTypeDescription = picklistTypeDescriptionFactory.create(picklistType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(picklistType.getPrimaryKey(), EventTypes.MODIFY, picklistTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -674,6 +683,12 @@ public class PicklistControl
     //   Picklist Time Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PicklistTimeTypeFactory picklistTimeTypeFactory;
+
+    @Inject
+    protected PicklistTimeTypeDetailFactory picklistTimeTypeDetailFactory;
+
     public PicklistTimeType createPicklistTimeType(PicklistType picklistType, String picklistTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPicklistTimeType = getDefaultPicklistTimeType(picklistType);
         var defaultFound = defaultPicklistTimeType != null;
@@ -687,12 +702,12 @@ public class PicklistControl
             isDefault = true;
         }
 
-        var picklistTimeType = PicklistTimeTypeFactory.getInstance().create();
-        var picklistTimeTypeDetail = PicklistTimeTypeDetailFactory.getInstance().create(picklistTimeType, picklistType, picklistTimeTypeName, isDefault,
+        var picklistTimeType = picklistTimeTypeFactory.create();
+        var picklistTimeTypeDetail = picklistTimeTypeDetailFactory.create(picklistTimeType, picklistType, picklistTimeTypeName, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        picklistTimeType = PicklistTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        picklistTimeType = picklistTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 picklistTimeType.getPrimaryKey());
         picklistTimeType.setActiveDetail(picklistTimeTypeDetail);
         picklistTimeType.setLastDetail(picklistTimeTypeDetail);
@@ -707,7 +722,7 @@ public class PicklistControl
     public PicklistTimeType getPicklistTimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PicklistTimeTypePK(entityInstance.getEntityUniqueId());
 
-        return PicklistTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return picklistTimeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PicklistTimeType getPicklistTimeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -751,7 +766,7 @@ public class PicklistControl
     }
 
     private PicklistTimeType getPicklistTimeTypeByName(PicklistType picklistType, String picklistTimeTypeName, EntityPermission entityPermission) {
-        return PicklistTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistTimeTypeByNameQueries,
+        return picklistTimeTypeFactory.getEntityFromQuery(entityPermission, getPicklistTimeTypeByNameQueries,
                 picklistType, picklistTimeTypeName);
     }
 
@@ -795,7 +810,7 @@ public class PicklistControl
     }
 
     private PicklistTimeType getDefaultPicklistTimeType(PicklistType picklistType, EntityPermission entityPermission) {
-        return PicklistTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPicklistTimeTypeQueries,
+        return picklistTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultPicklistTimeTypeQueries,
                 picklistType);
     }
 
@@ -836,7 +851,7 @@ public class PicklistControl
     }
 
     private List<PicklistTimeType> getPicklistTimeTypes(PicklistType picklistType, EntityPermission entityPermission) {
-        return PicklistTimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistTimeTypesQueries,
+        return picklistTimeTypeFactory.getEntitiesFromQuery(entityPermission, getPicklistTimeTypesQueries,
                 picklistType);
     }
 
@@ -904,7 +919,7 @@ public class PicklistControl
     private void updatePicklistTimeTypeFromValue(PicklistTimeTypeDetailValue picklistTimeTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(picklistTimeTypeDetailValue.hasBeenModified()) {
-            var picklistTimeType = PicklistTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistTimeType = picklistTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      picklistTimeTypeDetailValue.getPicklistTimeTypePK());
             var picklistTimeTypeDetail = picklistTimeType.getActiveDetailForUpdate();
 
@@ -934,7 +949,7 @@ public class PicklistControl
                 }
             }
 
-            picklistTimeTypeDetail = PicklistTimeTypeDetailFactory.getInstance().create(picklistTimeTypePK, picklistTypePK, picklistTimeTypeName, isDefault, sortOrder,
+            picklistTimeTypeDetail = picklistTimeTypeDetailFactory.create(picklistTimeTypePK, picklistTypePK, picklistTimeTypeName, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             picklistTimeType.setActiveDetail(picklistTimeTypeDetail);
@@ -982,8 +997,11 @@ public class PicklistControl
     //   Picklist Time Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PicklistTimeTypeDescriptionFactory picklistTimeTypeDescriptionFactory;
+
     public PicklistTimeTypeDescription createPicklistTimeTypeDescription(PicklistTimeType picklistTimeType, Language language, String description, BasePK createdBy) {
-        var picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().create(picklistTimeType, language, description,
+        var picklistTimeTypeDescription = picklistTimeTypeDescriptionFactory.create(picklistTimeType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(picklistTimeType.getPrimaryKey(), EventTypes.MODIFY, picklistTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1013,7 +1031,7 @@ public class PicklistControl
     }
 
     private PicklistTimeTypeDescription getPicklistTimeTypeDescription(PicklistTimeType picklistTimeType, Language language, EntityPermission entityPermission) {
-        return PicklistTimeTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistTimeTypeDescriptionQueries,
+        return picklistTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPicklistTimeTypeDescriptionQueries,
                 picklistTimeType, language, Session.MAX_TIME);
     }
 
@@ -1056,7 +1074,7 @@ public class PicklistControl
     }
 
     private List<PicklistTimeTypeDescription> getPicklistTimeTypeDescriptionsByPicklistTimeType(PicklistTimeType picklistTimeType, EntityPermission entityPermission) {
-        return PicklistTimeTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistTimeTypeDescriptionsByPicklistTimeTypeQueries,
+        return picklistTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPicklistTimeTypeDescriptionsByPicklistTimeTypeQueries,
                 picklistTimeType, Session.MAX_TIME);
     }
 
@@ -1102,7 +1120,7 @@ public class PicklistControl
 
     public void updatePicklistTimeTypeDescriptionFromValue(PicklistTimeTypeDescriptionValue picklistTimeTypeDescriptionValue, BasePK updatedBy) {
         if(picklistTimeTypeDescriptionValue.hasBeenModified()) {
-            var picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistTimeTypeDescription = picklistTimeTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTimeTypeDescriptionValue.getPrimaryKey());
 
             picklistTimeTypeDescription.setThruTime(session.getStartTime());
@@ -1112,7 +1130,7 @@ public class PicklistControl
             var language = picklistTimeTypeDescription.getLanguage();
             var description = picklistTimeTypeDescriptionValue.getDescription();
 
-            picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().create(picklistTimeType, language, description,
+            picklistTimeTypeDescription = picklistTimeTypeDescriptionFactory.create(picklistTimeType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(picklistTimeType.getPrimaryKey(), EventTypes.MODIFY, picklistTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1138,6 +1156,12 @@ public class PicklistControl
     //   Picklist Alias Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PicklistAliasTypeFactory picklistAliasTypeFactory;
+
+    @Inject
+    protected PicklistAliasTypeDetailFactory picklistAliasTypeDetailFactory;
+
     public PicklistAliasType createPicklistAliasType(PicklistType picklistType, String picklistAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultPicklistAliasType = getDefaultPicklistAliasType(picklistType);
@@ -1152,12 +1176,12 @@ public class PicklistControl
             isDefault = true;
         }
 
-        var picklistAliasType = PicklistAliasTypeFactory.getInstance().create();
-        var picklistAliasTypeDetail = PicklistAliasTypeDetailFactory.getInstance().create(picklistAliasType, picklistType, picklistAliasTypeName,
+        var picklistAliasType = picklistAliasTypeFactory.create();
+        var picklistAliasTypeDetail = picklistAliasTypeDetailFactory.create(picklistAliasType, picklistType, picklistAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        picklistAliasType = PicklistAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, picklistAliasType.getPrimaryKey());
+        picklistAliasType = picklistAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, picklistAliasType.getPrimaryKey());
         picklistAliasType.setActiveDetail(picklistAliasTypeDetail);
         picklistAliasType.setLastDetail(picklistAliasTypeDetail);
         picklistAliasType.store();
@@ -1171,7 +1195,7 @@ public class PicklistControl
     public PicklistAliasType getPicklistAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PicklistAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return PicklistAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return picklistAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public PicklistAliasType getPicklistAliasTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1215,7 +1239,7 @@ public class PicklistControl
     }
 
     private PicklistAliasType getPicklistAliasTypeByName(PicklistType picklistType, String picklistAliasTypeName, EntityPermission entityPermission) {
-        return PicklistAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistAliasTypeByNameQueries,
+        return picklistAliasTypeFactory.getEntityFromQuery(entityPermission, getPicklistAliasTypeByNameQueries,
                 picklistType, picklistAliasTypeName);
     }
 
@@ -1260,7 +1284,7 @@ public class PicklistControl
     }
 
     private PicklistAliasType getDefaultPicklistAliasType(PicklistType picklistType, EntityPermission entityPermission) {
-        return PicklistAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPicklistAliasTypeQueries, picklistType);
+        return picklistAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultPicklistAliasTypeQueries, picklistType);
     }
 
     public PicklistAliasType getDefaultPicklistAliasType(PicklistType picklistType) {
@@ -1298,7 +1322,7 @@ public class PicklistControl
     }
 
     private List<PicklistAliasType> getPicklistAliasTypes(PicklistType picklistType, EntityPermission entityPermission) {
-        return PicklistAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistAliasTypesQueries, picklistType);
+        return picklistAliasTypeFactory.getEntitiesFromQuery(entityPermission, getPicklistAliasTypesQueries, picklistType);
     }
 
     public List<PicklistAliasType> getPicklistAliasTypes(PicklistType picklistType) {
@@ -1365,7 +1389,7 @@ public class PicklistControl
     private void updatePicklistAliasTypeFromValue(PicklistAliasTypeDetailValue picklistAliasTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(picklistAliasTypeDetailValue.hasBeenModified()) {
-            var picklistAliasType = PicklistAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistAliasType = picklistAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistAliasTypeDetailValue.getPicklistAliasTypePK());
             var picklistAliasTypeDetail = picklistAliasType.getActiveDetailForUpdate();
 
@@ -1396,7 +1420,7 @@ public class PicklistControl
                 }
             }
 
-            picklistAliasTypeDetail = PicklistAliasTypeDetailFactory.getInstance().create(picklistAliasTypePK, picklistTypePK, picklistAliasTypeName,
+            picklistAliasTypeDetail = picklistAliasTypeDetailFactory.create(picklistAliasTypePK, picklistTypePK, picklistAliasTypeName,
                     validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             picklistAliasType.setActiveDetail(picklistAliasTypeDetail);
@@ -1454,8 +1478,11 @@ public class PicklistControl
     //   Picklist Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PicklistAliasTypeDescriptionFactory picklistAliasTypeDescriptionFactory;
+
     public PicklistAliasTypeDescription createPicklistAliasTypeDescription(PicklistAliasType picklistAliasType, Language language, String description, BasePK createdBy) {
-        var picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().create(picklistAliasType, language,
+        var picklistAliasTypeDescription = picklistAliasTypeDescriptionFactory.create(picklistAliasType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(picklistAliasType.getPrimaryKey(), EventTypes.MODIFY, picklistAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1485,7 +1512,7 @@ public class PicklistControl
     }
 
     private PicklistAliasTypeDescription getPicklistAliasTypeDescription(PicklistAliasType picklistAliasType, Language language, EntityPermission entityPermission) {
-        return PicklistAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistAliasTypeDescriptionQueries,
+        return picklistAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPicklistAliasTypeDescriptionQueries,
                 picklistAliasType, language, Session.MAX_TIME);
     }
 
@@ -1528,7 +1555,7 @@ public class PicklistControl
     }
 
     private List<PicklistAliasTypeDescription> getPicklistAliasTypeDescriptionsByPicklistAliasType(PicklistAliasType picklistAliasType, EntityPermission entityPermission) {
-        return PicklistAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistAliasTypeDescriptionsByPicklistAliasTypeQueries,
+        return picklistAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPicklistAliasTypeDescriptionsByPicklistAliasTypeQueries,
                 picklistAliasType, Session.MAX_TIME);
     }
 
@@ -1574,7 +1601,7 @@ public class PicklistControl
 
     public void updatePicklistAliasTypeDescriptionFromValue(PicklistAliasTypeDescriptionValue picklistAliasTypeDescriptionValue, BasePK updatedBy) {
         if(picklistAliasTypeDescriptionValue.hasBeenModified()) {
-            var picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistAliasTypeDescription = picklistAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      picklistAliasTypeDescriptionValue.getPrimaryKey());
 
             picklistAliasTypeDescription.setThruTime(session.getStartTime());
@@ -1584,7 +1611,7 @@ public class PicklistControl
             var language = picklistAliasTypeDescription.getLanguage();
             var description = picklistAliasTypeDescriptionValue.getDescription();
 
-            picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().create(picklistAliasType, language, description,
+            picklistAliasTypeDescription = picklistAliasTypeDescriptionFactory.create(picklistAliasType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(picklistAliasType.getPrimaryKey(), EventTypes.MODIFY, picklistAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1610,8 +1637,11 @@ public class PicklistControl
     //   Picklist Times
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PicklistTimeFactory picklistTimeFactory;
+
     public PicklistTime createPicklistTime(Picklist picklist, PicklistTimeType picklistTimeType, Long time, BasePK createdBy) {
-        var picklistTime = PicklistTimeFactory.getInstance().create(picklist, picklistTimeType, time, session.getStartTime(), Session.MAX_TIME);
+        var picklistTime = picklistTimeFactory.create(picklist, picklistTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(picklist.getPrimaryKey(), EventTypes.MODIFY, picklistTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1656,7 +1686,7 @@ public class PicklistControl
     }
 
     private PicklistTime getPicklistTime(Picklist picklist, PicklistTimeType picklistTimeType, EntityPermission entityPermission) {
-        return PicklistTimeFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistTimeQueries, picklist, picklistTimeType, Session.MAX_TIME);
+        return picklistTimeFactory.getEntityFromQuery(entityPermission, getPicklistTimeQueries, picklist, picklistTimeType, Session.MAX_TIME);
     }
 
     public PicklistTime getPicklistTime(Picklist picklist, PicklistTimeType picklistTimeType) {
@@ -1699,7 +1729,7 @@ public class PicklistControl
     }
 
     private List<PicklistTime> getPicklistTimesByPicklist(Picklist picklist, EntityPermission entityPermission) {
-        return PicklistTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistTimesByPicklistQueries, picklist, Session.MAX_TIME);
+        return picklistTimeFactory.getEntitiesFromQuery(entityPermission, getPicklistTimesByPicklistQueries, picklist, Session.MAX_TIME);
     }
 
     public List<PicklistTime> getPicklistTimesByPicklist(Picklist picklist) {
@@ -1734,7 +1764,7 @@ public class PicklistControl
     }
 
     private List<PicklistTime> getPicklistTimesByPicklistTimeType(PicklistTimeType picklistTimeType, EntityPermission entityPermission) {
-        return PicklistTimeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistTimesByPicklistTimeTypeQueries, picklistTimeType, Session.MAX_TIME);
+        return picklistTimeFactory.getEntitiesFromQuery(entityPermission, getPicklistTimesByPicklistTimeTypeQueries, picklistTimeType, Session.MAX_TIME);
     }
 
     public List<PicklistTime> getPicklistTimesByPicklistTimeType(PicklistTimeType picklistTimeType) {
@@ -1769,7 +1799,7 @@ public class PicklistControl
 
     public void updatePicklistTimeFromValue(PicklistTimeValue picklistTimeValue, BasePK updatedBy) {
         if(picklistTimeValue.hasBeenModified()) {
-            var picklistTime = PicklistTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var picklistTime = picklistTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTimeValue.getPrimaryKey());
 
             picklistTime.setThruTime(session.getStartTime());
@@ -1779,7 +1809,7 @@ public class PicklistControl
             var picklistTimeTypePK = picklistTime.getPicklistTimeTypePK(); // Not updated
             var time = picklistTimeValue.getTime();
 
-            picklistTime = PicklistTimeFactory.getInstance().create(picklistPK, picklistTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
+            picklistTime = picklistTimeFactory.create(picklistPK, picklistTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(picklistPK, EventTypes.MODIFY, picklistTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1810,8 +1840,11 @@ public class PicklistControl
     //   Picklist Aliases
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected PicklistAliasFactory picklistAliasFactory;
+
     public PicklistAlias createPicklistAlias(Picklist picklist, PicklistAliasType picklistAliasType, String alias, BasePK createdBy) {
-        var picklistAlias = PicklistAliasFactory.getInstance().create(picklist, picklistAliasType, alias, session.getStartTime(), Session.MAX_TIME);
+        var picklistAlias = picklistAliasFactory.create(picklist, picklistAliasType, alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(picklist.getPrimaryKey(), EventTypes.MODIFY, picklistAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1856,7 +1889,7 @@ public class PicklistControl
     }
 
     private PicklistAlias getPicklistAlias(Picklist picklist, PicklistAliasType picklistAliasType, EntityPermission entityPermission) {
-        return PicklistAliasFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistAliasQueries,
+        return picklistAliasFactory.getEntityFromQuery(entityPermission, getPicklistAliasQueries,
                 picklist, picklistAliasType, Session.MAX_TIME);
     }
 
@@ -1898,7 +1931,7 @@ public class PicklistControl
     }
 
     private PicklistAlias getPicklistAliasByAlias(PicklistAliasType picklistAliasType, String alias, EntityPermission entityPermission) {
-        return PicklistAliasFactory.getInstance().getEntityFromQuery(entityPermission, getPicklistAliasByAliasQueries, picklistAliasType, alias, Session.MAX_TIME);
+        return picklistAliasFactory.getEntityFromQuery(entityPermission, getPicklistAliasByAliasQueries, picklistAliasType, alias, Session.MAX_TIME);
     }
 
     public PicklistAlias getPicklistAliasByAlias(PicklistAliasType picklistAliasType, String alias) {
@@ -1933,7 +1966,7 @@ public class PicklistControl
     }
 
     private List<PicklistAlias> getPicklistAliasesByPicklist(Picklist picklist, EntityPermission entityPermission) {
-        return PicklistAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistAliasesByPicklistQueries,
+        return picklistAliasFactory.getEntitiesFromQuery(entityPermission, getPicklistAliasesByPicklistQueries,
                 picklist, Session.MAX_TIME);
     }
 
@@ -1969,7 +2002,7 @@ public class PicklistControl
     }
 
     private List<PicklistAlias> getPicklistAliasesByPicklistAliasType(PicklistAliasType picklistAliasType, EntityPermission entityPermission) {
-        return PicklistAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getPicklistAliasesByPicklistAliasTypeQueries,
+        return picklistAliasFactory.getEntitiesFromQuery(entityPermission, getPicklistAliasesByPicklistAliasTypeQueries,
                 picklistAliasType, Session.MAX_TIME);
     }
 
@@ -1998,7 +2031,7 @@ public class PicklistControl
 
     public void updatePicklistAliasFromValue(PicklistAliasValue picklistAliasValue, BasePK updatedBy) {
         if(picklistAliasValue.hasBeenModified()) {
-            var picklistAlias = PicklistAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, picklistAliasValue.getPrimaryKey());
+            var picklistAlias = picklistAliasFactory.getEntityFromPK(EntityPermission.READ_WRITE, picklistAliasValue.getPrimaryKey());
 
             picklistAlias.setThruTime(session.getStartTime());
             picklistAlias.store();
@@ -2007,7 +2040,7 @@ public class PicklistControl
             var picklistAliasTypePK = picklistAlias.getPicklistAliasTypePK();
             var alias  = picklistAliasValue.getAlias();
 
-            picklistAlias = PicklistAliasFactory.getInstance().create(picklistPK, picklistAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
+            picklistAlias = picklistAliasFactory.create(picklistPK, picklistAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(picklistPK, EventTypes.MODIFY, picklistAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2039,6 +2072,11 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
     //   Picklists
     // --------------------------------------------------------------------------------
+
+    public Picklist getPicklistByName(PicklistType picklistType, String picklistName, EntityPermission entityPermission) {
+        // TODO
+        return null;
+    }
 
     public Picklist getPicklistByName(PicklistType picklistType, String picklistName) {
         // TODO

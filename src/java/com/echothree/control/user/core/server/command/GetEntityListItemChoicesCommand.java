@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityListItemChoicesCommand
@@ -48,16 +48,20 @@ public class GetEntityListItemChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityListItem.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
     
     /** Creates a new instance of GetEntityListItemChoicesCommand */
     public GetEntityListItemChoicesCommand() {
@@ -89,7 +93,6 @@ public class GetEntityListItemChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
                 }
             } else {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                 var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {

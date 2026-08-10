@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditHarmonizedTariffScheduleCodeTranslationCommand
@@ -59,20 +59,32 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCode.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("HarmonizedTariffScheduleCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("OverviewMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
 
     /** Creates a new instance of EditHarmonizedTariffScheduleCodeTranslationCommand */
     public EditHarmonizedTariffScheduleCodeTranslationCommand() {
@@ -91,18 +103,15 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
 
     @Override
     public HarmonizedTariffScheduleCodeTranslation getEntity(EditHarmonizedTariffScheduleCodeTranslationResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = null;
         var countryName = spec.getCountryName();
         var countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var harmonizedTariffScheduleCodeName = spec.getHarmonizedTariffScheduleCodeName();
             var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(countryGeoCode, harmonizedTariffScheduleCodeName);
 
             if(harmonizedTariffScheduleCode != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -136,8 +145,6 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
 
     @Override
     public void fillInResult(EditHarmonizedTariffScheduleCodeTranslationResult result, HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setHarmonizedTariffScheduleCodeTranslation(itemControl.getHarmonizedTariffScheduleCodeTranslationTransfer(getUserVisit(), harmonizedTariffScheduleCodeTranslation));
     }
 
@@ -157,14 +164,13 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
         var overviewMimeTypeName = edit.getOverviewMimeTypeName();
         var overview = edit.getOverview();
         
-        overviewMimeType = MimeTypeLogic.getInstance().checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
+        overviewMimeType = mimeTypeLogic.checkMimeType(this, overviewMimeTypeName, overview, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),
                 ExecutionErrors.UnknownOverviewMimeTypeName.name(), ExecutionErrors.UnknownOverviewMimeTypeUsage.name());
     }
     
     @Override
     public void doUpdate(HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeTranslationValue = itemControl.getHarmonizedTariffScheduleCodeTranslationValue(harmonizedTariffScheduleCodeTranslation);
 
         harmonizedTariffScheduleCodeTranslationValue.setDescription(edit.getDescription());

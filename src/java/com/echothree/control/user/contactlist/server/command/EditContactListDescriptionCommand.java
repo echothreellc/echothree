@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactListDescriptionCommand
@@ -55,18 +55,24 @@ public class EditContactListDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditContactListDescriptionCommand */
     public EditContactListDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditContactListDescriptionCommand
 
     @Override
     public ContactListDescription getEntity(EditContactListDescriptionResult result) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListDescription contactListDescription = null;
         var contactListName = spec.getContactListName();
         var contactList = contactListControl.getContactListByName(contactListName);
 
         if(contactList != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditContactListDescriptionCommand
 
     @Override
     public void fillInResult(EditContactListDescriptionResult result, ContactListDescription contactListDescription) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setContactListDescription(contactListControl.getContactListDescriptionTransfer(getUserVisit(), contactListDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditContactListDescriptionCommand
 
     @Override
     public void doUpdate(ContactListDescription contactListDescription) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListDescriptionValue = contactListControl.getContactListDescriptionValue(contactListDescription);
 
         contactListDescriptionValue.setDescription(edit.getDescription());

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCampaignStatusChoicesCommand
@@ -54,6 +54,10 @@ public class GetCampaignStatusChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    CampaignControl campaignControl;
+
     
     /** Creates a new instance of GetCampaignStatusChoicesCommand */
     public GetCampaignStatusChoicesCommand() {
@@ -62,7 +66,6 @@ public class GetCampaignStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var result = CampaignResultFactory.getGetCampaignStatusChoicesResult();
         var campaignName = form.getCampaignName();
         var campaign = campaignControl.getCampaignByName(campaignName);

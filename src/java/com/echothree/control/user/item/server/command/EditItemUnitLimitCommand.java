@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemUnitLimitCommand
@@ -48,13 +48,23 @@ public class EditItemUnitLimitCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MinimumQuantity", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("MaximumQuantity", FieldType.UNSIGNED_LONG, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditItemUnitLimitCommand */
     public EditItemUnitLimitCommand() {
@@ -73,18 +83,15 @@ public class EditItemUnitLimitCommand
 
     @Override
     public ItemUnitLimit getEntity(EditItemUnitLimitResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitLimit itemUnitLimit = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var inventoryConditionName = spec.getInventoryConditionName();
             var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var itemDetail = item.getLastDetail();
                 var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                 var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
@@ -119,8 +126,6 @@ public class EditItemUnitLimitCommand
 
     @Override
     public void fillInResult(EditItemUnitLimitResult result, ItemUnitLimit itemUnitLimit) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemUnitLimit(itemControl.getItemUnitLimitTransfer(getUserVisit(), itemUnitLimit));
     }
 
@@ -153,7 +158,6 @@ public class EditItemUnitLimitCommand
 
     @Override
     public void doUpdate(ItemUnitLimit itemUnitLimit) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemUnitLimitValue = itemControl.getItemUnitLimitValue(itemUnitLimit);
 
         itemUnitLimitValue.setMinimumQuantity(minimumQuantity);

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTrainingClassSectionCommand
@@ -48,8 +48,8 @@ public class CreateTrainingClassSectionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassSection.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -62,8 +62,15 @@ public class CreateTrainingClassSectionCommand
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null),
                 new FieldDefinition("IntroductionMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Introduction", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateTrainingClassSectionCommand */
     public CreateTrainingClassSectionCommand() {
@@ -72,7 +79,6 @@ public class CreateTrainingClassSectionCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -81,7 +87,6 @@ public class CreateTrainingClassSectionCommand
             var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection == null) {
-                var mimeTypeLogic = MimeTypeLogic.getInstance();
                 var overview = form.getOverview();
                 var overviewMimeType = mimeTypeLogic.checkMimeType(this, form.getOverviewMimeTypeName(), overview, MimeTypeUsageTypes.TEXT.name(),
                         ExecutionErrors.MissingRequiredOverviewMimeTypeName.name(), ExecutionErrors.MissingRequiredOverview.name(),

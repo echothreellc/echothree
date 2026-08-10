@@ -39,6 +39,7 @@ import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityStringAttributeCommand
@@ -61,12 +62,22 @@ public class EditEntityStringAttributeCommand
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("StringAttribute", FieldType.STRING, true, 1L, 512L)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     
     /** Creates a new instance of EditEntityStringAttributeCommand */
     public EditEntityStringAttributeCommand() {
@@ -76,10 +87,10 @@ public class EditEntityStringAttributeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityStringAttributeResult();
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -89,8 +100,8 @@ public class EditEntityStringAttributeCommand
                 
                 if(parameterCount == 1) {
                     var entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
+                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
@@ -101,8 +112,8 @@ public class EditEntityStringAttributeCommand
 
                             if(parameterCount == 1) {
                                 var language = languageIsoName == null ?
-                                        LanguageLogic.getInstance().getLanguageByUuid(this, languageUuid) :
-                                        LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                                        languageLogic.getLanguageByUuid(this, languageUuid) :
+                                        languageLogic.getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {
                                     EntityStringAttribute entityStringAttribute = null;
@@ -130,7 +141,7 @@ public class EditEntityStringAttributeCommand
                                             }
                                         } else {
                                             addExecutionError(ExecutionErrors.UnknownEntityStringAttribute.name(),
-                                                    EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                         }
                                     } else if(editMode.equals(EditMode.UPDATE)) {
                                         var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
@@ -166,7 +177,7 @@ public class EditEntityStringAttributeCommand
                                                 }
                                             } else {
                                                 addExecutionError(ExecutionErrors.UnknownEntityStringAttribute.name(),
-                                                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
                                             }
                                         }
                                     }

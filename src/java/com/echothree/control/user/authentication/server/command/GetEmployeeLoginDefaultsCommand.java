@@ -38,9 +38,10 @@ public class GetEmployeeLoginDefaultsCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     PartyControl partyControl;
+
 
     /** Creates a new instance of GetEmployeeLoginDefaultsCommand */
     public GetEmployeeLoginDefaultsCommand() {

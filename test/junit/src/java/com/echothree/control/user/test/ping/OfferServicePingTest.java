@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.OfferService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class OfferServicePingTest
-        extends TestCase {
+public class OfferServicePingTest {
     private OfferService offerService;
     
-    /** Creates a new instance of OfferServiceTest */
-    public OfferServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new OfferServicePingTest("testPingOfferService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             offerService = OfferUtil.getHome();
             assertNotNull(offerService);
@@ -54,8 +37,8 @@ public class OfferServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             offerService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class OfferServicePingTest
         }
     }
     
+    @Test
     public void testPingOfferService() {
-        setUp();
         try {
             offerService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

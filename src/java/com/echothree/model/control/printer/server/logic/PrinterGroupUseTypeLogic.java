@@ -22,13 +22,16 @@ import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PrinterGroupUseTypeLogic
         extends BaseLogic {
+
+    @Inject
+    PrinterControl printerControl;
 
     protected PrinterGroupUseTypeLogic() {
         super();
@@ -39,7 +42,6 @@ public class PrinterGroupUseTypeLogic
     }
 
     public PrinterGroupUseType getPrinterGroupUseTypeByName(final ExecutionErrorAccumulator eea, final String printerGroupUseTypeName) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
         if(printerGroupUseType == null) {

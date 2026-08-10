@@ -191,13 +191,16 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Keys
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserKeyFactory userKeyFactory;
-    
+
+    @Inject
+    protected UserVisitFactory userVisitFactory;
+
     @Inject
     protected UserKeyDetailFactory userKeyDetailFactory;
-    
+
     protected static final String characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-=";
     protected static final char []characterArray = characters.toCharArray();
     protected static final int characterCount = characters.length();
@@ -240,14 +243,18 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM userkeys, userkeydetails " +
-                "WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_par_partyid = ?");
+                """
+                SELECT _ALL_
+                FROM userkeys, userkeydetails
+                WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_par_partyid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM userkeys, userkeydetails " +
-                "WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_par_partyid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM userkeys, userkeydetails
+                WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_par_partyid = ?
+                FOR UPDATE
+                """);
         getUserKeysByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -270,14 +277,18 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM userkeys, userkeydetails " +
-                "WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_prel_partyrelationshipid = ?");
+                """
+                SELECT _ALL_
+                FROM userkeys, userkeydetails
+                WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_prel_partyrelationshipid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM userkeys, userkeydetails " +
-                "WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_prel_partyrelationshipid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM userkeys, userkeydetails
+                WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_prel_partyrelationshipid = ?
+                FOR UPDATE
+                """);
         getUserKeysByPartyRelationshipQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -301,14 +312,18 @@ public class UserControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM userkeydetails " +
-                        "WHERE ukeydt_userkeyname = ? AND ukeydt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM userkeydetails
+                        WHERE ukeydt_userkeyname = ? AND ukeydt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM userkeydetails " +
-                        "WHERE ukeydt_userkeyname = ? AND ukeydt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM userkeydetails
+                        WHERE ukeydt_userkeyname = ? AND ukeydt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = userKeyDetailFactory.prepareStatement(query);
@@ -375,11 +390,13 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM userkeys, userkeydetails, userkeystatuses "
-                + "WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_ukey_userkeyid = ukeyst_userkeystatusid "
-                + "AND ukeyst_lastseentime < ? - ? "
-                + "ORDER BY ukey_userkeyid");
+                """
+                SELECT _ALL_
+                FROM userkeys, userkeydetails, userkeystatuses
+                WHERE ukey_activedetailid = ukeydt_userkeydetailid AND ukeydt_ukey_userkeyid = ukeyst_userkeystatusid
+                AND ukeyst_lastseentime < ? - ?
+                ORDER BY ukey_userkeyid
+                """);
         getInactiveUserKeysQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -402,10 +419,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Key Statuses
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserKeyStatusFactory userKeyStatusFactory;
-    
+
     public UserKeyStatus createUserKeyStatus(UserKey userKey, Long lastSeenTime) {
         return userKeyStatusFactory.create(userKey, lastSeenTime);
     }
@@ -415,10 +432,12 @@ public class UserControl
         
         try {
             var ps = userKeyStatusFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM userkeystatuses " +
-                    "WHERE ukeyst_ukey_userkeyid = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM userkeystatuses
+                    WHERE ukeyst_ukey_userkeyid = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, userKey.getPrimaryKey().getEntityId());
             
@@ -436,7 +455,7 @@ public class UserControl
 
     @Inject
     protected UserVisitGroupFactory userVisitGroupFactory;
-    
+
     @Inject
     protected UserVisitGroupDetailFactory userVisitGroupDetailFactory;
 
@@ -449,18 +468,20 @@ public class UserControl
 
             try {
                 var ps = userVisitGroupFactory.prepareStatement(
-                        "SELECT _ALL_ " +
-                        "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
-                        "uservisitgroups, uservisitgroupdetails, workflowentitystatuses, entitytimes " +
-                        "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid " +
-                        "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                        "AND ent_activedetailid = entdt_entitytypedetailid " +
-                        "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                        "AND entdt_entitytypename = ? " +
-                        "AND ent_entitytypeid = eni_ent_entitytypeid AND uvisgrp_uservisitgroupid = eni_entityuniqueid " +
-                        "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                        "AND eni_entityinstanceid = etim_eni_entityinstanceid " +
-                        "ORDER BY etim_createdtime DESC");
+                        """
+                        SELECT _ALL_
+                        FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances,
+                        uservisitgroups, uservisitgroupdetails, workflowentitystatuses, entitytimes
+                        WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid
+                        AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                        AND ent_activedetailid = entdt_entitytypedetailid
+                        AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
+                        AND entdt_entitytypename = ?
+                        AND ent_entitytypeid = eni_ent_entitytypeid AND uvisgrp_uservisitgroupid = eni_entityuniqueid
+                        AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                        AND eni_entityinstanceid = etim_eni_entityinstanceid
+                        ORDER BY etim_createdtime DESC
+                        """);
 
                 ps.setString(1, ComponentVendors.ECHO_THREE.name());
                 ps.setString(2, EntityTypes.UserVisitGroup.name());
@@ -554,14 +575,18 @@ public class UserControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM uservisitgroups, uservisitgroupdetails " +
-                        "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid AND uvisgrpdt_uservisitgroupname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM uservisitgroups, uservisitgroupdetails
+                        WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid AND uvisgrpdt_uservisitgroupname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM uservisitgroups, uservisitgroupdetails " +
-                        "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid AND uvisgrpdt_uservisitgroupname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM uservisitgroups, uservisitgroupdetails
+                        WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid AND uvisgrpdt_uservisitgroupname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = userVisitGroupFactory.prepareStatement(query);
@@ -592,16 +617,20 @@ public class UserControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM uservisitgroups, uservisitgroupdetails " +
-                    "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid " +
-                    "ORDER BY uvisgrpdt_uservisitgroupname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM uservisitgroups, uservisitgroupdetails
+                    WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid
+                    ORDER BY uvisgrpdt_uservisitgroupname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM uservisitgroups, uservisitgroupdetails " +
-                    "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM uservisitgroups, uservisitgroupdetails
+                    WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = userVisitGroupFactory.prepareStatement(query);
@@ -670,10 +699,6 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Visits
     // --------------------------------------------------------------------------------
-    
-    @Inject
-    protected UserVisitFactory userVisitFactory;
-    
     public UserVisit createUserVisit(UserKey userKey, Language preferredLanguage, Currency preferredCurrency, TimeZone preferredTimeZone,
             DateTimeFormat preferredDateTimeFormat, OfferUse offerUse, AssociateReferral associateReferral, Long retainUntilTime) {
         var userVisitGroup = getActiveUserVisitGroup();
@@ -713,57 +738,71 @@ public class UserControl
 
     public long countUserVisitsByUserKey(UserKey userKey) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM uservisits " +
-                        "WHERE uvis_ukey_userkeyid = ? AND uvis_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM uservisits
+                WHERE uvis_ukey_userkeyid = ? AND uvis_thrutime = ?
+                """,
                 userKey, Session.MAX_TIME);
     }
 
     public long countUserVisitsByPreferredLanguage(Language preferredLanguage) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM uservisits " +
-                        "WHERE uvis_preferredlanguageid = ? AND uvis_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM uservisits
+                WHERE uvis_preferredlanguageid = ? AND uvis_thrutime = ?
+                """,
                 preferredLanguage, Session.MAX_TIME);
     }
 
     public long countUserVisitsByPreferredCurrency(Currency preferredCurrency) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM uservisits " +
-                        "WHERE uvis_preferredcurrencyid = ? AND uvis_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM uservisits
+                WHERE uvis_preferredcurrencyid = ? AND uvis_thrutime = ?
+                """,
                 preferredCurrency, Session.MAX_TIME);
     }
 
     public long countUserVisitsByPreferredTimeZone(TimeZone preferredTimeZone) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM uservisits " +
-                        "WHERE uvis_preferredtimezoneid = ? AND uvis_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM uservisits
+                WHERE uvis_preferredtimezoneid = ? AND uvis_thrutime = ?
+                """,
                 preferredTimeZone, Session.MAX_TIME);
     }
 
     public long countUserVisitsByPreferredDateTimeFormat(DateTimeFormat preferredDateTimeFormat) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM uservisits " +
-                        "WHERE uvis_preferreddatetimeformatid = ? AND uvis_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM uservisits
+                WHERE uvis_preferreddatetimeformatid = ? AND uvis_thrutime = ?
+                """,
                 preferredDateTimeFormat, Session.MAX_TIME);
     }
 
     public long countUserVisitsByOfferUse(OfferUse offerUse) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM uservisits " +
-                        "WHERE uvis_ofruse_offeruseid = ? AND uvis_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM uservisits
+                WHERE uvis_ofruse_offeruseid = ? AND uvis_thrutime = ?
+                """,
                 offerUse, Session.MAX_TIME);
     }
 
     public long countUserVisitsByAssociateReferral(AssociateReferral associateReferral) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM uservisits " +
-                        "WHERE uvis_ascrfr_associatereferralid = ? AND uvis_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM uservisits
+                WHERE uvis_ascrfr_associatereferralid = ? AND uvis_thrutime = ?
+                """,
                 associateReferral, Session.MAX_TIME);
     }
 
@@ -1026,10 +1065,12 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM uservisits "
-                + "WHERE uvis_thrutime = ? AND uvis_lastcommandtime < ? - ? "
-                + "ORDER BY uvis_uservisitid");
+                """
+                SELECT _ALL_
+                FROM uservisits
+                WHERE uvis_thrutime = ? AND uvis_lastcommandtime < ? - ?
+                ORDER BY uvis_uservisitid
+                """);
         getAbandonedUserVisitsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1044,16 +1085,20 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM uservisits "
-                        + "WHERE uvis_uvisgrp_uservisitgroupid = ? AND uvis_thrutime = ? "
-                        + "ORDER BY uvis_uservisitid " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM uservisits
+                WHERE uvis_uvisgrp_uservisitgroupid = ? AND uvis_thrutime = ?
+                ORDER BY uvis_uservisitid
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM uservisits "
-                        + "WHERE uvis_uvisgrp_uservisitgroupid = ? AND uvis_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisits
+                WHERE uvis_uvisgrp_uservisitgroupid = ? AND uvis_thrutime = ?
+                FOR UPDATE
+                """);
         getUserVisitsByUserVisitGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1076,15 +1121,19 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM uservisits "
-                + "WHERE uvis_ukey_userkeyid = ? "
-                + "ORDER BY uvis_uservisitid");
+                """
+                SELECT _ALL_
+                FROM uservisits
+                WHERE uvis_ukey_userkeyid = ?
+                ORDER BY uvis_uservisitid
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM uservisits "
-                + "WHERE uvis_ukey_userkeyid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisits
+                WHERE uvis_ukey_userkeyid = ?
+                FOR UPDATE
+                """);
         getUserVisitsByUserKeyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1107,10 +1156,12 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM uservisits "
-                + "WHERE uvis_retainuntiltime < ? AND uvis_thrutime <> ? "
-                + "ORDER BY uvis_uservisitid");
+                """
+                SELECT _ALL_
+                FROM uservisits
+                WHERE uvis_retainuntiltime < ? AND uvis_thrutime <> ?
+                ORDER BY uvis_uservisitid
+                """);
         getInvalidatedUserVisitsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1122,10 +1173,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Visit Statuses
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserVisitStatusFactory userVisitStatusFactory;
-    
+
     public UserVisitStatus createUserVisitStatus(UserVisit userVisit) {
         return userVisitStatusFactory.create(userVisit, 0, 0, 0, 0);
     }
@@ -1136,14 +1187,18 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM uservisitstatuses "
-                + "WHERE uvisst_uvis_uservisitid = ?");
+                """
+                SELECT _ALL_
+                FROM uservisitstatuses
+                WHERE uvisst_uvis_uservisitid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM uservisitstatuses "
-                + "WHERE uvisst_uvis_uservisitid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM uservisitstatuses
+                WHERE uvisst_uvis_uservisitid = ?
+                FOR UPDATE
+                """);
         getUserVisitStatusQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1171,10 +1226,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Visit Commands
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserVisitCommandFactory userVisitCommandFactory;
-    
+
     public UserVisitCommand createUserVisitCommand(UserVisit userVisit, Integer userVisitCommandSequence, Party party, Command command, Long startTime,
             Long endTime, Boolean hadSecurityErrors, Boolean hadValidationErrors, Boolean hadExecutionErrors) {
         return userVisitCommandFactory.create(userVisit, userVisitCommandSequence, party, command, startTime, endTime, hadSecurityErrors,
@@ -1184,10 +1239,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Sessions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserSessionFactory userSessionFactory;
-    
+
     /** Use associatePartyToUserVisit to associate a Party with a UserVisit, rather than using this
      * function directly.
      */
@@ -1214,14 +1269,18 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM usersessions " +
-                "WHERE usess_par_partyid = ? AND usess_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM usersessions
+                WHERE usess_par_partyid = ? AND usess_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM usersessions " +
-                "WHERE usess_par_partyid = ? AND usess_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM usersessions
+                WHERE usess_par_partyid = ? AND usess_thrutime = ?
+                FOR UPDATE
+                """);
         getUserSessionsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1244,14 +1303,18 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM usersessions " +
-                "WHERE usess_prel_partyrelationshipid = ? AND usess_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM usersessions
+                WHERE usess_prel_partyrelationshipid = ? AND usess_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM usersessions " +
-                "WHERE usess_prel_partyrelationshipid = ? AND usess_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM usersessions
+                WHERE usess_prel_partyrelationshipid = ? AND usess_thrutime = ?
+                FOR UPDATE
+                """);
         getUserSessionsByPartyRelationshipQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1273,9 +1336,11 @@ public class UserControl
         
         try {
             var ps = userSessionFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM usersessions " +
-                    "WHERE usess_uvis_uservisitid = ? AND usess_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM usersessions
+                    WHERE usess_uvis_uservisitid = ? AND usess_thrutime = ?
+                    """);
             
             ps.setLong(1, userVisit.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1293,10 +1358,12 @@ public class UserControl
         
         try {
             var ps = userSessionFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM usersessions " +
-                    "WHERE usess_uvis_uservisitid = ? AND usess_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM usersessions
+                    WHERE usess_uvis_uservisitid = ? AND usess_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, userVisit.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1329,13 +1396,13 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   Recovery Questions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected RecoveryQuestionFactory recoveryQuestionFactory;
-    
+
     @Inject
     protected RecoveryQuestionDetailFactory recoveryQuestionDetailFactory;
-    
+
     public RecoveryQuestion createRecoveryQuestion(String recoveryQuestionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultRecoveryQuestion = getDefaultRecoveryQuestion();
         var defaultFound = defaultRecoveryQuestion != null;
@@ -1367,9 +1434,11 @@ public class UserControl
 
     public long countRecoveryQuestions() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM recoveryquestions, recoveryquestiondetails " +
-                        "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid");
+                """
+                SELECT COUNT(*)
+                FROM recoveryquestions, recoveryquestiondetails
+                WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid
+                """);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.RecoveryQuestion */
@@ -1391,16 +1460,20 @@ public class UserControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM recoveryquestions, recoveryquestiondetails " +
-                    "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid " +
-                    "ORDER BY rqusdt_sortorder, rqusdt_recoveryquestionname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM recoveryquestions, recoveryquestiondetails
+                    WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid
+                    ORDER BY rqusdt_sortorder, rqusdt_recoveryquestionname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM recoveryquestions, recoveryquestiondetails " +
-                    "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM recoveryquestions, recoveryquestiondetails
+                    WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = recoveryQuestionFactory.prepareStatement(query);
@@ -1420,14 +1493,18 @@ public class UserControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM recoveryquestions, recoveryquestiondetails " +
-                    "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM recoveryquestions, recoveryquestiondetails
+                    WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM recoveryquestions, recoveryquestiondetails " +
-                    "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM recoveryquestions, recoveryquestiondetails
+                    WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = recoveryQuestionFactory.prepareStatement(query);
@@ -1454,14 +1531,18 @@ public class UserControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM recoveryquestions, recoveryquestiondetails " +
-                        "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_recoveryquestionname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM recoveryquestions, recoveryquestiondetails
+                        WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_recoveryquestionname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM recoveryquestions, recoveryquestiondetails " +
-                        "WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_recoveryquestionname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM recoveryquestions, recoveryquestiondetails
+                        WHERE rqus_activedetailid = rqusdt_recoveryquestiondetailid AND rqusdt_recoveryquestionname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = recoveryQuestionFactory.prepareStatement(query);
@@ -1620,10 +1701,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   Recovery Question Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected RecoveryQuestionDescriptionFactory recoveryQuestionDescriptionFactory;
-    
+
     public RecoveryQuestionDescription createRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             String description, BasePK createdBy) {
         var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(
@@ -1643,14 +1724,18 @@ public class UserControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM recoveryquestiondescriptions " +
-                        "WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_lang_languageid = ? AND rqusd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM recoveryquestiondescriptions
+                        WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_lang_languageid = ? AND rqusd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM recoveryquestiondescriptions " +
-                        "WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_lang_languageid = ? AND rqusd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM recoveryquestiondescriptions
+                        WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_lang_languageid = ? AND rqusd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = recoveryQuestionDescriptionFactory.prepareStatement(query);
@@ -1691,15 +1776,19 @@ public class UserControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM recoveryquestiondescriptions, languages " +
-                        "WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_thrutime = ? AND rqusd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM recoveryquestiondescriptions, languages
+                        WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_thrutime = ? AND rqusd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM recoveryquestiondescriptions " +
-                        "WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM recoveryquestiondescriptions
+                        WHERE rqusd_rqus_recoveryquestionid = ? AND rqusd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = recoveryQuestionDescriptionFactory.prepareStatement(query);
@@ -1793,13 +1882,13 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   Recovery Answers
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected RecoveryAnswerFactory recoveryAnswerFactory;
-    
+
     @Inject
     protected RecoveryAnswerDetailFactory recoveryAnswerDetailFactory;
-    
+
     public RecoveryAnswer createRecoveryAnswer(Party party, RecoveryQuestion recoveryQuestion, String answer, BasePK createdBy) {
         var recoveryAnswer = recoveryAnswerFactory.create();
         var recoveryAnswerDetail = recoveryAnswerDetailFactory.create(recoveryAnswer,
@@ -1818,10 +1907,12 @@ public class UserControl
     
     public long countRecoveryAnswersByRecoveryQuestion(RecoveryQuestion recoveryQuestion) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM recoveryanswers, recoveryanswerdetails "
-                + "WHERE rans_activedetailid = ransdt_recoveryanswerdetailid "
-                + "AND ransdt_rqus_recoveryquestionid = ?",
+                """
+                SELECT COUNT(*)
+                FROM recoveryanswers, recoveryanswerdetails
+                WHERE rans_activedetailid = ransdt_recoveryanswerdetailid
+                AND ransdt_rqus_recoveryquestionid = ?
+                """,
                 recoveryQuestion);
     }
 
@@ -1831,16 +1922,20 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM recoveryanswers, recoveryanswerdetails "
-                + "WHERE rans_activedetailid = ransdt_recoveryanswerdetailid "
-                + "AND ransdt_par_partyid = ?");
+                """
+                SELECT _ALL_
+                FROM recoveryanswers, recoveryanswerdetails
+                WHERE rans_activedetailid = ransdt_recoveryanswerdetailid
+                AND ransdt_par_partyid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM recoveryanswers, recoveryanswerdetails "
-                + "WHERE rans_activedetailid = ransdt_recoveryanswerdetailid "
-                + "AND ransdt_par_partyid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM recoveryanswers, recoveryanswerdetails
+                WHERE rans_activedetailid = ransdt_recoveryanswerdetailid
+                AND ransdt_par_partyid = ?
+                FOR UPDATE
+                """);
         getRecoveryAnswerQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1871,19 +1966,23 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM recoveryanswers, recoveryanswerdetails, party, partydetails, partytypes "
-                + "WHERE rans_activedetailid = ransdt_recoveryanswerdetailid "
-                + "AND ransdt_rqus_recoveryquestionid = ? "
-                + "AND ransdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ptyp_partytypeid "
-                + "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname");
+                """
+                SELECT _ALL_
+                FROM recoveryanswers, recoveryanswerdetails, party, partydetails, partytypes
+                WHERE rans_activedetailid = ransdt_recoveryanswerdetailid
+                AND ransdt_rqus_recoveryquestionid = ?
+                AND ransdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                AND pardt_ptyp_partytypeid = ptyp_partytypeid
+                ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM recoveryanswers, recoveryanswerdetails "
-                + "WHERE rans_activedetailid = ransdt_recoveryanswerdetailid "
-                + "AND ransdt_rqus_recoveryquestionid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM recoveryanswers, recoveryanswerdetails
+                WHERE rans_activedetailid = ransdt_recoveryanswerdetailid
+                AND ransdt_rqus_recoveryquestionid = ?
+                FOR UPDATE
+                """);
         getRecoveryAnswersByRecoveryQuestionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1963,19 +2062,21 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Encoder Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordEncoderTypeFactory userLoginPasswordEncoderTypeFactory;
-    
+
     public UserLoginPasswordEncoderType createUserLoginPasswordEncoderType(String sequenceEncoderTypeName) {
         return userLoginPasswordEncoderTypeFactory.create(sequenceEncoderTypeName);
     }
     
     public List<UserLoginPasswordEncoderType> getUserLoginPasswordEncoderTypes() {
         var ps = userLoginPasswordEncoderTypeFactory.prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM userloginpasswordencodertypes " +
-                "ORDER BY ulogpet_userloginpasswordencodertypename");
+                """
+                SELECT _ALL_
+                FROM userloginpasswordencodertypes
+                ORDER BY ulogpet_userloginpasswordencodertypename
+                """);
         
         return userLoginPasswordEncoderTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1985,9 +2086,11 @@ public class UserControl
         
         try {
             var ps = userLoginPasswordEncoderTypeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM userloginpasswordencodertypes " +
-                    "WHERE ulogpet_userloginpasswordencodertypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM userloginpasswordencodertypes
+                    WHERE ulogpet_userloginpasswordencodertypename = ?
+                    """);
             
             ps.setString(1, sequenceEncoderTypeName);
             
@@ -2006,10 +2109,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Encoder Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordEncoderTypeDescriptionFactory userLoginPasswordEncoderTypeDescriptionFactory;
-    
+
     public UserLoginPasswordEncoderTypeDescription createUserLoginPasswordEncoderTypeDescription(UserLoginPasswordEncoderType sequenceEncoderType,
             Language language, String description) {
         return userLoginPasswordEncoderTypeDescriptionFactory.create(sequenceEncoderType, language, description);
@@ -2021,9 +2124,11 @@ public class UserControl
         
         try {
             var ps = userLoginPasswordEncoderTypeDescriptionFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM userloginpasswordencodertypedescriptions " +
-                    "WHERE ulogpetd_ulogpet_userloginpasswordencodertypeid = ? AND ulogpetd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM userloginpasswordencodertypedescriptions
+                    WHERE ulogpetd_ulogpet_userloginpasswordencodertypeid = ? AND ulogpetd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, sequenceEncoderType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2059,10 +2164,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Types
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordTypeFactory userLoginPasswordTypeFactory;
-    
+
     public UserLoginPasswordType createUserLoginPasswordType(String userLoginPasswordTypeName,
             UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
         return userLoginPasswordTypeFactory.create(userLoginPasswordTypeName, userLoginPasswordEncoderType);
@@ -2073,9 +2178,11 @@ public class UserControl
         
         try {
             var ps = userLoginPasswordTypeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM userloginpasswordtypes " +
-                    "WHERE ulogpt_userloginpasswordtypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM userloginpasswordtypes
+                    WHERE ulogpt_userloginpasswordtypename = ?
+                    """);
             
             ps.setString(1, userLoginPasswordTypeName);
             
@@ -2094,10 +2201,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordTypeDescriptionFactory userLoginPasswordTypeDescriptionFactory;
-    
+
     public UserLoginPasswordTypeDescription createUserLoginPasswordTypeDescription(UserLoginPasswordType userLoginPasswordType, Language language, String description) {
         return userLoginPasswordTypeDescriptionFactory.create(userLoginPasswordType, language, description);
     }
@@ -2107,9 +2214,11 @@ public class UserControl
         
         try {
             var ps = userLoginPasswordTypeDescriptionFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM userloginpasswordtypedescriptions " +
-                    "WHERE ulogptd_ulogpt_userloginpasswordtypeid = ? AND ulogptd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM userloginpasswordtypedescriptions
+                    WHERE ulogptd_ulogpt_userloginpasswordtypeid = ? AND ulogptd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, userLoginPasswordType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -2144,10 +2253,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Passwords
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordFactory userLoginPasswordFactory;
-    
+
     public UserLoginPassword createUserLoginPassword(Party party, UserLoginPasswordType userLoginPasswordType, BasePK createdBy) {
         var userLoginPassword = userLoginPasswordFactory.create(party, userLoginPasswordType,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2159,9 +2268,11 @@ public class UserControl
     
     public long countUserLoginPasswords(Party party, UserLoginPasswordType userLoginPasswordType) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM userloginpasswords "
-                + "WHERE ulogp_par_partyid = ? AND ulogp_ulogpt_userloginpasswordtypeid = ? AND ulogp_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM userloginpasswords
+                WHERE ulogp_par_partyid = ? AND ulogp_ulogpt_userloginpasswordtypeid = ? AND ulogp_thrutime = ?
+                """,
                 party, userLoginPasswordType, Session.MAX_TIME);
     }
     
@@ -2171,14 +2282,18 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM userloginpasswords "
-                + "WHERE ulogp_par_partyid = ? AND ulogp_ulogpt_userloginpasswordtypeid = ? AND ulogp_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM userloginpasswords
+                WHERE ulogp_par_partyid = ? AND ulogp_ulogpt_userloginpasswordtypeid = ? AND ulogp_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM userloginpasswords "
-                + "WHERE ulogp_par_partyid = ? AND ulogp_ulogpt_userloginpasswordtypeid = ? AND ulogp_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM userloginpasswords
+                WHERE ulogp_par_partyid = ? AND ulogp_ulogpt_userloginpasswordtypeid = ? AND ulogp_thrutime = ?
+                FOR UPDATE
+                """);
         getUserLoginPasswordQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2201,16 +2316,20 @@ public class UserControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM userloginpasswords, userloginpasswordtypes "
-                + "WHERE ulogp_par_partyid = ? AND ulogp_thrutime = ? "
-                + "AND ulogp_ulogpt_userloginpasswordtypeid = ulogpt_userloginpasswordtypeid "
-                + "ORDER BY ulogpt_userloginpasswordtypename");
+                """
+                SELECT _ALL_
+                FROM userloginpasswords, userloginpasswordtypes
+                WHERE ulogp_par_partyid = ? AND ulogp_thrutime = ?
+                AND ulogp_ulogpt_userloginpasswordtypeid = ulogpt_userloginpasswordtypeid
+                ORDER BY ulogpt_userloginpasswordtypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM userloginpasswords "
-                + "WHERE ulogp_par_partyid = ? AND ulogp_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM userloginpasswords
+                WHERE ulogp_par_partyid = ? AND ulogp_thrutime = ?
+                FOR UPDATE
+                """);
         getUserLoginPasswordsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2272,10 +2391,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Password Strings
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginPasswordStringFactory userLoginPasswordStringFactory;
-    
+
     public UserLoginPasswordString createUserLoginPasswordString(UserLoginPassword userLoginPassword, String password, Long changedTime, Boolean wasReset,
             BasePK createdBy) {
         var userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
@@ -2307,9 +2426,11 @@ public class UserControl
         
         try {
             var ps = userLoginPasswordStringFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM userloginpasswordstrings " +
-                    "WHERE ulogps_ulogp_userloginpasswordid = ? AND ulogps_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM userloginpasswordstrings
+                    WHERE ulogps_ulogp_userloginpasswordid = ? AND ulogps_thrutime = ?
+                    """);
             
             ps.setLong(1, userLoginPassword.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -2344,9 +2465,11 @@ public class UserControl
         
         try {
             var ps = userLoginPasswordStringFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM userloginpasswordstrings " +
-                    "WHERE ulogps_ulogp_userloginpasswordid = ? ORDER BY ulogps_fromtime DESC LIMIT " + limit);
+                    """
+                    SELECT _ALL_
+                    FROM userloginpasswordstrings
+                    WHERE ulogps_ulogp_userloginpasswordid = ? ORDER BY ulogps_fromtime DESC LIMIT
+                    """ + limit);
             
             ps.setLong(1, userLoginPassword.getPrimaryKey().getEntityId());
             
@@ -2415,10 +2538,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Logins
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginFactory userLoginFactory;
-    
+
     public UserLogin createUserLogin(Party party, String username, BasePK createdBy) {
         var userLogin = userLoginFactory.create(party, username, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2437,14 +2560,18 @@ public class UserControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM userlogins " +
-                        "WHERE ulog_par_partyid = ? AND ulog_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM userlogins
+                        WHERE ulog_par_partyid = ? AND ulog_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM userlogins " +
-                        "WHERE ulog_par_partyid = ? AND ulog_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM userlogins
+                        WHERE ulog_par_partyid = ? AND ulog_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = userLoginFactory.prepareStatement(query);
@@ -2483,14 +2610,18 @@ public class UserControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM userlogins " +
-                        "WHERE ulog_username = ? AND ulog_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM userlogins
+                        WHERE ulog_username = ? AND ulog_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM userlogins " +
-                        "WHERE ulog_username = ? AND ulog_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM userlogins
+                        WHERE ulog_username = ? AND ulog_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = userLoginFactory.prepareStatement(query);
@@ -2565,10 +2696,10 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Login Statuses
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected UserLoginStatusFactory userLoginStatusFactory;
-    
+
     public UserLoginStatus createUserLoginStatus(Party party) {
         return userLoginStatusFactory.create(party, null, 0, null, null, 0, false);
     }
@@ -2580,14 +2711,18 @@ public class UserControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM userloginstatuses " +
-                        "WHERE ulogst_par_partyid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM userloginstatuses
+                        WHERE ulogst_par_partyid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM userloginstatuses " +
-                        "WHERE ulogst_par_partyid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM userloginstatuses
+                        WHERE ulogst_par_partyid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = userLoginStatusFactory.prepareStatement(query);

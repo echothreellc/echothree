@@ -32,7 +32,7 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-public abstract class BaseIndex<R extends Object>
+public abstract class BaseIndex<R>
         extends BaseLogic {
     
     protected ExecutionErrorAccumulator eea;

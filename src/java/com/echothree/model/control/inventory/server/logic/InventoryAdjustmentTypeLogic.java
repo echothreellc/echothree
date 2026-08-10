@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class InventoryAdjustmentTypeLogic
     extends BaseLogic {
+
+    @Inject
+    InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected InventoryAdjustmentTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class InventoryAdjustmentTypeLogic
     public InventoryAdjustmentType createInventoryAdjustmentType(final ExecutionErrorAccumulator eea, final String inventoryAdjustmentTypeName,
             final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var inventoryAdjustmentType = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeByName(inventoryAdjustmentTypeName);
 
         if(inventoryAdjustmentType == null) {
@@ -71,7 +76,6 @@ public class InventoryAdjustmentTypeLogic
 
     public InventoryAdjustmentType getInventoryAdjustmentTypeByName(final ExecutionErrorAccumulator eea, final String inventoryAdjustmentTypeName,
             final EntityPermission entityPermission) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var inventoryAdjustmentType = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeByName(inventoryAdjustmentTypeName, entityPermission);
 
         if(inventoryAdjustmentType == null) {
@@ -92,9 +96,8 @@ public class InventoryAdjustmentTypeLogic
     public InventoryAdjustmentType getInventoryAdjustmentTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final InventoryAdjustmentTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         InventoryAdjustmentType inventoryAdjustmentType = null;
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var inventoryAdjustmentTypeName = universalSpec.getInventoryAdjustmentTypeName();
-        var parameterCount = (inventoryAdjustmentTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (inventoryAdjustmentTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,10 +113,10 @@ public class InventoryAdjustmentTypeLogic
             }
             case 1 -> {
                 if(inventoryAdjustmentTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryAdjustmentType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         inventoryAdjustmentType = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -139,15 +142,11 @@ public class InventoryAdjustmentTypeLogic
 
     public void updateInventoryAdjustmentTypeFromValue(final InventoryAdjustmentTypeDetailValue inventoryAdjustmentTypeDetailValue,
             final BasePK updatedBy) {
-        final var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
-
         inventoryAdjustmentTypeControl.updateInventoryAdjustmentTypeFromValue(inventoryAdjustmentTypeDetailValue, updatedBy);
     }
     
     public void deleteInventoryAdjustmentType(final ExecutionErrorAccumulator eea, final InventoryAdjustmentType inventoryAdjustmentType,
             final BasePK deletedBy) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
-
         inventoryAdjustmentTypeControl.deleteInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
     }
 

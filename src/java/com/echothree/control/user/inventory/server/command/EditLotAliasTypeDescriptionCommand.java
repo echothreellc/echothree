@@ -38,8 +38,8 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -55,18 +55,24 @@ public class EditLotAliasTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LotAliasType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    LotAliasControl lotAliasControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditLotAliasTypeDescriptionCommand */
     public EditLotAliasTypeDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public LotAliasTypeDescription getEntity(EditLotAliasTypeDescriptionResult result) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         LotAliasTypeDescription lotAliasTypeDescription = null;
         var lotAliasTypeName = spec.getLotAliasTypeName();
         var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLotAliasTypeDescriptionResult result, LotAliasTypeDescription lotAliasTypeDescription) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
-
         result.setLotAliasTypeDescription(lotAliasControl.getLotAliasTypeDescriptionTransfer(getUserVisit(), lotAliasTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(LotAliasTypeDescription lotAliasTypeDescription) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var lotAliasTypeDescriptionValue = lotAliasControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
 
         lotAliasTypeDescriptionValue.setDescription(edit.getDescription());

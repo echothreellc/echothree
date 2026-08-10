@@ -31,6 +31,9 @@ import javax.inject.Inject;
 public class ClubLogic
         extends BaseLogic {
 
+    @Inject
+    ClubControl clubControl;
+
     protected ClubLogic() {
         super();
     }
@@ -38,9 +41,6 @@ public class ClubLogic
     public static ClubLogic getInstance() {
         return CDI.current().select(ClubLogic.class).get();
     }
-
-    @Inject
-    ClubControl clubControl;
 
     public Club getClubByName(final ExecutionErrorAccumulator eea, final String clubName,
             final EntityPermission entityPermission) {

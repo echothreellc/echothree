@@ -31,9 +31,9 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRatingCommand
@@ -43,12 +43,25 @@ public class CreateRatingCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("RatedByUsername", FieldType.STRING, false, 1L, 80L),
-            new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-            new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("RatedByUsername", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
+                new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateRatingCommand */
     public CreateRatingCommand() {
@@ -58,19 +71,16 @@ public class CreateRatingCommand
     @Override
     protected BaseResult execute() {
         var result = RatingResultFactory.getCreateRatingResult();
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         String ratingName = null;
         var entityRef = form.getEntityRef();
         var ratedEntityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(ratedEntityInstance != null) {
-            var ratingControl = Session.getModelController(RatingControl.class);
             EntityInstance ratedByEntityInstance = null;
             BasePK createdBy = getPartyPK();
             var ratedByUsername = form.getRatedByUsername();
             
             if(ratedByUsername != null) {
-                var userControl = getUserControl();
                 var userLogin = userControl.getUserLoginByUsername(ratedByUsername);
                 
                 if(userLogin != null) {
@@ -95,14 +105,13 @@ public class CreateRatingCommand
                         var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                         
                         if(ratingTypeListItem != null) {
-                            var sequenceControl = Session.getModelController(SequenceControl.class);
                             var ratingSequence = ratingType.getLastDetail().getRatingSequence();
                             
                             if(ratingSequence == null) {
                                 ratingSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.RATING.name());
                             }
                             
-                            ratingName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(ratingSequence);
+                            ratingName = sequenceGeneratorLogic.getNextSequenceValue(ratingSequence);
                             
                             ratingControl.createRating(ratingName, ratingTypeListItem, ratedEntityInstance, ratedByEntityInstance,
                                     createdBy);

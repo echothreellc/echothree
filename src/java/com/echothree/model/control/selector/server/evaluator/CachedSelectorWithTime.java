@@ -25,7 +25,6 @@ public class CachedSelectorWithTime
     SelectorTime selectorTime;
     
     /** Create a new instance of CachedSelectorWithTime */
-    /** Creates a new instance of CachedSelectorWithTime */
     public CachedSelectorWithTime(Selector selector) {
         super(selector);
         

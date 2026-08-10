@@ -45,6 +45,24 @@ import javax.inject.Inject;
 public class CampaignSourceLogic
         extends BaseLogic {
 
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     protected CampaignSourceLogic() {
         super();
     }
@@ -52,9 +70,6 @@ public class CampaignSourceLogic
     public static CampaignSourceLogic getInstance() {
         return CDI.current().select(CampaignSourceLogic.class).get();
     }
-
-    @Inject
-    CampaignControl campaignControl;
 
     public CampaignSource getCampaignSourceByName(final ExecutionErrorAccumulator eea, final String campaignSourceName,
             final EntityPermission entityPermission) {
@@ -98,15 +113,15 @@ public class CampaignSourceLogic
             final CampaignSourceUniversalSpec universalSpec, final EntityPermission entityPermission) {
         CampaignSource campaignSource = null;
         var campaignSourceName = universalSpec.getCampaignSourceName();
-        var parameterCount = (campaignSourceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (campaignSourceName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(campaignSourceName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignSource.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         campaignSource = campaignControl.getCampaignSourceByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -131,16 +146,12 @@ public class CampaignSourceLogic
     }
     
     public void setCampaignSourceStatus(final Session session, ExecutionErrorAccumulator eea, CampaignSource campaignSource, String campaignSourceStatusChoice, PartyPK modifiedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflowLogic = WorkflowLogic.getInstance();
         var workflow = workflowLogic.getWorkflowByName(eea, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignSource.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = campaignSourceStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), campaignSourceStatusChoice);
 
         if(workflowDestination != null || campaignSourceStatusChoice == null) {
-            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;

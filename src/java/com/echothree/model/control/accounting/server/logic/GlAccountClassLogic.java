@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class GlAccountClassLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected GlAccountClassLogic() {
         super();
@@ -52,7 +58,6 @@ public class GlAccountClassLogic
     public GlAccountClass createGlAccountClass(final ExecutionErrorAccumulator eea, final String glAccountClassName,
             final GlAccountClass parentGlAccountClass, final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
 
         if(glAccountClass == null) {
@@ -72,7 +77,6 @@ public class GlAccountClassLogic
 
     public GlAccountClass getGlAccountClassByName(final ExecutionErrorAccumulator eea, final String glAccountClassName,
             final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName, entityPermission);
 
         if(glAccountClass == null) {
@@ -93,9 +97,8 @@ public class GlAccountClassLogic
     public GlAccountClass getGlAccountClassByUniversalSpec(final ExecutionErrorAccumulator eea,
             final GlAccountClassUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         GlAccountClass glAccountClass = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glAccountClassName = universalSpec.getGlAccountClassName();
-        var parameterCount = (glAccountClassName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (glAccountClassName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -111,10 +114,10 @@ public class GlAccountClassLogic
             }
             case 1 -> {
                 if(glAccountClassName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GlAccountClass.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         glAccountClass = accountingControl.getGlAccountClassByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -139,14 +142,10 @@ public class GlAccountClassLogic
     }
 
     public void updateGlAccountClassFromValue(GlAccountClassDetailValue glAccountClassDetailValue, BasePK updatedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         accountingControl.updateGlAccountClassFromValue(glAccountClassDetailValue, updatedBy);
     }
 
     public void deleteGlAccountClass(final ExecutionErrorAccumulator eea, final GlAccountClass glAccountClass, final BasePK deletedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         accountingControl.deleteGlAccountClass(glAccountClass, deletedBy);
     }
 

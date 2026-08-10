@@ -39,9 +39,6 @@ import javax.inject.Inject;
 public class GetItemVolumeTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<ItemVolumeType, GetItemVolumeTypesForm> {
 
-    @Inject
-    ItemControl itemControl;
-
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -55,6 +52,9 @@ public class GetItemVolumeTypesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ItemControl itemControl;
 
     /** Creates a new instance of GetItemVolumeTypesCommand */
     public GetItemVolumeTypesCommand() {

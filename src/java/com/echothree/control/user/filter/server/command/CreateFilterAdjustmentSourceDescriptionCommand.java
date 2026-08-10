@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentSourceDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentSourceDescriptionCommand
@@ -54,8 +54,15 @@ public class CreateFilterAdjustmentSourceDescriptionCommand
                 new FieldDefinition("FilterAdjustmentSourceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateFilterAdjustmentSourceDescriptionCommand */
     public CreateFilterAdjustmentSourceDescriptionCommand() {
@@ -64,22 +71,20 @@ public class CreateFilterAdjustmentSourceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
-        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var filterAdjustmentSource = filterAdjustmentControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
         
         if(filterAdjustmentSource != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var filterTypeDescription = filterControl.getFilterAdjustmentSourceDescription(filterAdjustmentSource, language);
+                var filterTypeDescription = filterAdjustmentControl.getFilterAdjustmentSourceDescription(filterAdjustmentSource, language);
                 
                 if(filterTypeDescription == null) {
                     var description = form.getDescription();
                     
-                    filterControl.createFilterAdjustmentSourceDescription(filterAdjustmentSource, language, description);
+                    filterAdjustmentControl.createFilterAdjustmentSourceDescription(filterAdjustmentSource, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentSourceDescription.name());
                 }

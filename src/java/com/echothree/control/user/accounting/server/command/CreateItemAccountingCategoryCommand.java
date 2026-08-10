@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemAccountingCategoryCommand
@@ -49,8 +49,8 @@ public class CreateItemAccountingCategoryCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemAccountingCategory.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, true, null, null),
@@ -60,6 +60,13 @@ public class CreateItemAccountingCategoryCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ItemAccountingCategoryLogic itemAccountingCategoryLogic;
+
     
     /** Creates a new instance of CreateItemAccountingCategoryCommand */
     public CreateItemAccountingCategoryCommand() {
@@ -70,7 +77,6 @@ public class CreateItemAccountingCategoryCommand
     protected BaseResult execute() {
         var result = AccountingResultFactory.getCreateItemAccountingCategoryResult();
         ItemAccountingCategory itemAccountingCategory = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var parentItemAccountingCategoryName = form.getParentItemAccountingCategoryName();
         ItemAccountingCategory parentItemAccountingCategory = null;
 
@@ -85,7 +91,7 @@ public class CreateItemAccountingCategoryCommand
             var description = form.getDescription();
             var partyPK = getPartyPK();
 
-            itemAccountingCategory = ItemAccountingCategoryLogic.getInstance().createItemAccountingCategory(this,
+            itemAccountingCategory = itemAccountingCategoryLogic.createItemAccountingCategory(this,
                     itemAccountingCategoryName, parentItemAccountingCategory, null, null, null,
                     null, null, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
         } else {

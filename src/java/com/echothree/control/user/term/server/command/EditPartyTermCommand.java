@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTermCommand
@@ -46,13 +46,23 @@ public class EditPartyTermCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TermName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Taxable", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    PartyChainLogic partyChainLogic;
+
     
     /** Creates a new instance of EditPartyTermCommand */
     public EditPartyTermCommand() {
@@ -61,14 +71,11 @@ public class EditPartyTermCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = TermResultFactory.getEditPartyTermResult();
         var partyName = spec.getPartyName();
         var party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var termControl = Session.getModelController(TermControl.class);
-            
             if(editMode.equals(EditMode.LOCK)) {
                 var partyTerm = termControl.getPartyTerm(party);
                 
@@ -112,7 +119,7 @@ public class EditPartyTermCommand
                                     
                                     if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
                                         // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                                        PartyChainLogic.getInstance().createPartyTermChangedChainInstance(null, party, updatedBy);
+                                        partyChainLogic.createPartyTermChangedChainInstance(null, party, updatedBy);
                                     }
                                 }
                             } finally {

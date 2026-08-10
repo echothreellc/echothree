@@ -16,7 +16,9 @@
 
 package com.echothree.model.control.subscription.server.logic;
 
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
+import com.echothree.model.control.chain.common.ChainTypes;
+import com.echothree.model.control.chain.common.ChainEntityRoleTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
 import com.echothree.model.control.chain.server.logic.ChainLogic;
@@ -28,7 +30,6 @@ import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -38,13 +39,19 @@ public class SubscriptionChainLogic
         extends BaseLogic {
 
     @Inject
+    ChainControl chainControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
+    @Inject
+    protected ChainInstanceLogic chainInstanceLogic;
+
+    @Inject
     protected ChainLogic chainLogic;
 
     @Inject
     protected ChainTypeLogic chainTypeLogic;
-
-    @Inject
-    protected ChainInstanceLogic chainInstanceLogic;
 
     protected SubscriptionChainLogic() {
         super();
@@ -66,11 +73,10 @@ public class SubscriptionChainLogic
      */
     protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName,
             final Subscription subscription, final BasePK createdBy) {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionType = subscription.getLastDetail().getSubscriptionType();
         var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
         var party = subscription.getLastDetail().getParty();
-        var subscriptionTypeChains = chainTypeName.equals(ChainConstants.ChainType_RENEWAL) ? null
+        var subscriptionTypeChains = chainTypeName.equals(ChainTypes.RENEWAL.name()) ? null
                 : subscriptionControl.getSubscriptionTypeChainsBySubscriptionTypeAndChainType(subscriptionType, chainType);
         Chain chain;
         ChainInstance chainInstance = null;
@@ -90,14 +96,13 @@ public class SubscriptionChainLogic
     
     protected ChainInstance createSubscriptionChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName, final Subscription subscription,
             final BasePK createdBy) {
-        var chainInstance = createChainInstance(eea, ChainConstants.ChainKind_SUBSCRIPTION, chainTypeName, subscription, createdBy);
+        var chainInstance = createChainInstance(eea, ChainKinds.SUBSCRIPTION.name(), chainTypeName, subscription, createdBy);
         
         if(chainInstance != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
         
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,
-                    ChainConstants.ChainEntityRoleType_SUBSCRIPTION), subscription.getPrimaryKey(), createdBy);
+                    ChainEntityRoleTypes.SUBSCRIPTION.name()), subscription.getPrimaryKey(), createdBy);
         }
         
         return chainInstance;
@@ -105,24 +110,24 @@ public class SubscriptionChainLogic
     
     public ChainInstance createSubscriptionInitialChainInstance(final ExecutionErrorAccumulator eea, final Subscription subscription,
             final BasePK createdBy) {
-        return createSubscriptionChainInstance(eea, ChainConstants.ChainType_INITIAL, subscription, createdBy);
+        return createSubscriptionChainInstance(eea, ChainTypes.INITIAL.name(), subscription, createdBy);
     }
     
     public ChainInstance createSubscriptionExpirationWarningChainInstance(final ExecutionErrorAccumulator eea, final Subscription subscription,
             final BasePK createdBy) {
-        return createSubscriptionChainInstance(eea, ChainConstants.ChainType_EXPIRATION_WARNING, subscription, createdBy);
+        return createSubscriptionChainInstance(eea, ChainTypes.EXPIRATION_WARNING.name(), subscription, createdBy);
     }
     
     /** TODO: Consider the RemainingTime in the SubscriptionDetail when choosing the Chain to use.
      */
     public ChainInstance createSubscriptionRenewalChainInstance(final ExecutionErrorAccumulator eea, final Subscription subscription,
             final BasePK createdBy) {
-        return createSubscriptionChainInstance(eea, ChainConstants.ChainType_RENEWAL, subscription, createdBy);
+        return createSubscriptionChainInstance(eea, ChainTypes.RENEWAL.name(), subscription, createdBy);
     }
     
     public ChainInstance createSubscriptionExpirationChainInstance(final ExecutionErrorAccumulator eea, final Subscription subscription,
             final BasePK createdBy) {
-        return createSubscriptionChainInstance(eea, ChainConstants.ChainType_EXPIRATION, subscription, createdBy);
+        return createSubscriptionChainInstance(eea, ChainTypes.EXPIRATION.name(), subscription, createdBy);
     }
     
 }

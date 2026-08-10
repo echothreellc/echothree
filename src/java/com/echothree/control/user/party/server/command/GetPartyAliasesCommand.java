@@ -63,6 +63,7 @@ public class GetPartyAliasesCommand
 
     @Inject
     PartyLogic partyLogic;
+
     
     /** Creates a new instance of GetPartyAliasesCommand */
     public GetPartyAliasesCommand() {

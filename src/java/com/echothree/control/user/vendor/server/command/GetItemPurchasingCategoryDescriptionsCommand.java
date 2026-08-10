@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemPurchasingCategoryDescriptionsCommand
@@ -47,13 +47,17 @@ public class GetItemPurchasingCategoryDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemPurchasingCategory.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    VendorControl vendorControl;
+
     
     /** Creates a new instance of GetItemPurchasingCategoryDescriptionsCommand */
     public GetItemPurchasingCategoryDescriptionsCommand() {
@@ -62,7 +66,6 @@ public class GetItemPurchasingCategoryDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetItemPurchasingCategoryDescriptionsResult();
         var itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
         var itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);

@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetJobStatusChoicesCommand
@@ -45,16 +45,20 @@ public class GetJobStatusChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.JobStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.JobStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("JobName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("DefaultJobStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("JobName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultJobStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    JobControl jobControl;
+
     
     /** Creates a new instance of GetJobStatusChoicesCommand */
     public GetJobStatusChoicesCommand() {
@@ -63,7 +67,6 @@ public class GetJobStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var jobControl = Session.getModelController(JobControl.class);
         var result = JobResultFactory.getGetJobStatusChoicesResult();
         var jobName = form.getJobName();
         var job = jobControl.getJobByName(jobName);

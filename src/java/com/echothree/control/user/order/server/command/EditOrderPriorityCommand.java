@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderPriorityCommand
@@ -54,16 +54,16 @@ public class EditOrderPriorityCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.OrderPriority.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.OrderPriority.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderPriorityName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderPriorityName", FieldType.ENTITY_NAME, true, null, null),
@@ -71,8 +71,18 @@ public class EditOrderPriorityCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    OrderPriorityControl orderPriorityControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    OrderPriorityLogic orderPriorityLogic;
+
     
     /** Creates a new instance of EditOrderPriorityCommand */
     public EditOrderPriorityCommand() {
@@ -94,9 +104,9 @@ public class EditOrderPriorityCommand
         OrderPriority orderPriority;
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            orderPriority = OrderPriorityLogic.getInstance().getOrderPriorityByUniversalSpec(this, spec, false);
+            orderPriority = orderPriorityLogic.getOrderPriorityByUniversalSpec(this, spec, false);
         } else { // EditMode.UPDATE
-            orderPriority = OrderPriorityLogic.getInstance().getOrderPriorityByUniversalSpecForUpdate(this, spec, false);
+            orderPriority = orderPriorityLogic.getOrderPriorityByUniversalSpecForUpdate(this, spec, false);
         }
 
 
@@ -110,14 +120,11 @@ public class EditOrderPriorityCommand
 
     @Override
     public void fillInResult(EditOrderPriorityResult result, OrderPriority orderPriority) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-
         result.setOrderPriority(orderPriorityControl.getOrderPriorityTransfer(getUserVisit(), orderPriority));
     }
 
     @Override
     public void doLock(OrderPriorityEdit edit, OrderPriority orderPriority) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
         var orderPriorityDescription = orderPriorityControl.getOrderPriorityDescription(orderPriority, getPreferredLanguage());
         var orderPriorityDetail = orderPriority.getLastDetail();
 
@@ -133,12 +140,10 @@ public class EditOrderPriorityCommand
 
     @Override
     public void canUpdate(OrderPriority orderPriority) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
             var orderPriorityName = edit.getOrderPriorityName();
             var duplicateOrderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
@@ -152,7 +157,6 @@ public class EditOrderPriorityCommand
 
     @Override
     public void doUpdate(OrderPriority orderPriority) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
         var partyPK = getPartyPK();
         var orderPriorityDetailValue = orderPriorityControl.getOrderPriorityDetailValueForUpdate(orderPriority);
         var orderPriorityDescription = orderPriorityControl.getOrderPriorityDescriptionForUpdate(orderPriority, getPreferredLanguage());
@@ -163,7 +167,7 @@ public class EditOrderPriorityCommand
         orderPriorityDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         orderPriorityDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        OrderPriorityLogic.getInstance().updateOrderPriorityFromValue(this, orderPriorityDetailValue, partyPK);
+        orderPriorityLogic.updateOrderPriorityFromValue(this, orderPriorityDetailValue, partyPK);
 
         if(orderPriorityDescription == null && description != null) {
             orderPriorityControl.createOrderPriorityDescription(orderPriority, getPreferredLanguage(), description, partyPK);

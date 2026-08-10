@@ -31,13 +31,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContentPageAreaTypeLogic
     extends BaseLogic {
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ContentPageAreaTypeLogic() {
         super();
@@ -49,7 +55,6 @@ public class ContentPageAreaTypeLogic
 
     public ContentPageAreaType createContentPageAreaType(final ExecutionErrorAccumulator eea, final String contentPageAreaTypeName,
             final Language language, final String description, final BasePK createdBy) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
 
         if(contentPageAreaType == null) {
@@ -67,7 +72,6 @@ public class ContentPageAreaTypeLogic
 
     public ContentPageAreaType getContentPageAreaTypeByName(final ExecutionErrorAccumulator eea, final String contentPageAreaTypeName,
             final EntityPermission entityPermission) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName, entityPermission);
 
         if(contentPageAreaType == null) {
@@ -88,17 +92,16 @@ public class ContentPageAreaTypeLogic
     public ContentPageAreaType getContentPageAreaTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ContentPageAreaTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         ContentPageAreaType contentPageAreaType = null;
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageAreaTypeName = universalSpec.getContentPageAreaTypeName();
-        var parameterCount = (contentPageAreaTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contentPageAreaTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(contentPageAreaTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentPageAreaType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         contentPageAreaType = contentControl.getContentPageAreaTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

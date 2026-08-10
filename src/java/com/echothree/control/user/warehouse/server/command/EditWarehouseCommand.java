@@ -47,9 +47,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWarehouseCommand
@@ -90,6 +90,25 @@ public class EditWarehouseCommand
                 new FieldDefinition("ShippingManifestPrinterGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WarehouseLogic warehouseLogic;
+
+    @Inject
+    WarehouseTypeLogic warehouseTypeLogic;
+
     
     /** Creates a new instance of EditWarehouseCommand */
     public EditWarehouseCommand() {
@@ -108,7 +127,7 @@ public class EditWarehouseCommand
 
     @Override
     public Party getEntity(EditWarehouseResult result) {
-        var warehouse = WarehouseLogic.getInstance().getWarehouseByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        var warehouse = warehouseLogic.getWarehouseByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
 
         return warehouse == null ? null : warehouse.getParty();
     }
@@ -120,16 +139,11 @@ public class EditWarehouseCommand
 
     @Override
     public void fillInResult(EditWarehouseResult result, Party party) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-
         result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), party));
     }
 
     @Override
     public void doLock(WarehouseEdit edit, Party party) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var printerControl = Session.getModelController(PrinterControl.class);
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouse = warehouseControl.getWarehouse(party);
         var partyDetail = party.getLastDetail();
         var partyGroup = partyControl.getPartyGroup(party);
@@ -165,14 +179,11 @@ public class EditWarehouseCommand
 
     @Override
     public void canUpdate(Party party) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var printerControl = Session.getModelController(PrinterControl.class);
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouse = warehouseControl.getWarehouseForUpdate(party);
         var warehouseName = edit.getWarehouseName();
         var duplicateWarehouse = warehouseControl.getWarehouseByName(warehouseName);
 
-        warehouseType = WarehouseTypeLogic.getInstance().getWarehouseTypeByName(this, edit.getWarehouseTypeName());
+        warehouseType = warehouseTypeLogic.getWarehouseTypeByName(this, edit.getWarehouseTypeName());
 
         if(duplicateWarehouse == null || duplicateWarehouse.getPrimaryKey().equals(warehouse.getPrimaryKey())) {
             var inventoryMovePrinterGroupName = edit.getInventoryMovePrinterGroupName();
@@ -215,8 +226,6 @@ public class EditWarehouseCommand
                                         if(preferredCurrencyIsoName == null) {
                                             preferredCurrency = null;
                                         } else {
-                                            var accountingControl = Session.getModelController(AccountingControl.class);
-
                                             preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                         }
 
@@ -251,9 +260,6 @@ public class EditWarehouseCommand
 
     @Override
     public void doUpdate(Party party) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var printerControl = Session.getModelController(PrinterControl.class);
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouse = warehouseControl.getWarehouseForUpdate(party);
         var warehouseValue = warehouseControl.getWarehouseValue(warehouse);
         var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
@@ -306,7 +312,7 @@ public class EditWarehouseCommand
             }
         }
 
-        WarehouseLogic.getInstance().updateWarehouseFromValue(this, warehouseValue, updatedBy);
+        warehouseLogic.updateWarehouseFromValue(this, warehouseValue, updatedBy);
         partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
     }
 

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTransactionTimeTypeCommand
@@ -49,15 +49,22 @@ public class GetTransactionTimeTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TransactionTimeType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TransactionTimeTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    TransactionTimeControl transactionTimeControl;
+
+    @Inject
+    TransactionTimeTypeLogic transactionTimeTypeLogic;
+
     
     /** Creates a new instance of GetTransactionTimeTypeCommand */
     public GetTransactionTimeTypeCommand() {
@@ -66,7 +73,7 @@ public class GetTransactionTimeTypeCommand
 
     @Override
     protected TransactionTimeType getEntity() {
-        var transactionTimeType = TransactionTimeTypeLogic.getInstance().getTransactionTimeTypeByUniversalSpec(this, form, true);
+        var transactionTimeType = transactionTimeTypeLogic.getTransactionTimeTypeByUniversalSpec(this, form, true);
 
         if(transactionTimeType != null) {
             sendEvent(transactionTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetTransactionTimeTypeCommand
 
     @Override
     protected BaseResult getResult(TransactionTimeType transactionTimeType) {
-        var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
         var result = AccountingResultFactory.getGetTransactionTimeTypeResult();
 
         if(transactionTimeType != null) {

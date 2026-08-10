@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTransactionGlAccountCategoryCommand
@@ -59,6 +59,13 @@ public class GetTransactionGlAccountCategoryCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    TransactionGlAccountCategoryLogic transactionGlAccountCategoryLogic;
+
     
     /** Creates a new instance of GetTransactionGlAccountCategoryCommand */
     public GetTransactionGlAccountCategoryCommand() {
@@ -67,7 +74,7 @@ public class GetTransactionGlAccountCategoryCommand
 
     @Override
     protected TransactionGlAccountCategory getEntity() {
-        var transactionGlAccountCategory = TransactionGlAccountCategoryLogic.getInstance().getTransactionGlAccountCategoryByUniversalSpec(this, form);
+        var transactionGlAccountCategory = transactionGlAccountCategoryLogic.getTransactionGlAccountCategoryByUniversalSpec(this, form);
 
         if(transactionGlAccountCategory != null) {
             sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +85,6 @@ public class GetTransactionGlAccountCategoryCommand
 
     @Override
     protected BaseResult getResult(TransactionGlAccountCategory entity) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetTransactionGlAccountCategoryResult();
 
         if(entity != null) {

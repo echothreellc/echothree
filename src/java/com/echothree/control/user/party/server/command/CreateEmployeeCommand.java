@@ -48,10 +48,10 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEmployeeCommand
@@ -65,8 +65,8 @@ public class CreateEmployeeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EmployeeTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -85,8 +85,39 @@ public class CreateEmployeeCommand
                 new FieldDefinition("Password1", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("Password2", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ContactEmailAddressLogic contactEmailAddressLogic;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
+    @Inject
+    PasswordStringPolicyLogic passwordStringPolicyLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     
     /** Creates a new instance of CreateEmployeeCommand */
     public CreateEmployeeCommand() {
@@ -95,8 +126,6 @@ public class CreateEmployeeCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-        var userControl = getUserControl();
         var result = PartyResultFactory.getCreateEmployeeResult();
         PartyEmployee partyEmployee = null;
         var username = form.getUsername();
@@ -107,9 +136,8 @@ public class CreateEmployeeCommand
             var password2 = form.getPassword2();
             
             if(password1.equals(password2)) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var partyType = partyControl.getPartyTypeByName(PartyTypes.EMPLOYEE.name());
-                var partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
+                var partyTypePasswordStringPolicy = passwordStringPolicyLogic.checkStringPassword(session,
                         getUserVisit(), this, partyType, null, null, password1);
                 
                 if(!hasExecutionErrors()) {
@@ -135,18 +163,14 @@ public class CreateEmployeeCommand
                                     if(preferredCurrencyIsoName == null)
                                         preferredCurrency = null;
                                     else {
-                                        var accountingControl = Session.getModelController(AccountingControl.class);
                                         preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                     }
                                     
                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                        var securityControl = Session.getModelController(SecurityControl.class);
                                         var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
                                         var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
                                         
                                         if(partySecurityRoleTemplate != null) {
-                                            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-                                            var workflowControl = Session.getModelController(WorkflowControl.class);
                                             var soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
                                             var personalTitleId = form.getPersonalTitleId();
@@ -161,14 +185,14 @@ public class CreateEmployeeCommand
                                             var nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
                                             var emailAddress = form.getEmailAddress();
                                             var allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                            var partyEmployeeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.EMPLOYEE.name());
+                                            var partyEmployeeName = sequenceGeneratorLogic.getNextSequenceValue(null, SequenceTypes.EMPLOYEE.name());
 
                                             var party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                                             partyControl.createPerson(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, createdBy);
                                             partyEmployee = employeeControl.createPartyEmployee(party, partyEmployeeName, employeeType, createdBy);
                                             userControl.createUserLogin(party, username, createdBy);
                                             
-                                            ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
+                                            contactEmailAddressLogic.createContactEmailAddress(party,
                                                     emailAddress, allowSolicitation, null,
                                                     ContactMechanismPurposes.PRIMARY_EMAIL.name(), createdBy);
 
@@ -190,7 +214,7 @@ public class CreateEmployeeCommand
                                             workflowControl.addEntityToWorkflowUsingNames(null, EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
                                                     EmployeeAvailabilityConstants.WorkflowEntrance_NEW_AVAILABLE, entityInstance, null, null, createdBy);
                                             
-                                            ContactListLogic.getInstance().setupInitialContactLists(this, party, createdBy);
+                                            contactListLogic.setupInitialContactLists(this, party, createdBy);
                                         } else {
                                             addExecutionError(ExecutionErrors.UnknownPartySecurityRoleTemplateName.name(), partySecurityRoleTemplateName);
                                         }

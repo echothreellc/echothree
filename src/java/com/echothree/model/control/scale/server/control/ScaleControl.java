@@ -118,6 +118,12 @@ public class ScaleControl
     //   Scale Group Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ScaleTypeFactory scaleTypeFactory;
+
+    @Inject
+    protected ScaleTypeDetailFactory scaleTypeDetailFactory;
+
     public ScaleType createScaleType(String scaleTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultScaleType = getDefaultScaleType();
         var defaultFound = defaultScaleType != null;
@@ -131,12 +137,12 @@ public class ScaleControl
             isDefault = true;
         }
 
-        var scaleType = ScaleTypeFactory.getInstance().create();
-        var scaleTypeDetail = ScaleTypeDetailFactory.getInstance().create(scaleType,
+        var scaleType = scaleTypeFactory.create();
+        var scaleTypeDetail = scaleTypeDetailFactory.create(scaleType,
                 scaleTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        scaleType = ScaleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        scaleType = scaleTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 scaleType.getPrimaryKey());
         scaleType.setActiveDetail(scaleTypeDetail);
         scaleType.setLastDetail(scaleTypeDetail);
@@ -151,7 +157,7 @@ public class ScaleControl
     public ScaleType getScaleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ScaleTypePK(entityInstance.getEntityUniqueId());
 
-        return ScaleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return scaleTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ScaleType getScaleTypeByEntityInstance(EntityInstance entityInstance) {
@@ -192,7 +198,7 @@ public class ScaleControl
     }
 
     private ScaleType getScaleTypeByName(String scaleTypeName, EntityPermission entityPermission) {
-        return ScaleTypeFactory.getInstance().getEntityFromQuery(entityPermission, getScaleTypeByNameQueries, scaleTypeName);
+        return scaleTypeFactory.getEntityFromQuery(entityPermission, getScaleTypeByNameQueries, scaleTypeName);
     }
 
     public ScaleType getScaleTypeByName(String scaleTypeName) {
@@ -233,7 +239,7 @@ public class ScaleControl
     }
 
     private ScaleType getDefaultScaleType(EntityPermission entityPermission) {
-        return ScaleTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultScaleTypeQueries);
+        return scaleTypeFactory.getEntityFromQuery(entityPermission, getDefaultScaleTypeQueries);
     }
 
     public ScaleType getDefaultScaleType() {
@@ -270,7 +276,7 @@ public class ScaleControl
     }
 
     private List<ScaleType> getScaleTypes(EntityPermission entityPermission) {
-        return ScaleTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getScaleTypesQueries);
+        return scaleTypeFactory.getEntitiesFromQuery(entityPermission, getScaleTypesQueries);
     }
 
     public List<ScaleType> getScaleTypes() {
@@ -336,7 +342,7 @@ public class ScaleControl
     private void updateScaleTypeFromValue(ScaleTypeDetailValue scaleTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(scaleTypeDetailValue.hasBeenModified()) {
-            var scaleType = ScaleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleType = scaleTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      scaleTypeDetailValue.getScaleTypePK());
             var scaleTypeDetail = scaleType.getActiveDetailForUpdate();
 
@@ -364,7 +370,7 @@ public class ScaleControl
                 }
             }
 
-            scaleTypeDetail = ScaleTypeDetailFactory.getInstance().create(scaleTypePK, scaleTypeName, isDefault,
+            scaleTypeDetail = scaleTypeDetailFactory.create(scaleTypePK, scaleTypeName, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             scaleType.setActiveDetail(scaleTypeDetail);
@@ -411,9 +417,12 @@ public class ScaleControl
     //   Scale Group Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ScaleTypeDescriptionFactory scaleTypeDescriptionFactory;
+
     public ScaleTypeDescription createScaleTypeDescription(ScaleType scaleType,
             Language language, String description, BasePK createdBy) {
-        var scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType,
+        var scaleTypeDescription = scaleTypeDescriptionFactory.create(scaleType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(scaleType.getPrimaryKey(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -442,7 +451,7 @@ public class ScaleControl
 
     private ScaleTypeDescription getScaleTypeDescription(ScaleType scaleType,
             Language language, EntityPermission entityPermission) {
-        return ScaleTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getScaleTypeDescriptionQueries,
+        return scaleTypeDescriptionFactory.getEntityFromQuery(entityPermission, getScaleTypeDescriptionQueries,
                 scaleType, language, Session.MAX_TIME);
     }
 
@@ -485,7 +494,7 @@ public class ScaleControl
 
     private List<ScaleTypeDescription> getScaleTypeDescriptionsByScaleType(ScaleType scaleType,
             EntityPermission entityPermission) {
-        return ScaleTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getScaleTypeDescriptionsByScaleTypeQueries,
+        return scaleTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaleTypeDescriptionsByScaleTypeQueries,
                 scaleType, Session.MAX_TIME);
     }
 
@@ -531,7 +540,7 @@ public class ScaleControl
 
     public void updateScaleTypeDescriptionFromValue(ScaleTypeDescriptionValue scaleTypeDescriptionValue, BasePK updatedBy) {
         if(scaleTypeDescriptionValue.hasBeenModified()) {
-            var scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleTypeDescription = scaleTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleTypeDescriptionValue.getPrimaryKey());
 
             scaleTypeDescription.setThruTime(session.getStartTime());
@@ -541,7 +550,7 @@ public class ScaleControl
             var language = scaleTypeDescription.getLanguage();
             var description = scaleTypeDescriptionValue.getDescription();
 
-            scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType, language, description,
+            scaleTypeDescription = scaleTypeDescriptionFactory.create(scaleType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(scaleType.getPrimaryKey(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -567,6 +576,12 @@ public class ScaleControl
     //   Scales
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ScaleFactory scaleFactory;
+
+    @Inject
+    protected ScaleDetailFactory scaleDetailFactory;
+
     public Scale createScale(String scaleName, ScaleType scaleType, ServerService serverService, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultScale = getDefaultScale();
@@ -581,12 +596,12 @@ public class ScaleControl
             isDefault = true;
         }
 
-        var scale = ScaleFactory.getInstance().create();
-        var scaleDetail = ScaleDetailFactory.getInstance().create(scale, scaleName, scaleType, serverService, isDefault, sortOrder,
+        var scale = scaleFactory.create();
+        var scaleDetail = scaleDetailFactory.create(scale, scaleName, scaleType, serverService, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        scale = ScaleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, scale.getPrimaryKey());
+        scale = scaleFactory.getEntityFromPK(EntityPermission.READ_WRITE, scale.getPrimaryKey());
         scale.setActiveDetail(scaleDetail);
         scale.setLastDetail(scaleDetail);
         scale.store();
@@ -600,7 +615,7 @@ public class ScaleControl
     public Scale getScaleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ScalePK(entityInstance.getEntityUniqueId());
 
-        return ScaleFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return scaleFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Scale getScaleByEntityInstance(EntityInstance entityInstance) {
@@ -659,7 +674,7 @@ public class ScaleControl
     }
 
     private Scale getScaleByName(String scaleName, EntityPermission entityPermission) {
-        return ScaleFactory.getInstance().getEntityFromQuery(entityPermission, getScaleByNameQueries, scaleName);
+        return scaleFactory.getEntityFromQuery(entityPermission, getScaleByNameQueries, scaleName);
     }
 
     public Scale getScaleByName(String scaleName) {
@@ -700,7 +715,7 @@ public class ScaleControl
     }
 
     private Scale getDefaultScale(EntityPermission entityPermission) {
-        return ScaleFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultScaleQueries);
+        return scaleFactory.getEntityFromQuery(entityPermission, getDefaultScaleQueries);
     }
 
     public Scale getDefaultScale() {
@@ -737,7 +752,7 @@ public class ScaleControl
     }
 
     private List<Scale> getScales(EntityPermission entityPermission) {
-        return ScaleFactory.getInstance().getEntitiesFromQuery(entityPermission, getScalesQueries);
+        return scaleFactory.getEntitiesFromQuery(entityPermission, getScalesQueries);
     }
 
     public List<Scale> getScales() {
@@ -772,7 +787,7 @@ public class ScaleControl
     }
 
     private List<Scale> getScalesByScaleType(ScaleType scaleType, EntityPermission entityPermission) {
-        return ScaleFactory.getInstance().getEntitiesFromQuery(entityPermission, getScalesByScaleTypeQueries,
+        return scaleFactory.getEntitiesFromQuery(entityPermission, getScalesByScaleTypeQueries,
                 scaleType);
     }
 
@@ -808,7 +823,7 @@ public class ScaleControl
     }
 
     private List<Scale> getScalesByServerService(ServerService serverService, EntityPermission entityPermission) {
-        return ScaleFactory.getInstance().getEntitiesFromQuery(entityPermission, getScalesByServerServiceQueries,
+        return scaleFactory.getEntitiesFromQuery(entityPermission, getScalesByServerServiceQueries,
                 serverService);
     }
 
@@ -875,7 +890,7 @@ public class ScaleControl
     private void updateScaleFromValue(ScaleDetailValue scaleDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(scaleDetailValue.hasBeenModified()) {
-            var scale = ScaleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scale = scaleFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      scaleDetailValue.getScalePK());
             var scaleDetail = scale.getActiveDetailForUpdate();
 
@@ -905,7 +920,7 @@ public class ScaleControl
                 }
             }
 
-            scaleDetail = ScaleDetailFactory.getInstance().create(scalePK, scaleName, scaleTypePK, serverServicePK, isDefault, sortOrder,
+            scaleDetail = scaleDetailFactory.create(scalePK, scaleName, scaleTypePK, serverServicePK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             scale.setActiveDetail(scaleDetail);
@@ -976,9 +991,12 @@ public class ScaleControl
     //   Scale Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ScaleDescriptionFactory scaleDescriptionFactory;
+
     public ScaleDescription createScaleDescription(Scale scale,
             Language language, String description, BasePK createdBy) {
-        var scaleDescription = ScaleDescriptionFactory.getInstance().create(scale,
+        var scaleDescription = scaleDescriptionFactory.create(scale,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(scale.getPrimaryKey(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1007,7 +1025,7 @@ public class ScaleControl
 
     private ScaleDescription getScaleDescription(Scale scale,
             Language language, EntityPermission entityPermission) {
-        return ScaleDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getScaleDescriptionQueries,
+        return scaleDescriptionFactory.getEntityFromQuery(entityPermission, getScaleDescriptionQueries,
                 scale, language, Session.MAX_TIME);
     }
 
@@ -1050,7 +1068,7 @@ public class ScaleControl
 
     private List<ScaleDescription> getScaleDescriptionsByScale(Scale scale,
             EntityPermission entityPermission) {
-        return ScaleDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getScaleDescriptionsByScaleQueries,
+        return scaleDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaleDescriptionsByScaleQueries,
                 scale, Session.MAX_TIME);
     }
 
@@ -1096,7 +1114,7 @@ public class ScaleControl
 
     public void updateScaleDescriptionFromValue(ScaleDescriptionValue scaleDescriptionValue, BasePK updatedBy) {
         if(scaleDescriptionValue.hasBeenModified()) {
-            var scaleDescription = ScaleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleDescription = scaleDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleDescriptionValue.getPrimaryKey());
 
             scaleDescription.setThruTime(session.getStartTime());
@@ -1106,7 +1124,7 @@ public class ScaleControl
             var language = scaleDescription.getLanguage();
             var description = scaleDescriptionValue.getDescription();
 
-            scaleDescription = ScaleDescriptionFactory.getInstance().create(scale, language, description,
+            scaleDescription = scaleDescriptionFactory.create(scale, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(scale.getPrimaryKey(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1132,6 +1150,12 @@ public class ScaleControl
     //   Scale Use Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ScaleUseTypeFactory scaleUseTypeFactory;
+
+    @Inject
+    protected ScaleUseTypeDetailFactory scaleUseTypeDetailFactory;
+
     public ScaleUseType createScaleUseType(String scaleUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultScaleUseType = getDefaultScaleUseType();
         var defaultFound = defaultScaleUseType != null;
@@ -1145,12 +1169,12 @@ public class ScaleControl
             isDefault = true;
         }
 
-        var scaleUseType = ScaleUseTypeFactory.getInstance().create();
-        var scaleUseTypeDetail = ScaleUseTypeDetailFactory.getInstance().create(scaleUseType,
+        var scaleUseType = scaleUseTypeFactory.create();
+        var scaleUseTypeDetail = scaleUseTypeDetailFactory.create(scaleUseType,
                 scaleUseTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        scaleUseType = ScaleUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        scaleUseType = scaleUseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 scaleUseType.getPrimaryKey());
         scaleUseType.setActiveDetail(scaleUseTypeDetail);
         scaleUseType.setLastDetail(scaleUseTypeDetail);
@@ -1165,7 +1189,7 @@ public class ScaleControl
     public ScaleUseType getScaleUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ScaleUseTypePK(entityInstance.getEntityUniqueId());
 
-        return ScaleUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return scaleUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ScaleUseType getScaleUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1206,7 +1230,7 @@ public class ScaleControl
     }
 
     private ScaleUseType getScaleUseTypeByName(String scaleUseTypeName, EntityPermission entityPermission) {
-        return ScaleUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getScaleUseTypeByNameQueries, scaleUseTypeName);
+        return scaleUseTypeFactory.getEntityFromQuery(entityPermission, getScaleUseTypeByNameQueries, scaleUseTypeName);
     }
 
     public ScaleUseType getScaleUseTypeByName(String scaleUseTypeName) {
@@ -1247,7 +1271,7 @@ public class ScaleControl
     }
 
     private ScaleUseType getDefaultScaleUseType(EntityPermission entityPermission) {
-        return ScaleUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultScaleUseTypeQueries);
+        return scaleUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultScaleUseTypeQueries);
     }
 
     public ScaleUseType getDefaultScaleUseType() {
@@ -1284,7 +1308,7 @@ public class ScaleControl
     }
 
     private List<ScaleUseType> getScaleUseTypes(EntityPermission entityPermission) {
-        return ScaleUseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getScaleUseTypesQueries);
+        return scaleUseTypeFactory.getEntitiesFromQuery(entityPermission, getScaleUseTypesQueries);
     }
 
     public List<ScaleUseType> getScaleUseTypes() {
@@ -1350,7 +1374,7 @@ public class ScaleControl
     private void updateScaleUseTypeFromValue(ScaleUseTypeDetailValue scaleUseTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(scaleUseTypeDetailValue.hasBeenModified()) {
-            var scaleUseType = ScaleUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleUseType = scaleUseTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      scaleUseTypeDetailValue.getScaleUseTypePK());
             var scaleUseTypeDetail = scaleUseType.getActiveDetailForUpdate();
 
@@ -1378,7 +1402,7 @@ public class ScaleControl
                 }
             }
 
-            scaleUseTypeDetail = ScaleUseTypeDetailFactory.getInstance().create(scaleUseTypePK, scaleUseTypeName, isDefault,
+            scaleUseTypeDetail = scaleUseTypeDetailFactory.create(scaleUseTypePK, scaleUseTypeName, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             scaleUseType.setActiveDetail(scaleUseTypeDetail);
@@ -1425,9 +1449,12 @@ public class ScaleControl
     //   Scale Use Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ScaleUseTypeDescriptionFactory scaleUseTypeDescriptionFactory;
+
     public ScaleUseTypeDescription createScaleUseTypeDescription(ScaleUseType scaleUseType,
             Language language, String description, BasePK createdBy) {
-        var scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType,
+        var scaleUseTypeDescription = scaleUseTypeDescriptionFactory.create(scaleUseType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(scaleUseType.getPrimaryKey(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1456,7 +1483,7 @@ public class ScaleControl
 
     private ScaleUseTypeDescription getScaleUseTypeDescription(ScaleUseType scaleUseType,
             Language language, EntityPermission entityPermission) {
-        return ScaleUseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getScaleUseTypeDescriptionQueries,
+        return scaleUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getScaleUseTypeDescriptionQueries,
                 scaleUseType, language, Session.MAX_TIME);
     }
 
@@ -1499,7 +1526,7 @@ public class ScaleControl
 
     private List<ScaleUseTypeDescription> getScaleUseTypeDescriptionsByScaleUseType(ScaleUseType scaleUseType,
             EntityPermission entityPermission) {
-        return ScaleUseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getScaleUseTypeDescriptionsByScaleUseTypeQueries,
+        return scaleUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaleUseTypeDescriptionsByScaleUseTypeQueries,
                 scaleUseType, Session.MAX_TIME);
     }
 
@@ -1545,7 +1572,7 @@ public class ScaleControl
 
     public void updateScaleUseTypeDescriptionFromValue(ScaleUseTypeDescriptionValue scaleUseTypeDescriptionValue, BasePK updatedBy) {
         if(scaleUseTypeDescriptionValue.hasBeenModified()) {
-            var scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var scaleUseTypeDescription = scaleUseTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleUseTypeDescriptionValue.getPrimaryKey());
 
             scaleUseTypeDescription.setThruTime(session.getStartTime());
@@ -1555,7 +1582,7 @@ public class ScaleControl
             var language = scaleUseTypeDescription.getLanguage();
             var description = scaleUseTypeDescriptionValue.getDescription();
 
-            scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType, language, description,
+            scaleUseTypeDescription = scaleUseTypeDescriptionFactory.create(scaleUseType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(scaleUseType.getPrimaryKey(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1580,9 +1607,12 @@ public class ScaleControl
     // --------------------------------------------------------------------------------
     //   Party Scale Uses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyScaleUseFactory partyScaleUseFactory;
+
     public PartyScaleUse createPartyScaleUse(Party party, ScaleUseType scaleUseType, Scale scale, BasePK createdBy) {
-        var partyScaleUse = PartyScaleUseFactory.getInstance().create(party, scaleUseType, scale,
+        var partyScaleUse = partyScaleUseFactory.create(party, scaleUseType, scale,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1635,7 +1665,7 @@ public class ScaleControl
     }
 
     private PartyScaleUse getPartyScaleUse(Party party, ScaleUseType scaleUseType, EntityPermission entityPermission) {
-        return PartyScaleUseFactory.getInstance().getEntityFromQuery(entityPermission, getPartyScaleUseQueries,
+        return partyScaleUseFactory.getEntityFromQuery(entityPermission, getPartyScaleUseQueries,
                 party, scaleUseType, Session.MAX_TIME);
     }
 
@@ -1681,7 +1711,7 @@ public class ScaleControl
     }
 
     private List<PartyScaleUse> getPartyScaleUsesByParty(Party party, EntityPermission entityPermission) {
-        return PartyScaleUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyScaleUsesByPartyQueries,
+        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, getPartyScaleUsesByPartyQueries,
                 party, Session.MAX_TIME);
     }
 
@@ -1716,7 +1746,7 @@ public class ScaleControl
     }
 
     private List<PartyScaleUse> getPartyScaleUsesByScale(Scale scale, EntityPermission entityPermission) {
-        return PartyScaleUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyScaleUsesByScaleQueries,
+        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, getPartyScaleUsesByScaleQueries,
                 scale, Session.MAX_TIME);
     }
 
@@ -1751,7 +1781,7 @@ public class ScaleControl
     }
 
     private List<PartyScaleUse> getPartyScaleUsesByScaleUseType(ScaleUseType scaleUseType, EntityPermission entityPermission) {
-        return PartyScaleUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyScaleUsesByScaleUseTypeQueries,
+        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, getPartyScaleUsesByScaleUseTypeQueries,
                 scaleUseType, Session.MAX_TIME);
     }
 
@@ -1791,7 +1821,7 @@ public class ScaleControl
 
     public void updatePartyScaleUseFromValue(PartyScaleUseValue partyScaleUseValue, BasePK updatedBy) {
         if(partyScaleUseValue.hasBeenModified()) {
-            var partyScaleUse = PartyScaleUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyScaleUse = partyScaleUseFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     partyScaleUseValue.getPrimaryKey());
             
             partyScaleUse.setThruTime(session.getStartTime());
@@ -1801,7 +1831,7 @@ public class ScaleControl
             var scaleUseTypePK = partyScaleUse.getScaleUseTypePK(); // Not updated
             var scalePK = partyScaleUseValue.getScalePK();
             
-            partyScaleUse = PartyScaleUseFactory.getInstance().create(partyPK, scaleUseTypePK,
+            partyScaleUse = partyScaleUseFactory.create(partyPK, scaleUseTypePK,
                     scalePK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

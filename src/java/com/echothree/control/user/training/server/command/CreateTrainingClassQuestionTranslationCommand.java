@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTrainingClassQuestionTranslationCommand
@@ -49,8 +49,8 @@ public class CreateTrainingClassQuestionTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassQuestion.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -59,8 +59,18 @@ public class CreateTrainingClassQuestionTranslationCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("QuestionMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Question", FieldType.STRING, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateTrainingClassQuestionTranslationCommand */
     public CreateTrainingClassQuestionTranslationCommand() {
@@ -69,7 +79,6 @@ public class CreateTrainingClassQuestionTranslationCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -82,7 +91,6 @@ public class CreateTrainingClassQuestionTranslationCommand
                 var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = form.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -90,7 +98,6 @@ public class CreateTrainingClassQuestionTranslationCommand
                         var trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslation(trainingClassQuestion, language);
 
                         if(trainingClassQuestionTranslation == null) {
-                            var mimeTypeLogic = MimeTypeLogic.getInstance();
                             var questionMimeTypeName = form.getQuestionMimeTypeName();
                             var question = form.getQuestion();
 

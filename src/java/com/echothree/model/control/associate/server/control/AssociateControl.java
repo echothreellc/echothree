@@ -77,6 +77,12 @@ import javax.inject.Inject;
 public class AssociateControl
         extends BaseModelControl {
     
+    @Inject
+    protected SequenceControl sequenceControl;
+
+    @Inject
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of AssociateControl */
     protected AssociateControl() {
         super();
@@ -104,7 +110,13 @@ public class AssociateControl
     // --------------------------------------------------------------------------------
     //   Associate Programs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected AssociateProgramFactory associateProgramFactory;
+
+    @Inject
+    protected AssociateProgramDetailFactory associateProgramDetailFactory;
+
     public AssociateProgram createAssociateProgram(String associateProgramName, Sequence associateSequence,
             Sequence associateContactMechanismSequence, Sequence associateReferralSequence, Integer itemIndirectSalePercent,
             Integer itemDirectSalePercent, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -120,13 +132,13 @@ public class AssociateControl
             isDefault = true;
         }
 
-        var associateProgram = AssociateProgramFactory.getInstance().create();
-        var associateProgramDetail = AssociateProgramDetailFactory.getInstance().create(associateProgram,
+        var associateProgram = associateProgramFactory.create();
+        var associateProgramDetail = associateProgramDetailFactory.create(associateProgram,
                 associateProgramName, associateSequence, associateContactMechanismSequence, associateReferralSequence,
                 itemIndirectSalePercent, itemDirectSalePercent, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        associateProgram = AssociateProgramFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        associateProgram = associateProgramFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 associateProgram.getPrimaryKey());
         associateProgram.setActiveDetail(associateProgramDetail);
         associateProgram.setLastDetail(associateProgramDetail);
@@ -141,7 +153,7 @@ public class AssociateControl
     public AssociateProgram getAssociateProgramByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new AssociateProgramPK(entityInstance.getEntityUniqueId());
 
-        return AssociateProgramFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return associateProgramFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public AssociateProgram getAssociateProgramByEntityInstance(EntityInstance entityInstance) {
@@ -167,21 +179,25 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprograms, associateprogramdetails " +
-                        "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_associateprogramname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprograms, associateprogramdetails
+                        WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_associateprogramname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprograms, associateprogramdetails " +
-                        "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_associateprogramname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprograms, associateprogramdetails
+                        WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_associateprogramname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateProgramFactory.getInstance().prepareStatement(query);
+            var ps = associateProgramFactory.prepareStatement(query);
             
             ps.setString(1, associateProgramName);
             
-            associateProgram = AssociateProgramFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            associateProgram = associateProgramFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -209,19 +225,23 @@ public class AssociateControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM associateprograms, associateprogramdetails " +
-                    "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM associateprograms, associateprogramdetails
+                    WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM associateprograms, associateprogramdetails " +
-                    "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM associateprograms, associateprogramdetails
+                    WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid AND ascprgmdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = AssociateProgramFactory.getInstance().prepareStatement(query);
+        var ps = associateProgramFactory.prepareStatement(query);
         
-        return AssociateProgramFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return associateProgramFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public AssociateProgram getDefaultAssociateProgram() {
@@ -240,21 +260,25 @@ public class AssociateControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM associateprograms, associateprogramdetails " +
-                    "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid " +
-                    "ORDER BY ascprgmdt_sortorder, ascprgmdt_associateprogramname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM associateprograms, associateprogramdetails
+                    WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid
+                    ORDER BY ascprgmdt_sortorder, ascprgmdt_associateprogramname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM associateprograms, associateprogramdetails " +
-                    "WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM associateprograms, associateprogramdetails
+                    WHERE ascprgm_activedetailid = ascprgmdt_associateprogramdetailid
+                    FOR UPDATE
+                    """;
         }
 
-        var ps = AssociateProgramFactory.getInstance().prepareStatement(query);
+        var ps = associateProgramFactory.prepareStatement(query);
         
-        return AssociateProgramFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return associateProgramFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<AssociateProgram> getAssociatePrograms() {
@@ -318,7 +342,7 @@ public class AssociateControl
     }
     
     private void updateAssociateProgramFromValue(AssociateProgramDetailValue associateProgramDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var associateProgram = AssociateProgramFactory.getInstance().getEntityFromPK(
+        var associateProgram = associateProgramFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, associateProgramDetailValue.getAssociateProgramPK());
         var associateProgramDetail = associateProgram.getActiveDetailForUpdate();
         
@@ -351,7 +375,7 @@ public class AssociateControl
             }
         }
         
-        associateProgramDetail = AssociateProgramDetailFactory.getInstance().create(associateProgramPK,
+        associateProgramDetail = associateProgramDetailFactory.create(associateProgramPK,
                 associateProgramName, associateSequencePK, associatePartyContactMechanismSequencePK, associateReferralSequencePK,
                 itemIndirectSalePercent, itemDirectSalePercent, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
@@ -399,10 +423,13 @@ public class AssociateControl
     // --------------------------------------------------------------------------------
     //   Associate Program Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected AssociateProgramDescriptionFactory associateProgramDescriptionFactory;
+
     public AssociateProgramDescription createAssociateProgramDescription(AssociateProgram associateProgram, Language language, String description,
             BasePK createdBy) {
-        var associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().create(associateProgram,
+        var associateProgramDescription = associateProgramDescriptionFactory.create(associateProgram,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(associateProgram.getPrimaryKey(), EventTypes.MODIFY, associateProgramDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -417,23 +444,27 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprogramdescriptions " +
-                        "WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_lang_languageid = ? AND ascprgmd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprogramdescriptions
+                        WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_lang_languageid = ? AND ascprgmd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprogramdescriptions " +
-                        "WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_lang_languageid = ? AND ascprgmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprogramdescriptions
+                        WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_lang_languageid = ? AND ascprgmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateProgramDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = associateProgramDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, associateProgram.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            associateProgramDescription = associateProgramDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -464,23 +495,27 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprogramdescriptions, languages " +
-                        "WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ? AND ascprgmd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprogramdescriptions, languages
+                        WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ? AND ascprgmd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associateprogramdescriptions " +
-                        "WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associateprogramdescriptions
+                        WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateProgramDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = associateProgramDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, associateProgram.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            associateProgramDescriptions = AssociateProgramDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            associateProgramDescriptions = associateProgramDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -530,7 +565,7 @@ public class AssociateControl
     
     public void updateAssociateProgramDescriptionFromValue(AssociateProgramDescriptionValue associateProgramDescriptionValue, BasePK updatedBy) {
         if(associateProgramDescriptionValue.hasBeenModified()) {
-            var associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var associateProgramDescription = associateProgramDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      associateProgramDescriptionValue.getPrimaryKey());
             
             associateProgramDescription.setThruTime(session.getStartTime());
@@ -540,7 +575,7 @@ public class AssociateControl
             var language = associateProgramDescription.getLanguage();
             var description = associateProgramDescriptionValue.getDescription();
             
-            associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().create(associateProgram, language, description,
+            associateProgramDescription = associateProgramDescriptionFactory.create(associateProgram, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(associateProgram.getPrimaryKey(), EventTypes.MODIFY, associateProgramDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -565,15 +600,21 @@ public class AssociateControl
     // --------------------------------------------------------------------------------
     //   Associates
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected AssociateFactory associateFactory;
+
+    @Inject
+    protected AssociateDetailFactory associateDetailFactory;
+
     public Associate createAssociate(AssociateProgram associateProgram, String associateName, Party party, String description,
             MimeType summaryMimeType, String summary, BasePK createdBy) {
-        var associate = AssociateFactory.getInstance().create();
-        var associateDetail = AssociateDetailFactory.getInstance().create(associate, associateProgram,
+        var associate = associateFactory.create();
+        var associateDetail = associateDetailFactory.create(associate, associateProgram,
                 associateName, party, description, summaryMimeType, summary, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        associate = AssociateFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        associate = associateFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 associate.getPrimaryKey());
         associate.setActiveDetail(associateDetail);
         associate.setLastDetail(associateDetail);
@@ -591,22 +632,26 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associates, associatedetails " +
-                        "WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? AND ascdt_associatename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associates, associatedetails
+                        WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? AND ascdt_associatename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associates, associatedetails " +
-                        "WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? AND ascdt_associatename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associates, associatedetails
+                        WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? AND ascdt_associatename = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateFactory.getInstance().prepareStatement(query);
+            var ps = associateFactory.prepareStatement(query);
             
             ps.setLong(1, associateProgram.getPrimaryKey().getEntityId());
             ps.setString(2, associateName);
             
-            associate = AssociateFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            associate = associateFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -637,22 +682,26 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associates, associatedetails " +
-                        "WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? " +
-                        "ORDER BY ascdt_associatename";
+                query = """
+                        SELECT _ALL_
+                        FROM associates, associatedetails
+                        WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ?
+                        ORDER BY ascdt_associatename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associates, associatedetails " +
-                        "WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associates, associatedetails
+                        WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateFactory.getInstance().prepareStatement(query);
+            var ps = associateFactory.prepareStatement(query);
             
             ps.setLong(1, associateProgram.getPrimaryKey().getEntityId());
             
-            associates = AssociateFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            associates = associateFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -722,7 +771,7 @@ public class AssociateControl
     }
     
     public void updateAssociateFromValue(AssociateDetailValue associateDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var associate = AssociateFactory.getInstance().getEntityFromPK(
+        var associate = associateFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, associateDetailValue.getAssociatePK());
         var associateDetail = associate.getActiveDetailForUpdate();
         
@@ -737,7 +786,7 @@ public class AssociateControl
         var summaryMimeTypePK = associateDetailValue.getSummaryMimeTypePK();
         var summary = associateDetailValue.getSummary();
         
-        associateDetail = AssociateDetailFactory.getInstance().create(associatePK, associateProgramPK, associateName,
+        associateDetail = associateDetailFactory.create(associatePK, associateProgramPK, associateName,
                 partyPK, description, summaryMimeTypePK, summary, session.getStartTime(), Session.MAX_TIME);
         
         associate.setActiveDetail(associateDetail);
@@ -772,7 +821,13 @@ public class AssociateControl
     // --------------------------------------------------------------------------------
     //   Associate Contact Mechanisms
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected AssociatePartyContactMechanismFactory associatePartyContactMechanismFactory;
+
+    @Inject
+    protected AssociatePartyContactMechanismDetailFactory associatePartyContactMechanismDetailFactory;
+
     public AssociatePartyContactMechanism createAssociatePartyContactMechanism(Associate associate, String associatePartyContactMechanismName,
             PartyContactMechanism partyContactMechanism, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultAssociatePartyContactMechanism = getDefaultAssociatePartyContactMechanism(associate);
@@ -787,13 +842,13 @@ public class AssociateControl
             isDefault = true;
         }
 
-        var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().create();
-        var associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(
+        var associatePartyContactMechanism = associatePartyContactMechanismFactory.create();
+        var associatePartyContactMechanismDetail = associatePartyContactMechanismDetailFactory.create(
                 associatePartyContactMechanism, associate, associatePartyContactMechanismName, partyContactMechanism, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        associatePartyContactMechanism = associatePartyContactMechanismFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 associatePartyContactMechanism.getPrimaryKey());
         associatePartyContactMechanism.setActiveDetail(associatePartyContactMechanismDetail);
         associatePartyContactMechanism.setLastDetail(associatePartyContactMechanismDetail);
@@ -811,24 +866,28 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? AND ascpcmdt_associatepartycontactmechanismname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ? AND ascpcmdt_associatepartycontactmechanismname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? AND ascpcmdt_associatepartycontactmechanismname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ? AND ascpcmdt_associatepartycontactmechanismname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociatePartyContactMechanismFactory.getInstance().prepareStatement(query);
+            var ps = associatePartyContactMechanismFactory.prepareStatement(query);
             
             ps.setLong(1, associate.getPrimaryKey().getEntityId());
             ps.setString(2, associatePartyContactMechanismName);
             
-            associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            associatePartyContactMechanism = associatePartyContactMechanismFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -859,23 +918,27 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? AND ascpcmdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ? AND ascpcmdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? AND ascpcmdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ? AND ascpcmdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociatePartyContactMechanismFactory.getInstance().prepareStatement(query);
+            var ps = associatePartyContactMechanismFactory.prepareStatement(query);
             
             ps.setLong(1, associate.getPrimaryKey().getEntityId());
             
-            associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            associatePartyContactMechanism = associatePartyContactMechanismFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -902,24 +965,28 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? " +
-                        "ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ?
+                        ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_asc_associateid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_asc_associateid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociatePartyContactMechanismFactory.getInstance().prepareStatement(query);
+            var ps = associatePartyContactMechanismFactory.prepareStatement(query);
             
             ps.setLong(1, associate.getPrimaryKey().getEntityId());
             
-            associatePartyContactMechanisms = AssociatePartyContactMechanismFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            associatePartyContactMechanisms = associatePartyContactMechanismFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -942,24 +1009,28 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_pcm_partycontactmechanismid = ? " +
-                        "ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_pcm_partycontactmechanismid = ?
+                        ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails " +
-                        "WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid " +
-                        "AND ascpcmdt_pcm_partycontactmechanismid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatepartycontactmechanisms, associatepartycontactmechanismdetails
+                        WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
+                        AND ascpcmdt_pcm_partycontactmechanismid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociatePartyContactMechanismFactory.getInstance().prepareStatement(query);
+            var ps = associatePartyContactMechanismFactory.prepareStatement(query);
             
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             
-            associatePartyContactMechanisms = AssociatePartyContactMechanismFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            associatePartyContactMechanisms = associatePartyContactMechanismFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1034,7 +1105,7 @@ public class AssociateControl
     
     private void updateAssociatePartyContactMechanismFromValue(AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue,
             boolean checkDefault, BasePK updatedBy) {
-        var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromPK(
+        var associatePartyContactMechanism = associatePartyContactMechanismFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, associatePartyContactMechanismDetailValue.getAssociatePartyContactMechanismPK());
         var associatePartyContactMechanismDetail = associatePartyContactMechanism.getActiveDetailForUpdate();
         
@@ -1065,7 +1136,7 @@ public class AssociateControl
             }
         }
         
-        associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(
+        associatePartyContactMechanismDetail = associatePartyContactMechanismDetailFactory.create(
                 associatePartyContactMechanismPK, associatePK, associatePartyContactMechanismName, partyContactMechanismPK, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -1126,12 +1197,17 @@ public class AssociateControl
     // --------------------------------------------------------------------------------
     //   Associate Referrals
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected AssociateReferralFactory associateReferralFactory;
+
+    @Inject
+    protected AssociateReferralDetailFactory associateReferralDetailFactory;
+
     public AssociateReferral createAssociateReferral(Associate associate, AssociatePartyContactMechanism associatePartyContactMechanism,
             EntityInstance targetEntityInstance, Long associateReferralTime, BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ASSOCIATE_REFERRAL.name());
-        var associateReferralName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+        var associateReferralName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
 
         return createAssociateReferral(associateReferralName, associate, associatePartyContactMechanism, targetEntityInstance, associateReferralTime,
                 createdBy);
@@ -1140,13 +1216,13 @@ public class AssociateControl
     public AssociateReferral createAssociateReferral(String associateReferralName, Associate associate,
             AssociatePartyContactMechanism associatePartyContactMechanism, EntityInstance targetEntityInstance, Long associateReferralTime,
             BasePK createdBy) {
-        var associateReferral = AssociateReferralFactory.getInstance().create();
-        var associateReferralDetail = AssociateReferralDetailFactory.getInstance().create(
+        var associateReferral = associateReferralFactory.create();
+        var associateReferralDetail = associateReferralDetailFactory.create(
                 associateReferral, associateReferralName, associate, associatePartyContactMechanism, targetEntityInstance,
                 associateReferralTime, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        associateReferral = AssociateReferralFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        associateReferral = associateReferralFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 associateReferral.getPrimaryKey());
         associateReferral.setActiveDetail(associateReferralDetail);
         associateReferral.setLastDetail(associateReferralDetail);
@@ -1164,23 +1240,27 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_associatereferralname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_associatereferralname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_associatereferralname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_associatereferralname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateReferralFactory.getInstance().prepareStatement(query);
+            var ps = associateReferralFactory.prepareStatement(query);
             
             ps.setString(1, associateReferralName);
             
-            associateReferral = AssociateReferralFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            associateReferral = associateReferralFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1211,24 +1291,28 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_asc_associateid = ? " +
-                        "ORDER BY ascrfrdt_associatereferralname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_asc_associateid = ?
+                        ORDER BY ascrfrdt_associatereferralname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_asc_associateid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_asc_associateid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateReferralFactory.getInstance().prepareStatement(query);
+            var ps = associateReferralFactory.prepareStatement(query);
             
             ps.setLong(1, associate.getPrimaryKey().getEntityId());
             
-            associateReferrals = AssociateReferralFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            associateReferrals = associateReferralFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1252,24 +1336,28 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ? " +
-                        "ORDER BY ascrfrdt_associatereferralname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ?
+                        ORDER BY ascrfrdt_associatereferralname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateReferralFactory.getInstance().prepareStatement(query);
+            var ps = associateReferralFactory.prepareStatement(query);
             
             ps.setLong(1, associatePartyContactMechanism.getPrimaryKey().getEntityId());
             
-            associateReferrals = AssociateReferralFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            associateReferrals = associateReferralFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1293,24 +1381,28 @@ public class AssociateControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_targetentityinstanceid = ? " +
-                        "ORDER BY ascrfrdt_associatereferralname";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_targetentityinstanceid = ?
+                        ORDER BY ascrfrdt_associatereferralname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM associatereferrals, associatereferraldetails " +
-                        "WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid " +
-                        "AND ascrfrdt_targetentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM associatereferrals, associatereferraldetails
+                        WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
+                        AND ascrfrdt_targetentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = AssociateReferralFactory.getInstance().prepareStatement(query);
+            var ps = associateReferralFactory.prepareStatement(query);
             
             ps.setLong(1, targetEntityInstance.getPrimaryKey().getEntityId());
             
-            associateReferrals = AssociateReferralFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            associateReferrals = associateReferralFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1346,7 +1438,7 @@ public class AssociateControl
     
     public void updateAssociateReferralFromValue(AssociateReferralDetailValue associateReferralDetailValue,
             boolean checkDefault, BasePK updatedBy) {
-        var associateReferral = AssociateReferralFactory.getInstance().getEntityFromPK(
+        var associateReferral = associateReferralFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, associateReferralDetailValue.getAssociateReferralPK());
         var associateReferralDetail = associateReferral.getActiveDetailForUpdate();
         
@@ -1360,7 +1452,7 @@ public class AssociateControl
         var targetEntityInstancePK = associateReferralDetailValue.getTargetEntityInstancePK();
         var associateReferralTime = associateReferralDetailValue.getAssociateReferralTime();
         
-        associateReferralDetail = AssociateReferralDetailFactory.getInstance().create(associateReferralPK,
+        associateReferralDetail = associateReferralDetailFactory.create(associateReferralPK,
                 associateReferralName, associatePK, associatePartyContactMechanismPK, targetEntityInstancePK, associateReferralTime,
                 session.getStartTime(), Session.MAX_TIME);
         

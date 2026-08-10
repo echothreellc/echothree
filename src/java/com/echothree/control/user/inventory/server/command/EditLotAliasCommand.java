@@ -40,8 +40,8 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -51,7 +51,7 @@ public class EditLotAliasCommand
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -64,18 +64,30 @@ public class EditLotAliasCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotIdentifier", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
-        
+        );
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    LotAliasControl lotAliasControl;
+
+    @Inject
+    LotControl lotControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    LotLogic lotLogic;
+
     /** Creates a new instance of EditLotAliasCommand */
     public EditLotAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     public EditLotAliasResult getResult() {
         return InventoryResultFactory.getEditLotAliasResult();
@@ -87,18 +99,17 @@ public class EditLotAliasCommand
     }
 
     LotAliasType lotAliasType;
-    
+
     @Override
     public LotAlias getEntity(EditLotAliasResult result) {
         LotAlias lotAlias = null;
-        var item = ItemLogic.getInstance().getItemByName(this, spec.getItemName());
+        var item = itemLogic.getItemByName(this, spec.getItemName());
 
         if(!hasExecutionErrors()) {
             var lotIdentifier = spec.getLotIdentifier();
-            var lot = LotLogic.getInstance().getLotByIdentifier(this, item, lotIdentifier);
+            var lot = lotLogic.getLotByIdentifier(this, item, lotIdentifier);
 
             if(!hasExecutionErrors()) {
-                var lotAliasControl = Session.getModelController(LotAliasControl.class);
                 var lotAliasTypeName = spec.getLotAliasTypeName();
 
                 lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
@@ -132,8 +143,6 @@ public class EditLotAliasCommand
 
     @Override
     public void fillInResult(EditLotAliasResult result, LotAlias lotAlias) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
-
         result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
     }
 
@@ -144,7 +153,6 @@ public class EditLotAliasCommand
 
     @Override
     public void canUpdate(LotAlias lotAlias) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var alias = edit.getAlias();
         var duplicateLotAlias = lotAliasControl.getLotAliasByAlias(lotAliasType, alias);
 
@@ -157,7 +165,6 @@ public class EditLotAliasCommand
 
     @Override
     public void doUpdate(LotAlias lotAlias) {
-        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var lotAliasValue = lotAliasControl.getLotAliasValue(lotAlias);
 
         lotAliasValue.setAlias(edit.getAlias());

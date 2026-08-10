@@ -26,6 +26,9 @@ import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterK
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterTypeException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterStepElementNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
@@ -35,11 +38,38 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.inject.Inject;
 
 public class FilterStepElementLogic
         extends BaseLogic {
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
+    @Inject
+    FilterLogic filterLogic;
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
+    @Inject
+    FilterTypeLogic filterTypeLogic;
 
     private FilterStepElementLogic() {
         super();
@@ -55,8 +85,7 @@ public class FilterStepElementLogic
 
     public FilterStepElement getFilterStepElementByName(final ExecutionErrorAccumulator eea, final FilterStep filterStep,
             final String filterStepElementName, final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
-        var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName, entityPermission);
+        var filterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName, entityPermission);
 
         if(filterStepElement == null) {
             handleExecutionError(UnknownFilterStepElementNameException.class, eea, ExecutionErrors.UnknownFilterStepElementName.name(),
@@ -82,14 +111,13 @@ public class FilterStepElementLogic
 
     public FilterStepElement getFilterStepElementByUniversalSpec(final ExecutionErrorAccumulator eea,
             final FilterStepElementUniversalSpec universalSpec, final boolean allowDefault, final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = universalSpec.getFilterKindName();
         var filterTypeName = universalSpec.getFilterTypeName();
         var filterName = universalSpec.getFilterName();
         var filterStepName = universalSpec.getFilterStepName();
         var filterStepElementName = universalSpec.getFilterStepElementName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName, filterName, filterStepName, filterStepElementName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         FilterStepElement filterStepElement = null;
 
         if(nameParameterCount < 6 && possibleEntitySpecs == 0) {
@@ -100,7 +128,7 @@ public class FilterStepElementLogic
 
             if(filterKindName == null) {
                 if(allowDefault) {
-                    filterKind = filterControl.getDefaultFilterKind();
+                    filterKind = filterKindControl.getDefaultFilterKind();
 
                     if(filterKind == null) {
                         handleExecutionError(UnknownDefaultFilterKindException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name());
@@ -109,13 +137,13 @@ public class FilterStepElementLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+                filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterTypeName == null) {
                     if(allowDefault) {
-                        filterType = filterControl.getDefaultFilterType(filterKind);
+                        filterType = filterTypeControl.getDefaultFilterType(filterKind);
 
                         if(filterType == null) {
                             handleExecutionError(UnknownDefaultFilterTypeException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name(),
@@ -125,11 +153,11 @@ public class FilterStepElementLogic
                         handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
-                    filterType = FilterTypeLogic.getInstance().getFilterTypeByName(eea, filterKind, filterTypeName);
+                    filterType = filterTypeLogic.getFilterTypeByName(eea, filterKind, filterTypeName);
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterName == null) {
                     if(allowDefault) {
                         filter = filterControl.getDefaultFilter(filterType);
@@ -142,19 +170,19 @@ public class FilterStepElementLogic
                         handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
-                    filter = FilterLogic.getInstance().getFilterByName(eea, filterType, filterName);
+                    filter = filterLogic.getFilterByName(eea, filterType, filterName);
                 }
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterStepName == null) {
                     // FilterStep does not have a default.
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 } else {
-                    filterStep = FilterStepLogic.getInstance().getFilterStepByName(eea, filter, filterStepName);
+                    filterStep = filterStepLogic.getFilterStepByName(eea, filter, filterStepName);
                 }
             }
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterStepElementName == null) {
                     // FilterStepElement does not have a default.
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -163,11 +191,11 @@ public class FilterStepElementLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterStepElement.name());
 
-            if(!eea.hasExecutionErrors()) {
-                filterStepElement = filterControl.getFilterStepElementByEntityInstance(entityInstance, entityPermission);
+            if(eea == null || !eea.hasExecutionErrors()) {
+                filterStepElement = filterStepElementControl.getFilterStepElementByEntityInstance(entityInstance, entityPermission);
             }
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());

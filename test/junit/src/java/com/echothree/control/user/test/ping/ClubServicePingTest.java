@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.club.common.ClubUtil;
 import com.echothree.control.user.club.common.ClubService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ClubServicePingTest
-        extends TestCase {
+public class ClubServicePingTest {
     private ClubService clubService;
     
-    /** Creates a new instance of ClubServiceTest */
-    public ClubServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new ClubServicePingTest("testPingClubService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             clubService = ClubUtil.getHome();
             assertNotNull(clubService);
@@ -54,8 +37,8 @@ public class ClubServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             clubService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class ClubServicePingTest
         }
     }
     
+    @Test
     public void testPingClubService() {
-        setUp();
         try {
             clubService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

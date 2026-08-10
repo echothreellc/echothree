@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSearchCheckSpellingActionTypeCommand
@@ -46,6 +46,12 @@ public class GetSearchCheckSpellingActionTypeCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchCheckSpellingActionTypeLogic searchCheckSpellingActionTypeLogic;
+
     /** Creates a new instance of GetSearchCheckSpellingActionTypeCommand */
     public GetSearchCheckSpellingActionTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -53,7 +59,7 @@ public class GetSearchCheckSpellingActionTypeCommand
 
     @Override
     protected SearchCheckSpellingActionType getEntity() {
-        var searchCheckSpellingActionType = SearchCheckSpellingActionTypeLogic.getInstance().getSearchCheckSpellingActionTypeByUniversalSpec(this, form);
+        var searchCheckSpellingActionType = searchCheckSpellingActionTypeLogic.getSearchCheckSpellingActionTypeByUniversalSpec(this, form);
 
         if(searchCheckSpellingActionType != null) {
             sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -67,8 +73,6 @@ public class GetSearchCheckSpellingActionTypeCommand
         var result = SearchResultFactory.getGetSearchCheckSpellingActionTypeResult();
 
         if(searchCheckSpellingActionType != null) {
-            var searchControl = Session.getModelController(SearchControl.class);
-
             result.setSearchCheckSpellingActionType(searchControl.getSearchCheckSpellingActionTypeTransfer(getUserVisit(), searchCheckSpellingActionType));
         }
 

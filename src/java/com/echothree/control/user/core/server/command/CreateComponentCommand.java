@@ -17,16 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateComponentForm;
-import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateComponentCommand
@@ -39,8 +38,9 @@ public class CreateComponentCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ComponentName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
     
     /** Creates a new instance of CreateComponentCommand */
     public CreateComponentCommand() {
@@ -49,7 +49,6 @@ public class CreateComponentCommand
     
     @Override
     protected BaseResult execute() {
-        var componentControl = Session.getModelController(ComponentControl.class);
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         

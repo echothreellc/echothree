@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainActionCommand
@@ -54,8 +54,8 @@ public class EditChainActionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ChainAction.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -63,14 +63,17 @@ public class EditChainActionCommand
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainActionSetName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainActionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainActionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
 
     /** Creates a new instance of EditChainActionCommand */
     public EditChainActionCommand() {
@@ -91,7 +94,6 @@ public class EditChainActionCommand
 
     @Override
     public ChainAction getEntity(EditChainActionResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainAction chainAction = null;
         var chainKindName = spec.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
@@ -145,14 +147,11 @@ public class EditChainActionCommand
 
     @Override
     public void fillInResult(EditChainActionResult result, ChainAction chainAction) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainAction(chainControl.getChainActionTransfer(getUserVisit(), chainAction));
     }
 
     @Override
     public void doLock(ChainActionEdit edit, ChainAction chainAction) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainActionDescription = chainControl.getChainActionDescription(chainAction, getPreferredLanguage());
         var chainActionDetail = chainAction.getLastDetail();
 
@@ -166,7 +165,6 @@ public class EditChainActionCommand
 
     @Override
     public void canUpdate(ChainAction chainAction) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainActionName = edit.getChainActionName();
         var duplicateChainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
@@ -183,7 +181,6 @@ public class EditChainActionCommand
 
     @Override
     public void doUpdate(ChainAction chainAction) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
         var chainActionDetailValue = chainControl.getChainActionDetailValueForUpdate(chainAction);
         var chainActionDescription = chainControl.getChainActionDescriptionForUpdate(chainAction, getPreferredLanguage());

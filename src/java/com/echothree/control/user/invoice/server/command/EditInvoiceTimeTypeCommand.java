@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditInvoiceTimeTypeCommand
@@ -52,22 +52,26 @@ public class EditInvoiceTimeTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.InvoiceTimeType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.InvoiceTimeType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InvoiceTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InvoiceTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of EditInvoiceTimeTypeCommand */
     public EditInvoiceTimeTypeCommand() {
@@ -86,7 +90,6 @@ public class EditInvoiceTimeTypeCommand
 
     @Override
     public InvoiceTimeType getEntity(EditInvoiceTimeTypeResult result) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         InvoiceTimeType invoiceTimeType = null;
         var invoiceTypeName = spec.getInvoiceTypeName();
         var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
@@ -119,14 +122,11 @@ public class EditInvoiceTimeTypeCommand
 
     @Override
     public void fillInResult(EditInvoiceTimeTypeResult result, InvoiceTimeType invoiceTimeType) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
-
         result.setInvoiceTimeType(invoiceControl.getInvoiceTimeTypeTransfer(getUserVisit(), invoiceTimeType));
     }
 
     @Override
     public void doLock(InvoiceTimeTypeEdit edit, InvoiceTimeType invoiceTimeType) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, getPreferredLanguage());
         var invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
 
@@ -141,7 +141,6 @@ public class EditInvoiceTimeTypeCommand
 
     @Override
     public void canUpdate(InvoiceTimeType invoiceTimeType) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceTypeName = spec.getInvoiceTypeName();
         var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
@@ -159,7 +158,6 @@ public class EditInvoiceTimeTypeCommand
 
     @Override
     public void doUpdate(InvoiceTimeType invoiceTimeType) {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var partyPK = getPartyPK();
         var invoiceTimeTypeDetailValue = invoiceControl.getInvoiceTimeTypeDetailValueForUpdate(invoiceTimeType);
         var invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescriptionForUpdate(invoiceTimeType, getPreferredLanguage());

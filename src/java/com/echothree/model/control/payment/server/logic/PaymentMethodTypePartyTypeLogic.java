@@ -36,13 +36,28 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentMethodTypePartyTypeLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentMethodTypePartyTypeControl paymentMethodTypePartyTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    PaymentMethodTypeLogic paymentMethodTypeLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
 
     protected PaymentMethodTypePartyTypeLogic() {
         super();
@@ -55,7 +70,6 @@ public class PaymentMethodTypePartyTypeLogic
     public PaymentMethodTypePartyType createPaymentMethodTypePartyType(final ExecutionErrorAccumulator eea,
             final PaymentMethodType paymentMethodType, final PartyType partyType, final Workflow partyPaymentMethodWorkflow,
             final Workflow partyContactMechanismWorkflow, final Boolean isDefault, final Integer sortOrder, final BasePK createdBy) {
-        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
         var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
 
         if(paymentMethodTypePartyType == null) {
@@ -74,12 +88,12 @@ public class PaymentMethodTypePartyTypeLogic
             final String partyContactMechanismWorkflowName, final Boolean isDefault, final Integer sortOrder,
             final BasePK createdBy) {
         PaymentMethodTypePartyType paymentMethodTypePartyType = null;
-        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(eea, paymentMethodTypeName);
-        var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
-        var partyPaymentMethodWorkflow = partyPaymentMethodWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(eea, partyPaymentMethodWorkflowName);
-        var partyContactMechanismWorkflow = partyContactMechanismWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(eea, partyContactMechanismWorkflowName);
+        var paymentMethodType = paymentMethodTypeLogic.getPaymentMethodTypeByName(eea, paymentMethodTypeName);
+        var partyType = partyLogic.getPartyTypeByName(eea, partyTypeName);
+        var partyPaymentMethodWorkflow = partyPaymentMethodWorkflowName == null ? null : workflowLogic.getWorkflowByName(eea, partyPaymentMethodWorkflowName);
+        var partyContactMechanismWorkflow = partyContactMechanismWorkflowName == null ? null : workflowLogic.getWorkflowByName(eea, partyContactMechanismWorkflowName);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             paymentMethodTypePartyType = createPaymentMethodTypePartyType(eea, paymentMethodType, partyType,
                     partyPaymentMethodWorkflow, partyContactMechanismWorkflow, isDefault, sortOrder, createdBy);
         }
@@ -90,7 +104,6 @@ public class PaymentMethodTypePartyTypeLogic
     public PaymentMethodTypePartyType getPaymentMethodTypePartyType(final ExecutionErrorAccumulator eea,
             final PaymentMethodType paymentMethodType, final PartyType partyType,
             final EntityPermission entityPermission) {
-        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
         var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType,
                 partyType, entityPermission);
 
@@ -114,11 +127,11 @@ public class PaymentMethodTypePartyTypeLogic
 
     public PaymentMethodTypePartyType getPaymentMethodTypePartyTypeByNames(final ExecutionErrorAccumulator eea,
             final String paymentMethodTypeName, final String partyTypeName, final EntityPermission entityPermission) {
-        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(eea, paymentMethodTypeName);
-        var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+        var paymentMethodType = paymentMethodTypeLogic.getPaymentMethodTypeByName(eea, paymentMethodTypeName);
+        var partyType = partyLogic.getPartyTypeByName(eea, partyTypeName);
         PaymentMethodTypePartyType paymentMethodTypePartyType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             paymentMethodTypePartyType = getPaymentMethodTypePartyType(eea, paymentMethodType, partyType, entityPermission);
         }
 
@@ -140,19 +153,18 @@ public class PaymentMethodTypePartyTypeLogic
     public PaymentMethodTypePartyType getPaymentMethodTypePartyTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentMethodTypePartyTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentMethodTypePartyType paymentMethodTypePartyType = null;
-        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
         var paymentMethodTypeName = universalSpec.getPaymentMethodTypeName();
         var partyTypeName = universalSpec.getPartyTypeName();
         var fullySpecifiedName = paymentMethodTypeName != null && partyTypeName != null;
-        var parameterCount = (fullySpecifiedName ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (fullySpecifiedName ? 1 : 0) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         if(parameterCount == 0) {
             if(allowDefault) {
                 if(paymentMethodTypeName != null) {
-                    var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(eea,
+                    var paymentMethodType = paymentMethodTypeLogic.getPaymentMethodTypeByName(eea,
                             paymentMethodTypeName);
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getDefaultPaymentMethodTypePartyType(paymentMethodType, entityPermission);
 
                         if(paymentMethodTypePartyType == null) {
@@ -167,17 +179,17 @@ public class PaymentMethodTypePartyTypeLogic
             }
         } else if(parameterCount == 1) {
             if(fullySpecifiedName) {
-                var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(eea, paymentMethodTypeName);
-                var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+                var paymentMethodType = paymentMethodTypeLogic.getPaymentMethodTypeByName(eea, paymentMethodTypeName);
+                var partyType = partyLogic.getPartyTypeByName(eea, partyTypeName);
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     paymentMethodTypePartyType = getPaymentMethodTypePartyType(eea, paymentMethodType, partyType, entityPermission);
                 }
             } else {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentMethodTypePartyType.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyTypeByEntityInstance(entityInstance, entityPermission);
                 }
             }
@@ -200,8 +212,6 @@ public class PaymentMethodTypePartyTypeLogic
 
     public void deletePaymentMethodTypePartyType(final ExecutionErrorAccumulator eea, final PaymentMethodTypePartyType paymentMethodTypePartyType,
             final BasePK deletedBy) {
-        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
-
         paymentMethodTypePartyTypeControl.deletePaymentMethodTypePartyType(paymentMethodTypePartyType, deletedBy);
     }
 

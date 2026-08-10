@@ -30,13 +30,37 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class OfferUseLogic
         extends BaseLogic {
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    SalesOrderControl salesOrderControl;
+
+    @Inject
+    UserControl userControl;
+
+    @Inject
+    WishlistControl wishlistControl;
+
+    @Inject
+    OfferLogic offerLogic;
+
+    @Inject
+    UseLogic useLogic;
 
     protected OfferUseLogic() {
         super();
@@ -48,13 +72,11 @@ public class OfferUseLogic
     
     public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName,
             final EntityPermission entityPermission) {
-        var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
-        var use = UseLogic.getInstance().getUseByName(eea, useName);
+        var offer = offerLogic.getOfferByName(eea, offerName);
+        var use = useLogic.getUseByName(eea, useName);
         OfferUse offerUse = null;
 
-        if(!eea.hasExecutionErrors()) {
-            var offerUseControl = Session.getModelController(OfferUseControl.class);
-
+        if(eea == null || !eea.hasExecutionErrors()) {
             offerUse = offerUseControl.getOfferUse(offer, use, entityPermission);
 
             if(offerUse == null) {
@@ -75,12 +97,6 @@ public class OfferUseLogic
     }
 
     public void deleteOfferUse(final ExecutionErrorAccumulator eea, final OfferUse offerUse, final BasePK deletedBy) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var customerControl = Session.getModelController(CustomerControl.class);
-        var salesOrderControl = Session.getModelController(SalesOrderControl.class);
-        var userControl = Session.getModelController(UserControl.class);
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-
         if(contentControl.countContentCollectionsByDefaultOfferUse(offerUse) == 0
                 && contentControl.countContentCatalogsByDefaultOfferUse(offerUse) == 0
                 && contentControl.countContentCategoriesByDefaultOfferUse(offerUse) == 0
@@ -91,8 +107,6 @@ public class OfferUseLogic
                 && userControl.countUserVisitsByOfferUse(offerUse) == 0
                 && wishlistControl.countWishlistsByOfferUse(offerUse) == 0
                 && wishlistControl.countWishlistLinesByOfferUse(offerUse) == 0) {
-            var offerUseControl = Session.getModelController(OfferUseControl.class);
-
             offerUseControl.deleteOfferUse(offerUse, deletedBy);
         } else {
             handleExecutionError(CannotDeleteOfferUseInUseException.class, eea, ExecutionErrors.CannotDeleteOfferUseInUse.name());

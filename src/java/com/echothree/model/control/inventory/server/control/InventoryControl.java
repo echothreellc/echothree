@@ -108,10 +108,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 @CommandScope
 public class InventoryControl
         extends BaseInventoryControl {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
     
     /** Creates a new instance of InventoryControl */
     protected InventoryControl() {
@@ -121,7 +131,13 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Location Groups
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryLocationGroupFactory inventoryLocationGroupFactory;
+
+    @Inject
+    protected InventoryLocationGroupDetailFactory inventoryLocationGroupDetailFactory;
+
     public InventoryLocationGroup createInventoryLocationGroup(Party warehouseParty, String inventoryLocationGroupName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultInventoryLocationGroup = getDefaultInventoryLocationGroup(warehouseParty);
@@ -136,13 +152,13 @@ public class InventoryControl
             isDefault = true;
         }
 
-        var inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().create();
-        var inventoryLocationGroupDetail = InventoryLocationGroupDetailFactory.getInstance().create(
+        var inventoryLocationGroup = inventoryLocationGroupFactory.create();
+        var inventoryLocationGroupDetail = inventoryLocationGroupDetailFactory.create(
                 inventoryLocationGroup, warehouseParty, inventoryLocationGroupName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroup.getPrimaryKey());
+        inventoryLocationGroup = inventoryLocationGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroup.getPrimaryKey());
         inventoryLocationGroup.setActiveDetail(inventoryLocationGroupDetail);
         inventoryLocationGroup.setLastDetail(inventoryLocationGroupDetail);
         inventoryLocationGroup.store();
@@ -156,7 +172,7 @@ public class InventoryControl
     public InventoryLocationGroup getInventoryLocationGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InventoryLocationGroupPK(entityInstance.getEntityUniqueId());
 
-        return InventoryLocationGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return inventoryLocationGroupFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InventoryLocationGroup getInventoryLocationGroupByEntityInstance(EntityInstance entityInstance) {
@@ -199,12 +215,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
+            var ps = inventoryLocationGroupFactory.prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setString(2, inventoryLocationGroupName);
 
-            inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            inventoryLocationGroup = inventoryLocationGroupFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -253,11 +269,11 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
+            var ps = inventoryLocationGroupFactory.prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
 
-            inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            inventoryLocationGroup = inventoryLocationGroupFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -302,11 +318,11 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
+            var ps = inventoryLocationGroupFactory.prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
 
-            inventoryLocationGroups = InventoryLocationGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            inventoryLocationGroups = inventoryLocationGroupFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -376,7 +392,7 @@ public class InventoryControl
     
     private void updateInventoryLocationGroupFromValue(InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue,
             boolean checkDefault, BasePK updatedBy) {
-        var inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDetailValue.getInventoryLocationGroupPK());
+        var inventoryLocationGroup = inventoryLocationGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDetailValue.getInventoryLocationGroupPK());
         var inventoryLocationGroupDetail = inventoryLocationGroup.getActiveDetailForUpdate();
         
         inventoryLocationGroupDetail.setThruTime(session.getStartTime());
@@ -405,7 +421,7 @@ public class InventoryControl
             }
         }
         
-        inventoryLocationGroupDetail = InventoryLocationGroupDetailFactory.getInstance().create(inventoryLocationGroupPK,
+        inventoryLocationGroupDetail = inventoryLocationGroupDetailFactory.create(inventoryLocationGroupPK,
                 warehousePartyPK, inventoryLocationGroupName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         inventoryLocationGroup.setActiveDetail(inventoryLocationGroupDetail);
@@ -483,7 +499,7 @@ public class InventoryControl
         deleteInventoryLocationGroupVolumeByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
         deleteInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
         
-        ((WarehouseControl)Session.getModelController(WarehouseControl.class)).deleteLocationsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
+        warehouseControl.deleteLocationsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
         deleteInventoryLocationGroup(inventoryLocationGroup, deletedBy, true);
     }
     
@@ -498,9 +514,12 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Location Group Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryLocationGroupDescriptionFactory inventoryLocationGroupDescriptionFactory;
+
     public InventoryLocationGroupDescription createInventoryLocationGroupDescription(InventoryLocationGroup inventoryLocationGroup, Language language, String description, BasePK createdBy) {
-        var inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description, session.getStartTime(),
+        var inventoryLocationGroupDescription = inventoryLocationGroupDescriptionFactory.create(inventoryLocationGroup, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -529,13 +548,13 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryLocationGroupDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = inventoryLocationGroupDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            inventoryLocationGroupDescription = inventoryLocationGroupDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -582,12 +601,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryLocationGroupDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = inventoryLocationGroupDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            inventoryLocationGroupDescriptions = InventoryLocationGroupDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            inventoryLocationGroupDescriptions = inventoryLocationGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -641,7 +660,7 @@ public class InventoryControl
     
     public void updateInventoryLocationGroupDescriptionFromValue(InventoryLocationGroupDescriptionValue inventoryLocationGroupDescriptionValue, BasePK updatedBy) {
         if(inventoryLocationGroupDescriptionValue.hasBeenModified()) {
-            var inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDescriptionValue.getPrimaryKey());
+            var inventoryLocationGroupDescription = inventoryLocationGroupDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDescriptionValue.getPrimaryKey());
             
             inventoryLocationGroupDescription.setThruTime(session.getStartTime());
             inventoryLocationGroupDescription.store();
@@ -650,7 +669,7 @@ public class InventoryControl
             var language = inventoryLocationGroupDescription.getLanguage();
             var description = inventoryLocationGroupDescriptionValue.getDescription();
             
-            inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description,
+            inventoryLocationGroupDescription = inventoryLocationGroupDescriptionFactory.create(inventoryLocationGroup, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -675,10 +694,13 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Location Group Volumes
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryLocationGroupVolumeFactory inventoryLocationGroupVolumeFactory;
+
     public InventoryLocationGroupVolume createInventoryLocationGroupVolume(InventoryLocationGroup inventoryLocationGroup,
             Long height, Long width, Long depth, BasePK createdBy) {
-        var inventoryLocationGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryLocationGroup, height, width, depth,
+        var inventoryLocationGroupVolume = inventoryLocationGroupVolumeFactory.create(inventoryLocationGroup, height, width, depth,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupVolume.getPrimaryKey(), null, createdBy);
@@ -715,12 +737,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryLocationGroupVolumeFactory.getInstance().prepareStatement(query);
+            var ps = inventoryLocationGroupVolumeFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            inventoryLocationGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            inventoryLocationGroupVolume = inventoryLocationGroupVolumeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -752,7 +774,7 @@ public class InventoryControl
     
     public void updateInventoryLocationGroupVolumeFromValue(InventoryLocationGroupVolumeValue inventoryInventoryLocationGroupGroupVolumeValue, BasePK updatedBy) {
         if(inventoryInventoryLocationGroupGroupVolumeValue.hasBeenModified()) {
-            var inventoryInventoryLocationGroupGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryInventoryLocationGroupGroupVolume = inventoryLocationGroupVolumeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryInventoryLocationGroupGroupVolumeValue.getPrimaryKey());
             
             inventoryInventoryLocationGroupGroupVolume.setThruTime(session.getStartTime());
@@ -763,7 +785,7 @@ public class InventoryControl
             var width = inventoryInventoryLocationGroupGroupVolumeValue.getWidth();
             var depth = inventoryInventoryLocationGroupGroupVolumeValue.getDepth();
             
-            inventoryInventoryLocationGroupGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryInventoryLocationGroupGroupPK, height,
+            inventoryInventoryLocationGroupGroupVolume = inventoryLocationGroupVolumeFactory.create(inventoryInventoryLocationGroupGroupPK, height,
                     width, depth, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(inventoryInventoryLocationGroupGroupPK, EventTypes.MODIFY, inventoryInventoryLocationGroupGroupVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -786,10 +808,13 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Location Group Capacities
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryLocationGroupCapacityFactory inventoryLocationGroupCapacityFactory;
+
     public InventoryLocationGroupCapacity createInventoryLocationGroupCapacity(InventoryLocationGroup inventoryLocationGroupGroup,
             UnitOfMeasureType unitOfMeasureType, Long capacity, BasePK createdBy) {
-        var inventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryLocationGroupGroup,
+        var inventoryLocationGroupGroupCapacity = inventoryLocationGroupCapacityFactory.create(inventoryLocationGroupGroup,
                 unitOfMeasureType, capacity, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(inventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
@@ -830,7 +855,7 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryLocationGroupCapacityFactory.getInstance().prepareStatement(query);
+            var ps = inventoryLocationGroupCapacityFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryInventoryLocationGroupGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -840,7 +865,7 @@ public class InventoryControl
                 ps.setLong(4, Session.MAX_TIME);
             }
             
-            inventoryInventoryLocationGroupGroupCapacities = InventoryLocationGroupCapacityFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            inventoryInventoryLocationGroupGroupCapacities = inventoryLocationGroupCapacityFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -879,13 +904,13 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryLocationGroupCapacityFactory.getInstance().prepareStatement(query);
+            var ps = inventoryLocationGroupCapacityFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryInventoryLocationGroupGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            inventoryInventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            inventoryInventoryLocationGroupGroupCapacity = inventoryLocationGroupCapacityFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -909,7 +934,7 @@ public class InventoryControl
     
     public void updateInventoryLocationGroupCapacityFromValue(InventoryLocationGroupCapacityValue inventoryLocationGroupCapacityValue, BasePK updatedBy) {
         if(inventoryLocationGroupCapacityValue.hasBeenModified()) {
-            var inventoryLocationGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryLocationGroupCapacity = inventoryLocationGroupCapacityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryLocationGroupCapacityValue.getPrimaryKey());
             
             inventoryLocationGroupCapacity.setThruTime(session.getStartTime());
@@ -919,7 +944,7 @@ public class InventoryControl
             var inventoryLocationGroupPK = inventoryLocationGroupCapacity.getInventoryLocationGroupPK(); // Not updated
             var capacity = inventoryLocationGroupCapacityValue.getCapacity();
             
-            inventoryLocationGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryLocationGroupPK, unitOfMeasureTypePK, capacity,
+            inventoryLocationGroupCapacity = inventoryLocationGroupCapacityFactory.create(inventoryLocationGroupPK, unitOfMeasureTypePK, capacity,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, inventoryLocationGroupCapacity.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -958,7 +983,13 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Conditions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryConditionFactory inventoryConditionFactory;
+
+    @Inject
+    protected InventoryConditionDetailFactory inventoryConditionDetailFactory;
+
     public InventoryCondition createInventoryCondition(final String inventoryConditionName, Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy) {
         var defaultInventoryCondition = getDefaultInventoryCondition();
@@ -973,12 +1004,12 @@ public class InventoryControl
             isDefault = true;
         }
 
-        var inventoryCondition = InventoryConditionFactory.getInstance().create();
-        var inventoryConditionDetail = InventoryConditionDetailFactory.getInstance().create(
+        var inventoryCondition = inventoryConditionFactory.create();
+        var inventoryConditionDetail = inventoryConditionDetailFactory.create(
                 inventoryCondition, inventoryConditionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        inventoryCondition = InventoryConditionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryCondition.getPrimaryKey());
+        inventoryCondition = inventoryConditionFactory.getEntityFromPK(EntityPermission.READ_WRITE, inventoryCondition.getPrimaryKey());
         inventoryCondition.setActiveDetail(inventoryConditionDetail);
         inventoryCondition.setLastDetail(inventoryConditionDetail);
         inventoryCondition.store();
@@ -993,7 +1024,7 @@ public class InventoryControl
             final EntityPermission entityPermission) {
         var pk = new InventoryConditionPK(entityInstance.getEntityUniqueId());
 
-        return InventoryConditionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return inventoryConditionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InventoryCondition getInventoryConditionByEntityInstance(final EntityInstance entityInstance) {
@@ -1026,7 +1057,7 @@ public class InventoryControl
                     """);
 
     public InventoryCondition getInventoryConditionByName(final String inventoryConditionName, final EntityPermission entityPermission) {
-        return InventoryConditionFactory.getInstance().getEntityFromQuery(entityPermission, getInventoryConditionByNameQueries,
+        return inventoryConditionFactory.getEntityFromQuery(entityPermission, getInventoryConditionByNameQueries,
                 inventoryConditionName, Session.MAX_TIME);
     }
     
@@ -1060,7 +1091,7 @@ public class InventoryControl
                     """);
 
     public InventoryCondition getDefaultInventoryCondition(final EntityPermission entityPermission) {
-        return InventoryConditionFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultInventoryConditionQueries,
+        return inventoryConditionFactory.getEntityFromQuery(entityPermission, getDefaultInventoryConditionQueries,
                 Session.MAX_TIME);
     }
     
@@ -1092,7 +1123,7 @@ public class InventoryControl
                     """);
 
     private List<InventoryCondition> getInventoryConditions(final EntityPermission entityPermission) {
-        return InventoryConditionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInventoryConditionsQueries,
+        return inventoryConditionFactory.getEntitiesFromQuery(entityPermission, getInventoryConditionsQueries,
                 Session.MAX_TIME);
     }
     
@@ -1198,7 +1229,7 @@ public class InventoryControl
     private void updateInventoryConditionFromValue(final InventoryConditionDetailValue inventoryConditionDetailValue,
             final boolean checkDefault, final BasePK updatedBy) {
         if(inventoryConditionDetailValue.hasBeenModified()) {
-            var inventoryCondition = InventoryConditionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryCondition = inventoryConditionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryConditionDetailValue.getInventoryConditionPK());
             var inventoryConditionDetail = inventoryCondition.getActiveDetailForUpdate();
             
@@ -1226,7 +1257,7 @@ public class InventoryControl
                 }
             }
             
-            inventoryConditionDetail = InventoryConditionDetailFactory.getInstance().create(inventoryConditionPK,
+            inventoryConditionDetail = inventoryConditionDetailFactory.create(inventoryConditionPK,
                     inventoryConditionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             inventoryCondition.setActiveDetail(inventoryConditionDetail);
@@ -1242,9 +1273,6 @@ public class InventoryControl
     }
     
     public void deleteInventoryCondition(final InventoryCondition inventoryCondition, final BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var vendorControl = Session.getModelController(VendorControl.class);
-        
         deleteInventoryConditionDescriptionsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionGlAccountsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionUseByInventoryCondition(inventoryCondition, deletedBy);
@@ -1284,10 +1312,13 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Condition Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryConditionDescriptionFactory inventoryConditionDescriptionFactory;
+
     public InventoryConditionDescription createInventoryConditionDescription(final InventoryCondition inventoryCondition,
             final Language language, final String description, final BasePK createdBy) {
-        var inventoryConditionDescription = InventoryConditionDescriptionFactory.getInstance().create(inventoryCondition,
+        var inventoryConditionDescription = inventoryConditionDescriptionFactory.create(inventoryCondition,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1310,7 +1341,7 @@ public class InventoryControl
 
     private InventoryConditionDescription getInventoryConditionDescription(final InventoryCondition inventoryCondition,
             final Language language, final EntityPermission entityPermission) {
-        return InventoryConditionDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getInventoryConditionDescriptionQueries,
+        return inventoryConditionDescriptionFactory.getEntityFromQuery(entityPermission, getInventoryConditionDescriptionQueries,
                 inventoryCondition, language, Session.MAX_TIME);
     }
 
@@ -1350,7 +1381,7 @@ public class InventoryControl
 
     private List<InventoryConditionDescription> getInventoryConditionDescriptionsByInventoryCondition(final InventoryCondition inventoryCondition,
             final EntityPermission entityPermission) {
-        return InventoryConditionDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission,
+        return inventoryConditionDescriptionFactory.getEntitiesFromQuery(entityPermission,
                 getInventoryConditionDescriptionsByInventoryConditionQueries,
                 inventoryCondition, Session.MAX_TIME);
     }
@@ -1400,7 +1431,7 @@ public class InventoryControl
     public void updateInventoryConditionDescriptionFromValue(final InventoryConditionDescriptionValue inventoryConditionDescriptionValue,
             final BasePK updatedBy) {
         if(inventoryConditionDescriptionValue.hasBeenModified()) {
-            var inventoryConditionDescription = InventoryConditionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryConditionDescriptionValue.getPrimaryKey());
+            var inventoryConditionDescription = inventoryConditionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, inventoryConditionDescriptionValue.getPrimaryKey());
             
             inventoryConditionDescription.setThruTime(session.getStartTime());
             inventoryConditionDescription.store();
@@ -1409,7 +1440,7 @@ public class InventoryControl
             var language = inventoryConditionDescription.getLanguage();
             var description = inventoryConditionDescriptionValue.getDescription();
             
-            inventoryConditionDescription = InventoryConditionDescriptionFactory.getInstance().create(inventoryCondition, language, description,
+            inventoryConditionDescription = inventoryConditionDescriptionFactory.create(inventoryCondition, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1434,17 +1465,20 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Condition Use Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryConditionUseTypeFactory inventoryConditionUseTypeFactory;
+
     public InventoryConditionUseType createInventoryConditionUseType(String inventoryConditionUseTypeName, Boolean isDefault,
             Integer sortOrder) {
-        return InventoryConditionUseTypeFactory.getInstance().create(inventoryConditionUseTypeName, isDefault, sortOrder);
+        return inventoryConditionUseTypeFactory.create(inventoryConditionUseTypeName, isDefault, sortOrder);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryConditionUseType */
     public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InventoryConditionUseTypePK(entityInstance.getEntityUniqueId());
 
-        return InventoryConditionUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return inventoryConditionUseTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1463,28 +1497,32 @@ public class InventoryControl
     }
 
     public List<InventoryConditionUseType> getInventoryConditionUseTypes() {
-        var ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM inventoryconditionusetypes " +
-                "ORDER BY invconut_inventoryconditionusetypename " +
-                "_LIMIT_");
+        var ps = inventoryConditionUseTypeFactory.prepareStatement(
+                """
+                SELECT _ALL_
+                FROM inventoryconditionusetypes
+                ORDER BY invconut_inventoryconditionusetypename
+                _LIMIT_
+                """);
         
-        return InventoryConditionUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return inventoryConditionUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public InventoryConditionUseType getInventoryConditionUseTypeByName(String inventoryConditionUseTypeName) {
         InventoryConditionUseType inventoryConditionUseType;
         
         try {
-            var ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM inventoryconditionusetypes " +
-                    "WHERE invconut_inventoryconditionusetypename = ?");
+            var ps = inventoryConditionUseTypeFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM inventoryconditionusetypes
+                    WHERE invconut_inventoryconditionusetypename = ?
+                    """);
             
             ps.setString(1, inventoryConditionUseTypeName);
             
             
-            inventoryConditionUseType = InventoryConditionUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            inventoryConditionUseType = inventoryConditionUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1544,16 +1582,19 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Condition Use Type Description
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryConditionUseTypeDescriptionFactory inventoryConditionUseTypeDescriptionFactory;
+
     public InventoryConditionUseTypeDescription createInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language, String description) {
-        return InventoryConditionUseTypeDescriptionFactory.getInstance().create(inventoryConditionUseType, language, description);
+        return inventoryConditionUseTypeDescriptionFactory.create(inventoryConditionUseType, language, description);
     }
     
     public InventoryConditionUseTypeDescription getInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language) {
         InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription;
         
         try {
-            var ps = InventoryConditionUseTypeDescriptionFactory.getInstance().prepareStatement("""
+            var ps = inventoryConditionUseTypeDescriptionFactory.prepareStatement("""
                     SELECT _ALL_
                     FROM inventoryconditionusetypedescriptions
                     WHERE invconutd_invconut_inventoryconditionusetypeid = ? AND invconutd_lang_languageid = ?
@@ -1562,7 +1603,7 @@ public class InventoryControl
             ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            inventoryConditionUseTypeDescription = InventoryConditionUseTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            inventoryConditionUseTypeDescription = inventoryConditionUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1590,7 +1631,10 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Condition Uses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryConditionUseFactory inventoryConditionUseFactory;
+
     public InventoryConditionUse createInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition, Boolean isDefault, BasePK createdBy) {
         var defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
@@ -1605,7 +1649,7 @@ public class InventoryControl
             isDefault = true;
         }
 
-        var inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseType,
+        var inventoryConditionUse = inventoryConditionUseFactory.create(inventoryConditionUseType,
                 inventoryCondition, isDefault, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(),
@@ -1653,13 +1697,13 @@ public class InventoryControl
                         FOR UPDATE
                         """;
             }
-            var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
+            var ps = inventoryConditionUseFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            inventoryConditionUse = inventoryConditionUseFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1703,12 +1747,12 @@ public class InventoryControl
                         FOR UPDATE
                         """;
             }
-            var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
+            var ps = inventoryConditionUseFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            inventoryConditionUse = inventoryConditionUseFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1753,12 +1797,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
+            var ps = inventoryConditionUseFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            inventoryConditionUses = InventoryConditionUseFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            inventoryConditionUses = inventoryConditionUseFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1802,12 +1846,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryConditionUseFactory.getInstance().prepareStatement(query);
+            var ps = inventoryConditionUseFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            inventoryConditionUses = InventoryConditionUseFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            inventoryConditionUses = inventoryConditionUseFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1850,7 +1894,7 @@ public class InventoryControl
 
     private void updateInventoryConditionUseFromValue(InventoryConditionUseValue inventoryConditionUseValue, boolean checkDefault,
             BasePK updatedBy) {
-        var inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromPK(
+        var inventoryConditionUse = inventoryConditionUseFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, inventoryConditionUseValue.getPrimaryKey());
         
         inventoryConditionUse.setThruTime(session.getStartTime());
@@ -1877,7 +1921,7 @@ public class InventoryControl
             }
         }
         
-        inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseTypePK,
+        inventoryConditionUse = inventoryConditionUseFactory.create(inventoryConditionUseTypePK,
                 inventoryConditionPK, isDefault, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(inventoryConditionPK, EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(), null, updatedBy);
@@ -1926,11 +1970,14 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Condition Gl Accounts
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected InventoryConditionGlAccountFactory inventoryConditionGlAccountFactory;
+
     public InventoryConditionGlAccount createInventoryConditionGlAccount(InventoryCondition inventoryCondition,
             ItemAccountingCategory itemAccountingCategory, GlAccount inventoryGlAccount, GlAccount salesGlAccount,
             GlAccount returnsGlAccount, GlAccount cogsGlAccount, GlAccount returnsCogsGlAccount, BasePK createdBy) {
-        var inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(
+        var inventoryConditionGlAccount = inventoryConditionGlAccountFactory.create(
                 inventoryCondition, itemAccountingCategory, inventoryGlAccount, salesGlAccount, returnsGlAccount, cogsGlAccount,
                 returnsCogsGlAccount, session.getStartTime(), Session.MAX_TIME);
         
@@ -2017,13 +2064,13 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
+            var ps = inventoryConditionGlAccountFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, itemAccountingCategory.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            inventoryConditionGlAccount = inventoryConditionGlAccountFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2068,12 +2115,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
+            var ps = inventoryConditionGlAccountFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            inventoryConditionGlAccounts = InventoryConditionGlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            inventoryConditionGlAccounts = inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2114,12 +2161,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = InventoryConditionGlAccountFactory.getInstance().prepareStatement(query);
+            var ps = inventoryConditionGlAccountFactory.prepareStatement(query);
             
             ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            inventoryConditionGlAccounts = InventoryConditionGlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            inventoryConditionGlAccounts = inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2137,7 +2184,7 @@ public class InventoryControl
     
     public void updateInventoryConditionGlAccountFromValue(InventoryConditionGlAccountValue inventoryConditionGlAccountValue, BasePK updatedBy) {
         if(inventoryConditionGlAccountValue.hasBeenModified()) {
-            var inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var inventoryConditionGlAccount = inventoryConditionGlAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryConditionGlAccountValue.getPrimaryKey());
             
             inventoryConditionGlAccount.setThruTime(session.getStartTime());
@@ -2151,7 +2198,7 @@ public class InventoryControl
             var cogsGlAccountPK = inventoryConditionGlAccountValue.getCogsGlAccountPK();
             var returnsCogsGlAccountPK = inventoryConditionGlAccountValue.getReturnsCogsGlAccountPK();
             
-            inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(inventoryConditionPK,
+            inventoryConditionGlAccount = inventoryConditionGlAccountFactory.create(inventoryConditionPK,
                     itemAccountingCategoryPK, inventoryGlAccountPK, salesGlAccountPK, returnsGlAccountPK, cogsGlAccountPK,
                     returnsCogsGlAccountPK, session.getStartTime(), Session.MAX_TIME);
             
@@ -2209,10 +2256,13 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     //   Party Inventory Levels
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected PartyInventoryLevelFactory partyInventoryLevelFactory;
+
     public PartyInventoryLevel createPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition,
             Long minimumInventory, Long maximumInventory, Long reorderQuantity, BasePK createdBy) {
-        var partyInventoryLevel = PartyInventoryLevelFactory.getInstance().create(party, item,
+        var partyInventoryLevel = partyInventoryLevelFactory.create(party, item,
                 inventoryCondition, minimumInventory, maximumInventory, reorderQuantity, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -2267,14 +2317,14 @@ public class InventoryControl
                         """;
             }
 
-            var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
+            var ps = partyInventoryLevelFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
             ps.setLong(3, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            partyInventoryLevel = PartyInventoryLevelFactory.getInstance().getEntityFromQuery(
+            partyInventoryLevel = partyInventoryLevelFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2324,12 +2374,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
+            var ps = partyInventoryLevelFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyInventoryLevels = PartyInventoryLevelFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyInventoryLevels = partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2371,12 +2421,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
+            var ps = partyInventoryLevelFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyInventoryLevels = PartyInventoryLevelFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyInventoryLevels = partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2418,12 +2468,12 @@ public class InventoryControl
                         """;
             }
 
-            var ps = PartyInventoryLevelFactory.getInstance().prepareStatement(query);
+            var ps = partyInventoryLevelFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyInventoryLevels = PartyInventoryLevelFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            partyInventoryLevels = partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2467,7 +2517,7 @@ public class InventoryControl
     
     public void updatePartyInventoryLevelFromValue(PartyInventoryLevelValue partyInventoryLevelValue, BasePK updatedBy) {
         if(partyInventoryLevelValue.hasBeenModified()) {
-            var partyInventoryLevel = PartyInventoryLevelFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var partyInventoryLevel = partyInventoryLevelFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partyInventoryLevelValue.getPrimaryKey());
             
             partyInventoryLevel.setThruTime(session.getStartTime());
@@ -2480,7 +2530,7 @@ public class InventoryControl
             var maximumInventory = partyInventoryLevelValue.getMaximumInventory();
             var reorderQuantity = partyInventoryLevelValue.getReorderQuantity();
             
-            partyInventoryLevel = PartyInventoryLevelFactory.getInstance().create(partyPK, itemPK, inventoryConditionPK,
+            partyInventoryLevel = partyInventoryLevelFactory.create(partyPK, itemPK, inventoryConditionPK,
                     minimumInventory, maximumInventory, reorderQuantity, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2516,6 +2566,12 @@ public class InventoryControl
     //   Allocation Priorities
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected AllocationPriorityFactory allocationPriorityFactory;
+
+    @Inject
+    protected AllocationPriorityDetailFactory allocationPriorityDetailFactory;
+
     public AllocationPriority createAllocationPriority(String allocationPriorityName, Integer priority, Boolean isDefault, Integer sortPriority,
             BasePK createdBy) {
         var defaultAllocationPriority = getDefaultAllocationPriority();
@@ -2530,12 +2586,12 @@ public class InventoryControl
             isDefault = true;
         }
 
-        var allocationPriority = AllocationPriorityFactory.getInstance().create();
-        var allocationPriorityDetail = AllocationPriorityDetailFactory.getInstance().create(allocationPriority, allocationPriorityName,
+        var allocationPriority = allocationPriorityFactory.create();
+        var allocationPriorityDetail = allocationPriorityDetailFactory.create(allocationPriority, allocationPriorityName,
                 priority, isDefault, sortPriority, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        allocationPriority = AllocationPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        allocationPriority = allocationPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 allocationPriority.getPrimaryKey());
         allocationPriority.setActiveDetail(allocationPriorityDetail);
         allocationPriority.setLastDetail(allocationPriorityDetail);
@@ -2551,7 +2607,7 @@ public class InventoryControl
             final EntityPermission entityPermission) {
         var pk = new AllocationPriorityPK(entityInstance.getEntityUniqueId());
 
-        return AllocationPriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return allocationPriorityFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public AllocationPriority getAllocationPriorityByEntityInstance(final EntityInstance entityInstance) {
@@ -2592,7 +2648,7 @@ public class InventoryControl
     }
 
     public AllocationPriority getAllocationPriorityByName(String allocationPriorityName, EntityPermission entityPermission) {
-        return AllocationPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getAllocationPriorityByNameQueries,
+        return allocationPriorityFactory.getEntityFromQuery(entityPermission, getAllocationPriorityByNameQueries,
                 allocationPriorityName);
     }
 
@@ -2634,7 +2690,7 @@ public class InventoryControl
     }
 
     public AllocationPriority getDefaultAllocationPriority(EntityPermission entityPermission) {
-        return AllocationPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultAllocationPriorityQueries);
+        return allocationPriorityFactory.getEntityFromQuery(entityPermission, getDefaultAllocationPriorityQueries);
     }
 
     public AllocationPriority getDefaultAllocationPriority() {
@@ -2671,7 +2727,7 @@ public class InventoryControl
     }
 
     private List<AllocationPriority> getAllocationPriorities(EntityPermission entityPermission) {
-        return AllocationPriorityFactory.getInstance().getEntitiesFromQuery(entityPermission, getAllocationPrioritiesQueries);
+        return allocationPriorityFactory.getEntitiesFromQuery(entityPermission, getAllocationPrioritiesQueries);
     }
 
     public List<AllocationPriority> getAllocationPriorities() {
@@ -2737,7 +2793,7 @@ public class InventoryControl
     private void updateAllocationPriorityFromValue(AllocationPriorityDetailValue allocationPriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(allocationPriorityDetailValue.hasBeenModified()) {
-            var allocationPriority = AllocationPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var allocationPriority = allocationPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      allocationPriorityDetailValue.getAllocationPriorityPK());
             var allocationPriorityDetail = allocationPriority.getActiveDetailForUpdate();
 
@@ -2766,7 +2822,7 @@ public class InventoryControl
                 }
             }
 
-            allocationPriorityDetail = AllocationPriorityDetailFactory.getInstance().create(allocationPriorityPK, allocationPriorityName, priority, isDefault,
+            allocationPriorityDetail = allocationPriorityDetailFactory.create(allocationPriorityPK, allocationPriorityName, priority, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             allocationPriority.setActiveDetail(allocationPriorityDetail);
@@ -2812,8 +2868,11 @@ public class InventoryControl
     //   Allocation Priority Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected AllocationPriorityDescriptionFactory allocationPriorityDescriptionFactory;
+
     public AllocationPriorityDescription createAllocationPriorityDescription(AllocationPriority allocationPriority, Language language, String description, BasePK createdBy) {
-        var allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
+        var allocationPriorityDescription = allocationPriorityDescriptionFactory.create(allocationPriority, language, description,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(allocationPriority.getPrimaryKey(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2841,7 +2900,7 @@ public class InventoryControl
     }
 
     private AllocationPriorityDescription getAllocationPriorityDescription(AllocationPriority allocationPriority, Language language, EntityPermission entityPermission) {
-        return AllocationPriorityDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getAllocationPriorityDescriptionQueries,
+        return allocationPriorityDescriptionFactory.getEntityFromQuery(entityPermission, getAllocationPriorityDescriptionQueries,
                 allocationPriority, language, Session.MAX_TIME);
     }
 
@@ -2883,7 +2942,7 @@ public class InventoryControl
     }
 
     private List<AllocationPriorityDescription> getAllocationPriorityDescriptionsByAllocationPriority(AllocationPriority allocationPriority, EntityPermission entityPermission) {
-        return AllocationPriorityDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getAllocationPriorityDescriptionsByAllocationPriorityQueries,
+        return allocationPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, getAllocationPriorityDescriptionsByAllocationPriorityQueries,
                 allocationPriority, Session.MAX_TIME);
     }
 
@@ -2929,7 +2988,7 @@ public class InventoryControl
 
     public void updateAllocationPriorityDescriptionFromValue(AllocationPriorityDescriptionValue allocationPriorityDescriptionValue, BasePK updatedBy) {
         if(allocationPriorityDescriptionValue.hasBeenModified()) {
-            var allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var allocationPriorityDescription = allocationPriorityDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     allocationPriorityDescriptionValue.getPrimaryKey());
 
             allocationPriorityDescription.setThruTime(session.getStartTime());
@@ -2939,7 +2998,7 @@ public class InventoryControl
             var language = allocationPriorityDescription.getLanguage();
             var description = allocationPriorityDescriptionValue.getDescription();
 
-            allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
+            allocationPriorityDescription = allocationPriorityDescriptionFactory.create(allocationPriority, language, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(allocationPriority.getPrimaryKey(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

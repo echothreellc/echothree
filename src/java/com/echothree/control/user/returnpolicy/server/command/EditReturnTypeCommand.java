@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditReturnTypeCommand
@@ -56,12 +56,12 @@ public class EditReturnTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ReturnType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -69,8 +69,14 @@ public class EditReturnTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
 
     /** Creates a new instance of EditReturnTypeCommand */
     public EditReturnTypeCommand() {
@@ -91,7 +97,6 @@ public class EditReturnTypeCommand
 
     @Override
     public ReturnType getEntity(EditReturnTypeResult result) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnType returnType = null;
         var returnKindName = spec.getReturnKindName();
 
@@ -123,8 +128,6 @@ public class EditReturnTypeCommand
 
     @Override
     public void fillInResult(EditReturnTypeResult result, ReturnType returnType) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
         result.setReturnType(returnPolicyControl.getReturnTypeTransfer(getUserVisit(), returnType));
     }
 
@@ -132,7 +135,6 @@ public class EditReturnTypeCommand
 
     @Override
     public void doLock(ReturnTypeEdit edit, ReturnType returnType) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnTypeDescription = returnPolicyControl.getReturnTypeDescription(returnType, getPreferredLanguage());
         var returnTypeDetail = returnType.getLastDetail();
 
@@ -150,7 +152,6 @@ public class EditReturnTypeCommand
 
     @Override
     public void canUpdate(ReturnType returnType) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindDetail = returnKind.getLastDetail();
         var returnTypeName = edit.getReturnTypeName();
         var duplicateReturnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
@@ -158,7 +159,6 @@ public class EditReturnTypeCommand
         if(duplicateReturnType != null && !returnType.equals(duplicateReturnType)) {
             addExecutionError(ExecutionErrors.DuplicateReturnTypeName.name(), returnKindDetail.getReturnKindName(), returnTypeName);
         } else {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
             var returnSequenceType = returnKindDetail.getReturnSequenceType();
             var returnSequenceName = edit.getReturnSequenceName();
 
@@ -172,7 +172,6 @@ public class EditReturnTypeCommand
 
     @Override
     public void doUpdate(ReturnType returnType) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var partyPK = getPartyPK();
         var returnTypeDetailValue = returnPolicyControl.getReturnTypeDetailValueForUpdate(returnType);
         var returnTypeDescription = returnPolicyControl.getReturnTypeDescriptionForUpdate(returnType, getPreferredLanguage());

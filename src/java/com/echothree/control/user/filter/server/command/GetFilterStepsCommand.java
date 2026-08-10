@@ -19,6 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.filter.server.logic.FilterLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -59,17 +60,21 @@ public class GetFilterStepsCommand
                 new FieldDefinition("FilterName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetFilterStepsCommand */
-    public GetFilterStepsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     FilterControl filterControl;
 
     @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
     FilterLogic filterLogic;
+
+
+    /** Creates a new instance of GetFilterStepsCommand */
+    public GetFilterStepsCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     Filter filter;
 
@@ -81,12 +86,12 @@ public class GetFilterStepsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : filterControl.countFilterStepsByFilter(filter);
+        return hasExecutionErrors() ? null : filterStepControl.countFilterStepsByFilter(filter);
     }
 
     @Override
     protected Collection<FilterStep> getEntities() {
-        return hasExecutionErrors() ? null : filterControl.getFilterStepsByFilter(filter);
+        return hasExecutionErrors() ? null : filterStepControl.getFilterStepsByFilter(filter);
     }
 
     @Override
@@ -101,7 +106,7 @@ public class GetFilterStepsCommand
                 result.setFilterStepCount(getTotalEntities());
             }
 
-            result.setFilterSteps(filterControl.getFilterStepTransfers(userVisit, entities));
+            result.setFilterSteps(filterStepControl.getFilterStepTransfers(userVisit, entities));
         }
 
         return result;

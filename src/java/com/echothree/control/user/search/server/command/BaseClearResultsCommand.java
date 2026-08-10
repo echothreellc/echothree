@@ -24,6 +24,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import java.util.List;
+import javax.inject.Inject;
 
 public abstract class BaseClearResultsCommand<F extends BaseClearResultsForm>
         extends BaseSimpleCommand<F> {
@@ -36,13 +37,16 @@ public abstract class BaseClearResultsCommand<F extends BaseClearResultsForm>
         );
     }
 
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of BaseClearResultsCommand */
     protected BaseClearResultsCommand(CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     protected BaseResult execute(String searchKindName) {
-        SearchLogic.getInstance().removeUserVisitSearch(this, getUserVisit(),searchKindName, form.getSearchTypeName());
+        searchLogic.removeUserVisitSearch(this, getUserVisit(),searchKindName, form.getSearchTypeName());
 
         return null;
     }

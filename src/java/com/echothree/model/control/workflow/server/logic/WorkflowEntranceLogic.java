@@ -49,14 +49,35 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkflowEntranceLogic
         extends BaseLogic {
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    SecurityRoleLogic securityRoleLogic;
+
+    @Inject
+    SelectorLogic selectorLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
 
     protected WorkflowEntranceLogic() {
         super();
@@ -69,7 +90,7 @@ public class WorkflowEntranceLogic
     public WorkflowEntrance getWorkflowEntranceByName(final Class<? extends BaseException> unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,
             final Class<? extends BaseException>  unknownWorkflowEntranceException, final ExecutionErrors unknownWorkflowEntranceExecutionError,
             final ExecutionErrorAccumulator eea, final String workflowName, final String workflowEntranceName) {
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
+        var workflow = workflowLogic.getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
                 eea, workflowName, EntityPermission.READ_ONLY);
         WorkflowEntrance workflowEntrance = null;
 
@@ -83,7 +104,6 @@ public class WorkflowEntranceLogic
 
     public WorkflowEntrance getWorkflowEntranceByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowEntranceName, EntityPermission entityPermission) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName, entityPermission);
 
         if(workflowEntrance == null) {
@@ -122,10 +142,10 @@ public class WorkflowEntranceLogic
 
     public WorkflowEntrance getWorkflowEntranceByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowEntranceName,
             final EntityPermission entityPermission) {
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+        var workflow = workflowLogic.getWorkflowByName(eea, workflowName);
         WorkflowEntrance workflowEntrance = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             workflowEntrance = getWorkflowEntranceByName(UnknownWorkflowEntranceNameException.class, ExecutionErrors.UnknownWorkflowEntranceName,
                     eea, workflow, workflowEntranceName, entityPermission);
         }
@@ -143,23 +163,22 @@ public class WorkflowEntranceLogic
 
     public WorkflowEntrance getWorkflowEntranceByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowEntranceUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = universalSpec.getWorkflowName();
         var workflowEntranceName = universalSpec.getWorkflowEntranceName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(workflowName, workflowEntranceName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         WorkflowEntrance workflowEntrance = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
             Workflow workflow = null;
 
             if(workflowName != null) {
-                workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+                workflow = workflowLogic.getWorkflowByName(eea, workflowName);
             } else {
                 handleExecutionError(MissingRequiredWorkflowNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowName.name());
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(workflowEntranceName == null) {
                     if(allowDefault) {
                         workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow, entityPermission);
@@ -175,10 +194,10 @@ public class WorkflowEntranceLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowEntrance.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 workflowEntrance = workflowControl.getWorkflowEntranceByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -203,8 +222,6 @@ public class WorkflowEntranceLogic
         WorkflowEntrancePartyType workflowEntrancePartyType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType, entityPermission);
 
             if(workflowEntrancePartyType == null) {
@@ -232,7 +249,7 @@ public class WorkflowEntranceLogic
     public WorkflowEntrancePartyType getWorkflowEntrancePartyTypeByName(final ExecutionErrorAccumulator eea, final String workflowName,
             final String workflowEntranceName, final String partyTypeName, final EntityPermission entityPermission) {
         var workflowEntrance = getWorkflowEntranceByName(eea, workflowName, workflowEntranceName);
-        var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+        var partyType = partyLogic.getPartyTypeByName(eea, partyTypeName);
 
         return getWorkflowEntrancePartyType(eea, workflowEntrance, partyType, entityPermission);
     }
@@ -254,21 +271,19 @@ public class WorkflowEntranceLogic
             final String workflowEntranceName, final String partyTypeName, final String securityRoleName,
             final EntityPermission entityPermission) {
         var workflowEntrance = getWorkflowEntranceByName(eea, workflowName, workflowEntranceName);
-        var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+        var partyType = partyLogic.getPartyTypeByName(eea, partyTypeName);
         WorkflowEntranceSecurityRole workflowEntranceSecurityRole = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var securityRoleGroup = workflowEntrance.getLastDetail().getWorkflow().getLastDetail().getSecurityRoleGroup();
 
             if(securityRoleGroup != null) {
-                var securityRole = SecurityRoleLogic.getInstance().getSecurityRoleByName(eea, securityRoleGroup, securityRoleName);
+                var securityRole = securityRoleLogic.getSecurityRoleByName(eea, securityRoleGroup, securityRoleName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
                     var workflowEntrancePartyType = getWorkflowEntrancePartyType(eea, workflowEntrance, partyType);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
-
                         workflowEntranceSecurityRole = workflowControl.getWorkflowEntranceSecurityRole(workflowEntrancePartyType,
                                 securityRole, entityPermission);
 
@@ -316,11 +331,9 @@ public class WorkflowEntranceLogic
             var selectorType = workflowEntrance.getLastDetail().getWorkflow().getLastDetail().getSelectorType();
 
             if(selectorType != null) {
-                var selector = SelectorLogic.getInstance().getSelectorByName(eea, selectorType, selectorName);
+                var selector = selectorLogic.getSelectorByName(eea, selectorType, selectorName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    var workflowControl = Session.getModelController(WorkflowControl.class);
-
                     workflowEntranceSelector = workflowControl.getWorkflowEntranceSelector(workflowEntrance,
                             selector, entityPermission);
 
@@ -360,7 +373,7 @@ public class WorkflowEntranceLogic
 
     public WorkflowStep getEntranceWorkflowStep(final ExecutionErrorAccumulator eea, final String entranceWorkflowName,
             final String entranceWorkflowStepName) {
-        return WorkflowStepLogic.getInstance().getWorkflowStepByName(
+        return workflowStepLogic.getWorkflowStepByName(
                 UnknownEntranceWorkflowNameException.class, ExecutionErrors.UnknownEntranceWorkflowName,
                 UnknownEntranceWorkflowStepNameException.class, ExecutionErrors.UnknownEntranceWorkflowStepName,
                 eea, entranceWorkflowName, entranceWorkflowStepName);
@@ -368,7 +381,6 @@ public class WorkflowEntranceLogic
 
     public WorkflowEntranceStep getWorkflowEntranceStep(final ExecutionErrorAccumulator eea,
             WorkflowEntrance workflowEntrance, WorkflowStep entranceWorkflowStep) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowEntranceStep = workflowControl.getWorkflowEntranceStep(workflowEntrance, entranceWorkflowStep);
 
         if(workflowEntranceStep == null) {

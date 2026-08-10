@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditForumGroupCommand
@@ -46,15 +46,22 @@ public class EditForumGroupCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    IconControl iconControl;
+
     
     /** Creates a new instance of EditForumGroupCommand */
     public EditForumGroupCommand() {
@@ -73,7 +80,6 @@ public class EditForumGroupCommand
 
     @Override
     public ForumGroup getEntity(EditForumGroupResult result) {
-        var forumControl = Session.getModelController(ForumControl.class);
         ForumGroup forumGroup;
         var forumGroupName = spec.getForumGroupName();
 
@@ -97,14 +103,11 @@ public class EditForumGroupCommand
 
     @Override
     public void fillInResult(EditForumGroupResult result, ForumGroup forumGroup) {
-        var forumControl = Session.getModelController(ForumControl.class);
-
         result.setForumGroup(forumControl.getForumGroupTransfer(getUserVisit(), forumGroup));
     }
 
     @Override
     public void doLock(ForumGroupEdit edit, ForumGroup forumGroup) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumGroupDescription = forumControl.getForumGroupDescription(forumGroup, getPreferredLanguage());
         var forumGroupDetail = forumGroup.getLastDetail();
 
@@ -123,12 +126,10 @@ public class EditForumGroupCommand
 
     @Override
     public void canUpdate(ForumGroup forumGroup) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumGroupName = edit.getForumGroupName();
         var duplicateForumGroup = forumControl.getForumGroupByName(forumGroupName);
 
         if(duplicateForumGroup == null || forumGroup.equals(duplicateForumGroup)) {
-            var iconControl = Session.getModelController(IconControl.class);
             var iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
@@ -143,7 +144,6 @@ public class EditForumGroupCommand
 
     @Override
     public void doUpdate(ForumGroup forumGroup) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
         var forumGroupDetailValue = forumControl.getForumGroupDetailValueForUpdate(forumGroup);
         var forumGroupDescription = forumControl.getForumGroupDescriptionForUpdate(forumGroup, getPreferredLanguage());

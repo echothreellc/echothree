@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetInvoiceTimeTypeDescriptionsCommand
@@ -47,14 +47,18 @@ public class GetInvoiceTimeTypeDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InvoiceTimeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InvoiceTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     
     /** Creates a new instance of GetInvoiceTimeTypeDescriptionsCommand */
     public GetInvoiceTimeTypeDescriptionsCommand() {
@@ -63,7 +67,6 @@ public class GetInvoiceTimeTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var result = InvoiceResultFactory.getGetInvoiceTimeTypeDescriptionsResult();
         var invoiceTypeName = form.getInvoiceTypeName();
         var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);

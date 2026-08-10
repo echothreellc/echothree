@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactListContactMechanismPurposeCommand
@@ -55,19 +55,29 @@ public class EditContactListContactMechanismPurposeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.ContactListContactMechanismPurpose.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactMechanismPurposeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
+    @Inject
+    ContactMechanismPurposeLogic contactMechanismPurposeLogic;
+
     
     /** Creates a new instance of EditContactListContactMechanismPurposeCommand */
     public EditContactListContactMechanismPurposeCommand() {
@@ -88,15 +98,13 @@ public class EditContactListContactMechanismPurposeCommand
     public ContactListContactMechanismPurpose getEntity(EditContactListContactMechanismPurposeResult result) {
         ContactListContactMechanismPurpose contactListContactMechanismPurpose = null;
         var contactListName = spec.getContactListName();
-        var contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
+        var contactList = contactListLogic.getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
             var contactMechanismPurposeName = spec.getContactMechanismPurposeName();
-            var contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
+            var contactMechanismPurpose = contactMechanismPurposeLogic.getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
-                var contactListControl = Session.getModelController(ContactListControl.class);
-                
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
                 } else { // EditMode.UPDATE
@@ -119,14 +127,11 @@ public class EditContactListContactMechanismPurposeCommand
 
     @Override
     public void fillInResult(EditContactListContactMechanismPurposeResult result, ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setContactListContactMechanismPurpose(contactListControl.getContactListContactMechanismPurposeTransfer(getUserVisit(), contactListContactMechanismPurpose));
     }
 
     @Override
     public void doLock(ContactListContactMechanismPurposeEdit edit, ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
 
         edit.setIsDefault(contactListContactMechanismPurposeDetail.getIsDefault().toString());
@@ -135,7 +140,6 @@ public class EditContactListContactMechanismPurposeCommand
 
     @Override
     public void doUpdate(ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
         var contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactListContactMechanismPurpose);
 

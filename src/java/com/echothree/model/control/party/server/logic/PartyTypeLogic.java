@@ -32,13 +32,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyTypeLogic
         extends BaseLogic {
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected PartyTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class PartyTypeLogic
             final PartyType parentPartyType, final SequenceType billingAccountSequenceType, final Boolean allowUserLogins,
             final Boolean allowPartyAliases, final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType == null) {
@@ -71,7 +76,6 @@ public class PartyTypeLogic
 
     public PartyType getPartyTypeByName(final ExecutionErrorAccumulator eea, final String partyTypeName,
             final EntityPermission entityPermission) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyType = partyControl.getPartyTypeByName(partyTypeName, entityPermission);
 
         if(partyType == null) {
@@ -92,9 +96,8 @@ public class PartyTypeLogic
     public PartyType getPartyTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PartyTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PartyType partyType = null;
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyTypeName = universalSpec.getPartyTypeName();
-        var parameterCount = (partyTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (partyTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,10 +113,10 @@ public class PartyTypeLogic
             }
             case 1 -> {
                 if(partyTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         partyType = partyControl.getPartyTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

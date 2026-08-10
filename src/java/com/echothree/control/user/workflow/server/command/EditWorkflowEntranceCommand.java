@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWorkflowEntranceCommand
@@ -70,6 +70,13 @@ public class EditWorkflowEntranceCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
     
     /** Creates a new instance of EditWorkflowEntranceCommand */
     public EditWorkflowEntranceCommand() {
@@ -88,7 +95,7 @@ public class EditWorkflowEntranceCommand
 
     @Override
     public WorkflowEntrance getEntity(EditWorkflowEntranceResult result) {
-        return WorkflowEntranceLogic.getInstance().getWorkflowEntranceByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return workflowEntranceLogic.getWorkflowEntranceByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -98,14 +105,13 @@ public class EditWorkflowEntranceCommand
 
     @Override
     public void fillInResult(EditWorkflowEntranceResult result, WorkflowEntrance freeOnBoard) {
-        var workflow = Session.getModelController(WorkflowControl.class);
+        var workflow = workflowControl;
 
         result.setWorkflowEntrance(workflow.getWorkflowEntranceTransfer(getUserVisit(), freeOnBoard));
     }
 
     @Override
     public void doLock(WorkflowEntranceEdit edit, WorkflowEntrance workflowEntrance) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowEntranceDescription = workflowControl.getWorkflowEntranceDescription(workflowEntrance, getPreferredLanguage());
         var workflowEntranceDetail = workflowEntrance.getLastDetail();
 
@@ -120,7 +126,6 @@ public class EditWorkflowEntranceCommand
 
     @Override
     public void canUpdate(WorkflowEntrance workflowEntrance) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = workflowEntrance.getLastDetail().getWorkflow();
         var workflowEntranceName = edit.getWorkflowEntranceName();
         var duplicateWorkflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
@@ -132,7 +137,6 @@ public class EditWorkflowEntranceCommand
 
     @Override
     public void doUpdate(WorkflowEntrance workflowEntrance) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var partyPK = getPartyPK();
         var workflowEntranceDetailValue = workflowControl.getWorkflowEntranceDetailValueForUpdate(workflowEntrance);
         var workflowEntranceDescription = workflowControl.getWorkflowEntranceDescriptionForUpdate(workflowEntrance, getPreferredLanguage());

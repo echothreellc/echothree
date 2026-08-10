@@ -28,9 +28,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateInvoiceLineUseTypeDescriptionCommand
@@ -42,14 +42,21 @@ public class CreateInvoiceLineUseTypeDescriptionCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                ));
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("InvoiceLineUseTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("InvoiceLineUseTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateInvoiceLineUseTypeDescriptionCommand */
     public CreateInvoiceLineUseTypeDescriptionCommand() {
@@ -58,12 +65,10 @@ public class CreateInvoiceLineUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceLineUseTypeName = form.getInvoiceLineUseTypeName();
         var invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(invoiceLineUseTypeName);
         
         if(invoiceLineUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

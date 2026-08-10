@@ -39,11 +39,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 
 public abstract class GraphQlTestCase {
 
@@ -102,7 +102,7 @@ public abstract class GraphQlTestCase {
     
     private static SSLConnectionSocketFactory sslSocketFactory;
     
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass()
             throws Exception {
         sslSocketFactory = new SSLConnectionSocketFactory(
@@ -112,14 +112,14 @@ public abstract class GraphQlTestCase {
                 NoopHostnameVerifier.INSTANCE);
     }
     
-    @AfterClass
+    @AfterAll
     public static void afterClass() {
         sslSocketFactory = null;
     }
     
     private CloseableHttpClient client;
     
-    @Before
+    @BeforeEach
     public void before() {
         client = HttpClientBuilder
                 .create()
@@ -132,7 +132,7 @@ public abstract class GraphQlTestCase {
                 .build();
     }
     
-    @After
+    @AfterEach
     public void after()
             throws Exception {
         client.close();
@@ -181,7 +181,7 @@ public abstract class GraphQlTestCase {
         try(var closeableHttpResponse = execute) {
             var statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
 
-            Assert.assertEquals(200, statusCode);
+            Assertions.assertEquals(200, statusCode);
 
             var responseEntity = closeableHttpResponse.getEntity();
             if(responseEntity != null) {

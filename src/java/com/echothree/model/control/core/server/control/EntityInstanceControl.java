@@ -52,10 +52,59 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class EntityInstanceControl
         extends BaseCoreControl {
+
+    @Inject
+    protected AccountingControl accountingControl;
+
+    @Inject
+    protected AppearanceControl appearanceControl;
+
+    @Inject
+    protected AssociateControl associateControl;
+
+    @Inject
+    protected BatchControl batchControl;
+
+    @Inject
+    protected ChainControl chainControl;
+
+    @Inject
+    protected CommentControl commentControl;
+
+    @Inject
+    protected ComponentControl componentControl;
+
+    @Inject
+    protected CoreControl coreControl;
+
+    @Inject
+    protected EntityAliasControl entityAliasControl;
+
+    @Inject
+    protected EntityTypeControl entityTypeControl;
+
+    @Inject
+    protected MessageControl messageControl;
+
+    @Inject
+    protected RatingControl ratingControl;
+
+    @Inject
+    protected SearchControl searchControl;
+
+    @Inject
+    protected SecurityControl securityControl;
+
+    @Inject
+    protected TagControl tagControl;
+
+    @Inject
+    protected WorkEffortControl workEffortControl;
 
     /** Creates a new instance of EntityInstanceControl */
     protected EntityInstanceControl() {
@@ -66,12 +115,14 @@ public class EntityInstanceControl
     //   Entity Instances
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityInstanceFactory entityInstanceFactory;
+
     public EntityInstance createEntityInstance(EntityType entityType, Long entityUniqueId) {
-        return EntityInstanceFactory.getInstance().create(entityType, entityUniqueId, null);
+        return entityInstanceFactory.create(entityType, entityUniqueId, null);
     }
 
     public EntityInstance createEntityAttributeDefaults(EntityInstance entityInstance, BasePK createdBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributes = coreControl.getEntityAttributesByEntityType(entityInstance.getEntityType());
 
         entityAttributes.forEach(entityAttribute -> {
@@ -164,15 +215,19 @@ public class EntityInstanceControl
 
     public long countEntityInstances() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityinstances");
+                """
+                SELECT COUNT(*)
+                FROM entityinstances
+                """);
     }
 
     public long countEntityInstancesByEntityType(EntityType entityType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityinstances " +
-                        "WHERE eni_ent_entitytypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityinstances
+                WHERE eni_ent_entitytypeid = ?
+                """,
                 entityType);
     }
 
@@ -180,16 +235,18 @@ public class EntityInstanceControl
         List<EntityInstance> entityInstances;
 
         try {
-            var ps = EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM entityinstances " +
-                            "WHERE eni_ent_entitytypeid = ? " +
-                            "ORDER BY eni_entityuniqueid " +
-                            "_LIMIT_");
+            var ps = entityInstanceFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM entityinstances
+                    WHERE eni_ent_entitytypeid = ?
+                    ORDER BY eni_entityuniqueid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
 
-            entityInstances = EntityInstanceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            entityInstances = entityInstanceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -204,22 +261,26 @@ public class EntityInstanceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityinstances
+                        WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityinstances
+                        WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
+            var ps = entityInstanceFactory.prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, entityUniqueId);
 
-            entityInstance = EntityInstanceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityInstance = entityInstanceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -242,21 +303,25 @@ public class EntityInstanceControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_uuid = UUID_TO_BIN(?)";
+                query = """
+                        SELECT _ALL_
+                        FROM entityinstances
+                        WHERE eni_uuid = UUID_TO_BIN(?)
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityinstances " +
-                        "WHERE eni_uuid = UUID_TO_BIN(?) " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityinstances
+                        WHERE eni_uuid = UUID_TO_BIN(?)
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = EntityInstanceFactory.getInstance().prepareStatement(query);
+            var ps = entityInstanceFactory.prepareStatement(query);
 
             ps.setString(1, uuid);
 
-            entityInstance = EntityInstanceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityInstance = entityInstanceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -278,7 +343,7 @@ public class EntityInstanceControl
         if(uuid == null || forceRegeneration) {
             // Convert to READ_WRITE if necessary...
             if(entityInstance.getEntityPermission().equals(EntityPermission.READ_ONLY)) {
-                entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
+                entityInstance = entityInstanceFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
             }
 
             // Keep generating UUIDs until a unique one is found...
@@ -337,7 +402,6 @@ public class EntityInstanceControl
         }
 
         if(pk != null) {
-            var componentControl = Session.getModelController(ComponentControl.class);
             var componentVendorName = pk.getComponentVendorName();
             var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
 
@@ -346,7 +410,6 @@ public class EntityInstanceControl
             }
 
             if(componentVendor != null) {
-                var entityTypeControl = Session.getModelController(EntityTypeControl.class);
                 var entityTypeName = pk.getEntityTypeName();
                 var entityType = entityTypeControl.getEntityTypeByNameFromCache(componentVendor, entityTypeName);
 
@@ -367,7 +430,7 @@ public class EntityInstanceControl
 
                         if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                             // Convert to R/W
-                            entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(
+                            entityInstance = entityInstanceFactory.getEntityFromPK(
                                     EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
                         }
                     }
@@ -411,12 +474,10 @@ public class EntityInstanceControl
             var entityRefParts = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(entityRef).toArray(new String[0]);
 
             if(entityRefParts.length == 3) {
-                var componentControl = Session.getModelController(ComponentControl.class);
                 var componentVendorName = entityRefParts[0];
                 var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
 
                 if(componentVendor != null) {
-                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
                     var entityTypeName = entityRefParts[1];
                     var entityType = entityTypeControl.getEntityTypeByNameFromCache(componentVendor, entityTypeName);
 
@@ -453,33 +514,27 @@ public class EntityInstanceControl
     }
 
     public EntityInstance getEntityInstanceByPK(EntityInstancePK entityInstancePK) {
-        return EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, entityInstancePK);
+        return entityInstanceFactory.getEntityFromPK(EntityPermission.READ_ONLY, entityInstancePK);
     }
 
     /** This function is a little odd. It doesn't actually delete the Entity Instance, rather, it cleans up all the
      * entities scattered through several components that depend on them.
      */
     public void deleteEntityInstanceDependencies(EntityInstance entityInstance, BasePK deletedBy) {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
-        var chainControl = Session.getModelController(ChainControl.class);
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-        var searchControl = Session.getModelController(SearchControl.class);
-        var securityControl = Session.getModelController(SecurityControl.class);
 
-        Session.getModelController(AccountingControl.class).deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(AssociateControl.class).deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(BatchControl.class).deleteBatchEntitiesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(CommentControl.class).deleteCommentsByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(MessageControl.class).deleteEntityMessagesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(RatingControl.class).deleteRatingsByEntityInstance(entityInstance, deletedBy);
+        accountingControl.deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
+        associateControl.deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
+        batchControl.deleteBatchEntitiesByEntityInstance(entityInstance, deletedBy);
+        commentControl.deleteCommentsByEntityInstance(entityInstance, deletedBy);
+        messageControl.deleteEntityMessagesByEntityInstance(entityInstance, deletedBy);
+        ratingControl.deleteRatingsByEntityInstance(entityInstance, deletedBy);
         searchControl.removeSearchResultsByEntityInstance(entityInstance);
         searchControl.removeCachedExecutedSearchResultsByEntityInstance(entityInstance);
         searchControl.deleteSearchResultActionsByEntityInstance(entityInstance, deletedBy);
         securityControl.deletePartyEntitySecurityRolesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(TagControl.class).deleteEntityTagsByEntityInstance(entityInstance, deletedBy);
+        tagControl.deleteEntityTagsByEntityInstance(entityInstance, deletedBy);
         workflowControl.deleteWorkflowEntityStatusesByEntityInstance(entityInstance, deletedBy);
-        Session.getModelController(WorkEffortControl.class).deleteWorkEffortsByOwningEntityInstance(entityInstance, deletedBy);
+        workEffortControl.deleteWorkEffortsByOwningEntityInstance(entityInstance, deletedBy);
 
         // If an EntityInstance is in a role for a ChainInstance, then that ChainInstance should be deleted. Because an individual
         // EntityInstance may be in more than one role, the list of ChainInstances needs to be deduplicated.
@@ -501,7 +556,7 @@ public class EntityInstanceControl
 
     public void deleteEntityInstancesByEntityTypeWithNullDeletedTime(final EntityType entityType, final BasePK deletedBy) {
         for(var entityInstanceResult : new EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery().execute(entityType)) {
-            deleteEntityInstance(EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            deleteEntityInstance(entityInstanceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityInstanceResult.getEntityInstancePK()), deletedBy);
         }
     }

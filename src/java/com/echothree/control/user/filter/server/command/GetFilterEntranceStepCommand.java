@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterEntranceStepForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -60,20 +59,19 @@ public class GetFilterEntranceStepCommand
         );
     }
 
+    @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
     /** Creates a new instance of GetFilterEntranceStepCommand */
     public GetFilterEntranceStepCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
-    @Inject
-    FilterControl filterControl;
-
-    @Inject
-    FilterStepLogic filterStepLogic;
-
     @Override
     protected FilterEntranceStep getEntity() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
         var filterTypeName = form.getFilterTypeName();
         var filterName = form.getFilterName();
@@ -84,7 +82,7 @@ public class GetFilterEntranceStepCommand
                 filterStepName);
 
         if(!hasExecutionErrors()) {
-            filterEntranceStep = filterControl.getFilterEntranceStep(filterStep.getLastDetail().getFilter(), filterStep);
+            filterEntranceStep = filterStepControl.getFilterEntranceStep(filterStep.getLastDetail().getFilter(), filterStep);
 
             if(filterEntranceStep == null) {
                 addExecutionError(ExecutionErrors.UnknownFilterEntranceStep.name(),
@@ -103,7 +101,7 @@ public class GetFilterEntranceStepCommand
         var result = FilterResultFactory.getGetFilterEntranceStepResult();
 
         if(filterEntranceStep != null) {
-            result.setFilterEntranceStep(filterControl.getFilterEntranceStepTransfer(getUserVisit(), filterEntranceStep));
+            result.setFilterEntranceStep(filterStepControl.getFilterEntranceStepTransfer(getUserVisit(), filterEntranceStep));
         }
 
         return result;

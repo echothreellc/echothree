@@ -16,32 +16,35 @@
 
 package com.echothree.model.control.content.server.indexer;
 
+import com.echothree.model.control.content.server.analyzer.ContentCategoryAnalyzer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.content.server.analyzer.ContentCategoryAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class ContentCategoryIndexer
         extends BaseIndexer<ContentCategory> {
-    
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
 
-    /** Creates a new instance of ContentCategoryIndexer */
-    public ContentCategoryIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+    @Inject
+    ContentControl contentControl;
+
+    @Override
+    public BaseIndexer<ContentCategory> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override

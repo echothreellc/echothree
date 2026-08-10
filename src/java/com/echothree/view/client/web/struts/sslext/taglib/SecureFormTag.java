@@ -116,7 +116,7 @@ public class SecureFormTag
     /**
      * Render the beginning of this form.
      *
-     * @exception JspException if a JSP exception has occurred
+     * @throws JspException if a JSP exception has occurred
      */
     @Override
     public int doStartTag() throws JspException {

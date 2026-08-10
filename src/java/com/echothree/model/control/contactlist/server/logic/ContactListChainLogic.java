@@ -16,7 +16,9 @@
 
 package com.echothree.model.control.contactlist.server.logic;
 
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
+import com.echothree.model.control.chain.common.ChainTypes;
+import com.echothree.model.control.chain.common.ChainEntityRoleTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
 import com.echothree.model.control.chain.server.logic.ChainLogic;
@@ -28,7 +30,6 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -38,13 +39,16 @@ public class ContactListChainLogic
         extends BaseLogic {
 
     @Inject
+    ChainControl chainControl;
+
+    @Inject
+    protected ChainInstanceLogic chainInstanceLogic;
+
+    @Inject
     protected ChainLogic chainLogic;
 
     @Inject
     protected ChainTypeLogic chainTypeLogic;
-
-    @Inject
-    protected ChainInstanceLogic chainInstanceLogic;
 
     protected ContactListChainLogic() {
         super();
@@ -67,11 +71,11 @@ public class ContactListChainLogic
         Chain chain = null;
         ChainInstance chainInstance = null;
         
-        if(chainTypeName.equals(ChainConstants.ChainType_CONFIRMATION_REQUEST)) {
+        if(chainTypeName.equals(ChainTypes.CONFIRMATION_REQUEST.name())) {
             chain = contactListTypeDetail.getConfirmationRequestChain();
-        } else if(chainTypeName.equals(ChainConstants.ChainType_SUBSCRIBE)) {
+        } else if(chainTypeName.equals(ChainTypes.SUBSCRIBE.name())) {
             chain = contactListTypeDetail.getSubscribeChain();
-        } else if(chainTypeName.equals(ChainConstants.ChainType_UNSUBSCRIBE)) {
+        } else if(chainTypeName.equals(ChainTypes.UNSUBSCRIBE.name())) {
             chain = contactListTypeDetail.getUnsubscribeChain();
         }
         
@@ -92,14 +96,13 @@ public class ContactListChainLogic
     
     protected ChainInstance createContactListChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName,
             final PartyContactList partyContactList, final BasePK createdBy) {
-        var chainInstance = createChainInstance(eea, ChainConstants.ChainKind_CONTACT_LIST, chainTypeName, partyContactList, createdBy);
+        var chainInstance = createChainInstance(eea, ChainKinds.CONTACT_LIST.name(), chainTypeName, partyContactList, createdBy);
         
         if(chainInstance != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
             var chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
             
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,
-                    ChainConstants.ChainEntityRoleType_PARTY_CONTACT_LIST), partyContactList.getPrimaryKey(), createdBy);
+                    ChainEntityRoleTypes.PARTY_CONTACT_LIST.name()), partyContactList.getPrimaryKey(), createdBy);
         }
         
         return chainInstance;
@@ -107,17 +110,17 @@ public class ContactListChainLogic
     
     public ChainInstance createContactListConfirmationChainInstance(final ExecutionErrorAccumulator eea, final Party party, final PartyContactList partyContactList,
             final BasePK createdBy) {
-        return createContactListChainInstance(eea, ChainConstants.ChainType_CONFIRMATION_REQUEST, partyContactList, createdBy);
+        return createContactListChainInstance(eea, ChainTypes.CONFIRMATION_REQUEST.name(), partyContactList, createdBy);
     }
     
     public ChainInstance createContactListSubscribeChainInstance(final ExecutionErrorAccumulator eea, final Party party, final PartyContactList partyContactList,
             final BasePK createdBy) {
-        return createContactListChainInstance(eea, ChainConstants.ChainType_SUBSCRIBE, partyContactList, createdBy);
+        return createContactListChainInstance(eea, ChainTypes.SUBSCRIBE.name(), partyContactList, createdBy);
     }
     
     public ChainInstance createContactListUnsubscribeChainInstance(final ExecutionErrorAccumulator eea, final Party party, final PartyContactList partyContactList,
             final BasePK createdBy) {
-        return createContactListChainInstance(eea, ChainConstants.ChainType_UNSUBSCRIBE, partyContactList, createdBy);
+        return createContactListChainInstance(eea, ChainTypes.UNSUBSCRIBE.name(), partyContactList, createdBy);
     }
     
 }

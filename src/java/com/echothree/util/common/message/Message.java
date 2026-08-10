@@ -92,7 +92,6 @@ public class Message
      *
      * @param key Message key for this message
      */
-    /** Creates a new instance of Message */
     public Message(String key) {
         this.key = key;
     }
@@ -103,7 +102,6 @@ public class Message
      * @param key Message key for this message
      * @param values One or more replacement values
      */
-    /** Creates a new instance of Message */
     public Message(String key, Object... values) {
         this.key = key;
         this.values = values;

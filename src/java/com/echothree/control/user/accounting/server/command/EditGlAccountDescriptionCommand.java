@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGlAccountDescriptionCommand
@@ -53,18 +53,25 @@ public class EditGlAccountDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GlAccount.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditGlAccountDescriptionCommand */
     public EditGlAccountDescriptionCommand() {
@@ -73,13 +80,11 @@ public class EditGlAccountDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getEditGlAccountDescriptionResult();
         var glAccountName = spec.getGlAccountName();
         var glAccount = accountingControl.getGlAccountByName(glAccountName);
         
         if(glAccount != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

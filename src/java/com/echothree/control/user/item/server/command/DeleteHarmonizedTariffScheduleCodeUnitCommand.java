@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteHarmonizedTariffScheduleCodeUnitCommand
@@ -45,14 +45,18 @@ public class DeleteHarmonizedTariffScheduleCodeUnitCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCodeUnit.name(), SecurityRoles.Delete.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCodeUnit.name(), SecurityRoles.Delete.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("HarmonizedTariffScheduleCodeUnitName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of DeleteHarmonizedTariffScheduleCodeUnitCommand */
     public DeleteHarmonizedTariffScheduleCodeUnitCommand() {
@@ -61,7 +65,6 @@ public class DeleteHarmonizedTariffScheduleCodeUnitCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var harmonizedTariffScheduleCodeUnitName = form.getHarmonizedTariffScheduleCodeUnitName();
         var harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByNameForUpdate(harmonizedTariffScheduleCodeUnitName);
         

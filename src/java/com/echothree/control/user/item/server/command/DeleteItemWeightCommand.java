@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteItemWeightCommand
@@ -56,6 +56,16 @@ public class DeleteItemWeightCommand
                 new FieldDefinition("ItemWeightTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ItemWeightTypeLogic itemWeightTypeLogic;
+
     
     /** Creates a new instance of DeleteItemWeightCommand */
     public DeleteItemWeightCommand() {
@@ -64,18 +74,16 @@ public class DeleteItemWeightCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-        var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(),
                     unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                var itemWeightType = ItemWeightTypeLogic.getInstance().getItemWeightTypeByName(this, form.getItemWeightTypeName());
+                var itemWeightType = itemWeightTypeLogic.getItemWeightTypeByName(this, form.getItemWeightTypeName());
 
                 if(!hasExecutionErrors()) {
                     var itemWeight = itemControl.getItemWeightForUpdate(item, unitOfMeasureType, itemWeightType);

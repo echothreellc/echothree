@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SearchDefaultOperatorLogic
         extends BaseLogic {
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected SearchDefaultOperatorLogic() {
         super();
@@ -51,7 +57,6 @@ public class SearchDefaultOperatorLogic
     public SearchDefaultOperator createSearchDefaultOperator(final ExecutionErrorAccumulator eea, final String searchDefaultOperatorName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
 
         if(searchDefaultOperator == null) {
@@ -69,7 +74,6 @@ public class SearchDefaultOperatorLogic
 
     public SearchDefaultOperator getSearchDefaultOperatorByName(final ExecutionErrorAccumulator eea, final String searchDefaultOperatorName,
             final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName, entityPermission);
 
         if(searchDefaultOperator == null) {
@@ -90,9 +94,8 @@ public class SearchDefaultOperatorLogic
     public SearchDefaultOperator getSearchDefaultOperatorByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SearchDefaultOperatorUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SearchDefaultOperator searchDefaultOperator = null;
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchDefaultOperatorName = universalSpec.getSearchDefaultOperatorName();
-        var parameterCount = (searchDefaultOperatorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (searchDefaultOperatorName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,10 +111,10 @@ public class SearchDefaultOperatorLogic
             }
             case 1 -> {
                 if(searchDefaultOperatorName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchDefaultOperator.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         searchDefaultOperator = searchControl.getSearchDefaultOperatorByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -137,8 +140,6 @@ public class SearchDefaultOperatorLogic
 
     public void deleteSearchDefaultOperator(final ExecutionErrorAccumulator eea, final SearchDefaultOperator searchDefaultOperator,
             final BasePK deletedBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         searchControl.deleteSearchDefaultOperator(searchDefaultOperator, deletedBy);
     }
 

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferNameElementDescriptionCommand
@@ -48,14 +48,21 @@ public class GetOfferNameElementDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferNameElement.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferNameElementName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    OfferNameElementControl offerNameElementControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetOfferNameElementDescriptionCommand */
     public GetOfferNameElementDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetOfferNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var result = OfferResultFactory.getGetOfferNameElementDescriptionResult();
         var offerNameElementName = form.getOfferNameElementName();
         var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

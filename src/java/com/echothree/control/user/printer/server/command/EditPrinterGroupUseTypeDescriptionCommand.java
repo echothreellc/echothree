@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPrinterGroupUseTypeDescriptionCommand
@@ -55,18 +55,24 @@ public class EditPrinterGroupUseTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PrinterGroupUseType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterGroupUseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
 
     /** Creates a new instance of EditPrinterGroupUseTypeDescriptionCommand */
     public EditPrinterGroupUseTypeDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditPrinterGroupUseTypeDescriptionCommand
 
     @Override
     public PrinterGroupUseTypeDescription getEntity(EditPrinterGroupUseTypeDescriptionResult result) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         PrinterGroupUseTypeDescription printerGroupUseTypeDescription = null;
         var printerGroupUseTypeName = spec.getPrinterGroupUseTypeName();
         var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
         if(printerGroupUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditPrinterGroupUseTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditPrinterGroupUseTypeDescriptionResult result, PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
-        var printerControl = Session.getModelController(PrinterControl.class);
-
         result.setPrinterGroupUseTypeDescription(printerControl.getPrinterGroupUseTypeDescriptionTransfer(getUserVisit(), printerGroupUseTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditPrinterGroupUseTypeDescriptionCommand
 
     @Override
     public void doUpdate(PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerGroupUseTypeDescriptionValue = printerControl.getPrinterGroupUseTypeDescriptionValue(printerGroupUseTypeDescription);
 
         printerGroupUseTypeDescriptionValue.setDescription(edit.getDescription());

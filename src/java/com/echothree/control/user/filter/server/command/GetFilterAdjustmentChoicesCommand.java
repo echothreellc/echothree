@@ -18,7 +18,8 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentChoicesCommand
@@ -56,6 +57,13 @@ public class GetFilterAdjustmentChoicesCommand
                 new FieldDefinition("InitialAdjustmentsOnly", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
     
     /** Creates a new instance of GetFilterAdjustmentChoicesCommand */
     public GetFilterAdjustmentChoicesCommand() {
@@ -64,16 +72,15 @@ public class GetFilterAdjustmentChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterAdjustmentChoicesResult();
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var defaultFilterAdjustmentChoice = form.getDefaultFilterAdjustmentChoice();
             var initialAdjustmentsOnly = Boolean.parseBoolean(form.getInitialAdjustmentsOnly());
             
-            result.setFilterAdjustmentChoices(filterControl.getFilterAdjustmentChoices(defaultFilterAdjustmentChoice, getPreferredLanguage(), filterKind, initialAdjustmentsOnly));
+            result.setFilterAdjustmentChoices(filterAdjustmentControl.getFilterAdjustmentChoices(defaultFilterAdjustmentChoice, getPreferredLanguage(), filterKind, initialAdjustmentsOnly));
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }

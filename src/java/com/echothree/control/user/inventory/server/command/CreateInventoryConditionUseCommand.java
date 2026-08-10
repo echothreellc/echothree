@@ -24,45 +24,47 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class CreateInventoryConditionUseCommand
         extends BaseSimpleCommand<CreateInventoryConditionUseForm> {
-    
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionUseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
     /** Creates a new instance of CreateInventoryConditionUseCommand */
     public CreateInventoryConditionUseCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
         var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
-        
+
         if(inventoryConditionUseType != null) {
             var inventoryConditionName = form.getInventoryConditionName();
             var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
-            
+
             if(inventoryCondition != null) {
                 var inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType, inventoryCondition);
-                
+
                 if(inventoryConditionUse == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
-                    
+
                     inventoryControl.createInventoryConditionUse(inventoryConditionUseType, inventoryCondition, isDefault, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateInventoryConditionUse.name());
@@ -73,8 +75,8 @@ public class CreateInventoryConditionUseCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryConditionUseTypeName.name(), inventoryConditionUseTypeName);
         }
-        
+
         return null;
     }
-    
+
 }

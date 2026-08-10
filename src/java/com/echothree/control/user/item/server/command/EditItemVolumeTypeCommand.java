@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemVolumeTypeCommand
@@ -51,22 +51,29 @@ public class EditItemVolumeTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemVolumeType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemVolumeTypeLogic itemVolumeTypeLogic;
+
     
     /** Creates a new instance of EditItemVolumeTypeCommand */
     public EditItemVolumeTypeCommand() {
@@ -85,7 +92,7 @@ public class EditItemVolumeTypeCommand
     
     @Override
     public ItemVolumeType getEntity(EditItemVolumeTypeResult result) {
-        return ItemVolumeTypeLogic.getInstance().getItemVolumeTypeByUniversalSpec(this,
+        return itemVolumeTypeLogic.getItemVolumeTypeByUniversalSpec(this,
                 spec, false, editModeToEntityPermission(editMode));
     }
     
@@ -96,14 +103,11 @@ public class EditItemVolumeTypeCommand
     
     @Override
     public void fillInResult(EditItemVolumeTypeResult result, ItemVolumeType itemVolumeType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
-        
         result.setItemVolumeType(itemControl.getItemVolumeTypeTransfer(getUserVisit(), itemVolumeType));
     }
     
     @Override
     public void doLock(ItemVolumeTypeEdit edit, ItemVolumeType itemVolumeType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var itemVolumeTypeDescription = itemControl.getItemVolumeTypeDescription(itemVolumeType, getPreferredLanguage());
         final var itemVolumeTypeDetail = itemVolumeType.getLastDetail();
         
@@ -118,7 +122,6 @@ public class EditItemVolumeTypeCommand
         
     @Override
     public void canUpdate(ItemVolumeType itemVolumeType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var itemVolumeTypeName = edit.getItemVolumeTypeName();
         final var duplicateItemVolumeType = itemControl.getItemVolumeTypeByName(itemVolumeTypeName);
 
@@ -129,7 +132,6 @@ public class EditItemVolumeTypeCommand
     
     @Override
     public void doUpdate(ItemVolumeType itemVolumeType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var partyPK = getPartyPK();
         final var itemVolumeTypeDetailValue = itemControl.getItemVolumeTypeDetailValueForUpdate(itemVolumeType);
         final var itemVolumeTypeDescription = itemControl.getItemVolumeTypeDescriptionForUpdate(itemVolumeType, getPreferredLanguage());
@@ -139,7 +141,7 @@ public class EditItemVolumeTypeCommand
         itemVolumeTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemVolumeTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        ItemVolumeTypeLogic.getInstance().updateItemVolumeTypeFromValue(session, itemVolumeTypeDetailValue, partyPK);
+        itemVolumeTypeLogic.updateItemVolumeTypeFromValue(session, itemVolumeTypeDetailValue, partyPK);
 
         if(itemVolumeTypeDescription == null && description != null) {
             itemControl.createItemVolumeTypeDescription(itemVolumeType, getPreferredLanguage(), description, partyPK);

@@ -41,9 +41,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditBatchTypeCommand
@@ -57,13 +57,13 @@ public class EditBatchTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.BatchType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.BatchType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -74,8 +74,18 @@ public class EditBatchTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of EditBatchTypeCommand */
     public EditBatchTypeCommand() {
@@ -94,7 +104,6 @@ public class EditBatchTypeCommand
 
     @Override
     public BatchType getEntity(EditBatchTypeResult result) {
-        var batchControl = Session.getModelController(BatchControl.class);
         BatchType batchType;
         var batchTypeName = spec.getBatchTypeName();
 
@@ -120,8 +129,6 @@ public class EditBatchTypeCommand
 
     @Override
     public void fillInResult(EditBatchTypeResult result, BatchType batchType) {
-        var batchControl = Session.getModelController(BatchControl.class);
-
         result.setBatchType(batchControl.getBatchTypeTransfer(getUserVisit(), batchType));
     }
 
@@ -132,7 +139,6 @@ public class EditBatchTypeCommand
 
     @Override
     public void doLock(BatchTypeEdit edit, BatchType batchType) {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchTypeDescription = batchControl.getBatchTypeDescription(batchType, getPreferredLanguage());
         var batchTypeDetail = batchType.getLastDetail();
 
@@ -156,7 +162,6 @@ public class EditBatchTypeCommand
 
     @Override
     public void canUpdate(BatchType batchType) {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchTypeName = edit.getBatchTypeName();
         var duplicateBatchType = batchControl.getBatchTypeByName(batchTypeName);
 
@@ -169,13 +174,11 @@ public class EditBatchTypeCommand
 
             if(parentBatchTypeName == null || parentBatchType != null) {
                 if(batchControl.isParentBatchTypeSafe(batchType, parentBatchType)) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     var batchSequenceTypeName = edit.getBatchSequenceTypeName();
 
                     batchSequenceType = sequenceControl.getSequenceTypeByName(batchSequenceTypeName);
 
                     if(batchSequenceTypeName == null || batchSequenceType != null) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         var batchWorkflowName = edit.getBatchWorkflowName();
 
                         batchWorkflow = batchWorkflowName == null ? null : workflowControl.getWorkflowByName(batchWorkflowName);
@@ -211,7 +214,6 @@ public class EditBatchTypeCommand
 
     @Override
     public void doUpdate(BatchType batchType) {
-        var batchControl = Session.getModelController(BatchControl.class);
         var partyPK = getPartyPK();
         var batchTypeDetailValue = batchControl.getBatchTypeDetailValueForUpdate(batchType);
         var batchTypeDescription = batchControl.getBatchTypeDescriptionForUpdate(batchType, getPreferredLanguage());

@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentWebAddressesCommand
@@ -48,12 +48,15 @@ public class GetContentWebAddressesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentWebAddress.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of GetContentWebAddressesCommand */
     public GetContentWebAddressesCommand() {
@@ -67,15 +70,11 @@ public class GetContentWebAddressesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return contentControl.countContentWebAddresses();
     }
 
     @Override
     protected Collection<ContentWebAddress> getEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return contentControl.getContentWebAddresses();
     }
 
@@ -84,8 +83,6 @@ public class GetContentWebAddressesCommand
         var result = ContentResultFactory.getGetContentWebAddressesResult();
 
         if(entities != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             if(session.hasLimit(ContentWebAddressFactory.class)) {
                 result.setContentWebAddressCount(getTotalEntities());
             }

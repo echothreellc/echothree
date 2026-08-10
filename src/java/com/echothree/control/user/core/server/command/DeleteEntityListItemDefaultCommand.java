@@ -28,6 +28,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityListItemDefaultCommand
@@ -50,6 +51,10 @@ public class DeleteEntityListItemDefaultCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of DeleteEntityListItemDefaultCommand */
     public DeleteEntityListItemDefaultCommand() {
@@ -58,10 +63,10 @@ public class DeleteEntityListItemDefaultCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, form);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttributeLogic.getInstance().deleteEntityListItemDefault(this, entityAttribute, getPartyPK());
+            entityAttributeLogic.deleteEntityListItemDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

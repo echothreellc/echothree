@@ -20,24 +20,28 @@ import com.echothree.control.user.contact.common.form.GetContactMechanismPurpose
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.contact.server.factory.ContactMechanismPurposeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContactMechanismPurposesCommand
         extends BasePaginatedMultipleEntitiesCommand<ContactMechanismPurpose, GetContactMechanismPurposesForm> {
 
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ContactControl contactControl;
 
     /** Creates a new instance of GetContactMechanismPurposesCommand */
     public GetContactMechanismPurposesCommand() {
@@ -51,15 +55,11 @@ public class GetContactMechanismPurposesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var contactControl = Session.getModelController(ContactControl.class);
-
         return contactControl.countContactMechanismPurposes();
     }
 
     @Override
     protected Collection<ContactMechanismPurpose> getEntities() {
-        var contactControl = Session.getModelController(ContactControl.class);
-
         return contactControl.getContactMechanismPurposes();
     }
 
@@ -68,7 +68,9 @@ public class GetContactMechanismPurposesCommand
         var result = ContactResultFactory.getGetContactMechanismPurposesResult();
 
         if(entities != null) {
-            var contactControl = Session.getModelController(ContactControl.class);
+            if(session.hasLimit(ContactMechanismPurposeFactory.class)) {
+                result.setContactMechanismPurposeCount(contactControl.countContactMechanismPurposes());
+            }
 
             result.setContactMechanismPurposes(contactControl.getContactMechanismPurposeTransfers(getUserVisit(), entities));
         }

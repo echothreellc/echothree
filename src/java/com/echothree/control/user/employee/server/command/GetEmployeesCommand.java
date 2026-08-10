@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEmployeesCommand
@@ -53,6 +53,9 @@ public class GetEmployeesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    EmployeeControl employeeControl;
+
     /** Creates a new instance of GetEmployeesCommand */
     public GetEmployeesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetEmployeesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-
         return employeeControl.countPartyEmployees();
     }
 
     @Override
     protected Collection<PartyEmployee> getEntities() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-
         return employeeControl.getPartyEmployees();
     }
 
@@ -82,8 +81,6 @@ public class GetEmployeesCommand
         var result = EmployeeResultFactory.getGetEmployeesResult();
 
         if(entities != null) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-
             if(session.hasLimit(PartyEmployeeFactory.class)) {
                 result.setEmployeeCount(getTotalEntities());
             }

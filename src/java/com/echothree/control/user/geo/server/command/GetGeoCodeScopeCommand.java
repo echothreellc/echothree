@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGeoCodeScopeCommand
@@ -59,6 +59,12 @@ public class GetGeoCodeScopeCommand
         );
     }
 
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    GeoCodeScopeLogic geoCodeScopeLogic;
+
     /** Creates a new instance of GetGeoCodeScopeCommand */
     public GetGeoCodeScopeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetGeoCodeScopeCommand
 
     @Override
     protected GeoCodeScope getEntity() {
-        var geoCodeScope = GeoCodeScopeLogic.getInstance().getGeoCodeScopeByUniversalSpec(this, form, true);
+        var geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByUniversalSpec(this, form, true);
 
         if(geoCodeScope != null) {
             sendEvent(geoCodeScope.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetGeoCodeScopeCommand
 
     @Override
     protected BaseResult getResult(GeoCodeScope entity) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var result = GeoResultFactory.getGetGeoCodeScopeResult();
 
         if(entity != null) {

@@ -56,12 +56,12 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditVendorCommand
@@ -75,9 +75,9 @@ public class EditVendorCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
@@ -115,8 +115,30 @@ public class EditVendorCommand
                 new FieldDefinition("RequireReference", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowReferenceDuplicates", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    VendorLogic vendorLogic;
+
     
     /** Creates a new instance of EditVendorCommand */
     public EditVendorCommand() {
@@ -125,15 +147,12 @@ public class EditVendorCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorName = spec.getVendorName();
         
         if(vendorName != null) {
             var vendor = vendorControl.getVendorByNameForUpdate(vendorName);
             
             if(vendor != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                
                 validator.setCurrency(partyControl.getPreferredCurrency(vendor.getParty()));
             }
         }
@@ -151,13 +170,12 @@ public class EditVendorCommand
 
     @Override
     public Party getEntity(EditVendorResult result) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         Vendor vendor;
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            vendor = VendorLogic.getInstance().getVendorByUniversalSpec(this, spec);
+            vendor = vendorLogic.getVendorByUniversalSpec(this, spec);
         } else { // EditMode.UPDATE
-            vendor = VendorLogic.getInstance().getVendorByUniversalSpecForUpdate(this, spec);
+            vendor = vendorLogic.getVendorByUniversalSpecForUpdate(this, spec);
         }
 
         if(!hasExecutionErrors()) {
@@ -174,15 +192,11 @@ public class EditVendorCommand
 
     @Override
     public void fillInResult(EditVendorResult result, Party party) {
-        var vendorControl = Session.getModelController(VendorControl.class);
-
         result.setVendor(vendorControl.getVendorTransfer(getUserVisit(), party));
     }
 
     @Override
     public void doLock(VendorEdit edit, Party party) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendor = vendorControl.getVendor(party);
         var amountUtils = AmountUtils.getInstance();
         var vendorPreferredCurrency = getPreferredCurrency(party);
@@ -245,8 +259,6 @@ public class EditVendorCommand
 
     @Override
     public void canUpdate(Party party) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendor = vendorControl.getVendorForUpdate(party);
         var vendorName = edit.getVendorName();
         var duplicateVendor = vendorControl.getVendorByName(vendorName);
@@ -259,7 +271,6 @@ public class EditVendorCommand
                 var cancellationPolicyName = edit.getCancellationPolicyName();
 
                 if(cancellationPolicyName != null) {
-                    var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                     var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
 
                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -269,14 +280,12 @@ public class EditVendorCommand
                     var returnPolicyName = edit.getReturnPolicyName();
 
                     if(returnPolicyName != null) {
-                        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                         var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
 
                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                     }
 
                     if(returnPolicyName == null || returnPolicy != null) {
-                        var accountingControl = Session.getModelController(AccountingControl.class);
                         var apGlAccountName = edit.getApGlAccountName();
 
                         apGlAccount = apGlAccountName == null ? null : accountingControl.getGlAccountByName(apGlAccountName);
@@ -285,7 +294,6 @@ public class EditVendorCommand
                             var glAccountCategoryName = apGlAccount == null ? null : apGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
-                                var itemControl = Session.getModelController(ItemControl.class);
                                 var defaultItemAliasTypeName = edit.getDefaultItemAliasTypeName();
 
                                 defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
@@ -352,8 +360,6 @@ public class EditVendorCommand
 
     @Override
     public void doUpdate(Party party) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var vendorControl = Session.getModelController(VendorControl.class);
         var soundex = new Soundex();
         var vendor = vendorControl.getVendorForUpdate(party);
         var vendorValue = vendorControl.getVendorValue(vendor);

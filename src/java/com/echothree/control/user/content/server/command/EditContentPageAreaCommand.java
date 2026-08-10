@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentPageAreaCommand
@@ -56,8 +56,8 @@ public class EditContentPageAreaCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPageArea.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -65,15 +65,25 @@ public class EditContentPageAreaCommand
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("ContentPageAreaClob", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("ContentPageAreaUrl", FieldType.URL, false, 1L, 200L)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContentPageAreaCommand */
     public EditContentPageAreaCommand() {
@@ -92,7 +102,6 @@ public class EditContentPageAreaCommand
     
     @Override
     public ContentPageArea getEntity(EditContentPageAreaResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageArea contentPageArea = null;
         var contentCollectionName = spec.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -111,7 +120,6 @@ public class EditContentPageAreaCommand
                     var contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
                     if(contentPageLayoutArea != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = spec.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
                         
@@ -151,14 +159,11 @@ public class EditContentPageAreaCommand
     
     @Override
     public void fillInResult(EditContentPageAreaResult result, ContentPageArea contentPageArea) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentPageArea(contentControl.getContentPageAreaTransfer(getUserVisit(), contentPageArea));
     }
     
     @Override
     public void doLock(ContentPageAreaEdit edit, ContentPageArea contentPageArea) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageAreaDetail = contentPageArea.getLastDetail();
         var contentPageAreaBlob = contentControl.getContentPageAreaBlob(contentPageAreaDetail);
         var contentPageAreaClob = contentControl.getContentPageAreaClob(contentPageAreaDetail);
@@ -188,7 +193,6 @@ public class EditContentPageAreaCommand
     
     @Override
     public void canUpdate(ContentPageArea contentPageArea) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeName = edit.getMimeTypeName();
         
         mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
@@ -200,7 +204,6 @@ public class EditContentPageAreaCommand
     
     @Override
     public void doUpdate(ContentPageArea contentPageArea) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageAreaDetailValue = contentControl.getContentPageAreaDetailValueForUpdate(contentPageArea);
         var description = edit.getDescription();
         var contentPageAreaBlob = edit.getContentPageAreaBlob();

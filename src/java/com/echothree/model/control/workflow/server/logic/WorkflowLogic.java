@@ -35,13 +35,25 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkflowLogic
         extends BaseLogic {
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    SelectorKindLogic selectorKindLogic;
 
     protected WorkflowLogic() {
         super();
@@ -53,7 +65,6 @@ public class WorkflowLogic
 
     public Workflow getWorkflowByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final String workflowName, final EntityPermission entityPermission) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = workflowControl.getWorkflowByName(workflowName, entityPermission);
 
         if(workflow == null) {
@@ -80,17 +91,16 @@ public class WorkflowLogic
     public Workflow getWorkflowByUniversalSpec(final ExecutionErrorAccumulator eea,
             final WorkflowUniversalSpec universalSpec, final EntityPermission entityPermission) {
         Workflow workflow = null;
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = universalSpec.getWorkflowName();
-        var parameterCount = (workflowName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (workflowName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(workflowName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Workflow.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         workflow = workflowControl.getWorkflowByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -117,12 +127,10 @@ public class WorkflowLogic
     public WorkflowEntityType getWorkflowEntityTypeByName(final ExecutionErrorAccumulator eea, final String workflowName,
             final String componentVendorName, final String entityTypeName) {
         var workflow = getWorkflowByName(eea, workflowName);
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendorName, entityTypeName);
+        var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendorName, entityTypeName);
         WorkflowEntityType workflowEntityType = null;
 
         if(eea != null && !eea.hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowEntityType = workflowControl.getWorkflowEntityType(workflow, entityType);
 
             if(workflowEntityType == null) {
@@ -141,12 +149,10 @@ public class WorkflowLogic
     public WorkflowSelectorKind getWorkflowSelectorKindByName(final ExecutionErrorAccumulator eea, final String workflowName,
             final String selectorKindName) {
         var workflow = getWorkflowByName(eea, workflowName);
-        var selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(eea, selectorKindName);
+        var selectorKind = selectorKindLogic.getSelectorKindByName(eea, selectorKindName);
         WorkflowSelectorKind workflowSelectorKind = null;
 
         if(eea != null && !eea.hasExecutionErrors()) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
-
             workflowSelectorKind = workflowControl.getWorkflowSelectorKind(workflow, selectorKind);
 
             if(workflowSelectorKind == null) {

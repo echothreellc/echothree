@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLetterDescriptionCommand
@@ -54,20 +54,30 @@ public class EditLetterDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Letter.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    LetterControl letterControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditLetterDescriptionCommand */
     public EditLetterDescriptionCommand() {
@@ -76,7 +86,6 @@ public class EditLetterDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = LetterResultFactory.getEditLetterDescriptionResult();
         var chainKindName = spec.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
@@ -86,12 +95,10 @@ public class EditLetterDescriptionCommand
             var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = Session.getModelController(LetterControl.class);
                 var letterName = spec.getLetterName();
                 var letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = spec.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
                     

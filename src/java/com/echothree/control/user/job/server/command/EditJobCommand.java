@@ -64,15 +64,16 @@ public class EditJobCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    JobControl jobControl;
+
     
     /** Creates a new instance of EditJobCommand */
     public EditJobCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
-    @Inject
-    JobControl jobControl;
-
     @Override
     protected EditJobResult getResult() {
         return JobResultFactory.getEditJobResult();

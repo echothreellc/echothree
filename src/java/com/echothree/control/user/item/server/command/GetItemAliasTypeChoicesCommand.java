@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemAliasTypeChoicesCommand
@@ -45,14 +45,18 @@ public class GetItemAliasTypeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemAliasType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultItemAliasTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of GetItemAliasTypeChoicesCommand */
     public GetItemAliasTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetItemAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemAliasTypeChoicesResult();
         var defaultItemAliasTypeChoice = form.getDefaultItemAliasTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -63,7 +62,11 @@ public class GetChainActionSetCommand
     }
 
     @Inject
+    ChainControl chainControl;
+
+    @Inject
     ChainActionSetLogic chainActionSetLogic;
+
     
     /** Creates a new instance of GetChainActionSetCommand */
     public GetChainActionSetCommand() {
@@ -86,8 +89,6 @@ public class GetChainActionSetCommand
         var result = ChainResultFactory.getGetChainActionSetResult();
 
         if(chainActionSet != null) {
-            var chainControl = Session.getModelController(ChainControl.class);
-
             result.setChainActionSet(chainControl.getChainActionSetTransfer(getUserVisit(), chainActionSet));
         }
 

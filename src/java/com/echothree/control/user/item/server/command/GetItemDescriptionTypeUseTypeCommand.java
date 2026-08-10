@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemDescriptionTypeUseTypeCommand
@@ -48,8 +48,7 @@ public class GetItemDescriptionTypeUseTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ItemDescriptionTypeUseType.name(), SecurityRoles.Review.name()
-                        )
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemDescriptionTypeUseType.name(), SecurityRoles.Review.name())
                 ))
         ));
 
@@ -60,6 +59,12 @@ public class GetItemDescriptionTypeUseTypeCommand
         );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemDescriptionTypeUseTypeLogic itemDescriptionTypeUseTypeLogic;
+
     /** Creates a new instance of GetItemDescriptionTypeUseTypeCommand */
     public GetItemDescriptionTypeUseTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -67,7 +72,7 @@ public class GetItemDescriptionTypeUseTypeCommand
 
     @Override
     protected ItemDescriptionTypeUseType getEntity() {
-        var itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeLogic.getInstance().getItemDescriptionTypeUseTypeByUniversalSpec(this, form, true);
+        var itemDescriptionTypeUseType = itemDescriptionTypeUseTypeLogic.getItemDescriptionTypeUseTypeByUniversalSpec(this, form, true);
 
         if(itemDescriptionTypeUseType != null) {
             sendEvent(itemDescriptionTypeUseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +83,7 @@ public class GetItemDescriptionTypeUseTypeCommand
 
     @Override
     protected BaseResult getResult(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        var itemDescriptionTypeUseTypeControl = Session.getModelController(ItemControl.class);
+        var itemDescriptionTypeUseTypeControl = itemControl;
         var result = ItemResultFactory.getGetItemDescriptionTypeUseTypeResult();
 
         if(itemDescriptionTypeUseType != null) {

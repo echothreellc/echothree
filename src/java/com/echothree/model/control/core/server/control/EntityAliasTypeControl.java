@@ -53,6 +53,15 @@ public class EntityAliasTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+
+    @Inject
+    protected EntityAliasTypeFactory entityAliasTypeFactory;
+
+    @Inject
+    protected SearchResultFactory searchResultFactory;
+
+    @Inject
     SearchControl searchControl;
 
     @Inject
@@ -73,18 +82,20 @@ public class EntityAliasTypeControl
             entityAliasTypeResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
-                var ps = SearchResultFactory.getInstance().prepareStatement(
-                        "SELECT eni_entityuniqueid "
-                                + "FROM searchresults, entityinstances "
-                                + "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid "
-                                + "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid "
-                                + "_LIMIT_");
+                var ps = searchResultFactory.prepareStatement(
+                        """
+                        SELECT eni_entityuniqueid
+                        FROM searchresults, entityinstances
+                        WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                        _LIMIT_
+                        """);
 
                 ps.setLong(1, search.getPrimaryKey().getEntityId());
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
+                        var entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
                         var entityAliasTypeDetail = entityAliasType.getLastDetail();
                         var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
 
@@ -106,18 +117,20 @@ public class EntityAliasTypeControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
             try {
-                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
-                        "SELECT eni_entityuniqueid "
-                                + "FROM cachedexecutedsearchresults, entityinstances "
-                                + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid "
-                                + "ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid "
-                                + "_LIMIT_");
+                var ps = cachedExecutedSearchResultFactory.prepareStatement(
+                        """
+                        SELECT eni_entityuniqueid
+                        FROM cachedexecutedsearchresults, entityinstances
+                        WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid
+                        _LIMIT_
+                        """);
 
                 ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
 
                 try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        var entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
+                        var entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
                         var entityAliasTypeDetail = entityAliasType.getLastDetail();
                         var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
 
@@ -137,7 +150,6 @@ public class EntityAliasTypeControl
     }
 
     public List<EntityAliasTypeObject> getEntityAliasTypeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var entityAliasTypeObjects = new ArrayList<EntityAliasTypeObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

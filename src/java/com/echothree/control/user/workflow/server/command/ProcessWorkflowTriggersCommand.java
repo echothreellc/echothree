@@ -24,6 +24,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class ProcessWorkflowTriggersCommand
@@ -36,6 +37,10 @@ public class ProcessWorkflowTriggersCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
         ));
     }
+
+    @Inject
+    WorkflowTriggerLogic workflowTriggerLogic;
+
     
     /** Creates a new instance of ProcessWorkflowTriggersCommand */
     public ProcessWorkflowTriggersCommand() {
@@ -44,7 +49,7 @@ public class ProcessWorkflowTriggersCommand
 
     @Override
     protected BaseResult execute() {
-        WorkflowTriggerLogic.getInstance().processWorkflowTriggers(session, this, getPartyPK());
+        workflowTriggerLogic.processWorkflowTriggers(session, this, getPartyPK());
 
         return null;
     }

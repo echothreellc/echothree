@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditReturnPolicyTranslationCommand
@@ -59,21 +59,30 @@ public class EditReturnPolicyTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ReturnPolicy.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("PolicyMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
 
     /** Creates a new instance of EditReturnPolicyTranslationCommand */
     public EditReturnPolicyTranslationCommand() {
@@ -94,7 +103,6 @@ public class EditReturnPolicyTranslationCommand
     
     @Override
     public ReturnPolicyTranslation getEntity(EditReturnPolicyTranslationResult result) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnPolicyTranslation returnPolicyTranslation = null;
         var returnKindName = spec.getReturnKindName();
         
@@ -105,7 +113,6 @@ public class EditReturnPolicyTranslationCommand
             var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
             if(returnPolicy != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -139,8 +146,6 @@ public class EditReturnPolicyTranslationCommand
 
     @Override
     public void fillInResult(EditReturnPolicyTranslationResult result, ReturnPolicyTranslation returnPolicyTranslation) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
         result.setReturnPolicyTranslation(returnPolicyControl.getReturnPolicyTranslationTransfer(getUserVisit(), returnPolicyTranslation));
     }
 
@@ -158,7 +163,6 @@ public class EditReturnPolicyTranslationCommand
 
     @Override
     protected void canUpdate(ReturnPolicyTranslation returnPolicyTranslation) {
-        var mimeTypeLogic = MimeTypeLogic.getInstance();
         var policyMimeTypeName = edit.getPolicyMimeTypeName();
         var policy = edit.getPolicy();
         
@@ -169,7 +173,6 @@ public class EditReturnPolicyTranslationCommand
     
     @Override
     public void doUpdate(ReturnPolicyTranslation returnPolicyTranslation) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnPolicyTranslationValue = returnPolicyControl.getReturnPolicyTranslationValue(returnPolicyTranslation);
         
         returnPolicyTranslationValue.setDescription(edit.getDescription());

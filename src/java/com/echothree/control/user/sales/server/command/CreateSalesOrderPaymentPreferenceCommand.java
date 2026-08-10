@@ -38,6 +38,7 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSalesOrderPaymentPreferenceCommand
@@ -50,9 +51,9 @@ public class CreateSalesOrderPaymentPreferenceCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderPaymentPreference.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderPaymentPreference.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
@@ -62,8 +63,23 @@ public class CreateSalesOrderPaymentPreferenceCommand
                 new FieldDefinition("WasPresent", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("MaximumAmount", FieldType.PRICE_UNIT, false, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    OrderLogic orderLogic;
+
+    @Inject
+    PartyPaymentMethodLogic partyPaymentMethodLogic;
+
+    @Inject
+    PaymentMethodLogic paymentMethodLogic;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
+
+    @Inject
+    SalesOrderPaymentPreferenceLogic salesOrderPaymentPreferenceLogic;
 
     /** Creates a new instance of CreateSalesOrderPaymentPreferenceCommand */
     public CreateSalesOrderPaymentPreferenceCommand() {
@@ -73,10 +89,10 @@ public class CreateSalesOrderPaymentPreferenceCommand
     @Override
     protected void setupValidator(Validator validator) {
         var orderName = form.getOrderName();
-        var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var order = orderName == null ? null : salesOrderLogic.getOrderByName(this, orderName);
         
         if(order != null) {
-            validator.setCurrency(OrderLogic.getInstance().getOrderCurrency(order));
+            validator.setCurrency(orderLogic.getOrderCurrency(order));
         }
     }
     
@@ -84,11 +100,11 @@ public class CreateSalesOrderPaymentPreferenceCommand
     protected BaseResult execute() {
         var result = SalesResultFactory.getCreateSalesOrderPaymentPreferenceResult();
         var orderName = form.getOrderName();
-        var order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var order = salesOrderLogic.getOrderByName(this, orderName);
         var paymentMethodName = form.getPaymentMethodName();
-        var paymentMethod = paymentMethodName == null ? null : PaymentMethodLogic.getInstance().getPaymentMethodByName(this, paymentMethodName);
+        var paymentMethod = paymentMethodName == null ? null : paymentMethodLogic.getPaymentMethodByName(this, paymentMethodName);
         var partyPaymentMethodName = form.getPartyPaymentMethodName();
-        var partyPaymentMethod = partyPaymentMethodName == null ? null : PartyPaymentMethodLogic.getInstance().getPartyPaymentMethodByName(this, partyPaymentMethodName);
+        var partyPaymentMethod = partyPaymentMethodName == null ? null : partyPaymentMethodLogic.getPartyPaymentMethodByName(this, partyPaymentMethodName);
         OrderPaymentPreference orderPaymentPreference = null;
         
         if(!hasExecutionErrors()) {
@@ -100,7 +116,7 @@ public class CreateSalesOrderPaymentPreferenceCommand
             var maximumAmount = strMaximumAmount == null ? null : Long.valueOf(strMaximumAmount);
             var sortOrder = Integer.valueOf(form.getSortOrder());
 
-            orderPaymentPreference = SalesOrderPaymentPreferenceLogic.getInstance().createSalesOrderPaymentPreference(session,
+            orderPaymentPreference = salesOrderPaymentPreferenceLogic.createSalesOrderPaymentPreference(session,
                     this, order, orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount,
                     sortOrder, getPartyPK());
         }

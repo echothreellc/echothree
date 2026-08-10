@@ -27,10 +27,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTermCommand
@@ -46,21 +46,25 @@ public class CreateTermCommand
                 new FieldDefinition("TermTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
         
         standardFieldDefinitions = List.of(
                 new FieldDefinition("NetDueDays", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DiscountPercentage", FieldType.FRACTIONAL_PERCENT, true, null, null),
                 new FieldDefinition("DiscountDays", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
         
         dateDrivenFieldDefinitions = List.of(
                 new FieldDefinition("NetDueDayOfMonth", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DueNextMonthDays", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DiscountPercentage", FieldType.FRACTIONAL_PERCENT, true, null, null),
                 new FieldDefinition("DiscountBeforeDayOfMonth", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of CreateTermCommand */
     public CreateTermCommand() {
@@ -88,7 +92,6 @@ public class CreateTermCommand
     @Override
     protected BaseResult execute() {
         var result = TermResultFactory.getCreateTermResult();
-        var termControl = Session.getModelController(TermControl.class);
         var termName = form.getTermName();
         var term = termControl.getTermByName(termName);
         

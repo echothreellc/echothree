@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteOrderTimeTypeCommand
@@ -54,6 +55,10 @@ public class DeleteOrderTimeTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    OrderTimeTypeLogic orderTimeTypeLogic;
+
     
     /** Creates a new instance of DeleteOrderTimeTypeCommand */
     public DeleteOrderTimeTypeCommand() {
@@ -62,10 +67,10 @@ public class DeleteOrderTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTimeType = OrderTimeTypeLogic.getInstance().getOrderTimeTypeByUniversalSpecForUpdate(this, form, false);
+        var orderTimeType = orderTimeTypeLogic.getOrderTimeTypeByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            OrderTimeTypeLogic.getInstance().deleteOrderTimeType(this, orderTimeType, getPartyPK());
+            orderTimeTypeLogic.deleteOrderTimeType(this, orderTimeType, getPartyPK());
         }
 
         return null;

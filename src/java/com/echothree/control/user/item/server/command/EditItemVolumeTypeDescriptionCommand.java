@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemVolumeTypeDescriptionCommand
@@ -55,18 +55,25 @@ public class EditItemVolumeTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemVolumeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemVolumeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditItemVolumeTypeDescriptionCommand */
     public EditItemVolumeTypeDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditItemVolumeTypeDescriptionCommand
 
     @Override
     public ItemVolumeTypeDescription getEntity(EditItemVolumeTypeDescriptionResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemVolumeTypeDescription itemVolumeTypeDescription = null;
         var itemVolumeTypeName = spec.getItemVolumeTypeName();
         var itemVolumeType = itemControl.getItemVolumeTypeByName(itemVolumeTypeName);
 
         if(itemVolumeType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditItemVolumeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditItemVolumeTypeDescriptionResult result, ItemVolumeTypeDescription itemVolumeTypeDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemVolumeTypeDescription(itemControl.getItemVolumeTypeDescriptionTransfer(getUserVisit(), itemVolumeTypeDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditItemVolumeTypeDescriptionCommand
 
     @Override
     public void doUpdate(ItemVolumeTypeDescription itemVolumeTypeDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemVolumeTypeDescriptionValue = itemControl.getItemVolumeTypeDescriptionValue(itemVolumeTypeDescription);
         
         itemVolumeTypeDescriptionValue.setDescription(edit.getDescription());

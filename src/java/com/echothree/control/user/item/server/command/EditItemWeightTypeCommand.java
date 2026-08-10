@@ -34,9 +34,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemWeightTypeCommand
@@ -51,22 +51,29 @@ public class EditItemWeightTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemWeightType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemWeightTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemWeightTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemWeightTypeLogic itemWeightTypeLogic;
+
     
     /** Creates a new instance of EditItemWeightTypeCommand */
     public EditItemWeightTypeCommand() {
@@ -85,7 +92,7 @@ public class EditItemWeightTypeCommand
     
     @Override
     public ItemWeightType getEntity(EditItemWeightTypeResult result) {
-        return ItemWeightTypeLogic.getInstance().getItemWeightTypeByUniversalSpec(this,
+        return itemWeightTypeLogic.getItemWeightTypeByUniversalSpec(this,
                 spec, false, editModeToEntityPermission(editMode));
     }
     
@@ -96,14 +103,11 @@ public class EditItemWeightTypeCommand
     
     @Override
     public void fillInResult(EditItemWeightTypeResult result, ItemWeightType itemWeightType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
-        
         result.setItemWeightType(itemControl.getItemWeightTypeTransfer(getUserVisit(), itemWeightType));
     }
     
     @Override
     public void doLock(ItemWeightTypeEdit edit, ItemWeightType itemWeightType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var itemWeightTypeDescription = itemControl.getItemWeightTypeDescription(itemWeightType, getPreferredLanguage());
         final var itemWeightTypeDetail = itemWeightType.getLastDetail();
         
@@ -118,7 +122,6 @@ public class EditItemWeightTypeCommand
         
     @Override
     public void canUpdate(ItemWeightType itemWeightType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var itemWeightTypeName = edit.getItemWeightTypeName();
         final var duplicateItemWeightType = itemControl.getItemWeightTypeByName(itemWeightTypeName);
 
@@ -129,7 +132,6 @@ public class EditItemWeightTypeCommand
     
     @Override
     public void doUpdate(ItemWeightType itemWeightType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var partyPK = getPartyPK();
         final var itemWeightTypeDetailValue = itemControl.getItemWeightTypeDetailValueForUpdate(itemWeightType);
         final var itemWeightTypeDescription = itemControl.getItemWeightTypeDescriptionForUpdate(itemWeightType, getPreferredLanguage());
@@ -139,7 +141,7 @@ public class EditItemWeightTypeCommand
         itemWeightTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemWeightTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        ItemWeightTypeLogic.getInstance().updateItemWeightTypeFromValue(session, itemWeightTypeDetailValue, partyPK);
+        itemWeightTypeLogic.updateItemWeightTypeFromValue(session, itemWeightTypeDetailValue, partyPK);
 
         if(itemWeightTypeDescription == null && description != null) {
             itemControl.createItemWeightTypeDescription(itemWeightType, getPreferredLanguage(), description, partyPK);

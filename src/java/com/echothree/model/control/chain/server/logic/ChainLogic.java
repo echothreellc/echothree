@@ -43,7 +43,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -56,13 +55,19 @@ public class ChainLogic
     ChainControl chainControl;
 
     @Inject
-    OfferControl offerControl;
-
-    @Inject
     CustomerControl customerControl;
 
     @Inject
+    OfferControl offerControl;
+
+    @Inject
+    ChainKindLogic chainKindLogic;
+
+    @Inject
     ChainTypeLogic chainTypeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     @Inject
     SequenceLogic sequenceLogic;
@@ -94,7 +99,6 @@ public class ChainLogic
     public Chain createChain(final ExecutionErrorAccumulator eea, final ChainType chainType, final String chainName,
             final Sequence chainInstanceSequence, final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chain = chainControl.getChainByName(chainType, chainName);
 
         if(chain == null) {
@@ -111,7 +115,6 @@ public class ChainLogic
 
     public Chain getChainByName(final ExecutionErrorAccumulator eea, final ChainType chainType, final String chainName,
             final EntityPermission entityPermission) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chain = chainControl.getChainByName(chainType, chainName, entityPermission);
 
         if(chain == null) {
@@ -136,7 +139,7 @@ public class ChainLogic
         var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
         Chain chain = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             chain = getChainByName(eea, chainType, chainName, entityPermission);
         }
 
@@ -153,12 +156,11 @@ public class ChainLogic
 
     public Chain getChainByUniversalSpec(final ExecutionErrorAccumulator eea, final ChainUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = universalSpec.getChainKindName();
         var chainTypeName = universalSpec.getChainTypeName();
         var chainName = universalSpec.getChainName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(chainKindName, chainTypeName, chainName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         Chain chain = null;
 
         if(nameParameterCount < 4 && possibleEntitySpecs == 0) {
@@ -176,25 +178,27 @@ public class ChainLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                chainKind = ChainKindLogic.getInstance().getChainKindByName(eea, chainKindName);
+                chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
             }
 
-            if(chainTypeName == null && !eea.hasExecutionErrors()) {
-                if(allowDefault) {
-                    chainType = chainControl.getDefaultChainType(chainKind);
+            if(eea == null || !eea.hasExecutionErrors()) {
+                if(chainTypeName == null) {
+                    if(allowDefault) {
+                        chainType = chainControl.getDefaultChainType(chainKind);
 
-                    if(chainType == null) {
-                        handleExecutionError(UnknownDefaultChainTypeException.class, eea, ExecutionErrors.UnknownDefaultChainKind.name(),
-                                chainKind.getLastDetail().getChainKindName());
+                        if(chainType == null) {
+                            handleExecutionError(UnknownDefaultChainTypeException.class, eea, ExecutionErrors.UnknownDefaultChainType.name(),
+                                    chainKind.getLastDetail().getChainKindName());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
-                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    chainType = chainTypeLogic.getChainTypeByName(eea, chainKind, chainTypeName);
                 }
-            } else {
-                chainType = chainTypeLogic.getChainTypeByName(eea, chainKind, chainTypeName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainName == null) {
                     if(allowDefault) {
                         chain = chainControl.getDefaultChain(chainType, entityPermission);
@@ -212,10 +216,10 @@ public class ChainLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.Chain.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 chain = chainControl.getChainByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -237,8 +241,6 @@ public class ChainLogic
 
     public void deleteChain(final ExecutionErrorAccumulator eea, final Chain chain, final BasePK deletedBy) {
         if(chainControl.countChainActionSetsByChain(chain) == 0) {
-            var chainControl = Session.getModelController(ChainControl.class);
-
             chainControl.deleteChain(chain, deletedBy);
         } else {
             var chainDetail = chain.getLastDetail();

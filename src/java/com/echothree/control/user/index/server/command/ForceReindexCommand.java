@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class ForceReindexCommand
@@ -53,6 +54,13 @@ public class ForceReindexCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    IndexLogic indexLogic;
+
     
     /** Creates a new instance of ForceReindexCommand */
     public ForceReindexCommand() {
@@ -66,10 +74,10 @@ public class ForceReindexCommand
         var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
         
         if(parameterCount == 0 || parameterCount == 2) {
-            var entityType = componentVendorName == null ? null : EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+            var entityType = componentVendorName == null ? null : entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
             
             if(!hasExecutionErrors()) {
-                IndexLogic.getInstance().reindex(session, this, entityType);
+                indexLogic.reindex(session, this, entityType);
             }
         }
         

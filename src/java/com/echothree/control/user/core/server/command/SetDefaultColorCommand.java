@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultColorCommand
@@ -45,14 +45,18 @@ public class SetDefaultColorCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Color.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Color.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ColorName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ColorControl colorControl;
+
     
     /** Creates a new instance of SetDefaultColorCommand */
     public SetDefaultColorCommand() {
@@ -61,7 +65,6 @@ public class SetDefaultColorCommand
     
     @Override
     protected BaseResult execute() {
-        var colorControl = Session.getModelController(ColorControl.class);
         var colorName = form.getColorName();
         var colorDetailValue = colorControl.getColorDetailValueByNameForUpdate(colorName);
         

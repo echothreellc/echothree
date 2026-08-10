@@ -42,14 +42,38 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CancellationPolicyLogic
         extends BaseLogic {
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    OrderLineControl orderLineControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
 
     protected CancellationPolicyLogic() {
         super();
@@ -62,8 +86,8 @@ public class CancellationPolicyLogic
     public CancellationPolicy createCancellationPolicy(final ExecutionErrorAccumulator eea, final String cancellationKindName, final String cancellationPolicyName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final String policyMimeTypeName,
             final String policy, final BasePK createdBy) {
-        var cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByName(eea, cancellationKindName);
-        var policyMimeType = MimeTypeLogic.getInstance().checkMimeType(eea, policyMimeTypeName, policy, MimeTypeUsageTypes.TEXT.name(),
+        var cancellationKind = cancellationKindLogic.getCancellationKindByName(eea, cancellationKindName);
+        var policyMimeType = mimeTypeLogic.checkMimeType(eea, policyMimeTypeName, policy, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredPolicyMimeTypeName.name(), ExecutionErrors.MissingRequiredPolicy.name(),
                 ExecutionErrors.UnknownPolicyMimeTypeName.name(), ExecutionErrors.UnknownPolicyMimeTypeUsage.name());
         CancellationPolicy cancellationPolicy = null;
@@ -78,7 +102,6 @@ public class CancellationPolicyLogic
     public CancellationPolicy createCancellationPolicy(final ExecutionErrorAccumulator eea, final CancellationKind cancellationKind, final String cancellationPolicyName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final MimeType policyMimeType,
             final String policy, final BasePK createdBy) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
         if(cancellationPolicy == null) {
@@ -95,7 +118,6 @@ public class CancellationPolicyLogic
 
     public CancellationPolicy getCancellationPolicyByName(final ExecutionErrorAccumulator eea, final CancellationKind cancellationKind, final String cancellationPolicyName,
             final EntityPermission entityPermission) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName, entityPermission);
 
         if(cancellationPolicy == null) {
@@ -116,10 +138,10 @@ public class CancellationPolicyLogic
 
     public CancellationPolicy getCancellationPolicyByName(final ExecutionErrorAccumulator eea, final String cancellationKindName, final String cancellationPolicyName,
             final EntityPermission entityPermission) {
-        var cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByName(eea, cancellationKindName);
+        var cancellationKind = cancellationKindLogic.getCancellationKindByName(eea, cancellationKindName);
         CancellationPolicy cancellationPolicy = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             cancellationPolicy = getCancellationPolicyByName(eea, cancellationKind, cancellationPolicyName, entityPermission);
         }
 
@@ -136,11 +158,10 @@ public class CancellationPolicyLogic
 
     public CancellationPolicy getCancellationPolicyByUniversalSpec(final ExecutionErrorAccumulator eea, final CancellationPolicyUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var cancellationKindName = universalSpec.getCancellationKindName();
         var cancellationPolicyName = universalSpec.getCancellationPolicyName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(cancellationKindName, cancellationPolicyName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         CancellationPolicy cancellationPolicy = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -157,10 +178,10 @@ public class CancellationPolicyLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByName(eea, cancellationKindName);
+                cancellationKind = cancellationKindLogic.getCancellationKindByName(eea, cancellationKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(cancellationPolicyName == null) {
                     if(allowDefault) {
                         cancellationPolicy = cancellationPolicyControl.getDefaultCancellationPolicy(cancellationKind, entityPermission);
@@ -176,10 +197,10 @@ public class CancellationPolicyLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.CancellationPolicy.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -208,7 +229,6 @@ public class CancellationPolicyLogic
         }
 
         if(cancellationPolicy == null) {
-            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
             if(cancellationKind != null) {
@@ -226,14 +246,10 @@ public class CancellationPolicyLogic
     }
 
     public void checkDeleteCancellationPolicy(final ExecutionErrorAccumulator eea, final CancellationPolicy cancellationPolicy) {
-        var orderControl = Session.getModelController(OrderControl.class);
-
         // Both CUSTOMERs and VENDORs use Orders and OrderLines, so check for CancellationPolicy use there first.
         var inUse = orderControl.countOrdersByCancellationPolicy(cancellationPolicy) != 0;
 
         if(!inUse) {
-            var orderLineControl = Session.getModelController(OrderLineControl.class);
-
             inUse |= orderLineControl.countOrderLinesByCancellationPolicy(cancellationPolicy) != 0;
         }
 
@@ -241,12 +257,8 @@ public class CancellationPolicyLogic
             var cancellationKindName = cancellationPolicy.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName();
             
             if(cancellationKindName.equals(CancellationKinds.CUSTOMER_CANCELLATION.name())) {
-                var itemControl = Session.getModelController(ItemControl.class);
-
                 inUse |= itemControl.countItemsByCancellationPolicy(cancellationPolicy) != 0;
             } else if(cancellationKindName.equals(CancellationKinds.VENDOR_CANCELLATION.name())) {
-                var vendorControl = Session.getModelController(VendorControl.class);
-
                 inUse |= vendorControl.countVendorItemsByCancellationPolicy(cancellationPolicy) != 0;
             }
         }
@@ -257,8 +269,6 @@ public class CancellationPolicyLogic
     }
 
     public void deleteCancellationPolicy(final CancellationPolicy cancellationPolicy, final BasePK deletedBy) {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-
         cancellationPolicyControl.deleteCancellationPolicy(cancellationPolicy, deletedBy);
     }
 

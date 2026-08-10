@@ -40,6 +40,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityClobAttributeCommand
@@ -62,13 +63,26 @@ public class EditEntityClobAttributeCommand
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ClobAttribute", FieldType.STRING, true, 1L, null),
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of EditEntityClobAttributeCommand */
     public EditEntityClobAttributeCommand() {
@@ -78,9 +92,9 @@ public class EditEntityClobAttributeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityClobAttributeResult();
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
-        var language = LanguageLogic.getInstance().getLanguage(this, spec, spec);
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, spec, spec,
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
+        var language = languageLogic.getLanguage(this, spec, spec);
+        var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec,
                 EntityAttributeTypes.CLOB);
 
         if(!hasExecutionErrors()) {
@@ -119,7 +133,7 @@ public class EditEntityClobAttributeCommand
                 entityClobAttribute = coreControl.getEntityClobAttributeForUpdate(entityAttribute, entityInstance, language);
 
                 if(entityClobAttribute != null) {
-                    var mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, edit.getMimeTypeName());
+                    var mimeType = mimeTypeLogic.getMimeTypeByName(this, edit.getMimeTypeName());
 
                     if(!hasExecutionErrors()) {
                         if(mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.CLOB.name())) {

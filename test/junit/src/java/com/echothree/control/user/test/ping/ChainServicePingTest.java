@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.chain.common.ChainUtil;
 import com.echothree.control.user.chain.common.ChainService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ChainServicePingTest
-        extends TestCase {
+public class ChainServicePingTest {
     private ChainService chainService;
     
-    /** Creates a new instance of ChainServiceTest */
-    public ChainServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new ChainServicePingTest("testPingChainService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             chainService = ChainUtil.getHome();
             assertNotNull(chainService);
@@ -54,8 +37,8 @@ public class ChainServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             chainService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class ChainServicePingTest
         }
     }
     
+    @Test
     public void testPingChainService() {
-        setUp();
         try {
             chainService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

@@ -27,13 +27,19 @@ import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContactMechanismPurposeLogic
     extends BaseLogic {
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ContactMechanismPurposeLogic() {
         super();
@@ -44,7 +50,6 @@ public class ContactMechanismPurposeLogic
     }
 
     public ContactMechanismPurpose getContactMechanismPurposeByName(final ExecutionErrorAccumulator eea, final String contactMechanismPurposeName) {
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
 
         if(contactMechanismPurpose == null) {
@@ -57,17 +62,16 @@ public class ContactMechanismPurposeLogic
     public ContactMechanismPurpose getContactMechanismPurposeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ContactMechanismPurposeUniversalSpec universalSpec) {
         ContactMechanismPurpose contactMechanismPurpose = null;
-        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismPurposeName = universalSpec.getContactMechanismPurposeName();
-        var parameterCount = (contactMechanismPurposeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contactMechanismPurposeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(contactMechanismPurposeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactMechanismPurpose.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         contactMechanismPurpose = contactControl.getContactMechanismPurposeByEntityInstance(entityInstance);
                     }
                 } else {

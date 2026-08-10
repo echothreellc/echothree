@@ -35,6 +35,7 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityInstanceCommand
@@ -57,6 +58,12 @@ public class CreateEntityInstanceCommand
         );
     }
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of CreateEntityTypeCommand */
     public CreateEntityInstanceCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -65,11 +72,11 @@ public class CreateEntityInstanceCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateEntityInstanceResult();
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
+        var entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
         EntityInstance entityInstance = null;
 
         if(!hasExecutionErrors()) {
-            entityInstance = EntityInstanceLogic.getInstance().createEntityInstance(this, entityType, getPartyPK());
+            entityInstance = entityInstanceLogic.createEntityInstance(this, entityType, getPartyPK());
         }
 
         if(entityInstance != null) {

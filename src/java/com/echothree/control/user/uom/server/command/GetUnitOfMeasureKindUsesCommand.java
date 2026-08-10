@@ -47,12 +47,7 @@ public class GetUnitOfMeasureKindUsesCommand
                 new FieldDefinition("UnitOfMeasureKindUseTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetUnitOfMeasureKindUsesCommand */
-    public GetUnitOfMeasureKindUsesCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, true);
-    }
-    
+
     @Inject
     UomControl uomControl;
 
@@ -61,6 +56,12 @@ public class GetUnitOfMeasureKindUsesCommand
 
     @Inject
     UnitOfMeasureKindUseLogic unitOfMeasureKindUseLogic;
+
+
+    /** Creates a new instance of GetUnitOfMeasureKindUsesCommand */
+    public GetUnitOfMeasureKindUsesCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private UnitOfMeasureKind unitOfMeasureKind;
     private UnitOfMeasureKindUseType unitOfMeasureKindUseType;

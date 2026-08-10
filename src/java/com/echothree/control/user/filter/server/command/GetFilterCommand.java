@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterCommand
@@ -60,6 +60,13 @@ public class GetFilterCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterLogic filterLogic;
+
     
     /** Creates a new instance of GetFilterCommand */
     public GetFilterCommand() {
@@ -68,7 +75,7 @@ public class GetFilterCommand
 
     @Override
     protected Filter getEntity() {
-        var filter = FilterLogic.getInstance().getFilterByUniversalSpec(this, form, true);
+        var filter = filterLogic.getFilterByUniversalSpec(this, form, true);
 
         if(filter != null) {
             sendEvent(filter.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -82,8 +89,6 @@ public class GetFilterCommand
         var result = FilterResultFactory.getGetFilterResult();
 
         if(filter != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
             result.setFilter(filterControl.getFilterTransfer(getUserVisit(), filter));
         }
 

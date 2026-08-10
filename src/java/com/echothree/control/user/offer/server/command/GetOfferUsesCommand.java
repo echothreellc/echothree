@@ -63,11 +63,6 @@ public class GetOfferUsesCommand
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, false, null, 20L)
         );
     }
-    
-    /** Creates a new instance of GetOfferUsesCommand */
-    public GetOfferUsesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     OfferControl offerControl;
@@ -83,6 +78,12 @@ public class GetOfferUsesCommand
 
     @Inject
     UseLogic useLogic;
+
+
+    /** Creates a new instance of GetOfferUsesCommand */
+    public GetOfferUsesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     private Offer offer;
     private Use use;

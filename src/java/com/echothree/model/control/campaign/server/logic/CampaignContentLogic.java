@@ -45,6 +45,24 @@ import javax.inject.Inject;
 public class CampaignContentLogic
         extends BaseLogic {
 
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     protected CampaignContentLogic() {
         super();
     }
@@ -52,9 +70,6 @@ public class CampaignContentLogic
     public static CampaignContentLogic getInstance() {
         return CDI.current().select(CampaignContentLogic.class).get();
     }
-
-    @Inject
-    CampaignControl campaignControl;
 
     public CampaignContent getCampaignContentByName(final ExecutionErrorAccumulator eea, final String campaignContentName,
             final EntityPermission entityPermission) {
@@ -98,15 +113,15 @@ public class CampaignContentLogic
             final CampaignContentUniversalSpec universalSpec, final EntityPermission entityPermission) {
         CampaignContent campaignContent = null;
         var campaignContentName = universalSpec.getCampaignContentName();
-        var parameterCount = (campaignContentName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (campaignContentName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(campaignContentName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignContent.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         campaignContent = campaignControl.getCampaignContentByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -131,16 +146,12 @@ public class CampaignContentLogic
     }
 
     public void setCampaignContentStatus(final Session session, ExecutionErrorAccumulator eea, CampaignContent campaignContent, String campaignContentStatusChoice, PartyPK modifiedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflowLogic = WorkflowLogic.getInstance();
         var workflow = workflowLogic.getWorkflowByName(eea, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContent.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = campaignContentStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), campaignContentStatusChoice);
 
         if(workflowDestination != null || campaignContentStatusChoice == null) {
-            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;

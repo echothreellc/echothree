@@ -45,7 +45,7 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form) {
+    public CommandResult<CreateTrainingClassResult> createTrainingClass(UserVisitPK userVisitPK, CreateTrainingClassForm form) {
         return CDI.current().select(CreateTrainingClassCommand.class).get().run(userVisitPK, form);
     }
     

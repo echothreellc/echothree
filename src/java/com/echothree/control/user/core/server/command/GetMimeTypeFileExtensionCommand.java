@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeFileExtensionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -26,9 +25,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMimeTypeFileExtensionCommand
@@ -39,8 +38,9 @@ public class GetMimeTypeFileExtensionCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FileExtension", FieldType.STRING, true, 1L, 10L)
-                );
+        );
     }
+
     
     /** Creates a new instance of GetMimeTypeFileExtensionCommand */
     public GetMimeTypeFileExtensionCommand() {
@@ -49,7 +49,6 @@ public class GetMimeTypeFileExtensionCommand
 
     @Override
     protected MimeTypeFileExtension getEntity() {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var fileExtension = form.getFileExtension();
         var mimeTypeFileExtension = mimeTypeControl.getMimeTypeFileExtension(fileExtension);
 
@@ -62,7 +61,6 @@ public class GetMimeTypeFileExtensionCommand
 
     @Override
     protected BaseResult getResult(MimeTypeFileExtension mimeTypeFileExtension) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var result = CoreResultFactory.getGetMimeTypeFileExtensionResult();
 
         if(mimeTypeFileExtension != null) {

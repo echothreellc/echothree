@@ -24,6 +24,8 @@ import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -47,9 +49,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOfferCommand
@@ -64,12 +66,12 @@ public class EditOfferCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Offer.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null),
@@ -79,8 +81,30 @@ public class EditOfferCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    OfferLogic offerLogic;
+
     
     /** Creates a new instance of EditOfferCommand */
     public EditOfferCommand() {
@@ -89,7 +113,6 @@ public class EditOfferCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getEditOfferResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -139,7 +162,6 @@ public class EditOfferCommand
                     Sequence salesOrderSequence = null;
                     
                     if(salesOrderSequenceName != null) {
-                        var sequenceControl = Session.getModelController(SequenceControl.class);
                         var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
                         
                         if(sequenceType != null) {
@@ -154,7 +176,6 @@ public class EditOfferCommand
                         Selector offerItemSelector = null;
                         
                         if(offerItemSelectorName != null) {
-                            var selectorControl = Session.getModelController(SelectorControl.class);
                             var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                             
                             if(selectorKind != null) {
@@ -176,9 +197,8 @@ public class EditOfferCommand
                             Filter offerItemPriceFilter = null;
                             
                             if(offerItemPriceFilterName != null) {
-                                var filterControl = Session.getModelController(FilterControl.class);
-                                var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
-                                var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
+                                var filterKind = filterKindControl.getFilterKindByName(FilterKinds.PRICE.name());
+                                var filterType = filterTypeControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
                                 
                                 if(filterType != null) {
                                     offerItemPriceFilter = filterControl.getFilterByName(filterType, offerItemPriceFilterName);
@@ -200,7 +220,7 @@ public class EditOfferCommand
                                         offerDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                                         offerDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-                                        OfferLogic.getInstance().updateOfferFromValue(offerDetailValue, partyPK);
+                                        offerLogic.updateOfferFromValue(offerDetailValue, partyPK);
 
                                         if(offerDescription == null && description != null) {
                                             offerControl.createOfferDescription(offer, getPreferredLanguage(), description, partyPK);

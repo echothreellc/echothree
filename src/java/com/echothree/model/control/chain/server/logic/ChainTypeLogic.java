@@ -43,15 +43,18 @@ import javax.inject.Inject;
 public class ChainTypeLogic
         extends BaseLogic {
 
-    protected ChainTypeLogic() {
-        super();
-    }
-
     @Inject
     ChainControl chainControl;
 
     @Inject
     ChainKindLogic chainKindLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    protected ChainTypeLogic() {
+        super();
+    }
 
     public ChainType createChainType(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
@@ -106,7 +109,7 @@ public class ChainTypeLogic
         var chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
         ChainType chainType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             chainType = getChainTypeByName(eea, chainKind, chainTypeName, entityPermission);
         }
 
@@ -126,7 +129,7 @@ public class ChainTypeLogic
         var chainKindName = universalSpec.getChainKindName();
         var chainTypeName = universalSpec.getChainTypeName();
         var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(chainKindName, chainTypeName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         ChainType chainType = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -146,7 +149,7 @@ public class ChainTypeLogic
                 chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainTypeName == null) {
                     if(allowDefault) {
                         chainType = chainControl.getDefaultChainType(chainKind, entityPermission);
@@ -162,10 +165,10 @@ public class ChainTypeLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 chainType = chainControl.getChainTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {

@@ -31,38 +31,40 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetAllocationPriorityDescriptionsCommand
         extends BaseSimpleCommand<GetAllocationPriorityDescriptionsForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.AllocationPriority.name(), SecurityRoles.Description.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
     /** Creates a new instance of GetAllocationPriorityDescriptionsCommand */
     public GetAllocationPriorityDescriptionsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var result = InventoryResultFactory.getGetAllocationPriorityDescriptionsResult();
         var allocationPriorityName = form.getAllocationPriorityName();
         var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
@@ -76,5 +78,5 @@ public class GetAllocationPriorityDescriptionsCommand
 
         return result;
     }
-    
+
 }

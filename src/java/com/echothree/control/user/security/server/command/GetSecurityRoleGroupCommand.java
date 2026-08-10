@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSecurityRoleGroupCommand
@@ -59,6 +59,12 @@ public class GetSecurityRoleGroupCommand
         );
     }
 
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    SecurityRoleGroupLogic securityRoleGroupLogic;
+
     /** Creates a new instance of GetSecurityRoleGroupCommand */
     public GetSecurityRoleGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetSecurityRoleGroupCommand
 
     @Override
     protected SecurityRoleGroup getEntity() {
-        var securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByUniversalSpec(this, form, true);
+        var securityRoleGroup = securityRoleGroupLogic.getSecurityRoleGroupByUniversalSpec(this, form, true);
 
         if(securityRoleGroup != null) {
             sendEvent(securityRoleGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -80,8 +86,6 @@ public class GetSecurityRoleGroupCommand
         var result = SecurityResultFactory.getGetSecurityRoleGroupResult();
 
         if(securityRoleGroup != null) {
-            var securityControl = Session.getModelController(SecurityControl.class);
-
             result.setSecurityRoleGroup(securityControl.getSecurityRoleGroupTransfer(getUserVisit(), securityRoleGroup));
         }
 

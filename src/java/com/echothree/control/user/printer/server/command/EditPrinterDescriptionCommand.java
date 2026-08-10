@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPrinterDescriptionCommand
@@ -55,18 +55,24 @@ public class EditPrinterDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Printer.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
 
     /** Creates a new instance of EditPrinterDescriptionCommand */
     public EditPrinterDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditPrinterDescriptionCommand
 
     @Override
     public PrinterDescription getEntity(EditPrinterDescriptionResult result) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         PrinterDescription printerDescription = null;
         var printerName = spec.getPrinterName();
         var printer = printerControl.getPrinterByName(printerName);
 
         if(printer != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditPrinterDescriptionCommand
 
     @Override
     public void fillInResult(EditPrinterDescriptionResult result, PrinterDescription printerDescription) {
-        var printerControl = Session.getModelController(PrinterControl.class);
-
         result.setPrinterDescription(printerControl.getPrinterDescriptionTransfer(getUserVisit(), printerDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditPrinterDescriptionCommand
 
     @Override
     public void doUpdate(PrinterDescription printerDescription) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerDescriptionValue = printerControl.getPrinterDescriptionValue(printerDescription);
 
         printerDescriptionValue.setDescription(edit.getDescription());

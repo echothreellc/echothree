@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class GlResourceTypeLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected GlResourceTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class GlResourceTypeLogic
     public GlResourceType createGlResourceType(final ExecutionErrorAccumulator eea, final String glResourceTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
 
         if(glResourceType == null) {
@@ -72,7 +77,6 @@ public class GlResourceTypeLogic
 
     public GlResourceType getGlResourceTypeByName(final ExecutionErrorAccumulator eea, final String glResourceTypeName,
             final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName, entityPermission);
 
         if(glResourceType == null) {
@@ -93,9 +97,8 @@ public class GlResourceTypeLogic
     public GlResourceType getGlResourceTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final GlResourceTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         GlResourceType glResourceType = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glResourceTypeName = universalSpec.getGlResourceTypeName();
-        var parameterCount = (glResourceTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (glResourceTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -111,10 +114,10 @@ public class GlResourceTypeLogic
             }
             case 1 -> {
                 if(glResourceTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.GlResourceType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         glResourceType = accountingControl.getGlResourceTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -139,14 +142,10 @@ public class GlResourceTypeLogic
     }
 
     public void updateGlResourceTypeFromValue(GlResourceTypeDetailValue glResourceTypeDetailValue, BasePK updatedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         accountingControl.updateGlResourceTypeFromValue(glResourceTypeDetailValue, updatedBy);
     }
 
     public void deleteGlResourceType(final ExecutionErrorAccumulator eea, final GlResourceType glResourceType, final BasePK deletedBy) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         accountingControl.deleteGlResourceType(glResourceType, deletedBy);
     }
 

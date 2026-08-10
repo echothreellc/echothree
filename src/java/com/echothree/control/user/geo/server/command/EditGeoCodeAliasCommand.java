@@ -38,10 +38,10 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeAliasCommand
@@ -56,18 +56,22 @@ public class EditGeoCodeAliasCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeAlias.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("GeoCodeAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of EditGeoCodeAliasCommand */
     public EditGeoCodeAliasCommand() {
@@ -89,7 +93,6 @@ public class EditGeoCodeAliasCommand
     
     @Override
     public GeoCodeAlias getEntity(EditGeoCodeAliasResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAlias geoCodeAlias = null;
         var geoCodeName = spec.getGeoCodeName();
 
@@ -130,8 +133,6 @@ public class EditGeoCodeAliasCommand
 
     @Override
     public void fillInResult(EditGeoCodeAliasResult result, GeoCodeAlias geoCodeAlias) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         result.setGeoCodeAlias(geoControl.getGeoCodeAliasTransfer(getUserVisit(), geoCodeAlias));
     }
 
@@ -142,7 +143,6 @@ public class EditGeoCodeAliasCommand
 
     @Override
     public void canUpdate(GeoCodeAlias geoCodeAlias) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScope = geoCode.getLastDetail().getGeoCodeScope();
         var alias = edit.getAlias();
         var duplicateGeoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias);
@@ -166,7 +166,6 @@ public class EditGeoCodeAliasCommand
 
     @Override
     public void doUpdate(GeoCodeAlias geoCodeAlias) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeAliasValue = geoControl.getGeoCodeAliasValue(geoCodeAlias);
 
         geoCodeAliasValue.setAlias(edit.getAlias());

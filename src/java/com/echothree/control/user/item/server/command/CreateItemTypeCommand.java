@@ -27,9 +27,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemTypeCommand
@@ -40,15 +40,19 @@ public class CreateItemTypeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
-        );
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("ItemTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of CreateItemTypeCommand */
     public CreateItemTypeCommand() {
@@ -57,7 +61,6 @@ public class CreateItemTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemTypeName = form.getItemTypeName();
         var itemType = itemControl.getItemTypeByName(itemTypeName);
         

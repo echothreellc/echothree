@@ -52,15 +52,16 @@ public class GetIndexesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    IndexControl indexControl;
+
     
     /** Creates a new instance of GetIndexesCommand */
     public GetIndexesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Inject
-    IndexControl indexControl;
-
     @Override
     protected void handleForm() {
         // No form fields.

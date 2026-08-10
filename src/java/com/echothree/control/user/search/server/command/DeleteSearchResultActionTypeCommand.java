@@ -31,6 +31,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSearchResultActionTypeCommand
@@ -44,15 +45,19 @@ public class DeleteSearchResultActionTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchResultActionType.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    SearchResultActionTypeLogic searchResultActionTypeLogic;
+
     
     /** Creates a new instance of DeleteSearchResultActionTypeCommand */
     public DeleteSearchResultActionTypeCommand() {
@@ -61,10 +66,10 @@ public class DeleteSearchResultActionTypeCommand
 
     @Override
     protected BaseResult execute() {
-        var searchResultActionType = SearchResultActionTypeLogic.getInstance().getSearchResultActionTypeByUniversalSpecForUpdate(this, form, false);
+        var searchResultActionType = searchResultActionTypeLogic.getSearchResultActionTypeByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            SearchResultActionTypeLogic.getInstance().deleteSearchResultActionType(this, searchResultActionType, getPartyPK());
+            searchResultActionTypeLogic.deleteSearchResultActionType(this, searchResultActionType, getPartyPK());
         }
 
         return null;

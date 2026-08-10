@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyScaleUseCommand
@@ -56,18 +56,25 @@ public class EditPartyScaleUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyScaleUse.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ScaleUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ScaleName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
     
     /** Creates a new instance of EditPartyScaleUseCommand */
     public EditPartyScaleUseCommand() {
@@ -91,8 +98,6 @@ public class EditPartyScaleUseCommand
         Party party;
 
         if(partyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             party = partyControl.getPartyByName(partyName);
 
             if(party == null) {
@@ -103,7 +108,6 @@ public class EditPartyScaleUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            var scaleControl = Session.getModelController(ScaleControl.class);
             var scaleUseTypeName = spec.getScaleUseTypeName();
             var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
@@ -132,8 +136,6 @@ public class EditPartyScaleUseCommand
 
     @Override
     public void fillInResult(EditPartyScaleUseResult result, PartyScaleUse partyScaleUse) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
-
         result.setPartyScaleUse(scaleControl.getPartyScaleUseTransfer(getUserVisit(), partyScaleUse));
     }
 
@@ -146,7 +148,6 @@ public class EditPartyScaleUseCommand
 
     @Override
     public void canUpdate(PartyScaleUse partyScaleUse) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var scaleName = edit.getScaleName();
 
         scale = scaleControl.getScaleByName(scaleName);
@@ -158,7 +159,6 @@ public class EditPartyScaleUseCommand
 
     @Override
     public void doUpdate(PartyScaleUse partyScaleUse) {
-        var scaleControl = Session.getModelController(ScaleControl.class);
         var partyScaleUseValue = scaleControl.getPartyScaleUseValue(partyScaleUse);
 
         partyScaleUseValue.setScalePK(scale.getPrimaryKey());

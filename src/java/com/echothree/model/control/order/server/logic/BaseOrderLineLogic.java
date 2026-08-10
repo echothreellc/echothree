@@ -36,9 +36,25 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.inject.Inject;
 
 public class BaseOrderLineLogic
         extends BaseLogic {
+
+    @Inject
+    OrderAdjustmentControl orderAdjustmentControl;
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    OrderLineAdjustmentControl orderLineAdjustmentControl;
+
+    @Inject
+    OrderLineControl orderLineControl;
+
+    @Inject
+    OrderLogic orderLogic;
 
     protected BaseOrderLineLogic() {
         super();
@@ -48,7 +64,6 @@ public class BaseOrderLineLogic
             final OrderLine parentOrderLine, final OrderShipmentGroup orderShipmentGroup, final Item item, final InventoryCondition inventoryCondition,
             final UnitOfMeasureType unitOfMeasureType, final Long quantity, final Long unitAmount, final String description,
             final CancellationPolicy cancellationPolicy, final ReturnPolicy returnPolicy, final Boolean taxable, final BasePK createdBy) {
-        var orderLogic = OrderLogic.getInstance();
         OrderLine orderLine = null;
 
         // Make sure any OrderPaymentPreferences associated with this order are OK with this Item.
@@ -60,8 +75,6 @@ public class BaseOrderLineLogic
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var orderControl = Session.getModelController(OrderControl.class);
-            var orderLineControl = Session.getModelController(OrderLineControl.class);
             var orderStatus = orderControl.getOrderStatusForUpdate(order);
 
             if(orderLineSequence == null) {
@@ -93,12 +106,10 @@ public class BaseOrderLineLogic
 
     private OrderLine getOrderLineByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName, final String orderLineSequence,
             final EntityPermission entityPermission) {
-        var order = OrderLogic.getInstance().getOrderByName(eea, orderTypeName, orderName);
+        var order = orderLogic.getOrderByName(eea, orderTypeName, orderName);
         OrderLine orderLine = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var orderLineControl = Session.getModelController(OrderLineControl.class);
-
             orderLine = orderLineControl.getOrderLineBySequence(order, Integer.valueOf(orderLineSequence), entityPermission);
             
             if(orderLine == null) {
@@ -118,7 +129,6 @@ public class BaseOrderLineLogic
     }
     
     public Long getOrderTotalWithAdjustments(final Order order) {
-        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
         long total = 0;
         var orderAdjustments = orderAdjustmentControl.getOrderAdjustmentsByOrder(order);
 
@@ -128,7 +138,6 @@ public class BaseOrderLineLogic
     }
 
     public Long getOrderLineTotalsWithAdjustments(final Order order) {
-        var orderLineControl = Session.getModelController(OrderLineControl.class);
         var orderLines = orderLineControl.getOrderLinesByOrder(order);
         long total = 0;
 
@@ -138,7 +147,6 @@ public class BaseOrderLineLogic
     }
 
     public Long getOrderLineTotalWithAdjustments(final OrderLine orderLine) {
-        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         var orderLineDetail = orderLine.getLastDetail();
         var total = orderLineDetail.getQuantity() * orderLineDetail.getUnitAmount();
         var orderLineAdjustments = orderLineAdjustmentControl.getOrderLineAdjustmentsByOrderLine(orderLine);

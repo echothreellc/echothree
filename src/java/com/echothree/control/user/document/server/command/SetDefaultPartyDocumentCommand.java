@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultPartyDocumentCommand
@@ -45,13 +45,17 @@ public class SetDefaultPartyDocumentCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyDocument.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DocumentName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
     
     /** Creates a new instance of SetDefaultPartyDocumentCommand */
     public SetDefaultPartyDocumentCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultPartyDocumentCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentName = form.getDocumentName();
         var document = documentControl.getDocumentByNameForUpdate(documentName);
         

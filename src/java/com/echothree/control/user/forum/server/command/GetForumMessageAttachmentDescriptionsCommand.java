@@ -20,16 +20,15 @@ import com.echothree.control.user.forum.common.form.GetForumMessageAttachmentDes
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumMessageAttachmentDescriptionsCommand
@@ -41,8 +40,15 @@ public class GetForumMessageAttachmentDescriptionsCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ForumMessageAttachmentSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    ForumRoleTypeLogic forumRoleTypeLogic;
+
     
     /** Creates a new instance of GetForumMessageAttachmentDescriptionsCommand */
     public GetForumMessageAttachmentDescriptionsCommand() {
@@ -51,13 +57,12 @@ public class GetForumMessageAttachmentDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var result = ForumResultFactory.getGetForumMessageAttachmentDescriptionsResult();
         var forumMessageName = form.getForumMessageName();
         var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
-            if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
+            if(forumRoleTypeLogic.isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
                 var forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
                 var forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 

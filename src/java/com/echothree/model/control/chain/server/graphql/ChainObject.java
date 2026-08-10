@@ -28,6 +28,7 @@ import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.chain.common.ChainActionSetConstants;
+import com.echothree.model.data.chain.common.ChainInstanceConstants;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainDetail;
 import com.echothree.util.server.persistence.Session;
@@ -122,6 +123,26 @@ public class ChainObject
                 var chainActionSets = entities.stream().map(ChainActionSetObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, chainActionSets);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("chain instances")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ChainInstanceObject> getChainInstances(final DataFetchingEnvironment env) {
+        if(ChainSecurityUtils.getHasChainInstancesAccess(env)) {
+            var chainControl = Session.getModelController(ChainControl.class);
+            var totalCount = chainControl.countChainInstancesByChain(chain);
+
+            try(var objectLimiter = new ObjectLimiter(env, ChainInstanceConstants.COMPONENT_VENDOR_NAME, ChainInstanceConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = chainControl.getChainInstancesByChain(chain);
+                var chainInstances = entities.stream().map(ChainInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, chainInstances);
             }
         } else {
             return Connections.emptyConnection();

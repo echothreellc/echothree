@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTagScopeCommand
@@ -53,20 +53,24 @@ public class EditTagScopeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TagScope.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    TagControl tagControl;
+
     
     /** Creates a new instance of EditTagScopeCommand */
     public EditTagScopeCommand() {
@@ -85,7 +89,6 @@ public class EditTagScopeCommand
 
     @Override
     public TagScope getEntity(EditTagScopeResult result) {
-        var tagControl = Session.getModelController(TagControl.class);
         TagScope tagScope;
         var tagScopeName = spec.getTagScopeName();
 
@@ -111,14 +114,11 @@ public class EditTagScopeCommand
 
     @Override
     public void fillInResult(EditTagScopeResult result, TagScope tagScope) {
-        var tagControl = Session.getModelController(TagControl.class);
-
         result.setTagScope(tagControl.getTagScopeTransfer(getUserVisit(), tagScope));
     }
 
     @Override
     public void doLock(TagScopeEdit edit, TagScope tagScope) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeDescription = tagControl.getTagScopeDescription(tagScope, getPreferredLanguage());
         var tagScopeDetail = tagScope.getLastDetail();
 
@@ -133,7 +133,6 @@ public class EditTagScopeCommand
 
     @Override
     public void canUpdate(TagScope tagScope) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopeName = edit.getTagScopeName();
         var duplicateTagScope = tagControl.getTagScopeByName(tagScopeName);
 
@@ -144,7 +143,6 @@ public class EditTagScopeCommand
 
     @Override
     public void doUpdate(TagScope tagScope) {
-        var tagControl = Session.getModelController(TagControl.class);
         var partyPK = getPartyPK();
         var tagScopeDetailValue = tagControl.getTagScopeDetailValueForUpdate(tagScope);
         var tagScopeDescription = tagControl.getTagScopeDescriptionForUpdate(tagScope, getPreferredLanguage());

@@ -32,11 +32,11 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditAssociateProgramCommand
@@ -48,7 +48,7 @@ public class EditAssociateProgramCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
@@ -60,8 +60,15 @@ public class EditAssociateProgramCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    AssociateControl associateControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     
     /** Creates a new instance of EditAssociateProgramCommand */
     public EditAssociateProgramCommand() {
@@ -70,7 +77,6 @@ public class EditAssociateProgramCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = Session.getModelController(AssociateControl.class);
         var result = AssociateResultFactory.getEditAssociateProgramResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -117,7 +123,6 @@ public class EditAssociateProgramCommand
                 var duplicateAssociateProgram = associateControl.getAssociateProgramByName(associateProgramName);
                 
                 if(duplicateAssociateProgram == null || associateProgram.equals(duplicateAssociateProgram)) {
-                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     var associateSequenceName = edit.getAssociateSequenceName();
                     Sequence associateSequence = null;
                     

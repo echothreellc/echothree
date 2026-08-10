@@ -32,10 +32,10 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditItemShippingTimeCommand
@@ -48,13 +48,20 @@ public class EditItemShippingTimeCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShippingStartTime", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("ShippingEndTime", FieldType.DATE_TIME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of EditItemShippingTimeCommand */
     public EditItemShippingTimeCommand() {
@@ -73,13 +80,11 @@ public class EditItemShippingTimeCommand
 
     @Override
     public ItemShippingTime getEntity(EditItemShippingTimeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemShippingTime itemShippingTime = null;
         var itemName = spec.getItemName();
         var item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var customerControl = Session.getModelController(CustomerControl.class);
             var customerTypeName = spec.getCustomerTypeName();
             var customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
@@ -110,8 +115,6 @@ public class EditItemShippingTimeCommand
 
     @Override
     public void fillInResult(EditItemShippingTimeResult result, ItemShippingTime itemShippingTime) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         result.setItemShippingTime(itemControl.getItemShippingTimeTransfer(getUserVisit(), itemShippingTime));
     }
 
@@ -128,7 +131,6 @@ public class EditItemShippingTimeCommand
 
     @Override
     public void doUpdate(ItemShippingTime itemShippingTime) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemShippingTimeValue = itemControl.getItemShippingTimeValue(itemShippingTime);
         var strShippingEndTime = edit.getShippingEndTime();
         var shippingEndTime = strShippingEndTime == null? null: Long.valueOf(strShippingEndTime);

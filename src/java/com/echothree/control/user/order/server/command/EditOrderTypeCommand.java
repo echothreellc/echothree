@@ -43,9 +43,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderTypeCommand
@@ -59,15 +59,15 @@ public class EditOrderTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.OrderType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.OrderType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -77,9 +77,25 @@ public class EditOrderTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
-    
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    OrderTypeLogic orderTypeLogic;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
+
     /** Creates a new instance of EditOrderTypeCommand */
     public EditOrderTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -97,9 +113,8 @@ public class EditOrderTypeCommand
 
     @Override
     public OrderType getEntity(EditOrderTypeResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = spec.getOrderTypeName();
-        var orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpec(this, spec, false,
+        var orderType = orderTypeLogic.getOrderTypeByUniversalSpec(this, spec, false,
                 editModeToEntityPermission(editMode));
 
         if(orderType != null) {
@@ -118,8 +133,6 @@ public class EditOrderTypeCommand
 
     @Override
     public void fillInResult(EditOrderTypeResult result, OrderType orderType) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-
         result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
     }
 
@@ -129,7 +142,6 @@ public class EditOrderTypeCommand
 
     @Override
     public void doLock(OrderTypeEdit edit, OrderType orderType) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, getPreferredLanguage());
         var orderTypeDetail = orderType.getLastDetail();
 
@@ -151,7 +163,6 @@ public class EditOrderTypeCommand
 
     @Override
     public void canUpdate(OrderType orderType) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = edit.getOrderTypeName();
         var duplicateOrderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
@@ -159,12 +170,12 @@ public class EditOrderTypeCommand
             var orderSequenceTypeName = edit.getOrderSequenceTypeName();
 
             orderSequenceType = orderSequenceTypeName == null ? null :
-                    SequenceTypeLogic.getInstance().getSequenceTypeByName(this, orderSequenceTypeName);
+                    sequenceTypeLogic.getSequenceTypeByName(this, orderSequenceTypeName);
 
             if(!hasExecutionErrors()) {
                 var orderWorkflowName = edit.getOrderWorkflowName();
 
-                orderWorkflow = orderWorkflowName == null ? null : WorkflowLogic.getInstance().getWorkflowByName(
+                orderWorkflow = orderWorkflowName == null ? null : workflowLogic.getWorkflowByName(
                         UnknownOrderWorkflowNameException.class, ExecutionErrors.UnknownOrderWorkflowName, this,
                         orderWorkflowName, EntityPermission.READ_ONLY);
 
@@ -172,7 +183,7 @@ public class EditOrderTypeCommand
                     var orderWorkflowEntranceName = edit.getOrderWorkflowEntranceName();
 
                     if(orderWorkflowEntranceName == null || orderWorkflow != null) {
-                            orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(
+                            orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
                                     UnknownOrderWorkflowEntranceNameException.class, ExecutionErrors.UnknownOrderWorkflowEntranceName, this,
                                     orderWorkflow, orderWorkflowEntranceName);
                     } else {
@@ -185,7 +196,6 @@ public class EditOrderTypeCommand
 
     @Override
     public void doUpdate(OrderType orderType) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var partyPK = getPartyPK();
         var orderTypeDetailValue = orderTypeControl.getOrderTypeDetailValueForUpdate(orderType);
         var orderTypeDescription = orderTypeControl.getOrderTypeDescriptionForUpdate(orderType, getPreferredLanguage());
@@ -198,7 +208,7 @@ public class EditOrderTypeCommand
         orderTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         orderTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        OrderTypeLogic.getInstance().updateOrderTypeFromValue(orderTypeDetailValue, partyPK);
+        orderTypeLogic.updateOrderTypeFromValue(orderTypeDetailValue, partyPK);
 
         if(orderTypeDescription == null && description != null) {
             orderTypeControl.createOrderTypeDescription(orderType, getPreferredLanguage(), description, partyPK);

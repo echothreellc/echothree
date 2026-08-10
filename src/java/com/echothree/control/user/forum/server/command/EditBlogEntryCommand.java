@@ -36,10 +36,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditBlogEntryCommand
@@ -51,7 +51,7 @@ public class EditBlogEntryCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumThreadIconName", FieldType.ENTITY_NAME, false, null, null),
@@ -65,8 +65,18 @@ public class EditBlogEntryCommand
                 new FieldDefinition("Summary", FieldType.STRING, false, null, null),
                 new FieldDefinition("ContentMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Content", FieldType.STRING, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
     
     /** Creates a new instance of EditBlogEntryCommand */
     public EditBlogEntryCommand() {
@@ -85,7 +95,6 @@ public class EditBlogEntryCommand
 
     @Override
     public ForumMessage getEntity(EditBlogEntryResult result) {
-        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessage forumMessage;
         var forumMessageName = spec.getForumMessageName();
 
@@ -109,14 +118,11 @@ public class EditBlogEntryCommand
 
     @Override
     public void fillInResult(EditBlogEntryResult result, ForumMessage forumMessage) {
-        var forumControl = Session.getModelController(ForumControl.class);
-
         result.setForumMessage(forumControl.getForumMessageTransfer(getUserVisit(), forumMessage));
     }
 
     @Override
     public void doLock(BlogEntryEdit edit, ForumMessage forumMessage) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessageDetail = forumMessage.getLastDetail();
         var forumThreadDetail = forumMessageDetail.getForumThread().getLastDetail();
 
@@ -173,11 +179,9 @@ public class EditBlogEntryCommand
 
     @Override
     public void canUpdate(ForumMessage forumMessage) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessageDetail = forumMessage.getLastDetail();
 
         if(forumMessageDetail.getForumMessageType().getForumMessageTypeName().equals(ForumConstants.ForumMessageType_BLOG_ENTRY)) {
-            var iconControl = Session.getModelController(IconControl.class);
             var forumThreadIconName = edit.getForumThreadIconName();
 
             forumThreadIcon = iconControl.getIconByName(forumThreadIconName);
@@ -213,8 +217,6 @@ public class EditBlogEntryCommand
                             var feedSummaryParameterCount = (feedSummaryMimeTypeName == null ? 0 : 1) + (feedSummary == null ? 0 : 1);
 
                             if(feedSummaryParameterCount == 0 || feedSummaryParameterCount == 2) {
-                                var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-
                                 feedSummaryMimeType = feedSummaryMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(feedSummaryMimeTypeName);
 
                                 if(feedSummaryMimeTypeName == null || feedSummaryMimeType != null) {
@@ -279,7 +281,6 @@ public class EditBlogEntryCommand
 
     @Override
     public void doUpdate(ForumMessage forumMessage) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
         var forumMessageDetailValue = forumControl.getForumMessageDetailValueForUpdate(forumMessage);
         var forumThreadDetailValue = forumControl.getForumThreadDetailValueForUpdate(forumMessage.getLastDetail().getForumThreadForUpdate());

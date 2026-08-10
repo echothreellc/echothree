@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SelectorKindLogic
         extends BaseLogic {
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected SelectorKindLogic() {
         super();
@@ -51,7 +57,6 @@ public class SelectorKindLogic
     public SelectorKind createSelectorKind(final ExecutionErrorAccumulator eea, final String selectorKindName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(selectorKind == null) {
@@ -69,7 +74,6 @@ public class SelectorKindLogic
 
     public SelectorKind getSelectorKindByName(final ExecutionErrorAccumulator eea, final String selectorKindName,
             final EntityPermission entityPermission) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName, entityPermission);
 
         if(selectorKind == null) {
@@ -90,9 +94,8 @@ public class SelectorKindLogic
     public SelectorKind getSelectorKindByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SelectorKindUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SelectorKind selectorKind = null;
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindName = universalSpec.getSelectorKindName();
-        var parameterCount = (selectorKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (selectorKindName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,10 +111,10 @@ public class SelectorKindLogic
             }
             case 1 -> {
                 if(selectorKindName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SelectorKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         selectorKind = selectorControl.getSelectorKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -137,8 +140,6 @@ public class SelectorKindLogic
 
     public void deleteSelectorKind(final ExecutionErrorAccumulator eea, final SelectorKind selectorKind,
             final BasePK deletedBy) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-
         selectorControl.deleteSelectorKind(selectorKind, deletedBy);
     }
 

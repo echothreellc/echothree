@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditCommandMessageForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandMessageResult;
 import com.echothree.control.user.core.common.spec.CommandMessageSpec;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -37,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommandMessageCommand
@@ -54,18 +53,19 @@ public class EditCommandMessageCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CommandMessage.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommandMessageKey", FieldType.KEY, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommandMessageKey", FieldType.KEY, true, null, null),
                 new FieldDefinition("Translation", FieldType.STRING, false, 1L, 80L)
-                );
+        );
     }
+
     
     /** Creates a new instance of EditCommandMessageCommand */
     public EditCommandMessageCommand() {
@@ -86,7 +86,6 @@ public class EditCommandMessageCommand
 
     @Override
     public CommandMessage getEntity(EditCommandMessageResult result) {
-        var commandControl = Session.getModelController(CommandControl.class);
         CommandMessage commandMessage = null;
         var commandMessageTypeName = spec.getCommandMessageTypeName();
 
@@ -120,14 +119,11 @@ public class EditCommandMessageCommand
 
     @Override
     public void fillInResult(EditCommandMessageResult result, CommandMessage commandMessage) {
-        var commandControl = Session.getModelController(CommandControl.class);
-
         result.setCommandMessage(commandControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
     }
 
     @Override
     public void doLock(CommandMessageEdit edit, CommandMessage commandMessage) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageTranslation = commandControl.getCommandMessageTranslation(commandMessage, getPreferredLanguage());
         var commandMessageDetail = commandMessage.getLastDetail();
 
@@ -140,7 +136,6 @@ public class EditCommandMessageCommand
 
     @Override
     public void canUpdate(CommandMessage commandMessage) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var commandMessageKey = edit.getCommandMessageKey();
         var duplicateCommandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
@@ -151,7 +146,6 @@ public class EditCommandMessageCommand
 
     @Override
     public void doUpdate(CommandMessage commandMessage) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var partyPK = getPartyPK();
         var commandMessageDetailValue = commandControl.getCommandMessageDetailValueForUpdate(commandMessage);
         var commandMessageTranslation = commandControl.getCommandMessageTranslationForUpdate(commandMessage, getPreferredLanguage());

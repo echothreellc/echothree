@@ -17,7 +17,6 @@
 package com.echothree.service.job;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupJobsResult;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupsResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.document.common.DocumentOptions;
@@ -31,7 +30,7 @@ import com.echothree.model.control.printer.common.workflow.PrinterStatusConstant
 import com.echothree.util.common.service.job.BaseScheduledJob;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -69,7 +68,7 @@ public class PrintPrinterGroupJobsJob
         super.executeJob();
     }
 
-    class PrintJobListener
+    static class PrintJobListener
             extends PrintJobAdapter {
 
         String printerGroupJobName;
@@ -129,16 +128,13 @@ public class PrintPrinterGroupJobsJob
     private PrintService locatePrintService(PrinterGroupTransfer printerGroup, DocFlavor docFlavor, PrintRequestAttributeSet printRequestAttributeSet) {
         PrintService result = null;
         var printServices = PrintServiceLookup.lookupPrintServices(docFlavor, printRequestAttributeSet);
-        var count = printServices.length;
         Set<String> printerNames = new HashSet<>(printerGroup.getPrinters().getSize());
 
-        printerGroup.getPrinters().getList().stream().filter((printer) -> (printer.getPrinterStatus().getWorkflowStep().getWorkflowStepName().equals(PrinterStatusConstants.WorkflowStep_ACCEPTING_JOBS))).forEach((printer) -> {
-            printerNames.add(printer.getPrinterName());
-        });
+        printerGroup.getPrinters().getList().stream()
+                .filter(printer -> printer.getPrinterStatus().getWorkflowStep().getWorkflowStepName().equals(PrinterStatusConstants.WorkflowStep_ACCEPTING_JOBS))
+                .forEach(printer -> printerNames.add(printer.getPrinterName()));
 
-        for(var i = 0; i < count; i++) {
-            var printService = printServices[i];
-
+        for(PrintService printService : printServices) {
             if(printerNames.contains(printService.getName())) {
                 result = printService;
                 break;
@@ -172,30 +168,28 @@ public class PrintPrinterGroupJobsJob
                     if(printService != null) {
                         var docPrintJob = printService.createPrintJob();
 
-			docPrintJob.addPrintJobListener(new PrintJobListener(printerGroupJob.getPrinterGroupJobName()));
+                        docPrintJob.addPrintJobListener(new PrintJobListener(printerGroupJob.getPrinterGroupJobName()));
 
-			try {
+                        try {
                             InputStream inputStream = null;
-                var document = printerGroupJob.getDocument();
-                var entityAttributeTypeName = mimeType.getEntityAttributeType().getEntityAttributeTypeName();
+                            var document = printerGroupJob.getDocument();
+                            var entityAttributeTypeName = mimeType.getEntityAttributeType().getEntityAttributeTypeName();
 
                             if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
                                 inputStream = document.getBlob().getByteArrayInputStream();
                             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
-                                inputStream = new ByteArrayInputStream(document.getClob().getBytes("UTF-8"));
+                                inputStream = new ByteArrayInputStream(document.getClob().getBytes(StandardCharsets.UTF_8));
                             }
 
                             Doc doc = new SimpleDoc(inputStream, docFlavor, null);
 
                             docPrintJob.print(doc, printRequestAttributeSet);
                             wasPrinted = true;
-			} catch (UnsupportedEncodingException uee) {
-                            uee.printStackTrace();
-			} catch (PrintException pe) {
+                        } catch (PrintException pe) {
                             pe.printStackTrace();
-			}
+                        }
                     } else {
-                        getLog().error("No suitable PrinterService was found for PrinterGroup " + printerGroup.getPrinterGroupName());
+                        log.error("No suitable PrinterService was found for PrinterGroup " + printerGroup.getPrinterGroupName());
                     }
 
                     setPrinterGroupJobStatus(printerGroupJob, wasPrinted ? PrinterGroupJobStatusConstants.WorkflowDestination_QUEUED_TO_PRINTED : PrinterGroupJobStatusConstants.WorkflowDestination_QUEUED_TO_ERRORED);
@@ -220,7 +214,7 @@ public class PrintPrinterGroupJobsJob
 
         if(!commandResult.getHasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPrinterGroupJobsResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             printPrinterGroupJobs(result.getPrinterGroupJobs());
         }

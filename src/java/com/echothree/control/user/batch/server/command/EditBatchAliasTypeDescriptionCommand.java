@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditBatchAliasTypeDescriptionCommand
@@ -55,19 +55,25 @@ public class EditBatchAliasTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.BatchAliasType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditBatchAliasTypeDescriptionCommand */
     public EditBatchAliasTypeDescriptionCommand() {
@@ -86,7 +92,6 @@ public class EditBatchAliasTypeDescriptionCommand
 
     @Override
     public BatchAliasTypeDescription getEntity(EditBatchAliasTypeDescriptionResult result) {
-        var batchControl = Session.getModelController(BatchControl.class);
         BatchAliasTypeDescription batchAliasTypeDescription = null;
         var batchTypeName = spec.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
@@ -96,7 +101,6 @@ public class EditBatchAliasTypeDescriptionCommand
             var batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
             if(batchAliasType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -130,8 +134,6 @@ public class EditBatchAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditBatchAliasTypeDescriptionResult result, BatchAliasTypeDescription batchAliasTypeDescription) {
-        var batchControl = Session.getModelController(BatchControl.class);
-
         result.setBatchAliasTypeDescription(batchControl.getBatchAliasTypeDescriptionTransfer(getUserVisit(), batchAliasTypeDescription));
     }
 
@@ -142,7 +144,6 @@ public class EditBatchAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(BatchAliasTypeDescription batchAliasTypeDescription) {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchAliasTypeDescriptionValue = batchControl.getBatchAliasTypeDescriptionValue(batchAliasTypeDescription);
 
         batchAliasTypeDescriptionValue.setDescription(edit.getDescription());

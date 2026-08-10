@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentTypeForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentTypeCommand
@@ -53,8 +53,12 @@ public class CreateFilterAdjustmentTypeCommand
                 new FieldDefinition("FilterAdjustmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
     
     /** Creates a new instance of CreateFilterAdjustmentTypeCommand */
     public CreateFilterAdjustmentTypeCommand() {
@@ -64,14 +68,13 @@ public class CreateFilterAdjustmentTypeCommand
     @Override
     protected BaseResult execute() {
         var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
-        var filterControl = Session.getModelController(FilterControl.class);
-        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentType = filterAdjustmentControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             
-            filterControl.createFilterAdjustmentType(filterAdjustmentTypeName, isDefault, sortOrder);
+            filterAdjustmentControl.createFilterAdjustmentType(filterAdjustmentTypeName, isDefault, sortOrder);
         } else {
             addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentTypeName.name(), filterAdjustmentTypeName);
         }

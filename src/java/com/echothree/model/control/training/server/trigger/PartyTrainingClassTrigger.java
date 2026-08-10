@@ -92,7 +92,7 @@ public class PartyTrainingClassTrigger
     @Override
     public void handleTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
         var trainingControl = Session.getModelController(TrainingControl.class);
-        var partyTrainingClass = trainingControl.convertEntityInstanceToPartyTrainingClassForUpdate(getEntityInstance(workflowEntityStatus));
+        var partyTrainingClass = trainingControl.getPartyTrainingClassByEntityInstanceForUpdate(getEntityInstance(workflowEntityStatus));
         var workflowStepName = getWorkflowStepName(workflowEntityStatus);
         
         if(workflowStepName.equals(PartyTrainingClassStatusConstants.WorkflowStep_PASSED)) {

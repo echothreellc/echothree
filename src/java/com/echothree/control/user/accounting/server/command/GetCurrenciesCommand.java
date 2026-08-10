@@ -24,10 +24,10 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCurrenciesCommand
@@ -39,6 +39,10 @@ public class GetCurrenciesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
     
     /** Creates a new instance of GetCurrenciesCommand */
     public GetCurrenciesCommand() {
@@ -52,23 +56,17 @@ public class GetCurrenciesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-
         return accountingControl.countCurrencies();
     }
 
     @Override
     protected Collection<Currency> getEntities() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        
         return accountingControl.getCurrencies();
     }
     
     @Override
     protected BaseResult getResult(Collection<Currency> entities) {
         var result = AccountingResultFactory.getGetCurrenciesResult();
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        
         result.setCurrencies(accountingControl.getCurrencyTransfers(getUserVisit(), entities));
         
         return result;

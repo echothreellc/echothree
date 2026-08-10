@@ -17,9 +17,9 @@
 package com.echothree.model.control.party.server.indexer;
 
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.party.server.analyzer.PartyAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
+import com.echothree.model.control.party.server.analyzer.PartyAnalyzer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -27,25 +27,26 @@ import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
 public abstract class PartyIndexer
         extends BaseIndexer<Party> {
-    
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
+    @Inject
+    PartyControl partyControl;
     
     protected PartyType partyType;
     protected String entityNameIndexField;
     
-    protected PartyIndexer(final ExecutionErrorAccumulator eea, final Index index, final String partyTypeName,
+    protected BaseIndexer<Party> setup(final ExecutionErrorAccumulator eea, final Index index, final String partyTypeName,
             final String entityNameIndexField) {
-        super(eea, index);
-        
         this.partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
         this.entityNameIndexField = entityNameIndexField;
+
+        return super.setup(eea, index);
     }
     
     @Override

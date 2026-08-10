@@ -24,13 +24,16 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyPrinterGroupUseLogic
         extends BaseLogic {
+
+    @Inject
+    PrinterControl printerControl;
 
     protected PartyPrinterGroupUseLogic() {
         super();
@@ -42,7 +45,6 @@ public class PartyPrinterGroupUseLogic
 
     public PartyPrinterGroupUse getPartyPrinterGroupUse(final ExecutionErrorAccumulator ema, final Party party, final PrinterGroupUseType printerGroupUseType,
             final BasePK createdBy) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
 
         if(partyPrinterGroupUse == null) {
@@ -60,7 +62,6 @@ public class PartyPrinterGroupUseLogic
 
     public PartyPrinterGroupUse getPartyPrinterGroupUseUsingNames(final ExecutionErrorAccumulator ema, final Party party, final String printerGroupUseTypeName,
             final BasePK createdBy) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         PartyPrinterGroupUse partyPrinterGroupUse = null;
 

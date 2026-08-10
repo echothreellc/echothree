@@ -38,9 +38,10 @@ public class GetContactMechanismTypesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     ContactControl contactControl;
+
 
     /** Creates a new instance of GetContactMechanismTypesCommand */
     public GetContactMechanismTypesCommand() {

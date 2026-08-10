@@ -49,7 +49,6 @@ import com.echothree.util.client.string.NameCleaner;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
 import com.echothree.util.common.string.NameResult;
 import com.echothree.util.common.string.StringUtils;
-import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,9 +63,6 @@ import org.apache.commons.logging.LogFactory;
 public class EnterOrders {
 
     private final Log LOG = LogFactory.getLog(this.getClass());
-
-    private static final Splitter TAB_SPLITTER = Splitter.on('\t')
-           .trimResults();
 
     private Configuration configuration;
     AmazonOrders amazonOrders;
@@ -136,6 +132,7 @@ public class EnterOrders {
     }
 
     /**
+     * Parses a currency value into its normalized minor-unit representation.
      *
      * @param minusSign Character to use when looking for a minus sign in the value, may be null if amount is positive-only
      * @param fractionSeparator Character that separates the whole part of the value from the decimal portion
@@ -204,7 +201,7 @@ public class EnterOrders {
         }
 
         // TODO: Format according to the currency rules.
-        return new StringBuilder(Long.toString(batchAmount / 100)).append('.').append(Long.toString(batchAmount % 100)).toString();
+        return Long.toString(batchAmount / 100) + '.' + Long.toString(batchAmount % 100);
     }
 
     public String createSalesOrderBatch(String currencyIsoName, String paymentMethodName, String count, String amount)

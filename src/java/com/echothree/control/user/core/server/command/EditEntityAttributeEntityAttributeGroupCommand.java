@@ -39,6 +39,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityAttributeEntityAttributeGroupCommand
@@ -53,20 +54,24 @@ public class EditEntityAttributeEntityAttributeGroupCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAttribute.name(), SecurityRoles.EntityAttributeEntityAttributeGroup.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of EditEntityAttributeEntityAttributeGroupCommand */
     public EditEntityAttributeEntityAttributeGroupCommand() {
@@ -86,10 +91,10 @@ public class EditEntityAttributeEntityAttributeGroupCommand
     @Override
     public EntityAttributeEntityAttributeGroup getEntity(EditEntityAttributeEntityAttributeGroupResult result) {
         EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = null;
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, spec.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, spec.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
 

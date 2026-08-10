@@ -21,12 +21,15 @@ import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class LotTimeLogic {
+
+    @Inject
+    LotTimeControl lotTimeControl;
 
     protected LotTimeLogic() {
         super();
@@ -45,7 +48,6 @@ public class LotTimeLogic {
 
     public void createOrUpdateLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType == null) {
@@ -65,7 +67,6 @@ public class LotTimeLogic {
     }
 
     public Long getLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName) {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var lotDetail = lot.getLastDetail();
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
         Long result = null;
@@ -90,7 +91,6 @@ public class LotTimeLogic {
     }
 
     public void deleteLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final BasePK deletedBy) {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var lotDetail = lot.getLastDetail();
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 

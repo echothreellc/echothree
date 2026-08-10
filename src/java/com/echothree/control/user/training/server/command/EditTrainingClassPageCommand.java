@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassPageCommand
@@ -57,14 +57,14 @@ public class EditTrainingClassPageCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassPage.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassPageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassPageName", FieldType.ENTITY_NAME, true, null, null),
@@ -74,8 +74,15 @@ public class EditTrainingClassPageCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PageMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Page", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of EditTrainingClassPageCommand */
     public EditTrainingClassPageCommand() {
@@ -96,7 +103,6 @@ public class EditTrainingClassPageCommand
     
     @Override
     public TrainingClassPage getEntity(EditTrainingClassPageResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassPage trainingClassPage = null;
         var trainingClassName = spec.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -137,8 +143,6 @@ public class EditTrainingClassPageCommand
 
     @Override
     public void fillInResult(EditTrainingClassPageResult result, TrainingClassPage trainingClassPage) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(getUserVisit(), trainingClassPage));
     }
 
@@ -147,7 +151,6 @@ public class EditTrainingClassPageCommand
     
     @Override
     public void doLock(TrainingClassPageEdit edit, TrainingClassPage trainingClassPage) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslation(trainingClassPage, getPreferredLanguage());
         var trainingClassPageDetail = trainingClassPage.getLastDetail();
 
@@ -165,14 +168,12 @@ public class EditTrainingClassPageCommand
 
     @Override
     public void canUpdate(TrainingClassPage trainingClassPage) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassPageName = edit.getTrainingClassPageName();
         var duplicateTrainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
         if(duplicateTrainingClassPage != null && !trainingClassPage.equals(duplicateTrainingClassPage)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassPageName.name(), trainingClassPageName);
         } else {
-            var mimeTypeLogic = MimeTypeLogic.getInstance();
             var pageMimeTypeName = edit.getPageMimeTypeName();
             var page = edit.getPage();
 
@@ -184,7 +185,6 @@ public class EditTrainingClassPageCommand
     
     @Override
     public void doUpdate(TrainingClassPage trainingClassPage) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         var trainingClassPageDetailValue = trainingControl.getTrainingClassPageDetailValueForUpdate(trainingClassPage);
         var trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslationForUpdate(trainingClassPage, getPreferredLanguage());

@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentSectionDescriptionCommand
@@ -55,19 +55,26 @@ public class EditContentSectionDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentSection.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContentSectionDescriptionCommand */
     public EditContentSectionDescriptionCommand() {
@@ -86,7 +93,6 @@ public class EditContentSectionDescriptionCommand
     
     @Override
     public ContentSectionDescription getEntity(EditContentSectionDescriptionResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentSectionDescription contentSectionDescription = null;
         var contentCollectionName = spec.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -96,7 +102,6 @@ public class EditContentSectionDescriptionCommand
             var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,8 +137,6 @@ public class EditContentSectionDescriptionCommand
     
     @Override
     public void fillInResult(EditContentSectionDescriptionResult result, ContentSectionDescription contentSectionDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentSectionDescription(contentControl.getContentSectionDescriptionTransfer(getUserVisit(), contentSectionDescription));
     }
     
@@ -144,7 +147,6 @@ public class EditContentSectionDescriptionCommand
     
     @Override
     public void doUpdate(ContentSectionDescription contentSectionDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentSectionDescriptionValue = contentControl.getContentSectionDescriptionValue(contentSectionDescription);
         contentSectionDescriptionValue.setDescription(edit.getDescription());
 

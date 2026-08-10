@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentPageLayoutCommand
@@ -45,16 +46,20 @@ public class CreateContentPageLayoutCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContentPageLayoutLogic contentPageLayoutLogic;
+
     
     /** Creates a new instance of CreateContentPageLayoutCommand */
     public CreateContentPageLayoutCommand() {
@@ -69,7 +74,7 @@ public class CreateContentPageLayoutCommand
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        var contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
+        var contentPageLayout = contentPageLayoutLogic.createContentPageLayout(this,
                 contentPageLayoutName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(contentPageLayout != null && !hasExecutionErrors()) {

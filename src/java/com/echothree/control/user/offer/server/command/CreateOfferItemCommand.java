@@ -35,6 +35,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateOfferItemCommand
@@ -48,14 +49,24 @@ public class CreateOfferItemCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferItem.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    OfferItemLogic offerItemLogic;
+
+    @Inject
+    OfferLogic offerLogic;
+
     
     /** Creates a new instance of CreateOfferItemCommand */
     public CreateOfferItemCommand() {
@@ -66,11 +77,11 @@ public class CreateOfferItemCommand
     protected BaseResult execute() {
         var result = OfferResultFactory.getCreateOfferItemResult();
         OfferItem offerItem = null;
-        var offer = OfferLogic.getInstance().getOfferByName(this, form.getOfferName());
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+        var offer = offerLogic.getOfferByName(this, form.getOfferName());
+        var item = itemLogic.getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
-            offerItem = OfferItemLogic.getInstance().createOfferItem(this, offer, item, getPartyPK());
+            offerItem = offerItemLogic.createOfferItem(this, offer, item, getPartyPK());
         }
 
         if(offerItem != null) {

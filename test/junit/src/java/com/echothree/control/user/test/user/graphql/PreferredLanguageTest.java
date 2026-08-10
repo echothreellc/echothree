@@ -18,7 +18,7 @@ package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PreferredLanguageTest
         extends GraphQlTestCase {

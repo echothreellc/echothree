@@ -27,9 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorTypeCommand
@@ -43,8 +43,15 @@ public class GetPaymentProcessorTypeCommand
                 new FieldDefinition("PaymentProcessorTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentProcessorTypeControl paymentProcessorTypeControl;
+
+    @Inject
+    PaymentProcessorTypeLogic paymentProcessorTypeLogic;
+
     
     /** Creates a new instance of GetPaymentProcessorTypeCommand */
     public GetPaymentProcessorTypeCommand() {
@@ -53,7 +60,7 @@ public class GetPaymentProcessorTypeCommand
     
     @Override
     protected PaymentProcessorType getEntity() {
-        var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByUniversalSpec(this, form, true);
+        var paymentProcessorType = paymentProcessorTypeLogic.getPaymentProcessorTypeByUniversalSpec(this, form, true);
 
         if(paymentProcessorType != null) {
             sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +71,6 @@ public class GetPaymentProcessorTypeCommand
     
     @Override
     protected BaseResult getResult(PaymentProcessorType paymentProcessorType) {
-        var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorTypeResult();
 
         if(paymentProcessorType != null) {

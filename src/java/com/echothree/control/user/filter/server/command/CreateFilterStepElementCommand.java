@@ -18,7 +18,12 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterStepElementForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -35,9 +40,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterStepElementCommand
@@ -65,6 +70,28 @@ public class CreateFilterStepElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateFilterStepElementCommand */
     public CreateFilterStepElementCommand() {
@@ -74,14 +101,13 @@ public class CreateFilterStepElementCommand
     @Override
     protected BaseResult execute() {
         var result = FilterResultFactory.getCreateFilterStepElementResult();
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         FilterStepElement filterStepElement = null;
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var filterName = form.getFilterName();
@@ -89,19 +115,18 @@ public class CreateFilterStepElementCommand
                 
                 if(filter != null) {
                     var filterStepName = form.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStep = filterStepControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
                         var filterStepElementName = form.getFilterStepElementName();
 
-                        filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        filterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement == null) {
                             var filterItemSelectorName = form.getFilterItemSelectorName();
                             Selector filterItemSelector = null;
                             
                             if(filterItemSelectorName != null) {
-                                var selectorControl = Session.getModelController(SelectorControl.class);
                                 var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                                 
                                 if(selectorKind != null) {
@@ -119,17 +144,17 @@ public class CreateFilterStepElementCommand
                             
                             if(filterItemSelectorName == null || filterItemSelector != null) {
                                 var filterAdjustmentName = form.getFilterAdjustmentName();
-                                var filterAdjustment = filterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+                                var filterAdjustment = filterAdjustmentName == null? null: filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
                                 
                                 if(filterAdjustmentName == null || filterAdjustment != null) {
                                     var description = form.getDescription();
                                     var partyPK = getPartyPK();
                                     
-                                    filterStepElement = filterControl.createFilterStepElement(filterStep, filterStepElementName,
+                                    filterStepElement = filterStepElementControl.createFilterStepElement(filterStep, filterStepElementName,
                                             filterItemSelector, filterAdjustment, partyPK);
                                     
                                     if(description != null) {
-                                        filterControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(),
+                                        filterStepElementControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(),
                                                 description, partyPK);
                                     }
                                 } else {

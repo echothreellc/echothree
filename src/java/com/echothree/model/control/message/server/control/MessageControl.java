@@ -121,15 +121,21 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Message Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected MessageTypeFactory messageTypeFactory;
+
+    @Inject
+    protected MessageTypeDetailFactory messageTypeDetailFactory;
+
     public MessageType createMessageType(EntityType entityType, String messageTypeName, MimeTypeUsageType mimeTypeUsageType,
             Integer sortOrder, BasePK createdBy) {
-        var messageType = MessageTypeFactory.getInstance().create();
-        var messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageType, entityType,
+        var messageType = messageTypeFactory.create();
+        var messageTypeDetail = messageTypeDetailFactory.create(messageType, entityType,
                 messageTypeName, mimeTypeUsageType, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        messageType = MessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        messageType = messageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 messageType.getPrimaryKey());
         messageType.setActiveDetail(messageTypeDetail);
         messageType.setLastDetail(messageTypeDetail);
@@ -144,7 +150,7 @@ public class MessageControl
     public MessageType getMessageTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new MessageTypePK(entityInstance.getEntityUniqueId());
 
-        return MessageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return messageTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public MessageType getMessageTypeByEntityInstance(EntityInstance entityInstance) {
@@ -187,11 +193,11 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageTypeFactory.getInstance().prepareStatement(query);
+            var ps = messageTypeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
-            messageTypes = MessageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            messageTypes = messageTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -230,12 +236,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageTypeFactory.getInstance().prepareStatement(query);
+            var ps = messageTypeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, messageTypeName);
             
-            messageType = MessageTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            messageType = messageTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -279,7 +285,7 @@ public class MessageControl
     
     public void updateMessageTypeFromValue(MessageTypeDetailValue messageTypeDetailValue, BasePK updatedBy) {
         if(messageTypeDetailValue.hasBeenModified()) {
-            var messageType = MessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageType = messageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      messageTypeDetailValue.getMessageTypePK());
             var messageTypeDetail = messageType.getActiveDetailForUpdate();
             
@@ -292,7 +298,7 @@ public class MessageControl
             var mimeTypeUsageTypePK = messageTypeDetail.getMimeTypeUsageTypePK(); // Not updated
             var sortOrder = messageTypeDetailValue.getSortOrder();
             
-            messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageTypePK, entityTypePK, messageTypeName,
+            messageTypeDetail = messageTypeDetailFactory.create(messageTypePK, entityTypePK, messageTypeName,
                     mimeTypeUsageTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             messageType.setActiveDetail(messageTypeDetail);
@@ -326,10 +332,13 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Message Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected MessageTypeDescriptionFactory messageTypeDescriptionFactory;
+
     public MessageTypeDescription createMessageTypeDescription(MessageType messageType, Language language, String description,
             BasePK createdBy) {
-        var messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType,
+        var messageTypeDescription = messageTypeDescriptionFactory.create(messageType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -358,13 +367,13 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = messageTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            messageTypeDescription = MessageTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            messageTypeDescription = messageTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -411,12 +420,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = messageTypeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            messageTypeDescriptions = MessageTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            messageTypeDescriptions = messageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -466,7 +475,7 @@ public class MessageControl
     
     public void updateMessageTypeDescriptionFromValue(MessageTypeDescriptionValue messageTypeDescriptionValue, BasePK updatedBy) {
         if(messageTypeDescriptionValue.hasBeenModified()) {
-            var messageTypeDescription = MessageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageTypeDescription = messageTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      messageTypeDescriptionValue.getPrimaryKey());
             
             messageTypeDescription.setThruTime(session.getStartTime());
@@ -476,7 +485,7 @@ public class MessageControl
             var language = messageTypeDescription.getLanguage();
             var description = messageTypeDescriptionValue.getDescription();
             
-            messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType, language, description,
+            messageTypeDescription = messageTypeDescriptionFactory.create(messageType, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -501,7 +510,13 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Message Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected MessageFactory messageFactory;
+
+    @Inject
+    protected MessageDetailFactory messageDetailFactory;
+
     public Message createMessage(MessageType messageType, String messageName, Boolean includeByDefault, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultMessage = getDefaultMessage(messageType);
@@ -516,12 +531,12 @@ public class MessageControl
             isDefault = true;
         }
 
-        var message = MessageFactory.getInstance().create();
-        var messageDetail = MessageDetailFactory.getInstance().create(message, messageType, messageName,
+        var message = messageFactory.create();
+        var messageDetail = messageDetailFactory.create(message, messageType, messageName,
                 includeByDefault, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        message = MessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        message = messageFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 message.getPrimaryKey());
         message.setActiveDetail(messageDetail);
         message.setLastDetail(messageDetail);
@@ -536,7 +551,7 @@ public class MessageControl
     public Message getMessageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new MessagePK(entityInstance.getEntityUniqueId());
 
-        return MessageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return messageFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public Message getMessageByEntityInstance(EntityInstance entityInstance) {
@@ -579,11 +594,11 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageFactory.getInstance().prepareStatement(query);
+            var ps = messageFactory.prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             
-            messages = MessageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            messages = messageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -622,11 +637,11 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageFactory.getInstance().prepareStatement(query);
+            var ps = messageFactory.prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             
-            message = MessageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            message = messageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -669,12 +684,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageFactory.getInstance().prepareStatement(query);
+            var ps = messageFactory.prepareStatement(query);
             
             ps.setLong(1, messageType.getPrimaryKey().getEntityId());
             ps.setString(2, messageName);
             
-            message = MessageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            message = messageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -753,7 +768,7 @@ public class MessageControl
     private void updateMessageFromValue(MessageDetailValue messageDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(messageDetailValue.hasBeenModified()) {
-            var message = MessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var message = messageFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     messageDetailValue.getMessagePK());
             var messageDetail = message.getActiveDetailForUpdate();
             
@@ -784,7 +799,7 @@ public class MessageControl
                 }
             }
             
-            messageDetail = MessageDetailFactory.getInstance().create(messagePK, messageTypePK, messageName,
+            messageDetail = messageDetailFactory.create(messagePK, messageTypePK, messageName,
                     includeByDefault, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             message.setActiveDetail(messageDetail);
@@ -844,9 +859,12 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Message Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected MessageDescriptionFactory messageDescriptionFactory;
+
     public MessageDescription createMessageDescription(Message message, Language language, String description, BasePK createdBy) {
-        var messageDescription = MessageDescriptionFactory.getInstance().create(message,
+        var messageDescription = messageDescriptionFactory.create(message,
                 language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -875,13 +893,13 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = messageDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            messageDescription = MessageDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            messageDescription = messageDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -928,12 +946,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = messageDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            messageDescriptions = MessageDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            messageDescriptions = messageDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -983,7 +1001,7 @@ public class MessageControl
     
     public void updateMessageDescriptionFromValue(MessageDescriptionValue messageDescriptionValue, BasePK updatedBy) {
         if(messageDescriptionValue.hasBeenModified()) {
-            var messageDescription = MessageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, messageDescriptionValue.getPrimaryKey());
+            var messageDescription = messageDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, messageDescriptionValue.getPrimaryKey());
             
             messageDescription.setThruTime(session.getStartTime());
             messageDescription.store();
@@ -992,7 +1010,7 @@ public class MessageControl
             var language = messageDescription.getLanguage();
             var description = messageDescriptionValue.getDescription();
             
-            messageDescription = MessageDescriptionFactory.getInstance().create(message, language, description, session.getStartTime(), Session.MAX_TIME);
+            messageDescription = messageDescriptionFactory.create(message, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1016,9 +1034,12 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Message Strings
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected MessageStringFactory messageStringFactory;
+
     public MessageString createMessageString(Message message, Language language, String string, BasePK createdBy) {
-        var messageString = MessageStringFactory.getInstance().create(message, language, string,
+        var messageString = messageStringFactory.create(message, language, string,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1050,12 +1071,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageStringFactory.getInstance().prepareStatement(query);
+            var ps = messageStringFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            messageStrings = MessageStringFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            messageStrings = messageStringFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1092,13 +1113,13 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageStringFactory.getInstance().prepareStatement(query);
+            var ps = messageStringFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            messageString = MessageStringFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            messageString = messageStringFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1140,7 +1161,7 @@ public class MessageControl
     
     public void updateMessageStringFromValue(MessageStringValue messageStringValue, BasePK updatedBy) {
         if(messageStringValue.hasBeenModified()) {
-            var messageString = MessageStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageString = messageStringFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     messageStringValue.getPrimaryKey());
             
             messageString.setThruTime(session.getStartTime());
@@ -1150,7 +1171,7 @@ public class MessageControl
             var languagePK = messageString.getLanguagePK(); // Not updated
             var string = messageStringValue.getString();
             
-            messageString = MessageStringFactory.getInstance().create(messagePK, languagePK, string,
+            messageString = messageStringFactory.create(messagePK, languagePK, string,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1176,9 +1197,12 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Message Blobs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected MessageBlobFactory messageBlobFactory;
+
     public MessageBlob createMessageBlob(Message message, Language language, MimeType mimeType, ByteArray blob, BasePK createdBy) {
-        var messageBlob = MessageBlobFactory.getInstance().create(message, language, mimeType, blob,
+        var messageBlob = messageBlobFactory.create(message, language, mimeType, blob,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1210,12 +1234,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageBlobFactory.getInstance().prepareStatement(query);
+            var ps = messageBlobFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            messageBlobs = MessageBlobFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            messageBlobs = messageBlobFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1252,13 +1276,13 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageBlobFactory.getInstance().prepareStatement(query);
+            var ps = messageBlobFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            messageBlob = MessageBlobFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            messageBlob = messageBlobFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1300,7 +1324,7 @@ public class MessageControl
     
     public void updateMessageBlobFromValue(MessageBlobValue messageBlobValue, BasePK updatedBy) {
         if(messageBlobValue.hasBeenModified()) {
-            var messageBlob = MessageBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageBlob = messageBlobFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     messageBlobValue.getPrimaryKey());
             
             messageBlob.setThruTime(session.getStartTime());
@@ -1311,7 +1335,7 @@ public class MessageControl
             var mimeTypePK = messageBlobValue.getMimeTypePK();
             var blob = messageBlobValue.getBlob();
             
-            messageBlob = MessageBlobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, blob,
+            messageBlob = messageBlobFactory.create(messagePK, languagePK, mimeTypePK, blob,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1337,9 +1361,12 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Message Clobs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected MessageClobFactory messageClobFactory;
+
     public MessageClob createMessageClob(Message message, Language language, MimeType mimeType, String clob, BasePK createdBy) {
-        var messageClob = MessageClobFactory.getInstance().create(message, language, mimeType, clob,
+        var messageClob = messageClobFactory.create(message, language, mimeType, clob,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1371,12 +1398,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageClobFactory.getInstance().prepareStatement(query);
+            var ps = messageClobFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            messageClobs = MessageClobFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            messageClobs = messageClobFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1413,13 +1440,13 @@ public class MessageControl
                         """;
             }
 
-            var ps = MessageClobFactory.getInstance().prepareStatement(query);
+            var ps = messageClobFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            messageClob = MessageClobFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            messageClob = messageClobFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1461,7 +1488,7 @@ public class MessageControl
     
     public void updateMessageClobFromValue(MessageClobValue messageClobValue, BasePK updatedBy) {
         if(messageClobValue.hasBeenModified()) {
-            var messageClob = MessageClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var messageClob = messageClobFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     messageClobValue.getPrimaryKey());
             
             messageClob.setThruTime(session.getStartTime());
@@ -1472,7 +1499,7 @@ public class MessageControl
             var mimeTypePK = messageClobValue.getMimeTypePK();
             var clob = messageClobValue.getClob();
             
-            messageClob = MessageClobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, clob,
+            messageClob = messageClobFactory.create(messagePK, languagePK, mimeTypePK, clob,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1498,9 +1525,12 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Entity Messages
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected EntityMessageFactory entityMessageFactory;
+
     public EntityMessage createEntityMessage(EntityInstance entityInstance, Message message, BasePK createdBy) {
-        var entityMessage = EntityMessageFactory.getInstance().create(entityInstance, message,
+        var entityMessage = entityMessageFactory.create(entityInstance, message,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1545,13 +1575,13 @@ public class MessageControl
                         """;
             }
 
-            var ps = EntityMessageFactory.getInstance().prepareStatement(query);
+            var ps = entityMessageFactory.prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, message.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityMessage = EntityMessageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityMessage = entityMessageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1591,12 +1621,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = EntityMessageFactory.getInstance().prepareStatement(query);
+            var ps = entityMessageFactory.prepareStatement(query);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityMessages = EntityMessageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityMessages = entityMessageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1635,12 +1665,12 @@ public class MessageControl
                         """;
             }
 
-            var ps = EntityMessageFactory.getInstance().prepareStatement(query);
+            var ps = entityMessageFactory.prepareStatement(query);
             
             ps.setLong(1, message.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityMessages = EntityMessageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityMessages = entityMessageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

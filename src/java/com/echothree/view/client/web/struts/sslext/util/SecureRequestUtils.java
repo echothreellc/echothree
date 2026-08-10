@@ -130,7 +130,7 @@ public class SecureRequestUtils {
      *
      * @param redirect Is this URL for a <code>response.sendRedirect()</code>?
      *
-     * @exception MalformedURLException if a URL cannot be created
+     * @throws MalformedURLException if a URL cannot be created
      *  for the specified parameters
      */
     public static String computeURL(PageContext pageContext, String forward, String href, String page, String action, Map params, String anchor, boolean redirect)

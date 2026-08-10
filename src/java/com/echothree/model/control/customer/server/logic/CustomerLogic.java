@@ -42,10 +42,35 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CustomerLogic
         extends BaseLogic {
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
 
     protected CustomerLogic() {
         super();
@@ -58,13 +83,10 @@ public class CustomerLogic
     public Customer getCustomerByName(final ExecutionErrorAccumulator eea, final String customerName, final String partyName,
             final UniversalEntitySpec universalEntitySpec) {
         var parameterCount = (customerName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
+                entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
         Customer customer = null;
 
         if(parameterCount == 1) {
-            var customerControl = Session.getModelController(CustomerControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(customerName != null) {
                 customer = customerControl.getCustomerByName(customerName);
 
@@ -75,20 +97,20 @@ public class CustomerLogic
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
 
                     customer = customerControl.getCustomer(party);
                 } else {
                     handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(universalEntitySpec != null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalEntitySpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);
 
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
 
                     customer = customerControl.getCustomer(party);
                 }
@@ -101,15 +123,12 @@ public class CustomerLogic
     }
 
     public void setCustomerStatus(final Session session, final ExecutionErrorAccumulator eea, final Party party, final String customerStatusChoice, final PartyPK modifiedBy) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
+        var workflow = workflowLogic.getWorkflowByName(eea, CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = customerStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), customerStatusChoice);
 
         if(workflowDestination != null || customerStatusChoice == null) {
-            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;

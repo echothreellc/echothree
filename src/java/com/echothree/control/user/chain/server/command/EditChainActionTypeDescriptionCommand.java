@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainActionTypeDescriptionCommand
@@ -55,18 +55,24 @@ public class EditChainActionTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ChainActionType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainActionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditChainActionTypeDescriptionCommand */
     public EditChainActionTypeDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditChainActionTypeDescriptionCommand
 
     @Override
     public ChainActionTypeDescription getEntity(EditChainActionTypeDescriptionResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainActionTypeDescription chainActionTypeDescription = null;
         var chainActionTypeName = spec.getChainActionTypeName();
         var chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
 
         if(chainActionType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditChainActionTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditChainActionTypeDescriptionResult result, ChainActionTypeDescription chainActionTypeDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainActionTypeDescription(chainControl.getChainActionTypeDescriptionTransfer(getUserVisit(), chainActionTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditChainActionTypeDescriptionCommand
 
     @Override
     public void doUpdate(ChainActionTypeDescription chainActionTypeDescription) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainActionTypeDescriptionValue = chainControl.getChainActionTypeDescriptionValue(chainActionTypeDescription);
 
         chainActionTypeDescriptionValue.setDescription(edit.getDescription());

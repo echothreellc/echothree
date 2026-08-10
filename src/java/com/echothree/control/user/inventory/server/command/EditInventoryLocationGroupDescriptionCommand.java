@@ -37,7 +37,6 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
@@ -49,7 +48,7 @@ public class EditInventoryLocationGroupDescriptionCommand
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -63,15 +62,10 @@ public class EditInventoryLocationGroupDescriptionCommand
                 new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
-    }
-    
-    /** Creates a new instance of EditInventoryLocationGroupDescriptionCommand */
-    public EditInventoryLocationGroupDescriptionCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Inject
@@ -82,7 +76,11 @@ public class EditInventoryLocationGroupDescriptionCommand
 
     @Inject
     WarehouseControl warehouseControl;
-    
+
+    /** Creates a new instance of EditInventoryLocationGroupDescriptionCommand */
+    public EditInventoryLocationGroupDescriptionCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
     @Override
     public EditInventoryLocationGroupDescriptionResult getResult() {
         return InventoryResultFactory.getEditInventoryLocationGroupDescriptionResult();
@@ -154,5 +152,5 @@ public class EditInventoryLocationGroupDescriptionCommand
 
         inventoryControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, getPartyPK());
     }
-    
+
 }

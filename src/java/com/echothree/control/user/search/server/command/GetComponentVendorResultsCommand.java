@@ -18,7 +18,6 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetComponentVendorResultsForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -34,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetComponentVendorResultsCommand
@@ -58,6 +57,12 @@ public class GetComponentVendorResultsCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetComponentVendorResultsCommand */
     public GetComponentVendorResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +71,6 @@ public class GetComponentVendorResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetComponentVendorResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.COMPONENT_VENDOR.name());
         
         if(searchKind != null) {
@@ -78,10 +82,10 @@ public class GetComponentVendorResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityListItemControl = Session.getModelController(ComponentControl.class);
+                    var entityListItemControl = componentControl;
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setComponentVendorResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setComponentVendorResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setComponentVendorResults(entityListItemControl.getComponentVendorResultTransfers(userVisit, userVisitSearch));

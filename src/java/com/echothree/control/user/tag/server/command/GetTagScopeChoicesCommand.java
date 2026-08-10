@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTagScopeChoicesCommand
@@ -46,14 +46,18 @@ public class GetTagScopeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TagScope.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultTagScopeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TagControl tagControl;
+
     
     /** Creates a new instance of GetTagScopeChoicesCommand */
     public GetTagScopeChoicesCommand() {
@@ -62,7 +66,6 @@ public class GetTagScopeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var tagControl = Session.getModelController(TagControl.class);
         var result = TagResultFactory.getGetTagScopeChoicesResult();
         var defaultTagScopeChoice = form.getDefaultTagScopeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

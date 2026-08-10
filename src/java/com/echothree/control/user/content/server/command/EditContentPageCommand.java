@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentPageCommand
@@ -55,14 +55,14 @@ public class EditContentPageCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPage.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null),
@@ -70,8 +70,12 @@ public class EditContentPageCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
     
     /** Creates a new instance of EditContentPageCommand */
     public EditContentPageCommand() {
@@ -92,7 +96,6 @@ public class EditContentPageCommand
     
     @Override
     public ContentPage getEntity(EditContentPageResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentPage contentPage = null;
         var contentCollectionName = spec.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -133,14 +136,11 @@ public class EditContentPageCommand
     
     @Override
     public void fillInResult(EditContentPageResult result, ContentPage contentPage) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentPage(contentControl.getContentPageTransfer(getUserVisit(), contentPage));
     }
     
     @Override
     public void doLock(ContentPageEdit edit, ContentPage contentPage) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageDescription = contentControl.getContentPageDescription(contentPage, getPreferredLanguage());
         var contentPageDetail = contentPage.getLastDetail();
 
@@ -158,7 +158,6 @@ public class EditContentPageCommand
     
     @Override
     public void canUpdate(ContentPage contentPage) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageName = edit.getContentPageName();
         var duplicateContentPage = contentControl.getContentPageByName(contentSection, contentPageName);
 
@@ -177,7 +176,6 @@ public class EditContentPageCommand
     
     @Override
     public void doUpdate(ContentPage contentPage) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         var contentPageDetailValue = contentControl.getContentPageDetailValueForUpdate(contentPage);
         var contentPageDescription = contentControl.getContentPageDescriptionForUpdate(contentPage, getPreferredLanguage());

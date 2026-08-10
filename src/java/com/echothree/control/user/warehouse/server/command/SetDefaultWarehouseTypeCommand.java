@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultWarehouseTypeCommand
@@ -44,14 +44,18 @@ public class SetDefaultWarehouseTypeCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.WarehouseType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.WarehouseType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     
     /** Creates a new instance of SetDefaultWarehouseTypeCommand */
     public SetDefaultWarehouseTypeCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultWarehouseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouseTypeName = form.getWarehouseTypeName();
         var warehouseTypeDetailValue = warehouseControl.getWarehouseTypeDetailValueByNameForUpdate(warehouseTypeName);
         

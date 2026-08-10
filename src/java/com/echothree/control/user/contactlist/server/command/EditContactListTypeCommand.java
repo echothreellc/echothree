@@ -18,11 +18,11 @@ package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.edit.ContactListEditFactory;
 import com.echothree.control.user.contactlist.common.edit.ContactListTypeEdit;
-import com.echothree.control.user.contactlist.common.form.EditContactListTypeForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.control.user.contactlist.common.result.EditContactListTypeResult;
 import com.echothree.control.user.contactlist.common.spec.ContactListTypeSpec;
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
+import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -30,18 +30,17 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contactlist.server.entity.ContactListType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContactListTypeCommand
@@ -56,12 +55,12 @@ public class EditContactListTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactListType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -72,8 +71,14 @@ public class EditContactListTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ContactListControl contactListControl;
 
     /** Creates a new instance of EditContactListTypeCommand */
     public EditContactListTypeCommand() {
@@ -92,7 +97,6 @@ public class EditContactListTypeCommand
 
     @Override
     public ContactListType getEntity(EditContactListTypeResult result) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListType contactListType;
         var contactListTypeName = spec.getContactListTypeName();
 
@@ -116,14 +120,11 @@ public class EditContactListTypeCommand
 
     @Override
     public void fillInResult(EditContactListTypeResult result, ContactListType contactListType) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
-
         result.setContactListType(contactListControl.getContactListTypeTransfer(getUserVisit(), contactListType));
     }
 
     @Override
     public void doLock(ContactListTypeEdit edit, ContactListType contactListType) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListTypeDescription = contactListControl.getContactListTypeDescription(contactListType, getPreferredLanguage());
         var contactListTypeDetail = contactListType.getLastDetail();
         var confirmationRequestChain = contactListTypeDetail.getConfirmationRequestChain();
@@ -149,31 +150,29 @@ public class EditContactListTypeCommand
 
     @Override
     public void canUpdate(ContactListType contactListType) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListTypeName = edit.getContactListTypeName();
         var duplicateContactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(duplicateContactListType != null && !contactListType.equals(duplicateContactListType)) {
             addExecutionError(ExecutionErrors.DuplicateContactListTypeName.name(), contactListTypeName);
         } else {
-            var chainControl = Session.getModelController(ChainControl.class);
-            var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
+            var chainKind = chainControl.getChainKindByName(ChainKinds.CONTACT_LIST.name());
             var confirmationRequestChainName = edit.getConfirmationRequestChainName();
 
             confirmationRequestChain = confirmationRequestChainName == null ? null
-                    : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_CONFIRMATION_REQUEST), confirmationRequestChainName);
+                    : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.CONFIRMATION_REQUEST.name()), confirmationRequestChainName);
 
             if(confirmationRequestChainName == null || confirmationRequestChain != null) {
                 var subscribeChainName = edit.getSubscribeChainName();
 
                 subscribeChain = subscribeChainName == null ? null
-                        : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_SUBSCRIBE), subscribeChainName);
+                        : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.SUBSCRIBE.name()), subscribeChainName);
 
                 if(subscribeChainName == null || subscribeChain != null) {
                     var unsubscribeChainName = edit.getUnsubscribeChainName();
 
                     unsubscribeChain = unsubscribeChainName == null ? null
-                            : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_UNSUBSCRIBE), unsubscribeChainName);
+                            : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.UNSUBSCRIBE.name()), unsubscribeChainName);
 
                     if(unsubscribeChainName != null && unsubscribeChain == null) {
                         addExecutionError(ExecutionErrors.UnknownUnsubscribeChainName.name(), unsubscribeChainName);
@@ -189,7 +188,6 @@ public class EditContactListTypeCommand
 
     @Override
     public void doUpdate(ContactListType contactListType) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
         var contactListTypeDetailValue = contactListControl.getContactListTypeDetailValueForUpdate(contactListType);
         var contactListTypeDescription = contactListControl.getContactListTypeDescriptionForUpdate(contactListType, getPreferredLanguage());

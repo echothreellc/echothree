@@ -20,7 +20,10 @@ import com.echothree.util.common.form.BaseForm;
 
 public interface GetGeoCodeTaxesForm
         extends BaseForm {
-    
+
+    String getGeoCodeName();
+    void setGeoCodeName(String geoCodeName);
+
     String getTaxName();
     void setTaxName(String taxName);
     

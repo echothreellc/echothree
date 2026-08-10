@@ -29,10 +29,10 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPostalAddressLineElementCommand
@@ -46,7 +46,7 @@ public class EditPostalAddressLineElementCommand
                 new FieldDefinition("PostalAddressFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PostalAddressLineSortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("PostalAddressLineElementSortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PostalAddressLineElementSortOrder", FieldType.SIGNED_INTEGER, true, null, null),
@@ -55,8 +55,12 @@ public class EditPostalAddressLineElementCommand
                 new FieldDefinition("AlwaysIncludePrefix", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Suffix", FieldType.STRING, false, 1L, 10L),
                 new FieldDefinition("AlwaysIncludeSuffix", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
     
     /** Creates a new instance of EditPostalAddressLineElementCommand */
     public EditPostalAddressLineElementCommand() {
@@ -65,7 +69,6 @@ public class EditPostalAddressLineElementCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
         var result = ContactResultFactory.getEditPostalAddressLineElementResult();
         var postalAddressFormatName = spec.getPostalAddressFormatName();
         var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);

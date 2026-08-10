@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTagChoicesCommand
@@ -47,15 +47,19 @@ public class GetTagChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Tag.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultTagChoice", FieldType.TAG, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TagControl tagControl;
+
     
     /** Creates a new instance of GetTagChoicesCommand */
     public GetTagChoicesCommand() {
@@ -64,7 +68,6 @@ public class GetTagChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var tagControl = Session.getModelController(TagControl.class);
         var result = TagResultFactory.getGetTagChoicesResult();
         var tagScopeName = form.getTagScopeName();
         var tagScope = tagControl.getTagScopeByName(tagScopeName);

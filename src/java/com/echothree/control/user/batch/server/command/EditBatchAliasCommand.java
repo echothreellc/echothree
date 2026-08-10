@@ -35,9 +35,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditBatchAliasCommand
@@ -51,12 +51,16 @@ public class EditBatchAliasCommand
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    BatchControl batchControl;
+
     
     /** Creates a new instance of EditBatchAliasCommand */
     public EditBatchAliasCommand() {
@@ -87,7 +91,6 @@ public class EditBatchAliasCommand
     
     @Override
     public BatchAlias getEntity(EditBatchAliasResult result) {
-        var batchControl = Session.getModelController(BatchControl.class);
         BatchAlias batchAlias = null;
         var batchTypeName = spec.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
@@ -133,8 +136,6 @@ public class EditBatchAliasCommand
 
     @Override
     public void fillInResult(EditBatchAliasResult result, BatchAlias batchAlias) {
-        var batchControl = Session.getModelController(BatchControl.class);
-
         result.setBatchAlias(batchControl.getBatchAliasTransfer(getUserVisit(), batchAlias));
     }
 
@@ -145,7 +146,6 @@ public class EditBatchAliasCommand
 
     @Override
     public void canUpdate(BatchAlias batchAlias) {
-        var batchControl = Session.getModelController(BatchControl.class);
         var alias = edit.getAlias();
         var duplicateBatchAlias = batchControl.getBatchAliasByAlias(batchAliasType, alias);
 
@@ -159,7 +159,6 @@ public class EditBatchAliasCommand
 
     @Override
     public void doUpdate(BatchAlias batchAlias) {
-        var batchControl = Session.getModelController(BatchControl.class);
         var batchAliasValue = batchControl.getBatchAliasValue(batchAlias);
 
         batchAliasValue.setAlias(edit.getAlias());

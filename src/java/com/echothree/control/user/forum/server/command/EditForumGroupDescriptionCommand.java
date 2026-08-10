@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditForumGroupDescriptionCommand
@@ -47,12 +47,19 @@ public class EditForumGroupDescriptionCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditForumGroupDescriptionCommand */
     public EditForumGroupDescriptionCommand() {
@@ -71,13 +78,11 @@ public class EditForumGroupDescriptionCommand
 
     @Override
     public ForumGroupDescription getEntity(EditForumGroupDescriptionResult result) {
-        var forumControl = Session.getModelController(ForumControl.class);
         ForumGroupDescription forumGroupDescription = null;
         var forumGroupName = spec.getForumGroupName();
         var forumGroup = forumControl.getForumGroupByName(forumGroupName);
 
         if(forumGroup != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -108,8 +113,6 @@ public class EditForumGroupDescriptionCommand
 
     @Override
     public void fillInResult(EditForumGroupDescriptionResult result, ForumGroupDescription forumGroupDescription) {
-        var forumControl = Session.getModelController(ForumControl.class);
-
         result.setForumGroupDescription(forumControl.getForumGroupDescriptionTransfer(getUserVisit(), forumGroupDescription));
     }
 
@@ -120,7 +123,6 @@ public class EditForumGroupDescriptionCommand
 
     @Override
     public void doUpdate(ForumGroupDescription forumGroupDescription) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumGroupDescriptionValue = forumControl.getForumGroupDescriptionValue(forumGroupDescription);
 
         forumGroupDescriptionValue.setDescription(edit.getDescription());

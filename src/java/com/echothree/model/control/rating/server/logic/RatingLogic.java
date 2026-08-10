@@ -22,13 +22,16 @@ import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class RatingLogic
         extends BaseLogic {
+
+    @Inject
+    RatingControl ratingControl;
 
     protected RatingLogic() {
         super();
@@ -39,7 +42,6 @@ public class RatingLogic
     }
     
     public Rating getRatingByName(final ExecutionErrorAccumulator eea, final String ratingName) {
-        var ratingControl = Session.getModelController(RatingControl.class);
         var rating = ratingControl.getRatingByName(ratingName);
 
         if(rating == null) {

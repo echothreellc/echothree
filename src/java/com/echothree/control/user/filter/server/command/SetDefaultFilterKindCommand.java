@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.SetDefaultFilterKindForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultFilterKindCommand
@@ -44,14 +44,18 @@ public class SetDefaultFilterKindCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.Edit.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterKindControl filterKindControl;
+
     
     /** Creates a new instance of SetDefaultFilterKindCommand */
     public SetDefaultFilterKindCommand() {
@@ -60,13 +64,12 @@ public class SetDefaultFilterKindCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
-        var filterKindDetailValue = filterControl.getFilterKindDetailValueByNameForUpdate(filterKindName);
+        var filterKindDetailValue = filterKindControl.getFilterKindDetailValueByNameForUpdate(filterKindName);
         
         if(filterKindDetailValue != null) {
             filterKindDetailValue.setIsDefault(true);
-            filterControl.updateFilterKindFromValue(filterKindDetailValue, getPartyPK());
+            filterKindControl.updateFilterKindFromValue(filterKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }

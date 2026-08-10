@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentSourcesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -39,9 +39,6 @@ import javax.inject.Inject;
 public class GetFilterAdjustmentSourcesCommand
         extends BasePaginatedMultipleEntitiesCommand<FilterAdjustmentSource, GetFilterAdjustmentSourcesForm> {
 
-    @Inject
-    FilterControl filterControl;
-
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -56,6 +53,9 @@ public class GetFilterAdjustmentSourcesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
     /** Creates a new instance of GetFilterAdjustmentSourcesCommand */
     public GetFilterAdjustmentSourcesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -68,12 +68,12 @@ public class GetFilterAdjustmentSourcesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return filterControl.countFilterAdjustmentSources();
+        return filterAdjustmentControl.countFilterAdjustmentSources();
     }
 
     @Override
     protected Collection<FilterAdjustmentSource> getEntities() {
-        return filterControl.getFilterAdjustmentSources();
+        return filterAdjustmentControl.getFilterAdjustmentSources();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class GetFilterAdjustmentSourcesCommand
                 result.setFilterAdjustmentSourceCount(getTotalEntities());
             }
 
-            result.setFilterAdjustmentSources(filterControl.getFilterAdjustmentSourceTransfers(getUserVisit(), entities));
+            result.setFilterAdjustmentSources(filterAdjustmentControl.getFilterAdjustmentSourceTransfers(getUserVisit(), entities));
         }
 
         return result;

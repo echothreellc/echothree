@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentProcessorLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected PaymentProcessorLogic() {
         super();
@@ -52,7 +58,6 @@ public class PaymentProcessorLogic
     public PaymentProcessor createPaymentProcessor(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             PaymentProcessorType paymentProcessorType, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
         if(paymentProcessor == null) {
@@ -71,7 +76,6 @@ public class PaymentProcessorLogic
 
     public PaymentProcessor getPaymentProcessorByName(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final EntityPermission entityPermission) {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName, entityPermission);
 
         if(paymentProcessor == null) {
@@ -92,9 +96,8 @@ public class PaymentProcessorLogic
     public PaymentProcessor getPaymentProcessorByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessor paymentProcessor = null;
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var paymentProcessorName = universalSpec.getPaymentProcessorName();
-        var parameterCount = (paymentProcessorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentProcessorName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         if(parameterCount == 0) {
             if(allowDefault) {
@@ -108,10 +111,10 @@ public class PaymentProcessorLogic
             }
         } else if(parameterCount == 1) {
             if(paymentProcessorName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessor.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     paymentProcessor = paymentProcessorControl.getPaymentProcessorByEntityInstance(entityInstance, entityPermission);
                 }
             } else {
@@ -136,8 +139,6 @@ public class PaymentProcessorLogic
 
     public void deletePaymentProcessor(final ExecutionErrorAccumulator eea, final PaymentProcessor paymentProcessor,
             final BasePK deletedBy) {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-
         paymentProcessorControl.deletePaymentProcessor(paymentProcessor, deletedBy);
     }
 

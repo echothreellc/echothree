@@ -42,7 +42,7 @@ public class GetLotAliasCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -57,7 +57,7 @@ public class GetLotAliasCommand
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     LotAliasControl lotAliasControl;
 
@@ -71,7 +71,7 @@ public class GetLotAliasCommand
     public GetLotAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
         var result = InventoryResultFactory.getGetLotAliasResult();
@@ -102,5 +102,5 @@ public class GetLotAliasCommand
 
         return result;
     }
-    
+
 }

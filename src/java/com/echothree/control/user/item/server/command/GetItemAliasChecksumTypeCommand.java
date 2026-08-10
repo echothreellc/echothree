@@ -30,9 +30,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemAliasChecksumTypeCommand
@@ -49,6 +49,15 @@ public class GetItemAliasChecksumTypeCommand
         );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemAliasChecksumTypeLogic itemAliasChecksumTypeLogic;
+
     /** Creates a new instance of GetItemAliasChecksumTypeCommand */
     public GetItemAliasChecksumTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -56,21 +65,20 @@ public class GetItemAliasChecksumTypeCommand
 
     @Override
     protected ItemAliasChecksumType getEntity() {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemAliasChecksumType itemAliasChecksumType = null;
         var itemAliasChecksumTypeName = form.getItemAliasChecksumTypeName();
-        var parameterCount = (itemAliasChecksumTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (itemAliasChecksumTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(itemAliasChecksumTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasChecksumType.name());
 
                 if(!hasExecutionErrors()) {
                     itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByEntityInstance(entityInstance);
                 }
             } else {
-                itemAliasChecksumType = ItemAliasChecksumTypeLogic.getInstance().getItemAliasChecksumTypeByName(this, itemAliasChecksumTypeName);
+                itemAliasChecksumType = itemAliasChecksumTypeLogic.getItemAliasChecksumTypeByName(this, itemAliasChecksumTypeName);
             }
 
             if(itemAliasChecksumType != null) {
@@ -85,7 +93,6 @@ public class GetItemAliasChecksumTypeCommand
 
     @Override
     protected BaseResult getResult(ItemAliasChecksumType itemAliasChecksumType) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemAliasChecksumTypeResult();
 
         if(itemAliasChecksumType != null) {

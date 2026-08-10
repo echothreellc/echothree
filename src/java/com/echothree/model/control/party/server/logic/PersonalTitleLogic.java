@@ -27,13 +27,22 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PersonalTitleLogic
         extends BaseLogic {
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
 
     protected PersonalTitleLogic() {
         super();
@@ -45,7 +54,6 @@ public class PersonalTitleLogic
 
     private PersonalTitle getPersonalTitleById(final ExecutionErrorAccumulator eea, final String personalTitleId,
             final EntityPermission entityPermission) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var personalTitle = partyControl.convertPersonalTitleIdToEntity(personalTitleId, entityPermission);
 
         if(personalTitle == null) {
@@ -64,10 +72,6 @@ public class PersonalTitleLogic
     }
 
     public void deletePersonalTitle(final ExecutionErrorAccumulator eea, final PersonalTitle personalTitle, final PartyPK deletedBy) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-
         // Check if the PersonalTitle is in-use by any PartyPaymentMethodCreditCard, ContactPostalAddress or Person.
         if(partyPaymentMethodControl.countPartyPaymentMethodCreditCardsByPersonalTitle(personalTitle) != 0
                 || contactControl.countContactPostalAddressesByPersonalTitle(personalTitle) != 0
@@ -76,7 +80,7 @@ public class PersonalTitleLogic
                     personalTitle.getLastDetail().getPersonalTitlePK().getEntityId().toString());
         }
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             partyControl.deletePersonalTitle(personalTitle, deletedBy);
         }
     }
@@ -84,7 +88,7 @@ public class PersonalTitleLogic
     public void deletePersonalTitle(final ExecutionErrorAccumulator eea, final String personalTitleId, final PartyPK deletedBy) {
         var personalTitle = getPersonalTitleByIdForUpdate(eea, personalTitleId);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             deletePersonalTitle(eea, personalTitle, deletedBy);
         }
     }

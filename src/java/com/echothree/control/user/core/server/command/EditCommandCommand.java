@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditCommandForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandResult;
 import com.echothree.control.user.core.common.spec.CommandSpec;
-import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -31,9 +30,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommandCommand
@@ -46,14 +45,15 @@ public class EditCommandCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommandName", FieldType.COMMAND_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommandName", FieldType.COMMAND_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
     
     /** Creates a new instance of EditCommandCommand */
     public EditCommandCommand() {
@@ -74,7 +74,6 @@ public class EditCommandCommand
     
     @Override
     public Command getEntity(EditCommandResult result) {
-        var commandControl = Session.getModelController(CommandControl.class);
         Command command = null;
         var componentVendorName = spec.getComponentVendorName();
         
@@ -106,14 +105,11 @@ public class EditCommandCommand
 
     @Override
     public void fillInResult(EditCommandResult result, Command command) {
-        var commandControl = Session.getModelController(CommandControl.class);
-
         result.setCommand(commandControl.getCommandTransfer(getUserVisit(), command));
     }
 
     @Override
     public void doLock(CommandEdit edit, Command command) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var commandDescription = commandControl.getCommandDescription(command, getPreferredLanguage());
         var commandDetail = command.getLastDetail();
 
@@ -127,7 +123,6 @@ public class EditCommandCommand
 
     @Override
     public void canUpdate(Command command) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var commandName = edit.getCommandName();
         var duplicateCommand = commandControl.getCommandByName(componentVendor, commandName);
 
@@ -138,7 +133,6 @@ public class EditCommandCommand
 
     @Override
     public void doUpdate(Command command) {
-        var commandControl = Session.getModelController(CommandControl.class);
         var partyPK = getPartyPK();
         var commandDetailValue = commandControl.getCommandDetailValueForUpdate(command);
         var commandDescription = commandControl.getCommandDescriptionForUpdate(command, getPreferredLanguage());

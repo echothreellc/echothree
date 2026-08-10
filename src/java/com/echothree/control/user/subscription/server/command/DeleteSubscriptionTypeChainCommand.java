@@ -17,7 +17,7 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.DeleteSubscriptionTypeChainForm;
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteSubscriptionTypeChainCommand
@@ -57,6 +57,13 @@ public class DeleteSubscriptionTypeChainCommand
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of DeleteSubscriptionTypeChainCommand */
     public DeleteSubscriptionTypeChainCommand() {
@@ -65,7 +72,6 @@ public class DeleteSubscriptionTypeChainCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -74,8 +80,7 @@ public class DeleteSubscriptionTypeChainCommand
             var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
-                var chainControl = Session.getModelController(ChainControl.class);
-                var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_SUBSCRIPTION);
+                var chainKind = chainControl.getChainKindByName(ChainKinds.SUBSCRIPTION.name());
                 var chainTypeName = form.getChainTypeName();
                 var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
                 

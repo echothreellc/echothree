@@ -31,13 +31,22 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemPurchasingCategoryLogic
         extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ItemPurchasingCategoryLogic() {
         super();
@@ -49,7 +58,6 @@ public class ItemPurchasingCategoryLogic
 
     public ItemPurchasingCategory getItemPurchasingCategoryByName(final ExecutionErrorAccumulator eea, final String itemPurchasingCategoryName,
             final EntityPermission entityPermission) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName, entityPermission);
 
         if(itemPurchasingCategory == null) {
@@ -70,9 +78,8 @@ public class ItemPurchasingCategoryLogic
     public ItemPurchasingCategory getItemPurchasingCategoryByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ItemPurchasingCategoryUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemPurchasingCategory itemPurchasingCategory = null;
-        var vendorControl = Session.getModelController(VendorControl.class);
         var itemPurchasingCategoryName = universalSpec.getItemPurchasingCategoryName();
-        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -88,10 +95,10 @@ public class ItemPurchasingCategoryLogic
             }
             case 1 -> {
                 if(itemPurchasingCategoryName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemPurchasingCategory.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -126,17 +133,12 @@ public class ItemPurchasingCategoryLogic
     }
 
     public void checkDeleteItemPurchasingCategory(final ExecutionErrorAccumulator ema, final ItemPurchasingCategory itemPurchasingCategory) {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        var itemControl = Session.getModelController(ItemControl.class);
-        
         if(countItemsByItemPurchasingCategoryChildren(vendorControl, itemControl, itemPurchasingCategory) != 0) {
             ema.addExecutionError(ExecutionErrors.CannotDeleteItemPurchasingCategoryInUse.name(), itemPurchasingCategory.getLastDetail().getItemPurchasingCategoryName());
         }
     }
 
     public void deleteItemPurchasingCategory(final ItemPurchasingCategory itemPurchasingCategory, final BasePK deletedBy) {
-        var vendorControl = Session.getModelController(VendorControl.class);
-
         vendorControl.deleteItemPurchasingCategory(itemPurchasingCategory, deletedBy);
     }
 

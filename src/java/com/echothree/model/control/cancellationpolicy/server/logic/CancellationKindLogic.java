@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CancellationKindLogic
         extends BaseLogic {
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected CancellationKindLogic() {
         super();
@@ -52,7 +58,7 @@ public class CancellationKindLogic
     public CancellationKind createCancellationKind(final ExecutionErrorAccumulator eea, final String cancellationKindName,
             final SequenceType cancellationSequenceType, final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description, final BasePK createdBy) {
-        var cancellationControl = Session.getModelController(CancellationPolicyControl.class);
+        var cancellationControl = cancellationPolicyControl;
         var cancellationKind = cancellationControl.getCancellationKindByName(cancellationKindName);
 
         if(cancellationKind == null) {
@@ -71,7 +77,7 @@ public class CancellationKindLogic
 
     public CancellationKind getCancellationKindByName(final ExecutionErrorAccumulator eea, final String cancellationKindName,
             final EntityPermission entityPermission) {
-        var cancellationControl = Session.getModelController(CancellationPolicyControl.class);
+        var cancellationControl = cancellationPolicyControl;
         var cancellationKind = cancellationControl.getCancellationKindByName(cancellationKindName, entityPermission);
 
         if(cancellationKind == null) {
@@ -92,9 +98,9 @@ public class CancellationKindLogic
     public CancellationKind getCancellationKindByUniversalSpec(final ExecutionErrorAccumulator eea,
             final CancellationKindUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         CancellationKind cancellationKind = null;
-        var cancellationControl = Session.getModelController(CancellationPolicyControl.class);
+        var cancellationControl = cancellationPolicyControl;
         var cancellationKindName = universalSpec.getCancellationKindName();
-        var parameterCount = (cancellationKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (cancellationKindName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,10 +116,10 @@ public class CancellationKindLogic
             }
             case 1 -> {
                 if(cancellationKindName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CancellationKind.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         cancellationKind = cancellationControl.getCancellationKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

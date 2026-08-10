@@ -35,6 +35,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityListItemDefaultCommand
@@ -63,6 +64,10 @@ public class EditEntityListItemDefaultCommand
                 new FieldDefinition("EntityListItemUuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of EditEntityListItemDefaultCommand */
     public EditEntityListItemDefaultCommand() {
@@ -72,7 +77,7 @@ public class EditEntityListItemDefaultCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityListItemDefaultResult();
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, spec);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
 
         if(!hasExecutionErrors()) {
             EntityListItemDefault entityListItemDefault = null;
@@ -103,7 +108,7 @@ public class EditEntityListItemDefaultCommand
                             entityAttribute.getLastDetail().getEntityAttributeName());
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
-                var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, edit);
+                var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, edit);
 
                 if(!hasExecutionErrors()) {
                     entityListItemDefault = coreControl.getEntityListItemDefaultForUpdate(entityAttribute);

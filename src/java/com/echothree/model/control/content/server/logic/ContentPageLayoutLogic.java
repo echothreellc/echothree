@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContentPageLayoutLogic
     extends BaseLogic {
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ContentPageLayoutLogic() {
         super();
@@ -51,7 +57,6 @@ public class ContentPageLayoutLogic
     public ContentPageLayout createContentPageLayout(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
 
         if(contentPageLayout == null) {
@@ -69,7 +74,6 @@ public class ContentPageLayoutLogic
 
     public ContentPageLayout getContentPageLayoutByName(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
             final EntityPermission entityPermission) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName, entityPermission);
 
         if(contentPageLayout == null) {
@@ -90,9 +94,8 @@ public class ContentPageLayoutLogic
     public ContentPageLayout getContentPageLayoutByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ContentPageLayoutUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ContentPageLayout contentPageLayout = null;
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageLayoutName = universalSpec.getContentPageLayoutName();
-        var parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contentPageLayoutName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,10 +111,10 @@ public class ContentPageLayoutLogic
             }
             case 1 -> {
                 if(contentPageLayoutName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentPageLayout.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         contentPageLayout = contentControl.getContentPageLayoutByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -137,8 +140,6 @@ public class ContentPageLayoutLogic
 
     public void deleteContentPageLayout(final ExecutionErrorAccumulator eea, final ContentPageLayout contentPageLayout,
             final BasePK deletedBy) {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         contentControl.deleteContentPageLayout(contentPageLayout, deletedBy);
     }
 }

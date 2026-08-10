@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentPageDescriptionCommand
@@ -55,20 +55,27 @@ public class EditContentPageDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPage.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditContentPageDescriptionCommand */
     public EditContentPageDescriptionCommand() {
@@ -87,7 +94,6 @@ public class EditContentPageDescriptionCommand
     
     @Override
     public ContentPageDescription getEntity(EditContentPageDescriptionResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageDescription contentPageDescription = null;
         var contentCollectionName = spec.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -101,7 +107,6 @@ public class EditContentPageDescriptionCommand
                 var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = spec.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
                     
@@ -140,8 +145,6 @@ public class EditContentPageDescriptionCommand
     
     @Override
     public void fillInResult(EditContentPageDescriptionResult result, ContentPageDescription contentPageDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentPageDescription(contentControl.getContentPageDescriptionTransfer(getUserVisit(), contentPageDescription));
     }
     
@@ -152,7 +155,6 @@ public class EditContentPageDescriptionCommand
     
     @Override
     public void doUpdate(ContentPageDescription contentPageDescription) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentPageDescriptionValue = contentControl.getContentPageDescriptionValue(contentPageDescription);
         contentPageDescriptionValue.setDescription(edit.getDescription());
 

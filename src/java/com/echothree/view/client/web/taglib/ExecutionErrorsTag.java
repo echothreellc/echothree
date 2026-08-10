@@ -98,7 +98,7 @@ public class ExecutionErrorsTag
      * Construct an iterator for the specified collection, and begin
      * looping through the body once per element.
      *
-     * @exception JspException if a JSP exception has occurred
+     * @throws JspException if a JSP exception has occurred
      */
     @Override
     public int doStartTag()
@@ -138,7 +138,7 @@ public class ExecutionErrorsTag
      * Make the next collection element available and loop, or
      * finish the iterations if there are no more elements.
      *
-     * @exception JspException if a JSP exception has occurred
+     * @throws JspException if a JSP exception has occurred
      */
     @Override
     public int doAfterBody()
@@ -162,7 +162,7 @@ public class ExecutionErrorsTag
     /**
      * Clean up after processing this enumeration.
      *
-     * @exception JspException if a JSP exception has occurred
+     * @throws JspException if a JSP exception has occurred
      */
     @Override
     public int doEndTag()

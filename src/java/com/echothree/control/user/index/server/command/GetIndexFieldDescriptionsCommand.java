@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetIndexFieldDescriptionsCommand
@@ -47,14 +47,18 @@ public class GetIndexFieldDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.IndexField.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IndexFieldName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    IndexControl indexControl;
+
     
     /** Creates a new instance of GetIndexFieldDescriptionsCommand */
     public GetIndexFieldDescriptionsCommand() {
@@ -63,7 +67,6 @@ public class GetIndexFieldDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = Session.getModelController(IndexControl.class);
         var result = IndexResultFactory.getGetIndexFieldDescriptionsResult();
         var indexTypeName = form.getIndexTypeName();
         var indexType = indexControl.getIndexTypeByName(indexTypeName);

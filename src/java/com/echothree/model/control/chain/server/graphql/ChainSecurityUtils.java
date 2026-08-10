@@ -16,11 +16,17 @@
 
 package com.echothree.model.control.chain.server.graphql;
 
+import com.echothree.control.user.chain.server.command.GetChainActionCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionSetCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionSetsCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionTypeCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionTypesCommand;
+import com.echothree.control.user.chain.server.command.GetChainActionsCommand;
 import com.echothree.control.user.chain.server.command.GetChainCommand;
+import com.echothree.control.user.chain.server.command.GetChainEntityRoleTypeCommand;
+import com.echothree.control.user.chain.server.command.GetChainEntityRoleTypesCommand;
+import com.echothree.control.user.chain.server.command.GetChainInstanceCommand;
+import com.echothree.control.user.chain.server.command.GetChainInstancesCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindsCommand;
 import com.echothree.control.user.chain.server.command.GetChainTypeCommand;
@@ -69,6 +75,30 @@ public interface ChainSecurityUtils {
 
     static boolean getHasChainActionTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainActionTypeCommand.class);
+    }
+
+    static boolean getHasChainActionsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainActionsCommand.class);
+    }
+
+    static boolean getHasChainActionAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainActionCommand.class);
+    }
+
+    static boolean getHasChainInstancesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainInstancesCommand.class);
+    }
+
+    static boolean getHasChainInstanceAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainInstanceCommand.class);
+    }
+
+    static boolean getHasChainEntityRoleTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainEntityRoleTypesCommand.class);
+    }
+
+    static boolean getHasChainEntityRoleTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetChainEntityRoleTypeCommand.class);
     }
 
 }

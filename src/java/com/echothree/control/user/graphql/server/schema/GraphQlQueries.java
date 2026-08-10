@@ -62,16 +62,46 @@ import com.echothree.control.user.cancellationpolicy.server.command.GetCancellat
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationPoliciesCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationPolicyCommand;
 import com.echothree.control.user.chain.common.ChainUtil;
+import com.echothree.control.user.chain.server.command.GetChainActionCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionSetCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionSetsCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionTypeCommand;
 import com.echothree.control.user.chain.server.command.GetChainActionTypesCommand;
+import com.echothree.control.user.chain.server.command.GetChainActionsCommand;
 import com.echothree.control.user.chain.server.command.GetChainCommand;
+import com.echothree.control.user.chain.server.command.GetChainEntityRoleTypeCommand;
+import com.echothree.control.user.chain.server.command.GetChainEntityRoleTypesCommand;
+import com.echothree.control.user.chain.server.command.GetChainInstanceCommand;
+import com.echothree.control.user.chain.server.command.GetChainInstancesCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindCommand;
 import com.echothree.control.user.chain.server.command.GetChainKindsCommand;
 import com.echothree.control.user.chain.server.command.GetChainTypeCommand;
 import com.echothree.control.user.chain.server.command.GetChainTypesCommand;
 import com.echothree.control.user.chain.server.command.GetChainsCommand;
+import com.echothree.control.user.contact.common.ContactUtil;
+import com.echothree.control.user.contact.server.command.GetContactMechanismPurposeCommand;
+import com.echothree.control.user.contact.server.command.GetContactMechanismPurposesCommand;
+import com.echothree.control.user.contactlist.common.ContactListUtil;
+import com.echothree.control.user.contactlist.server.command.GetContactListCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListContactMechanismPurposeCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListContactMechanismPurposesCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListFrequenciesCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListFrequencyCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListGroupCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListGroupsCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListTypeCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListTypesCommand;
+import com.echothree.control.user.contactlist.server.command.GetContactListsCommand;
+import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListCommand;
+import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListGroupCommand;
+import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListGroupsCommand;
+import com.echothree.control.user.contactlist.server.command.GetCustomerTypeContactListsCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyContactListCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyContactListsCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListGroupCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListGroupsCommand;
+import com.echothree.control.user.contactlist.server.command.GetPartyTypeContactListsCommand;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
@@ -208,8 +238,12 @@ import com.echothree.control.user.inventory.server.command.GetAllocationPrioriti
 import com.echothree.control.user.inventory.server.command.GetAllocationPriorityCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypesCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryBucketTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryBucketTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
@@ -514,11 +548,25 @@ import com.echothree.model.control.campaign.server.graphql.CampaignSourceObject;
 import com.echothree.model.control.campaign.server.graphql.CampaignTermObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
+import com.echothree.model.control.chain.server.graphql.ChainActionObject;
 import com.echothree.model.control.chain.server.graphql.ChainActionSetObject;
 import com.echothree.model.control.chain.server.graphql.ChainActionTypeObject;
+import com.echothree.model.control.chain.server.graphql.ChainEntityRoleTypeObject;
+import com.echothree.model.control.chain.server.graphql.ChainInstanceObject;
 import com.echothree.model.control.chain.server.graphql.ChainKindObject;
 import com.echothree.model.control.chain.server.graphql.ChainObject;
 import com.echothree.model.control.chain.server.graphql.ChainTypeObject;
+import com.echothree.model.control.contact.server.graphql.ContactMechanismPurposeObject;
+import com.echothree.model.control.contactlist.server.graphql.ContactListContactMechanismPurposeObject;
+import com.echothree.model.control.contactlist.server.graphql.ContactListFrequencyObject;
+import com.echothree.model.control.contactlist.server.graphql.ContactListGroupObject;
+import com.echothree.model.control.contactlist.server.graphql.ContactListObject;
+import com.echothree.model.control.contactlist.server.graphql.ContactListTypeObject;
+import com.echothree.model.control.contactlist.server.graphql.CustomerTypeContactListGroupObject;
+import com.echothree.model.control.contactlist.server.graphql.CustomerTypeContactListObject;
+import com.echothree.model.control.contactlist.server.graphql.PartyContactListObject;
+import com.echothree.model.control.contactlist.server.graphql.PartyTypeContactListGroupObject;
+import com.echothree.model.control.contactlist.server.graphql.PartyTypeContactListObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryItemObject;
@@ -586,7 +634,9 @@ import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUse
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentTypeObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryBucketTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryCostingMethodObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
@@ -775,16 +825,44 @@ import com.echothree.model.data.cancellationpolicy.common.CancellationKindConsta
 import com.echothree.model.data.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.chain.common.ChainActionConstants;
 import com.echothree.model.data.chain.common.ChainActionSetConstants;
 import com.echothree.model.data.chain.common.ChainActionTypeConstants;
 import com.echothree.model.data.chain.common.ChainConstants;
+import com.echothree.model.data.chain.common.ChainEntityRoleTypeConstants;
+import com.echothree.model.data.chain.common.ChainInstanceConstants;
 import com.echothree.model.data.chain.common.ChainKindConstants;
 import com.echothree.model.data.chain.common.ChainTypeConstants;
 import com.echothree.model.data.chain.server.entity.Chain;
+import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
+import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
+import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
+import com.echothree.model.data.contact.common.ContactMechanismPurposeConstants;
+import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
+import com.echothree.model.data.contactlist.common.ContactListConstants;
+import com.echothree.model.data.contactlist.common.ContactListContactMechanismPurposeConstants;
+import com.echothree.model.data.contactlist.common.ContactListFrequencyConstants;
+import com.echothree.model.data.contactlist.common.ContactListGroupConstants;
+import com.echothree.model.data.contactlist.common.ContactListTypeConstants;
+import com.echothree.model.data.contactlist.common.CustomerTypeContactListConstants;
+import com.echothree.model.data.contactlist.common.CustomerTypeContactListGroupConstants;
+import com.echothree.model.data.contactlist.common.PartyContactListConstants;
+import com.echothree.model.data.contactlist.common.PartyTypeContactListConstants;
+import com.echothree.model.data.contactlist.common.PartyTypeContactListGroupConstants;
+import com.echothree.model.data.contactlist.server.entity.ContactList;
+import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
+import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
+import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
+import com.echothree.model.data.contactlist.server.entity.ContactListType;
+import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactList;
+import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactListGroup;
+import com.echothree.model.data.contactlist.server.entity.PartyContactList;
+import com.echothree.model.data.contactlist.server.entity.PartyTypeContactList;
+import com.echothree.model.data.contactlist.server.entity.PartyTypeContactListGroup;
 import com.echothree.model.data.content.common.ContentCatalogConstants;
 import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.model.data.content.common.ContentCategoryConstants;
@@ -897,13 +975,17 @@ import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
 import com.echothree.model.data.inventory.common.InventoryAdjustmentTypeConstants;
+import com.echothree.model.data.inventory.common.InventoryBucketTypeConstants;
 import com.echothree.model.data.inventory.common.InventoryConditionConstants;
+import com.echothree.model.data.inventory.common.InventoryCostingMethodConstants;
 import com.echothree.model.data.inventory.common.InventoryLocationGroupConstants;
 import com.echothree.model.data.inventory.common.InventoryTransactionTypeConstants;
 import com.echothree.model.data.inventory.common.LotConstants;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
+import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
+import com.echothree.model.data.inventory.server.entity.InventoryCostingMethod;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -5459,6 +5541,112 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryAdjustmentTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryCostingMethod")
+    static InventoryCostingMethodObject inventoryCostingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryCostingMethodName") final String inventoryCostingMethodName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        InventoryCostingMethod inventoryCostingMethod;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryCostingMethodForm();
+
+            commandForm.setInventoryCostingMethodName(inventoryCostingMethodName);
+            commandForm.setUuid(id);
+
+            inventoryCostingMethod = CDI.current().select(GetInventoryCostingMethodCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryCostingMethod == null ? null : new InventoryCostingMethodObject(inventoryCostingMethod);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryCostingMethods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryCostingMethodObject> inventoryCostingMethods(final DataFetchingEnvironment env) {
+        CountingPaginatedData<InventoryCostingMethodObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryCostingMethodsForm();
+            var command = CDI.current().select(GetInventoryCostingMethodsCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryCostingMethodConstants.COMPONENT_VENDOR_NAME, InventoryCostingMethodConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryCostingMethods = entities.stream()
+                            .map(InventoryCostingMethodObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryCostingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryBucketType")
+    static InventoryBucketTypeObject inventoryBucketType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryBucketTypeName") final String inventoryBucketTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        InventoryBucketType inventoryBucketType;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryBucketTypeForm();
+
+            commandForm.setInventoryBucketTypeName(inventoryBucketTypeName);
+            commandForm.setUuid(id);
+
+            inventoryBucketType = CDI.current().select(GetInventoryBucketTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryBucketType == null ? null : new InventoryBucketTypeObject(inventoryBucketType);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryBucketTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryBucketTypeObject> inventoryBucketTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<InventoryBucketTypeObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryBucketTypesForm();
+            var command = CDI.current().select(GetInventoryBucketTypesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryBucketTypeConstants.COMPONENT_VENDOR_NAME, InventoryBucketTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryBucketTypes = entities.stream()
+                            .map(InventoryBucketTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryBucketTypes);
                 }
             }
         } catch (NamingException ex) {
@@ -13638,6 +13826,811 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, chainActionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("chainEntityTypeRole")
+    static ChainEntityRoleTypeObject chainEntityTypeRole(final DataFetchingEnvironment env,
+            @GraphQLName("chainKindName") final String chainKindName,
+            @GraphQLName("chainTypeName") final String chainTypeName,
+            @GraphQLName("chainEntityRoleTypeName") final String chainEntityRoleTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ChainEntityRoleType chainEntityRoleType;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainEntityRoleTypeForm();
+
+            commandForm.setChainKindName(chainKindName);
+            commandForm.setChainTypeName(chainTypeName);
+            commandForm.setChainEntityRoleTypeName(chainEntityRoleTypeName);
+            commandForm.setUuid(id);
+
+            chainEntityRoleType = CDI.current().select(GetChainEntityRoleTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return chainEntityRoleType == null ? null : new ChainEntityRoleTypeObject(chainEntityRoleType);
+    }
+
+    @GraphQLField
+    @GraphQLName("chainEntityTypeRoles")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ChainEntityRoleTypeObject> chainEntityTypeRoles(final DataFetchingEnvironment env,
+            @GraphQLName("chainKindName") @GraphQLNonNull final String chainKindName,
+            @GraphQLName("chainTypeName") @GraphQLNonNull final String chainTypeName) {
+        CountingPaginatedData<ChainEntityRoleTypeObject> data;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainEntityRoleTypesForm();
+            var command = CDI.current().select(GetChainEntityRoleTypesCommand.class).get();
+
+            commandForm.setChainKindName(chainKindName);
+            commandForm.setChainTypeName(chainTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ChainEntityRoleTypeConstants.COMPONENT_VENDOR_NAME, ChainEntityRoleTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var chainEntityTypeRoles = entities.stream()
+                            .map(ChainEntityRoleTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, chainEntityTypeRoles);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("chainAction")
+    static ChainActionObject chainAction(final DataFetchingEnvironment env,
+            @GraphQLName("chainKindName") final String chainKindName,
+            @GraphQLName("chainTypeName") final String chainTypeName,
+            @GraphQLName("chainName") final String chainName,
+            @GraphQLName("chainActionSetName") final String chainActionSetName,
+            @GraphQLName("chainActionName") final String chainActionName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ChainAction chainAction;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainActionForm();
+
+            commandForm.setChainKindName(chainKindName);
+            commandForm.setChainTypeName(chainTypeName);
+            commandForm.setChainName(chainName);
+            commandForm.setChainActionSetName(chainActionSetName);
+            commandForm.setChainActionName(chainActionName);
+            commandForm.setUuid(id);
+
+            chainAction = CDI.current().select(GetChainActionCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return chainAction == null ? null : new ChainActionObject(chainAction);
+    }
+
+    @GraphQLField
+    @GraphQLName("chainActions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ChainActionObject> chainActions(final DataFetchingEnvironment env,
+            @GraphQLName("chainKindName") @GraphQLNonNull final String chainKindName,
+            @GraphQLName("chainTypeName") @GraphQLNonNull final String chainTypeName,
+            @GraphQLName("chainName") @GraphQLNonNull final String chainName,
+            @GraphQLName("chainActionSetName") @GraphQLNonNull final String chainActionSetName) {
+        CountingPaginatedData<ChainActionObject> data;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainActionsForm();
+            var command = CDI.current().select(GetChainActionsCommand.class).get();
+
+            commandForm.setChainKindName(chainKindName);
+            commandForm.setChainTypeName(chainTypeName);
+            commandForm.setChainName(chainName);
+            commandForm.setChainActionSetName(chainActionSetName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ChainActionConstants.COMPONENT_VENDOR_NAME, ChainActionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var chainActions = entities.stream()
+                            .map(ChainActionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, chainActions);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("chainInstance")
+    static ChainInstanceObject chainInstance(final DataFetchingEnvironment env,
+            @GraphQLName("chainInstanceName") final String chainInstanceName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ChainInstance chainInstance;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainInstanceForm();
+
+            commandForm.setChainInstanceName(chainInstanceName);
+            commandForm.setUuid(id);
+
+            chainInstance = CDI.current().select(GetChainInstanceCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return chainInstance == null ? null : new ChainInstanceObject(chainInstance);
+    }
+
+    @GraphQLField
+    @GraphQLName("chainInstances")
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ChainInstanceObject> chainInstances(final DataFetchingEnvironment env,
+            @GraphQLName("chainKindName") final String chainKindName,
+            @GraphQLName("chainTypeName") final String chainTypeName,
+            @GraphQLName("chainName") final String chainName) {
+        CountingPaginatedData<ChainInstanceObject> data;
+
+        try {
+            var commandForm = ChainUtil.getHome().getGetChainInstancesForm();
+            var command = CDI.current().select(GetChainInstancesCommand.class).get();
+
+            commandForm.setChainKindName(chainKindName);
+            commandForm.setChainTypeName(chainTypeName);
+            commandForm.setChainName(chainName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ChainInstanceConstants.COMPONENT_VENDOR_NAME, ChainInstanceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var chainInstances = entities.stream()
+                            .map(ChainInstanceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, chainInstances);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+
+    @GraphQLField
+    @GraphQLName("contactListFrequency")
+    static ContactListFrequencyObject contactListFrequency(final DataFetchingEnvironment env,
+            @GraphQLName("contactListFrequencyName") final String contactListFrequencyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ContactListFrequency contactListFrequency;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListFrequencyForm();
+
+            commandForm.setContactListFrequencyName(contactListFrequencyName);
+            commandForm.setUuid(id);
+
+            contactListFrequency = CDI.current().select(GetContactListFrequencyCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contactListFrequency == null ? null : new ContactListFrequencyObject(contactListFrequency);
+    }
+
+    @GraphQLField
+    @GraphQLName("contactListFrequencies")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContactListFrequencyObject> contactListFrequencies(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContactListFrequencyObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListFrequenciesForm();
+            var command = CDI.current().select(GetContactListFrequenciesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContactListFrequencyConstants.COMPONENT_VENDOR_NAME, ContactListFrequencyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var contactListFrequencies = entities.stream()
+                            .map(ContactListFrequencyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contactListFrequencies);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("contactMechanismPurpose")
+    static ContactMechanismPurposeObject contactMechanismPurpose(final DataFetchingEnvironment env,
+            @GraphQLName("contactMechanismPurposeName") final String contactMechanismPurposeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ContactMechanismPurpose contactMechanismPurpose;
+
+        try {
+            var commandForm = ContactUtil.getHome().getGetContactMechanismPurposeForm();
+
+            commandForm.setContactMechanismPurposeName(contactMechanismPurposeName);
+            commandForm.setUuid(id);
+
+            contactMechanismPurpose = CDI.current().select(GetContactMechanismPurposeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contactMechanismPurpose == null ? null : new ContactMechanismPurposeObject(contactMechanismPurpose);
+    }
+
+    @GraphQLField
+    @GraphQLName("contactMechanismPurposes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContactMechanismPurposeObject> contactMechanismPurposes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContactMechanismPurposeObject> data;
+
+        try {
+            var commandForm = ContactUtil.getHome().getGetContactMechanismPurposesForm();
+            var command = CDI.current().select(GetContactMechanismPurposesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContactMechanismPurposeConstants.COMPONENT_VENDOR_NAME, ContactMechanismPurposeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var contactMechanismPurposes = entities.stream()
+                            .map(ContactMechanismPurposeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contactMechanismPurposes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("contactListGroup")
+    static ContactListGroupObject contactListGroup(final DataFetchingEnvironment env,
+            @GraphQLName("contactListGroupName") final String contactListGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ContactListGroup contactListGroup;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListGroupForm();
+
+            commandForm.setContactListGroupName(contactListGroupName);
+            commandForm.setUuid(id);
+
+            contactListGroup = CDI.current().select(GetContactListGroupCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contactListGroup == null ? null : new ContactListGroupObject(contactListGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("contactListGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContactListGroupObject> contactListGroups(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContactListGroupObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListGroupsForm();
+            var command = CDI.current().select(GetContactListGroupsCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContactListGroupConstants.COMPONENT_VENDOR_NAME, ContactListGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var contactListGroups = entities.stream()
+                            .map(ContactListGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contactListGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("customerTypeContactListGroup")
+    static CustomerTypeContactListGroupObject customerTypeContactListGroup(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("contactListGroupName") @GraphQLNonNull final String contactListGroupName) {
+        CustomerTypeContactListGroup customerTypeContactListGroup;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListGroupForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setContactListGroupName(contactListGroupName);
+
+            customerTypeContactListGroup = CDI.current().select(GetCustomerTypeContactListGroupCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return customerTypeContactListGroup == null ? null : new CustomerTypeContactListGroupObject(customerTypeContactListGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("customerTypeContactListGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<CustomerTypeContactListGroupObject> customerTypeContactListGroups(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") final String customerTypeName,
+            @GraphQLName("contactListGroupName") final String contactListGroupName) {
+        CountingPaginatedData<CustomerTypeContactListGroupObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListGroupsForm();
+            var command = CDI.current().select(GetCustomerTypeContactListGroupsCommand.class).get();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setContactListGroupName(contactListGroupName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CustomerTypeContactListGroupConstants.COMPONENT_VENDOR_NAME, CustomerTypeContactListGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var customerTypeContactListGroups = entities.stream()
+                            .map(CustomerTypeContactListGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, customerTypeContactListGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("partyTypeContactListGroup")
+    static PartyTypeContactListGroupObject partyTypeContactListGroup(final DataFetchingEnvironment env,
+            @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName,
+            @GraphQLName("contactListGroupName") @GraphQLNonNull final String contactListGroupName) {
+        PartyTypeContactListGroup partyTypeContactListGroup;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetPartyTypeContactListGroupForm();
+
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setContactListGroupName(contactListGroupName);
+
+            partyTypeContactListGroup = CDI.current().select(GetPartyTypeContactListGroupCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return partyTypeContactListGroup == null ? null : new PartyTypeContactListGroupObject(partyTypeContactListGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("partyTypeContactListGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PartyTypeContactListGroupObject> partyTypeContactListGroups(final DataFetchingEnvironment env,
+            @GraphQLName("partyTypeName") final String partyTypeName,
+            @GraphQLName("contactListGroupName") final String contactListGroupName) {
+        CountingPaginatedData<PartyTypeContactListGroupObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetPartyTypeContactListGroupsForm();
+            var command = CDI.current().select(GetPartyTypeContactListGroupsCommand.class).get();
+
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setContactListGroupName(contactListGroupName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyTypeContactListGroupConstants.COMPONENT_VENDOR_NAME, PartyTypeContactListGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var partyTypeContactListGroups = entities.stream()
+                            .map(PartyTypeContactListGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, partyTypeContactListGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("contactListType")
+    static ContactListTypeObject contactListType(final DataFetchingEnvironment env,
+            @GraphQLName("contactListTypeName") final String contactListTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ContactListType contactListType;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListTypeForm();
+
+            commandForm.setContactListTypeName(contactListTypeName);
+            commandForm.setUuid(id);
+
+            contactListType = CDI.current().select(GetContactListTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contactListType == null ? null : new ContactListTypeObject(contactListType);
+    }
+
+    @GraphQLField
+    @GraphQLName("contactListTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContactListTypeObject> contactListTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContactListTypeObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListTypesForm();
+            var command = CDI.current().select(GetContactListTypesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContactListTypeConstants.COMPONENT_VENDOR_NAME, ContactListTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var contactListTypes = entities.stream()
+                            .map(ContactListTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contactListTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("contactList")
+    static ContactListObject contactList(final DataFetchingEnvironment env,
+            @GraphQLName("contactListName") final String contactListName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ContactList contactList;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListForm();
+
+            commandForm.setContactListName(contactListName);
+            commandForm.setUuid(id);
+
+            contactList = CDI.current().select(GetContactListCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contactList == null ? null : new ContactListObject(contactList);
+    }
+
+    @GraphQLField
+    @GraphQLName("contactLists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContactListObject> contactLists(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ContactListObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListsForm();
+            var command = CDI.current().select(GetContactListsCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContactListConstants.COMPONENT_VENDOR_NAME, ContactListConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var contactLists = entities.stream()
+                            .map(ContactListObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contactLists);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("customerTypeContactList")
+    static CustomerTypeContactListObject customerTypeContactList(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("contactListName") @GraphQLNonNull final String contactListName) {
+        CustomerTypeContactList customerTypeContactList;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setContactListName(contactListName);
+
+            customerTypeContactList = CDI.current().select(GetCustomerTypeContactListCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return customerTypeContactList == null ? null : new CustomerTypeContactListObject(customerTypeContactList);
+    }
+
+    @GraphQLField
+    @GraphQLName("customerTypeContactLists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<CustomerTypeContactListObject> customerTypeContactLists(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") final String customerTypeName,
+            @GraphQLName("contactListName") final String contactListName) {
+        CountingPaginatedData<CustomerTypeContactListObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListsForm();
+            var command = CDI.current().select(GetCustomerTypeContactListsCommand.class).get();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setContactListName(contactListName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CustomerTypeContactListConstants.COMPONENT_VENDOR_NAME, CustomerTypeContactListConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var customerTypeContactLists = entities.stream()
+                            .map(CustomerTypeContactListObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, customerTypeContactLists);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("partyTypeContactList")
+    static PartyTypeContactListObject partyTypeContactList(final DataFetchingEnvironment env,
+            @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName,
+            @GraphQLName("contactListName") @GraphQLNonNull final String contactListName) {
+        PartyTypeContactList partyTypeContactList;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetPartyTypeContactListForm();
+
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setContactListName(contactListName);
+
+            partyTypeContactList = CDI.current().select(GetPartyTypeContactListCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return partyTypeContactList == null ? null : new PartyTypeContactListObject(partyTypeContactList);
+    }
+
+    @GraphQLField
+    @GraphQLName("partyTypeContactLists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PartyTypeContactListObject> partyTypeContactLists(final DataFetchingEnvironment env,
+            @GraphQLName("partyTypeName") final String partyTypeName,
+            @GraphQLName("contactListName") final String contactListName) {
+        CountingPaginatedData<PartyTypeContactListObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetPartyTypeContactListsForm();
+            var command = CDI.current().select(GetPartyTypeContactListsCommand.class).get();
+
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setContactListName(contactListName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyTypeContactListConstants.COMPONENT_VENDOR_NAME, PartyTypeContactListConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var partyTypeContactLists = entities.stream()
+                            .map(PartyTypeContactListObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, partyTypeContactLists);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("partyContactList")
+    static PartyContactListObject partyContactList(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("contactListName") final String contactListName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PartyContactList partyContactList;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetPartyContactListForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setContactListName(contactListName);
+            commandForm.setUuid(id);
+
+            partyContactList = CDI.current().select(GetPartyContactListCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return partyContactList == null ? null : new PartyContactListObject(partyContactList);
+    }
+
+    @GraphQLField
+    @GraphQLName("partyContactLists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PartyContactListObject> partyContactLists(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("contactListName") final String contactListName) {
+        CountingPaginatedData<PartyContactListObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetPartyContactListsForm();
+            var command = CDI.current().select(GetPartyContactListsCommand.class).get();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setContactListName(contactListName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyContactListConstants.COMPONENT_VENDOR_NAME, PartyContactListConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var partyContactLists = entities.stream()
+                            .map(PartyContactListObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, partyContactLists);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("contactListContactMechanismPurpose")
+    static ContactListContactMechanismPurposeObject contactListContactMechanismPurpose(final DataFetchingEnvironment env,
+            @GraphQLName("contactListName") final String contactListName,
+            @GraphQLName("contactMechanismPurposeName") final String contactMechanismPurposeName) {
+        ContactListContactMechanismPurpose contactListContactMechanismPurpose = null;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListContactMechanismPurposeForm();
+
+            commandForm.setContactListName(contactListName);
+            commandForm.setContactMechanismPurposeName(contactMechanismPurposeName);
+
+            contactListContactMechanismPurpose = CDI.current().select(GetContactListContactMechanismPurposeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return contactListContactMechanismPurpose == null ? null : new ContactListContactMechanismPurposeObject(contactListContactMechanismPurpose);
+    }
+
+    @GraphQLField
+    @GraphQLName("contactListContactMechanismPurposes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ContactListContactMechanismPurposeObject> contactListContactMechanismPurposes(final DataFetchingEnvironment env,
+            @GraphQLName("contactListName") final String contactListName) {
+        CountingPaginatedData<ContactListContactMechanismPurposeObject> data;
+
+        try {
+            var commandForm = ContactListUtil.getHome().getGetContactListContactMechanismPurposesForm();
+            var command = CDI.current().select(GetContactListContactMechanismPurposesCommand.class).get();
+
+            commandForm.setContactListName(contactListName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ContactListContactMechanismPurposeConstants.COMPONENT_VENDOR_NAME, ContactListContactMechanismPurposeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var contactListContactMechanismPurposes = entities.stream()
+                            .map(ContactListContactMechanismPurposeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, contactListContactMechanismPurposes);
                 }
             }
         } catch (NamingException ex) {

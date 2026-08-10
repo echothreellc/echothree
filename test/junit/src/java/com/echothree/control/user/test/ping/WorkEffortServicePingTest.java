@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
 import com.echothree.control.user.workeffort.common.WorkEffortService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class WorkEffortServicePingTest
-        extends TestCase {
+public class WorkEffortServicePingTest {
     private WorkEffortService workEffortService;
     
-    /** Creates a new instance of WorkEffortServiceTest */
-    public WorkEffortServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new WorkEffortServicePingTest("testPingWorkEffortService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             workEffortService = WorkEffortUtil.getHome();
             assertNotNull(workEffortService);
@@ -54,8 +37,8 @@ public class WorkEffortServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             workEffortService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class WorkEffortServicePingTest
         }
     }
     
+    @Test
     public void testPingWorkEffortService() {
-        setUp();
         try {
             workEffortService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

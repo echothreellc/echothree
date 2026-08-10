@@ -35,10 +35,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowsCommand
@@ -59,6 +59,16 @@ public class GetWorkflowsCommand
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SelectorKindLogic selectorKindLogic;
+
     
     /** Creates a new instance of GetWorkflowsCommand */
     public GetWorkflowsCommand() {
@@ -72,14 +82,12 @@ public class GetWorkflowsCommand
         var selectorKindName = form.getSelectorKindName();
 
         if(selectorKindName != null) {
-            selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(this, selectorKindName);
+            selectorKind = selectorKindLogic.getSelectorKindByName(this, selectorKindName);
         }
     }
 
     @Override
     protected Long getTotalEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return hasExecutionErrors() ? null :
                 selectorKind == null ?
                         workflowControl.countWorkflows() :
@@ -88,8 +96,6 @@ public class GetWorkflowsCommand
 
     @Override
     protected Collection<Workflow> getEntities() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-
         return hasExecutionErrors() ? null :
                 selectorKind == null ?
                         workflowControl.getWorkflows() :
@@ -101,12 +107,9 @@ public class GetWorkflowsCommand
         var result = WorkflowResultFactory.getGetWorkflowsResult();
 
         if(entities != null) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             if(selectorKind != null) {
-                var selectorControl = Session.getModelController(SelectorControl.class);
-
                 result.setSelectorKind(selectorControl.getSelectorKindTransfer(userVisit, selectorKind));
             }
 

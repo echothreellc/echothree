@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentMethodTypeChoicesCommand
@@ -45,14 +45,18 @@ public class GetPaymentMethodTypeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethodType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultPaymentMethodTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PaymentMethodTypeControl paymentMethodTypeControl;
+
     
     /** Creates a new instance of GetPaymentMethodTypeChoicesCommand */
     public GetPaymentMethodTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetPaymentMethodTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var result = PaymentResultFactory.getGetPaymentMethodTypeChoicesResult();
         var defaultPaymentMethodTypeChoice = form.getDefaultPaymentMethodTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

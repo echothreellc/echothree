@@ -26,6 +26,9 @@ public interface GetTrainingClassPagesResult
     
     TrainingClassSectionTransfer getTrainingClassSection();
     void setTrainingClassSection(TrainingClassSectionTransfer trainingClassSection);
+
+    Long getTrainingClassPageCount();
+    void setTrainingClassPageCount(Long trainingClassPageCount);
     
     List<TrainingClassPageTransfer> getTrainingClassPages();
     void setTrainingClassPages(List<TrainingClassPageTransfer> trainingClassPages);

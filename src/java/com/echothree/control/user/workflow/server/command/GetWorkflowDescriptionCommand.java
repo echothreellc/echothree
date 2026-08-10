@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkflowDescriptionCommand
@@ -47,15 +47,22 @@ public class GetWorkflowDescriptionCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.Description.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.Description.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     
     /** Creates a new instance of GetWorkflowDescriptionCommand */
     public GetWorkflowDescriptionCommand() {
@@ -64,13 +71,11 @@ public class GetWorkflowDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var result = WorkflowResultFactory.getGetWorkflowDescriptionResult();
         var workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

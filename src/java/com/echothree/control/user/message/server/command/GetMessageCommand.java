@@ -46,15 +46,16 @@ public class GetMessageCommand
                 new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
+    @Inject
+    MessageControl messageControl;
+
     @Inject
     ComponentVendorLogic componentVendorLogic;
 
     @Inject
     EntityTypeLogic entityTypeLogic;
 
-    @Inject
-    MessageControl messageControl;
 
     /** Creates a new instance of GetMessageCommand */
     public GetMessageCommand() {

@@ -65,7 +65,7 @@ public class ParamFilter
 
         private final Pattern pattern;
 
-        public ParamFilteredRequest(ServletRequest request, Pattern pattern) {
+        ParamFilteredRequest(ServletRequest request, Pattern pattern) {
             super((HttpServletRequest)request);
             this.pattern = pattern;
         }

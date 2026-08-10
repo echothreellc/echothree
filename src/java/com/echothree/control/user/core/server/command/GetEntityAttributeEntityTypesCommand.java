@@ -63,12 +63,13 @@ public class GetEntityAttributeEntityTypesCommand
                 new FieldDefinition("AllowedEntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
     EntityTypeLogic entityTypeLogic;
+
 
     /** Creates a new instance of GetEntityAttributeEntityTypesCommand */
     public GetEntityAttributeEntityTypesCommand() {

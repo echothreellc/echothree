@@ -38,10 +38,10 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchLeavesCommand
@@ -55,8 +55,8 @@ public class SearchLeavesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Leave.name(), SecurityRoles.Search.name())
-                        ))
-                ));
+                ))
+        ));
                 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -69,8 +69,23 @@ public class SearchLeavesCommand
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    CompanyLogic companyLogic;
+
+    @Inject
+    LeaveLogic leaveLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of SearchLeavesCommand */
     public SearchLeavesCommand() {
@@ -79,7 +94,6 @@ public class SearchLeavesCommand
     
     @Override
     protected BaseResult execute() {
-        var searchLogic = SearchLogic.getInstance();
         var result = SearchResultFactory.getSearchLeavesResult();
         var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.LEAVE.name());
 
@@ -89,21 +103,20 @@ public class SearchLeavesCommand
 
             if(!hasExecutionErrors()) {
                 var partyName = form.getPartyName();
-                var party = partyName == null ? null : PartyLogic.getInstance().getPartyByName(this, partyName);
+                var party = partyName == null ? null : partyLogic.getPartyByName(this, partyName);
 
                 if(!hasExecutionErrors()) {
-                    var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, form.getCompanyName(), null, null, false);
+                    var partyCompany = companyLogic.getPartyCompanyByName(this, form.getCompanyName(), null, null, false);
 
                     if(!hasExecutionErrors()) {
                         var leaveTypeName = form.getLeaveTypeName();
-                        var leaveType = leaveTypeName == null ? null : LeaveLogic.getInstance().getLeaveTypeByName(this, leaveTypeName);
+                        var leaveType = leaveTypeName == null ? null : leaveLogic.getLeaveTypeByName(this, leaveTypeName);
 
                         if(!hasExecutionErrors()) {
                             var leaveReasonName = form.getLeaveReasonName();
-                            var leaveReason = leaveReasonName == null ? null : LeaveLogic.getInstance().getLeaveReasonByName(this, leaveReasonName);
+                            var leaveReason = leaveReasonName == null ? null : leaveLogic.getLeaveReasonByName(this, leaveReasonName);
 
                             if(!hasExecutionErrors()) {
-                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                 var leaveStatusChoice = form.getLeaveStatusChoice();
                                 var leaveStatusWorkflowStep = leaveStatusChoice == null ? null
                                         : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(LeaveStatusConstants.Workflow_LEAVE_STATUS),

@@ -16,24 +16,38 @@
 
 package com.echothree.model.control.training.server.logic;
 
+import com.echothree.control.user.training.common.spec.TrainingClassUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.training.common.exception.CannotDeleteTrainingClassInUseException;
+import com.echothree.model.control.training.common.exception.DuplicateTrainingClassNameException;
+import com.echothree.model.control.training.common.exception.UnknownDefaultTrainingClassException;
 import com.echothree.model.control.training.common.exception.UnknownTrainingClassNameException;
 import com.echothree.model.control.training.server.control.TrainingControl;
+import com.echothree.model.data.core.server.entity.MimeType;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
-import com.echothree.model.data.training.server.entity.TrainingClassPage;
-import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
-import com.echothree.model.data.training.server.entity.TrainingClassSection;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TrainingClassLogic
         extends BaseLogic {
+
+    @Inject
+    private TrainingControl trainingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected TrainingClassLogic() {
         super();
@@ -42,129 +56,117 @@ public class TrainingClassLogic
     public static TrainingClassLogic getInstance() {
         return CDI.current().select(TrainingClassLogic.class).get();
     }
-    
-    private TrainingClass getTrainingClassByName(final ExecutionErrorAccumulator eea, final String trainingClassName, EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName, entityPermission);
+
+    public TrainingClass createTrainingClass(final ExecutionErrorAccumulator eea, final String trainingClassName,
+            final Long estimatedReadingTime, final Long readingTimeAllowed, final Long estimatedTestingTime,
+            final Long testingTimeAllowed, final Long requiredCompletionTime, final WorkEffortScope workEffortScope,
+            final Integer defaultPercentageToPass, final Integer overallQuestionCount, final Long testingValidityTime,
+            final Long expiredRetentionTime, final Boolean alwaysReassignOnExpiration, final Boolean isDefault,
+            final Integer sortOrder, final Language language, final String description,
+            final MimeType overviewMimeType, final String overview,
+            final MimeType introductionMimeType, final String introduction,
+            final BasePK createdBy) {
+        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass == null) {
-            handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
+            trainingClass = trainingControl.createTrainingClass(trainingClassName, estimatedReadingTime,
+                    readingTimeAllowed, estimatedTestingTime, testingTimeAllowed, requiredCompletionTime,
+                    workEffortScope, defaultPercentageToPass, overallQuestionCount, testingValidityTime,
+                    expiredRetentionTime, alwaysReassignOnExpiration, isDefault, sortOrder, createdBy);
+
+            if(description != null || overview != null || introduction != null) {
+                trainingControl.createTrainingClassTranslation(trainingClass, language, description,
+                        overviewMimeType, overview, introductionMimeType, introduction, createdBy);
+            }
+        } else {
+            handleExecutionError(DuplicateTrainingClassNameException.class, eea, ExecutionErrors.DuplicateTrainingClassName.name(), trainingClassName);
         }
 
         return trainingClass;
     }
-    
-    public TrainingClass getTrainingClassByName(final ExecutionErrorAccumulator eea, final String trainingClassName) {
-        return getTrainingClassByName(eea, trainingClassName, EntityPermission.READ_ONLY);
-    }
-    
-    public TrainingClass getTrainingClassByNameForUpdate(final ExecutionErrorAccumulator eea, final String trainingClassName) {
-        return getTrainingClassByName(eea, trainingClassName, EntityPermission.READ_WRITE);
-    }
-    
-    private TrainingClassSection getTrainingClassSectionByName(final ExecutionErrorAccumulator eea, final TrainingClass trainingClass,
-            final String trainingClassSectionName, EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName, entityPermission);
 
-        if(trainingClassSection == null) {
-            var trainingClassDetail = trainingClass.getLastDetail();
-            
-            handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassSectionName.name(),
-                    trainingClassDetail.getTrainingClassName(), trainingClassSectionName);
+    private TrainingClass getTrainingClassByName(final ExecutionErrorAccumulator eea, final String trainingClassName,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        TrainingClass trainingClass = null;
+
+        if(trainingClassName == null) {
+            if(allowDefault) {
+                trainingClass = trainingControl.getDefaultTrainingClass(entityPermission);
+
+                if(trainingClass == null) {
+                    handleExecutionError(UnknownDefaultTrainingClassException.class, eea, ExecutionErrors.UnknownDefaultTrainingClass.name());
+                }
+            } else {
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+            }
+        } else {
+            trainingClass = trainingControl.getTrainingClassByName(trainingClassName, entityPermission);
+
+            if(trainingClass == null) {
+                handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
+            }
         }
 
-        return trainingClassSection;
+        return trainingClass;
     }
-    
-    public TrainingClassSection getTrainingClassSectionByName(final ExecutionErrorAccumulator eea, final TrainingClass trainingClass,
-            final String trainingClassSectionName) {
-        return getTrainingClassSectionByName(eea, trainingClass, trainingClassSectionName, EntityPermission.READ_ONLY);
-    }
-    
-    public TrainingClassSection getTrainingClassSectionByNameForUpdate(final ExecutionErrorAccumulator eea, final TrainingClass trainingClass,
-            final String trainingClassSectionName) {
-        return getTrainingClassSectionByName(eea, trainingClass, trainingClassSectionName, EntityPermission.READ_WRITE);
-    }
-    
-    private TrainingClassPage getTrainingClassPageByName(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
-            final String trainingClassPageName, EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName, entityPermission);
 
-        if(trainingClassPage == null) {
-            var trainingClassSectionDetail = trainingClassSection.getLastDetail();
-            var trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
-            
-            handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassPageName.name(),
-                    trainingClassDetail.getTrainingClassName(), trainingClassSectionDetail.getTrainingClassSectionName(), trainingClassPageName);
+    public TrainingClass getTrainingClassByName(final ExecutionErrorAccumulator eea, final String trainingClassName,
+            final boolean allowDefault) {
+        return getTrainingClassByName(eea, trainingClassName, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public TrainingClass getTrainingClassByNameForUpdate(final ExecutionErrorAccumulator eea, final String trainingClassName,
+            final boolean allowDefault) {
+        return getTrainingClassByName(eea, trainingClassName, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public TrainingClass getTrainingClassByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final TrainingClassUniversalSpec universalSpec, final boolean allowDefault, final EntityPermission entityPermission) {
+        TrainingClass trainingClass = null;
+        var trainingClassName = universalSpec.getTrainingClassName();
+        var parameterCount = (trainingClassName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 0 -> trainingClass = getTrainingClassByName(eea, null, allowDefault, entityPermission);
+            case 1 -> {
+                if(trainingClassName == null) {
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.TrainingClass.name());
+
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        trainingClass = trainingControl.getTrainingClassByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    trainingClass = getTrainingClassByName(eea, trainingClassName, false, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
-        return trainingClassPage;
+        return trainingClass;
     }
-    
-    public TrainingClassPage getTrainingClassPageByName(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
-            final String trainingClassPageName) {
-        return getTrainingClassPageByName(eea, trainingClassSection, trainingClassPageName, EntityPermission.READ_ONLY);
-    }
-    
-    public TrainingClassPage getTrainingClassPageByNameForUpdate(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
-            final String trainingClassPageName) {
-        return getTrainingClassPageByName(eea, trainingClassSection, trainingClassPageName, EntityPermission.READ_WRITE);
-    }
-    
-    private TrainingClassQuestion getTrainingClassQuestionByName(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
-            final String trainingClassQuestionName, EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName, entityPermission);
 
-        if(trainingClassQuestion == null) {
-            var trainingClassSectionDetail = trainingClassSection.getLastDetail();
-            var trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
-            
-            handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassQuestionName.name(),
-                    trainingClassDetail.getTrainingClassName(), trainingClassSectionDetail.getTrainingClassSectionName(), trainingClassQuestionName);
+    public TrainingClass getTrainingClassByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final TrainingClassUniversalSpec universalSpec, final boolean allowDefault) {
+        return getTrainingClassByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public TrainingClass getTrainingClassByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final TrainingClassUniversalSpec universalSpec, final boolean allowDefault) {
+        return getTrainingClassByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteTrainingClass(final ExecutionErrorAccumulator eea, final TrainingClass trainingClass,
+            final BasePK deletedBy) {
+        var trainingClassSectionCount = trainingControl.countTrainingClassSectionsByTrainingClass(trainingClass);
+
+        if(trainingClassSectionCount == 0) {
+            trainingControl.deleteTrainingClass(trainingClass, deletedBy);
+        } else {
+            handleExecutionError(CannotDeleteTrainingClassInUseException.class, eea, ExecutionErrors.CannotDeleteTrainingClassInUse.name(),
+                    trainingClass.getLastDetail().getTrainingClassName());
         }
-
-        return trainingClassQuestion;
-    }
-    
-    public TrainingClassQuestion getTrainingClassQuestionByName(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
-            final String trainingClassQuestionName) {
-        return getTrainingClassQuestionByName(eea, trainingClassSection, trainingClassQuestionName, EntityPermission.READ_ONLY);
-    }
-    
-    public TrainingClassQuestion getTrainingClassQuestionByNameForUpdate(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
-            final String trainingClassQuestionName) {
-        return getTrainingClassQuestionByName(eea, trainingClassSection, trainingClassQuestionName, EntityPermission.READ_WRITE);
-    }
-    
-    private TrainingClassAnswer getTrainingClassAnswerByName(final ExecutionErrorAccumulator eea, final TrainingClassQuestion trainingClassQuestion,
-            final String trainingClassAnswerName, EntityPermission entityPermission) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-        var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName, entityPermission);
-
-        if(trainingClassAnswer == null) {
-            var trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
-            var trainingClassSectionDetail = trainingClassQuestionDetail.getTrainingClassSection().getLastDetail();
-            var trainingClassDetail = trainingClassSectionDetail.getTrainingClass().getLastDetail();
-            
-            handleExecutionError(UnknownTrainingClassNameException.class, eea, ExecutionErrors.UnknownTrainingClassAnswerName.name(),
-                    trainingClassDetail.getTrainingClassName(), trainingClassSectionDetail.getTrainingClassSectionName(),
-                    trainingClassQuestionDetail.getTrainingClassQuestionName(), trainingClassAnswerName);
-        }
-
-        return trainingClassAnswer;
-    }
-    
-    public TrainingClassAnswer getTrainingClassAnswerByName(final ExecutionErrorAccumulator eea, final TrainingClassQuestion trainingClassQuestion,
-            final String trainingClassAnswerName) {
-        return getTrainingClassAnswerByName(eea, trainingClassQuestion, trainingClassAnswerName, EntityPermission.READ_ONLY);
-    }
-    
-    public TrainingClassAnswer getTrainingClassAnswerByNameForUpdate(final ExecutionErrorAccumulator eea, final TrainingClassQuestion trainingClassQuestion,
-            final String trainingClassAnswerName) {
-        return getTrainingClassAnswerByName(eea, trainingClassQuestion, trainingClassAnswerName, EntityPermission.READ_WRITE);
     }
     
 }

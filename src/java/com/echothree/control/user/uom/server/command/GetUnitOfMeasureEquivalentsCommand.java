@@ -43,12 +43,13 @@ public class GetUnitOfMeasureEquivalentsCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     UomControl uomControl;
 
     @Inject
     UnitOfMeasureKindLogic unitOfMeasureKindLogic;
+
 
     /** Creates a new instance of GetUnitOfMeasureEquivalentsCommand */
     public GetUnitOfMeasureEquivalentsCommand() {

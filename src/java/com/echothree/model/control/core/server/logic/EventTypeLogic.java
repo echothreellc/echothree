@@ -70,7 +70,7 @@ public class EventTypeLogic
                     var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EventType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         eventType = eventControl.getEventTypeByEntityInstance(entityInstance);
                     }
                 } else {

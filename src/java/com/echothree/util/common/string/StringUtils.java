@@ -37,7 +37,7 @@ public class StringUtils {
         return StringUtilsHolder.instance;
     }
 
-    private Transliterator transliterator = Transliterator.getInstance("Any-Latin; Latin-ASCII; NFKD; [:Nonspacing Mark:] Remove; NFKC", Transliterator.FORWARD);
+    private final Transliterator transliterator = Transliterator.getInstance("Any-Latin; Latin-ASCII; NFKD; [:Nonspacing Mark:] Remove; NFKC", Transliterator.FORWARD);
 
     public String toAscii7(String text) {
         return transliterator.transliterate(text);
@@ -56,7 +56,7 @@ public class StringUtils {
         if(string != null) {
             result = string.trim();
 
-            if(result.length() == 0) {
+            if(result.isEmpty()) {
                 result = null;
             }
         }
@@ -72,7 +72,7 @@ public class StringUtils {
             return (s1 == null) ? -1 : 1;
         }
 
-        if (s1 == null && s2 == null) {
+        if (s1 == null) {
             return 0;
         }
 
@@ -87,20 +87,44 @@ public class StringUtils {
         return str == null ? null : str.length() <= len ? str : str.substring(str.length() - len);
     }
 
+    public String padLeftZeros(final String input, final int length) {
+        return pad(input, length, '0', true);
+    }
+
+    public String padLeftSpaces(final String input, final int length) {
+        return pad(input, length, ' ', true);
+    }
+
+    public String padRightSpaces(final String input, final int length) {
+        return pad(input, length, ' ', false);
+    }
+
+    private String pad(final String input, final int length, final char padChar, final boolean padLeft) {
+        var value = input == null ? "" : input;
+        var paddingLength = length - value.length();
+
+        if(paddingLength < 0) {
+            throw new IllegalArgumentException("input length may not be greater than length");
+        }
+
+        var padding = repeatingStringFromChar(padChar, paddingLength);
+        
+        return padLeft ? padding + value : value + padding;
+    }
+
     public String cleanStringToName(final String s) {
         var a = s.toCharArray();
         var l = a.length;
         var r = new StringBuilder(l);
-        
-        for(var i = 0; i < l; i++) {
-            var t = a[i];
-            
+
+        for(char c : a) {
+            var t = c;
+
             if(!Character.isLetterOrDigit(t) && t != '-' && t != '_') {
                 t = '_';
             }
-            
+
             r.append(t);
-            
         }
         
         return r.toString();
@@ -168,35 +192,35 @@ public class StringUtils {
     }
     
     public String upperCaseFirstCharacter(final String str) {
-        return str == null ? null : str.length() == 0 ? str : str.substring(0, 1).toUpperCase(Locale.getDefault()) + str.substring(1);
+        return str == null ? null : str.isEmpty() ? str : str.substring(0, 1).toUpperCase(Locale.getDefault()) + str.substring(1);
     }
 
     public String lowerCaseFirstCharacter(final String str) {
-        return str == null ? null : str.length() == 0 ? str : str.substring(0, 1).toLowerCase(Locale.getDefault()) + str.substring(1);
+        return str == null ? null : str.isEmpty() ? str : str.substring(0, 1).toLowerCase(Locale.getDefault()) + str.substring(1);
     }
 
     public String normalizeCase(final String str) {
-        return str == null ? null : str.length() == 0 ? str : str.substring(0, 1).toUpperCase(Locale.getDefault()) + str.substring(1).toLowerCase(Locale.getDefault());
+        return str == null ? null : str.isEmpty() ? str : str.substring(0, 1).toUpperCase(Locale.getDefault()) + str.substring(1).toLowerCase(Locale.getDefault());
     }
 
     // Similar to http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5003547
     public Iterable<Integer> codePoints(final String str) {
-        return () -> new Iterator<Integer>() {
+        return () -> new Iterator<>() {
             int nextIndex = 0;
-            int len = str.length();
-            
+            final int len = str.length();
+
             @Override
             public boolean hasNext() {
                 return nextIndex < len;
             }
-            
+
             @Override
             public Integer next() {
                 var result = str.codePointAt(nextIndex);
                 nextIndex += Character.charCount(result);
                 return result;
             }
-            
+
             @Override
             public void remove() {
                 throw new UnsupportedOperationException();
@@ -224,7 +248,7 @@ public class StringUtils {
 
         // Make sure there's enough String to mask anything at all
         if(len - unmasked > 0) {
-            char maskChars[] = new char[len - unmasked];
+            char[] maskChars = new char[len - unmasked];
 
             Arrays.fill(maskChars, mask);
 
@@ -237,7 +261,7 @@ public class StringUtils {
     }
 
     public String mask(final String value, final char mask) {
-        char maskChars[] = new char[value.length()];
+        char[] maskChars = new char[value.length()];
 
         Arrays.fill(maskChars, mask);
 
@@ -253,15 +277,15 @@ public class StringUtils {
     }
 
     public boolean isAllUpperCase(String str) {
-        return str == null ? false : str.equals(str.toUpperCase(Locale.getDefault()));
+        return str != null && str.equals(str.toUpperCase(Locale.getDefault()));
     }
 
     public boolean isAllLowerCase(String str) {
-        return str == null ? false : str.equals(str.toLowerCase(Locale.getDefault()));
+        return str != null && str.equals(str.toLowerCase(Locale.getDefault()));
     }
 
     public boolean isAllSameCase(String str) {
-        return str == null ? false : isAllUpperCase(str) || isAllLowerCase(str);
+        return str != null && (isAllUpperCase(str) || isAllLowerCase(str));
     }
 
 }

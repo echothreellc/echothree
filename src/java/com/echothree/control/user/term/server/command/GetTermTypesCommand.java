@@ -33,15 +33,16 @@ import javax.inject.Inject;
 public class GetTermTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<TermType, GetTermTypesForm> {
 
-    @Inject
-    TermControl termControl;
-
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of GetTermTypesCommand */
     public GetTermTypesCommand() {

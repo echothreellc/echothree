@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetColorsCommand
@@ -52,6 +52,10 @@ public class GetColorsCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ColorControl colorControl;
+
     
     /** Creates a new instance of GetColorsCommand */
     public GetColorsCommand() {
@@ -65,22 +69,17 @@ public class GetColorsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var colorControl = Session.getModelController(ColorControl.class);
-
         return colorControl.countColors();
     }
 
     @Override
     protected Collection<Color> getEntities() {
-        var colorControl = Session.getModelController(ColorControl.class);
-        
         return colorControl.getColors();
     }
     
     @Override
     protected BaseResult getResult(Collection<Color> entities) {
         var result = CoreResultFactory.getGetColorsResult();
-        var colorControl = Session.getModelController(ColorControl.class);
         var userVisit = getUserVisit();
         
         result.setColors(colorControl.getColorTransfers(userVisit, entities));

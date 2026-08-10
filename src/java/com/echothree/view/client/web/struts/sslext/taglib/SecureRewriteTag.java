@@ -92,7 +92,7 @@ public class SecureRewriteTag
     /**
      * Render the appropriately encoded URI.
      *
-     * @exception JspException if a JSP exception has occurred
+     * @throws JspException if a JSP exception has occurred
      */
     @Override
     public int doStartTag() throws JspException {
@@ -119,7 +119,7 @@ public class SecureRewriteTag
     /**
      * Ignore the end of this tag.
      *
-     * @exception JspException if a JSP exception has occurred
+     * @throws JspException if a JSP exception has occurred
      */
     @Override
     public int doEndTag() throws JspException {

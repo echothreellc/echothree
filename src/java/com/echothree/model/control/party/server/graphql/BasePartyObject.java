@@ -23,6 +23,9 @@ import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contact.server.graphql.PartyContactMechanismObject;
 import com.echothree.model.control.contact.server.graphql.PartyContactMechanismPurposeObject;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.contactlist.server.graphql.ContactListSecurityUtils;
+import com.echothree.model.control.contactlist.server.graphql.PartyContactListObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -37,6 +40,7 @@ import com.echothree.model.control.subscription.server.graphql.SubscriptionObjec
 import com.echothree.model.control.subscription.server.graphql.SubscriptionSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.contact.common.PartyContactMechanismConstants;
+import com.echothree.model.data.contactlist.common.PartyContactListConstants;
 import com.echothree.model.data.party.common.PartyAliasConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDetail;
@@ -220,6 +224,26 @@ public abstract class BasePartyObject
                 var subscriptions = entities.stream().map(SubscriptionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, subscriptions);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("party contact lists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyContactListObject> getPartyContactLists(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasPartyContactListsAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countPartyContactListsByParty(party);
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyContactListConstants.COMPONENT_VENDOR_NAME, PartyContactListConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getPartyContactListsByParty(party);
+                var partyContactLists = entities.stream().map(PartyContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, partyContactLists);
             }
         } else {
             return Connections.emptyConnection();

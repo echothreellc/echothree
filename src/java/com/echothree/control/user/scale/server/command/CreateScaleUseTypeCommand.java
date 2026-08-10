@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateScaleUseTypeCommand
@@ -40,8 +40,11 @@ public class CreateScaleUseTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ScaleControl scaleControl;
 
     /** Creates a new instance of CreateScaleUseTypeCommand */
     public CreateScaleUseTypeCommand() {
@@ -50,7 +53,6 @@ public class CreateScaleUseTypeCommand
     
    @Override
     protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
        var scaleUseTypeName = form.getScaleUseTypeName();
        var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         

@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.sales.common.form;
 
-import com.echothree.control.user.sales.common.spec.SalesOrderBatchSpec;
+import com.echothree.control.user.sales.common.spec.SalesOrderBatchUniversalSpec;
 
 public interface GetSalesOrderBatchForm
-        extends SalesOrderBatchSpec {
+        extends SalesOrderBatchUniversalSpec {
     
     // Nothing additional beyond SalesOrderBatchSpec
     

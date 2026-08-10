@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTypeCommand
@@ -58,6 +58,13 @@ public class GetPartyTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyTypeLogic partyTypeLogic;
+
     
     /** Creates a new instance of GetPartyTypeCommand */
     public GetPartyTypeCommand() {
@@ -66,7 +73,7 @@ public class GetPartyTypeCommand
 
     @Override
     protected PartyType getEntity() {
-        var partyType = PartyTypeLogic.getInstance().getPartyTypeByUniversalSpec(this, form, true);
+        var partyType = partyTypeLogic.getPartyTypeByUniversalSpec(this, form, true);
 
         if(partyType != null) {
             sendEvent(partyType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +84,6 @@ public class GetPartyTypeCommand
 
     @Override
     protected BaseResult getResult(PartyType partyType) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetPartyTypeResult();
 
         if(partyType != null) {

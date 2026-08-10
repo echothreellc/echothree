@@ -24,9 +24,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateRatingTypeListItemCommand
@@ -43,8 +43,12 @@ public class CreateRatingTypeListItemCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    RatingControl ratingControl;
+
     
     /** Creates a new instance of CreateRatingTypeListItemCommand */
     public CreateRatingTypeListItemCommand() {
@@ -61,7 +65,6 @@ public class CreateRatingTypeListItemCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
                 var ratingTypeName = form.getRatingTypeName();
                 var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 

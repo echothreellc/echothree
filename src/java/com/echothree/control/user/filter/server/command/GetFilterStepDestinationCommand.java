@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterStepDestinationForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.filter.server.logic.FilterLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,16 +60,16 @@ public class GetFilterStepDestinationCommand
         );
     }
 
+    @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterLogic filterLogic;
+
     /** Creates a new instance of GetFilterStepDestinationCommand */
     public GetFilterStepDestinationCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-
-    @Inject
-    FilterControl filterControl;
-
-    @Inject
-    FilterLogic filterLogic;
 
     @Override
     protected FilterStepDestination getEntity() {
@@ -81,14 +81,14 @@ public class GetFilterStepDestinationCommand
 
         if(!hasExecutionErrors()) {
             var fromFilterStepName = form.getFromFilterStepName();
-            var fromFilterStep = filterControl.getFilterStepByName(filter, fromFilterStepName);
+            var fromFilterStep = filterStepControl.getFilterStepByName(filter, fromFilterStepName);
 
             if(fromFilterStep != null) {
                 var toFilterStepName = form.getToFilterStepName();
-                var toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
+                var toFilterStep = filterStepControl.getFilterStepByName(filter, toFilterStepName);
 
                 if(toFilterStep != null) {
-                    filterStepDestination = filterControl.getFilterStepDestination(fromFilterStep, toFilterStep);
+                    filterStepDestination = filterStepControl.getFilterStepDestination(fromFilterStep, toFilterStep);
 
                     if(filterStepDestination == null) {
                         addExecutionError(ExecutionErrors.UnknownFilterStepDestination.name(),
@@ -113,7 +113,7 @@ public class GetFilterStepDestinationCommand
         var result = FilterResultFactory.getGetFilterStepDestinationResult();
 
         if(filterStepDestination != null) {
-            result.setFilterStepDestination(filterControl.getFilterStepDestinationTransfer(getUserVisit(), filterStepDestination));
+            result.setFilterStepDestination(filterStepControl.getFilterStepDestinationTransfer(getUserVisit(), filterStepDestination));
         }
 
         return result;

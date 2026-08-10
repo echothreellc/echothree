@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class WorkflowServicePingTest
-        extends TestCase {
+public class WorkflowServicePingTest {
     private WorkflowService workflowService;
     
-    /** Creates a new instance of WorkflowServiceTest */
-    public WorkflowServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new WorkflowServicePingTest("testPingWorkflowService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             workflowService = WorkflowUtil.getHome();
             assertNotNull(workflowService);
@@ -54,8 +37,8 @@ public class WorkflowServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             workflowService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class WorkflowServicePingTest
         }
     }
     
+    @Test
     public void testPingWorkflowService() {
-        setUp();
         try {
             workflowService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

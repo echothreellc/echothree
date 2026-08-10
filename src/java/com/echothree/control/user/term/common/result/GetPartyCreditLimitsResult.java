@@ -26,7 +26,10 @@ public interface GetPartyCreditLimitsResult
     
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
-    
+
+    Long getPartyCreditLimitCount();
+    void setPartyCreditLimitCount(Long partyCreditLimitCount);
+
     List<PartyCreditLimitTransfer> getPartyCreditLimits();
     void setPartyCreditLimits(List<PartyCreditLimitTransfer> partyCreditLimits);
     

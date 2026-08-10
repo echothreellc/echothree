@@ -25,7 +25,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.chain.common.ChainConstants;
+import com.echothree.model.data.chain.common.ChainActionConstants;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainActionSetDetail;
 import com.echothree.util.server.persistence.Session;
@@ -96,6 +96,26 @@ public class ChainActionSetObject
         var userControl = Session.getModelController(UserControl.class);
 
         return chainControl.getBestChainActionSetDescription(chainActionSet, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("chain actions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ChainActionObject> getChainActions(final DataFetchingEnvironment env) {
+        if(ChainSecurityUtils.getHasChainActionsAccess(env)) {
+            var chainControl = Session.getModelController(ChainControl.class);
+            var totalCount = chainControl.countChainActionsByChainActionSet(chainActionSet);
+
+            try(var objectLimiter = new ObjectLimiter(env, ChainActionConstants.COMPONENT_VENDOR_NAME, ChainActionConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = chainControl.getChainActionsByChainActionSet(chainActionSet);
+                var chainActions = entities.stream().map(ChainActionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, chainActions);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

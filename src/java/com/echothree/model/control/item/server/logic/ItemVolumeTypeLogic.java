@@ -43,10 +43,10 @@ public class ItemVolumeTypeLogic
     extends BaseLogic {
 
     @Inject
-    EntityInstanceLogic entityInstanceLogic;
+    ItemControl itemControl;
 
     @Inject
-    ItemControl itemControl;
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ItemVolumeTypeLogic() {
         super();
@@ -116,7 +116,7 @@ public class ItemVolumeTypeLogic
                     var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemVolumeType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         itemVolumeType = itemControl.getItemVolumeTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

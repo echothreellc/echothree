@@ -62,7 +62,7 @@ public class GetHarmonizedTariffScheduleCodeUsesCommand
                 new FieldDefinition("HarmonizedTariffScheduleCodeUseTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     GeoControl geoControl;
 
@@ -71,6 +71,7 @@ public class GetHarmonizedTariffScheduleCodeUsesCommand
 
     @Inject
     HarmonizedTariffScheduleCodeLogic harmonizedTariffScheduleCodeLogic;
+
 
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeUsesCommand */
     public GetHarmonizedTariffScheduleCodeUsesCommand() {

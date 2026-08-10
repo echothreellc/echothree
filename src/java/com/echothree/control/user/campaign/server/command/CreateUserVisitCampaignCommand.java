@@ -30,9 +30,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUserVisitCampaignCommand
@@ -47,8 +47,12 @@ public class CreateUserVisitCampaignCommand
                 new FieldDefinition("CampaignMediumValue", FieldType.STRING, false, null, null),
                 new FieldDefinition("CampaignTermValue", FieldType.STRING, false, null, null),
                 new FieldDefinition("CampaignContentValue", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    CampaignControl campaignControl;
+
     
     /** Creates a new instance of CreateCampaignCommand */
     public CreateUserVisitCampaignCommand() {
@@ -66,7 +70,6 @@ public class CreateUserVisitCampaignCommand
                 + (campaignTermValue == null ? 0 : 1) + (campaignContentValue == null ? 0 : 1);
 
         if(parameterCount > 0) {
-            var campaignControl = Session.getModelController(CampaignControl.class);
             Campaign campaign = null;
             CampaignSource campaignSource = null;
             CampaignMedium campaignMedium = null;

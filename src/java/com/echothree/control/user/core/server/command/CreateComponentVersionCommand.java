@@ -17,16 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateComponentVersionForm;
-import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateComponentVersionCommand
@@ -41,9 +40,10 @@ public class CreateComponentVersionCommand
                 new FieldDefinition("MajorRevision", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("MinorRevision", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("ComponentStageName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("BuildNumber", FieldType.SIGNED_INTEGER,  true, null, null)
-                );
+                new FieldDefinition("BuildNumber", FieldType.SIGNED_INTEGER, true, null, null)
+        );
     }
+
     
     /** Creates a new instance of CreateComponentVersionCommand */
     public CreateComponentVersionCommand() {
@@ -52,7 +52,6 @@ public class CreateComponentVersionCommand
     
     @Override
     protected BaseResult execute() {
-        var componentControl = Session.getModelController(ComponentControl.class);
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         

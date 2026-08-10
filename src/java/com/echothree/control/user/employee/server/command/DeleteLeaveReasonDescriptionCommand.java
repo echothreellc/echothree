@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteLeaveReasonDescriptionCommand
@@ -53,8 +53,14 @@ public class DeleteLeaveReasonDescriptionCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LeaveReasonName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of DeleteLeaveReasonDescriptionCommand */
     public DeleteLeaveReasonDescriptionCommand() {
@@ -63,12 +69,10 @@ public class DeleteLeaveReasonDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
        var leaveReasonName = form.getLeaveReasonName();
        var leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
         
         if(leaveReason != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

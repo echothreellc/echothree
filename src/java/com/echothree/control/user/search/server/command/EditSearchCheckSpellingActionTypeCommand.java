@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSearchCheckSpellingActionTypeCommand
@@ -53,20 +53,24 @@ public class EditSearchCheckSpellingActionTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchCheckSpellingActionType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchCheckSpellingActionTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchCheckSpellingActionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    SearchControl searchControl;
+
     
     /** Creates a new instance of EditSearchCheckSpellingActionTypeCommand */
     public EditSearchCheckSpellingActionTypeCommand() {
@@ -85,7 +89,6 @@ public class EditSearchCheckSpellingActionTypeCommand
 
     @Override
     public SearchCheckSpellingActionType getEntity(EditSearchCheckSpellingActionTypeResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
         SearchCheckSpellingActionType searchCheckSpellingActionType;
         var searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
 
@@ -109,14 +112,11 @@ public class EditSearchCheckSpellingActionTypeCommand
 
     @Override
     public void fillInResult(EditSearchCheckSpellingActionTypeResult result, SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         result.setSearchCheckSpellingActionType(searchControl.getSearchCheckSpellingActionTypeTransfer(getUserVisit(), searchCheckSpellingActionType));
     }
 
     @Override
     public void doLock(SearchCheckSpellingActionTypeEdit edit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getPreferredLanguage());
         var searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditSearchCheckSpellingActionTypeCommand
 
     @Override
     public void canUpdate(SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchCheckSpellingActionTypeName = edit.getSearchCheckSpellingActionTypeName();
         var duplicateSearchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
 
@@ -142,7 +141,6 @@ public class EditSearchCheckSpellingActionTypeCommand
 
     @Override
     public void doUpdate(SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
         var searchCheckSpellingActionTypeDetailValue = searchControl.getSearchCheckSpellingActionTypeDetailValueForUpdate(searchCheckSpellingActionType);
         var searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescriptionForUpdate(searchCheckSpellingActionType, getPreferredLanguage());

@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWarehouseTypesCommand
@@ -53,6 +53,9 @@ public class GetWarehouseTypesCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    WarehouseControl warehouseControl;
+
     /** Creates a new instance of GetWarehouseTypesCommand */
     public GetWarehouseTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,15 +68,11 @@ public class GetWarehouseTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-
         return warehouseControl.countWarehouseTypes();
     }
 
     @Override
     protected Collection<WarehouseType> getEntities() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-
         return warehouseControl.getWarehouseTypes();
     }
 
@@ -82,8 +81,6 @@ public class GetWarehouseTypesCommand
         var result = WarehouseResultFactory.getGetWarehouseTypesResult();
 
         if(entities != null) {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
-
             if(session.hasLimit(WarehouseTypeFactory.class)) {
                 result.setWarehouseTypeCount(getTotalEntities());
             }

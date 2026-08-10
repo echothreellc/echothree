@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAliasCommand
@@ -61,6 +61,12 @@ public class GetEntityAliasCommand
         );
     }
 
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityAliasTypeLogic entityAliasTypeLogic;
+
     /** Creates a new instance of DeleteEntityAliasCommand */
     public GetEntityAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -68,11 +74,11 @@ public class GetEntityAliasCommand
 
     @Override
     protected EntityAlias getEntity() {
-        var entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
+        var entityAliasType = entityAliasTypeLogic.getEntityAliasTypeByUniversalSpec(this, form);
         EntityAlias entityAlias = null;
 
         if(!hasExecutionErrors()) {
-            entityAlias = EntityAliasTypeLogic.getInstance().getEntityAliasByAlias(this, entityAliasType, form.getAlias());
+            entityAlias = entityAliasTypeLogic.getEntityAliasByAlias(this, entityAliasType, form.getAlias());
         }
 
         return entityAlias;
@@ -80,7 +86,6 @@ public class GetEntityAliasCommand
 
     @Override
     protected BaseResult getResult(EntityAlias entityAlias) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var result = CoreResultFactory.getGetEntityAliasResult();
 
         if(entityAlias != null) {

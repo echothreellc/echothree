@@ -44,12 +44,13 @@ public class GetItemWeightsCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ItemControl itemControl;
 
     @Inject
     ItemLogic itemLogic;
+
 
     /** Creates a new instance of GetItemWeightsCommand */
     public GetItemWeightsCommand() {

@@ -29,10 +29,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentSectionsCommand
@@ -49,8 +49,15 @@ public class GetContentSectionsCommand
                 new FieldDefinition("AssociateProgramName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociateName", FieldType.STRING, false, null, null),
                 new FieldDefinition("AssociatePartyContactMechanismName", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    AssociateReferralLogic associateReferralLogic;
+
     
     /** Creates a new instance of GetContentSectionsCommand */
     public GetContentSectionsCommand() {
@@ -67,8 +74,6 @@ public class GetContentSectionsCommand
         var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             if(contentWebAddressName != null) {
                 var contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
@@ -104,15 +109,13 @@ public class GetContentSectionsCommand
         }
 
         if(!hasExecutionErrors()) {
-            AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
+            associateReferralLogic.handleAssociateReferral(session, this, form, getUserVisitForUpdate(),
                     contentCollection.getPrimaryKey(), getPartyPK());
         }
     }
     
     @Override
     protected Long getTotalEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return hasExecutionErrors() ? null :
                 parentContentSection == null ?
                         contentControl.countContentSectionsByContentCollection(contentCollection) :
@@ -124,8 +127,6 @@ public class GetContentSectionsCommand
         Collection<ContentSection> contentSections = null;
 
         if(!hasExecutionErrors()) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             if(parentContentSection == null) {
                 contentSections = contentControl.getContentSections(contentCollection);
             } else {
@@ -141,7 +142,6 @@ public class GetContentSectionsCommand
         var result = ContentResultFactory.getGetContentSectionsResult();
         
         if(entities != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
             var userVisit = getUserVisit();
 
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));

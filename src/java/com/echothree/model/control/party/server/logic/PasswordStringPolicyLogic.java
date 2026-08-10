@@ -37,9 +37,19 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PasswordStringPolicyLogic {
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    UserControl userControl;
 
     protected PasswordStringPolicyLogic() {
         super();
@@ -60,8 +70,6 @@ public class PasswordStringPolicyLogic {
         var passwordHistory = policyDetail.getPasswordHistory();
         
         if(passwordHistory != null) {
-            var userControl = Session.getModelController(UserControl.class);
-            
             for(var userLoginPasswordString: userControl.getUserLoginPasswordStringHistory(ulp, passwordHistory)) {
                 var salt = userLoginPasswordString.getSalt();
                 
@@ -81,7 +89,6 @@ public class PasswordStringPolicyLogic {
             var currentPasswordLifetime = session.getStartTime() - ulpsv.getChangedTime();
             
             if(currentPasswordLifetime < minimumPasswordLifetime) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                 var fmtMinimumPasswordLifetime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit,
                         timeUnitOfMeasureKind, minimumPasswordLifetime);
@@ -201,7 +208,6 @@ public class PasswordStringPolicyLogic {
     
     public PartyTypePasswordStringPolicy checkStringPassword(final Session session, final UserVisit userVisit, final ExecutionErrorAccumulator ema,
             final PartyType partyType, final UserLoginPassword ulp, final UserLoginPasswordStringValue ulpsv, final String password) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var policy = partyControl.getPartyTypePasswordStringPolicy(partyType);
         
         if(policy != null) {

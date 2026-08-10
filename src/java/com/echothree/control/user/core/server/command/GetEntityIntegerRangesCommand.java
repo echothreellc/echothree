@@ -60,15 +60,16 @@ public class GetEntityIntegerRangesCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of GetEntityIntegerRangesCommand */
     public GetEntityIntegerRangesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Inject
-    EntityAttributeLogic entityAttributeLogic;
-
     private EntityAttribute entityAttribute;
 
     @Override

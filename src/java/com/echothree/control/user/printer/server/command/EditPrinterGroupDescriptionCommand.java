@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPrinterGroupDescriptionCommand
@@ -55,18 +55,24 @@ public class EditPrinterGroupDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PrinterGroup.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
 
     /** Creates a new instance of EditPrinterGroupDescriptionCommand */
     public EditPrinterGroupDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditPrinterGroupDescriptionCommand
 
     @Override
     public PrinterGroupDescription getEntity(EditPrinterGroupDescriptionResult result) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         PrinterGroupDescription printerGroupDescription = null;
         var printerGroupName = spec.getPrinterGroupName();
         var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(printerGroup != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditPrinterGroupDescriptionCommand
 
     @Override
     public void fillInResult(EditPrinterGroupDescriptionResult result, PrinterGroupDescription printerGroupDescription) {
-        var printerControl = Session.getModelController(PrinterControl.class);
-
         result.setPrinterGroupDescription(printerControl.getPrinterGroupDescriptionTransfer(getUserVisit(), printerGroupDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditPrinterGroupDescriptionCommand
 
     @Override
     public void doUpdate(PrinterGroupDescription printerGroupDescription) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerGroupDescriptionValue = printerControl.getPrinterGroupDescriptionValue(printerGroupDescription);
 
         printerGroupDescriptionValue.setDescription(edit.getDescription());

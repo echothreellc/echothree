@@ -37,17 +37,29 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkflowStepLogic
         extends BaseLogic {
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
 
     protected WorkflowStepLogic() {
         super();
@@ -60,7 +72,7 @@ public class WorkflowStepLogic
     public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,
             final Class<? extends BaseException>  unknownWorkflowStepException, final ExecutionErrors unknownWorkflowStepExecutionError,
             final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName) {
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
+        var workflow = workflowLogic.getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
                 eea, workflowName, EntityPermission.READ_ONLY);
         WorkflowStep workflowStep = null;
 
@@ -74,7 +86,6 @@ public class WorkflowStepLogic
 
     public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName, EntityPermission entityPermission) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName, entityPermission);
 
         if(workflowStep == null) {
@@ -113,7 +124,7 @@ public class WorkflowStepLogic
 
     public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName,
             final EntityPermission entityPermission) {
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+        var workflow = workflowLogic.getWorkflowByName(eea, workflowName);
         WorkflowStep workflowStep = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -134,23 +145,22 @@ public class WorkflowStepLogic
 
     public WorkflowStep getWorkflowStepByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowStepUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowName = universalSpec.getWorkflowName();
         var workflowStepName = universalSpec.getWorkflowStepName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(workflowName, workflowStepName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         WorkflowStep workflowStep = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
             Workflow workflow = null;
 
             if(workflowName != null) {
-                workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+                workflow = workflowLogic.getWorkflowByName(eea, workflowName);
             } else {
                 handleExecutionError(MissingRequiredWorkflowNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowName.name());
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(workflowStepName == null) {
                     if(allowDefault) {
                         workflowStep = workflowControl.getDefaultWorkflowStep(workflow, entityPermission);
@@ -166,10 +176,10 @@ public class WorkflowStepLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowStep.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 workflowStep = workflowControl.getWorkflowStepByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -216,7 +226,6 @@ public class WorkflowStepLogic
     
     public Set<WorkflowEntityStatus> isEntityInWorkflowSteps(final ExecutionErrorAccumulator eea, final String workflowName, final BasePK pk,
             EntityPermission entityPermission, String... workflowStepNames) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(pk);
         
         return isEntityInWorkflowSteps(eea, workflowName, entityInstance, entityPermission, workflowStepNames);
@@ -234,11 +243,10 @@ public class WorkflowStepLogic
     
     private Set<WorkflowEntityStatus> isEntityInWorkflowSteps(final ExecutionErrorAccumulator eea, final String workflowName, final EntityInstance entityInstance,
             final EntityPermission entityPermission, final String... workflowStepNames) {
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+        var workflow = workflowLogic.getWorkflowByName(eea, workflowName);
         Set<WorkflowEntityStatus> result = new HashSet<>();
         
         if(!hasExecutionErrors(eea)) {
-            var workflowControl = Session.getModelController(WorkflowControl.class);
             var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance, entityPermission);
             Set<String> possibleWorkflowStepNames = new HashSet<>(workflowStepNames.length);
             

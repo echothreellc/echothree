@@ -36,6 +36,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityDateDefaultCommand
@@ -63,6 +64,10 @@ public class EditEntityDateDefaultCommand
                 new FieldDefinition("DateAttribute", FieldType.DATE, true, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of EditEntityDateDefaultCommand */
     public EditEntityDateDefaultCommand() {
@@ -81,7 +86,7 @@ public class EditEntityDateDefaultCommand
 
     @Override
     public EntityDateDefault getEntity(EditEntityDateDefaultResult result) {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, spec);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
         EntityDateDefault entityDateDefault = null;
 
         if(!hasExecutionErrors()) {

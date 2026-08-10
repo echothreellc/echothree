@@ -17,7 +17,8 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterTypeDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteFilterTypeDescriptionCommand
@@ -47,15 +48,25 @@ public class DeleteFilterTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteFilterTypeDescriptionCommand */
     public DeleteFilterTypeDescriptionCommand() {
@@ -64,24 +75,22 @@ public class DeleteFilterTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var filterTypeDescription = filterControl.getFilterTypeDescriptionForUpdate(filterType, language);
+                    var filterTypeDescription = filterTypeControl.getFilterTypeDescriptionForUpdate(filterType, language);
                     
                     if(filterTypeDescription != null) {
-                        filterControl.deleteFilterTypeDescription(filterTypeDescription, getPartyPK());
+                        filterTypeControl.deleteFilterTypeDescription(filterTypeDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownFilterTypeDescription.name(), filterKindName, filterTypeName, languageIsoName);
                     }

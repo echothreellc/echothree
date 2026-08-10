@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetIndexTypeCommand
@@ -61,6 +61,13 @@ public class GetIndexTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of GetIndexTypeCommand */
     public GetIndexTypeCommand() {
@@ -71,14 +78,13 @@ public class GetIndexTypeCommand
     protected BaseResult execute() {
         var result = IndexResultFactory.getGetIndexTypeResult();
         var indexTypeName = form.getIndexTypeName();
-        var parameterCount = (indexTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (indexTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var indexControl = Session.getModelController(IndexControl.class);
             IndexType indexType = null;
 
             if(indexTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.IndexType.name());
                 
                 if(!hasExecutionErrors()) {

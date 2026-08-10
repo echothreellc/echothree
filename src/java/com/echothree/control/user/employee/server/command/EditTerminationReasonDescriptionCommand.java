@@ -36,10 +36,10 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTerminationReasonDescriptionCommand
@@ -60,12 +60,19 @@ public class EditTerminationReasonDescriptionCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditTerminationReasonDescriptionCommand */
     public EditTerminationReasonDescriptionCommand() {
@@ -74,13 +81,11 @@ public class EditTerminationReasonDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var result = EmployeeResultFactory.getEditTerminationReasonDescriptionResult();
         var terminationReasonName = spec.getTerminationReasonName();
         var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
         
         if(terminationReason != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

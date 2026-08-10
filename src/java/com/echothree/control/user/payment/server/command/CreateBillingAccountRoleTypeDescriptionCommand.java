@@ -28,9 +28,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateBillingAccountRoleTypeDescriptionCommand
@@ -42,14 +42,21 @@ public class CreateBillingAccountRoleTypeDescriptionCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                ));
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BillingAccountRoleTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    BillingControl billingControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateBillingAccountRoleTypeDescriptionCommand */
     public CreateBillingAccountRoleTypeDescriptionCommand() {
@@ -58,12 +65,10 @@ public class CreateBillingAccountRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var billingControl = Session.getModelController(BillingControl.class);
         var billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
         var billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         
         if(billingAccountRoleType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

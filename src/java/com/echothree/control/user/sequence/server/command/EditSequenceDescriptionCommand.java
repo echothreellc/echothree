@@ -39,9 +39,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSequenceDescriptionCommand
@@ -55,20 +55,26 @@ public class EditSequenceDescriptionCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Sequence.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Sequence.name(), SecurityRoles.Description.name())
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
 
     /** Creates a new instance of EditSequenceDescriptionCommand */
     public EditSequenceDescriptionCommand() {
@@ -89,7 +95,6 @@ public class EditSequenceDescriptionCommand
     
     @Override
     public SequenceDescription getEntity(EditSequenceDescriptionResult result) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceDescription sequenceDescription = null;
         var sequenceTypeName = spec.getSequenceTypeName();
         
@@ -100,7 +105,6 @@ public class EditSequenceDescriptionCommand
             var sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
 
             if(sequence != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -134,8 +138,6 @@ public class EditSequenceDescriptionCommand
 
     @Override
     public void fillInResult(EditSequenceDescriptionResult result, SequenceDescription sequenceDescription) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-
         result.setSequenceDescription(sequenceControl.getSequenceDescriptionTransfer(getUserVisit(), sequenceDescription));
     }
 
@@ -146,7 +148,6 @@ public class EditSequenceDescriptionCommand
 
     @Override
     public void doUpdate(SequenceDescription sequenceDescription) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceDescriptionValue = sequenceControl.getSequenceDescriptionValue(sequenceDescription);
         
         sequenceDescriptionValue.setDescription(edit.getDescription());

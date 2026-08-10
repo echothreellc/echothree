@@ -38,13 +38,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class VendorTypeLogic
         extends BaseLogic {
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected VendorTypeLogic() {
         super();
@@ -60,7 +66,6 @@ public class VendorTypeLogic
             final Boolean defaultAllowSubstitutions, final Boolean defaultAllowCombiningShipments, final Boolean defaultRequireReference,
             final Boolean defaultAllowReferenceDuplicates, final String defaultReferenceValidationPattern, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
 
         if(vendorType == null) {
@@ -82,7 +87,6 @@ public class VendorTypeLogic
 
     public VendorType getVendorTypeByName(final ExecutionErrorAccumulator eea, final String vendorTypeName,
             final EntityPermission entityPermission) {
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorType = vendorControl.getVendorTypeByName(vendorTypeName, entityPermission);
 
         if(vendorType == null) {
@@ -103,9 +107,8 @@ public class VendorTypeLogic
     public VendorType getVendorTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final VendorTypeUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
         VendorType vendorType = null;
-        var vendorControl = Session.getModelController(VendorControl.class);
         var vendorTypeName = universalSpec.getVendorTypeName();
-        var parameterCount = (vendorTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (vendorTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -121,10 +124,10 @@ public class VendorTypeLogic
             }
             case 1 -> {
                 if(vendorTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.VendorType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         vendorType = vendorControl.getVendorTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -150,14 +153,10 @@ public class VendorTypeLogic
 
     public void updateVendorTypeFromValue(final ExecutionErrorAccumulator eea, final VendorTypeDetailValue vendorTypeDetailValue,
             final BasePK updatedBy) {
-        var vendorControl = Session.getModelController(VendorControl.class);
-
         vendorControl.updateVendorTypeFromValue(vendorTypeDetailValue, updatedBy);
     }
 
     public void deleteVendorType(final ExecutionErrorAccumulator eea, final VendorType vendorType, final BasePK deletedBy) {
-        var vendorControl = Session.getModelController(VendorControl.class);
-
         vendorControl.deleteVendorType(vendorType, deletedBy);
     }
 

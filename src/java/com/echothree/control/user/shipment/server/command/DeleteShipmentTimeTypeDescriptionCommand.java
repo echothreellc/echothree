@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteShipmentTimeTypeDescriptionCommand
@@ -46,15 +46,22 @@ public class DeleteShipmentTimeTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ShipmentTimeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ShipmentControl shipmentControl;
+
     
     /** Creates a new instance of DeleteShipmentTimeTypeDescriptionCommand */
     public DeleteShipmentTimeTypeDescriptionCommand() {
@@ -63,7 +70,6 @@ public class DeleteShipmentTimeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
@@ -72,7 +78,6 @@ public class DeleteShipmentTimeTypeDescriptionCommand
             var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 

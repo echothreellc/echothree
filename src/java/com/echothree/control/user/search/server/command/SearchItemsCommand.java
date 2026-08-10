@@ -34,11 +34,11 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SearchItemsCommand
@@ -64,8 +64,26 @@ public class SearchItemsCommand
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null),
                 new FieldDefinition("RememberPreferences", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("SearchUseTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    SearchLogic searchLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
+    @Inject
+    WorkflowStepLogic workflowStepLogic;
 
     /** Creates a new instance of SearchItemsCommand */
     public SearchItemsCommand() {
@@ -80,7 +98,6 @@ public class SearchItemsCommand
         var parameterCount = (itemStatusChoice == null ? 0 : 1) + (itemStatusChoices == null ? 0 : 1);
         
         if(parameterCount < 2) {
-            var searchLogic = SearchLogic.getInstance();
             var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ITEM.name());
 
             if(!hasExecutionErrors()) {
@@ -89,10 +106,9 @@ public class SearchItemsCommand
 
                 if(!hasExecutionErrors()) {
                     var languageIsoName = form.getLanguageIsoName();
-                    var language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                    var language = languageIsoName == null ? null : languageLogic.getLanguageByName(this, languageIsoName);
 
                     if(!hasExecutionErrors()) {
-                        var searchControl = Session.getModelController(SearchControl.class);
                         var partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
                         var partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
                         boolean rememberPreferences = Boolean.valueOf(form.getRememberPreferences());
@@ -115,10 +131,9 @@ public class SearchItemsCommand
 
                                 if(!hasExecutionErrors()) {
                                     var searchUseTypeName = form.getSearchUseTypeName();
-                                    var searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
+                                    var searchUseType = searchUseTypeName == null ? null : searchLogic.getSearchUseTypeByName(this, searchUseTypeName);
 
                                     if(!hasExecutionErrors()) {
-                                        var itemLogic = ItemLogic.getInstance();
                                         var itemTypeName = form.getItemTypeName();
                                         var itemType = itemTypeName == null ? null : itemLogic.getItemTypeByName(this, itemTypeName);
 
@@ -131,11 +146,9 @@ public class SearchItemsCommand
                                                 List<WorkflowStep> itemStatusWorkflowSteps = null;
 
                                                 if(itemStatusChoice != null || itemStatusChoices != null) {
-                                                    var workflow = WorkflowLogic.getInstance().getWorkflowByName(this, ItemStatusConstants.Workflow_ITEM_STATUS);
+                                                    var workflow = workflowLogic.getWorkflowByName(this, ItemStatusConstants.Workflow_ITEM_STATUS);
 
                                                     if(!hasExecutionErrors()) {
-                                                        var workflowStepLogic = WorkflowStepLogic.getInstance();
-
                                                         if(itemStatusChoice != null) {
                                                             itemStatusWorkflowStep = workflowStepLogic.getWorkflowStepByName(this, workflow, itemStatusChoice);
                                                         } else {

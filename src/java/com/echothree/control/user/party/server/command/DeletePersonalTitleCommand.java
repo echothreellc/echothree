@@ -25,6 +25,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePersonalTitleCommand
@@ -35,8 +36,12 @@ public class DeletePersonalTitleCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PersonalTitleId", FieldType.ID, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PersonalTitleLogic personalTitleLogic;
+
     
     /** Creates a new instance of DeletePersonalTitleCommand */
     public DeletePersonalTitleCommand() {
@@ -47,7 +52,7 @@ public class DeletePersonalTitleCommand
     protected BaseResult execute() {
         var personalTitleId = form.getPersonalTitleId();
 
-        PersonalTitleLogic.getInstance().deletePersonalTitle(this, personalTitleId, getPartyPK());
+        personalTitleLogic.deletePersonalTitle(this, personalTitleId, getPartyPK());
 
         return null;
     }

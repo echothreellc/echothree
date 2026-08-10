@@ -31,6 +31,9 @@ public interface GetForumForumThreadsResult
     ForumThreadTransfer getForumThread();
     void setForumThread(ForumThreadTransfer forumThread);
     
+    Long getForumForumThreadCount();
+    void setForumForumThreadCount(Long forumForumThreadCount);
+
     List<ForumForumThreadTransfer> getForumForumThreads();
     void setForumForumThreads(List<ForumForumThreadTransfer> forumForumThreads);
     

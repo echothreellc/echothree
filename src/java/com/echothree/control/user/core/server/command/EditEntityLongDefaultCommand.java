@@ -36,6 +36,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityLongDefaultCommand
@@ -63,6 +64,10 @@ public class EditEntityLongDefaultCommand
                 new FieldDefinition("LongAttribute", FieldType.SIGNED_LONG, true, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of EditEntityLongDefaultCommand */
     public EditEntityLongDefaultCommand() {
@@ -81,7 +86,7 @@ public class EditEntityLongDefaultCommand
 
     @Override
     public EntityLongDefault getEntity(EditEntityLongDefaultResult result) {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this, spec);
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
         EntityLongDefault entityLongDefault = null;
 
         if(!hasExecutionErrors()) {

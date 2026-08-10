@@ -33,17 +33,17 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetAllocationPriorityCommand
         extends BaseSingleEntityCommand<AllocationPriority, GetAllocationPriorityForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -51,14 +51,20 @@ public class GetAllocationPriorityCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.AllocationPriority.name(), SecurityRoles.Review.name())
                 ))
         ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    AllocationPriorityLogic allocationPriorityLogic;
+
     /** Creates a new instance of GetAllocationPriorityCommand */
     public GetAllocationPriorityCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetAllocationPriorityCommand
 
     @Override
     protected AllocationPriority getEntity() {
-        var entity = AllocationPriorityLogic.getInstance().getAllocationPriorityByUniversalSpec(this, form, true);
+        var entity = allocationPriorityLogic.getAllocationPriorityByUniversalSpec(this, form, true);
 
         if(entity != null) {
             sendEvent(entity.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetAllocationPriorityCommand
 
     @Override
     protected BaseResult getResult(AllocationPriority entity) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var result = InventoryResultFactory.getGetAllocationPriorityResult();
 
         if(entity != null) {
@@ -86,5 +91,5 @@ public class GetAllocationPriorityCommand
 
         return result;
     }
-    
+
 }

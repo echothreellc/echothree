@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.picklist.common.PicklistUtil;
 import com.echothree.control.user.picklist.common.PicklistService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class PicklistServicePingTest
-        extends TestCase {
+public class PicklistServicePingTest {
     private PicklistService picklistService;
     
-    /** Creates a new instance of PicklistServiceTest */
-    public PicklistServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new PicklistServicePingTest("testPingPicklistService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             picklistService = PicklistUtil.getHome();
             assertNotNull(picklistService);
@@ -54,8 +37,8 @@ public class PicklistServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             picklistService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class PicklistServicePingTest
         }
     }
     
+    @Test
     public void testPingPicklistService() {
-        setUp();
         try {
             picklistService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

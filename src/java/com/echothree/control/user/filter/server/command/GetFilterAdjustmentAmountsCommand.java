@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentAmountsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,17 +60,18 @@ public class GetFilterAdjustmentAmountsCommand
                 new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
+
     /** Creates a new instance of GetFilterAdjustmentAmountsCommand */
     public GetFilterAdjustmentAmountsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    FilterControl filterControl;
-
-    @Inject
-    FilterAdjustmentLogic filterAdjustmentLogic;
 
     FilterAdjustment filterAdjustment;
 
@@ -90,12 +91,12 @@ public class GetFilterAdjustmentAmountsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : filterControl.countFilterAdjustmentAmountsByFilterAdjustment(filterAdjustment);
+        return hasExecutionErrors() ? null : filterAdjustmentControl.countFilterAdjustmentAmountsByFilterAdjustment(filterAdjustment);
     }
 
     @Override
     protected Collection<FilterAdjustmentAmount> getEntities() {
-        return hasExecutionErrors() ? null : filterControl.getFilterAdjustmentAmounts(filterAdjustment);
+        return hasExecutionErrors() ? null : filterAdjustmentControl.getFilterAdjustmentAmounts(filterAdjustment);
     }
 
     @Override
@@ -105,13 +106,13 @@ public class GetFilterAdjustmentAmountsCommand
         if(entities != null) {
             var userVisit = getUserVisit();
 
-            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustment));
+            result.setFilterAdjustment(filterAdjustmentControl.getFilterAdjustmentTransfer(userVisit, filterAdjustment));
 
             if(session.hasLimit(FilterAdjustmentAmountFactory.class)) {
                 result.setFilterAdjustmentAmountCount(getTotalEntities());
             }
 
-            result.setFilterAdjustmentAmounts(filterControl.getFilterAdjustmentAmountTransfers(userVisit, entities));
+            result.setFilterAdjustmentAmounts(filterAdjustmentControl.getFilterAdjustmentAmountTransfers(userVisit, entities));
         }
 
         return result;

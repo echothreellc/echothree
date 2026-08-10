@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetQueueTypesCommand
@@ -52,6 +52,10 @@ public class GetQueueTypesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    QueueControl queueControl;
+
     
     /** Creates a new instance of GetQueueTypesCommand */
     public GetQueueTypesCommand() {
@@ -65,15 +69,11 @@ public class GetQueueTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var queueControl = Session.getModelController(QueueControl.class);
-
         return queueControl.countQueueTypes();
     }
 
     @Override
     protected Collection<QueueType> getEntities() {
-        var queueControl = Session.getModelController(QueueControl.class);
-
         return queueControl.getQueueTypes();
     }
 
@@ -82,8 +82,6 @@ public class GetQueueTypesCommand
         var result = QueueResultFactory.getGetQueueTypesResult();
 
         if(entities != null) {
-            var queueControl = Session.getModelController(QueueControl.class);
-
             result.setQueueTypes(queueControl.getQueueTypeTransfers(getUserVisit(), entities));
         }
 

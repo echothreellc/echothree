@@ -24,9 +24,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteRatingTypeListItemCommand
@@ -40,8 +40,12 @@ public class DeleteRatingTypeListItemCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    RatingControl ratingControl;
+
     
     /** Creates a new instance of DeleteRatingTypeListItemCommand */
     public DeleteRatingTypeListItemCommand() {
@@ -58,7 +62,6 @@ public class DeleteRatingTypeListItemCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
                 var ratingTypeName = form.getRatingTypeName();
                 var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 

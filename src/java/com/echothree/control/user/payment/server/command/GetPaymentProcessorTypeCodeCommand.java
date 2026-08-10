@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorTypeCodeCommand
@@ -59,6 +59,12 @@ public class GetPaymentProcessorTypeCodeCommand
         );
     }
 
+    @Inject
+    PaymentProcessorTypeCodeControl paymentProcessorTypeCodeControl;
+
+    @Inject
+    PaymentProcessorTypeCodeLogic paymentProcessorTypeCodeLogic;
+
     /** Creates a new instance of GetPaymentProcessorTypeCodeCommand */
     public GetPaymentProcessorTypeCodeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetPaymentProcessorTypeCodeCommand
 
     @Override
     protected PaymentProcessorTypeCode getEntity() {
-        var paymentProcessorTypeCode = PaymentProcessorTypeCodeLogic.getInstance().getPaymentProcessorTypeCodeByNames(this,
+        var paymentProcessorTypeCode = paymentProcessorTypeCodeLogic.getPaymentProcessorTypeCodeByNames(this,
                 form.getPaymentProcessorTypeName(), form.getPaymentProcessorTypeCodeTypeName(), form.getPaymentProcessorTypeCodeName());
 
         if(paymentProcessorTypeCode != null) {
@@ -78,7 +84,6 @@ public class GetPaymentProcessorTypeCodeCommand
 
     @Override
     protected BaseResult getResult(PaymentProcessorTypeCode paymentProcessorTypeCode) {
-        var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorTypeCodeResult();
 
         if(paymentProcessorTypeCode != null) {

@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGlAccountCommand
@@ -59,6 +59,12 @@ public class GetGlAccountCommand
         );
     }
 
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    GlAccountLogic glAccountLogic;
+
     /** Creates a new instance of GetGlAccountCommand */
     public GetGlAccountCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +72,7 @@ public class GetGlAccountCommand
 
     @Override
     protected GlAccount getEntity() {
-        var glAccount = GlAccountLogic.getInstance().getGlAccountByUniversalSpec(this, form, false, null);
+        var glAccount = glAccountLogic.getGlAccountByUniversalSpec(this, form, false, null);
 
         if(glAccount != null) {
             sendEvent(glAccount.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -77,7 +83,6 @@ public class GetGlAccountCommand
 
     @Override
     protected BaseResult getResult(GlAccount entity) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetGlAccountResult();
 
         if(entity != null) {

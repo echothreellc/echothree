@@ -34,10 +34,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTransactionEntityRoleTypesCommand
@@ -58,6 +58,13 @@ public class GetTransactionEntityRoleTypesCommand
                 new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    TransactionTypeLogic transactionTypeLogic;
+
     
     /** Creates a new instance of GetTransactionEntityRoleTypesCommand */
     public GetTransactionEntityRoleTypesCommand() {
@@ -68,7 +75,7 @@ public class GetTransactionEntityRoleTypesCommand
 
     @Override
     protected void handleForm() {
-        transactionType = TransactionTypeLogic.getInstance().getTransactionTypeByName(this, form.getTransactionTypeName());
+        transactionType = transactionTypeLogic.getTransactionTypeByName(this, form.getTransactionTypeName());
     }
 
     @Override
@@ -76,8 +83,6 @@ public class GetTransactionEntityRoleTypesCommand
         Long totalEntities = null;
 
         if(!hasExecutionErrors()) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-
             totalEntities = accountingControl.countTransactionEntityRoleTypesByTransactionType(transactionType);
         }
 
@@ -89,8 +94,6 @@ public class GetTransactionEntityRoleTypesCommand
         Collection<TransactionEntityRoleType> entities = null;
 
         if(!hasExecutionErrors()) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-
             entities = accountingControl.getTransactionEntityRoleTypesByTransactionType(transactionType);
         }
 
@@ -102,7 +105,6 @@ public class GetTransactionEntityRoleTypesCommand
         var result = AccountingResultFactory.getGetTransactionEntityRoleTypesResult();
 
         if(entities != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
             var userVisit = getUserVisit();
 
             result.setTransactionType(accountingControl.getTransactionTypeTransfer(userVisit, transactionType));

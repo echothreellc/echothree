@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultItemAliasTypeCommand
@@ -44,14 +44,18 @@ public class SetDefaultItemAliasTypeCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ItemAliasType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemAliasType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
     
     /** Creates a new instance of SetDefaultItemAliasTypeCommand */
     public SetDefaultItemAliasTypeCommand() {
@@ -60,7 +64,6 @@ public class SetDefaultItemAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemAliasTypeName = form.getItemAliasTypeName();
         var itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueByNameForUpdate(itemAliasTypeName);
         

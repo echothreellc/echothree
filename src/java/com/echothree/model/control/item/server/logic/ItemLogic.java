@@ -69,6 +69,18 @@ public class ItemLogic
     @Inject
     WorkflowControl workflowControl;
 
+    @Inject
+    ItemCategoryLogic itemCategoryLogic;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
+    @Inject
+    WorkflowDestinationLogic workflowDestinationLogic;
+
+    @Inject
+    WorkflowLogic workflowLogic;
+
     protected ItemLogic() {
         super();
     }
@@ -128,7 +140,7 @@ public class ItemLogic
         Item item = null;
         
         if(itemCategory == null) {
-            itemCategory = ItemCategoryLogic.getInstance().getDefaultItemCategory(eea);
+            itemCategory = itemCategoryLogic.getDefaultItemCategory(eea);
         }
         
         if(itemName == null && !hasExecutionErrors(eea)) {
@@ -157,11 +169,11 @@ public class ItemLogic
         var itemSequence = itemCategory.getLastDetail().getItemSequence();
         
         if(itemSequence == null) {
-            itemSequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ITEM.name());
+            itemSequence = sequenceGeneratorLogic.getDefaultSequence(eea, SequenceTypes.ITEM.name());
         }
         
         if(!hasExecutionErrors(eea)) {
-            itemName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, itemSequence);
+            itemName = sequenceGeneratorLogic.getNextSequenceValue(eea, itemSequence);
         } else {
             handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
                     SequenceTypes.ITEM.name());
@@ -171,13 +183,12 @@ public class ItemLogic
     }
 
     public void setItemStatus(final Session session, final ExecutionErrorAccumulator eea, final Item item, final String itemStatusChoice, final PartyPK modifiedBy) {
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, ItemStatusConstants.Workflow_ITEM_STATUS);
+        var workflow = workflowLogic.getWorkflowByName(eea, ItemStatusConstants.Workflow_ITEM_STATUS);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         var workflowDestination = itemStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), itemStatusChoice);
 
         if(workflowDestination != null || itemStatusChoice == null) {
-            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
             var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             var handled = false;

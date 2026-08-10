@@ -18,19 +18,14 @@ package com.echothree.util.client.test;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-public abstract class UserVisitTestCase
-        extends TestCase {
-    
-    /** Creates a new instance of UserVisitTestCase */
-    protected UserVisitTestCase(String name) {
-        super(name);
-    }
+public abstract class UserVisitTestCase {
 
     protected UserVisitPK userVisitPK = null;
 
-    @Override
+    @BeforeEach
     protected void setUp() {
         try {
             userVisitPK = AuthenticationUtil.getHome().getDataLoaderUserVisit();
@@ -39,7 +34,7 @@ public abstract class UserVisitTestCase
         }
     }
 
-    @Override
+    @AfterEach
     protected void tearDown() {
         try {
             AuthenticationUtil.getHome().invalidateUserVisit(userVisitPK);

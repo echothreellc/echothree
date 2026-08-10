@@ -25,6 +25,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSalesOrderLineTimeCommand
@@ -38,8 +39,12 @@ public class CreateSalesOrderLineTimeCommand
                 new FieldDefinition("OrderLineSequence", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Time", FieldType.DATE_TIME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    SalesOrderLineTimeLogic salesOrderLineTimeLogic;
+
     
     /** Creates a new instance of CreateSalesOrderLineTimeCommand */
     public CreateSalesOrderLineTimeCommand() {
@@ -53,7 +58,7 @@ public class CreateSalesOrderLineTimeCommand
         var orderTimeTypeName = form.getOrderTimeTypeName();
         var time = Long.valueOf(form.getTime());
         
-        SalesOrderLineTimeLogic.getInstance().createOrderLineTime(this, orderName, orderLineSequence, orderTimeTypeName, time, getPartyPK());
+        salesOrderLineTimeLogic.createOrderLineTime(this, orderName, orderLineSequence, orderTimeTypeName, time, getPartyPK());
         
         return null;
     }

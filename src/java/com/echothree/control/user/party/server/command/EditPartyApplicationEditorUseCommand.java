@@ -41,9 +41,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyApplicationEditorUseCommand
@@ -58,21 +58,34 @@ public class EditPartyApplicationEditorUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyApplicationEditorUse.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PreferredHeight", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("PreferredWidth", FieldType.UNSIGNED_INTEGER, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyApplicationEditorUseControl partyApplicationEditorUseControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
+    @Inject
+    EditorLogic editorLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     
     /** Creates a new instance of EditPartyApplicationEditorUseCommand */
     public EditPartyApplicationEditorUseCommand() {
@@ -95,20 +108,18 @@ public class EditPartyApplicationEditorUseCommand
     public PartyApplicationEditorUse getEntity(EditPartyApplicationEditorUseResult result) {
         PartyApplicationEditorUse partyApplicationEditorUse = null;
         var partyName = spec.getPartyName();
-        var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
+        var party = partyName == null ? getParty() : partyLogic.getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
             var applicationName = spec.getApplicationName();
             
-            application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+            application = applicationLogic.getApplicationByName(this, applicationName);
             
             if(!hasExecutionErrors()) {
                 var applicationEditorUseName = spec.getApplicationEditorUseName();
-                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                var applicationEditorUse = applicationLogic.getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
-                    
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                         partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     } else { // EditMode.UPDATE
@@ -132,8 +143,6 @@ public class EditPartyApplicationEditorUseCommand
 
     @Override
     public void fillInResult(EditPartyApplicationEditorUseResult result, PartyApplicationEditorUse partyApplicationEditorUse) {
-        var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
-
         result.setPartyApplicationEditorUse(partyApplicationEditorUseControl.getPartyApplicationEditorUseTransfer(getUserVisit(), partyApplicationEditorUse));
     }
 
@@ -155,16 +164,15 @@ public class EditPartyApplicationEditorUseCommand
     @Override
     public void canUpdate(PartyApplicationEditorUse partyApplicationEditorUse) {
         var editorName = edit.getEditorName();
-        var editor = editorName == null ? null : EditorLogic.getInstance().getEditorByName(this, editorName);
+        var editor = editorName == null ? null : editorLogic.getEditorByName(this, editorName);
 
         if(!hasExecutionErrors()) {
-            applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
+            applicationEditor = editor == null ? null : applicationLogic.getApplicationEditor(this, application, editor);
         }
     }
 
     @Override
     public void doUpdate(PartyApplicationEditorUse partyApplicationEditorUse) {
-        var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
         var partyPK = getPartyPK();
         var partyApplicationEditorUseDetailValue = partyApplicationEditorUseControl.getPartyApplicationEditorUseDetailValueForUpdate(partyApplicationEditorUse);
         var strPreferredHeight = edit.getPreferredHeight();

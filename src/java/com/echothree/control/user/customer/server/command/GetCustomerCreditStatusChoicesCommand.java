@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerCreditStatusChoicesCommand
@@ -37,11 +37,15 @@ public class GetCustomerCreditStatusChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("DefaultCustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultCustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    CustomerControl customerControl;
+
     
     /** Creates a new instance of GetCustomerCreditStatusChoicesCommand */
     public GetCustomerCreditStatusChoicesCommand() {
@@ -50,7 +54,6 @@ public class GetCustomerCreditStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var result = CustomerResultFactory.getGetCustomerCreditStatusChoicesResult();
         var customerName = form.getCustomerName();
         var customer = customerName == null? null: customerControl.getCustomerByName(customerName);

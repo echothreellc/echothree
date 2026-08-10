@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditApplicationEditorUseCommand
@@ -57,13 +57,13 @@ public class EditApplicationEditorUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ApplicationEditorUse.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null),
@@ -73,8 +73,18 @@ public class EditApplicationEditorUseCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    EditorControl editorControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
     
     /** Creates a new instance of EditApplicationEditorUseCommand */
     public EditApplicationEditorUseCommand() {
@@ -98,10 +108,9 @@ public class EditApplicationEditorUseCommand
         ApplicationEditorUse applicationEditorUse = null;
         var applicationName = spec.getApplicationName();
         
-        application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        application = applicationLogic.getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            var applicationControl = Session.getModelController(ApplicationControl.class);
             var applicationEditorUseName = spec.getApplicationEditorUseName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -125,8 +134,6 @@ public class EditApplicationEditorUseCommand
 
     @Override
     public void fillInResult(EditApplicationEditorUseResult result, ApplicationEditorUse applicationEditorUse) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
-
         result.setApplicationEditorUse(applicationControl.getApplicationEditorUseTransfer(getUserVisit(), applicationEditorUse));
     }
 
@@ -134,7 +141,6 @@ public class EditApplicationEditorUseCommand
     
     @Override
     public void doLock(ApplicationEditorUseEdit edit, ApplicationEditorUse applicationEditorUse) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationEditorUseDescription = applicationControl.getApplicationEditorUseDescription(applicationEditorUse, getPreferredLanguage());
         var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
         var defaultHeight = applicationEditorUseDetail.getDefaultHeight();
@@ -156,26 +162,23 @@ public class EditApplicationEditorUseCommand
 
     @Override
     public void canUpdate(ApplicationEditorUse applicationEditorUse) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var applicationEditorUseName = edit.getApplicationEditorUseName();
         var duplicateApplicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
         if(duplicateApplicationEditorUse != null && !applicationEditorUse.equals(duplicateApplicationEditorUse)) {
             addExecutionError(ExecutionErrors.DuplicateApplicationEditorUseName.name(), applicationEditorUseName);
         } else {
-            var editorControl = Session.getModelController(EditorControl.class);
             var defaultEditorName = edit.getDefaultEditorName();
             var editor = defaultEditorName == null ? null : editorControl.getEditorByName(defaultEditorName);
 
             if(defaultEditorName == null || editor != null) {
-                applicationEditor = editor == null ? null : ApplicationLogic.getInstance().getApplicationEditor(this, application, editor);
+                applicationEditor = editor == null ? null : applicationLogic.getApplicationEditor(this, application, editor);
             }
         }
     }
 
     @Override
     public void doUpdate(ApplicationEditorUse applicationEditorUse) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var partyPK = getPartyPK();
         var applicationEditorUseDetailValue = applicationControl.getApplicationEditorUseDetailValueForUpdate(applicationEditorUse);
         var applicationEditorUseDescription = applicationControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, getPreferredLanguage());

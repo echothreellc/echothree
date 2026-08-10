@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditOrderTimeTypeCommand
@@ -53,24 +53,34 @@ public class EditOrderTimeTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.OrderTimeType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.OrderTimeType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    OrderTimeControl orderTimeControl;
+
+    @Inject
+    OrderTypeControl orderTypeControl;
+
+    @Inject
+    OrderTimeTypeLogic orderTimeTypeLogic;
+
     
     /** Creates a new instance of EditOrderTimeTypeCommand */
     public EditOrderTimeTypeCommand() {
@@ -89,7 +99,7 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public OrderTimeType getEntity(EditOrderTimeTypeResult result) {
-        return OrderTimeTypeLogic.getInstance().getOrderTimeTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+        return orderTimeTypeLogic.getOrderTimeTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -99,14 +109,11 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void fillInResult(EditOrderTimeTypeResult result, OrderTimeType orderTimeType) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-
         result.setOrderTimeType(orderTimeControl.getOrderTimeTypeTransfer(getUserVisit(), orderTimeType));
     }
 
     @Override
     public void doLock(OrderTimeTypeEdit edit, OrderTimeType orderTimeType) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var orderTimeTypeDescription = orderTimeControl.getOrderTimeTypeDescription(orderTimeType, getPreferredLanguage());
         var orderTimeTypeDetail = orderTimeType.getLastDetail();
 
@@ -121,12 +128,10 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void canUpdate(OrderTimeType orderTimeType) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
             var orderTimeTypeName = edit.getOrderTimeTypeName();
             var duplicateOrderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
@@ -140,7 +145,6 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void doUpdate(OrderTimeType orderTimeType) {
-        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var partyPK = getPartyPK();
         var orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueForUpdate(orderTimeType);
         var orderTimeTypeDescription = orderTimeControl.getOrderTimeTypeDescriptionForUpdate(orderTimeType, getPreferredLanguage());

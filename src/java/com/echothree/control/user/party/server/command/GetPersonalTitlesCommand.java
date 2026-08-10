@@ -24,10 +24,10 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPersonalTitlesCommand
@@ -39,6 +39,10 @@ public class GetPersonalTitlesCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetPersonalTitlesCommand */
     public GetPersonalTitlesCommand() {
@@ -52,23 +56,17 @@ public class GetPersonalTitlesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         return partyControl.countPersonalTitles();
     }
     
     @Override
     protected Collection<PersonalTitle> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
-        
         return partyControl.getPersonalTitles();
     }
     
     @Override
     protected BaseResult getResult(Collection<PersonalTitle> entities) {
         var result = PartyResultFactory.getGetPersonalTitlesResult();
-        var partyControl = Session.getModelController(PartyControl.class);
-        
         result.setPersonalTitles(partyControl.getPersonalTitleTransfers(getUserVisit(), entities));
         
         return result;

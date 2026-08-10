@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentCatalogCommand
@@ -54,8 +54,8 @@ public class CreateContentCatalogCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCatalog.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -66,8 +66,24 @@ public class CreateContentCatalogCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    SourceControl sourceControl;
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of CreateContentCatalogCommand */
     public CreateContentCatalogCommand() {
@@ -77,7 +93,6 @@ public class CreateContentCatalogCommand
     @Override
     protected BaseResult execute() {
         var result = ContentResultFactory.getCreateContentCatalogResult();
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         ContentCatalog contentCatalog = null;
@@ -94,15 +109,12 @@ public class CreateContentCatalogCommand
                 OfferUse defaultOfferUse = null;
 
                 if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
-                    var offerControl = Session.getModelController(OfferControl.class);
                     var defaultOffer = offerControl.getOfferByName(defaultOfferName);
                     
                     if(defaultOffer != null) {
-                        var useControl = Session.getModelController(UseControl.class);
                         var defaultUse = useControl.getUseByName(defaultUseName);
                         
                         if(defaultUse != null) {
-                            var offerUseControl = Session.getModelController(OfferUseControl.class);
                             defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                             
                             if(defaultOfferUse == null) {
@@ -115,7 +127,6 @@ public class CreateContentCatalogCommand
                         addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                     }
                 } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                    var sourceControl = Session.getModelController(SourceControl.class);
                     var source = sourceControl.getSourceByName(defaultSourceName);
                     
                     if(source != null) {

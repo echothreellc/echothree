@@ -39,6 +39,8 @@ import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -46,21 +48,25 @@ import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class ContentCatalogItemIndexer
         extends BaseIndexer<ContentCatalogItem> {
 
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    ItemControl itemControl;
 
     List<ItemDescriptionType> itemDescriptionTypes;
     SortableDescriptionProducer sortableDescriptionProducer;
 
-    /** Creates a new instance of ItemIndexer */
-    public ContentCatalogItemIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
-        
+    @Override
+    public BaseIndexer<ContentCatalogItem> setup(final ExecutionErrorAccumulator eea, final Index index) {
         itemDescriptionTypes = itemControl.getItemDescriptionTypesByIncludeInIndex();
         sortableDescriptionProducer = SortableDescriptionProducerFactory.getInstance().getSortableDescriptionProducer(index.getLastDetail().getLanguage());
+
+        return super.setup(eea, index);
     }
 
     @Override

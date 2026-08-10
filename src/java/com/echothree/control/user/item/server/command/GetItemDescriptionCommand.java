@@ -35,10 +35,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemDescriptionCommand
@@ -57,6 +57,28 @@ public class GetItemDescriptionCommand
                 new FieldDefinition("Referrer", FieldType.URL, false, null, null)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ContentLogic contentLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemDescriptionLogic itemDescriptionLogic;
+
+    @Inject
+    ItemDescriptionTypeLogic itemDescriptionTypeLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
     
     /** Creates a new instance of GetItemDescriptionCommand */
     public GetItemDescriptionCommand() {
@@ -65,32 +87,30 @@ public class GetItemDescriptionCommand
 
     private void checkReferrer(final ItemDescriptionType itemDescriptionType) {
         if(itemDescriptionType.getLastDetail().getCheckContentWebAddress()) {
-            ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
+            contentLogic.checkReferrer(this, form.getReferrer());
         }
     }
 
     @Override
     protected ItemDescription getEntity() {
-        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescription itemDescription = null;
         var itemName = form.getItemName();
         var itemDescriptionTypeName = form.getItemDescriptionTypeName();
         var traditionalParameterCount = ParameterUtils.getInstance().countNonNullParameters(itemName, itemDescriptionTypeName);
 
         if(traditionalParameterCount == 0 || traditionalParameterCount == 2) {
-            var possibleEntitySpecsCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+            var possibleEntitySpecsCount = entityInstanceLogic.countPossibleEntitySpecs(form);
 
             // checkReferrer(...) is called separately in the two paths since the first one can be short circuited if
             // the referrer check fails.
             if(traditionalParameterCount == 2 && possibleEntitySpecsCount == 0) {
-                var item = ItemLogic.getInstance().getItemByName(this, itemName);
-                var itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByName(this, itemDescriptionTypeName);
+                var item = itemLogic.getItemByName(this, itemName);
+                var itemDescriptionType = itemDescriptionTypeLogic.getItemDescriptionTypeByName(this, itemDescriptionTypeName);
 
                 if(!hasExecutionErrors()) {
                     checkReferrer(itemDescriptionType);
 
                     if(!hasExecutionErrors()) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = form.getLanguageIsoName();
                         var language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -98,7 +118,7 @@ public class GetItemDescriptionCommand
                             itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
 
                             if(itemDescription == null) {
-                                itemDescription = ItemDescriptionLogic.getInstance().searchForItemDescription(itemDescriptionType,
+                                itemDescription = itemDescriptionLogic.searchForItemDescription(itemDescriptionType,
                                         item, language, getPartyPK());
                             }
 
@@ -112,7 +132,7 @@ public class GetItemDescriptionCommand
                     }
                 }
             } else if(traditionalParameterCount == 0 && possibleEntitySpecsCount == 1) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDescription.name());
 
                 if(!hasExecutionErrors()) {
@@ -136,7 +156,6 @@ public class GetItemDescriptionCommand
 
     @Override
     protected BaseResult getResult(ItemDescription itemDescription) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemDescriptionResult();
 
         if(itemDescription != null) {

@@ -34,14 +34,23 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SearchTypeLogic
         extends BaseLogic {
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    SearchKindLogic searchKindLogic;
 
     protected SearchTypeLogic() {
         super();
@@ -53,7 +62,7 @@ public class SearchTypeLogic
 
     public SearchType createSearchType(final ExecutionErrorAccumulator eea, final String searchKindName, final String searchTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
+        var searchKind = searchKindLogic.getSearchKindByName(eea, searchKindName);
         SearchType searchType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -65,7 +74,6 @@ public class SearchTypeLogic
 
     public SearchType createSearchType(final ExecutionErrorAccumulator eea, final SearchKind searchKind, final String searchTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
         if(searchType == null) {
@@ -82,7 +90,6 @@ public class SearchTypeLogic
 
     public SearchType getSearchTypeByName(final ExecutionErrorAccumulator eea, final SearchKind searchKind, final String searchTypeName,
             final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName, entityPermission);
 
         if(searchType == null) {
@@ -103,10 +110,10 @@ public class SearchTypeLogic
 
     public SearchType getSearchTypeByName(final ExecutionErrorAccumulator eea, final String searchKindName, final String searchTypeName,
             final EntityPermission entityPermission) {
-        var searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
+        var searchKind = searchKindLogic.getSearchKindByName(eea, searchKindName);
         SearchType searchType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             searchType = getSearchTypeByName(eea, searchKind, searchTypeName, entityPermission);
         }
 
@@ -123,11 +130,10 @@ public class SearchTypeLogic
 
     public SearchType getSearchTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final SearchTypeUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKindName = universalSpec.getSearchKindName();
         var searchTypeName = universalSpec.getSearchTypeName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(searchKindName, searchTypeName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         SearchType searchType = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -144,10 +150,10 @@ public class SearchTypeLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                searchKind = SearchKindLogic.getInstance().getSearchKindByName(eea, searchKindName);
+                searchKind = searchKindLogic.getSearchKindByName(eea, searchKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(searchTypeName == null) {
                     if(allowDefault) {
                         searchType = searchControl.getDefaultSearchType(searchKind, entityPermission);
@@ -163,10 +169,10 @@ public class SearchTypeLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchType.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 searchType = searchControl.getSearchTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -188,8 +194,6 @@ public class SearchTypeLogic
 
     public void deleteSearchType(final ExecutionErrorAccumulator eea, final SearchType searchType,
             final BasePK deletedBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         searchControl.deleteSearchType(searchType, deletedBy);
     }
 }

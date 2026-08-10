@@ -17,7 +17,6 @@
 package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumMimeTypeForm;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -25,9 +24,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateForumMimeTypeCommand
@@ -41,8 +40,12 @@ public class CreateForumMimeTypeCommand
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of CreateForumMimeTypeCommand */
     public CreateForumMimeTypeCommand() {
@@ -51,12 +54,10 @@ public class CreateForumMimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumName = form.getForumName();
         var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
             var mimeTypeName = form.getMimeTypeName();
             var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
             

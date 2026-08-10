@@ -38,6 +38,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityListItemAttributeCommand
@@ -65,6 +66,13 @@ public class EditEntityListItemAttributeCommand
                 new FieldDefinition("EntityListItemUuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     
     /** Creates a new instance of EditEntityListItemAttributeCommand */
     public EditEntityListItemAttributeCommand() {
@@ -74,10 +82,10 @@ public class EditEntityListItemAttributeCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEditEntityListItemAttributeResult();
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, spec, spec,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec,
                     EntityAttributeTypes.LISTITEM);
 
             if(!hasExecutionErrors()) {
@@ -105,11 +113,11 @@ public class EditEntityListItemAttributeCommand
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(),
-                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                 entityAttribute.getLastDetail().getEntityAttributeName());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, edit);
+                    var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, edit);
 
                     if(!hasExecutionErrors()) {
                         entityListItemAttribute = coreControl.getEntityListItemAttributeForUpdate(entityAttribute, entityInstance);
@@ -131,7 +139,7 @@ public class EditEntityListItemAttributeCommand
                             }
                         } else {
                             addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(),
-                                    EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                                     entityAttribute.getLastDetail().getEntityAttributeName());
                         }
                     }

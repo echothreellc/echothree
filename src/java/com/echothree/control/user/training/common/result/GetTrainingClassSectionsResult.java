@@ -27,6 +27,9 @@ public interface GetTrainingClassSectionsResult
     TrainingClassTransfer getTrainingClass();
     void setTrainingClass(TrainingClassTransfer trainingClass);
     
+    Long getTrainingClassSectionCount();
+    void setTrainingClassSectionCount(Long trainingClassSectionCount);
+
     List<TrainingClassSectionTransfer> getTrainingClassSections();
     void setTrainingClassSections(List<TrainingClassSectionTransfer> trainingClassSections);
     

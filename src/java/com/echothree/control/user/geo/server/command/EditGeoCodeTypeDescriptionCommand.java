@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeTypeDescriptionCommand
@@ -55,18 +55,24 @@ public class EditGeoCodeTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditGeoCodeTypeDescriptionCommand */
     public EditGeoCodeTypeDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditGeoCodeTypeDescriptionCommand
 
     @Override
     public GeoCodeTypeDescription getEntity(EditGeoCodeTypeDescriptionResult result) {
-        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeTypeDescription geoCodeTypeDescription = null;
         var geoCodeTypeName = spec.getGeoCodeTypeName();
         var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditGeoCodeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditGeoCodeTypeDescriptionResult result, GeoCodeTypeDescription geoCodeTypeDescription) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
         result.setGeoCodeTypeDescription(geoControl.getGeoCodeTypeDescriptionTransfer(getUserVisit(), geoCodeTypeDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditGeoCodeTypeDescriptionCommand
 
     @Override
     public void doUpdate(GeoCodeTypeDescription geoCodeTypeDescription) {
-        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeTypeDescriptionValue = geoControl.getGeoCodeTypeDescriptionValue(geoCodeTypeDescription);
         geoCodeTypeDescriptionValue.setDescription(edit.getDescription());
 

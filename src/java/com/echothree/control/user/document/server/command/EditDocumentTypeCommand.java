@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditDocumentTypeCommand
@@ -54,13 +54,13 @@ public class EditDocumentTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.DocumentType.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.DocumentType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DocumentTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DocumentTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -70,8 +70,15 @@ public class EditDocumentTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
     
     /** Creates a new instance of EditDocumentTypeCommand */
     public EditDocumentTypeCommand() {
@@ -90,7 +97,6 @@ public class EditDocumentTypeCommand
 
     @Override
     public DocumentType getEntity(EditDocumentTypeResult result) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentType documentType;
         var documentTypeName = spec.getDocumentTypeName();
 
@@ -116,8 +122,6 @@ public class EditDocumentTypeCommand
 
     @Override
     public void fillInResult(EditDocumentTypeResult result, DocumentType documentType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
-
         result.setDocumentType(documentControl.getDocumentTypeTransfer(getUserVisit(), documentType));
     }
 
@@ -126,7 +130,6 @@ public class EditDocumentTypeCommand
 
     @Override
     public void doLock(DocumentTypeEdit edit, DocumentType documentType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeDescription = documentControl.getDocumentTypeDescription(documentType, getPreferredLanguage());
         var documentTypeDetail = documentType.getLastDetail();
 
@@ -147,7 +150,6 @@ public class EditDocumentTypeCommand
 
     @Override
     public void canUpdate(DocumentType documentType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var documentTypeName = edit.getDocumentTypeName();
         var duplicateDocumentType = documentControl.getDocumentTypeByName(documentTypeName);
 
@@ -163,8 +165,6 @@ public class EditDocumentTypeCommand
                     var mimeTypeUsageTypeName = edit.getMimeTypeUsageTypeName();
 
                     if(mimeTypeUsageTypeName != null) {
-                        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-
                         mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                     }
 
@@ -184,7 +184,6 @@ public class EditDocumentTypeCommand
 
     @Override
     public void doUpdate(DocumentType documentType) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var partyPK = getPartyPK();
         var documentTypeDetailValue = documentControl.getDocumentTypeDetailValueForUpdate(documentType);
         var documentTypeDescription = documentControl.getDocumentTypeDescriptionForUpdate(documentType, getPreferredLanguage());

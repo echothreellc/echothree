@@ -28,9 +28,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateItemInventoryTypeDescriptionCommand
@@ -41,15 +41,22 @@ public class CreateItemInventoryTypeDescriptionCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
-        );
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemInventoryTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("ItemInventoryTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateItemInventoryTypeDescriptionCommand */
     public CreateItemInventoryTypeDescriptionCommand() {
@@ -58,12 +65,10 @@ public class CreateItemInventoryTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemInventoryTypeName = form.getItemInventoryTypeName();
         var itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
         
         if(itemInventoryType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -50,9 +50,6 @@ public class BuildOrders {
     private String indent;
 
     private List<String> headerFields;
-    private long orderCount = 0;
-    private long orderShipmentGroupCount = 0;
-    private long orderLineCount = 0;
 
     private void init(String filename, AmazonOrders amazonOrders, int depth)
             throws IOException {
@@ -104,7 +101,6 @@ public class BuildOrders {
         if(existingOrder == null) {
             amazonOrders.getAmazonOrders().put(orderKey, order);
             existingOrder = order;
-            orderCount++;
         }
 
         return existingOrder;
@@ -119,7 +115,6 @@ public class BuildOrders {
         if(existingOrderShipmentGroup == null) {
             amazonOrderShipmentGroups.put(orderShipmentGroupKey, orderShipmentGroup);
             existingOrderShipmentGroup = orderShipmentGroup;
-            orderShipmentGroupCount++;
         }
 
         return existingOrderShipmentGroup;
@@ -134,7 +129,6 @@ public class BuildOrders {
         if(existingOrderLine == null) {
             amazonOrderLines.put(orderLineKey, orderLine);
             existingOrderLine = orderLine;
-            orderLineCount++;
         }
 
         return existingOrderLine;

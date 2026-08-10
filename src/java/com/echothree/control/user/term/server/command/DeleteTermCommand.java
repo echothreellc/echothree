@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteTermCommand
@@ -37,8 +37,12 @@ public class DeleteTermCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TermName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    TermControl termControl;
+
     
     /** Creates a new instance of DeleteTermCommand */
     public DeleteTermCommand() {
@@ -47,7 +51,6 @@ public class DeleteTermCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = Session.getModelController(TermControl.class);
         var termName = form.getTermName();
         var term = termControl.getTermByNameForUpdate(termName);
         

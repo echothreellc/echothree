@@ -32,9 +32,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTypeAuditPolicyCommand
@@ -46,14 +46,21 @@ public class EditPartyTypeAuditPolicyCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AuditCommands", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RetainUserVisitsTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("RetainUserVisitsTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
     
     /** Creates a new instance of EditPartyTypeAuditPolicyCommand */
     public EditPartyTypeAuditPolicyCommand() {
@@ -62,7 +69,6 @@ public class EditPartyTypeAuditPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getEditPartyTypeAuditPolicyResult();
         var partyTypeName = spec.getPartyTypeName();
         var partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -71,7 +77,6 @@ public class EditPartyTypeAuditPolicyCommand
             var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
 
             if(partyTypeAuditPolicy != null) {
-                var uomControl = Session.getModelController(UomControl.class);
                 var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                 if(timeUnitOfMeasureKind != null) {

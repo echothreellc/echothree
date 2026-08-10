@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentCategoryItemCommand
@@ -59,8 +59,8 @@ public class EditContentCategoryItemCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCategoryItem.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -70,13 +70,32 @@ public class EditContentCategoryItemCommand
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    ContentLogic contentLogic;
+
     
     /** Creates a new instance of EditContentCategoryItemCommand */
     public EditContentCategoryItemCommand() {
@@ -95,7 +114,6 @@ public class EditContentCategoryItemCommand
     
     @Override
     public ContentCategoryItem getEntity(EditContentCategoryItemResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentCategoryItem contentCategoryItem = null;
         var contentCollectionName = spec.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -109,24 +127,20 @@ public class EditContentCategoryItemCommand
                 var contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
-                    var itemControl = Session.getModelController(ItemControl.class);
                     var itemName = spec.getItemName();
                     var item = itemControl.getItemByName(itemName);
                     
                     if(item != null) {
-                        var inventoryControl = Session.getModelController(InventoryControl.class);
                         var inventoryConditionName = spec.getInventoryConditionName();
                         var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                         if(inventoryCondition != null) {
-                            var uomControl = Session.getModelController(UomControl.class);
                             var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                             var itemDetail = item.getLastDetail();
                             var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                             if(unitOfMeasureType != null) {
-                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 var currencyIsoName = spec.getCurrencyIsoName();
                                 var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
@@ -180,8 +194,6 @@ public class EditContentCategoryItemCommand
     
     @Override
     public void fillInResult(EditContentCategoryItemResult result, ContentCategoryItem contentCategoryItem) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentCategoryItem(contentControl.getContentCategoryItemTransfer(getUserVisit(), contentCategoryItem));
     }
     
@@ -193,13 +205,12 @@ public class EditContentCategoryItemCommand
     
     @Override
     public void doUpdate(ContentCategoryItem contentCategoryItem) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCategoryItemValue = contentControl.getContentCategoryItemValue(contentCategoryItem);
 
         contentCategoryItemValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         contentCategoryItemValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        ContentLogic.getInstance().updateContentCategoryItemFromValue(contentCategoryItemValue, getPartyPK());
+        contentLogic.updateContentCategoryItemFromValue(contentCategoryItemValue, getPartyPK());
     }
     
 }

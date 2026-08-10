@@ -52,21 +52,22 @@ public class GetStatesCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.State.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    GeoControl geoControl;
+
     
     /** Creates a new instance of GetStatesCommand */
     public GetStatesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    GeoControl geoControl;
 
     GeoCode countryGeoCode;
     GeoCodeScope statesGeoCodeScope;

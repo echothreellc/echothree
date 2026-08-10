@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOrderPriorityCommand
@@ -49,16 +49,23 @@ public class GetOrderPriorityCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OrderPriority.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderPriorityName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    OrderPriorityControl orderPriorityControl;
+
+    @Inject
+    OrderPriorityLogic orderPriorityLogic;
+
     
     /** Creates a new instance of GetOrderPriorityCommand */
     public GetOrderPriorityCommand() {
@@ -67,7 +74,7 @@ public class GetOrderPriorityCommand
 
     @Override
     protected OrderPriority getEntity() {
-        var orderPriority = OrderPriorityLogic.getInstance().getOrderPriorityByUniversalSpec(this, form, true);
+        var orderPriority = orderPriorityLogic.getOrderPriorityByUniversalSpec(this, form, true);
 
         if(orderPriority != null) {
             sendEvent(orderPriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -78,7 +85,6 @@ public class GetOrderPriorityCommand
 
     @Override
     protected BaseResult getResult(OrderPriority orderPriority) {
-        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
         var result = OrderResultFactory.getGetOrderPriorityResult();
 
         if(orderPriority != null) {

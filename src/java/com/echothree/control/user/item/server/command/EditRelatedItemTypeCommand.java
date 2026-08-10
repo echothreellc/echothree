@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditRelatedItemTypeCommand
@@ -70,6 +70,12 @@ public class EditRelatedItemTypeCommand
         );
     }
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    RelatedItemTypeLogic relatedItemTypeLogic;
+
     /** Creates a new instance of EditRelatedItemTypeCommand */
     public EditRelatedItemTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -87,7 +93,7 @@ public class EditRelatedItemTypeCommand
 
     @Override
     public RelatedItemType getEntity(EditRelatedItemTypeResult result) {
-        return RelatedItemTypeLogic.getInstance().getRelatedItemTypeByUniversalSpec(this,
+        return relatedItemTypeLogic.getRelatedItemTypeByUniversalSpec(this,
                 spec, false, editModeToEntityPermission(editMode));
     }
 
@@ -98,14 +104,11 @@ public class EditRelatedItemTypeCommand
 
     @Override
     public void fillInResult(EditRelatedItemTypeResult result, RelatedItemType relatedItemType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
-
         result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));
     }
 
     @Override
     public void doLock(RelatedItemTypeEdit edit, RelatedItemType relatedItemType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var relatedItemTypeDescription = itemControl.getRelatedItemTypeDescription(relatedItemType, getPreferredLanguage());
         final var relatedItemTypeDetail = relatedItemType.getLastDetail();
 
@@ -120,7 +123,6 @@ public class EditRelatedItemTypeCommand
 
     @Override
     public void canUpdate(RelatedItemType relatedItemType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var relatedItemTypeName = edit.getRelatedItemTypeName();
         final var duplicateRelatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
@@ -131,7 +133,6 @@ public class EditRelatedItemTypeCommand
 
     @Override
     public void doUpdate(RelatedItemType relatedItemType) {
-        final var itemControl = Session.getModelController(ItemControl.class);
         final var partyPK = getPartyPK();
         final var relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueForUpdate(relatedItemType);
         final var relatedItemTypeDescription = itemControl.getRelatedItemTypeDescriptionForUpdate(relatedItemType, getPreferredLanguage());
@@ -141,7 +142,7 @@ public class EditRelatedItemTypeCommand
         relatedItemTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         relatedItemTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        RelatedItemTypeLogic.getInstance().updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, partyPK);
+        relatedItemTypeLogic.updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, partyPK);
 
         if(relatedItemTypeDescription == null && description != null) {
             itemControl.createRelatedItemTypeDescription(relatedItemType, getPreferredLanguage(), description, partyPK);

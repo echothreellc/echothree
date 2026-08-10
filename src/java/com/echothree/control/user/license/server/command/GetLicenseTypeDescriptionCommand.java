@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLicenseTypeDescriptionCommand
@@ -48,13 +48,20 @@ public class GetLicenseTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LicenseType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LicenseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    LicenseControl licenseControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetLicenseTypeDescriptionCommand */
     public GetLicenseTypeDescriptionCommand() {
@@ -63,13 +70,11 @@ public class GetLicenseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         var result = LicenseResultFactory.getGetLicenseTypeDescriptionResult();
         var licenseTypeName = form.getLicenseTypeName();
         var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
 
         if(licenseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 

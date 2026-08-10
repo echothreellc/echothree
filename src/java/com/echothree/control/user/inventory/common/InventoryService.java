@@ -30,37 +30,67 @@ public interface InventoryService
     // -------------------------------------------------------------------------
     
     String ping();
-    
+
+    // -------------------------------------------------------------------------
+    //   Inventory Costing Methods
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateInventoryCostingMethodResult> createInventoryCostingMethod(UserVisitPK userVisitPK, CreateInventoryCostingMethodForm form);
+
+    CommandResult<GetInventoryCostingMethodsResult> getInventoryCostingMethods(UserVisitPK userVisitPK, GetInventoryCostingMethodsForm form);
+
+    CommandResult<GetInventoryCostingMethodResult> getInventoryCostingMethod(UserVisitPK userVisitPK, GetInventoryCostingMethodForm form);
+
+    CommandResult<GetInventoryCostingMethodChoicesResult> getInventoryCostingMethodChoices(UserVisitPK userVisitPK, GetInventoryCostingMethodChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultInventoryCostingMethod(UserVisitPK userVisitPK, SetDefaultInventoryCostingMethodForm form);
+
+    CommandResult<EditInventoryCostingMethodResult> editInventoryCostingMethod(UserVisitPK userVisitPK, EditInventoryCostingMethodForm form);
+
+    CommandResult<VoidResult> deleteInventoryCostingMethod(UserVisitPK userVisitPK, DeleteInventoryCostingMethodForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Costing Method Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryCostingMethodDescription(UserVisitPK userVisitPK, CreateInventoryCostingMethodDescriptionForm form);
+
+    CommandResult<GetInventoryCostingMethodDescriptionsResult> getInventoryCostingMethodDescriptions(UserVisitPK userVisitPK, GetInventoryCostingMethodDescriptionsForm form);
+
+    CommandResult<EditInventoryCostingMethodDescriptionResult> editInventoryCostingMethodDescription(UserVisitPK userVisitPK, EditInventoryCostingMethodDescriptionForm form);
+
+    CommandResult<VoidResult> deleteInventoryCostingMethodDescription(UserVisitPK userVisitPK, DeleteInventoryCostingMethodDescriptionForm form);
+
     // -------------------------------------------------------------------------
     //   Inventory Conditions
     // -------------------------------------------------------------------------
-    
+
     CommandResult<CreateInventoryConditionResult> createInventoryCondition(UserVisitPK userVisitPK, CreateInventoryConditionForm form);
-    
+
     CommandResult<GetInventoryConditionsResult> getInventoryConditions(UserVisitPK userVisitPK, GetInventoryConditionsForm form);
-    
+
     CommandResult<GetInventoryConditionResult> getInventoryCondition(UserVisitPK userVisitPK, GetInventoryConditionForm form);
-    
+
     CommandResult<GetInventoryConditionChoicesResult> getInventoryConditionChoices(UserVisitPK userVisitPK, GetInventoryConditionChoicesForm form);
-    
+
     CommandResult<VoidResult> setDefaultInventoryCondition(UserVisitPK userVisitPK, SetDefaultInventoryConditionForm form);
-    
+
     CommandResult<EditInventoryConditionResult> editInventoryCondition(UserVisitPK userVisitPK, EditInventoryConditionForm form);
-    
+
     CommandResult<VoidResult> deleteInventoryCondition(UserVisitPK userVisitPK, DeleteInventoryConditionForm form);
-    
+
     // -------------------------------------------------------------------------
     //   Inventory Condition Descriptions
     // -------------------------------------------------------------------------
-    
+
     CommandResult<VoidResult> createInventoryConditionDescription(UserVisitPK userVisitPK, CreateInventoryConditionDescriptionForm form);
-    
+
     CommandResult<GetInventoryConditionDescriptionsResult> getInventoryConditionDescriptions(UserVisitPK userVisitPK, GetInventoryConditionDescriptionsForm form);
-    
+
     CommandResult<EditInventoryConditionDescriptionResult> editInventoryConditionDescription(UserVisitPK userVisitPK, EditInventoryConditionDescriptionForm form);
-    
+
     CommandResult<VoidResult> deleteInventoryConditionDescription(UserVisitPK userVisitPK, DeleteInventoryConditionDescriptionForm form);
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Condition Use Types
     // --------------------------------------------------------------------------------
@@ -336,5 +366,35 @@ public interface InventoryService
     CommandResult<EditInventoryTransactionTypeDescriptionResult> editInventoryTransactionTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionTypeDescriptionForm form);
 
     CommandResult<VoidResult> deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Bucket Types
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateInventoryBucketTypeResult> createInventoryBucketType(UserVisitPK userVisitPK, CreateInventoryBucketTypeForm form);
+
+    CommandResult<GetInventoryBucketTypesResult> getInventoryBucketTypes(UserVisitPK userVisitPK, GetInventoryBucketTypesForm form);
+
+    CommandResult<GetInventoryBucketTypeResult> getInventoryBucketType(UserVisitPK userVisitPK, GetInventoryBucketTypeForm form);
+
+    CommandResult<GetInventoryBucketTypeChoicesResult> getInventoryBucketTypeChoices(UserVisitPK userVisitPK, GetInventoryBucketTypeChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultInventoryBucketType(UserVisitPK userVisitPK, SetDefaultInventoryBucketTypeForm form);
+
+    CommandResult<EditInventoryBucketTypeResult> editInventoryBucketType(UserVisitPK userVisitPK, EditInventoryBucketTypeForm form);
+
+    CommandResult<VoidResult> deleteInventoryBucketType(UserVisitPK userVisitPK, DeleteInventoryBucketTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Bucket Type Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryBucketTypeDescription(UserVisitPK userVisitPK, CreateInventoryBucketTypeDescriptionForm form);
+
+    CommandResult<GetInventoryBucketTypeDescriptionsResult> getInventoryBucketTypeDescriptions(UserVisitPK userVisitPK, GetInventoryBucketTypeDescriptionsForm form);
+
+    CommandResult<EditInventoryBucketTypeDescriptionResult> editInventoryBucketTypeDescription(UserVisitPK userVisitPK, EditInventoryBucketTypeDescriptionForm form);
+
+    CommandResult<VoidResult> deleteInventoryBucketTypeDescription(UserVisitPK userVisitPK, DeleteInventoryBucketTypeDescriptionForm form);
 
 }

@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditChainTypeCommand
@@ -54,20 +54,23 @@ public class EditChainTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ChainType.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
 
     /** Creates a new instance of EditChainTypeCommand */
     public EditChainTypeCommand() {
@@ -88,7 +91,6 @@ public class EditChainTypeCommand
 
     @Override
     public ChainType getEntity(EditChainTypeResult result) {
-        var chainControl = Session.getModelController(ChainControl.class);
         ChainType chainType = null;
         var chainKindName = spec.getChainKindName();
 
@@ -120,14 +122,11 @@ public class EditChainTypeCommand
 
     @Override
     public void fillInResult(EditChainTypeResult result, ChainType chainType) {
-        var chainControl = Session.getModelController(ChainControl.class);
-
         result.setChainType(chainControl.getChainTypeTransfer(getUserVisit(), chainType));
     }
 
     @Override
     public void doLock(ChainTypeEdit edit, ChainType chainType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainTypeDescription = chainControl.getChainTypeDescription(chainType, getPreferredLanguage());
         var chainTypeDetail = chainType.getLastDetail();
 
@@ -142,7 +141,6 @@ public class EditChainTypeCommand
 
     @Override
     public void canUpdate(ChainType chainType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindDetail = chainKind.getLastDetail();
         var chainTypeName = edit.getChainTypeName();
         var duplicateChainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
@@ -154,7 +152,6 @@ public class EditChainTypeCommand
 
     @Override
     public void doUpdate(ChainType chainType) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
         var chainTypeDetailValue = chainControl.getChainTypeDetailValueForUpdate(chainType);
         var chainTypeDescription = chainControl.getChainTypeDescriptionForUpdate(chainType, getPreferredLanguage());

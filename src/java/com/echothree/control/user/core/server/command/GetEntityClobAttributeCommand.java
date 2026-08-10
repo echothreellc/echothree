@@ -26,9 +26,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityClobAttributeCommand
@@ -41,8 +41,15 @@ public class GetEntityClobAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of GetEntityClobAttributeCommand */
     public GetEntityClobAttributeCommand() {
@@ -51,7 +58,6 @@ public class GetEntityClobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var result = CoreResultFactory.getGetEntityClobAttributeResult();
         var entityRef = form.getEntityRef();
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
@@ -61,7 +67,6 @@ public class GetEntityClobAttributeCommand
             var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             
             if(entityAttribute != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = languageIsoName == null ? null : partyControl.getLanguageByIsoName(languageIsoName);
                 

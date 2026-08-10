@@ -26,7 +26,6 @@ public class ValidationResult
 
     /** Creates a new instance of ValidationResult.
      */
-    /** Creates a new instance of ValidationResult */
     public ValidationResult(Messages validationMessages) {
         this.validationMessages = validationMessages;
     }

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrackCommand
@@ -53,20 +53,24 @@ public class EditTrackCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Track.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrackName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Value", FieldType.STRING, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    TrackControl trackControl;
+
     
     /** Creates a new instance of EditTrackCommand */
     public EditTrackCommand() {
@@ -85,7 +89,6 @@ public class EditTrackCommand
 
     @Override
     public Track getEntity(EditTrackResult result) {
-        var trackControl = Session.getModelController(TrackControl.class);
         Track track;
         var trackName = spec.getTrackName();
 
@@ -109,14 +112,11 @@ public class EditTrackCommand
 
     @Override
     public void fillInResult(EditTrackResult result, Track track) {
-        var trackControl = Session.getModelController(TrackControl.class);
-
         result.setTrack(trackControl.getTrackTransfer(getUserVisit(), track));
     }
 
     @Override
     public void doLock(TrackEdit edit, Track track) {
-        var trackControl = Session.getModelController(TrackControl.class);
         var trackDescription = trackControl.getTrackDescription(track, getPreferredLanguage());
         var trackDetail = track.getLastDetail();
 
@@ -131,7 +131,6 @@ public class EditTrackCommand
 
     @Override
     public void canUpdate(Track track) {
-        var trackControl = Session.getModelController(TrackControl.class);
         var value = edit.getValue();
         var duplicateTrack = trackControl.getTrackByValue(value);
 
@@ -142,7 +141,6 @@ public class EditTrackCommand
 
     @Override
     public void doUpdate(Track track) {
-        var trackControl = Session.getModelController(TrackControl.class);
         var partyPK = getPartyPK();
         var trackDetailValue = trackControl.getTrackDetailValueForUpdate(track);
         var trackDescription = trackControl.getTrackDescriptionForUpdate(track, getPreferredLanguage());

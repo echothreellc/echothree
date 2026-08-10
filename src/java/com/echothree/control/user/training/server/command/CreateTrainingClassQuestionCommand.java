@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateTrainingClassQuestionCommand
@@ -48,8 +48,8 @@ public class CreateTrainingClassQuestionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassQuestion.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -60,8 +60,15 @@ public class CreateTrainingClassQuestionCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("QuestionMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Question", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of CreateTrainingClassQuestionCommand */
     public CreateTrainingClassQuestionCommand() {
@@ -70,7 +77,6 @@ public class CreateTrainingClassQuestionCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -83,7 +89,6 @@ public class CreateTrainingClassQuestionCommand
                 var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion == null) {
-                    var mimeTypeLogic = MimeTypeLogic.getInstance();
                     var question = form.getQuestion();
                     var questionMimeType = mimeTypeLogic.checkMimeType(this, form.getQuestionMimeTypeName(), question, MimeTypeUsageTypes.TEXT.name(),
                             ExecutionErrors.MissingRequiredQuestionMimeTypeName.name(), ExecutionErrors.MissingRequiredQuestion.name(),

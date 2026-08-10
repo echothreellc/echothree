@@ -20,11 +20,15 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UpcEChecksumLogic
         extends BaseChecksumLogic
         implements ItemAliasChecksumInterface {
+
+    @Inject
+    UpcAChecksumLogic upcAChecksumLogic;
 
     protected UpcEChecksumLogic() {
         super();
@@ -57,7 +61,7 @@ public class UpcEChecksumLogic
         if(alias.length() == 8) {
             if(alias.matches("\\d{8}")) {
                 switch(getDigit(alias, 0)) {
-                    case 0, 1 -> UpcAChecksumLogic.getInstance().checkChecksum(eea, expandUpcEToUpcA(alias));
+                    case 0, 1 -> upcAChecksumLogic.checkChecksum(eea, expandUpcEToUpcA(alias));
                     default -> eea.addExecutionError(ExecutionErrors.IncorrectUpcENumberSystem.name(), alias);
                 }
             } else {

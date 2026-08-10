@@ -18,6 +18,10 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterStepElementForm;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteFilterStepElementCommand
@@ -57,6 +61,22 @@ public class DeleteFilterStepElementCommand
                 new FieldDefinition("FilterStepElementName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
+
     
     /** Creates a new instance of DeleteFilterStepElementCommand */
     public DeleteFilterStepElementCommand() {
@@ -65,13 +85,12 @@ public class DeleteFilterStepElementCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var filterName = form.getFilterName();
@@ -79,14 +98,14 @@ public class DeleteFilterStepElementCommand
                 
                 if(filter != null) {
                     var filterStepName = form.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStep = filterStepControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
                         var filterStepElementName = form.getFilterStepElementName();
-                        var filterStepElement = filterControl.getFilterStepElementByNameForUpdate(filterStep, filterStepElementName);
+                        var filterStepElement = filterStepElementControl.getFilterStepElementByNameForUpdate(filterStep, filterStepElementName);
                         
                         if(filterStepElement != null) {
-                            filterControl.deleteFilterStepElement(filterStepElement, getPartyPK());
+                            filterStepElementControl.deleteFilterStepElement(filterStepElement, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownFilterStepElementName.name(), filterStepElementName);
                         }

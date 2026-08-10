@@ -52,9 +52,10 @@ public class GetBatchTypesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     @Inject
     BatchControl batchControl;
+
 
     /** Creates a new instance of GetBatchTypesCommand */
     public GetBatchTypesCommand() {

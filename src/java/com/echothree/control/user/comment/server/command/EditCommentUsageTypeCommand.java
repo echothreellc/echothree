@@ -29,9 +29,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommentUsageTypeCommand
@@ -46,15 +46,19 @@ public class EditCommentUsageTypeCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("CommentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommentUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommentUsageTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectedByDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    CommentControl commentControl;
+
     
     /** Creates a new instance of EditCommentUsageTypeCommand */
     public EditCommentUsageTypeCommand() {
@@ -72,7 +76,6 @@ public class EditCommentUsageTypeCommand
             var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var commentControl = Session.getModelController(CommentControl.class);
                 var commentTypeName = spec.getCommentTypeName();
                 var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 

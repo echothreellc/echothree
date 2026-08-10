@@ -34,10 +34,20 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SalesOrderShipmentGroupLogic
         extends BaseOrderShipmentGroupLogic {
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    OrderShipmentGroupControl orderShipmentGroupControl;
+
+    @Inject
+    SalesOrderLogic salesOrderLogic;
 
     protected SalesOrderShipmentGroupLogic() {
         super();
@@ -57,8 +67,6 @@ public class SalesOrderShipmentGroupLogic
      */
     public void checkCustomerTypeShippingMethod(final ExecutionErrorAccumulator eea, final CustomerType customerType,
             final ShippingMethod shippingMethod) {
-        var customerControl = Session.getModelController(CustomerControl.class);
-
         if(!customerControl.getCustomerTypeShippingMethodExists(customerType, shippingMethod)
                 && customerControl.countCustomerTypeShippingMethodsByCustomerType(customerType) != 0) {
             handleExecutionError(UnknownCustomerTypeShippingMethodException.class, eea, ExecutionErrors.UnknownCustomerTypeShippingMethod.name(),
@@ -87,7 +95,7 @@ public class SalesOrderShipmentGroupLogic
             final PartyPK createdBy) {
         OrderShipmentGroup orderShipmentGroup = null;
 
-        SalesOrderLogic.getInstance().checkOrderAvailableForModification(session, eea, order, createdBy);
+        salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdBy);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             orderShipmentGroup = createOrderShipmentGroup(eea, order, orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism,
@@ -99,8 +107,6 @@ public class SalesOrderShipmentGroupLogic
 
     public void updateSalesOrderShipmentGroupFromValue(final ExecutionErrorAccumulator eea, final OrderShipmentGroupDetailValue orderShipmentGroupDetailValue,
             final BasePK updatedBy) {
-        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
-
         orderShipmentGroupControl.updateOrderShipmentGroupFromValue(orderShipmentGroupDetailValue, updatedBy);
     }
 

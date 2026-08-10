@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class InventoryConditionLogic
     extends BaseLogic {
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected InventoryConditionLogic() {
         super();
@@ -51,7 +57,6 @@ public class InventoryConditionLogic
     public InventoryCondition createInventoryCondition(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
         if(inventoryCondition == null) {
@@ -69,7 +74,6 @@ public class InventoryConditionLogic
 
     public InventoryCondition getInventoryConditionByName(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
             final EntityPermission entityPermission) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName, entityPermission);
 
         if(inventoryCondition == null) {
@@ -90,9 +94,8 @@ public class InventoryConditionLogic
     public InventoryCondition getInventoryConditionByUniversalSpec(final ExecutionErrorAccumulator eea,
             final InventoryConditionUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         InventoryCondition inventoryCondition = null;
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var inventoryConditionName = universalSpec.getInventoryConditionName();
-        var parameterCount = (inventoryConditionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (inventoryConditionName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,10 +111,10 @@ public class InventoryConditionLogic
             }
             case 1 -> {
                 if(inventoryConditionName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryCondition.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         inventoryCondition = inventoryControl.getInventoryConditionByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -137,8 +140,6 @@ public class InventoryConditionLogic
 
     public void deleteInventoryCondition(final ExecutionErrorAccumulator eea, final InventoryCondition inventoryCondition,
             final BasePK deletedBy) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-
         inventoryControl.deleteInventoryCondition(inventoryCondition, deletedBy);
     }
 

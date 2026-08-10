@@ -55,11 +55,11 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCustomerWithLoginCommand
@@ -100,7 +100,7 @@ public class CreateCustomerWithLoginCommand
                 new FieldDefinition("Answer", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("CustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
         
         otherFormFieldDefinitions = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -129,8 +129,57 @@ public class CreateCustomerWithLoginCommand
                 new FieldDefinition("Answer", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("CustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    SourceControl sourceControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    UseControl useControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ContactEmailAddressLogic contactEmailAddressLogic;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
+    @Inject
+    PartyChainLogic partyChainLogic;
+
+    @Inject
+    PasswordStringPolicyLogic passwordStringPolicyLogic;
+
     
     /** Creates a new instance of CreateCustomerWithLoginCommand */
     public CreateCustomerWithLoginCommand() {
@@ -149,9 +198,7 @@ public class CreateCustomerWithLoginCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var result = PartyResultFactory.getCreateCustomerWithLoginResult();
-        var customerControl = Session.getModelController(CustomerControl.class);
         Customer customer = null;
         var username = form.getUsername();
         var userLogin = userControl.getUserLoginByUsername(username);
@@ -161,9 +208,8 @@ public class CreateCustomerWithLoginCommand
             var password2 = form.getPassword2();
 
             if(password1.equals(password2)) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
-                var partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
+                var partyTypePasswordStringPolicy = passwordStringPolicyLogic.checkStringPassword(session,
                         getUserVisit(), this, partyType, null, null, password1);
 
                 if(!hasExecutionErrors()) {
@@ -175,7 +221,6 @@ public class CreateCustomerWithLoginCommand
                         CancellationPolicy cancellationPolicy = null;
 
                         if(cancellationPolicyName != null) {
-                            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                             var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -186,14 +231,12 @@ public class CreateCustomerWithLoginCommand
                             ReturnPolicy returnPolicy = null;
 
                             if(returnPolicyName != null) {
-                                var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                                 var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                             }
 
                             if(returnPolicyName == null || returnPolicy != null) {
-                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 var arGlAccountName = form.getArGlAccountName();
                                 var arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
 
@@ -202,7 +245,6 @@ public class CreateCustomerWithLoginCommand
                                             : arGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                                     if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
-                                        var termControl = Session.getModelController(TermControl.class);
                                         var customerTypeDetail = customerType.getLastDetail();
                                         var term = customerTypeDetail.getDefaultTerm();
 
@@ -218,15 +260,12 @@ public class CreateCustomerWithLoginCommand
                                             var invalidInitialOfferOrSourceSpecification = false;
 
                                             if(initialOfferName != null && initialUseName != null && initialSourceName == null) {
-                                                var offerControl = Session.getModelController(OfferControl.class);
                                                 var initialOffer = offerControl.getOfferByName(initialOfferName);
 
                                                 if(initialOffer != null) {
-                                                    var useControl = Session.getModelController(UseControl.class);
                                                     var initialUse = useControl.getUseByName(initialUseName);
 
                                                     if(initialUse != null) {
-                                                        var offerUseControl = Session.getModelController(OfferUseControl.class);
                                                         initialOfferUse = offerUseControl.getOfferUse(initialOffer, initialUse);
 
                                                         if(initialOfferUse == null) {
@@ -239,8 +278,6 @@ public class CreateCustomerWithLoginCommand
                                                     addExecutionError(ExecutionErrors.UnknownInitialOfferName.name(), initialOfferName);
                                                 }
                                             } else {
-                                                var sourceControl = Session.getModelController(SourceControl.class);
-
                                                 if(initialOfferName == null && initialUseName == null && initialSourceName != null) {
                                                     var source = sourceControl.getSourceByName(initialSourceName);
 
@@ -294,7 +331,6 @@ public class CreateCustomerWithLoginCommand
                                                                 var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
 
                                                                 if(recoveryQuestion != null) {
-                                                                    var workflowControl = Session.getModelController(WorkflowControl.class);
                                                                     var soundex = new Soundex();
                                                                     BasePK createdBy = getPartyPK();
                                                                     var personalTitleId = form.getPersonalTitleId();
@@ -353,7 +389,7 @@ public class CreateCustomerWithLoginCommand
                                                                             customerTypeDetail.getDefaultReferenceValidationPattern(), createdBy);
                                                                     userControl.createUserLogin(party, username, createdBy);
 
-                                                                    ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
+                                                                    contactEmailAddressLogic.createContactEmailAddress(party,
                                                                             emailAddress, allowSolicitation, null,
                                                                             ContactMechanismPurposes.PRIMARY_EMAIL.name(),
                                                                             createdBy);
@@ -401,16 +437,14 @@ public class CreateCustomerWithLoginCommand
                                                                     if(customerCreditStatusWorkflowEntrance == null) {
                                                                         customerCreditStatusWorkflowEntrance = workflowControl.getDefaultWorkflowEntrance(customerCreditStatusWorkflow);
                                                                     }
-
-                                                                    var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
                                                                     var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                                                                     workflowControl.addEntityToWorkflow(customerStatusWorkflowEntrance, entityInstance, null, null, createdBy);
                                                                     workflowControl.addEntityToWorkflow(customerCreditStatusWorkflowEntrance, entityInstance, null, null, createdBy);
 
-                                                                    ContactListLogic.getInstance().setupInitialContactLists(this, party, createdBy);
+                                                                    contactListLogic.setupInitialContactLists(this, party, createdBy);
                                                                     
                                                                     // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                                                                    PartyChainLogic.getInstance().createPartyWelcomeChainInstance(null, party, createdBy);
+                                                                    partyChainLogic.createPartyWelcomeChainInstance(null, party, createdBy);
                                                                 } else {
                                                                     addExecutionError(ExecutionErrors.UnknownRecoveryQuestionName.name(), recoveryQuestionName);
                                                                 }

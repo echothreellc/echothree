@@ -36,13 +36,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class InventoryTransactionTypeLogic
     extends BaseLogic {
+
+    @Inject
+    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected InventoryTransactionTypeLogic() {
         super();
@@ -56,7 +62,6 @@ public class InventoryTransactionTypeLogic
             final SequenceType inventoryTransactionSequenceType, final Workflow inventoryTransactionWorkflow,
             final WorkflowEntrance inventoryTransactionWorkflowEntrance, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
 
         if(inventoryTransactionType == null) {
@@ -75,7 +80,6 @@ public class InventoryTransactionTypeLogic
 
     public InventoryTransactionType getInventoryTransactionTypeByName(final ExecutionErrorAccumulator eea, final String inventoryTransactionTypeName,
             final EntityPermission entityPermission) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName, entityPermission);
 
         if(inventoryTransactionType == null) {
@@ -96,9 +100,8 @@ public class InventoryTransactionTypeLogic
     public InventoryTransactionType getInventoryTransactionTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final InventoryTransactionTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         InventoryTransactionType inventoryTransactionType = null;
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var inventoryTransactionTypeName = universalSpec.getInventoryTransactionTypeName();
-        var parameterCount = (inventoryTransactionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (inventoryTransactionTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -114,10 +117,10 @@ public class InventoryTransactionTypeLogic
             }
             case 1 -> {
                 if(inventoryTransactionTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryTransactionType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -143,15 +146,11 @@ public class InventoryTransactionTypeLogic
 
     public void updateInventoryTransactionTypeFromValue(final InventoryTransactionTypeDetailValue inventoryTransactionTypeDetailValue,
             final BasePK updatedBy) {
-        final var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
-
         inventoryTransactionTypeControl.updateInventoryTransactionTypeFromValue(inventoryTransactionTypeDetailValue, updatedBy);
     }
     
     public void deleteInventoryTransactionType(final ExecutionErrorAccumulator eea, final InventoryTransactionType inventoryTransactionType,
             final BasePK deletedBy) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
-
         inventoryTransactionTypeControl.deleteInventoryTransactionType(inventoryTransactionType, deletedBy);
     }
 

@@ -33,8 +33,8 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -43,7 +43,7 @@ public class DeleteLotAliasCommand
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -56,24 +56,35 @@ public class DeleteLotAliasCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotIdentifier", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    LotAliasControl lotAliasControl;
+
+    @Inject
+    LotControl lotControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    LotLogic lotLogic;
+
     /** Creates a new instance of DeleteLotAliasCommand */
     public DeleteLotAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+        var item = itemLogic.getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
             var lotIdentifier = form.getLotIdentifier();
-            var lot = LotLogic.getInstance().getLotByIdentifier(this, item, lotIdentifier);
+            var lot = lotLogic.getLotByIdentifier(this, item, lotIdentifier);
 
             if(!hasExecutionErrors()) {
-                var lotAliasControl = Session.getModelController(LotAliasControl.class);
                 var lotAliasTypeName = form.getLotAliasTypeName();
                 var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
@@ -94,5 +105,5 @@ public class DeleteLotAliasCommand
 
         return null;
     }
-    
+
 }

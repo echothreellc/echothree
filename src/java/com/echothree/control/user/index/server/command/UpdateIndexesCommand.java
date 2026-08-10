@@ -54,13 +54,12 @@ import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.queue.common.QueuedEntityConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.ThreadSession;
 import static java.lang.Math.toIntExact;
 import java.util.ArrayList;
@@ -69,6 +68,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @Dependent
 public class UpdateIndexesCommand
@@ -78,9 +79,22 @@ public class UpdateIndexesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
-        );
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
+        ));
     }
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    QueueControl queueControl;
+
+    @Inject
+    QueueTypeLogic queueTypeLogic;
+
+    @Inject
+    SearchLogic searchLogic;
+
     
     /** Creates a new instance of UpdateIndexesCommand */
     public UpdateIndexesCommand() {
@@ -88,7 +102,7 @@ public class UpdateIndexesCommand
     }
     
     private static final int QUEUED_ENTITY_COUNT = 10;
-    private static final long MAXIMUM_MILLISECONDS = 90 * 1000; // 90 seconds
+    private static final long MAXIMUM_MILLISECONDS = 40 * 1000; // 40 seconds, allows time to close indexes
     
     private void setLimits() {
         var limits = new HashMap<String, Limit>(1);
@@ -98,7 +112,6 @@ public class UpdateIndexesCommand
     }
     
     private Map<EntityInstance, List<QueuedEntity>> getQueuedEntities(final QueueType queueType) {
-        var queueControl = Session.getModelController(QueueControl.class);
         var queuedEntityMap = new HashMap<EntityInstance, List<QueuedEntity>>(QUEUED_ENTITY_COUNT);
         var queuedEntities = queueControl.getQueuedEntitiesByQueueType(queueType);
         
@@ -128,51 +141,51 @@ public class UpdateIndexesCommand
                 BaseIndexer<?> baseIndexer = null;
 
                 if(indexTypeName.equals(IndexTypes.CUSTOMER.name())) {
-                    baseIndexer = new CustomerIndexer(this, index);
+                    baseIndexer = CDI.current().select(CustomerIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.EMPLOYEE.name())) {
-                    baseIndexer = new EmployeeIndexer(this, index);
+                    baseIndexer = CDI.current().select(EmployeeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.VENDOR.name())) {
-                    baseIndexer = new VendorIndexer(this, index);
+                    baseIndexer = CDI.current().select(VendorIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ITEM.name())) {
-                    baseIndexer = new ItemIndexer(this, index);
+                    baseIndexer = CDI.current().select(ItemIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.FORUM_MESSAGE.name())) {
-                    baseIndexer = new ForumMessageIndexer(this, index);
+                    baseIndexer = CDI.current().select(ForumMessageIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.COMPONENT_VENDOR.name())) {
-                    baseIndexer = new ComponentVendorIndexer(this, index);
+                    baseIndexer = CDI.current().select(ComponentVendorIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_TYPE.name())) {
-                    baseIndexer = new EntityTypeIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityTypeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_ALIAS_TYPE.name())) {
-                    baseIndexer = new EntityAliasTypeIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityAliasTypeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_ATTRIBUTE_GROUP.name())) {
-                    baseIndexer = new EntityAttributeGroupIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityAttributeGroupIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_ATTRIBUTE.name())) {
-                    baseIndexer = new EntityAttributeIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityAttributeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.ENTITY_LIST_ITEM.name())) {
-                    baseIndexer = new EntityListItemIndexer(this, index);
+                    baseIndexer = CDI.current().select(EntityListItemIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATALOG.name())) {
-                    baseIndexer = new ContentCatalogIndexer(this, index);
+                    baseIndexer = CDI.current().select(ContentCatalogIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATALOG_ITEM.name())) {
-                    baseIndexer = new ContentCatalogItemIndexer(this, index);
+                    baseIndexer = CDI.current().select(ContentCatalogItemIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTENT_CATEGORY.name())) {
-                    baseIndexer = new ContentCategoryIndexer(this, index);
+                    baseIndexer = CDI.current().select(ContentCategoryIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE_GROUP.name())) {
-                    baseIndexer = new SecurityRoleGroupIndexer(this, index);
+                    baseIndexer = CDI.current().select(SecurityRoleGroupIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE.name())) {
-                    baseIndexer = new SecurityRoleIndexer(this, index);
+                    baseIndexer = CDI.current().select(SecurityRoleIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.HARMONIZED_TARIFF_SCHEDULE_CODE.name())) {
-                    baseIndexer = new HarmonizedTariffScheduleCodeIndexer(this, index);
+                    baseIndexer = CDI.current().select(HarmonizedTariffScheduleCodeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.CONTACT_MECHANISM.name())) {
-                    baseIndexer = new ContactMechanismIndexer(this, index);
+                    baseIndexer = CDI.current().select(ContactMechanismIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.OFFER.name())) {
-                    baseIndexer = new OfferIndexer(this, index);
+                    baseIndexer = CDI.current().select(OfferIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.USE.name())) {
-                    baseIndexer = new UseIndexer(this, index);
+                    baseIndexer = CDI.current().select(UseIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.USE_TYPE.name())) {
-                    baseIndexer = new UseTypeIndexer(this, index);
+                    baseIndexer = CDI.current().select(UseTypeIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.SHIPPING_METHOD.name())) {
-                    baseIndexer = new ShippingMethodIndexer(this, index);
+                    baseIndexer = CDI.current().select(ShippingMethodIndexer.class).get().setup(this, index);
                 } else if(indexTypeName.equals(IndexTypes.WAREHOUSE.name())) {
-                    baseIndexer = new WarehouseIndexer(this, index);
+                    baseIndexer = CDI.current().select(WarehouseIndexer.class).get().setup(this, index);
                 }
 
                 return baseIndexer;
@@ -187,7 +200,9 @@ public class UpdateIndexesCommand
         var entityInstance = queuedEntityEntry.getKey();
         var entityType = entityInstance.getEntityType();
         var baseIndexers = indexersMap.get(entityType);
-        
+
+        log.info("indexing {}", PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance).toString());
+
         for(var baseIndexer : baseIndexers) {
             baseIndexer.updateIndex(entityInstance);
 
@@ -204,7 +219,7 @@ public class UpdateIndexesCommand
     private void closeIndexers(final QueueControl queueControl, final QueueType queueType, final Map<EntityType, List<BaseIndexer<?>>> indexersMap) {
         indexersMap.forEach((key, value) -> value.stream().peek((baseIndexer) -> {
             if(queueControl.countQueuedEntitiesByEntityType(queueType, baseIndexer.getEntityType()) == 0) {
-                SearchLogic.getInstance().invalidateCachedSearchesByIndex(baseIndexer.getIndex());
+                searchLogic.invalidateCachedSearchesByIndex(baseIndexer.getIndex());
             }
         }).forEach(BaseIndexer::close));
     }
@@ -244,17 +259,14 @@ public class UpdateIndexesCommand
     @Override
     protected BaseResult execute() {
         var result = IndexResultFactory.getUpdateIndexesResult();
-        var queueType = QueueTypeLogic.getInstance().getQueueTypeByName(this, QueueTypes.INDEXING.name());
+        var queueType = queueTypeLogic.getQueueTypeByName(this, QueueTypes.INDEXING.name());
         var indexingComplete = false; // Indexing is only complete when we can absolutely verify it as being complete.
         
         if(!hasExecutionErrors()) {
-            var queueControl = Session.getModelController(QueueControl.class);
-            
             indexingComplete = queueControl.countQueuedEntitiesByQueueType(queueType) == 0;
             
             // If there isn't anything in the queue, skip over all of this.
             if(!indexingComplete) {
-                var indexControl = Session.getModelController(IndexControl.class);
                 var indexersMap = new HashMap<EntityType, List<BaseIndexer<?>>>(toIntExact(indexControl.countIndexes()));
 
                 try {

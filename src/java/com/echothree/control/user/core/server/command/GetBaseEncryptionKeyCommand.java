@@ -56,6 +56,7 @@ public class GetBaseEncryptionKeyCommand
 
     @Inject
     EncryptionKeyControl encryptionKeyControl;
+
     
     /** Creates a new instance of GetBaseEncryptionKeyCommand */
     public GetBaseEncryptionKeyCommand() {

@@ -44,6 +44,9 @@ public class SecurityRoleGroupLogic
     @Inject
     protected SecurityControl securityControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected SecurityRoleGroupLogic() {
         super();
     }
@@ -100,7 +103,7 @@ public class SecurityRoleGroupLogic
             final SecurityRoleGroupUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SecurityRoleGroup securityRoleGroup = null;
         var securityRoleGroupName = universalSpec.getSecurityRoleGroupName();
-        var parameterCount = (securityRoleGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (securityRoleGroupName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -116,10 +119,10 @@ public class SecurityRoleGroupLogic
             }
             case 1 -> {
                 if(securityRoleGroupName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SecurityRoleGroup.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         securityRoleGroup = securityControl.getSecurityRoleGroupByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

@@ -42,14 +42,38 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ReturnPolicyLogic
         extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OrderControl orderControl;
+
+    @Inject
+    OrderLineControl orderLineControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
+    @Inject
+    ReturnKindLogic returnKindLogic;
 
     protected ReturnPolicyLogic() {
         super();
@@ -62,8 +86,8 @@ public class ReturnPolicyLogic
     public ReturnPolicy createReturnPolicy(final ExecutionErrorAccumulator eea, final String returnKindName, final String returnPolicyName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final String policyMimeTypeName,
             final String policy, final BasePK createdBy) {
-        var returnKind = ReturnKindLogic.getInstance().getReturnKindByName(eea, returnKindName);
-        var policyMimeType = MimeTypeLogic.getInstance().checkMimeType(eea, policyMimeTypeName, policy, MimeTypeUsageTypes.TEXT.name(),
+        var returnKind = returnKindLogic.getReturnKindByName(eea, returnKindName);
+        var policyMimeType = mimeTypeLogic.checkMimeType(eea, policyMimeTypeName, policy, MimeTypeUsageTypes.TEXT.name(),
                 ExecutionErrors.MissingRequiredPolicyMimeTypeName.name(), ExecutionErrors.MissingRequiredPolicy.name(),
                 ExecutionErrors.UnknownPolicyMimeTypeName.name(), ExecutionErrors.UnknownPolicyMimeTypeUsage.name());
         ReturnPolicy returnPolicy = null;
@@ -78,7 +102,6 @@ public class ReturnPolicyLogic
     public ReturnPolicy createReturnPolicy(final ExecutionErrorAccumulator eea, final ReturnKind returnKind, final String returnPolicyName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final MimeType policyMimeType,
             final String policy, final BasePK createdBy) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
         if(returnPolicy == null) {
@@ -95,7 +118,6 @@ public class ReturnPolicyLogic
 
     public ReturnPolicy getReturnPolicyByName(final ExecutionErrorAccumulator eea, final ReturnKind returnKind, final String returnPolicyName,
             final EntityPermission entityPermission) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName, entityPermission);
 
         if(returnPolicy == null) {
@@ -116,10 +138,10 @@ public class ReturnPolicyLogic
 
     public ReturnPolicy getReturnPolicyByName(final ExecutionErrorAccumulator eea, final String returnKindName, final String returnPolicyName,
             final EntityPermission entityPermission) {
-        var returnKind = ReturnKindLogic.getInstance().getReturnKindByName(eea, returnKindName);
+        var returnKind = returnKindLogic.getReturnKindByName(eea, returnKindName);
         ReturnPolicy returnPolicy = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             returnPolicy = getReturnPolicyByName(eea, returnKind, returnPolicyName, entityPermission);
         }
 
@@ -136,11 +158,10 @@ public class ReturnPolicyLogic
 
     public ReturnPolicy getReturnPolicyByUniversalSpec(final ExecutionErrorAccumulator eea, final ReturnPolicyUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var returnKindName = universalSpec.getReturnKindName();
         var returnPolicyName = universalSpec.getReturnPolicyName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(returnKindName, returnPolicyName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var possibleEntitySpecs= entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         ReturnPolicy returnPolicy = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
@@ -157,10 +178,10 @@ public class ReturnPolicyLogic
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             } else {
-                returnKind = ReturnKindLogic.getInstance().getReturnKindByName(eea, returnKindName);
+                returnKind = returnKindLogic.getReturnKindByName(eea, returnKindName);
             }
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(returnPolicyName == null) {
                     if(allowDefault) {
                         returnPolicy = returnPolicyControl.getDefaultReturnPolicy(returnKind, entityPermission);
@@ -176,10 +197,10 @@ public class ReturnPolicyLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.ReturnPolicy.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 returnPolicy = returnPolicyControl.getReturnPolicyByEntityInstance(entityInstance, entityPermission);
             }
         } else {
@@ -208,7 +229,6 @@ public class ReturnPolicyLogic
         }
 
         if(returnPolicy == null) {
-            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
             if(returnKind != null) {
@@ -226,14 +246,10 @@ public class ReturnPolicyLogic
     }
 
     public void checkDeleteReturnPolicy(final ExecutionErrorAccumulator eea, final ReturnPolicy returnPolicy) {
-        var orderControl = Session.getModelController(OrderControl.class);
-
         // Both CUSTOMERs and VENDORs use Orders and OrderLines, so check for ReturnPolicy use there first.
         var inUse = orderControl.countOrdersByReturnPolicy(returnPolicy) != 0;
 
         if(!inUse) {
-            var orderLineControl = Session.getModelController(OrderLineControl.class);
-
             inUse |= orderLineControl.countOrderLinesByReturnPolicy(returnPolicy) != 0;
         }
 
@@ -241,12 +257,8 @@ public class ReturnPolicyLogic
             var returnKindName = returnPolicy.getLastDetail().getReturnKind().getLastDetail().getReturnKindName();
 
             if(returnKindName.equals(ReturnKinds.CUSTOMER_RETURN.name())) {
-                var itemControl = Session.getModelController(ItemControl.class);
-
                 inUse |= itemControl.countItemsByReturnPolicy(returnPolicy) != 0;
             } else if(returnKindName.equals(ReturnKinds.VENDOR_RETURN.name())) {
-                var vendorControl = Session.getModelController(VendorControl.class);
-
                 inUse |= vendorControl.countVendorItemsByReturnPolicy(returnPolicy) != 0;
             }
         }
@@ -257,8 +269,6 @@ public class ReturnPolicyLogic
     }
 
     public void deleteReturnPolicy(final ReturnPolicy returnPolicy, final BasePK deletedBy) {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-
         returnPolicyControl.deleteReturnPolicy(returnPolicy, deletedBy);
     }
 

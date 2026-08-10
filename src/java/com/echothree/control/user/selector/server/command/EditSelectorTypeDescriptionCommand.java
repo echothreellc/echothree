@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSelectorTypeDescriptionCommand
@@ -55,18 +55,24 @@ public class EditSelectorTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SelectorControl selectorControl;
 
     /** Creates a new instance of EditSelectorTypeDescriptionCommand */
     public EditSelectorTypeDescriptionCommand() {
@@ -85,7 +91,6 @@ public class EditSelectorTypeDescriptionCommand
 
     @Override
     public SelectorTypeDescription getEntity(EditSelectorTypeDescriptionResult result) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorTypeDescription selectorTypeDescription = null;
         var selectorKindName = spec.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
@@ -95,7 +100,6 @@ public class EditSelectorTypeDescriptionCommand
             var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
             if(selectorType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -129,8 +133,6 @@ public class EditSelectorTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSelectorTypeDescriptionResult result, SelectorTypeDescription selectorTypeDescription) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-
         result.setSelectorTypeDescription(selectorControl.getSelectorTypeDescriptionTransfer(getUserVisit(), selectorTypeDescription));
     }
 
@@ -141,7 +143,6 @@ public class EditSelectorTypeDescriptionCommand
 
     @Override
     public void doUpdate(SelectorTypeDescription selectorTypeDescription) {
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorTypeDescriptionValue = selectorControl.getSelectorTypeDescriptionValue(selectorTypeDescription);
 
         selectorTypeDescriptionValue.setDescription(edit.getDescription());

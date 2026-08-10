@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemAliasChecksumTypesCommand
@@ -50,9 +50,11 @@ public class GetItemAliasChecksumTypesCommand
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ItemControl itemControl;
 
     /** Creates a new instance of GetItemAliasChecksumTypesCommand */
     public GetItemAliasChecksumTypesCommand() {
@@ -66,15 +68,11 @@ public class GetItemAliasChecksumTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.countItemAliasChecksumTypes();
     }
 
     @Override
     protected Collection<ItemAliasChecksumType> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         return itemControl.getItemAliasChecksumTypes();
     }
 
@@ -83,8 +81,6 @@ public class GetItemAliasChecksumTypesCommand
         var result = ItemResultFactory.getGetItemAliasChecksumTypesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
             if(session.hasLimit(ItemAliasChecksumTypeFactory.class)) {
                 result.setItemAliasChecksumTypeCount(getTotalEntities());
             }

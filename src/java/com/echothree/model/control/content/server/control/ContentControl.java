@@ -203,6 +203,9 @@ import javax.inject.Inject;
 public class ContentControl
         extends BaseModelControl {
     
+    @Inject
+    protected ContentLogic contentLogic;
+
     /** Creates a new instance of ContentControl */
     protected ContentControl() {
         super();
@@ -278,9 +281,12 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Area Types
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageAreaTypeFactory contentPageAreaTypeFactory;
+
     public ContentPageAreaType createContentPageAreaType(String contentPageAreaTypeName, BasePK createdBy) {
-        var contentPageAreaType = ContentPageAreaTypeFactory.getInstance().create(contentPageAreaTypeName);
+        var contentPageAreaType = contentPageAreaTypeFactory.create(contentPageAreaTypeName);
         
         sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -298,7 +304,7 @@ public class ContentControl
     public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageAreaTypePK(entityInstance.getEntityUniqueId());
 
-        return ContentPageAreaTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentPageAreaTypeFactory.getEntityFromPK(entityPermission, pk);
     }
     
     public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance) {
@@ -315,19 +321,23 @@ public class ContentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM contentpageareatypes " +
-                "WHERE cntpat_contentpageareatypename = ?");
+                """
+                SELECT _ALL_
+                FROM contentpageareatypes
+                WHERE cntpat_contentpageareatypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM contentpageareatypes " +
-                "WHERE cntpat_contentpageareatypename = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contentpageareatypes
+                WHERE cntpat_contentpageareatypename = ?
+                FOR UPDATE
+                """);
         getContentPageAreaTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName, EntityPermission entityPermission) {
-        return ContentPageAreaTypeFactory.getInstance().getEntityFromQuery(entityPermission, getContentPageAreaTypeByNameQueries,
+        return contentPageAreaTypeFactory.getEntityFromQuery(entityPermission, getContentPageAreaTypeByNameQueries,
                 contentPageAreaTypeName);
     }
     
@@ -345,19 +355,23 @@ public class ContentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM contentpageareatypes " +
-                "ORDER BY cntpat_contentpageareatypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contentpageareatypes
+                ORDER BY cntpat_contentpageareatypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM contentpageareatypes " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contentpageareatypes
+                FOR UPDATE
+                """);
         getContentPageAreaTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<ContentPageAreaType> getContentPageAreaTypes(EntityPermission entityPermission) {
-        return ContentPageAreaTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContentPageAreaTypesQueries);
+        return contentPageAreaTypeFactory.getEntitiesFromQuery(entityPermission, getContentPageAreaTypesQueries);
     }
     
     public List<ContentPageAreaType> getContentPageAreaTypes() {
@@ -422,10 +436,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Area Type Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageAreaTypeDescriptionFactory contentPageAreaTypeDescriptionFactory;
+
     public ContentPageAreaTypeDescription createContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language,
             String description, BasePK createdBy) {
-        var contentPageAreaTypeDescription = ContentPageAreaTypeDescriptionFactory.getInstance().create(contentPageAreaType,
+        var contentPageAreaTypeDescription = contentPageAreaTypeDescriptionFactory.create(contentPageAreaType,
                 language, description);
         
         sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.MODIFY, contentPageAreaTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -437,15 +454,17 @@ public class ContentControl
         ContentPageAreaTypeDescription contentPageAreaTypeDescription;
         
         try {
-            var ps = ContentPageAreaTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpageareatypedescriptions " +
-                    "WHERE cntpatd_cntpat_contentpageareatypeid = ? AND cntpatd_lang_languageid = ?");
+            var ps = contentPageAreaTypeDescriptionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentpageareatypedescriptions
+                    WHERE cntpatd_cntpat_contentpageareatypeid = ? AND cntpatd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, contentPageAreaType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            contentPageAreaTypeDescription = ContentPageAreaTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageAreaTypeDescription = contentPageAreaTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -473,7 +492,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Layouts
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageLayoutFactory contentPageLayoutFactory;
+
+    @Inject
+    protected ContentPageLayoutDetailFactory contentPageLayoutDetailFactory;
+
     public ContentPageLayout createContentPageLayout(String contentPageLayoutName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContentPageLayout = getDefaultContentPageLayout();
         var defaultFound = defaultContentPageLayout != null;
@@ -487,12 +512,12 @@ public class ContentControl
             isDefault = true;
         }
 
-        var contentPageLayout = ContentPageLayoutFactory.getInstance().create();
-        var contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(
+        var contentPageLayout = contentPageLayoutFactory.create();
+        var contentPageLayoutDetail = contentPageLayoutDetailFactory.create(
                 contentPageLayout, contentPageLayoutName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayout.getPrimaryKey());
+        contentPageLayout = contentPageLayoutFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayout.getPrimaryKey());
         contentPageLayout.setActiveDetail(contentPageLayoutDetail);
         contentPageLayout.setLastDetail(contentPageLayoutDetail);
         contentPageLayout.store();
@@ -514,7 +539,7 @@ public class ContentControl
     public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageLayoutPK(entityInstance.getEntityUniqueId());
 
-        return ContentPageLayoutFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentPageLayoutFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance) {
@@ -531,19 +556,23 @@ public class ContentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM contentpagelayouts, contentpagelayoutdetails " +
-                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM contentpagelayouts, contentpagelayoutdetails
+                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM contentpagelayouts, contentpagelayoutdetails " +
-                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contentpagelayouts, contentpagelayoutdetails
+                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ?
+                FOR UPDATE
+                """);
         getContentPageLayoutByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName, EntityPermission entityPermission) {
-        return ContentPageLayoutFactory.getInstance().getEntityFromQuery(entityPermission, getContentPageLayoutByNameQueries,
+        return contentPageLayoutFactory.getEntityFromQuery(entityPermission, getContentPageLayoutByNameQueries,
                 contentPageLayoutName, Session.MAX_TIME);
     }
     
@@ -569,19 +598,23 @@ public class ContentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM contentpagelayouts, contentpagelayoutdetails " +
-                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM contentpagelayouts, contentpagelayoutdetails
+                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM contentpagelayouts, contentpagelayoutdetails " +
-                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contentpagelayouts, contentpagelayoutdetails
+                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ?
+                FOR UPDATE
+                """);
         getDefaultContentPageLayoutQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public ContentPageLayout getDefaultContentPageLayout(EntityPermission entityPermission) {
-        return ContentPageLayoutFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContentPageLayoutQueries,
+        return contentPageLayoutFactory.getEntityFromQuery(entityPermission, getDefaultContentPageLayoutQueries,
                 Session.MAX_TIME);
     }
     
@@ -603,21 +636,25 @@ public class ContentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM contentpagelayouts, contentpagelayoutdetails " +
-                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
-                "ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contentpagelayouts, contentpagelayoutdetails
+                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ?
+                ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM contentpagelayouts, contentpagelayoutdetails " +
-                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contentpagelayouts, contentpagelayoutdetails
+                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ?
+                FOR UPDATE
+                """);
         getContentPageLayoutsQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<ContentPageLayout> getContentPageLayouts(EntityPermission entityPermission) {
-        return ContentPageLayoutFactory.getInstance().getEntitiesFromQuery(entityPermission, getContentPageLayoutsQueries,
+        return contentPageLayoutFactory.getEntitiesFromQuery(entityPermission, getContentPageLayoutsQueries,
                 Session.MAX_TIME);
     }
     
@@ -685,7 +722,7 @@ public class ContentControl
     private void updateContentPageLayoutFromValue(ContentPageLayoutDetailValue contentPageLayoutDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(contentPageLayoutDetailValue.hasBeenModified()) {
-            var contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentPageLayout = contentPageLayoutFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contentPageLayoutDetailValue.getContentPageLayoutPK());
             var contentPageLayoutDetail = contentPageLayout.getActiveDetailForUpdate();
             
@@ -713,7 +750,7 @@ public class ContentControl
                 }
             }
             
-            contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(contentPageLayoutPK,
+            contentPageLayoutDetail = contentPageLayoutDetailFactory.create(contentPageLayoutPK,
                     contentPageLayoutName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             contentPageLayout.setActiveDetail(contentPageLayoutDetail);
@@ -759,9 +796,12 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Layout Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageLayoutDescriptionFactory contentPageLayoutDescriptionFactory;
+
     public ContentPageLayoutDescription createContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, String description, BasePK createdBy) {
-        var contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description, session.getStartTime(),
+        var contentPageLayoutDescription = contentPageLayoutDescriptionFactory.create(contentPageLayout, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY, contentPageLayoutDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -776,23 +816,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayoutdescriptions " +
-                        "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpagelayoutdescriptions
+                        WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayoutdescriptions " +
-                        "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpagelayoutdescriptions
+                        WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentPageLayoutDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentPageLayoutDescription = contentPageLayoutDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -823,23 +867,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayoutdescriptions, languages " +
-                        "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ? AND cntpld_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpagelayoutdescriptions, languages
+                        WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ? AND cntpld_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayoutdescriptions " +
-                        "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpagelayoutdescriptions
+                        WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentPageLayoutDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentPageLayoutDescriptions = ContentPageLayoutDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentPageLayoutDescriptions = contentPageLayoutDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -889,7 +937,7 @@ public class ContentControl
     
     public void updateContentPageLayoutDescriptionFromValue(ContentPageLayoutDescriptionValue contentPageLayoutDescriptionValue, BasePK updatedBy) {
         if(contentPageLayoutDescriptionValue.hasBeenModified()) {
-            var contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayoutDescriptionValue.getPrimaryKey());
+            var contentPageLayoutDescription = contentPageLayoutDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayoutDescriptionValue.getPrimaryKey());
             
             contentPageLayoutDescription.setThruTime(session.getStartTime());
             contentPageLayoutDescription.store();
@@ -898,7 +946,7 @@ public class ContentControl
             var language = contentPageLayoutDescription.getLanguage();
             var description = contentPageLayoutDescriptionValue.getDescription();
             
-            contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description,
+            contentPageLayoutDescription = contentPageLayoutDescriptionFactory.create(contentPageLayout, language, description,
                     session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY, contentPageLayoutDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -923,18 +971,23 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Layout Areas
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageLayoutAreaFactory contentPageLayoutAreaFactory;
+
     public ContentPageLayoutArea createContentPageLayoutArea(ContentPageLayout contentPageLayout,
             ContentPageAreaType contentPageAreaType, Boolean showDescriptionField, Integer sortOrder) {
-        return ContentPageLayoutAreaFactory.getInstance().create(contentPageLayout, contentPageAreaType,
+        return contentPageLayoutAreaFactory.create(contentPageLayout, contentPageAreaType,
                 showDescriptionField, sortOrder);
     }
     
     public long countContentPageLayoutAreasByContentPageLayout(ContentPageLayout contentPageLayout) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentpagelayoutareas " +
-                "WHERE cntpla_cntpl_contentpagelayoutid = ?",
+                """
+                SELECT COUNT(*)
+                FROM contentpagelayoutareas
+                WHERE cntpla_cntpl_contentpagelayoutid = ?
+                """,
                 contentPageLayout);
     }
 
@@ -942,15 +995,17 @@ public class ContentControl
         ContentPageLayoutArea contentPageLayoutArea;
         
         try {
-            var ps = ContentPageLayoutAreaFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpagelayoutareas " +
-                    "WHERE cntpla_cntpl_contentpagelayoutid = ? AND cntpla_sortorder = ?");
+            var ps = contentPageLayoutAreaFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentpagelayoutareas
+                    WHERE cntpla_cntpl_contentpagelayoutid = ? AND cntpla_sortorder = ?
+                    """);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             ps.setInt(2, sortOrder);
             
-            contentPageLayoutArea = ContentPageLayoutAreaFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageLayoutArea = contentPageLayoutAreaFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -962,16 +1017,18 @@ public class ContentControl
         List<ContentPageLayoutArea> contentPageLayoutAreas;
         
         try {
-            var ps = ContentPageLayoutAreaFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpagelayoutareas " +
-                    "WHERE cntpla_cntpl_contentpagelayoutid = ? " +
-                    "ORDER BY cntpla_sortorder " +
-                    "_LIMIT_");
+            var ps = contentPageLayoutAreaFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentpagelayoutareas
+                    WHERE cntpla_cntpl_contentpagelayoutid = ?
+                    ORDER BY cntpla_sortorder
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             
-            contentPageLayoutAreas = ContentPageLayoutAreaFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageLayoutAreas = contentPageLayoutAreaFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1000,24 +1057,29 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Layout Area Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageLayoutAreaDescriptionFactory contentPageLayoutAreaDescriptionFactory;
+
     public ContentPageLayoutAreaDescription createContentPageLayoutAreaDescription(ContentPageLayoutArea contentPageLayoutArea, Language language, String description) {
-        return ContentPageLayoutAreaDescriptionFactory.getInstance().create(contentPageLayoutArea, language, description);
+        return contentPageLayoutAreaDescriptionFactory.create(contentPageLayoutArea, language, description);
     }
     
     public ContentPageLayoutAreaDescription getContentPageLayoutAreaDescription(ContentPageLayoutArea contentPageLayoutArea, Language language) {
         ContentPageLayoutAreaDescription contentPageLayoutAreaDescription;
         
         try {
-            var ps = ContentPageLayoutAreaDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpagelayoutareadescriptions " +
-                    "WHERE cntplad_cntpla_contentpagelayoutareaid = ? AND cntplad_lang_languageid = ?");
+            var ps = contentPageLayoutAreaDescriptionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentpagelayoutareadescriptions
+                    WHERE cntplad_cntpla_contentpagelayoutareaid = ? AND cntplad_lang_languageid = ?
+                    """);
             
             ps.setLong(1, contentPageLayoutArea.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            contentPageLayoutAreaDescription = ContentPageLayoutAreaDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageLayoutAreaDescription = contentPageLayoutAreaDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1045,14 +1107,20 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Collections
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentCollectionFactory contentCollectionFactory;
+
+    @Inject
+    protected ContentCollectionDetailFactory contentCollectionDetailFactory;
+
     public ContentCollection createContentCollection(String contentCollectionName, OfferUse defaultOfferUse, BasePK createdBy) {
-        var contentCollection = ContentCollectionFactory.getInstance().create();
-        var contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(
+        var contentCollection = contentCollectionFactory.create();
+        var contentCollectionDetail = contentCollectionDetailFactory.create(
                 contentCollection, contentCollectionName, defaultOfferUse, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        contentCollection = ContentCollectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCollection.getPrimaryKey());
+        contentCollection = contentCollectionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentCollection.getPrimaryKey());
         contentCollection.setActiveDetail(contentCollectionDetail);
         contentCollection.setLastDetail(contentCollectionDetail);
         contentCollection.store();
@@ -1083,7 +1151,7 @@ public class ContentControl
     public ContentCollection getContentCollectionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentCollectionPK(entityInstance.getEntityUniqueId());
 
-        return ContentCollectionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentCollectionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentCollection getContentCollectionByEntityInstance(EntityInstance entityInstance) {
@@ -1098,16 +1166,18 @@ public class ContentControl
         List<ContentCollection> contentCollections;
         
         try {
-            var ps = ContentCollectionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentcollections, contentcollectiondetails " +
-                    "WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_thrutime = ? " +
-                    "ORDER BY cntcdt_contentcollectionname " +
-                    "_LIMIT_");
+            var ps = contentCollectionFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentcollections, contentcollectiondetails
+                    WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_thrutime = ?
+                    ORDER BY cntcdt_contentcollectionname
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, Session.MAX_TIME);
             
-            contentCollections = ContentCollectionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            contentCollections = contentCollectionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1122,22 +1192,26 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcollections, contentcollectiondetails " +
-                        "WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_contentcollectionname = ? AND cntcdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcollections, contentcollectiondetails
+                        WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_contentcollectionname = ? AND cntcdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcollections, contentcollectiondetails " +
-                        "WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_contentcollectionname = ? AND cntcdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcollections, contentcollectiondetails
+                        WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_contentcollectionname = ? AND cntcdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCollectionFactory.getInstance().prepareStatement(query);
+            var ps = contentCollectionFactory.prepareStatement(query);
             
             ps.setString(1, contentCollectionName);
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCollection = ContentCollectionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCollection = contentCollectionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1203,7 +1277,7 @@ public class ContentControl
     
     public void updateContentCollectionFromValue(ContentCollectionDetailValue contentCollectionDetailValue, BasePK updatedBy) {
         if(contentCollectionDetailValue.hasBeenModified()) {
-            var contentCollection = ContentCollectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentCollection = contentCollectionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contentCollectionDetailValue.getContentCollectionPK());
             var contentCollectionDetail = contentCollection.getActiveDetailForUpdate();
 
@@ -1214,7 +1288,7 @@ public class ContentControl
             var contentCollectionName = contentCollectionDetailValue.getContentCollectionName();
             var defaultOfferUsePK = contentCollectionDetailValue.getDefaultOfferUsePK();
 
-            contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(contentCollectionPK,
+            contentCollectionDetail = contentCollectionDetailFactory.create(contentCollectionPK,
                     contentCollectionName, defaultOfferUsePK, session.getStartTime(), Session.MAX_TIME);
 
             contentCollection.setActiveDetail(contentCollectionDetail);
@@ -1240,10 +1314,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Collection Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentCollectionDescriptionFactory contentCollectionDescriptionFactory;
+
     public ContentCollectionDescription createContentCollectionDescription(ContentCollection contentCollection, Language language, String description, BasePK createdBy) {
 
-        var contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.getStartTime(),
+        var contentCollectionDescription = contentCollectionDescriptionFactory.create(contentCollection, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(contentCollection.getPrimaryKey(), EventTypes.MODIFY, contentCollectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1258,23 +1335,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcollectiondescriptions " +
-                        "WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_lang_languageid = ? AND cntcd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcollectiondescriptions
+                        WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_lang_languageid = ? AND cntcd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcollectiondescriptions " +
-                        "WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_lang_languageid = ? AND cntcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcollectiondescriptions
+                        WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_lang_languageid = ? AND cntcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCollectionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentCollectionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCollectionDescription = contentCollectionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1305,24 +1386,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcollectiondescriptions, languages " +
-                        "WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_thrutime = ? AND cntcd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcollectiondescriptions, languages
+                        WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_thrutime = ? AND cntcd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcollectiondescriptions " +
-                        "WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcollectiondescriptions
+                        WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCollectionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentCollectionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCollectionDescriptions = ContentCollectionDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCollectionDescriptions = contentCollectionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1372,7 +1457,7 @@ public class ContentControl
     
     public void updateContentCollectionDescriptionFromValue(ContentCollectionDescriptionValue contentCollectionDescriptionValue, BasePK updatedBy) {
         if(contentCollectionDescriptionValue.hasBeenModified()) {
-            var contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCollectionDescriptionValue.getPrimaryKey());
+            var contentCollectionDescription = contentCollectionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentCollectionDescriptionValue.getPrimaryKey());
             
             contentCollectionDescription.setThruTime(session.getStartTime());
             contentCollectionDescription.store();
@@ -1381,7 +1466,7 @@ public class ContentControl
             var language = contentCollectionDescription.getLanguage();
             var description = contentCollectionDescriptionValue.getDescription();
             
-            contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.getStartTime(), Session.MAX_TIME);
+            contentCollectionDescription = contentCollectionDescriptionFactory.create(contentCollection, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentCollection.getPrimaryKey(), EventTypes.MODIFY, contentCollectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1405,7 +1490,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Sections
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentSectionFactory contentSectionFactory;
+
+    @Inject
+    protected ContentSectionDetailFactory contentSectionDetailFactory;
+
     public ContentSection createContentSection(ContentCollection contentCollection, String contentSectionName,
             ContentSection parentContentSection, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContentSection = getDefaultContentSection(contentCollection);
@@ -1426,12 +1517,12 @@ public class ContentControl
             isDefault = true;
         }
 
-        var contentSection = ContentSectionFactory.getInstance().create();
-        var contentSectionDetail = ContentSectionDetailFactory.getInstance().create(contentSection, contentCollection, contentSectionName, parentContentSection, isDefault,
+        var contentSection = contentSectionFactory.create();
+        var contentSectionDetail = contentSectionDetailFactory.create(contentSection, contentCollection, contentSectionName, parentContentSection, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        contentSection = ContentSectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentSection.getPrimaryKey());
+        contentSection = contentSectionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentSection.getPrimaryKey());
         contentSection.setActiveDetail(contentSectionDetail);
         contentSection.setLastDetail(contentSectionDetail);
         contentSection.store();
@@ -1465,25 +1556,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsections, contentsectiondetails " +
-                        "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ? " +
-                        "ORDER BY cntsdt_sortorder, cntsdt_contentsectionname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ?
+                        ORDER BY cntsdt_sortorder, cntsdt_contentsectionname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsections, contentsectiondetails " +
-                        "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ? " +
-                        "ORDER BY cntsdt_sortorder, cntsdt_contentsectionname " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ?
+                        ORDER BY cntsdt_sortorder, cntsdt_contentsectionname
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentSectionFactory.getInstance().prepareStatement(query);
+            var ps = contentSectionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentSections = ContentSectionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentSections = contentSectionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1506,25 +1601,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsections, contentsectiondetails " +
-                        "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_parentcontentsectionid = ? AND cntsdt_thrutime = ? " +
-                        "ORDER BY cntsdt_sortorder, cntsdt_contentsectionname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_parentcontentsectionid = ? AND cntsdt_thrutime = ?
+                        ORDER BY cntsdt_sortorder, cntsdt_contentsectionname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsections, contentsectiondetails " +
-                        "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_parentcontentsectionid = ? AND cntsdt_thrutime = ? " +
-                        "ORDER BY cntsdt_sortorder, cntsdt_contentsectionname " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_parentcontentsectionid = ? AND cntsdt_thrutime = ?
+                        ORDER BY cntsdt_sortorder, cntsdt_contentsectionname
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentSectionFactory.getInstance().prepareStatement(query);
+            var ps = contentSectionFactory.prepareStatement(query);
             
             ps.setLong(1, parentContentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentSections = ContentSectionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentSections = contentSectionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1547,23 +1646,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsections, contentsectiondetails " +
-                        "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_contentsectionname = ? AND cntsdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_contentsectionname = ? AND cntsdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsections, contentsectiondetails " +
-                        "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_contentsectionname = ? AND cntsdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_contentsectionname = ? AND cntsdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentSectionFactory.getInstance().prepareStatement(query);
+            var ps = contentSectionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setString(2, contentSectionName);
             ps.setLong(3, Session.MAX_TIME);
             
-            contentSection = ContentSectionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentSection = contentSectionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1594,22 +1697,26 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsections, contentsectiondetails " +
-                        "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_isdefault = 1 AND cntsdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_isdefault = 1 AND cntsdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsections, contentsectiondetails " +
-                        "WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_isdefault = 1 AND cntsdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsections, contentsectiondetails
+                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_isdefault = 1 AND cntsdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentSectionFactory.getInstance().prepareStatement(query);
+            var ps = contentSectionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentSection = ContentSectionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentSection = contentSectionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1706,7 +1813,7 @@ public class ContentControl
     
     private void updateContentSectionFromValue(ContentSectionDetailValue contentSectionDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentSectionDetailValue.hasBeenModified()) {
-            var contentSection = ContentSectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentSectionDetailValue.getContentSectionPK());
+            var contentSection = contentSectionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentSectionDetailValue.getContentSectionPK());
             var contentSectionDetail = contentSection.getActiveDetailForUpdate();
 
             contentSectionDetail.setThruTime(session.getStartTime());
@@ -1736,7 +1843,7 @@ public class ContentControl
                 }
             }
 
-            contentSectionDetail = ContentSectionDetailFactory.getInstance().create(contentSectionPK, contentCollectionPK, contentSectionName, parentContentSectionPK, isDefault,
+            contentSectionDetail = contentSectionDetailFactory.create(contentSectionPK, contentCollectionPK, contentSectionName, parentContentSectionPK, isDefault,
                     sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             contentSection.setActiveDetail(contentSectionDetail);
@@ -1813,10 +1920,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Section Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentSectionDescriptionFactory contentSectionDescriptionFactory;
+
     public ContentSectionDescription createContentSectionDescription(ContentSection contentSection, Language language, String description, BasePK createdBy) {
 
-        var contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.getStartTime(),
+        var contentSectionDescription = contentSectionDescriptionFactory.create(contentSection, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(contentSection.getPrimaryKey(), EventTypes.MODIFY, contentSectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1831,23 +1941,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsectiondescriptions " +
-                        "WHERE cntsd_cnts_contentsectionid = ? AND cntsd_lang_languageid = ? AND cntsd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsectiondescriptions
+                        WHERE cntsd_cnts_contentsectionid = ? AND cntsd_lang_languageid = ? AND cntsd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsectiondescriptions " +
-                        "WHERE cntsd_cnts_contentsectionid = ? AND cntsd_lang_languageid = ? AND cntsd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsectiondescriptions
+                        WHERE cntsd_cnts_contentsectionid = ? AND cntsd_lang_languageid = ? AND cntsd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentSectionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentSectionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentSectionDescription = ContentSectionDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentSectionDescription = contentSectionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1878,24 +1992,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsectiondescriptions, languages " +
-                        "WHERE cntsd_cnts_contentsectionid = ? AND cntsd_thrutime = ? AND cntsd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsectiondescriptions, languages
+                        WHERE cntsd_cnts_contentsectionid = ? AND cntsd_thrutime = ? AND cntsd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentsectiondescriptions " +
-                        "WHERE cntsd_cnts_contentsectionid = ? AND cntsd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentsectiondescriptions
+                        WHERE cntsd_cnts_contentsectionid = ? AND cntsd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentSectionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentSectionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentSectionDescriptions = ContentSectionDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentSectionDescriptions = contentSectionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1945,7 +2063,7 @@ public class ContentControl
     
     public void updateContentSectionDescriptionFromValue(ContentSectionDescriptionValue contentSectionDescriptionValue, BasePK updatedBy) {
         if(contentSectionDescriptionValue.hasBeenModified()) {
-            var contentSectionDescription = ContentSectionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentSectionDescriptionValue.getPrimaryKey());
+            var contentSectionDescription = contentSectionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentSectionDescriptionValue.getPrimaryKey());
             
             contentSectionDescription.setThruTime(session.getStartTime());
             contentSectionDescription.store();
@@ -1954,7 +2072,7 @@ public class ContentControl
             var language = contentSectionDescription.getLanguage();
             var description = contentSectionDescriptionValue.getDescription();
             
-            contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.getStartTime(), Session.MAX_TIME);
+            contentSectionDescription = contentSectionDescriptionFactory.create(contentSection, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentSection.getPrimaryKey(), EventTypes.MODIFY, contentSectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1976,7 +2094,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Pages
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageFactory contentPageFactory;
+
+    @Inject
+    protected ContentPageDetailFactory contentPageDetailFactory;
+
     public ContentPage createContentPage(ContentSection contentSection, String contentPageName, ContentPageLayout contentPageLayout, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultFound = getDefaultContentPage(contentSection) != null;
@@ -1990,12 +2114,12 @@ public class ContentControl
             isDefault = true;
         }
 
-        var contentPage = ContentPageFactory.getInstance().create();
-        var contentPageDetail = ContentPageDetailFactory.getInstance().create(contentPage, contentSection, contentPageName, contentPageLayout, isDefault, sortOrder,
+        var contentPage = contentPageFactory.create();
+        var contentPageDetail = contentPageDetailFactory.create(contentPage, contentSection, contentPageName, contentPageLayout, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        contentPage = ContentPageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPage.getPrimaryKey());
+        contentPage = contentPageFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentPage.getPrimaryKey());
         contentPage.setActiveDetail(contentPageDetail);
         contentPage.setLastDetail(contentPageDetail);
         contentPage.store();
@@ -2007,9 +2131,11 @@ public class ContentControl
     
     public long countContentPagesByContentSection(ContentSection contentSection) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentpagedetails " +
-                "WHERE cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM contentpagedetails
+                WHERE cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?
+                """,
                 contentSection, Session.MAX_TIME);
     }
 
@@ -2017,7 +2143,7 @@ public class ContentControl
     public ContentPage getContentPageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPagePK(entityInstance.getEntityUniqueId());
 
-        return ContentPageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentPageFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentPage getContentPageByEntityInstance(EntityInstance entityInstance) {
@@ -2035,25 +2161,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpages, contentpagedetails " +
-                        "WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ? " +
-                        "ORDER BY cntpdt_sortorder, cntpdt_contentpagename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpages, contentpagedetails
+                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?
+                        ORDER BY cntpdt_sortorder, cntpdt_contentpagename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpages, contentpagedetails " +
-                        "WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ? " +
-                        "ORDER BY cntpdt_sortorder, cntpdt_contentpagename " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpages, contentpagedetails
+                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?
+                        ORDER BY cntpdt_sortorder, cntpdt_contentpagename
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageFactory.getInstance().prepareStatement(query);
+            var ps = contentPageFactory.prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentPages = ContentPageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentPages = contentPageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2076,25 +2206,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpages, contentpagedetails, contentsections, contentsectiondetails " +
-                        "WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ? " +
-                        "AND cntpdt_cnts_contentsectionid = cnts_contentsectionid AND cnts_lastdetailid = cntsdt_contentsectiondetailid " +
-                        "ORDER BY ccntsdt_sortorder, cntsdt_contentsectionname, cntpdt_sortorder, cntpdt_contentpagename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpages, contentpagedetails, contentsections, contentsectiondetails
+                        WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ?
+                        AND cntpdt_cnts_contentsectionid = cnts_contentsectionid AND cnts_lastdetailid = cntsdt_contentsectiondetailid
+                        ORDER BY ccntsdt_sortorder, cntsdt_contentsectionname, cntpdt_sortorder, cntpdt_contentpagename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpages, contentpagedetails " +
-                        "WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ? " +
-                        "ORDER BY cntpdt_sortorder, cntpdt_contentpagename " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpages, contentpagedetails
+                        WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ?
+                        ORDER BY cntpdt_sortorder, cntpdt_contentpagename
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageFactory.getInstance().prepareStatement(query);
+            var ps = contentPageFactory.prepareStatement(query);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
 
-            contentPages = ContentPageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentPages = contentPageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2117,23 +2251,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpages, contentpagedetails " +
-                        "WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_contentpagename = ? AND cntpdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpages, contentpagedetails
+                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_contentpagename = ? AND cntpdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpages, contentpagedetails " +
-                        "WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_contentpagename = ? AND cntpdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpages, contentpagedetails
+                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_contentpagename = ? AND cntpdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageFactory.getInstance().prepareStatement(query);
+            var ps = contentPageFactory.prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setString(2, contentPageName);
             ps.setLong(3, Session.MAX_TIME);
             
-            contentPage = ContentPageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentPage = contentPageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2164,22 +2302,26 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpages, contentpagedetails " +
-                        "WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_isdefault = 1 AND cntpdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpages, contentpagedetails
+                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_isdefault = 1 AND cntpdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpages, contentpagedetails " +
-                        "WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_isdefault = 1 AND cntpdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpages, contentpagedetails
+                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_isdefault = 1 AND cntpdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageFactory.getInstance().prepareStatement(query);
+            var ps = contentPageFactory.prepareStatement(query);
             
             ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentPage = ContentPageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentPage = contentPageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2215,7 +2357,7 @@ public class ContentControl
     
     private void updateContentPageFromValue(ContentPageDetailValue contentPageDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentPageDetailValue.hasBeenModified()) {
-            var contentPage = ContentPageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageDetailValue.getContentPagePK());
+            var contentPage = contentPageFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentPageDetailValue.getContentPagePK());
             var contentPageDetail = contentPage.getActiveDetailForUpdate();
 
             contentPageDetail.setThruTime(session.getStartTime());
@@ -2251,7 +2393,7 @@ public class ContentControl
                 deleteContentPageAreasByContentPage(contentPage, updatedBy);
             }
 
-            contentPageDetail = ContentPageDetailFactory.getInstance().create(contentPagePK, contentSectionPK, contentPageName, contentPageLayoutPK, isDefault, sortOrder,
+            contentPageDetail = contentPageDetailFactory.create(contentPagePK, contentSectionPK, contentPageName, contentPageLayoutPK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
             contentPage.setActiveDetail(contentPageDetail);
@@ -2307,9 +2449,12 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageDescriptionFactory contentPageDescriptionFactory;
+
     public ContentPageDescription createContentPageDescription(ContentPage contentPage, Language language, String description, BasePK createdBy) {
-        var contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.getStartTime(),
+        var contentPageDescription = contentPageDescriptionFactory.create(contentPage, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(contentPage.getPrimaryKey(), EventTypes.MODIFY, contentPageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2324,23 +2469,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagedescriptions " +
-                        "WHERE cntpd_cntp_contentpageid = ? AND cntpd_lang_languageid = ? AND cntpd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpagedescriptions
+                        WHERE cntpd_cntp_contentpageid = ? AND cntpd_lang_languageid = ? AND cntpd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagedescriptions " +
-                        "WHERE cntpd_cntp_contentpageid = ? AND cntpd_lang_languageid = ? AND cntpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpagedescriptions
+                        WHERE cntpd_cntp_contentpageid = ? AND cntpd_lang_languageid = ? AND cntpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentPageDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentPageDescription = ContentPageDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentPageDescription = contentPageDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2371,24 +2520,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagedescriptions, languages " +
-                        "WHERE cntpd_cntp_contentpageid = ? AND cntpd_thrutime = ? AND cntpd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpagedescriptions, languages
+                        WHERE cntpd_cntp_contentpageid = ? AND cntpd_thrutime = ? AND cntpd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagedescriptions " +
-                        "WHERE cntpd_cntp_contentpageid = ? AND cntpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpagedescriptions
+                        WHERE cntpd_cntp_contentpageid = ? AND cntpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentPageDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentPageDescriptions = ContentPageDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentPageDescriptions = contentPageDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2438,7 +2591,7 @@ public class ContentControl
     
     public void updateContentPageDescriptionFromValue(ContentPageDescriptionValue contentPageDescriptionValue, BasePK updatedBy) {
         if(contentPageDescriptionValue.hasBeenModified()) {
-            var contentPageDescription = ContentPageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageDescriptionValue.getPrimaryKey());
+            var contentPageDescription = contentPageDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentPageDescriptionValue.getPrimaryKey());
             
             contentPageDescription.setThruTime(session.getStartTime());
             contentPageDescription.store();
@@ -2447,7 +2600,7 @@ public class ContentControl
             var language = contentPageDescription.getLanguage();
             var description = contentPageDescriptionValue.getDescription();
             
-            contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.getStartTime(), Session.MAX_TIME);
+            contentPageDescription = contentPageDescriptionFactory.create(contentPage, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentPage.getPrimaryKey(), EventTypes.MODIFY, contentPageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2469,14 +2622,20 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Areas
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageAreaFactory contentPageAreaFactory;
+
+    @Inject
+    protected ContentPageAreaDetailFactory contentPageAreaDetailFactory;
+
     public ContentPageArea createContentPageArea(ContentPage contentPage, ContentPageLayoutArea contentPageLayoutArea, Language language, MimeType mimeType, BasePK createdBy) {
-        var contentPageArea = ContentPageAreaFactory.getInstance().create();
-        var contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().create(contentPageArea, contentPage, contentPageLayoutArea,
+        var contentPageArea = contentPageAreaFactory.create();
+        var contentPageAreaDetail = contentPageAreaDetailFactory.create(contentPageArea, contentPage, contentPageLayoutArea,
                 language, mimeType, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        contentPageArea = ContentPageAreaFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageArea.getPrimaryKey());
+        contentPageArea = contentPageAreaFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentPageArea.getPrimaryKey());
         contentPageArea.setActiveDetail(contentPageAreaDetail);
         contentPageArea.setLastDetail(contentPageAreaDetail);
         contentPageArea.store();
@@ -2499,7 +2658,7 @@ public class ContentControl
     public ContentPageArea getContentPageAreaByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageAreaPK(entityInstance.getEntityUniqueId());
 
-        return ContentPageAreaFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentPageAreaFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentPageArea getContentPageAreaByEntityInstance(EntityInstance entityInstance) {
@@ -2517,25 +2676,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpageareas, contentpageareadetails, contentpagelayoutareas, languages " +
-                        "WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ? " +
-                        "AND cntpad_cntpla_contentpagelayoutareaid = cntpla_contentpagelayoutareaid AND cntpad_lang_languageid = lang_languageid " +
-                        "ORDER BY cntpla_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpageareas, contentpageareadetails, contentpagelayoutareas, languages
+                        WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ?
+                        AND cntpad_cntpla_contentpagelayoutareaid = cntpla_contentpagelayoutareaid AND cntpad_lang_languageid = lang_languageid
+                        ORDER BY cntpla_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpageareas, contentpageareadetails " +
-                        "WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpageareas, contentpageareadetails
+                        WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageAreaFactory.getInstance().prepareStatement(query);
+            var ps = contentPageAreaFactory.prepareStatement(query);
             
             ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentPageAreas = ContentPageAreaFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentPageAreas = contentPageAreaFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2557,21 +2720,25 @@ public class ContentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM contentpageareas, contentpageareadetails "
-                + "WHERE cntpa_activedetailid = cntpad_contentpageareadetailid "
-                + "AND cntpad_cntp_contentpageid = ? AND cntpad_lang_languageid = ?");
+                """
+                SELECT _ALL_
+                FROM contentpageareas, contentpageareadetails
+                WHERE cntpa_activedetailid = cntpad_contentpageareadetailid
+                AND cntpad_cntp_contentpageid = ? AND cntpad_lang_languageid = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM contentpageareas, contentpageareadetails "
-                + "WHERE cntpa_activedetailid = cntpad_contentpageareadetailid "
-                + "AND cntpad_cntp_contentpageid = ? AND cntpad_lang_languageid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contentpageareas, contentpageareadetails
+                WHERE cntpa_activedetailid = cntpad_contentpageareadetailid
+                AND cntpad_cntp_contentpageid = ? AND cntpad_lang_languageid = ?
+                FOR UPDATE
+                """);
         getContentPageAreasByContentPageQueries = Collections.unmodifiableMap(queryMap);
     }
     
     private List<ContentPageArea> getContentPageAreasByContentPage(ContentPage contentPage, Language language, EntityPermission entityPermission) {
-        return ContentPageAreaFactory.getInstance().getEntitiesFromQuery(entityPermission, getContentPageAreasByContentPageQueries,
+        return contentPageAreaFactory.getEntitiesFromQuery(entityPermission, getContentPageAreasByContentPageQueries,
                 contentPage, language);
     }
     
@@ -2590,25 +2757,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM contentpageareas, contentpageareadetails "
-                        + "WHERE cntpa_activedetailid = cntpad_contentpageareadetailid "
-                        + "AND cntpad_cntp_contentpageid = ? AND cntpad_cntpla_contentpagelayoutareaid = ? AND cntpad_lang_languageid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpageareas, contentpageareadetails
+                        WHERE cntpa_activedetailid = cntpad_contentpageareadetailid
+                        AND cntpad_cntp_contentpageid = ? AND cntpad_cntpla_contentpagelayoutareaid = ? AND cntpad_lang_languageid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM contentpageareas, contentpageareadetails "
-                        + "WHERE cntpa_activedetailid = cntpad_contentpageareadetailid "
-                        + "AND cntpad_cntp_contentpageid = ? AND cntpad_cntpla_contentpagelayoutareaid = ? AND cntpad_lang_languageid = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentpageareas, contentpageareadetails
+                        WHERE cntpa_activedetailid = cntpad_contentpageareadetailid
+                        AND cntpad_cntp_contentpageid = ? AND cntpad_cntpla_contentpagelayoutareaid = ? AND cntpad_lang_languageid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentPageAreaFactory.getInstance().prepareStatement(query);
+            var ps = contentPageAreaFactory.prepareStatement(query);
             
             ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
             ps.setLong(2, contentPageLayoutArea.getPrimaryKey().getEntityId());
             ps.setLong(3, language.getPrimaryKey().getEntityId());
             
-            contentPageArea = ContentPageAreaFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentPageArea = contentPageAreaFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2666,7 +2837,7 @@ public class ContentControl
     }
     
     public ContentPageAreaDetail updateContentPageAreaFromValue(ContentPageAreaDetailValue contentPageAreaDetailValue, boolean forceUpdate, BasePK updatedBy) {
-        var contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaDetailValue.getPrimaryKey());
+        var contentPageAreaDetail = contentPageAreaDetailFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaDetailValue.getPrimaryKey());
         
         if(forceUpdate || contentPageAreaDetailValue.hasBeenModified()) {
             contentPageAreaDetail.setThruTime(session.getStartTime());
@@ -2678,10 +2849,10 @@ public class ContentControl
             var languagePK = contentPageAreaDetail.getLanguagePK();
             var mimeTypePK = contentPageAreaDetailValue.getMimeTypePK();
             
-            contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().create(contentPageAreaPK, contentPagePK, contentPageLayoutAreaPK,
+            contentPageAreaDetail = contentPageAreaDetailFactory.create(contentPageAreaPK, contentPagePK, contentPageLayoutAreaPK,
                     languagePK, mimeTypePK, session.getStartTime(), Session.MAX_TIME);
 
-            var contentPageArea = ContentPageAreaFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaPK);
+            var contentPageArea = contentPageAreaFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaPK);
             contentPageArea.setActiveDetail(contentPageAreaDetail);
             contentPageArea.setLastDetail(contentPageAreaDetail);
             
@@ -2709,23 +2880,28 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Area Blobs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageAreaBlobFactory contentPageAreaBlobFactory;
+
     public ContentPageAreaBlob createContentPageAreaBlob(ContentPageAreaDetail contentPageAreaDetail, ByteArray blob) {
-        return ContentPageAreaBlobFactory.getInstance().create(contentPageAreaDetail, blob);
+        return contentPageAreaBlobFactory.create(contentPageAreaDetail, blob);
     }
     
     public ContentPageAreaBlob getContentPageAreaBlob(ContentPageAreaDetail contentPageAreaDetail) {
         ContentPageAreaBlob contentPageAreaBlob;
         
         try {
-            var ps = ContentPageAreaBlobFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpageareablobs " +
-                    "WHERE cntpab_cntpad_contentpageareadetailid = ?");
+            var ps = contentPageAreaBlobFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentpageareablobs
+                    WHERE cntpab_cntpad_contentpageareadetailid = ?
+                    """);
             
             ps.setLong(1, contentPageAreaDetail.getPrimaryKey().getEntityId());
             
-            contentPageAreaBlob = ContentPageAreaBlobFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageAreaBlob = contentPageAreaBlobFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2736,23 +2912,28 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Area Clobs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageAreaClobFactory contentPageAreaClobFactory;
+
     public ContentPageAreaClob createContentPageAreaClob(ContentPageAreaDetail contentPageAreaDetail, String clob) {
-        return ContentPageAreaClobFactory.getInstance().create(contentPageAreaDetail, clob);
+        return contentPageAreaClobFactory.create(contentPageAreaDetail, clob);
     }
     
     public ContentPageAreaClob getContentPageAreaClob(ContentPageAreaDetail contentPageAreaDetail) {
         ContentPageAreaClob contentPageAreaClob;
         
         try {
-            var ps = ContentPageAreaClobFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpageareaclobs " +
-                    "WHERE cntpac_cntpad_contentpageareadetailid = ?");
+            var ps = contentPageAreaClobFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentpageareaclobs
+                    WHERE cntpac_cntpad_contentpageareadetailid = ?
+                    """);
             
             ps.setLong(1, contentPageAreaDetail.getPrimaryKey().getEntityId());
             
-            contentPageAreaClob = ContentPageAreaClobFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageAreaClob = contentPageAreaClobFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2763,23 +2944,28 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Area Strings
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageAreaStringFactory contentPageAreaStringFactory;
+
     public ContentPageAreaString createContentPageAreaString(ContentPageAreaDetail contentPageAreaDetail, String string) {
-        return ContentPageAreaStringFactory.getInstance().create(contentPageAreaDetail, string);
+        return contentPageAreaStringFactory.create(contentPageAreaDetail, string);
     }
     
     public ContentPageAreaString getContentPageAreaString(ContentPageAreaDetail contentPageAreaDetail) {
         ContentPageAreaString contentPageAreaString;
         
         try {
-            var ps = ContentPageAreaStringFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpageareastrings " +
-                    "WHERE cntpas_cntpad_contentpageareadetailid = ?");
+            var ps = contentPageAreaStringFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentpageareastrings
+                    WHERE cntpas_cntpad_contentpageareadetailid = ?
+                    """);
             
             ps.setLong(1, contentPageAreaDetail.getPrimaryKey().getEntityId());
             
-            contentPageAreaString = ContentPageAreaStringFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageAreaString = contentPageAreaStringFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2790,23 +2976,28 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Page Area Urls
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentPageAreaUrlFactory contentPageAreaUrlFactory;
+
     public ContentPageAreaUrl createContentPageAreaUrl(ContentPageAreaDetail contentPageAreaDetail, String contentPageAreaURL) {
-        return ContentPageAreaUrlFactory.getInstance().create(contentPageAreaDetail, contentPageAreaURL);
+        return contentPageAreaUrlFactory.create(contentPageAreaDetail, contentPageAreaURL);
     }
     
     public ContentPageAreaUrl getContentPageAreaUrl(ContentPageAreaDetail contentPageAreaDetail) {
         ContentPageAreaUrl contentPageAreaUrl;
         
         try {
-            var ps = ContentPageAreaUrlFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpageareaurls " +
-                    "WHERE cntpau_cntpad_contentpageareadetailid = ?");
+            var ps = contentPageAreaUrlFactory.prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM contentpageareaurls
+                    WHERE cntpau_cntpad_contentpageareadetailid = ?
+                    """);
             
             ps.setLong(1, contentPageAreaDetail.getPrimaryKey().getEntityId());
             
-            contentPageAreaUrl = ContentPageAreaUrlFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageAreaUrl = contentPageAreaUrlFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2817,7 +3008,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Catalogs
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentCatalogFactory contentCatalogFactory;
+
+    @Inject
+    protected ContentCatalogDetailFactory contentCatalogDetailFactory;
+
     public ContentCatalog createContentCatalog(ContentCollection contentCollection, String contentCatalogName,
             OfferUse defaultOfferUse, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultFound = getDefaultContentCatalog(contentCollection) != null;
@@ -2831,13 +3028,13 @@ public class ContentControl
             isDefault = true;
         }
 
-        var contentCatalog = ContentCatalogFactory.getInstance().create();
-        var contentCatalogDetail = ContentCatalogDetailFactory.getInstance().create(contentCatalog,
+        var contentCatalog = contentCatalogFactory.create();
+        var contentCatalogDetail = contentCatalogDetailFactory.create(contentCatalog,
                 contentCollection, contentCatalogName, defaultOfferUse, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
         // Convert to R/W
-        contentCatalog = ContentCatalogFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCatalog.getPrimaryKey());
+        contentCatalog = contentCatalogFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentCatalog.getPrimaryKey());
         contentCatalog.setActiveDetail(contentCatalogDetail);
         contentCatalog.setLastDetail(contentCatalogDetail);
         contentCatalog.store();
@@ -2851,7 +3048,7 @@ public class ContentControl
     public ContentCatalog getContentCatalogByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentCatalogPK(entityInstance.getEntityUniqueId());
 
-        return ContentCatalogFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentCatalogFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentCatalog getContentCatalogByEntityInstance(EntityInstance entityInstance) {
@@ -2864,18 +3061,22 @@ public class ContentControl
 
     public long countContentCatalogsByContentCollection(ContentCollection contentCollection) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentcatalogdetails " +
-                "WHERE cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM contentcatalogdetails
+                WHERE cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?
+                """,
                 contentCollection, Session.MAX_TIME);
     }
 
     public long countContentCatalogsByDefaultOfferUse(OfferUse defaultOfferUse) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM contentcatalogs, contentcatalogdetails " +
-                        "WHERE cntct_activedetailid = cntctdt_contentcatalogdetailid " +
-                        "AND cntctdt_defaultofferuseid = ?", defaultOfferUse);
+                """
+                SELECT COUNT(*)
+                FROM contentcatalogs, contentcatalogdetails
+                WHERE cntct_activedetailid = cntctdt_contentcatalogdetailid
+                AND cntctdt_defaultofferuseid = ?
+                """, defaultOfferUse);
     }
 
     private List<ContentCatalog> getContentCatalogs(ContentCollection contentCollection, EntityPermission entityPermission) {
@@ -2885,25 +3086,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogs, contentcatalogdetails " +
-                        "WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ? " +
-                        "ORDER BY cntctdt_sortorder, cntctdt_contentcatalogname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogs, contentcatalogdetails
+                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?
+                        ORDER BY cntctdt_sortorder, cntctdt_contentcatalogname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogs, contentcatalogdetails " +
-                        "WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ? " +
-                        "ORDER BY cntctdt_sortorder, cntctdt_contentcatalogname " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogs, contentcatalogdetails
+                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?
+                        ORDER BY cntctdt_sortorder, cntctdt_contentcatalogname
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCatalogs = ContentCatalogFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCatalogs = contentCatalogFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2926,25 +3131,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogs, contentcatalogdetails " +
-                        "WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? " +
-                        "AND cntctdt_contentcatalogname = ? AND cntctdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogs, contentcatalogdetails
+                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ?
+                        AND cntctdt_contentcatalogname = ? AND cntctdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogs, contentcatalogdetails " +
-                        "WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? " +
-                        "AND cntctdt_contentcatalogname = ? AND cntctdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogs, contentcatalogdetails
+                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ?
+                        AND cntctdt_contentcatalogname = ? AND cntctdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setString(2, contentCatalogName);
             ps.setLong(3, Session.MAX_TIME);
             
-            contentCatalog = ContentCatalogFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCatalog = contentCatalogFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2975,24 +3184,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogs, contentcatalogdetails " +
-                        "WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? " +
-                        "AND cntctdt_isdefault = 1 AND cntctdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogs, contentcatalogdetails
+                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ?
+                        AND cntctdt_isdefault = 1 AND cntctdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogs, contentcatalogdetails " +
-                        "WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? " +
-                        "AND cntctdt_isdefault = 1 AND cntctdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogs, contentcatalogdetails
+                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ?
+                        AND cntctdt_isdefault = 1 AND cntctdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCatalog = ContentCatalogFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCatalog = contentCatalogFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3052,7 +3265,7 @@ public class ContentControl
     
     private void updateContentCatalogFromValue(ContentCatalogDetailValue contentCatalogDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentCatalogDetailValue.hasBeenModified()) {
-            var contentCatalog = ContentCatalogFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCatalogDetailValue.getContentCatalogPK());
+            var contentCatalog = contentCatalogFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentCatalogDetailValue.getContentCatalogPK());
             var contentCatalogDetail = contentCatalog.getActiveDetailForUpdate();
 
             contentCatalogDetail.setThruTime(session.getStartTime());
@@ -3082,7 +3295,7 @@ public class ContentControl
                 }
             }
 
-            contentCatalogDetail = ContentCatalogDetailFactory.getInstance().create(contentCatalogPK, contentCollectionPK,
+            contentCatalogDetail = contentCatalogDetailFactory.create(contentCatalogPK, contentCollectionPK,
                     contentCatalogName, defaultOfferUsePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             contentCatalog.setActiveDetail(contentCatalogDetail);
@@ -3098,7 +3311,7 @@ public class ContentControl
     }
 
     public ContentCatalog getContentCatalogByPK(ContentCatalogPK contentCatalogPK) {
-        return ContentCatalogFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, contentCatalogPK);
+        return contentCatalogFactory.getEntityFromPK(EntityPermission.READ_ONLY, contentCatalogPK);
     }
 
     public void deleteContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
@@ -3141,10 +3354,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Catalog Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentCatalogDescriptionFactory contentCatalogDescriptionFactory;
+
     public ContentCatalogDescription createContentCatalogDescription(ContentCatalog contentCatalog, Language language, String description, BasePK createdBy) {
 
-        var contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.getStartTime(),
+        var contentCatalogDescription = contentCatalogDescriptionFactory.create(contentCatalog, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3159,23 +3375,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogdescriptions " +
-                        "WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_lang_languageid = ? AND cntctd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogdescriptions
+                        WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_lang_languageid = ? AND cntctd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogdescriptions " +
-                        "WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_lang_languageid = ? AND cntctd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogdescriptions
+                        WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_lang_languageid = ? AND cntctd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCatalogDescription = contentCatalogDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3206,24 +3426,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogdescriptions, languages " +
-                        "WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_thrutime = ? AND cntctd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogdescriptions, languages
+                        WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_thrutime = ? AND cntctd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogdescriptions " +
-                        "WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogdescriptions
+                        WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCatalogDescriptions = ContentCatalogDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCatalogDescriptions = contentCatalogDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3273,7 +3497,7 @@ public class ContentControl
     
     public void updateContentCatalogDescriptionFromValue(ContentCatalogDescriptionValue contentCatalogDescriptionValue, BasePK updatedBy) {
         if(contentCatalogDescriptionValue.hasBeenModified()) {
-            var contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCatalogDescriptionValue.getPrimaryKey());
+            var contentCatalogDescription = contentCatalogDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentCatalogDescriptionValue.getPrimaryKey());
             
             contentCatalogDescription.setThruTime(session.getStartTime());
             contentCatalogDescription.store();
@@ -3282,7 +3506,7 @@ public class ContentControl
             var language = contentCatalogDescription.getLanguage();
             var description = contentCatalogDescriptionValue.getDescription();
             
-            contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.getStartTime(), Session.MAX_TIME);
+            contentCatalogDescription = contentCatalogDescriptionFactory.create(contentCatalog, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3304,10 +3528,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Catalog Items
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentCatalogItemFactory contentCatalogItemFactory;
+
     public ContentCatalogItem createContentCatalogItem(ContentCatalog contentCatalog, Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, BasePK createdBy) {
-        var contentCatalogItem = ContentCatalogItemFactory.getInstance().create(contentCatalog, item,
+        var contentCatalogItem = contentCatalogItemFactory.create(contentCatalog, item,
                 inventoryCondition, unitOfMeasureType, currency, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
@@ -3319,7 +3546,7 @@ public class ContentControl
     public ContentCatalogItem getContentCatalogItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentCatalogItemPK(entityInstance.getEntityUniqueId());
 
-        return ContentCatalogItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentCatalogItemFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentCatalogItem getContentCatalogItemByEntityInstance(EntityInstance entityInstance) {
@@ -3332,9 +3559,11 @@ public class ContentControl
 
     public long countContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentcatalogitems " +
-                "WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM contentcatalogitems
+                WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ?
+                """,
                 contentCatalog, Session.MAX_TIME);
     }
 
@@ -3345,29 +3574,33 @@ public class ContentControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, unitofmeasurekinds, unitofmeasurekinddetails, currencies " +
-                        "WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ? " +
-                        "AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND uomtdt_uomk_unitofmeasurekindid = uomk_unitofmeasurekindid AND uomk_lastdetailid = uomkdt_unitofmeasurekinddetailid " +
-                        "AND cntcti_cur_currencyid = cur_currencyid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, unitofmeasurekinds, unitofmeasurekinddetails, currencies
+                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ?
+                        AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                        AND uomtdt_uomk_unitofmeasurekindid = uomk_unitofmeasurekindid AND uomk_lastdetailid = uomkdt_unitofmeasurekinddetailid
+                        AND cntcti_cur_currencyid = cur_currencyid
+                        ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname, cur_sortorder, cur_currencyisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems " +
-                        "WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems
+                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogItemFactory.prepareStatement(query);
 
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            contentCatalogItems = ContentCatalogItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3391,28 +3624,32 @@ public class ContentControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies " +
-                        "WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_thrutime = ? " +
-                        "AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND cntcti_cur_currencyid = cur_currencyid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
+                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_thrutime = ?
+                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                        AND cntcti_cur_currencyid = cur_currencyid
+                        ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems " +
-                        "WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems
+                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogItemFactory.prepareStatement(query);
 
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            contentCatalogItems = ContentCatalogItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3435,31 +3672,35 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails, " +
-                        "inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies " +
-                        "WHERE cntcti_itm_itemid = ? AND cntcti_thrutime = ? " +
-                        "AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid " +
-                        "AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid " +
-                        "AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND cntcti_cur_currencyid = cur_currencyid " +
-                        "ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, invcondt_sortorder, " +
-                        "invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails,
+                        inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
+                        WHERE cntcti_itm_itemid = ? AND cntcti_thrutime = ?
+                        AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
+                        AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
+                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                        AND cntcti_cur_currencyid = cur_currencyid
+                        ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, invcondt_sortorder,
+                        invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems " +
-                        "WHERE cntcti_itm_itemid = ? AND cntcti_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems
+                        WHERE cntcti_itm_itemid = ? AND cntcti_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogItemFactory.prepareStatement(query);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCatalogItems = ContentCatalogItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3482,31 +3723,35 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails, " +
-                        "items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies " +
-                        "WHERE cntcti_invcon_inventoryconditionid = ? AND cntcti_thrutime = ? " +
-                        "AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid " +
-                        "AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid " +
-                        "AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND cntcti_cur_currencyid = cur_currencyid " +
-                        "ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, itmdt_itemname, " +
-                        "uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails,
+                        items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
+                        WHERE cntcti_invcon_inventoryconditionid = ? AND cntcti_thrutime = ?
+                        AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
+                        AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
+                        AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                        AND cntcti_cur_currencyid = cur_currencyid
+                        ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, itmdt_itemname,
+                        uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems " +
-                        "WHERE cntcti_invcon_inventoryconditionid = ? AND cntcti_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems
+                        WHERE cntcti_invcon_inventoryconditionid = ? AND cntcti_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogItemFactory.prepareStatement(query);
             
             ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCatalogItems = ContentCatalogItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3529,31 +3774,35 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails, " +
-                        "items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies " +
-                        "WHERE cntcti_uomt_unitofmeasuretypeid = ? AND cntcti_thrutime = ? " +
-                        "AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid " +
-                        "AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid " +
-                        "AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND cntcti_cur_currencyid = cur_currencyid " +
-                        "ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, itmdt_itemname, " +
-                        "invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails,
+                        items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies
+                        WHERE cntcti_uomt_unitofmeasuretypeid = ? AND cntcti_thrutime = ?
+                        AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
+                        AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
+                        AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                        AND cntcti_cur_currencyid = cur_currencyid
+                        ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, itmdt_itemname,
+                        invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems " +
-                        "WHERE cntcti_uomt_unitofmeasuretypeid = ? AND cntcti_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems
+                        WHERE cntcti_uomt_unitofmeasuretypeid = ? AND cntcti_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogItemFactory.prepareStatement(query);
             
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCatalogItems = ContentCatalogItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3577,19 +3826,23 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems " +
-                        "WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_invcon_inventoryconditionid = ? AND cntcti_uomt_unitofmeasuretypeid = ? " +
-                        "AND cntcti_cur_currencyid = ? AND cntcti_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems
+                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_invcon_inventoryconditionid = ? AND cntcti_uomt_unitofmeasuretypeid = ?
+                        AND cntcti_cur_currencyid = ? AND cntcti_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitems " +
-                        "WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_invcon_inventoryconditionid = ? AND cntcti_uomt_unitofmeasuretypeid = ? " +
-                        "AND cntcti_cur_currencyid = ? AND cntcti_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitems
+                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_invcon_inventoryconditionid = ? AND cntcti_uomt_unitofmeasuretypeid = ?
+                        AND cntcti_cur_currencyid = ? AND cntcti_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogItemFactory.prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setLong(2, item.getPrimaryKey().getEntityId());
@@ -3598,7 +3851,7 @@ public class ContentControl
             ps.setLong(5, currency.getPrimaryKey().getEntityId());
             ps.setLong(6, Session.MAX_TIME);
             
-            contentCatalogItem = ContentCatalogItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCatalogItem = contentCatalogItemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3635,7 +3888,7 @@ public class ContentControl
     }
 
     public ContentCatalogItem getContentCatalogItemByPK(ContentCatalogItemPK contentCatalogItemPK) {
-        return ContentCatalogItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, contentCatalogItemPK);
+        return contentCatalogItemFactory.getEntityFromPK(EntityPermission.READ_ONLY, contentCatalogItemPK);
     }
 
     public void deleteContentCatalogItem(ContentCatalogItem contentCatalogItem, BasePK deletedBy) {
@@ -3690,9 +3943,12 @@ public class ContentControl
     //   Content Catalog Item Fixed Prices
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContentCatalogItemFixedPriceFactory contentCatalogItemFixedPriceFactory;
+
     public ContentCatalogItemFixedPrice createContentCatalogItemFixedPrice(ContentCatalogItem contentCatalogItem, Long unitPrice,
             BasePK createdBy) {
-        var contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(
+        var contentCatalogItemFixedPrice = contentCatalogItemFixedPriceFactory.create(
                 contentCatalogItem, unitPrice, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3701,7 +3957,7 @@ public class ContentControl
     }
 
     public ContentCatalogItemFixedPriceValue getContentCatalogItemFixedPriceValueByPKForUpdate(ContentCatalogItemFixedPricePK contentCatalogItemFixedPricePK) {
-        return ContentCatalogItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        return contentCatalogItemFixedPriceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 contentCatalogItemFixedPricePK).getContentCatalogItemFixedPriceValue().clone();
     }
 
@@ -3712,22 +3968,26 @@ public class ContentControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitemfixedprices " +
-                        "WHERE cntctifp_cntcti_contentcatalogitemid = ? AND cntctifp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitemfixedprices
+                        WHERE cntctifp_cntcti_contentcatalogitemid = ? AND cntctifp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitemfixedprices " +
-                        "WHERE cntctifp_cntcti_contentcatalogitemid = ? AND cntctifp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitemfixedprices
+                        WHERE cntctifp_cntcti_contentcatalogitemid = ? AND cntctifp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogItemFixedPriceFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogItemFixedPriceFactory.prepareStatement(query);
 
             ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCatalogItemFixedPrice = contentCatalogItemFixedPriceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3753,7 +4013,7 @@ public class ContentControl
 
     public void updateContentCatalogItemFixedPriceFromValue(ContentCatalogItemFixedPriceValue contentCatalogItemFixedPriceValue, BasePK updatedBy) {
         if(contentCatalogItemFixedPriceValue.hasBeenModified()) {
-            var contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentCatalogItemFixedPrice = contentCatalogItemFixedPriceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contentCatalogItemFixedPriceValue.getPrimaryKey());
 
             contentCatalogItemFixedPrice.setThruTime(session.getStartTime());
@@ -3762,7 +4022,7 @@ public class ContentControl
             var contentCatalogItemPK = contentCatalogItemFixedPrice.getContentCatalogItemPK();
             var unitPrice = contentCatalogItemFixedPriceValue.getUnitPrice();
 
-            contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(contentCatalogItemPK,
+            contentCatalogItemFixedPrice = contentCatalogItemFixedPriceFactory.create(contentCatalogItemPK,
                     unitPrice, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contentCatalogItemFixedPrice.getContentCatalogItemPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3780,9 +4040,12 @@ public class ContentControl
     //   Content Catalog Item Variable Prices
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected ContentCatalogItemVariablePriceFactory contentCatalogItemVariablePriceFactory;
+
     public ContentCatalogItemVariablePrice createContentCatalogItemVariablePrice(ContentCatalogItem contentCatalogItem, Long minimumUnitPrice,
             Long maximumUnitPrice, Long unitPriceIncrement, BasePK createdBy) {
-        var contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(
+        var contentCatalogItemVariablePrice = contentCatalogItemVariablePriceFactory.create(
                 contentCatalogItem, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3791,7 +4054,7 @@ public class ContentControl
     }
 
     public ContentCatalogItemVariablePriceValue getContentCatalogItemVariablePriceValueByPKForUpdate(ContentCatalogItemVariablePricePK contentCatalogItemVariablePricePK) {
-        return ContentCatalogItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        return contentCatalogItemVariablePriceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 contentCatalogItemVariablePricePK).getContentCatalogItemVariablePriceValue().clone();
     }
 
@@ -3802,22 +4065,26 @@ public class ContentControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitemvariableprices " +
-                        "WHERE cntctivp_cntcti_contentcatalogitemid = ? AND cntctivp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitemvariableprices
+                        WHERE cntctivp_cntcti_contentcatalogitemid = ? AND cntctivp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcatalogitemvariableprices " +
-                        "WHERE cntctivp_cntcti_contentcatalogitemid = ? AND cntctivp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcatalogitemvariableprices
+                        WHERE cntctivp_cntcti_contentcatalogitemid = ? AND cntctivp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCatalogItemVariablePriceFactory.getInstance().prepareStatement(query);
+            var ps = contentCatalogItemVariablePriceFactory.prepareStatement(query);
 
             ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCatalogItemVariablePrice = contentCatalogItemVariablePriceFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3843,7 +4110,7 @@ public class ContentControl
 
     public void updateContentCatalogItemVariablePriceFromValue(ContentCatalogItemVariablePriceValue contentCatalogItemVariablePriceValue, BasePK updatedBy) {
         if(contentCatalogItemVariablePriceValue.hasBeenModified()) {
-            var contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentCatalogItemVariablePrice = contentCatalogItemVariablePriceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contentCatalogItemVariablePriceValue.getPrimaryKey());
 
             contentCatalogItemVariablePrice.setThruTime(session.getStartTime());
@@ -3854,7 +4121,7 @@ public class ContentControl
             var minimumUnitPrice = contentCatalogItemVariablePriceValue.getMinimumUnitPrice();
             var unitPriceIncrement = contentCatalogItemVariablePriceValue.getUnitPriceIncrement();
 
-            contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(contentCatalogItemPK, maximumUnitPrice,
+            contentCatalogItemVariablePrice = contentCatalogItemVariablePriceFactory.create(contentCatalogItemPK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contentCatalogItemVariablePrice.getContentCatalogItemPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3871,7 +4138,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Categories
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentCategoryFactory contentCategoryFactory;
+
+    @Inject
+    protected ContentCategoryDetailFactory contentCategoryDetailFactory;
+
     public ContentCategory createContentCategory(ContentCatalog contentCatalog, String contentCategoryName,
             ContentCategory parentContentCategory, OfferUse defaultOfferUse, Selector itemSelector, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -3892,13 +4165,13 @@ public class ContentControl
             isDefault = true;
         }
 
-        var contentCategory = ContentCategoryFactory.getInstance().create();
-        var contentCategoryDetail = ContentCategoryDetailFactory.getInstance().create(contentCategory,
+        var contentCategory = contentCategoryFactory.create();
+        var contentCategoryDetail = contentCategoryDetailFactory.create(contentCategory,
                 contentCatalog, contentCategoryName, parentContentCategory, defaultOfferUse, itemSelector, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCategory.getPrimaryKey());
+        contentCategory = contentCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentCategory.getPrimaryKey());
         contentCategory.setActiveDetail(contentCategoryDetail);
         contentCategory.setLastDetail(contentCategoryDetail);
         contentCategory.store();
@@ -3912,7 +4185,7 @@ public class ContentControl
     public ContentCategory getContentCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentCategoryPK(entityInstance.getEntityUniqueId());
 
-        return ContentCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentCategoryFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentCategory getContentCategoryByEntityInstance(EntityInstance entityInstance) {
@@ -3925,33 +4198,41 @@ public class ContentControl
 
     public long countContentCategories() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentcategories, contentcategorydetails " +
-                "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid");
+                """
+                SELECT COUNT(*)
+                FROM contentcategories, contentcategorydetails
+                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid
+                """);
     }
 
     public long countContentCategoriesByContentCatalog(ContentCatalog contentCatalog) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentcategories, contentcategorydetails " +
-                "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ?",
+                """
+                SELECT COUNT(*)
+                FROM contentcategories, contentcategorydetails
+                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ?
+                """,
                 contentCatalog);
     }
 
     public long countContentCategoriesByParentContentCategory(ContentCategory parentContentCategory) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentcategories, contentcategorydetails " +
-                "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ?",
+                """
+                SELECT COUNT(*)
+                FROM contentcategories, contentcategorydetails
+                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ?
+                """,
                 parentContentCategory);
     }
 
     public long countContentCategoriesByDefaultOfferUse(OfferUse defaultOfferUse) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid " +
-                        "AND cntcgdt_defaultofferuseid = ?", defaultOfferUse);
+                """
+                SELECT COUNT(*)
+                FROM contentcategories, contentcategorydetails
+                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid
+                AND cntcgdt_defaultofferuseid = ?
+                """, defaultOfferUse);
     }
 
     private List<ContentCategory> getContentCategories(ContentCatalog contentCatalog, EntityPermission entityPermission) {
@@ -3961,24 +4242,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? " +
-                        "ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategories, contentcategorydetails
+                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ?
+                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? " +
-                        "ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategories, contentcategorydetails
+                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ?
+                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryFactory.prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             
-            contentCategories = ContentCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCategories = contentCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4001,24 +4286,28 @@ public class ContentControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ? " +
-                        "ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategories, contentcategorydetails
+                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ?
+                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ? " +
-                        "ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategories, contentcategorydetails
+                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ?
+                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryFactory.prepareStatement(query);
 
             ps.setLong(1, parentContentCategory.getPrimaryKey().getEntityId());
 
-            contentCategories = ContentCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCategories = contentCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4040,24 +4329,28 @@ public class ContentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM contentcategories, contentcategorydetails, contentcatalogs, contentcatalogdetails, contentcollections, contentcollectiondetails " +
-                "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_defaultofferuseid = ? " +
-                "AND cntcgdt_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid " +
-                "AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid " +
-                "ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contentcategories, contentcategorydetails, contentcatalogs, contentcatalogdetails, contentcollections, contentcollectiondetails
+                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_defaultofferuseid = ?
+                AND cntcgdt_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
+                AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
+                ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, cntcgdt_sortorder, cntcgdt_contentcategoryname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM contentcategories, contentcategorydetails " +
-                "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_defaultofferuseid = ? " +
-                "ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contentcategories, contentcategorydetails
+                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_defaultofferuseid = ?
+                ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
+                FOR UPDATE
+                """);
         getContentCategoriesByDefaultOfferUseQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<ContentCategory> getContentCategoriesByDefaultOfferUse(OfferUse defaultOfferUse, EntityPermission entityPermission) {
-        return ContentCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, getContentCategoriesByDefaultOfferUseQueries,
+        return contentCategoryFactory.getEntitiesFromQuery(entityPermission, getContentCategoriesByDefaultOfferUseQueries,
                 defaultOfferUse);
     }
 
@@ -4075,24 +4368,28 @@ public class ContentControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM contentcategories, contentcategorydetails, contentcatalogs, contentcatalogdetails, contentcollections, contentcollectiondetails " +
-                "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_contentcategoryitemselectorid = ? " +
-                "AND cntcgdt_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid " +
-                "AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid " +
-                "ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM contentcategories, contentcategorydetails, contentcatalogs, contentcatalogdetails, contentcollections, contentcollectiondetails
+                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_contentcategoryitemselectorid = ?
+                AND cntcgdt_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
+                AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
+                ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, cntcgdt_sortorder, cntcgdt_contentcategoryname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM contentcategories, contentcategorydetails " +
-                "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_contentcategoryitemselectorid = ? " +
-                "ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM contentcategories, contentcategorydetails
+                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_contentcategoryitemselectorid = ?
+                ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
+                FOR UPDATE
+                """);
         getContentCategoriesByContentCategoryItemSelectorQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<ContentCategory> getContentCategoriesByContentCategoryItemSelector(Selector contentCategoryItemSelector, EntityPermission entityPermission) {
-        return ContentCategoryFactory.getInstance().getEntitiesFromQuery(entityPermission, getContentCategoriesByContentCategoryItemSelectorQueries,
+        return contentCategoryFactory.getEntitiesFromQuery(entityPermission, getContentCategoriesByContentCategoryItemSelectorQueries,
                 contentCategoryItemSelector);
     }
 
@@ -4111,22 +4408,26 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_contentcategoryname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategories, contentcategorydetails
+                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_contentcategoryname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_contentcategoryname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategories, contentcategorydetails
+                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_contentcategoryname = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryFactory.prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             ps.setString(2, contentCategoryName);
             
-            contentCategory = ContentCategoryFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCategory = contentCategoryFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4157,21 +4458,25 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategories, contentcategorydetails
+                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategories, contentcategorydetails " +
-                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategories, contentcategorydetails
+                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryFactory.prepareStatement(query);
             
             ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
             
-            contentCategory = ContentCategoryFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCategory = contentCategoryFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4268,7 +4573,7 @@ public class ContentControl
     
     private void updateContentCategoryFromValue(ContentCategoryDetailValue contentCategoryDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentCategoryDetailValue.hasBeenModified()) {
-            var contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCategoryDetailValue.getContentCategoryPK());
+            var contentCategory = contentCategoryFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentCategoryDetailValue.getContentCategoryPK());
             var contentCategoryDetail = contentCategory.getActiveDetailForUpdate();
 
             contentCategoryDetail.setThruTime(session.getStartTime());
@@ -4300,7 +4605,7 @@ public class ContentControl
                 }
             }
 
-            contentCategoryDetail = ContentCategoryDetailFactory.getInstance().create(contentCategoryPK, contentCatalogPK,
+            contentCategoryDetail = contentCategoryDetailFactory.create(contentCategoryPK, contentCatalogPK,
                     contentCategoryName, parentContentCategoryPK, defaultOfferUsePK, itemSelectorPK, isDefault, sortOrder,
                     session.getStartTime(), Session.MAX_TIME);
 
@@ -4311,7 +4616,7 @@ public class ContentControl
             sendEvent(contentCategoryPK, EventTypes.MODIFY, null, null, updatedBy);
 
             if(contentCategoryDetailValue.getDefaultOfferUsePKHasBeenModified()) {
-                ContentLogic.getInstance().updateContentCatalogItemPricesByContentCategory(contentCategoryDetail.getContentCategory(), updatedBy);
+                contentLogic.updateContentCatalogItemPricesByContentCategory(contentCategoryDetail.getContentCategory(), updatedBy);
             }
         }
     }
@@ -4321,7 +4626,7 @@ public class ContentControl
     }
 
     public ContentCategory getContentCategoryByPK(ContentCategoryPK contentCategoryPK) {
-        return ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, contentCategoryPK);
+        return contentCategoryFactory.getEntityFromPK(EntityPermission.READ_ONLY, contentCategoryPK);
     }
 
     private void deleteContentCategory(ContentCategory contentCategory, BasePK deletedBy, boolean recursive) {
@@ -4381,11 +4686,14 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Category Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentCategoryDescriptionFactory contentCategoryDescriptionFactory;
+
     public ContentCategoryDescription createContentCategoryDescription(ContentCategory contentCategory, Language language,
             String description, BasePK createdBy) {
 
-        var contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(
+        var contentCategoryDescription = contentCategoryDescriptionFactory.create(
                 contentCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -4402,23 +4710,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategorydescriptions " +
-                        "WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_lang_languageid = ? AND cntcgd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategorydescriptions
+                        WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_lang_languageid = ? AND cntcgd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategorydescriptions " +
-                        "WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_lang_languageid = ? AND cntcgd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategorydescriptions
+                        WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_lang_languageid = ? AND cntcgd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCategoryDescription = contentCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4449,24 +4761,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategorydescriptions, languages " +
-                        "WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_thrutime = ? AND cntcgd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategorydescriptions, languages
+                        WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_thrutime = ? AND cntcgd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategorydescriptions " +
-                        "WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategorydescriptions
+                        WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCategoryDescriptions = ContentCategoryDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCategoryDescriptions = contentCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4516,7 +4832,7 @@ public class ContentControl
     
     public void updateContentCategoryDescriptionFromValue(ContentCategoryDescriptionValue contentCategoryDescriptionValue, BasePK updatedBy) {
         if(contentCategoryDescriptionValue.hasBeenModified()) {
-            var contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCategoryDescriptionValue.getPrimaryKey());
+            var contentCategoryDescription = contentCategoryDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentCategoryDescriptionValue.getPrimaryKey());
             
             contentCategoryDescription.setThruTime(session.getStartTime());
             contentCategoryDescription.store();
@@ -4525,7 +4841,7 @@ public class ContentControl
             var language = contentCategoryDescription.getLanguage();
             var description = contentCategoryDescriptionValue.getDescription();
             
-            contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(contentCategory, language, description, session.getStartTime(), Session.MAX_TIME);
+            contentCategoryDescription = contentCategoryDescriptionFactory.create(contentCategory, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentCategory.getPrimaryKey(), EventTypes.MODIFY, contentCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4547,7 +4863,10 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Category Items
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentCategoryItemFactory contentCategoryItemFactory;
+
     /** Use the function in ContentLogic instead. */
     public ContentCategoryItem createContentCategoryItem(ContentCategory contentCategory, ContentCatalogItem contentCatalogItem,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -4563,7 +4882,7 @@ public class ContentControl
             isDefault = true;
         }
 
-        var contentCategoryItem = ContentCategoryItemFactory.getInstance().create(
+        var contentCategoryItem = contentCategoryItemFactory.create(
                 contentCategory, contentCatalogItem, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -4574,9 +4893,11 @@ public class ContentControl
     
     public long countContentCategoryItemsByContentCategory(ContentCategory contentCategory) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentcategoryitems " +
-                "WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM contentcategoryitems
+                WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ?
+                """,
                 contentCategory, Session.MAX_TIME);
     }
 
@@ -4588,23 +4909,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategoryitems " +
-                        "WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategoryitems
+                        WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategoryitems " +
-                        "WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategoryitems
+                        WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryItemFactory.prepareStatement(query);
             
             ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentCategoryItem = ContentCategoryItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCategoryItem = contentCategoryItemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4635,22 +4960,26 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategoryitems " +
-                        "WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_isdefault = 1 AND cntcgi_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategoryitems
+                        WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_isdefault = 1 AND cntcgi_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategoryitems " +
-                        "WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_isdefault = 1 AND cntcgi_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategoryitems
+                        WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_isdefault = 1 AND cntcgi_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryItemFactory.prepareStatement(query);
             
             ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCategoryItem = ContentCategoryItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentCategoryItem = contentCategoryItemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4679,31 +5008,35 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategoryitems, contentcatalogitems, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, " +
-                        "unitofmeasuretypedetails, currencies " +
-                        "WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ? " +
-                        "AND cntcgi_cntcti_contentcatalogitemid = cntcti_contentcatalogitemid " +
-                        "AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND cntcti_cur_currencyid = cur_currencyid " +
-                        "ORDER BY cntcgi_sortorder, itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, " +
-                        "uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategoryitems, contentcatalogitems, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes,
+                        unitofmeasuretypedetails, currencies
+                        WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ?
+                        AND cntcgi_cntcti_contentcatalogitemid = cntcti_contentcatalogitemid
+                        AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                        AND cntcti_cur_currencyid = cur_currencyid
+                        ORDER BY cntcgi_sortorder, itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder,
+                        uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategoryitems " +
-                        "WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategoryitems
+                        WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryItemFactory.prepareStatement(query);
             
             ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCategoryItems = ContentCategoryItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCategoryItems = contentCategoryItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4726,25 +5059,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategoryitems, contentcategories, contentcategorydetails " +
-                        "WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ? " +
-                        "AND cntcgi_cntcg_contentcategoryid = cntcg_contentcategoryid AND cntcg_lastdetailid = cntcgdt_contentcategorydetailid " +
-                        "ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategoryitems, contentcategories, contentcategorydetails
+                        WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
+                        AND cntcgi_cntcg_contentcategoryid = cntcg_contentcategoryid AND cntcg_lastdetailid = cntcgdt_contentcategorydetailid
+                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentcategoryitems " +
-                        "WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentcategoryitems
+                        WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentCategoryItemFactory.getInstance().prepareStatement(query);
+            var ps = contentCategoryItemFactory.prepareStatement(query);
             
             ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentCategoryItems = ContentCategoryItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentCategoryItems = contentCategoryItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4780,15 +5117,17 @@ public class ContentControl
     
     public long countContentCategoryItemsByContentCatalogItem(ContentCatalogItem contentCatalogItem) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM contentcategoryitems " +
-                "WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM contentcategoryitems
+                WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
+                """,
                 contentCatalogItem, Session.MAX_TIME);
     }
 
     private void updateContentCategoryItemFromValue(ContentCategoryItemValue contentCategoryItemValue, boolean checkDefault, BasePK updatedBy) {
         if(contentCategoryItemValue.hasBeenModified()) {
-            var contentCategoryItem = ContentCategoryItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentCategoryItem = contentCategoryItemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      contentCategoryItemValue.getPrimaryKey());
             
             contentCategoryItem.setThruTime(session.getStartTime());
@@ -4816,7 +5155,7 @@ public class ContentControl
                 }
             }
             
-            contentCategoryItem = ContentCategoryItemFactory.getInstance().create(contentCategoryPK, contentCatalogItemPK,
+            contentCategoryItem = contentCategoryItemFactory.create(contentCategoryPK, contentCatalogItemPK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentCategoryPK, EventTypes.MODIFY, contentCategoryItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4863,7 +5202,7 @@ public class ContentControl
     
     public void deleteContentCategoryItemsByContentCategory(ContentCategory contentCategory, BasePK deletedBy) {
         getContentCategoryItemsByContentCategoryForUpdate(contentCategory).forEach((contentCategoryItem) -> {
-            ContentLogic.getInstance().deleteContentCategoryItem(contentCategoryItem, deletedBy);
+            contentLogic.deleteContentCategoryItem(contentCategoryItem, deletedBy);
         });
     }
 
@@ -4876,7 +5215,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Forums
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentForumFactory contentForumFactory;
+
+    @Inject
+    protected ContentForumDetailFactory contentForumDetailFactory;
+
     public ContentForum createContentForum(ContentCollection contentCollection, Forum forum, Boolean isDefault, BasePK createdBy) {
         var defaultContentForum = getDefaultContentForum(contentCollection);
         var defaultFound = defaultContentForum != null;
@@ -4890,12 +5235,12 @@ public class ContentControl
             isDefault = true;
         }
 
-        var contentForum = ContentForumFactory.getInstance().create();
-        var contentForumDetail = ContentForumDetailFactory.getInstance().create(contentForum, contentCollection, forum, isDefault,
+        var contentForum = contentForumFactory.create();
+        var contentForumDetail = contentForumDetailFactory.create(contentForum, contentCollection, forum, isDefault,
                 session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        contentForum = ContentForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentForum.getPrimaryKey());
+        contentForum = contentForumFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentForum.getPrimaryKey());
         contentForum.setActiveDetail(contentForumDetail);
         contentForum.setLastDetail(contentForumDetail);
         contentForum.store();
@@ -4909,7 +5254,7 @@ public class ContentControl
     public ContentForum getContentForumByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentForumPK(entityInstance.getEntityUniqueId());
 
-        return ContentForumFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentForumFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentForum getContentForumByEntityInstance(EntityInstance entityInstance) {
@@ -4936,24 +5281,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentforums, contentforumdetails, forums, forumdetails " +
-                        "WHERE cntfrm_activedetailid = cntfrmdt_contentforumdetailid AND cntfrmdt_cntc_contentcollectionid = ? " +
-                        "AND cntfrmdt_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid " +
-                        "ORDER BY frmdt_sortorder, frmdt_forumname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentforums, contentforumdetails, forums, forumdetails
+                        WHERE cntfrm_activedetailid = cntfrmdt_contentforumdetailid AND cntfrmdt_cntc_contentcollectionid = ?
+                        AND cntfrmdt_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
+                        ORDER BY frmdt_sortorder, frmdt_forumname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentforums, contentforumdetails " +
-                        "WHERE cntfrm_activedetailid = cntfrmdt_contentforumdetailid AND cntfrmdt_cntc_contentcollectionid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentforums, contentforumdetails
+                        WHERE cntfrm_activedetailid = cntfrmdt_contentforumdetailid AND cntfrmdt_cntc_contentcollectionid = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentForumFactory.getInstance().prepareStatement(query);
+            var ps = contentForumFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             
-            contentForums = ContentForumFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentForums = contentForumFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4976,25 +5325,29 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentforums, contentforumdetails " +
-                        "WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ? " +
-                        "AND cntfrmdt_frm_forumid = ? AND cntfrmdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentforums, contentforumdetails
+                        WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ?
+                        AND cntfrmdt_frm_forumid = ? AND cntfrmdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentforums, contentforumdetails " +
-                        "WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ? " +
-                        "AND cntfrmdt_frm_forumid = ? AND cntfrmdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentforums, contentforumdetails
+                        WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ?
+                        AND cntfrmdt_frm_forumid = ? AND cntfrmdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentForumFactory.getInstance().prepareStatement(query);
+            var ps = contentForumFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, forum.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentForum = ContentForumFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentForum = contentForumFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5023,24 +5376,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentforums, contentforumdetails " +
-                        "WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ? " +
-                        "AND cntfrmdt_isdefault = 1 AND cntfrmdt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentforums, contentforumdetails
+                        WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ?
+                        AND cntfrmdt_isdefault = 1 AND cntfrmdt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentforums, contentforumdetails " +
-                        "WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ? " +
-                        "AND cntfrmdt_isdefault = 1 AND cntfrmdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentforums, contentforumdetails
+                        WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ?
+                        AND cntfrmdt_isdefault = 1 AND cntfrmdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentForumFactory.getInstance().prepareStatement(query);
+            var ps = contentForumFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentForum = ContentForumFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentForum = contentForumFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5076,7 +5433,7 @@ public class ContentControl
     
     private void updateContentForumFromValue(ContentForumDetailValue contentForumDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(contentForumDetailValue.hasBeenModified()) {
-            var contentForum = ContentForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentForum = contentForumFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     contentForumDetailValue.getContentForumPK());
             var contentForumDetail = contentForum.getActiveDetailForUpdate();
 
@@ -5105,7 +5462,7 @@ public class ContentControl
                 }
             }
 
-            contentForumDetail = ContentForumDetailFactory.getInstance().create(contentForumPK, contentCollectionPK, forumPK,
+            contentForumDetail = contentForumDetailFactory.create(contentForumPK, contentCollectionPK, forumPK,
                     isDefault, session.getStartTime(), Session.MAX_TIME);
 
             contentForum.setActiveDetail(contentForumDetail);
@@ -5156,15 +5513,21 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Web Addresses
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentWebAddressFactory contentWebAddressFactory;
+
+    @Inject
+    protected ContentWebAddressDetailFactory contentWebAddressDetailFactory;
+
     public ContentWebAddress createContentWebAddress(String contentWebAddressName, ContentCollection contentCollection,
             BasePK createdBy) {
-        var contentWebAddress = ContentWebAddressFactory.getInstance().create();
-        var contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddress,
+        var contentWebAddress = contentWebAddressFactory.create();
+        var contentWebAddressDetail = contentWebAddressDetailFactory.create(contentWebAddress,
                 contentWebAddressName, contentCollection, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        contentWebAddress = ContentWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddress.getPrimaryKey());
+        contentWebAddress = contentWebAddressFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddress.getPrimaryKey());
         contentWebAddress.setActiveDetail(contentWebAddressDetail);
         contentWebAddress.setLastDetail(contentWebAddressDetail);
         contentWebAddress.store();
@@ -5203,7 +5566,7 @@ public class ContentControl
     public ContentWebAddress getContentWebAddressByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentWebAddressPK(entityInstance.getEntityUniqueId());
 
-        return ContentWebAddressFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return contentWebAddressFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public ContentWebAddress getContentWebAddressByEntityInstance(EntityInstance entityInstance) {
@@ -5221,23 +5584,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddresses, contentwebaddressdetails " +
-                        "WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_thrutime = ? " +
-                        "ORDER BY cntwadt_contentwebaddressname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_thrutime = ?
+                        ORDER BY cntwadt_contentwebaddressname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddresses " +
-                        "WHERE cntwadt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddresses
+                        WHERE cntwadt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
+            var ps = contentWebAddressFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             
-            contentWebAddresses = ContentWebAddressFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentWebAddresses = contentWebAddressFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5260,22 +5627,26 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddresses, contentwebaddressdetails " +
-                        "WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_contentwebaddressname = ? AND cntwadt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_contentwebaddressname = ? AND cntwadt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddresses, contentwebaddressdetails " +
-                        "WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_contentwebaddressname = ? AND cntwadt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_contentwebaddressname = ? AND cntwadt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
+            var ps = contentWebAddressFactory.prepareStatement(query);
             
             ps.setString(1, contentWebAddressName);
             ps.setLong(2, Session.MAX_TIME);
             
-            contentWebAddress = ContentWebAddressFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentWebAddress = contentWebAddressFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5306,23 +5677,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddresses, contentwebaddressdetails " +
-                        "WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_cntc_contentcollectionid = ? AND cntwadt_thrutime = ? " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_cntc_contentcollectionid = ? AND cntwadt_thrutime = ?
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddresses, contentwebaddressdetails " +
-                        "WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_cntc_contentcollectionid = ? AND cntwadt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddresses, contentwebaddressdetails
+                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_cntc_contentcollectionid = ? AND cntwadt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentWebAddressFactory.getInstance().prepareStatement(query);
+            var ps = contentWebAddressFactory.prepareStatement(query);
             
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentWebAddresses = ContentWebAddressFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentWebAddresses = contentWebAddressFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5380,7 +5755,7 @@ public class ContentControl
     
     public void updateContentWebAddressFromValue(ContentWebAddressDetailValue contentWebAddressDetailValue, BasePK updatedBy) {
         if(contentWebAddressDetailValue.hasBeenModified()) {
-            var contentWebAddress = ContentWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var contentWebAddress = contentWebAddressFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     contentWebAddressDetailValue.getContentWebAddressPK());
             var contentWebAddressDetail = contentWebAddress.getActiveDetailForUpdate();
             
@@ -5391,7 +5766,7 @@ public class ContentControl
             var contentWebAddressName = contentWebAddressDetailValue.getContentWebAddressName();
             var contentCollectionPK = contentWebAddressDetailValue.getContentCollectionPK();
             
-            contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddressPK, contentWebAddressName, contentCollectionPK, session.getStartTime(),
+            contentWebAddressDetail = contentWebAddressDetailFactory.create(contentWebAddressPK, contentWebAddressName, contentCollectionPK, session.getStartTime(),
                     Session.MAX_TIME);
             
             contentWebAddress.setActiveDetail(contentWebAddressDetail);
@@ -5419,10 +5794,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Web Address Descriptions
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentWebAddressDescriptionFactory contentWebAddressDescriptionFactory;
+
     public ContentWebAddressDescription createContentWebAddressDescription(ContentWebAddress contentWebAddress, Language language, String description, BasePK createdBy) {
 
-        var contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.getStartTime(),
+        var contentWebAddressDescription = contentWebAddressDescriptionFactory.create(contentWebAddress, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5437,23 +5815,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddressdescriptions " +
-                        "WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_lang_languageid = ? AND cntwad_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddressdescriptions
+                        WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_lang_languageid = ? AND cntwad_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddressdescriptions " +
-                        "WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_lang_languageid = ? AND cntwad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddressdescriptions
+                        WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_lang_languageid = ? AND cntwad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentWebAddressDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentWebAddressDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentWebAddressDescription = contentWebAddressDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5484,24 +5866,28 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddressdescriptions, languages " +
-                        "WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_thrutime = ? AND cntwad_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddressdescriptions, languages
+                        WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_thrutime = ? AND cntwad_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddressdescriptions " +
-                        "WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddressdescriptions
+                        WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentWebAddressDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = contentWebAddressDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentWebAddressDescriptions = ContentWebAddressDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentWebAddressDescriptions = contentWebAddressDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5551,7 +5937,7 @@ public class ContentControl
     
     public void updateContentWebAddressDescriptionFromValue(ContentWebAddressDescriptionValue contentWebAddressDescriptionValue, BasePK updatedBy) {
         if(contentWebAddressDescriptionValue.hasBeenModified()) {
-            var contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddressDescriptionValue.getPrimaryKey());
+            var contentWebAddressDescription = contentWebAddressDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddressDescriptionValue.getPrimaryKey());
             
             contentWebAddressDescription.setThruTime(session.getStartTime());
             contentWebAddressDescription.store();
@@ -5560,7 +5946,7 @@ public class ContentControl
             var language = contentWebAddressDescription.getLanguage();
             var description = contentWebAddressDescriptionValue.getDescription();
             
-            contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.getStartTime(), Session.MAX_TIME);
+            contentWebAddressDescription = contentWebAddressDescriptionFactory.create(contentWebAddress, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -5582,10 +5968,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
     //   Content Web Address Servers
     // --------------------------------------------------------------------------------
-    
+
+    @Inject
+    protected ContentWebAddressServerFactory contentWebAddressServerFactory;
+
     public ContentWebAddressServer createContentWebAddressServer(ContentWebAddress contentWebAddress, Server server, BasePK createdBy) {
 
-        var contentWebAddressServer = ContentWebAddressServerFactory.getInstance().create(contentWebAddress, server,  session.getStartTime(),
+        var contentWebAddressServer = contentWebAddressServerFactory.create(contentWebAddress, server,  session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressServer.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5600,23 +5989,27 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddressservers " +
-                        "WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_serv_serverid = ? AND cntwaserv_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddressservers
+                        WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_serv_serverid = ? AND cntwaserv_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddressservers " +
-                        "WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_serv_serverid = ? AND cntwaserv_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddressservers
+                        WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_serv_serverid = ? AND cntwaserv_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentWebAddressServerFactory.getInstance().prepareStatement(query);
+            var ps = contentWebAddressServerFactory.prepareStatement(query);
             
             ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
             ps.setLong(2, server.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            contentWebAddressServer = ContentWebAddressServerFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            contentWebAddressServer = contentWebAddressServerFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5639,19 +6032,23 @@ public class ContentControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddressservers, serverdetails " +
-                        "WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_thrutime = ? AND cntwaserv_serv_serverid = servd_serv_serverid AND servd_thrutime = ? " +
-                        "ORDER BY servd_servername " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddressservers, serverdetails
+                        WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_thrutime = ? AND cntwaserv_serv_serverid = servd_serv_serverid AND servd_thrutime = ?
+                        ORDER BY servd_servername
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentwebaddressservers " +
-                        "WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM contentwebaddressservers
+                        WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
-            var ps = ContentWebAddressServerFactory.getInstance().prepareStatement(query);
+            var ps = contentWebAddressServerFactory.prepareStatement(query);
             
             ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5660,7 +6057,7 @@ public class ContentControl
                 ps.setLong(3, Session.MAX_TIME);
             }
             
-            contentWebAddressServers = ContentWebAddressServerFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            contentWebAddressServers = contentWebAddressServerFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

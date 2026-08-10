@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityBlobAttributeCommand
@@ -59,12 +59,22 @@ public class EditEntityBlobAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of EditEntityBlobAttributeCommand */
     public EditEntityBlobAttributeCommand() {
@@ -73,7 +83,6 @@ public class EditEntityBlobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var result = CoreResultFactory.getEditEntityBlobAttributeResult();
         var entityRef = spec.getEntityRef();
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
@@ -83,7 +92,6 @@ public class EditEntityBlobAttributeCommand
             var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
 
             if(entityAttribute != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,7 +130,7 @@ public class EditEntityBlobAttributeCommand
                         entityBlobAttribute = coreControl.getEntityBlobAttributeForUpdate(entityAttribute, entityInstance, language);
 
                         if(entityBlobAttribute != null) {
-                            var mimeType = MimeTypeLogic.getInstance().getMimeTypeByName(this, edit.getMimeTypeName());
+                            var mimeType = mimeTypeLogic.getMimeTypeByName(this, edit.getMimeTypeName());
 
                             if(!hasExecutionErrors()) {
                                 if(mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.BLOB.name())) {

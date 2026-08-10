@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.chain.common.form;
 
-import com.echothree.control.user.chain.common.spec.ChainEntityRoleTypeSpec;
+import com.echothree.control.user.chain.common.spec.ChainEntityRoleTypeUniversalSpec;
 
 public interface GetChainEntityRoleTypeForm
-        extends ChainEntityRoleTypeSpec {
+        extends ChainEntityRoleTypeUniversalSpec {
     
     // Nothing additional beyond ChainEntityRoleTypeSpec
     

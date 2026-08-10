@@ -16,15 +16,16 @@
 
 package com.echothree.model.control.core.server.indexer;
 
+import com.echothree.model.control.core.server.analyzer.EntityListItemAnalyzer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.core.server.analyzer.EntityListItemAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.index.server.entity.Index;
+import javax.enterprise.context.Dependent;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -32,12 +33,13 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 
+@Dependent
 public class EntityListItemIndexer
         extends BaseIndexer<EntityListItem> {
-    
-    /** Creates a new instance of EntityListItemIndexer */
-    public EntityListItemIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index);
+
+    @Override
+    public BaseIndexer<EntityListItem> setup(final ExecutionErrorAccumulator eea, final Index index) {
+        return super.setup(eea, index);
     }
 
     @Override

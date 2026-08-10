@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentSourceForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentSourceCommand
@@ -54,8 +54,12 @@ public class CreateFilterAdjustmentSourceCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("AllowedForInitialAmount", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
     
     /** Creates a new instance of CreateFilterAdjustmentSourceCommand */
     public CreateFilterAdjustmentSourceCommand() {
@@ -65,15 +69,14 @@ public class CreateFilterAdjustmentSourceCommand
     @Override
     protected BaseResult execute() {
         var filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
-        var filterControl = Session.getModelController(FilterControl.class);
-        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var filterAdjustmentSource = filterAdjustmentControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
         
         if(filterAdjustmentSource == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var allowedForInitialAmount = Boolean.valueOf(form.getAllowedForInitialAmount());
             
-            filterControl.createFilterAdjustmentSource(filterAdjustmentSourceName, allowedForInitialAmount, isDefault, sortOrder);
+            filterAdjustmentControl.createFilterAdjustmentSource(filterAdjustmentSourceName, allowedForInitialAmount, isDefault, sortOrder);
         } else {
             addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentSourceName.name(), filterAdjustmentSourceName);
         }

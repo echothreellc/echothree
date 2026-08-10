@@ -43,9 +43,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditContentCatalogCommand
@@ -60,13 +60,13 @@ public class EditContentCatalogCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCatalog.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContentCatalogName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCatalogName", FieldType.ENTITY_NAME, true, null, null),
@@ -76,8 +76,27 @@ public class EditContentCatalogCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SourceControl sourceControl;
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of EditContentCatalogCommand */
     public EditContentCatalogCommand() {
@@ -98,7 +117,6 @@ public class EditContentCatalogCommand
     
     @Override
     public ContentCatalog getEntity(EditContentCatalogResult result) {
-        var contentControl = Session.getModelController(ContentControl.class);
         ContentCatalog contentCatalog = null;
         var contentCollectionName = spec.getContentCollectionName();
         
@@ -132,15 +150,11 @@ public class EditContentCatalogCommand
     
     @Override
     public void fillInResult(EditContentCatalogResult result, ContentCatalog contentCatalog) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        
         result.setContentCatalog(contentControl.getContentCatalogTransfer(getUserVisit(), contentCatalog));
     }
     
     @Override
     public void doLock(ContentCatalogEdit edit, ContentCatalog contentCatalog) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var sourceControl = Session.getModelController(SourceControl.class);
         var contentCatalogDescription = contentControl.getContentCatalogDescription(contentCatalog, getPreferredLanguage());
         var contentCatalogDetail = contentCatalog.getLastDetail();
         var offerUse = contentCatalogDetail.getDefaultOfferUse();
@@ -164,12 +178,10 @@ public class EditContentCatalogCommand
     
     @Override
     public void canUpdate(ContentCatalog contentCatalog) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCatalogName = edit.getContentCatalogName();
         var duplicateContentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
         if(duplicateContentCatalog == null || contentCatalog.equals(duplicateContentCatalog)) {
-            var offerControl = Session.getModelController(OfferControl.class);
             var defaultOfferName = edit.getDefaultOfferName();
             var defaultUseName = edit.getDefaultUseName();
             var defaultSourceName = edit.getDefaultSourceName();
@@ -178,11 +190,9 @@ public class EditContentCatalogCommand
                 var defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                 if(defaultOffer != null) {
-                    var useControl = Session.getModelController(UseControl.class);
                     var defaultUse = useControl.getUseByName(defaultUseName);
 
                     if(defaultUse != null) {
-                        var offerUseControl = Session.getModelController(OfferUseControl.class);
                         defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
 
                         if(defaultOfferUse == null) {
@@ -195,7 +205,6 @@ public class EditContentCatalogCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                var sourceControl = Session.getModelController(SourceControl.class);
                 var source = sourceControl.getSourceByName(defaultSourceName);
 
                 if(source != null) {
@@ -208,7 +217,6 @@ public class EditContentCatalogCommand
             }
 
             if(defaultOfferUse != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var defaultOffer = defaultOfferUse.getLastDetail().getOffer();
                 var defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
                 var defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
@@ -230,7 +238,6 @@ public class EditContentCatalogCommand
     
     @Override
     public void doUpdate(ContentCatalog contentCatalog) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         var contentCatalogDetailValue = contentControl.getContentCatalogDetailValueForUpdate(contentCatalog);
         var contentCatalogDescription = contentControl.getContentCatalogDescriptionForUpdate(contentCatalog, getPreferredLanguage());

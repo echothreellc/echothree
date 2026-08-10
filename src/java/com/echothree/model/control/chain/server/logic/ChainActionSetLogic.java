@@ -19,6 +19,9 @@ package com.echothree.model.control.chain.server.logic;
 import com.echothree.control.user.chain.common.spec.ChainActionSetUniversalSpec;
 import com.echothree.model.control.chain.common.exception.UnknownChainActionSetNameException;
 import com.echothree.model.control.chain.common.exception.UnknownDefaultChainActionSetException;
+import com.echothree.model.control.chain.common.exception.UnknownDefaultChainException;
+import com.echothree.model.control.chain.common.exception.UnknownDefaultChainKindException;
+import com.echothree.model.control.chain.common.exception.UnknownDefaultChainTypeException;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -26,11 +29,12 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
+import com.echothree.model.data.chain.server.entity.ChainKind;
+import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -40,10 +44,21 @@ public class ChainActionSetLogic
         extends BaseLogic {
 
     @Inject
+    ParameterUtils parameterUtils;
+    @Inject
     ChainControl chainControl;
 
     @Inject
+    ChainKindLogic chainKindLogic;
+
+    @Inject
     ChainLogic chainLogic;
+
+    @Inject
+    ChainTypeLogic chainTypeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ChainActionSetLogic() {
         super();
@@ -96,19 +111,69 @@ public class ChainActionSetLogic
 
     public ChainActionSet getChainActionSetByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ChainActionSetUniversalSpec universalSpec, final boolean allowDefault, final EntityPermission entityPermission) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainKindName = universalSpec.getChainKindName();
         var chainTypeName = universalSpec.getChainTypeName();
         var chainName = universalSpec.getChainName();
         var chainActionSetName = universalSpec.getChainActionSetName();
-        var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(chainKindName, chainTypeName, chainName, chainActionSetName);
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var nameParameterCount = parameterUtils.countNonNullParameters(chainKindName, chainTypeName, chainName, chainActionSetName);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         ChainActionSet chainActionSet = null;
 
-        if(possibleEntitySpecs == 0) {
-            var chain = chainLogic.getChainByUniversalSpec(eea, universalSpec, allowDefault, entityPermission);
+        if(nameParameterCount != 0 && possibleEntitySpecs == 0) {
+            ChainKind chainKind = null;
+            ChainType chainType = null;
+            Chain chain = null;
 
-            if(!eea.hasExecutionErrors()) {
+            if(chainKindName == null) {
+                if(allowDefault) {
+                    chainKind = chainControl.getDefaultChainKind();
+
+                    if(chainKind == null) {
+                        handleExecutionError(UnknownDefaultChainKindException.class, eea, ExecutionErrors.UnknownDefaultChainKind.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            } else {
+                chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
+            }
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                if(chainTypeName == null) {
+                    if(allowDefault) {
+                        chainType = chainControl.getDefaultChainType(chainKind);
+
+                        if(chainType == null) {
+                            handleExecutionError(UnknownDefaultChainTypeException.class, eea, ExecutionErrors.UnknownDefaultChainType.name(),
+                                    chainKind.getLastDetail().getChainKindName());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    chainType = chainTypeLogic.getChainTypeByName(eea, chainKind, chainTypeName);
+                }
+            }
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                if(chainName == null) {
+                    if(allowDefault) {
+                        chain = chainControl.getDefaultChain(chainType, entityPermission);
+
+                        if(chain == null) {
+                            handleExecutionError(UnknownDefaultChainException.class, eea, ExecutionErrors.UnknownDefaultChain.name(),
+                                    chainKind.getLastDetail().getChainKindName(),
+                                    chainType.getLastDetail().getChainTypeName());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    chain = chainLogic.getChainByName(eea, chainType, chainName, entityPermission);
+                }
+            }
+
+            if(eea == null || !eea.hasExecutionErrors()) {
                 if(chainActionSetName == null) {
                     if(allowDefault) {
                         chainActionSet = chainControl.getDefaultChainActionSet(chain, entityPermission);
@@ -127,10 +192,10 @@ public class ChainActionSetLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.ChainActionSet.name());
 
-            if(!eea.hasExecutionErrors()) {
+            if(eea == null || !eea.hasExecutionErrors()) {
                 chainActionSet = chainControl.getChainActionSetByEntityInstance(entityInstance, entityPermission);
             }
         } else {

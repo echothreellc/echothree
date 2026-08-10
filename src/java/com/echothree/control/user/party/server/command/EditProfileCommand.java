@@ -40,10 +40,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditProfileCommand
@@ -56,7 +56,7 @@ public class EditProfileCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
         
         customerEditFieldDefinitions = List.of(
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
@@ -73,7 +73,7 @@ public class EditProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                );
+        );
         
         otherEditFieldDefinitions = List.of(
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
@@ -90,8 +90,18 @@ public class EditProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                );
+        );
     }
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of EditProfileCommand */
     public EditProfileCommand() {
@@ -117,7 +127,6 @@ public class EditProfileCommand
 
     @Override
     public Profile getEntity(EditProfileResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
         Profile profile = null;
         var partyTypeName = getPartyTypeName();
         var partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? null : spec.getPartyName();
@@ -155,8 +164,6 @@ public class EditProfileCommand
 
     @Override
     public void fillInResult(EditProfileResult result, Profile profile) {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         result.setParty(partyControl.getPartyTransfer(getUserVisit(), profile.getParty()));
     }
 
@@ -193,8 +200,6 @@ public class EditProfileCommand
 
     @Override
     protected void canUpdate(Profile profile) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        var mimeTypeLogic = MimeTypeLogic.getInstance();
         var bioMimeTypeName = edit.getBioMimeTypeName();
         var bio = edit.getBio();
         var signatureMimeTypeName = edit.getSignatureMimeTypeName();
@@ -212,7 +217,6 @@ public class EditProfileCommand
         var duplicateProfile = nickname == null ? null : partyControl.getProfileByNickname(nickname);
 
         if(duplicateProfile == null || duplicateProfile.getPrimaryKey().equals(profile.getPrimaryKey())) {
-            var iconControl = Session.getModelController(IconControl.class);
             var iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
@@ -254,7 +258,6 @@ public class EditProfileCommand
 
     @Override
     public void doUpdate(Profile profile) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var profileValue = partyControl.getProfileValue(profile);
         var nickname = edit.getNickname();
         var pronunciation = edit.getPronunciation();

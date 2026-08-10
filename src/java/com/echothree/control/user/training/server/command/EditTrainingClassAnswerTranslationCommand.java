@@ -42,9 +42,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassAnswerTranslationCommand
@@ -59,8 +59,8 @@ public class EditTrainingClassAnswerTranslationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassAnswer.name(), SecurityRoles.Translation.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
@@ -68,15 +68,24 @@ public class EditTrainingClassAnswerTranslationCommand
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassAnswerName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AnswerMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Answer", FieldType.STRING, true, null, null),
                 new FieldDefinition("SelectedMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Selected", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
 
     /** Creates a new instance of EditTrainingClassAnswerTranslationCommand */
     public EditTrainingClassAnswerTranslationCommand() {
@@ -97,7 +106,6 @@ public class EditTrainingClassAnswerTranslationCommand
     
     @Override
     public TrainingClassAnswerTranslation getEntity(EditTrainingClassAnswerTranslationResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassAnswerTranslation trainingClassAnswerTranslation = null;
         var trainingClassName = spec.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -116,7 +124,6 @@ public class EditTrainingClassAnswerTranslationCommand
                     var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer != null) {
-                        var partyControl = Session.getModelController(PartyControl.class);
                         var languageIsoName = spec.getLanguageIsoName();
                         var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -159,8 +166,6 @@ public class EditTrainingClassAnswerTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassAnswerTranslationResult result, TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClassAnswerTranslation(trainingControl.getTrainingClassAnswerTranslationTransfer(getUserVisit(), trainingClassAnswerTranslation));
     }
 
@@ -180,7 +185,6 @@ public class EditTrainingClassAnswerTranslationCommand
 
     @Override
     protected void canUpdate(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        var mimeTypeLogic = MimeTypeLogic.getInstance();
         var answerMimeTypeName = edit.getAnswerMimeTypeName();
         var answer = edit.getAnswer();
         
@@ -200,7 +204,6 @@ public class EditTrainingClassAnswerTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassAnswerTranslationValue = trainingControl.getTrainingClassAnswerTranslationValue(trainingClassAnswerTranslation);
         
         trainingClassAnswerTranslationValue.setAnswerMimeTypePK(answerMimeType == null? null: answerMimeType.getPrimaryKey());

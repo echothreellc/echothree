@@ -38,41 +38,47 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditInventoryTransactionTypeDescriptionCommand
         extends BaseAbstractEditCommand<InventoryTransactionTypeDescriptionSpec, InventoryTransactionTypeDescriptionEdit, EditInventoryTransactionTypeDescriptionResult, InventoryTransactionTypeDescription, InventoryTransactionType> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryTransactionType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
-        
+        );
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditInventoryTransactionTypeDescriptionCommand */
     public EditInventoryTransactionTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     public EditInventoryTransactionTypeDescriptionResult getResult() {
         return InventoryResultFactory.getEditInventoryTransactionTypeDescriptionResult();
@@ -85,13 +91,11 @@ public class EditInventoryTransactionTypeDescriptionCommand
 
     @Override
     public InventoryTransactionTypeDescription getEntity(EditInventoryTransactionTypeDescriptionResult result) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         InventoryTransactionTypeDescription inventoryTransactionTypeDescription = null;
         var inventoryTransactionTypeName = spec.getInventoryTransactionTypeName();
         var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
 
         if(inventoryTransactionType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditInventoryTransactionTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditInventoryTransactionTypeDescriptionResult result, InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
-
         result.setInventoryTransactionTypeDescription(inventoryTransactionTypeControl.getInventoryTransactionTypeDescriptionTransfer(getUserVisit(), inventoryTransactionTypeDescription));
     }
 
@@ -134,11 +136,10 @@ public class EditInventoryTransactionTypeDescriptionCommand
 
     @Override
     public void doUpdate(InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
-        var inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
         var inventoryTransactionTypeDescriptionValue = inventoryTransactionTypeControl.getInventoryTransactionTypeDescriptionValue(inventoryTransactionTypeDescription);
         inventoryTransactionTypeDescriptionValue.setDescription(edit.getDescription());
 
         inventoryTransactionTypeControl.updateInventoryTransactionTypeDescriptionFromValue(inventoryTransactionTypeDescriptionValue, getPartyPK());
     }
-    
+
 }

@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseGetResultsCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorResultsCommand
@@ -48,13 +48,19 @@ public class GetVendorResultsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    SearchLogic searchLogic;
 
     /** Creates a new instance of GetVendorResultsCommand */
     public GetVendorResultsCommand() {
@@ -66,14 +72,12 @@ public class GetVendorResultsCommand
         var result = SearchResultFactory.getGetVendorResultsResult();
         var searchTypeName = form.getSearchTypeName();
         var userVisit = getUserVisit();
-        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
+        var userVisitSearch = searchLogic.getUserVisitSearchByName(this, userVisit,
                 SearchKinds.VENDOR.name(), searchTypeName);
 
         if(!hasExecutionErrors()) {
-            var vendorControl = Session.getModelController(VendorControl.class);
-
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                result.setVendorResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                result.setVendorResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
             }
 
             result.setVendorResults(vendorControl.getVendorResultTransfers(userVisit, userVisitSearch));

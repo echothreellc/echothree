@@ -42,16 +42,16 @@ import javax.inject.Inject;
 @Dependent
 public class EditInventoryLocationGroupVolumeCommand
         extends BaseAbstractEditCommand<InventoryLocationGroupSpec, InventoryLocationGroupVolumeEdit, EditInventoryLocationGroupVolumeResult, InventoryLocationGroupVolume, InventoryLocationGroup> {
-    
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
-        
+        );
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("HeightUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Height", FieldType.UNSIGNED_LONG, true, null, null),
@@ -59,12 +59,7 @@ public class EditInventoryLocationGroupVolumeCommand
                 new FieldDefinition("Width", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("DepthUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
-                );
-    }
-    
-    /** Creates a new instance of EditInventoryLocationGroupVolumeCommand */
-    public EditInventoryLocationGroupVolumeCommand() {
-        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        );
     }
 
     @Inject
@@ -76,6 +71,10 @@ public class EditInventoryLocationGroupVolumeCommand
     @Inject
     WarehouseControl warehouseControl;
 
+    /** Creates a new instance of EditInventoryLocationGroupVolumeCommand */
+    public EditInventoryLocationGroupVolumeCommand() {
+        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
     @Override
     public EditInventoryLocationGroupVolumeResult getResult() {
         return InventoryResultFactory.getEditInventoryLocationGroupVolumeResult();

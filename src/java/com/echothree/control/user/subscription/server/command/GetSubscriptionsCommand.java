@@ -62,7 +62,7 @@ public class GetSubscriptionsCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     PartyControl partyControl;
 
@@ -74,6 +74,8 @@ public class GetSubscriptionsCommand
 
     @Inject
     SubscriptionTypeLogic subscriptionTypeLogic;
+
+
     
     /** Creates a new instance of GetSubscriptionsCommand */
     public GetSubscriptionsCommand() {

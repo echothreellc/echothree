@@ -47,10 +47,10 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyPaymentMethodCommand
@@ -65,8 +65,8 @@ public class CreatePartyPaymentMethodCommand
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -88,8 +88,33 @@ public class CreatePartyPaymentMethodCommand
                 new FieldDefinition("BillingContactMechanismName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IssuerName", FieldType.STRING, false, 1L, 60L),
                 new FieldDefinition("IssuerContactMechanismName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    PaymentMethodTypePartyTypeControl paymentMethodTypePartyTypeControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    PartyPaymentMethodLogic partyPaymentMethodLogic;
+
     
     /** Creates a new instance of CreatePartyPaymentMethodCommand */
     public CreatePartyPaymentMethodCommand() {
@@ -99,12 +124,9 @@ public class CreatePartyPaymentMethodCommand
     private void setupWorkflows(final PaymentMethodType paymentMethodType, final PartyType partyType,
             final PartyPaymentMethodContactMechanism billingPartyPaymentMethodContactMechanism,
             final PartyPaymentMethod partyPaymentMethod, final PartyPK createdBy) {
-        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
         
         if(paymentMethodTypePartyType != null) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyType.getLastDetail();
 
             if(billingPartyPaymentMethodContactMechanism != null) {
@@ -146,7 +168,6 @@ public class CreatePartyPaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = PaymentResultFactory.getCreatePartyPaymentMethodResult();
         var party = getParty();
         var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
@@ -168,20 +189,17 @@ public class CreatePartyPaymentMethodCommand
         }
 
         if(!hasExecutionErrors()) {
-            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
             var paymentMethodName = form.getPaymentMethodName();
             var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
             if(paymentMethod != null) {
-                PartyPaymentMethodLogic.getInstance().checkPartyPaymentMethod(session, getUserVisit(), this, party, paymentMethod, form);
+                partyPaymentMethodLogic.checkPartyPaymentMethod(session, getUserVisit(), this, party, paymentMethod, form);
 
                 if(!hasExecutionErrors()) {
                     var paymentMethodType = paymentMethod.getLastDetail().getPaymentMethodType();
                     var paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
 
                     if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-                        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-                        var contactControl = Session.getModelController(ContactControl.class);
                         var soundex = new Soundex();
                         var personalTitleId = form.getPersonalTitleId();
                         var personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);

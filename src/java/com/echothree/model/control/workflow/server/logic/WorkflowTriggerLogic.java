@@ -32,9 +32,16 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WorkflowTriggerLogic {
+
+    @Inject
+    WorkflowTriggerFactory workflowTriggerFactory;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     protected WorkflowTriggerLogic() {
         super();
@@ -79,8 +86,7 @@ public class WorkflowTriggerLogic {
     }
     
     public void processWorkflowTriggers(final Session session, final ExecutionErrorAccumulator eea, final PartyPK triggeredBy) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var remainingTime = 1L * 60 * 1000; // 1 minute
+        var remainingTime = 1L * 50 * 1000; // 1 minute
         
         for(var workflowTrigger : workflowControl.getWorkflowTriggersByTriggerTime(session.getStartTime())) {
             var errorsOccurred = workflowTrigger.getErrorsOccurred();
@@ -88,7 +94,7 @@ public class WorkflowTriggerLogic {
             if(errorsOccurred == null || errorsOccurred == false) {
                 var startTime = System.currentTimeMillis();
 
-                workflowTrigger = WorkflowTriggerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowTrigger.getPrimaryKey());
+                workflowTrigger = workflowTriggerFactory.getEntityFromPK(EntityPermission.READ_WRITE, workflowTrigger.getPrimaryKey());
                 processWorkflowTrigger(session, eea, workflowTrigger, triggeredBy);
 
                 if(eea.hasExecutionErrors()) {

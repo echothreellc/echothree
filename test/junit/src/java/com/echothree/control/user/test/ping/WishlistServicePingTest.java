@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.WishlistService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class WishlistServicePingTest
-        extends TestCase {
+public class WishlistServicePingTest {
     private WishlistService wishlistService;
     
-    /** Creates a new instance of WishlistServiceTest */
-    public WishlistServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new WishlistServicePingTest("testPingWishlistService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             wishlistService = WishlistUtil.getHome();
             assertNotNull(wishlistService);
@@ -54,8 +37,8 @@ public class WishlistServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             wishlistService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class WishlistServicePingTest
         }
     }
     
+    @Test
     public void testPingWishlistService() {
-        setUp();
         try {
             wishlistService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

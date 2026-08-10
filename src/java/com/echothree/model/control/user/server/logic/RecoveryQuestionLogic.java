@@ -22,13 +22,16 @@ import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class RecoveryQuestionLogic
         extends BaseLogic {
+
+    @Inject
+    UserControl userControl;
 
     protected RecoveryQuestionLogic() {
         super();
@@ -39,7 +42,6 @@ public class RecoveryQuestionLogic
     }
     
     public RecoveryQuestion getRecoveryQuestionByName(final ExecutionErrorAccumulator eea, final String recoveryQuestionName) {
-        var userControl = Session.getModelController(UserControl.class);
         var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
 
         if(recoveryQuestion == null) {

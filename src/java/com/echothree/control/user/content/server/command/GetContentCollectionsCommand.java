@@ -31,10 +31,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContentCollectionsCommand
@@ -54,6 +54,9 @@ public class GetContentCollectionsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    ContentControl contentControl;
+
     /** Creates a new instance of GetContentCollectionsCommand */
     public GetContentCollectionsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,15 +69,11 @@ public class GetContentCollectionsCommand
 
     @Override
     protected Long getTotalEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return contentControl.countContentCollections();
     }
 
     @Override
     protected Collection<ContentCollection> getEntities() {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         return contentControl.getContentCollections();
     }
 
@@ -83,8 +82,6 @@ public class GetContentCollectionsCommand
         var result = ContentResultFactory.getGetContentCollectionsResult();
 
         if(entities != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
-
             if(session.hasLimit(ContentCollectionFactory.class)) {
                 result.setContentCollectionCount(getTotalEntities());
             }

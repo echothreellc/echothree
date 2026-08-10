@@ -18,6 +18,7 @@ package com.echothree.ui.web.main.action.accounting.departmentcontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
+import com.echothree.control.user.contact.common.result.GetPartyContactMechanismResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
@@ -56,7 +57,7 @@ public class ReviewAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        var commandForm = ContactUtil.getHome().getGetContactMechanismForm();
+        var commandForm = ContactUtil.getHome().getGetPartyContactMechanismForm();
         var partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         var contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
 
@@ -74,12 +75,12 @@ public class ReviewAction
         options.add(CoreOptions.EntityInstanceIncludeNames);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
-        var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
+        var commandResult = ContactUtil.getHome().getPartyContactMechanism(getUserVisitPK(request), commandForm);
         PartyContactMechanismTransfer partyContactMechanism = null;
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactMechanismResult)executionResult.getResult();
+            var result = (GetPartyContactMechanismResult)executionResult.getResult();
             partyContactMechanism = result.getPartyContactMechanism();
         }
 

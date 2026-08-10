@@ -20,6 +20,10 @@ import com.echothree.model.control.accounting.server.graphql.AccountingSecurityU
 import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.contactlist.server.graphql.ContactListSecurityUtils;
+import com.echothree.model.control.contactlist.server.graphql.CustomerTypeContactListGroupObject;
+import com.echothree.model.control.contactlist.server.graphql.CustomerTypeContactListObject;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -45,6 +49,8 @@ import com.echothree.model.control.term.server.graphql.TermSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.contactlist.common.CustomerTypeContactListConstants;
+import com.echothree.model.data.contactlist.common.CustomerTypeContactListGroupConstants;
 import com.echothree.model.data.customer.common.CustomerTypePaymentMethodConstants;
 import com.echothree.model.data.customer.common.CustomerTypeShippingMethodConstants;
 import com.echothree.model.data.customer.server.entity.CustomerType;
@@ -309,6 +315,47 @@ public class CustomerTypeObject
                 var offerCustomerTypes = entities.stream().map(OfferCustomerTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, offerCustomerTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+
+    @GraphQLField
+    @GraphQLDescription("customer type contact list groups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerTypeContactListGroupObject> getCustomerTypeContactListGroups(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasCustomerTypeContactListGroupsAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countCustomerTypeContactListGroupsByCustomerType(customerType);
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypeContactListGroupConstants.COMPONENT_VENDOR_NAME, CustomerTypeContactListGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getCustomerTypeContactListGroupsByCustomerType(customerType);
+                var customerTypeContactListGroups = entities.stream().map(CustomerTypeContactListGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, customerTypeContactListGroups);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("customer type contact lists")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerTypeContactListObject> getCustomerTypeContactLists(final DataFetchingEnvironment env) {
+        if(ContactListSecurityUtils.getHasCustomerTypeContactListsAccess(env)) {
+            var contactListControl = Session.getModelController(ContactListControl.class);
+            var totalCount = contactListControl.countCustomerTypeContactListsByCustomerType(customerType);
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypeContactListConstants.COMPONENT_VENDOR_NAME, CustomerTypeContactListConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getCustomerTypeContactListsByCustomerType(customerType);
+                var customerTypeContactLists = entities.stream().map(CustomerTypeContactListObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, customerTypeContactLists);
             }
         } else {
             return Connections.emptyConnection();

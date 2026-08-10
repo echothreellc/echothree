@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPrinterGroupCommand
@@ -55,12 +55,12 @@ public class EditPrinterGroupCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PrinterGroup.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterGroupName", FieldType.ENTITY_NAME, true, null, null),
@@ -69,8 +69,14 @@ public class EditPrinterGroupCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
     /** Creates a new instance of EditPrinterGroupCommand */
     public EditPrinterGroupCommand() {
@@ -89,7 +95,6 @@ public class EditPrinterGroupCommand
 
     @Override
     public PrinterGroup getEntity(EditPrinterGroupResult result) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         PrinterGroup printerGroup;
         var printerGroupName = spec.getPrinterGroupName();
 
@@ -115,15 +120,11 @@ public class EditPrinterGroupCommand
 
     @Override
     public void fillInResult(EditPrinterGroupResult result, PrinterGroup printerGroup) {
-        var printerControl = Session.getModelController(PrinterControl.class);
-
         result.setPrinterGroup(printerControl.getPrinterGroupTransfer(getUserVisit(), printerGroup));
     }
 
     @Override
     public void doLock(PrinterGroupEdit edit, PrinterGroup printerGroup) {
-        var printerControl = Session.getModelController(PrinterControl.class);
-        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         var printerGroupDescription = printerControl.getPrinterGroupDescription(printerGroup, getPreferredLanguage());
         var printerGroupDetail = printerGroup.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
@@ -144,15 +145,12 @@ public class EditPrinterGroupCommand
 
     @Override
     public void canUpdate(PrinterGroup printerGroup) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var printerGroupName = edit.getPrinterGroupName();
         var duplicatePrinterGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(duplicatePrinterGroup != null && !printerGroup.equals(duplicatePrinterGroup)) {
             addExecutionError(ExecutionErrors.DuplicatePrinterGroupName.name(), printerGroupName);
         } else {
-            var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-
             keepPrintedJobsTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                     edit.getKeepPrintedJobsTime(), edit.getKeepPrintedJobsTimeUnitOfMeasureTypeName(),
                     null, ExecutionErrors.MissingRequiredKeepPrintedJobsTime.name(), null, ExecutionErrors.MissingRequiredKeepPrintedJobsTimeUnitOfMeasureTypeName.name(),
@@ -162,7 +160,6 @@ public class EditPrinterGroupCommand
 
     @Override
     public void doUpdate(PrinterGroup printerGroup) {
-        var printerControl = Session.getModelController(PrinterControl.class);
         var partyPK = getPartyPK();
         var printerGroupDetailValue = printerControl.getPrinterGroupDetailValueForUpdate(printerGroup);
         var printerGroupDescription = printerControl.getPrinterGroupDescriptionForUpdate(printerGroup, getPreferredLanguage());

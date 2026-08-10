@@ -32,13 +32,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SearchUseTypeLogic
         extends BaseLogic {
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected SearchUseTypeLogic() {
         super();
@@ -51,7 +57,6 @@ public class SearchUseTypeLogic
     public SearchUseType createSearchUseType(final ExecutionErrorAccumulator eea, final String searchUseTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
         if(searchUseType == null) {
@@ -69,7 +74,6 @@ public class SearchUseTypeLogic
 
     public SearchUseType getSearchUseTypeByName(final ExecutionErrorAccumulator eea, final String searchUseTypeName,
             final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName, entityPermission);
 
         if(searchUseType == null) {
@@ -90,9 +94,8 @@ public class SearchUseTypeLogic
     public SearchUseType getSearchUseTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SearchUseTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SearchUseType searchUseType = null;
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchUseTypeName = universalSpec.getSearchUseTypeName();
-        var parameterCount = (searchUseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (searchUseTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,10 +111,10 @@ public class SearchUseTypeLogic
             }
             case 1 -> {
                 if(searchUseTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchUseType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         searchUseType = searchControl.getSearchUseTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -137,8 +140,6 @@ public class SearchUseTypeLogic
 
     public void deleteSearchUseType(final ExecutionErrorAccumulator eea, final SearchUseType searchUseType,
             final BasePK deletedBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         searchControl.deleteSearchUseType(searchUseType, deletedBy);
     }
 

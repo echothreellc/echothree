@@ -22,7 +22,7 @@ import com.echothree.control.user.filter.common.form.EditFilterKindForm;
 import com.echothree.control.user.filter.common.result.EditFilterKindResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterKindSpec;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFilterKindCommand
@@ -53,20 +53,23 @@ public class EditFilterKindCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     /** Creates a new instance of EditFilterKindCommand */
     public EditFilterKindCommand() {
@@ -85,14 +88,13 @@ public class EditFilterKindCommand
 
     @Override
     public FilterKind getEntity(EditFilterKindResult result) {
-        var filterControl = Session.getModelController(FilterControl.class);
         FilterKind filterKind;
         var filterKindName = spec.getFilterKindName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            filterKind = filterControl.getFilterKindByName(filterKindName);
+            filterKind = filterKindControl.getFilterKindByName(filterKindName);
         } else { // EditMode.UPDATE
-            filterKind = filterControl.getFilterKindByNameForUpdate(filterKindName);
+            filterKind = filterKindControl.getFilterKindByNameForUpdate(filterKindName);
         }
 
         if(filterKind == null) {
@@ -109,15 +111,12 @@ public class EditFilterKindCommand
 
     @Override
     public void fillInResult(EditFilterKindResult result, FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
-
-        result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
+        result.setFilterKind(filterKindControl.getFilterKindTransfer(getUserVisit(), filterKind));
     }
 
     @Override
     public void doLock(FilterKindEdit edit, FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
-        var filterKindDescription = filterControl.getFilterKindDescription(filterKind, getPreferredLanguage());
+        var filterKindDescription = filterKindControl.getFilterKindDescription(filterKind, getPreferredLanguage());
         var filterKindDetail = filterKind.getLastDetail();
 
         edit.setFilterKindName(filterKindDetail.getFilterKindName());
@@ -131,9 +130,8 @@ public class EditFilterKindCommand
 
     @Override
     public void canUpdate(FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = edit.getFilterKindName();
-        var duplicateFilterKind = filterControl.getFilterKindByName(filterKindName);
+        var duplicateFilterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(duplicateFilterKind != null && !filterKind.equals(duplicateFilterKind)) {
             addExecutionError(ExecutionErrors.DuplicateFilterKindName.name(), filterKindName);
@@ -142,27 +140,26 @@ public class EditFilterKindCommand
 
     @Override
     public void doUpdate(FilterKind filterKind) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var partyPK = getPartyPK();
-        var filterKindDetailValue = filterControl.getFilterKindDetailValueForUpdate(filterKind);
-        var filterKindDescription = filterControl.getFilterKindDescriptionForUpdate(filterKind, getPreferredLanguage());
+        var filterKindDetailValue = filterKindControl.getFilterKindDetailValueForUpdate(filterKind);
+        var filterKindDescription = filterKindControl.getFilterKindDescriptionForUpdate(filterKind, getPreferredLanguage());
         var description = edit.getDescription();
 
         filterKindDetailValue.setFilterKindName(edit.getFilterKindName());
         filterKindDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         filterKindDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        filterControl.updateFilterKindFromValue(filterKindDetailValue, partyPK);
+        filterKindControl.updateFilterKindFromValue(filterKindDetailValue, partyPK);
 
         if(filterKindDescription == null && description != null) {
-            filterControl.createFilterKindDescription(filterKind, getPreferredLanguage(), description, partyPK);
+            filterKindControl.createFilterKindDescription(filterKind, getPreferredLanguage(), description, partyPK);
         } else if(filterKindDescription != null && description == null) {
-            filterControl.deleteFilterKindDescription(filterKindDescription, partyPK);
+            filterKindControl.deleteFilterKindDescription(filterKindDescription, partyPK);
         } else if(filterKindDescription != null && description != null) {
-            var filterKindDescriptionValue = filterControl.getFilterKindDescriptionValue(filterKindDescription);
+            var filterKindDescriptionValue = filterKindControl.getFilterKindDescriptionValue(filterKindDescription);
 
             filterKindDescriptionValue.setDescription(description);
-            filterControl.updateFilterKindDescriptionFromValue(filterKindDescriptionValue, partyPK);
+            filterKindControl.updateFilterKindDescriptionFromValue(filterKindDescriptionValue, partyPK);
         }
     }
 

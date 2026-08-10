@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditShippingMethodDescriptionCommand
@@ -55,18 +55,25 @@ public class EditShippingMethodDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ShippingMethod.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
     
     /** Creates a new instance of EditShippingMethodDescriptionCommand */
     public EditShippingMethodDescriptionCommand() {
@@ -85,13 +92,11 @@ public class EditShippingMethodDescriptionCommand
 
     @Override
     public ShippingMethodDescription getEntity(EditShippingMethodDescriptionResult result) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         ShippingMethodDescription shippingMethodDescription = null;
         var shippingMethodName = spec.getShippingMethodName();
         var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
         if(shippingMethod != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +127,6 @@ public class EditShippingMethodDescriptionCommand
 
     @Override
     public void fillInResult(EditShippingMethodDescriptionResult result, ShippingMethodDescription shippingMethodDescription) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
-
         result.setShippingMethodDescription(shippingControl.getShippingMethodDescriptionTransfer(getUserVisit(), shippingMethodDescription));
     }
 
@@ -134,7 +137,6 @@ public class EditShippingMethodDescriptionCommand
 
     @Override
     public void doUpdate(ShippingMethodDescription shippingMethodDescription) {
-        var shippingControl = Session.getModelController(ShippingControl.class);
         var shippingMethodDescriptionValue = shippingControl.getShippingMethodDescriptionValue(shippingMethodDescription);
         shippingMethodDescriptionValue.setDescription(edit.getDescription());
 

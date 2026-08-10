@@ -26,9 +26,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateSelectorBooleanTypeCommand
@@ -48,6 +48,10 @@ public class CreateSelectorBooleanTypeCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    SelectorControl selectorControl;
+
     
     /** Creates a new instance of CreateSelectorBooleanTypeCommand */
     public CreateSelectorBooleanTypeCommand() {
@@ -57,7 +61,6 @@ public class CreateSelectorBooleanTypeCommand
     @Override
     protected BaseResult execute() {
         var selectorBooleanTypeName = form.getSelectorBooleanTypeName();
-        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
         
         if(selectorBooleanType == null) {

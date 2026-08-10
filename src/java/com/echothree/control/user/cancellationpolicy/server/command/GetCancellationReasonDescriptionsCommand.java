@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationReasonDescriptionsCommand
@@ -47,14 +47,18 @@ public class GetCancellationReasonDescriptionsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CancellationReason.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationReasonName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
     
     /** Creates a new instance of GetCancellationReasonDescriptionsCommand */
     public GetCancellationReasonDescriptionsCommand() {
@@ -63,7 +67,6 @@ public class GetCancellationReasonDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var result = CancellationPolicyResultFactory.getGetCancellationReasonDescriptionsResult();
         var cancellationKindName = form.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);

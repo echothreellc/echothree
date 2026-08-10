@@ -19,6 +19,9 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterStepChoicesCommand
@@ -58,6 +61,19 @@ public class GetFilterStepChoicesCommand
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
+
     
     /** Creates a new instance of GetFilterStepChoicesCommand */
     public GetFilterStepChoicesCommand() {
@@ -66,14 +82,13 @@ public class GetFilterStepChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterStepChoicesResult();
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var filterName = form.getFilterName();
@@ -83,7 +98,7 @@ public class GetFilterStepChoicesCommand
                     var defaultFilterStepChoice = form.getDefaultFilterStepChoice();
                     var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                     
-                    result.setFilterStepChoices(filterControl.getFilterStepChoices(defaultFilterStepChoice, getPreferredLanguage(),
+                    result.setFilterStepChoices(filterStepControl.getFilterStepChoices(defaultFilterStepChoice, getPreferredLanguage(),
                             allowNullChoice, filter));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);

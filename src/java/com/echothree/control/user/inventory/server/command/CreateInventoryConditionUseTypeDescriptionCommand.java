@@ -25,46 +25,50 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class CreateInventoryConditionUseTypeDescriptionCommand
         extends BaseSimpleCommand<CreateInventoryConditionUseTypeDescriptionForm> {
-    
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("InventoryConditionUseTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("InventoryConditionUseTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of CreateInventoryConditionUseTypeDescriptionCommand */
     public CreateInventoryConditionUseTypeDescriptionCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
         var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
-        
+
         if(inventoryConditionUseType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
+
             if(language != null) {
                 var inventoryConditionUseTypeDescription = inventoryControl.getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
-                
+
                 if(inventoryConditionUseTypeDescription == null) {
                     var description = form.getDescription();
-                    
+
                     inventoryControl.createInventoryConditionUseTypeDescription(inventoryConditionUseType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateInventoryConditionUseTypeDescription.name());
@@ -75,8 +79,8 @@ public class CreateInventoryConditionUseTypeDescriptionCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryConditionUseTypeName.name(), inventoryConditionUseTypeName);
         }
-        
+
         return null;
     }
-    
+
 }

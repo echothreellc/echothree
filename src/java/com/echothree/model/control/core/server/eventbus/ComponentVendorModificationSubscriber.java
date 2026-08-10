@@ -24,26 +24,32 @@ import com.echothree.model.data.core.common.ComponentVendorConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
 
 @SentEventSubscriber
 public class ComponentVendorModificationSubscriber
         extends BaseEventSubscriber {
+
+    @Inject
+    ComponentControl componentControl;
+
+    @Inject
+    EntityTypeControl entityTypeControl;
+
+    @Inject
+    EventControl eventControl;
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
         decodeEventAndApply(se, touchEntityTypesIfComponentVendor);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchEntityTypesIfComponentVendor = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(ComponentVendorConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ComponentVendorConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var componentControl = Session.getModelController(ComponentControl.class);
-            var entityTypeControl = Session.getModelController(EntityTypeControl.class);
             var componentVendor = componentControl.getComponentVendorByEntityInstance(entityInstance);
             var entityTypes = entityTypeControl.getEntityTypesByComponentVendor(componentVendor);
             var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());

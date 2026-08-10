@@ -21,7 +21,10 @@ import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -76,17 +79,27 @@ public class EditFilterCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
-    /** Creates a new instance of EditFilterCommand */
-    public EditFilterCommand() {
-        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
-    }
-    
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
     @Inject
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
     SelectorControl selectorControl;
+
+
+    /** Creates a new instance of EditFilterCommand */
+    public EditFilterCommand() {
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
 
     @Override
     public EditFilterResult getResult() {
@@ -106,12 +119,12 @@ public class EditFilterCommand
         Filter filter = null;
         var filterKindName = spec.getFilterKindName();
 
-        filterKind = filterControl.getFilterKindByName(filterKindName);
+        filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterTypeName = spec.getFilterTypeName();
 
-            filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
 
             if(filterType != null) {
                 var filterName = spec.getFilterName();
@@ -175,7 +188,7 @@ public class EditFilterCommand
         } else {
             var initialFilterAdjustmentName = edit.getInitialFilterAdjustmentName();
 
-            initialFilterAdjustment = initialFilterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, initialFilterAdjustmentName);
+            initialFilterAdjustment = initialFilterAdjustmentName == null? null: filterAdjustmentControl.getFilterAdjustmentByName(filterKind, initialFilterAdjustmentName);
 
             if(initialFilterAdjustmentName != null && initialFilterAdjustment == null) {
                 addExecutionError(ExecutionErrors.UnknownInitialFilterAdjustmentName.name(), initialFilterAdjustmentName);

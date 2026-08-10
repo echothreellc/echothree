@@ -36,10 +36,10 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditBlogCommentCommand
@@ -51,7 +51,7 @@ public class EditBlogCommentCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PostedTime", FieldType.DATE_TIME, true, null, null),
@@ -59,8 +59,18 @@ public class EditBlogCommentCommand
                 new FieldDefinition("Title", FieldType.STRING, true, 1L, 512L),
                 new FieldDefinition("ContentMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Content", FieldType.STRING, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
     
     /** Creates a new instance of EditBlogCommentCommand */
     public EditBlogCommentCommand() {
@@ -79,7 +89,6 @@ public class EditBlogCommentCommand
 
     @Override
     public ForumMessage getEntity(EditBlogCommentResult result) {
-        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessage forumMessage;
         var forumMessageName = spec.getForumMessageName();
 
@@ -103,14 +112,11 @@ public class EditBlogCommentCommand
 
     @Override
     public void fillInResult(EditBlogCommentResult result, ForumMessage forumMessage) {
-        var forumControl = Session.getModelController(ForumControl.class);
-
         result.setForumMessage(forumControl.getForumMessageTransfer(getUserVisit(), forumMessage));
     }
 
     @Override
     public void doLock(BlogCommentEdit edit, ForumMessage forumMessage) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessageDetail = forumMessage.getLastDetail();
 
         forumMessageIcon = forumMessageDetail.getIcon();
@@ -142,11 +148,9 @@ public class EditBlogCommentCommand
 
     @Override
     public void canUpdate(ForumMessage forumMessage) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessageDetail = forumMessage.getLastDetail();
 
         if(forumMessageDetail.getForumMessageType().getForumMessageTypeName().equals(ForumConstants.ForumMessageType_BLOG_COMMENT)) {
-            var iconControl = Session.getModelController(IconControl.class);
             var forumMessageIconName = edit.getForumMessageIconName();
 
             forumMessageIcon = forumMessageIconName == null? null: iconControl.getIconByName(forumMessageIconName);
@@ -162,7 +166,6 @@ public class EditBlogCommentCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
                     var contentMimeTypeName = edit.getContentMimeTypeName();
 
                     contentMimeType = contentMimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(contentMimeTypeName);
@@ -188,7 +191,6 @@ public class EditBlogCommentCommand
 
     @Override
     public void doUpdate(ForumMessage forumMessage) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
         var forumMessageDetailValue = forumControl.getForumMessageDetailValueForUpdate(forumMessage);
 

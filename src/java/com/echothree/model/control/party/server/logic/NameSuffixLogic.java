@@ -27,13 +27,22 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class NameSuffixLogic
         extends BaseLogic {
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
 
     protected NameSuffixLogic() {
         super();
@@ -45,7 +54,6 @@ public class NameSuffixLogic
 
     private NameSuffix getNameSuffixById(final ExecutionErrorAccumulator eea, final String nameSuffixId,
             final EntityPermission entityPermission) {
-        var partyControl = Session.getModelController(PartyControl.class);
         var nameSuffix = partyControl.convertNameSuffixIdToEntity(nameSuffixId, entityPermission);
 
         if(nameSuffix == null) {
@@ -64,10 +72,6 @@ public class NameSuffixLogic
     }
 
     public void deleteNameSuffix(final ExecutionErrorAccumulator eea, final NameSuffix nameSuffix, final PartyPK deletedBy) {
-        var contactControl = Session.getModelController(ContactControl.class);
-        var partyControl = Session.getModelController(PartyControl.class);
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-
         // Check if the NameSuffix is in-use by any PartyPaymentMethodCreditCard, ContactPostalAddress or Person.
         if(partyPaymentMethodControl.countPartyPaymentMethodCreditCardsByNameSuffix(nameSuffix) != 0
                 || contactControl.countContactPostalAddressesByNameSuffix(nameSuffix) != 0
@@ -76,7 +80,7 @@ public class NameSuffixLogic
                     nameSuffix.getLastDetail().getNameSuffixPK().getEntityId().toString());
         }
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             partyControl.deleteNameSuffix(nameSuffix, deletedBy);
         }
     }
@@ -84,7 +88,7 @@ public class NameSuffixLogic
     public void deleteNameSuffix(final ExecutionErrorAccumulator eea, final String nameSuffixId, final PartyPK deletedBy) {
         var nameSuffix = getNameSuffixByIdForUpdate(eea, nameSuffixId);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             deleteNameSuffix(eea, nameSuffix, deletedBy);
         }
     }

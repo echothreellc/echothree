@@ -40,9 +40,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditTrainingClassQuestionCommand
@@ -57,14 +57,14 @@ public class EditTrainingClassQuestionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.TrainingClassQuestion.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null),
@@ -73,8 +73,15 @@ public class EditTrainingClassQuestionCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("QuestionMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Question", FieldType.STRING, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    MimeTypeLogic mimeTypeLogic;
+
     
     /** Creates a new instance of EditTrainingClassQuestionCommand */
     public EditTrainingClassQuestionCommand() {
@@ -95,7 +102,6 @@ public class EditTrainingClassQuestionCommand
     
     @Override
     public TrainingClassQuestion getEntity(EditTrainingClassQuestionResult result) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassQuestion trainingClassQuestion = null;
         var trainingClassName = spec.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -136,8 +142,6 @@ public class EditTrainingClassQuestionCommand
 
     @Override
     public void fillInResult(EditTrainingClassQuestionResult result, TrainingClassQuestion trainingClassQuestion) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
-
         result.setTrainingClassQuestion(trainingControl.getTrainingClassQuestionTransfer(getUserVisit(), trainingClassQuestion));
     }
 
@@ -145,7 +149,6 @@ public class EditTrainingClassQuestionCommand
     
     @Override
     public void doLock(TrainingClassQuestionEdit edit, TrainingClassQuestion trainingClassQuestion) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslation(trainingClassQuestion, getPreferredLanguage());
         var trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
 
@@ -162,14 +165,12 @@ public class EditTrainingClassQuestionCommand
 
     @Override
     public void canUpdate(TrainingClassQuestion trainingClassQuestion) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var trainingClassQuestionName = edit.getTrainingClassQuestionName();
         var duplicateTrainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
         if(duplicateTrainingClassQuestion != null && !trainingClassQuestion.equals(duplicateTrainingClassQuestion)) {
             addExecutionError(ExecutionErrors.DuplicateTrainingClassQuestionName.name(), trainingClassQuestionName);
         } else {
-            var mimeTypeLogic = MimeTypeLogic.getInstance();
             var questionMimeTypeName = edit.getQuestionMimeTypeName();
             var question = edit.getQuestion();
 
@@ -181,7 +182,6 @@ public class EditTrainingClassQuestionCommand
     
     @Override
     public void doUpdate(TrainingClassQuestion trainingClassQuestion) {
-        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         var trainingClassQuestionDetailValue = trainingControl.getTrainingClassQuestionDetailValueForUpdate(trainingClassQuestion);
         var trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslationForUpdate(trainingClassQuestion, getPreferredLanguage());

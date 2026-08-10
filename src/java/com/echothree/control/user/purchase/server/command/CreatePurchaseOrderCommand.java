@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePurchaseOrderCommand
@@ -44,9 +45,9 @@ public class CreatePurchaseOrderCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PurchaseOrder.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PurchaseOrder.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
@@ -58,8 +59,11 @@ public class CreatePurchaseOrderCommand
                 new FieldDefinition("Reference", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PurchaseOrderLogic purchaseOrderLogic;
 
     /** Creates a new instance of CreatePurchaseOrderCommand */
     public CreatePurchaseOrderCommand() {
@@ -79,7 +83,7 @@ public class CreatePurchaseOrderCommand
         var freeOnBoardName = form.getFreeOnBoardName();
         var workflowEntranceName = form.getWorkflowEntranceName();
 
-        var order = PurchaseOrderLogic.getInstance().createPurchaseOrder(session, this, getUserVisit(), vendorName,
+        var order = purchaseOrderLogic.createPurchaseOrder(session, this, getUserVisit(), vendorName,
                 termName, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, reference,
                 freeOnBoardName, workflowEntranceName, getParty());
 

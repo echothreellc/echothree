@@ -18,7 +18,6 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetEntityTypeResultsForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -34,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityTypeResultsCommand
@@ -58,6 +57,12 @@ public class GetEntityTypeResultsCommand
         );
     }
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    SearchLogic searchLogic;
+
     /** Creates a new instance of GetEntityTypeResultsCommand */
     public GetEntityTypeResultsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -66,7 +71,6 @@ public class GetEntityTypeResultsCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getGetEntityTypeResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchKind = searchControl.getSearchKindByName(SearchKinds.ENTITY_TYPE.name());
         
         if(searchKind != null) {
@@ -78,10 +82,8 @@ public class GetEntityTypeResultsCommand
                 var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
-
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setEntityTypeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
+                        result.setEntityTypeResultCount(searchLogic.countSearchResults(userVisitSearch.getSearch()));
                     }
 
                     result.setEntityTypeResults(entityTypeControl.getEntityTypeResultTransfers(userVisit, userVisitSearch));

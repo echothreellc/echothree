@@ -27,8 +27,8 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -37,7 +37,7 @@ public class GetInventoryAdjustmentTypeCommand
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryAdjustmentTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -45,7 +45,13 @@ public class GetInventoryAdjustmentTypeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
+    @Inject
+    InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
+
+    @Inject
+    InventoryAdjustmentTypeLogic inventoryAdjustmentTypeLogic;
+
     /** Creates a new instance of GetInventoryAdjustmentTypeCommand */
     public GetInventoryAdjustmentTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -53,7 +59,7 @@ public class GetInventoryAdjustmentTypeCommand
 
     @Override
     protected InventoryAdjustmentType getEntity() {
-        var inventoryAdjustmentType = InventoryAdjustmentTypeLogic.getInstance().getInventoryAdjustmentTypeByUniversalSpec(this, form, true);
+        var inventoryAdjustmentType = inventoryAdjustmentTypeLogic.getInventoryAdjustmentTypeByUniversalSpec(this, form, true);
 
         if(inventoryAdjustmentType != null) {
             sendEvent(inventoryAdjustmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -64,7 +70,6 @@ public class GetInventoryAdjustmentTypeCommand
 
     @Override
     protected BaseResult getResult(InventoryAdjustmentType itemAliasType) {
-        var inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
         var result = InventoryResultFactory.getGetInventoryAdjustmentTypeResult();
 
         if(itemAliasType != null) {
@@ -73,5 +78,5 @@ public class GetInventoryAdjustmentTypeCommand
 
         return result;
     }
-    
+
 }

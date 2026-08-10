@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContentCollectionCommand
@@ -53,8 +53,8 @@ public class CreateContentCollectionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentCollection.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -62,8 +62,24 @@ public class CreateContentCollectionCommand
                 new FieldDefinition("DefaultUseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSourceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    SourceControl sourceControl;
+
+    @Inject
+    UseControl useControl;
+
     
     /** Creates a new instance of CreateContentCollectionCommand */
     public CreateContentCollectionCommand() {
@@ -73,12 +89,10 @@ public class CreateContentCollectionCommand
     @Override
     protected BaseResult execute() {
         var result = ContentResultFactory.getCreateContentCollectionResult();
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
         if(contentCollection == null) {
-            var offerControl = Session.getModelController(OfferControl.class);
             var defaultOfferName = form.getDefaultOfferName();
             var defaultUseName = form.getDefaultUseName();
             var defaultSourceName = form.getDefaultSourceName();
@@ -88,11 +102,9 @@ public class CreateContentCollectionCommand
                 var defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                 if(defaultOffer != null) {
-                    var useControl = Session.getModelController(UseControl.class);
                     var defaultUse = useControl.getUseByName(defaultUseName);
 
                     if(defaultUse != null) {
-                        var offerUseControl = Session.getModelController(OfferUseControl.class);
                         defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
 
                         if(defaultOfferUse == null) {
@@ -105,7 +117,6 @@ public class CreateContentCollectionCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                var sourceControl = Session.getModelController(SourceControl.class);
                 var source = sourceControl.getSourceByName(defaultSourceName);
 
                 if(source != null) {
@@ -114,7 +125,6 @@ public class CreateContentCollectionCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultSourceName.name(), defaultSourceName);
                 }
             } else {
-                var sourceControl = Session.getModelController(SourceControl.class);
                 // If all three parameters are null, then try to get the default Source and use its OfferUse.
                 var source = sourceControl.getDefaultSource();
 

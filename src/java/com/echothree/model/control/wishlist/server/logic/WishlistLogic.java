@@ -39,10 +39,29 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class WishlistLogic
         extends BaseLogic {
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    OrderRoleControl orderRoleControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WishlistControl wishlistControl;
+
+    @Inject
+    OrderLogic orderLogic;
+
+    @Inject
+    SalesOrderLineLogic salesOrderLineLogic;
 
     protected WishlistLogic() {
         super();
@@ -53,7 +72,6 @@ public class WishlistLogic
     }
 
     private OfferUse getOrderOfferUse(final UserVisit userVisit, final OfferUse offerUse, final Party companyParty) {
-            var partyControl = Session.getModelController(PartyControl.class);
         var orderOfferUse = userVisit.getOfferUse();
 
         if(orderOfferUse == null) {
@@ -80,9 +98,6 @@ public class WishlistLogic
         var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var wishlistControl = Session.getModelController(WishlistControl.class);
-            var orderLogic = OrderLogic.getInstance();
             var currency = offerItemPrice.getCurrency();
             var offerUse = source.getLastDetail().getOfferUse();
             var departmentParty = offerUse.getLastDetail().getOffer().getLastDetail().getDepartmentParty();
@@ -99,8 +114,6 @@ public class WishlistLogic
                     order = orderLogic.createOrder(ema, orderType, null, null, currency, null, null, null, null, null, null, null, null, null, null, null, createdBy);
 
                     if(!ema.hasExecutionErrors()) {
-                        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
-
                         wishlistControl.createWishlist(order, getOrderOfferUse(userVisit, offerUse, companyParty), wishlistType, createdBy);
 
                         orderRoleControl.createOrderRoleUsingNames(order, companyParty, OrderRoleTypes.BILL_FROM.name(), createdBy);
@@ -115,12 +128,11 @@ public class WishlistLogic
                 var orderLine = wishlistControl.getWishlistLineByItemForUpdate(order, item, inventoryCondition, unitOfMeasureType);
 
                 if(orderLine == null) {
-                    var offerItemControl = Session.getModelController(OfferItemControl.class);
                     var offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
                     var unitAmount = offerItemFixedPrice.getUnitPrice();
                     var associateReferral = userVisit.getAssociateReferral();
 
-                    orderLine = SalesOrderLineLogic.getInstance().createOrderLine(session, ema, order, null, null, null, item, inventoryCondition, unitOfMeasureType,
+                    orderLine = salesOrderLineLogic.createOrderLine(session, ema, order, null, null, null, item, inventoryCondition, unitOfMeasureType,
                             quantity, unitAmount, null, null, null, null, createdBy);
 
                     if(!ema.hasExecutionErrors()) {

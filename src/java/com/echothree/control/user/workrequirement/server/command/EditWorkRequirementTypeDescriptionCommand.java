@@ -31,9 +31,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWorkRequirementTypeDescriptionCommand
@@ -44,15 +44,25 @@ public class EditWorkRequirementTypeDescriptionCommand
     
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
     
     /** Creates a new instance of EditWorkRequirementTypeDescriptionCommand */
     public EditWorkRequirementTypeDescriptionCommand() {
@@ -61,18 +71,15 @@ public class EditWorkRequirementTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var result = WorkRequirementResultFactory.getEditWorkRequirementTypeDescriptionResult();
         var workEffortTypeName = spec.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
             var workRequirementTypeName = spec.getWorkRequirementTypeName();
             var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

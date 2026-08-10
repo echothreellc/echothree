@@ -36,13 +36,25 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PaymentProcessorTypeCodeTypeLogic
     extends BaseLogic {
+
+    @Inject
+    PaymentProcessorTypeCodeTypeControl paymentProcessorTypeCodeTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    PaymentProcessorTypeLogic paymentProcessorTypeLogic;
 
     protected PaymentProcessorTypeCodeTypeLogic() {
         super();
@@ -56,7 +68,6 @@ public class PaymentProcessorTypeCodeTypeLogic
             final PaymentProcessorType paymentProcessorType, final String paymentProcessorTypeCodeTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeByName(paymentProcessorType, paymentProcessorTypeCodeTypeName);
 
         if(paymentProcessorTypeCodeType == null) {
@@ -77,9 +88,9 @@ public class PaymentProcessorTypeCodeTypeLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = null;
-        var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, paymentProcessorTypeName);
+        var paymentProcessorType = paymentProcessorTypeLogic.getPaymentProcessorTypeByName(eea, paymentProcessorTypeName);
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             paymentProcessorTypeCodeType = createPaymentProcessorTypeCodeType(eea, paymentProcessorType,
                     paymentProcessorTypeCodeTypeName, isDefault, sortOrder, language, description, createdBy);
         }
@@ -90,7 +101,6 @@ public class PaymentProcessorTypeCodeTypeLogic
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByName(final ExecutionErrorAccumulator eea,
             final PaymentProcessorType paymentProcessorType, final String paymentProcessorTypeCodeTypeName,
             final EntityPermission entityPermission) {
-        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeByName(paymentProcessorType,
                 paymentProcessorTypeCodeTypeName, entityPermission);
 
@@ -114,10 +124,10 @@ public class PaymentProcessorTypeCodeTypeLogic
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByNames(final ExecutionErrorAccumulator eea,
             final String paymentProcessorTypeName, final String paymentProcessorTypeCodeTypeName,
             final EntityPermission entityPermission) {
-        var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, paymentProcessorTypeName);
+        var paymentProcessorType = paymentProcessorTypeLogic.getPaymentProcessorTypeByName(eea, paymentProcessorTypeName);
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             paymentProcessorTypeCodeType = getPaymentProcessorTypeCodeTypeByName(eea, paymentProcessorType, paymentProcessorTypeCodeTypeName, entityPermission);
         }
 
@@ -137,18 +147,17 @@ public class PaymentProcessorTypeCodeTypeLogic
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCodeTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = null;
-        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var paymentProcessorTypeName = universalSpec.getPaymentProcessorTypeName();
         var paymentProcessorTypeCodeTypeName = universalSpec.getPaymentProcessorTypeCodeTypeName();
-        var parameterCount = (paymentProcessorTypeName != null && paymentProcessorTypeCodeTypeName != null ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentProcessorTypeName != null && paymentProcessorTypeCodeTypeName != null ? 1 : 0) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
                 if(allowDefault) {
                     if(paymentProcessorTypeName != null) {
-                        var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, universalSpec.getPaymentProcessorTypeName());
+                        var paymentProcessorType = paymentProcessorTypeLogic.getPaymentProcessorTypeByName(eea, universalSpec.getPaymentProcessorTypeName());
 
-                        if(!eea.hasExecutionErrors()) {
+                        if(eea == null || !eea.hasExecutionErrors()) {
                             paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getDefaultPaymentProcessorTypeCodeType(paymentProcessorType, entityPermission);
 
                             if(paymentProcessorTypeCodeType == null) {
@@ -164,17 +173,17 @@ public class PaymentProcessorTypeCodeTypeLogic
             }
             case 1 -> {
                 if(paymentProcessorTypeName != null && paymentProcessorTypeCodeTypeName != null) {
-                    var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, universalSpec.getPaymentProcessorTypeName());
+                    var paymentProcessorType = paymentProcessorTypeLogic.getPaymentProcessorTypeByName(eea, universalSpec.getPaymentProcessorTypeName());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         paymentProcessorTypeCodeType = getPaymentProcessorTypeCodeTypeByName(eea, paymentProcessorType,
                                 paymentProcessorTypeCodeTypeName, entityPermission);
                     }
                 } else {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorTypeCodeType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 }
@@ -198,15 +207,12 @@ public class PaymentProcessorTypeCodeTypeLogic
 
     public void deletePaymentProcessorTypeCodeType(final ExecutionErrorAccumulator eea, final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType,
             final BasePK deletedBy) {
-        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
-
         paymentProcessorTypeCodeTypeControl.deletePaymentProcessorTypeCodeType(paymentProcessorTypeCodeType, deletedBy);
     }
 
     public PaymentProcessorTypeCodeTypeDescription createPaymentProcessorTypeCodeTypeDescription(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType, final Language language,
             final String description, final BasePK createdBy) {
-        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var paymentProcessorTypeCodeTypeDescription = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, language);
 
         if(paymentProcessorTypeCodeTypeDescription == null) {
@@ -224,10 +230,10 @@ public class PaymentProcessorTypeCodeTypeLogic
             final String languageIsoName, final String description, final BasePK createdBy) {
         var paymentProcessorTypeCodeType = getPaymentProcessorTypeCodeTypeByNames(eea, paymentProcessorTypeName,
                 paymentProcessorTypeCodeTypeName);
-        var language = LanguageLogic.getInstance().getLanguageByName(eea, languageIsoName);
+        var language = languageLogic.getLanguageByName(eea, languageIsoName);
         PaymentProcessorTypeCodeTypeDescription paymentProcessorTypeCodeTypeDescription = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             paymentProcessorTypeCodeTypeDescription = createPaymentProcessorTypeCodeTypeDescription(eea,
                     paymentProcessorTypeCodeType, language, description, createdBy);
         }

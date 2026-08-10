@@ -20,15 +20,17 @@ import com.echothree.control.user.contactlist.common.form.GetCustomerTypeContact
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactList;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypeContactListCommand
-        extends BaseSimpleCommand<GetCustomerTypeContactListForm> {
+        extends BaseSingleEntityCommand<CustomerTypeContactList, GetCustomerTypeContactListForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -72,26 +74,37 @@ public class GetCustomerTypeContactListCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = ContactListResultFactory.getGetCustomerTypeContactListResult();
+    protected CustomerTypeContactList getEntity() {
+        CustomerTypeContactList customerTypeContactList = null;
         var customerTypeName = form.getCustomerTypeName();
         var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
-        
+
         if(!hasExecutionErrors()) {
             var contactListName = form.getContactListName();
             var contactList = contactListLogic.getContactListByName(this, contactListName);
-            
+
             if(!hasExecutionErrors()) {
-                var customerTypeContactList = contactListControl.getCustomerTypeContactList(customerType, contactList);
-                
+                customerTypeContactList = contactListControl.getCustomerTypeContactList(customerType, contactList);
+
                 if(customerTypeContactList != null) {
-                    result.setCustomerTypeContactList(contactListControl.getCustomerTypeContactListTransfer(getUserVisit(), customerTypeContactList));
+                    sendEvent(customerTypeContactList.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypeContactList.name(), customerTypeName, contactListName);
                 }
             }
         }
-        
+
+        return customerTypeContactList;
+    }
+
+    @Override
+    protected BaseResult getResult(CustomerTypeContactList customerTypeContactList) {
+        var result = ContactListResultFactory.getGetCustomerTypeContactListResult();
+
+        if(customerTypeContactList != null) {
+            result.setCustomerTypeContactList(contactListControl.getCustomerTypeContactListTransfer(getUserVisit(), customerTypeContactList));
+        }
+
         return result;
     }
     

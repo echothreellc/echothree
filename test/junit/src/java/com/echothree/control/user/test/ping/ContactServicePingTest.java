@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ContactServicePingTest
-        extends TestCase {
+public class ContactServicePingTest {
     private ContactService contactService;
     
-    /** Creates a new instance of ContactServiceTest */
-    public ContactServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new ContactServicePingTest("testPingContactService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             contactService = ContactUtil.getHome();
             assertNotNull(contactService);
@@ -54,8 +37,8 @@ public class ContactServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             contactService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class ContactServicePingTest
         }
     }
     
+    @Test
     public void testPingContactService() {
-        setUp();
         try {
             contactService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

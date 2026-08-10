@@ -17,24 +17,24 @@
 package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreateContactListTypeForm;
-import com.echothree.model.control.chain.common.ChainConstants;
+import com.echothree.model.control.chain.common.ChainKinds;
+import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateContactListTypeCommand
@@ -47,9 +47,9 @@ public class CreateContactListTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ContactListType.name(), SecurityRoles.Create.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContactListType.name(), SecurityRoles.Create.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactListTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -60,8 +60,15 @@ public class CreateContactListTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
     
     /** Creates a new instance of CreateContactListTypeCommand */
     public CreateContactListTypeCommand() {
@@ -70,26 +77,24 @@ public class CreateContactListTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListTypeName = form.getContactListTypeName();
         var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(contactListType == null) {
-            var chainControl = Session.getModelController(ChainControl.class);
-            var chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
+            var chainKind = chainControl.getChainKindByName(ChainKinds.CONTACT_LIST.name());
             var confirmationRequestChainName = form.getConfirmationRequestChainName();
             var confirmationRequestChain = confirmationRequestChainName == null ? null
-                    : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_CONFIRMATION_REQUEST), confirmationRequestChainName);
+                    : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.CONFIRMATION_REQUEST.name()), confirmationRequestChainName);
 
             if(confirmationRequestChainName == null || confirmationRequestChain != null) {
                 var subscribeChainName = form.getSubscribeChainName();
                 var subscribeChain = subscribeChainName == null ? null
-                        : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_SUBSCRIBE), subscribeChainName);
+                        : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.SUBSCRIBE.name()), subscribeChainName);
 
                 if(subscribeChainName == null || subscribeChain != null) {
                     var unsubscribeChainName = form.getUnsubscribeChainName();
                     var unsubscribeChain = unsubscribeChainName == null ? null
-                            : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_UNSUBSCRIBE), unsubscribeChainName);
+                            : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainTypes.UNSUBSCRIBE.name()), unsubscribeChainName);
 
                     if(unsubscribeChainName == null || unsubscribeChain != null) {
                         var partyPK = getPartyPK();

@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.tax.common.form;
 
-import com.echothree.control.user.tax.common.spec.TaxClassificationSpec;
+import com.echothree.control.user.tax.common.spec.TaxClassificationUniversalSpec;
 
 public interface GetTaxClassificationForm
-        extends TaxClassificationSpec {
-    
-    // Nothing additional beyond TaxClassificationSpec
+        extends TaxClassificationUniversalSpec {
+
+    // Nothing additional beyond TaxClassificationUniversalSpec
     
 }

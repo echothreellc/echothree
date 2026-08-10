@@ -37,7 +37,6 @@ import static com.echothree.model.control.security.common.SecurityRoleGroups.Emp
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Vendor;
 import com.echothree.model.control.security.common.SecurityRoles;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
@@ -50,9 +49,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditUserLoginCommand
@@ -69,19 +68,29 @@ public class EditUserLoginCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.UserLogin.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     
     /** Creates a new instance of EditUserLoginCommand */
     public EditUserLoginCommand() {
@@ -102,21 +111,20 @@ public class EditUserLoginCommand
     public UserLogin getEntity(EditUserLoginResult result) {
         UserLogin userLogin = null;
         var partyName = spec.getPartyName();
-        var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = (partyName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             Party party = null;
             
             if(partyName == null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Party.name());
 
                 if(!hasExecutionErrors()) {
                     party = partyControl.getPartyByEntityInstanceForUpdate(entityInstance);
                 }
             } else {
-                party = PartyLogic.getInstance().getPartyByName(this, spec.getPartyName());
+                party = partyLogic.getPartyByName(this, spec.getPartyName());
             }
             
             if(!hasExecutionErrors()) {
@@ -133,11 +141,9 @@ public class EditUserLoginCommand
                 }
 
                 if(securityRoleGroupName != null 
-                        && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
+                        && securityRoleLogic.hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
                     if(!hasExecutionErrors()) {
                         if(partyType.getAllowUserLogins()) {
-                            var userControl = getUserControl();
-
                             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                                 userLogin = userControl.getUserLogin(party);
                             } else { // EditMode.UPDATE
@@ -169,8 +175,6 @@ public class EditUserLoginCommand
 
     @Override
     public void fillInResult(EditUserLoginResult result, UserLogin userLogin) {
-        var userControl = getUserControl();
-
         result.setUserLogin(userControl.getUserLoginTransfer(getUserVisit(), userLogin));
     }
 
@@ -181,7 +185,6 @@ public class EditUserLoginCommand
 
     @Override
     public void canUpdate(UserLogin userLogin) {
-        var userControl = getUserControl();
         var username = edit.getUsername();
         var duplicateUserLogin = userControl.getUserLoginByUsername(username);
 
@@ -192,7 +195,6 @@ public class EditUserLoginCommand
 
     @Override
     public void doUpdate(UserLogin userLogin) {
-        var userControl = getUserControl();
         var userLoginValue = userControl.getUserLoginValue(userLogin);
         
         userLoginValue.setUsername(edit.getUsername());

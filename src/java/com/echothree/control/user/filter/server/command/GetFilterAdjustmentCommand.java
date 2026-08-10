@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,9 +33,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentCommand
@@ -59,6 +59,13 @@ public class GetFilterAdjustmentCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
     
     /** Creates a new instance of GetFilterAdjustmentCommand */
     public GetFilterAdjustmentCommand() {
@@ -68,7 +75,7 @@ public class GetFilterAdjustmentCommand
 
     @Override
     protected FilterAdjustment getEntity() {
-        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByUniversalSpec(this, form, true);
+        var filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByUniversalSpec(this, form, true);
 
         if(filterAdjustment != null) {
             sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -82,9 +89,7 @@ public class GetFilterAdjustmentCommand
         var result = FilterResultFactory.getGetFilterAdjustmentResult();
 
         if(filterAdjustment != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
-            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
+            result.setFilterAdjustment(filterAdjustmentControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
         }
 
         return result;

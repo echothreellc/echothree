@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterKindDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteFilterKindDescriptionCommand
@@ -47,14 +47,21 @@ public class DeleteFilterKindDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of DeleteFilterKindDescriptionCommand */
     public DeleteFilterKindDescriptionCommand() {
@@ -63,20 +70,18 @@ public class DeleteFilterKindDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var filterKindDescription = filterControl.getFilterKindDescriptionForUpdate(filterKind, language);
+                var filterKindDescription = filterKindControl.getFilterKindDescriptionForUpdate(filterKind, language);
                 
                 if(filterKindDescription != null) {
-                    filterControl.deleteFilterKindDescription(filterKindDescription, getPartyPK());
+                    filterKindControl.deleteFilterKindDescription(filterKindDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownFilterKindDescription.name(), filterKindName, languageIsoName);
                 }

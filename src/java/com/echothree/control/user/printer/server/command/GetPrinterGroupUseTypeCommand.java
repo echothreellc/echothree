@@ -53,12 +53,13 @@ public class GetPrinterGroupUseTypeCommand
                 new FieldDefinition("PrinterGroupUseTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     PrinterControl printerControl;
 
     @Inject
     PrinterGroupUseTypeLogic printerGroupUseTypeLogic;
+
 
     /** Creates a new instance of GetPrinterGroupUseTypeCommand */
     public GetPrinterGroupUseTypeCommand() {

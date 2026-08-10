@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLeaveTypeCommand
@@ -47,13 +47,17 @@ public class GetLeaveTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LeaveType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LeaveTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
     
     /** Creates a new instance of GetLeaveTypeCommand */
     public GetLeaveTypeCommand() {
@@ -62,7 +66,6 @@ public class GetLeaveTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var result = EmployeeResultFactory.getGetLeaveTypeResult();
         var leaveTypeName = form.getLeaveTypeName();
         var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);

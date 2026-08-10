@@ -25,9 +25,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateWorkEffortScopeDescriptionCommand
@@ -37,12 +37,19 @@ public class CreateWorkEffortScopeDescriptionCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
     
     /** Creates a new instance of CreateWorkEffortScopeDescriptionCommand */
     public CreateWorkEffortScopeDescriptionCommand() {
@@ -51,7 +58,6 @@ public class CreateWorkEffortScopeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
@@ -60,7 +66,6 @@ public class CreateWorkEffortScopeDescriptionCommand
             var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
             
             if(workEffortScope != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 

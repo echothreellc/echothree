@@ -27,10 +27,10 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWishlistPrioritiesCommand
@@ -45,6 +45,12 @@ public class GetWishlistPrioritiesCommand
         );
     }
 
+    @Inject
+    WishlistControl wishlistControl;
+
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
+
     /** Creates a new instance of GetWishlistPrioritiesCommand */
     public GetWishlistPrioritiesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -56,13 +62,11 @@ public class GetWishlistPrioritiesCommand
     protected void handleForm() {
         var wishlistTypeName = form.getWishlistTypeName();
 
-        wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(this, wishlistTypeName);
+        wishlistType = wishlistTypeLogic.getWishlistTypeByName(this, wishlistTypeName);
     }
 
     @Override
     protected Long getTotalEntities() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-
         return hasExecutionErrors() ? null :
                 wishlistControl.countWishlistPrioritiesByWishlistType(wishlistType);
     }
@@ -72,8 +76,6 @@ public class GetWishlistPrioritiesCommand
         Collection<WishlistPriority> wishlistPriorities = null;
 
         if(!hasExecutionErrors()) {
-            var wishlistControl = Session.getModelController(WishlistControl.class);
-
             wishlistPriorities = wishlistControl.getWishlistPriorities(wishlistType);
         }
 
@@ -85,7 +87,6 @@ public class GetWishlistPrioritiesCommand
         var result = WishlistResultFactory.getGetWishlistPrioritiesResult();
 
         if(entities != null) {
-            var wishlistControl = Session.getModelController(WishlistControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(WishlistPriorityFactory.class)) {

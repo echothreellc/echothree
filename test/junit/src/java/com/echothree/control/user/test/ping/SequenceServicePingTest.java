@@ -18,34 +18,17 @@ package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.SequenceService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class SequenceServicePingTest
-        extends TestCase {
+public class SequenceServicePingTest {
     private SequenceService sequenceService;
     
-    /** Creates a new instance of SequenceServiceTest */
-    public SequenceServicePingTest(String name) {
-        super(name);
-    }
-    
-    public static void main(String[] args) {
-        TestRunner.run(suite());
-    }
-    
-    public static Test suite() {
-        var suite = new TestSuite();
-        
-        suite.addTest(new SequenceServicePingTest("testPingSequenceService"));
-        
-        return suite;
-    }
-    
-    @Override
-    protected void setUp() {
+    @BeforeEach
+    public void setUp() {
         try {
             sequenceService = SequenceUtil.getHome();
             assertNotNull(sequenceService);
@@ -54,8 +37,8 @@ public class SequenceServicePingTest
         }
     }
     
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    public void tearDown() {
         try {
             sequenceService = null;
         } catch (Exception e) {
@@ -63,14 +46,13 @@ public class SequenceServicePingTest
         }
     }
     
+    @Test
     public void testPingSequenceService() {
-        setUp();
         try {
             sequenceService.ping();
         } catch (Exception e) {
             fail("Exception: " + printException(e));
         }
-        tearDown();
     }
         
     private String printException(Exception e) {

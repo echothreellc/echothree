@@ -59,7 +59,7 @@ public class GetLettersCommand
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     ChainControl chainControl;
 
@@ -68,6 +68,7 @@ public class GetLettersCommand
 
     @Inject
     ChainTypeLogic chainTypeLogic;
+
 
     /** Creates a new instance of GetLettersCommand */
     public GetLettersCommand() {

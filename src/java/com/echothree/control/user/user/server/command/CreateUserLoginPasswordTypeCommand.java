@@ -24,6 +24,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateUserLoginPasswordTypeCommand
@@ -35,8 +36,9 @@ public class CreateUserLoginPasswordTypeCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UserLoginPasswordTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UserLoginPasswordEncoderTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
     
     /** Creates a new instance of CreateUserLoginPasswordTypeCommand */
     public CreateUserLoginPasswordTypeCommand() {
@@ -45,7 +47,6 @@ public class CreateUserLoginPasswordTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var userLoginPasswordTypeName = form.getUserLoginPasswordTypeName();
         var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(userLoginPasswordTypeName);
         

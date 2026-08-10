@@ -34,13 +34,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SequenceTypeLogic
         extends BaseLogic {
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected SequenceTypeLogic() {
         super();
@@ -54,7 +60,6 @@ public class SequenceTypeLogic
             final String prefix, final String suffix, final SequenceEncoderType sequenceEncoderType,
             final SequenceChecksumType sequenceChecksumType, final Integer chunkSize, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(sequenceType == null) {
@@ -73,7 +78,6 @@ public class SequenceTypeLogic
 
     public SequenceType getSequenceTypeByName(final ExecutionErrorAccumulator eea, final String sequenceTypeName,
             final EntityPermission entityPermission) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName, entityPermission);
 
         if(sequenceType == null) {
@@ -94,9 +98,8 @@ public class SequenceTypeLogic
     public SequenceType getSequenceTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SequenceTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SequenceType sequenceType = null;
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeName = universalSpec.getSequenceTypeName();
-        var parameterCount = (sequenceTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (sequenceTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -112,10 +115,10 @@ public class SequenceTypeLogic
             }
             case 1 -> {
                 if(sequenceTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SequenceType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         sequenceType = sequenceControl.getSequenceTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

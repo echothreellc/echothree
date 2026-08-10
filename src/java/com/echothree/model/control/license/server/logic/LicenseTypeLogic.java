@@ -22,13 +22,16 @@ import com.echothree.model.data.license.server.entity.LicenseType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class LicenseTypeLogic
         extends BaseLogic {
+
+    @Inject
+    LicenseControl licenseControl;
 
     protected LicenseTypeLogic() {
         super();
@@ -39,7 +42,6 @@ public class LicenseTypeLogic
     }
     
     public LicenseType getLicenseTypeByName(final ExecutionErrorAccumulator eea, final String licenseTypeName) {
-        var licenseControl = Session.getModelController(LicenseControl.class);
         var licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
 
         if(licenseType == null) {

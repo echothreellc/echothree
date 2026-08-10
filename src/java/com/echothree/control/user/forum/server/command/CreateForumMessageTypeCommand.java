@@ -24,9 +24,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateForumMessageTypeCommand
@@ -36,11 +36,15 @@ public class CreateForumMessageTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ForumMessageTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("ForumMessageTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
+
+    @Inject
+    ForumControl forumControl;
+
     
     /** Creates a new instance of CreateForumMessageTypeCommand */
     public CreateForumMessageTypeCommand() {
@@ -49,7 +53,6 @@ public class CreateForumMessageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumMessageTypeName = form.getForumMessageTypeName();
         var forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
         

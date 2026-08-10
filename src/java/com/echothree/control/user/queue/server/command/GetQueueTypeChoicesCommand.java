@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetQueueTypeChoicesCommand
@@ -45,14 +45,18 @@ public class GetQueueTypeChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.QueueType.name(), SecurityRoles.Choices.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultQueueTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    QueueControl queueControl;
+
     
     /** Creates a new instance of GetQueueTypeChoicesCommand */
     public GetQueueTypeChoicesCommand() {
@@ -61,7 +65,6 @@ public class GetQueueTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var queueControl = Session.getModelController(QueueControl.class);
         var result = QueueResultFactory.getGetQueueTypeChoicesResult();
         var defaultQueueTypeChoice = form.getDefaultQueueTypeChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

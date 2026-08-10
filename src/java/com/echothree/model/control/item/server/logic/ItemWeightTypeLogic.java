@@ -36,10 +36,17 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemWeightTypeLogic
     extends BaseLogic {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected ItemWeightTypeLogic() {
         super();
@@ -52,7 +59,6 @@ public class ItemWeightTypeLogic
     public ItemWeightType createItemWeightType(final ExecutionErrorAccumulator eea, final String itemWeightTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemWeightType = itemControl.getItemWeightTypeByName(itemWeightTypeName);
 
         if(itemWeightType == null) {
@@ -70,7 +76,6 @@ public class ItemWeightTypeLogic
 
     public ItemWeightType getItemWeightTypeByName(final ExecutionErrorAccumulator eea, final String itemWeightTypeName,
             final EntityPermission entityPermission) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemWeightType = itemControl.getItemWeightTypeByName(itemWeightTypeName, entityPermission);
 
         if(itemWeightType == null) {
@@ -91,9 +96,8 @@ public class ItemWeightTypeLogic
     public ItemWeightType getItemWeightTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ItemWeightTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemWeightType itemWeightType = null;
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemWeightTypeName = universalSpec.getItemWeightTypeName();
-        var parameterCount = (itemWeightTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemWeightTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,10 +113,10 @@ public class ItemWeightTypeLogic
             }
             case 1 -> {
                 if(itemWeightTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemWeightType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         itemWeightType = itemControl.getItemWeightTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -138,15 +142,11 @@ public class ItemWeightTypeLogic
 
     public void updateItemWeightTypeFromValue(final Session session, final ItemWeightTypeDetailValue itemWeightTypeDetailValue,
             final BasePK updatedBy) {
-        final var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.updateItemWeightTypeFromValue(itemWeightTypeDetailValue, updatedBy);
     }
     
     public void deleteItemWeightType(final ExecutionErrorAccumulator eea, final ItemWeightType itemWeightType,
             final BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.deleteItemWeightType(itemWeightType, deletedBy);
     }
 

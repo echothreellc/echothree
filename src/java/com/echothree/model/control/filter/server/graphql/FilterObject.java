@@ -17,6 +17,7 @@
 package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -130,11 +131,11 @@ public class FilterObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<FilterEntranceStepObject> getFilterEntranceSteps(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFilterEntranceStepsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var totalCount = filterControl.countFilterEntranceStepsByFilter(filter);
+            var filterStepControl = Session.getModelController(FilterStepControl.class);
+            var totalCount = filterStepControl.countFilterEntranceStepsByFilter(filter);
 
             try(var objectLimiter = new ObjectLimiter(env, FilterEntranceStepConstants.COMPONENT_VENDOR_NAME, FilterEntranceStepConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = filterControl.getFilterEntranceStepsByFilter(filter);
+                var entities = filterStepControl.getFilterEntranceStepsByFilter(filter);
                 var unitOfMeasureTypes = entities.stream().map(FilterEntranceStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);
@@ -150,11 +151,11 @@ public class FilterObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<FilterStepObject> getFilterSteps(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFilterStepsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var totalCount = filterControl.countFilterStepsByFilter(filter);
+            var filterStepControl = Session.getModelController(FilterStepControl.class);
+            var totalCount = filterStepControl.countFilterStepsByFilter(filter);
 
             try(var objectLimiter = new ObjectLimiter(env, FilterStepConstants.COMPONENT_VENDOR_NAME, FilterStepConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = filterControl.getFilterStepsByFilter(filter);
+                var entities = filterStepControl.getFilterStepsByFilter(filter);
                 var unitOfMeasureTypes = entities.stream().map(FilterStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);

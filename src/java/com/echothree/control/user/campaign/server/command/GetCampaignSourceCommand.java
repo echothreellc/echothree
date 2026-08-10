@@ -57,12 +57,13 @@ public class GetCampaignSourceCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
     @Inject
     CampaignControl campaignControl;
 
     @Inject
     CampaignSourceLogic campaignSourceLogic;
+
 
     /** Creates a new instance of GetCampaignSourceCommand */
     public GetCampaignSourceCommand() {

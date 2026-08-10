@@ -56,7 +56,6 @@ public class CachedSelector {
     Map<SelectorNode, SelectorNodeItemPurchasingCategory> selectorNodeItemPurchasingCategories;
     
     /** Create a new instance of CachedSelector and fill in the details that are cached for the Selector */
-    /** Creates a new instance of CachedSelector */
     public CachedSelector(Selector selector) {
         init(selector);
     }

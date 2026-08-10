@@ -48,7 +48,7 @@ public class GetPartySkillsCommand
                 new FieldDefinition("SkillTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
     @Inject
     EmployeeControl employeeControl;
 
@@ -57,6 +57,7 @@ public class GetPartySkillsCommand
 
     @Inject
     PartyLogic partyLogic;
+
 
     /** Creates a new instance of GetPartySkillsCommand */
     public GetPartySkillsCommand() {

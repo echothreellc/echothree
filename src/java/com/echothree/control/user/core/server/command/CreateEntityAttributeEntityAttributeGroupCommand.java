@@ -32,6 +32,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityAttributeEntityAttributeGroupCommand
@@ -45,8 +46,8 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAttribute.name(), SecurityRoles.EntityAttributeEntityAttributeGroup.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
@@ -54,8 +55,12 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of CreateEntityAttributeEntityAttributeGroupCommand */
     public CreateEntityAttributeEntityAttributeGroupCommand() {
@@ -64,10 +69,10 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
+        var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);

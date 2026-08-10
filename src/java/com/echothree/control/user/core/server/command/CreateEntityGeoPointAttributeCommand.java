@@ -33,6 +33,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityGeoPointAttributeCommand
@@ -58,8 +59,18 @@ public class CreateEntityGeoPointAttributeCommand
                 new FieldDefinition("ElevationUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Altitude", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("AltitudeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     
     /** Creates a new instance of CreateEntityGeoPointAttributeCommand */
     public CreateEntityGeoPointAttributeCommand() {
@@ -68,14 +79,13 @@ public class CreateEntityGeoPointAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = entityInstanceLogic.getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.GEOPOINT);
 
             if(!hasExecutionErrors()) {
-                var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
                 var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
                         form.getElevation(), form.getElevationUnitOfMeasureTypeName(),
                         null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
@@ -91,7 +101,7 @@ public class CreateEntityGeoPointAttributeCommand
                         var latitude = Integer.valueOf(form.getLatitude());
                         var longitude = Integer.valueOf(form.getLongitude());
 
-                        EntityAttributeLogic.getInstance().createEntityGeoPointAttribute(this, entityAttribute, entityInstance, latitude, longitude, elevation, altitude, getPartyPK());
+                        entityAttributeLogic.createEntityGeoPointAttribute(this, entityAttribute, entityInstance, latitude, longitude, elevation, altitude, getPartyPK());
                     }
                 }
             }

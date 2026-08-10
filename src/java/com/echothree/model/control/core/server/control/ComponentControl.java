@@ -74,10 +74,10 @@ public class ComponentControl
 
     @Inject
     protected ComponentVendorFactory componentVendorFactory;
-    
+
     @Inject
     protected ComponentVendorDetailFactory componentVendorDetailFactory;
-    
+
     public ComponentVendor createComponentVendor(String componentVendorName, String description, BasePK createdBy) {
         var componentVendor = componentVendorFactory.create();
         var componentVendorDetail = componentVendorDetailFactory.create(componentVendor,
@@ -112,9 +112,11 @@ public class ComponentControl
 
     public long countComponentVendors() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM componentvendors, componentvendordetails " +
-                        "WHERE cvnd_activedetailid = cvndd_componentvendordetailid");
+                """
+                SELECT COUNT(*)
+                FROM componentvendors, componentvendordetails
+                WHERE cvnd_activedetailid = cvndd_componentvendordetailid
+                """);
     }
 
     public ComponentVendor getComponentVendorByName(String componentVendorName, EntityPermission entityPermission) {
@@ -124,14 +126,18 @@ public class ComponentControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM componentvendors, componentvendordetails " +
-                        "WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM componentvendors, componentvendordetails
+                        WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM componentvendors, componentvendordetails " +
-                        "WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM componentvendors, componentvendordetails
+                        WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = componentVendorFactory.prepareStatement(query);
@@ -180,11 +186,13 @@ public class ComponentControl
 
     public List<ComponentVendor> getComponentVendors() {
         var ps = componentVendorFactory.prepareStatement(
-                "SELECT _ALL_ " +
-                        "FROM componentvendors, componentvendordetails " +
-                        "WHERE cvnd_activedetailid = cvndd_componentvendordetailid " +
-                        "ORDER BY cvndd_componentvendorname " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM componentvendors, componentvendordetails
+                WHERE cvnd_activedetailid = cvndd_componentvendordetailid
+                ORDER BY cvndd_componentvendorname
+                _LIMIT_
+                """);
 
         return componentVendorFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -250,13 +258,13 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected SearchControl searchControl;
+    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
 
     @Inject
     protected SearchResultFactory searchResultFactory;
-    
+
     @Inject
-    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
+    protected SearchControl searchControl;
 
     public List<ComponentVendorResultTransfer> getComponentVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
@@ -274,11 +282,13 @@ public class ComponentControl
 
             try {
                 try(var ps = searchResultFactory.prepareStatement(
-                        "SELECT eni_entityuniqueid "
-                                + "FROM searchresults, entityinstances "
-                                + "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid "
-                                + "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid "
-                                + "_LIMIT_")) {
+                        """
+                        SELECT eni_entityuniqueid
+                        FROM searchresults, entityinstances
+                        WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
+                        _LIMIT_
+                        """)) {
 
                     ps.setLong(1, search.getPrimaryKey().getEntityId());
 
@@ -306,11 +316,13 @@ public class ComponentControl
 
             try {
                 try(var ps = cachedExecutedSearchResultFactory.prepareStatement(
-                        "SELECT eni_entityuniqueid "
-                                + "FROM cachedexecutedsearchresults, entityinstances "
-                                + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid "
-                                + "ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid "
-                                + "_LIMIT_")) {
+                        """
+                        SELECT eni_entityuniqueid
+                        FROM cachedexecutedsearchresults, entityinstances
+                        WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid
+                        _LIMIT_
+                        """)) {
 
                     ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
 
@@ -353,10 +365,10 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
     //   Components
     // --------------------------------------------------------------------------------
-    
+
     @Inject
     protected ComponentFactory componentFactory;
-    
+
     @Inject
     protected ComponentDetailFactory componentDetailFactory;
 
@@ -379,10 +391,12 @@ public class ComponentControl
 
         try {
             var ps = componentFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM components, componentdetails " +
-                            "WHERE cpnt_componentid = cpntd_cpnt_componentid AND cpntd_cvnd_componentvendorid = ? " +
-                            "AND cpntd_componentname = ? AND cpntd_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM components, componentdetails
+                    WHERE cpnt_componentid = cpntd_cpnt_componentid AND cpntd_cvnd_componentvendorid = ?
+                    AND cpntd_componentname = ? AND cpntd_thrutime = ?
+                    """);
 
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
             ps.setString(2, componentName);
@@ -402,7 +416,7 @@ public class ComponentControl
 
     @Inject
     protected ComponentStageFactory componentStageFactory;
-    
+
     public ComponentStage createComponentStage(String componentStageName, String description, Integer relativeAge) {
         var componentStage = componentStageFactory.create(componentStageName, description, relativeAge);
 
@@ -414,9 +428,11 @@ public class ComponentControl
 
         try {
             var ps = componentStageFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM componentstages " +
-                            "WHERE cstg_componentstagename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM componentstages
+                    WHERE cstg_componentstagename = ?
+                    """);
 
             ps.setString(1, componentStageName);
 
@@ -434,7 +450,7 @@ public class ComponentControl
 
     @Inject
     protected ComponentVersionFactory componentVersionFactory;
-    
+
     public ComponentVersion createComponentVersion(Component component, Integer majorRevision, Integer minorRevision,
             ComponentStage componentStage, Integer buildNumber,
             BasePK createdBy) {
@@ -448,9 +464,11 @@ public class ComponentControl
 
         try {
             var ps = componentVersionFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM componentversions " +
-                            "WHERE cvrs_cpnt_componentid = ? AND cvrs_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM componentversions
+                    WHERE cvrs_cpnt_componentid = ? AND cvrs_thrutime = ?
+                    """);
 
             ps.setLong(1, component.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);

@@ -57,9 +57,10 @@ public class GetSecurityRolePartyTypesCommand
                 new FieldDefinition("SecurityRoleName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     @Inject
     SecurityControl securityControl;
+
 
     /** Creates a new instance of GetSecurityRolePartyTypesCommand */
     public GetSecurityRolePartyTypesCommand() {

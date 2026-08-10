@@ -130,7 +130,6 @@ public class Messages
     /**
      * Create an empty <code>Messages</code> object.
      */
-    /** Creates a new instance of Messages */
     public Messages() {
         super();
     }
@@ -143,7 +142,6 @@ public class Messages
      * This parameter can be <code>null</code>.
      * @since Struts 1.1
      */
-    /** Creates a new instance of Messages */
     public Messages(Messages messages) {
         super();
         this.add(messages);

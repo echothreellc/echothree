@@ -19,7 +19,6 @@ package com.echothree.model.control.index.server.indexer;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.ComponentControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
@@ -44,12 +43,12 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
-import com.echothree.util.server.persistence.Session;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -68,15 +67,30 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         extends BaseLogic
         implements Closeable {
 
-    protected AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
-    protected CoreControl coreControl = Session.getModelController(CoreControl.class);
-    protected ComponentControl componentControl = Session.getModelController(ComponentControl.class);
-    protected EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
-    protected EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    protected EventControl eventControl = Session.getModelController(EventControl.class);
-    protected IndexControl indexControl = Session.getModelController(IndexControl.class);
-    protected TagControl tagControl = Session.getModelController(TagControl.class);
-    protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    protected AppearanceControl appearanceControl;
+
+    @Inject
+    protected ComponentControl componentControl;
+
+    @Inject
+    protected EntityAliasControl entityAliasControl;
+
+    @Inject
+    protected EntityTypeControl entityTypeControl;
+
+    @Inject
+    protected EventControl eventControl;
+
+    @Inject
+    protected IndexControl indexControl;
+
+    @Inject
+    protected TagControl tagControl;
+
+    @Inject
+    protected WorkflowControl workflowControl;
+
     protected Log log = LogFactory.getLog(this.getClass());
 
     protected ExecutionErrorAccumulator eea;
@@ -91,9 +105,11 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     
     protected IndexWriter indexWriter;
     
-    protected BaseIndexer(final ExecutionErrorAccumulator eea, final Index index) {
+    protected BaseIndexer<BE> setup(final ExecutionErrorAccumulator eea, final Index index) {
         this.eea = eea;
         this.index = index;
+
+        return this;
     }
     
     public Index getIndex() {

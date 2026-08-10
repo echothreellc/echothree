@@ -20,16 +20,15 @@ import com.echothree.control.user.forum.common.form.GetForumDescriptionsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.forum.server.logic.ForumLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumDescriptionsCommand
@@ -39,9 +38,16 @@ public class GetForumDescriptionsCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ForumName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ForumName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    ForumRoleTypeLogic forumRoleTypeLogic;
+
     
     /** Creates a new instance of GetForumDescriptionsCommand */
     public GetForumDescriptionsCommand() {
@@ -50,13 +56,12 @@ public class GetForumDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
         var result = ForumResultFactory.getGetForumDescriptionsResult();
         var forumName = form.getForumName();
         var forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+            if(forumRoleTypeLogic.isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                 result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
                 result.setForumDescriptions(forumControl.getForumDescriptionTransfersByForum(getUserVisit(), forum));
             } else {

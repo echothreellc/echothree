@@ -44,9 +44,10 @@ public class GetPostalAddressLineElementsCommand
                 new FieldDefinition("PostalAddressLineSortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
-    
+
     @Inject
     ContactControl contactControl;
+
 
     /** Creates a new instance of GetPostalAddressLineElementsCommand */
     public GetPostalAddressLineElementsCommand() {

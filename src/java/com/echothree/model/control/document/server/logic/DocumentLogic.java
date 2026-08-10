@@ -30,15 +30,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import com.lowagie.text.pdf.PdfReader;
 import java.io.IOException;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class DocumentLogic
         extends BaseLogic {
+
+    @Inject
+    DocumentControl documentControl;
 
     protected DocumentLogic() {
         super();
@@ -88,8 +91,6 @@ public class DocumentLogic
         }
 
         if(!hasErrors) {
-            var documentControl = Session.getModelController(DocumentControl.class);
-
             document = documentControl.createDocument(documentType, mimeType, pages, createdBy);
 
             if(blob != null) {
@@ -109,7 +110,6 @@ public class DocumentLogic
     public PartyDocument createPartyDocument(final ExecutionErrorAccumulator ema, final Party party, final DocumentType documentType, final MimeType mimeType,
             final Boolean isDefault, final Integer sortOrder,  final Language preferredLanguage, final String description, final ByteArray blob,
             final String clob, final PartyPK createdBy) {
-        var documentControl = Session.getModelController(DocumentControl.class);
         var document = createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
 
         return document == null ? null : documentControl.createPartyDocument(party, document, isDefault, sortOrder, createdBy);

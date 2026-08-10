@@ -34,13 +34,22 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class UseTypeLogic
         extends BaseLogic {
+
+    @Inject
+    UseControl useControl;
+
+    @Inject
+    UseTypeControl useTypeControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected UseTypeLogic() {
         super();
@@ -53,7 +62,6 @@ public class UseTypeLogic
     public UseType createUseType(final ExecutionErrorAccumulator eea, final String useTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useType = useTypeControl.getUseTypeByName(useTypeName);
 
         if(useType == null) {
@@ -71,7 +79,6 @@ public class UseTypeLogic
 
     public UseType getUseTypeByName(final ExecutionErrorAccumulator eea, final String useTypeName,
             final EntityPermission entityPermission) {
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useType = useTypeControl.getUseTypeByName(useTypeName, entityPermission);
 
         if(useType == null) {
@@ -92,9 +99,8 @@ public class UseTypeLogic
     public UseType getUseTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final UseTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         UseType useType = null;
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useTypeName = universalSpec.getUseTypeName();
-        var parameterCount = (useTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (useTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,10 +116,10 @@ public class UseTypeLogic
             }
             case 1 -> {
                 if(useTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.UseType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         useType = useTypeControl.getUseTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -139,11 +145,7 @@ public class UseTypeLogic
 
     public void deleteUseType(final ExecutionErrorAccumulator eea, final UseType useType,
             final BasePK deletedBy) {
-        var useControl = Session.getModelController(UseControl.class);
-
         if(useControl.countUsesByUseType(useType) == 0) {
-            var useTypeControl = Session.getModelController(UseTypeControl.class);
-
             useTypeControl.deleteUseType(useType, deletedBy);
         } else {
             handleExecutionError(CannotDeleteUseTypeInUseException.class, eea, ExecutionErrors.CannotDeleteUseTypeInUse.name());

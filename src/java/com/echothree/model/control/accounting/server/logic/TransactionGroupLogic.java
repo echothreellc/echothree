@@ -28,13 +28,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class TransactionGroupLogic
         extends BaseLogic {
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected TransactionGroupLogic() {
         super();
@@ -46,7 +52,6 @@ public class TransactionGroupLogic
 
     public TransactionGroup getTransactionGroupByName(final ExecutionErrorAccumulator eea, final String transactionGroupName,
             final EntityPermission entityPermission) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName, entityPermission);
 
         if(transactionGroup == null) {
@@ -67,16 +72,15 @@ public class TransactionGroupLogic
     public TransactionGroup getTransactionGroupByUniversalSpec(final ExecutionErrorAccumulator eea,
             final TransactionGroupUniversalSpec universalSpec, final EntityPermission entityPermission) {
         TransactionGroup transactionGroup = null;
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var transactionGroupName = universalSpec.getTransactionGroupName();
-        var parameterCount = (transactionGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (transactionGroupName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         if(parameterCount == 1) {
             if(transactionGroupName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionGroup.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     transactionGroup = accountingControl.getTransactionGroupByEntityInstance(entityInstance, entityPermission);
                 }
             } else {

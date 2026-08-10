@@ -30,10 +30,10 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAppearancesCommand
@@ -52,6 +52,10 @@ public class GetAppearancesCommand
         
         FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    AppearanceControl appearanceControl;
+
     
     /** Creates a new instance of GetAppearancesCommand */
     public GetAppearancesCommand() {
@@ -65,15 +69,11 @@ public class GetAppearancesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
-
         return appearanceControl.countAppearances();
     }
 
     @Override
     protected Collection<Appearance> getEntities() {
-        var appearanceControl = Session.getModelController(AppearanceControl.class);
-
         return appearanceControl.getAppearances();
     }
 
@@ -82,8 +82,6 @@ public class GetAppearancesCommand
         var result = CoreResultFactory.getGetAppearancesResult();
 
         if(entities != null) {
-            var appearanceControl = Session.getModelController(AppearanceControl.class);
-
             result.setAppearances(appearanceControl.getAppearanceTransfers(getUserVisit(), entities));
         }
 

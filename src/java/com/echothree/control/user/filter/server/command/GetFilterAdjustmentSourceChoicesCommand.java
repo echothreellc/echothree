@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentSourceChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentSourceChoicesCommand
@@ -51,8 +51,12 @@ public class GetFilterAdjustmentSourceChoicesCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultFilterAdjustmentSourceChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
     
     /** Creates a new instance of GetFilterAdjustmentSourceChoicesCommand */
     public GetFilterAdjustmentSourceChoicesCommand() {
@@ -61,11 +65,10 @@ public class GetFilterAdjustmentSourceChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterAdjustmentSourceChoicesResult();
         var defaultFilterAdjustmentSourceChoice = form.getDefaultFilterAdjustmentSourceChoice();
         
-        result.setFilterAdjustmentSourceChoices(filterControl.getFilterAdjustmentSourceChoices(defaultFilterAdjustmentSourceChoice, getPreferredLanguage()));
+        result.setFilterAdjustmentSourceChoices(filterAdjustmentControl.getFilterAdjustmentSourceChoices(defaultFilterAdjustmentSourceChoice, getPreferredLanguage()));
         
         return result;
     }

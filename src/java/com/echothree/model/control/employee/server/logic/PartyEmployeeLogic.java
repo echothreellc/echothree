@@ -31,13 +31,25 @@ import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyEmployeeLogic
         extends BaseLogic {
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PartyLogic partyLogic;
 
     protected PartyEmployeeLogic() {
         super();
@@ -50,13 +62,10 @@ public class PartyEmployeeLogic
     public PartyEmployee getPartyEmployeeByName(final ExecutionErrorAccumulator eea, final String partyEmployeeName, final String partyName,
             final UniversalEntitySpec universalEntitySpec) {
         var parameterCount = (partyEmployeeName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
-                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
+                entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
         PartyEmployee partyEmployee = null;
 
         if(parameterCount == 1) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(partyEmployeeName != null) {
                 partyEmployee = employeeControl.getPartyEmployeeByName(partyEmployeeName);
 
@@ -67,20 +76,20 @@ public class PartyEmployeeLogic
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
 
                     partyEmployee = employeeControl.getPartyEmployee(party);
                 } else {
                     handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(universalEntitySpec != null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalEntitySpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
-                if(!eea.hasExecutionErrors()) {
+                if(eea == null || !eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);
 
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
+                    partyLogic.checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
 
                     partyEmployee = employeeControl.getPartyEmployee(party);
                 }

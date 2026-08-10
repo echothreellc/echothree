@@ -56,21 +56,23 @@ public class EditWishlistTypeDescriptionCommand
         ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
     WishlistControl wishlistControl;
-    @Inject
-    WishlistTypeLogic wishlistTypeLogic;
+
     @Inject
     LanguageLogic languageLogic;
+
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
 
     /** Creates a new instance of EditWishlistTypeDescriptionCommand */
     public EditWishlistTypeDescriptionCommand() {

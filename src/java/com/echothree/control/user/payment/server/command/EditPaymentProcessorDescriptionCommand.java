@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPaymentProcessorDescriptionCommand
@@ -54,19 +54,25 @@ public class EditPaymentProcessorDescriptionCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessor.name(), SecurityRoles.Description.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessor.name(), SecurityRoles.Description.name())
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
 
     /** Creates a new instance of EditPaymentProcessorDescriptionCommand */
     public EditPaymentProcessorDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditPaymentProcessorDescriptionCommand
 
     @Override
     public PaymentProcessorDescription getEntity(EditPaymentProcessorDescriptionResult result) {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         PaymentProcessorDescription paymentProcessorDescription = null;
         var paymentProcessorName = spec.getPaymentProcessorName();
         var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
         if(paymentProcessor != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditPaymentProcessorDescriptionCommand
 
     @Override
     public void fillInResult(EditPaymentProcessorDescriptionResult result, PaymentProcessorDescription paymentProcessorDescription) {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-
         result.setPaymentProcessorDescription(paymentProcessorControl.getPaymentProcessorDescriptionTransfer(getUserVisit(), paymentProcessorDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditPaymentProcessorDescriptionCommand
 
     @Override
     public void doUpdate(PaymentProcessorDescription paymentProcessorDescription) {
-        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var paymentProcessorDescriptionValue = paymentProcessorControl.getPaymentProcessorDescriptionValue(paymentProcessorDescription);
         paymentProcessorDescriptionValue.setDescription(edit.getDescription());
 

@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentTypeDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,9 +31,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateFilterAdjustmentTypeDescriptionCommand
@@ -54,8 +54,15 @@ public class CreateFilterAdjustmentTypeDescriptionCommand
                 new FieldDefinition("FilterAdjustmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of CreateFilterAdjustmentTypeDescriptionCommand */
     public CreateFilterAdjustmentTypeDescriptionCommand() {
@@ -64,22 +71,20 @@ public class CreateFilterAdjustmentTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
-        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentType = filterAdjustmentControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var filterTypeDescription = filterControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
+                var filterTypeDescription = filterAdjustmentControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
                 
                 if(filterTypeDescription == null) {
                     var description = form.getDescription();
                     
-                    filterControl.createFilterAdjustmentTypeDescription(filterAdjustmentType, language, description);
+                    filterAdjustmentControl.createFilterAdjustmentTypeDescription(filterAdjustmentType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentTypeDescription.name());
                 }

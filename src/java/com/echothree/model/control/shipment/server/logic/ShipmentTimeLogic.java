@@ -23,13 +23,16 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ShipmentTimeLogic
         extends BaseLogic {
+
+    @Inject
+    ShipmentControl shipmentControl;
 
     protected ShipmentTimeLogic() {
         super();
@@ -52,7 +55,6 @@ public class ShipmentTimeLogic
 
     public void createOrUpdateShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentDetail = shipment.getLastDetail();
         var shipmentType = shipmentDetail.getShipmentType();
         var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
@@ -74,7 +76,6 @@ public class ShipmentTimeLogic
     }
 
     public Long getShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentDetail = shipment.getLastDetail();
         var shipmentType = shipmentDetail.getShipmentType();
         var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
@@ -100,7 +101,6 @@ public class ShipmentTimeLogic
     }
 
     public void deleteShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName, final BasePK deletedBy) {
-        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var shipmentDetail = shipment.getLastDetail();
         var shipmentType = shipmentDetail.getShipmentType();
         var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);

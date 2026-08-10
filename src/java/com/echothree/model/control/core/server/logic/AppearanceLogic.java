@@ -38,6 +38,9 @@ public class AppearanceLogic
     @Inject
     protected AppearanceControl appearanceControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected AppearanceLogic() {
         super();
     }
@@ -69,15 +72,15 @@ public class AppearanceLogic
             final AppearanceUniversalSpec universalSpec, final EntityPermission entityPermission) {
         Appearance appearance = null;
         var appearanceName = universalSpec.getAppearanceName();
-        var parameterCount = (appearanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (appearanceName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1 -> {
                 if(appearanceName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Appearance.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         appearance = appearanceControl.getAppearanceByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {

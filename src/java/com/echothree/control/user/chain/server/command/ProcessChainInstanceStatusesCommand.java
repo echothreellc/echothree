@@ -32,12 +32,6 @@ import javax.inject.Inject;
 public class ProcessChainInstanceStatusesCommand
         extends BaseSimpleCommand {
 
-    @Inject
-    ChainControl chainControl;
-
-    @Inject
-    ChainInstanceStatusLogic chainInstanceStatusLogic;
-
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     
     static {
@@ -45,6 +39,13 @@ public class ProcessChainInstanceStatusesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
         ));
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ChainInstanceStatusLogic chainInstanceStatusLogic;
+
     
     /** Creates a new instance of ProcessChainInstanceStatusesCommand */
     public ProcessChainInstanceStatusesCommand() {

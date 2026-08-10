@@ -37,9 +37,9 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLetterCommand
@@ -53,15 +53,15 @@ public class EditLetterCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Letter.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Letter.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null),
@@ -70,8 +70,18 @@ public class EditLetterCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    LetterControl letterControl;
+
     
     /** Creates a new instance of EditLetterCommand */
     public EditLetterCommand() {
@@ -80,7 +90,6 @@ public class EditLetterCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = LetterResultFactory.getEditLetterResult();
         var chainKindName = spec.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
@@ -90,8 +99,6 @@ public class EditLetterCommand
             var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = Session.getModelController(LetterControl.class);
-                
                 if(editMode.equals(EditMode.LOCK)) {
                     var letterName = spec.getLetterName();
                     var letter = letterControl.getLetterByName(chainType, letterName);
@@ -135,7 +142,6 @@ public class EditLetterCommand
                             var letterSource = letterControl.getLetterSourceByName(letterSourceName);
                             
                             if(letterSource != null) {
-                                var contactListControl = Session.getModelController(ContactListControl.class);
                                 var contactListName = edit.getContactListName();
                                 var contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
                                 

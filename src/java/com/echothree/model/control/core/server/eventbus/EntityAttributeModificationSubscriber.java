@@ -24,25 +24,29 @@ import com.echothree.model.data.core.common.EntityAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
+import javax.inject.Inject;
 
 @SentEventSubscriber
 public class EntityAttributeModificationSubscriber
         extends BaseEventSubscriber {
+
+    @Inject
+    CoreControl coreControl;
+
+    @Inject
+    EventControl eventControl;
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
         decodeEventAndApply(se, touchEntityListItemsIfEntityAttribute);
     }
 
-    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+    private final Function5Arity<Event, EntityInstance, EventTypes, String, String>
             touchEntityListItemsIfEntityAttribute = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(EntityAttributeConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && EntityAttributeConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var eventControl = Session.getModelController(EventControl.class);
             var entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance);
             var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);

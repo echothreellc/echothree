@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeletePartyPrinterGroupUseCommand
@@ -48,14 +48,20 @@ public class DeletePartyPrinterGroupUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPrinterGroupUse.name(), SecurityRoles.Delete.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PrinterGroupUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
 
     /** Creates a new instance of DeletePartyPrinterGroupUseCommand */
     public DeletePartyPrinterGroupUseCommand() {
@@ -68,8 +74,6 @@ public class DeletePartyPrinterGroupUseCommand
         Party party;
 
         if(partyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             party = partyControl.getPartyByName(partyName);
 
             if(party == null) {
@@ -80,7 +84,6 @@ public class DeletePartyPrinterGroupUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            var printerControl = Session.getModelController(PrinterControl.class);
             var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
             var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 

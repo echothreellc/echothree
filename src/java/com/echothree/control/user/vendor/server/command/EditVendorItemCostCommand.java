@@ -78,6 +78,7 @@ public class EditVendorItemCostCommand
 
     @Inject
     VendorControl vendorControl;
+
     
     /** Creates a new instance of EditVendorItemCostCommand */
     public EditVendorItemCostCommand() {

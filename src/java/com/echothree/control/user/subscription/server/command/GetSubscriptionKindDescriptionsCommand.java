@@ -30,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSubscriptionKindDescriptionsCommand
@@ -53,6 +53,10 @@ public class GetSubscriptionKindDescriptionsCommand
                 new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
     
     /** Creates a new instance of GetSubscriptionKindDescriptionsCommand */
     public GetSubscriptionKindDescriptionsCommand() {
@@ -61,7 +65,6 @@ public class GetSubscriptionKindDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var result = SubscriptionResultFactory.getGetSubscriptionKindDescriptionsResult();
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);

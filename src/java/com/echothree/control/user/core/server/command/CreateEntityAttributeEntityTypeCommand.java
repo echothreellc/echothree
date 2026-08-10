@@ -44,8 +44,8 @@ public class CreateEntityAttributeEntityTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAttributeEntityType.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
@@ -53,7 +53,7 @@ public class CreateEntityAttributeEntityTypeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("AllowedComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("AllowedEntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of CreateEntityAttributeEntityTypeCommand */

@@ -29,9 +29,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditRecoveryQuestionDescriptionCommand
@@ -42,14 +42,18 @@ public class EditRecoveryQuestionDescriptionCommand
     
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
     
     /** Creates a new instance of EditRecoveryQuestionDescriptionCommand */
     public EditRecoveryQuestionDescriptionCommand() {
@@ -58,13 +62,11 @@ public class EditRecoveryQuestionDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = getUserControl();
         var result = UserResultFactory.getEditRecoveryQuestionDescriptionResult();
         var recoveryQuestionName = spec.getRecoveryQuestionName();
         var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
         if(recoveryQuestion != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             

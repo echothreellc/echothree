@@ -33,13 +33,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SearchResultActionTypeLogic
     extends BaseLogic {
+
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected SearchResultActionTypeLogic() {
         super();
@@ -52,7 +58,6 @@ public class SearchResultActionTypeLogic
     public SearchResultActionType createSearchResultActionType(final ExecutionErrorAccumulator eea, final String searchResultActionTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
 
         if(searchResultActionType == null) {
@@ -71,7 +76,6 @@ public class SearchResultActionTypeLogic
 
     public SearchResultActionType getSearchResultActionTypeByName(final ExecutionErrorAccumulator eea, final String searchResultActionTypeName,
             final EntityPermission entityPermission) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName, entityPermission);
 
         if(searchResultActionType == null) {
@@ -92,9 +96,8 @@ public class SearchResultActionTypeLogic
     public SearchResultActionType getSearchResultActionTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SearchResultActionTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SearchResultActionType searchResultActionType = null;
-        var searchControl = Session.getModelController(SearchControl.class);
         var searchResultActionTypeName = universalSpec.getSearchResultActionTypeName();
-        var parameterCount = (searchResultActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (searchResultActionTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -110,10 +113,10 @@ public class SearchResultActionTypeLogic
             }
             case 1 -> {
                 if(searchResultActionTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchResultActionType.name());
 
-                    if(!eea.hasExecutionErrors()) {
+                    if(eea == null || !eea.hasExecutionErrors()) {
                         searchResultActionType = searchControl.getSearchResultActionTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -139,15 +142,11 @@ public class SearchResultActionTypeLogic
 
     public void updateSearchResultActionTypeFromValue(final SearchResultActionTypeDetailValue searchResultActionTypeDetailValue,
             final BasePK updatedBy) {
-        final var searchControl = Session.getModelController(SearchControl.class);
-
         searchControl.updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, updatedBy);
     }
     
     public void deleteSearchResultActionType(final ExecutionErrorAccumulator eea, final SearchResultActionType searchResultActionType,
             final BasePK deletedBy) {
-        var searchControl = Session.getModelController(SearchControl.class);
-
         searchControl.deleteSearchResultActionType(searchResultActionType, deletedBy);
     }
 

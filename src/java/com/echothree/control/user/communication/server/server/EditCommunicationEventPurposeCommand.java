@@ -29,10 +29,10 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCommunicationEventPurposeCommand
@@ -44,15 +44,18 @@ public class EditCommunicationEventPurposeCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommunicationEventPurposeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommunicationEventPurposeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    CommunicationControl communicationControl;
     
     /** Creates a new instance of EditCommunicationEventPurposeCommand */
     public EditCommunicationEventPurposeCommand() {
@@ -61,7 +64,6 @@ public class EditCommunicationEventPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = Session.getModelController(CommunicationControl.class);
         var result = CommunicationResultFactory.getEditCommunicationEventPurposeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
