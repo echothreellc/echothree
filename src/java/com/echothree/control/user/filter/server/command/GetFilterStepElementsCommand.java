@@ -19,6 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepElementsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -65,6 +66,9 @@ public class GetFilterStepElementsCommand
     FilterStepControl filterStepControl;
 
     @Inject
+    FilterStepElementControl filterStepElementControl;
+
+    @Inject
     FilterStepLogic filterStepLogic;
 
 
@@ -83,12 +87,12 @@ public class GetFilterStepElementsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : filterStepControl.countFilterStepElementsByFilterStep(filterStep);
+        return hasExecutionErrors() ? null : filterStepElementControl.countFilterStepElementsByFilterStep(filterStep);
     }
 
     @Override
     protected Collection<FilterStepElement> getEntities() {
-        return hasExecutionErrors() ? null : filterStepControl.getFilterStepElementsByFilterStep(filterStep);
+        return hasExecutionErrors() ? null : filterStepElementControl.getFilterStepElementsByFilterStep(filterStep);
     }
 
     @Override
@@ -104,7 +108,7 @@ public class GetFilterStepElementsCommand
                 result.setFilterStepElementCount(getTotalEntities());
             }
 
-            result.setFilterStepElements(filterStepControl.getFilterStepElementTransfers(userVisit, entities));
+            result.setFilterStepElements(filterStepElementControl.getFilterStepElementTransfers(userVisit, entities));
         }
 
         return result;

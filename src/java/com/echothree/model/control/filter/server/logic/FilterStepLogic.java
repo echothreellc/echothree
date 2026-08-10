@@ -31,6 +31,7 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.logic.SelectorLogic;
@@ -65,6 +66,9 @@ public class FilterStepLogic
 
     @Inject
     FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -263,7 +267,7 @@ public class FilterStepLogic
         var filterEntranceStepCount = filterStepControl.countFilterEntranceStepsByFilterStep(filterStep);
         var filterStepDestinationFromFilterStepCount = filterStepControl.countFilterStepDestinationsByFromFilterStep(filterStep);
         var filterStepDestinationToFilterStepCount = filterStepControl.countFilterStepDestinationsByToFilterStep(filterStep);
-        var filterStepElementCount = filterStepControl.countFilterStepElementsByFilterStep(filterStep);
+        var filterStepElementCount = filterStepElementControl.countFilterStepElementsByFilterStep(filterStep);
 
         if(filterEntranceStepCount == 0 && filterStepDestinationFromFilterStepCount == 0
                 && filterStepDestinationToFilterStepCount == 0 && filterStepElementCount == 0) {

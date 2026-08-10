@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
 import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.filter.common.FilterAdjustmentConstants;
@@ -46,7 +46,7 @@ public class FilterAdjustmentModificationSubscriber
     FilterControl filterControl;
 
     @Inject
-    FilterStepControl filterStepControl;
+    FilterStepElementControl filterStepElementControl;
 
     @Subscribe
     public void receiveSentFilterAdjustmentEvent(SentEvent se) {
@@ -67,7 +67,7 @@ public class FilterAdjustmentModificationSubscriber
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }
 
-            var filterStepElements = filterStepControl.getFilterStepElementsByFilterAdjustment(filterAdjustment);
+            var filterStepElements = filterStepElementControl.getFilterStepElementsByFilterAdjustment(filterAdjustment);
             for(var filterStepElement : filterStepElements) {
                 eventControl.sendEvent(filterStepElement.getPrimaryKey(), EventTypes.TOUCH,
                         filterAdjustment.getPrimaryKey(), eventType,

@@ -28,7 +28,7 @@ import com.echothree.model.control.filter.common.exception.UnknownFilterStepElem
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
-import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
@@ -54,7 +54,7 @@ public class FilterStepElementLogic
     FilterTypeControl filterTypeControl;
 
     @Inject
-    FilterStepControl filterStepControl;
+    FilterStepElementControl filterStepElementControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -85,7 +85,7 @@ public class FilterStepElementLogic
 
     public FilterStepElement getFilterStepElementByName(final ExecutionErrorAccumulator eea, final FilterStep filterStep,
             final String filterStepElementName, final EntityPermission entityPermission) {
-        var filterStepElement = filterStepControl.getFilterStepElementByName(filterStep, filterStepElementName, entityPermission);
+        var filterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName, entityPermission);
 
         if(filterStepElement == null) {
             handleExecutionError(UnknownFilterStepElementNameException.class, eea, ExecutionErrors.UnknownFilterStepElementName.name(),
@@ -195,7 +195,7 @@ public class FilterStepElementLogic
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterStepElement.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                filterStepElement = filterStepControl.getFilterStepElementByEntityInstance(entityInstance, entityPermission);
+                filterStepElement = filterStepElementControl.getFilterStepElementByEntityInstance(entityInstance, entityPermission);
             }
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());

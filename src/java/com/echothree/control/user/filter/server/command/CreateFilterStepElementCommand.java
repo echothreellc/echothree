@@ -23,6 +23,7 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -86,6 +87,9 @@ public class CreateFilterStepElementCommand
     FilterStepControl filterStepControl;
 
     @Inject
+    FilterStepElementControl filterStepElementControl;
+
+    @Inject
     SelectorControl selectorControl;
 
     
@@ -116,7 +120,7 @@ public class CreateFilterStepElementCommand
                     if(filterStep != null) {
                         var filterStepElementName = form.getFilterStepElementName();
 
-                        filterStepElement = filterStepControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        filterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement == null) {
                             var filterItemSelectorName = form.getFilterItemSelectorName();
@@ -146,11 +150,11 @@ public class CreateFilterStepElementCommand
                                     var description = form.getDescription();
                                     var partyPK = getPartyPK();
                                     
-                                    filterStepElement = filterStepControl.createFilterStepElement(filterStep, filterStepElementName,
+                                    filterStepElement = filterStepElementControl.createFilterStepElement(filterStep, filterStepElementName,
                                             filterItemSelector, filterAdjustment, partyPK);
                                     
                                     if(description != null) {
-                                        filterStepControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(),
+                                        filterStepElementControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(),
                                                 description, partyPK);
                                     }
                                 } else {

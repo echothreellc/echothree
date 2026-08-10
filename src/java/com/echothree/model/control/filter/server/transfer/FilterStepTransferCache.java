@@ -21,6 +21,7 @@ import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterStepTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -36,6 +37,9 @@ public class FilterStepTransferCache
 
     @Inject
     FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
 
     @Inject
     SelectorControl selectorControl;
@@ -72,7 +76,7 @@ public class FilterStepTransferCache
             put(userVisit, filterStep, filterStepTransfer);
             
             if(includeFilterStepElements) {
-                filterStepTransfer.setFilterStepElements(new ListWrapper<>(filterStepControl.getFilterStepElementTransfersByFilterStep(userVisit, filterStep)));
+                filterStepTransfer.setFilterStepElements(new ListWrapper<>(filterStepElementControl.getFilterStepElementTransfersByFilterStep(userVisit, filterStep)));
             }
             
             if(includeFilterStepDestinations) {

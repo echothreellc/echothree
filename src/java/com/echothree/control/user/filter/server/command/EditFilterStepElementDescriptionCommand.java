@@ -25,6 +25,7 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -86,6 +87,9 @@ public class EditFilterStepElementDescriptionCommand
     FilterStepControl filterStepControl;
 
     @Inject
+    FilterStepElementControl filterStepElementControl;
+
+    @Inject
     PartyControl partyControl;
 
     
@@ -124,7 +128,7 @@ public class EditFilterStepElementDescriptionCommand
 
                     if(filterStep != null) {
                         var filterStepElementName = spec.getFilterStepElementName();
-                        var filterStepElement = filterStepControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        var filterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName);
 
                         if(filterStepElement != null) {
                             var languageIsoName = spec.getLanguageIsoName();
@@ -132,9 +136,9 @@ public class EditFilterStepElementDescriptionCommand
 
                             if(language != null) {
                                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                    filterStepElementDescription = filterStepControl.getFilterStepElementDescription(filterStepElement, language);
+                                    filterStepElementDescription = filterStepElementControl.getFilterStepElementDescription(filterStepElement, language);
                                 } else { // EditMode.UPDATE
-                                    filterStepElementDescription = filterStepControl.getFilterStepElementDescriptionForUpdate(filterStepElement, language);
+                                    filterStepElementDescription = filterStepElementControl.getFilterStepElementDescriptionForUpdate(filterStepElement, language);
                                 }
 
                                 if(filterStepElementDescription == null) {
@@ -169,7 +173,7 @@ public class EditFilterStepElementDescriptionCommand
 
     @Override
     public void fillInResult(EditFilterStepElementDescriptionResult result, FilterStepElementDescription filterStepElementDescription) {
-        result.setFilterStepElementDescription(filterStepControl.getFilterStepElementDescriptionTransfer(getUserVisit(), filterStepElementDescription));
+        result.setFilterStepElementDescription(filterStepElementControl.getFilterStepElementDescriptionTransfer(getUserVisit(), filterStepElementDescription));
     }
 
     @Override
@@ -179,11 +183,11 @@ public class EditFilterStepElementDescriptionCommand
 
     @Override
     public void doUpdate(FilterStepElementDescription filterStepElementDescription) {
-        var filterStepElementDescriptionValue = filterStepControl.getFilterStepElementDescriptionValue(filterStepElementDescription);
+        var filterStepElementDescriptionValue = filterStepElementControl.getFilterStepElementDescriptionValue(filterStepElementDescription);
 
         filterStepElementDescriptionValue.setDescription(edit.getDescription());
 
-        filterStepControl.updateFilterStepElementDescriptionFromValue(filterStepElementDescriptionValue, getPartyPK());
+        filterStepElementControl.updateFilterStepElementDescriptionFromValue(filterStepElementDescriptionValue, getPartyPK());
     }
     
 }

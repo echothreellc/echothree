@@ -22,6 +22,7 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -74,6 +75,9 @@ public class GetFilterStepElementDescriptionsCommand
     @Inject
     FilterStepControl filterStepControl;
 
+    @Inject
+    FilterStepElementControl filterStepElementControl;
+
     
     /** Creates a new instance of GetFilterStepElementDescriptionsCommand */
     public GetFilterStepElementDescriptionsCommand() {
@@ -107,13 +111,13 @@ public class GetFilterStepElementDescriptionsCommand
                     
                     if(filterStep != null) {
                         var filterStepElementName = form.getFilterStepElementName();
-                        var filterStepElement = filterStepControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        var filterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         result.setFilterStep(filterStepControl.getFilterStepTransfer(userVisit, filterStep));
                         
                         if(filterStepElement != null) {
-                            result.setFilterStepElement(filterStepControl.getFilterStepElementTransfer(userVisit, filterStepElement));
-                            result.setFilterStepElementDescriptions(filterStepControl.getFilterStepElementDescriptionTransfers(userVisit, filterStepElement));
+                            result.setFilterStepElement(filterStepElementControl.getFilterStepElementTransfer(userVisit, filterStepElement));
+                            result.setFilterStepElementDescriptions(filterStepElementControl.getFilterStepElementDescriptionTransfers(userVisit, filterStepElement));
                         } else {
                             addExecutionError(ExecutionErrors.UnknownFilterStepElementName.name(), filterStepElementName);
                         }

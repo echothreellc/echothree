@@ -17,6 +17,7 @@
 package com.echothree.model.control.filter.server.evaluator;
 
 import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
@@ -37,6 +38,7 @@ public class CachedFilter {
     
     Session session;
     FilterStepControl filterStepControl;
+    FilterStepElementControl filterStepElementControl;
     Filter filter;
     Log log;
     
@@ -52,6 +54,7 @@ public class CachedFilter {
         
         this.session = session;
         this.filterStepControl = filterStepControl;
+        this.filterStepElementControl = Session.getModelController(FilterStepElementControl.class);
         this.filter = filter;
         this.log = LogFactory.getLog(CachedFilter.class);
         
@@ -159,7 +162,7 @@ public class CachedFilter {
         filterStepElements = new HashMap<>(filterStepsSize);
         
         filterSteps.forEach((filterStep) -> {
-            var rawFilterStepElements = filterStepControl.getFilterStepElementsByFilterStep(filterStep);
+            var rawFilterStepElements = filterStepElementControl.getFilterStepElementsByFilterStep(filterStep);
             var rawFilterStepElementsSize = rawFilterStepElements.size();
             List<FilterStepElementDetail> filterStepElementsList = new ArrayList<>(rawFilterStepElementsSize);
             if(BaseFilterEvaluatorDebugFlags.CachedFilter)
