@@ -19,16 +19,17 @@ package com.echothree.control.user.document.server.command;
 import com.echothree.control.user.document.common.form.GetPartyTypeDocumentTypeUsageTypeForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.document.server.control.DocumentControl;
+import com.echothree.model.control.document.server.logic.DocumentTypeUsageTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.document.server.entity.PartyTypeDocumentTypeUsageType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTypeDocumentTypeUsageTypeCommand
-        extends BaseSimpleCommand<GetPartyTypeDocumentTypeUsageTypeForm> {
+        extends BaseSingleEntityCommand<PartyTypeDocumentTypeUsageType, GetPartyTypeDocumentTypeUsageTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,39 +62,50 @@ public class GetPartyTypeDocumentTypeUsageTypeCommand
     DocumentControl documentControl;
 
     @Inject
-    PartyControl partyControl;
+    PartyTypeLogic partyTypeLogic;
 
-    
+    @Inject
+    DocumentTypeUsageTypeLogic documentTypeUsageTypeLogic;
+
     /** Creates a new instance of GetPartyTypeDocumentTypeUsageTypeCommand */
     public GetPartyTypeDocumentTypeUsageTypeCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = DocumentResultFactory.getGetPartyTypeDocumentTypeUsageTypeResult();
+    protected PartyTypeDocumentTypeUsageType getEntity() {
+        PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = null;
         var partyTypeName = form.getPartyTypeName();
-        var partyType = partyControl.getPartyTypeByName(partyTypeName);
-        
-        if(partyType != null) {
+        var partyType = partyTypeLogic.getPartyTypeByName(this, partyTypeName);
+
+        if(!hasExecutionErrors()) {
             var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-            var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
+            var documentTypeUsageType = documentTypeUsageTypeLogic.getDocumentTypeUsageTypeByName(this,
+                    documentTypeUsageTypeName);
 
-            if(documentTypeUsageType != null) {
-                var partyTypeDocumentTypeUsageType = documentControl.getPartyTypeDocumentTypeUsageType(partyType, documentTypeUsageType);
+            if(!hasExecutionErrors()) {
+                partyTypeDocumentTypeUsageType = documentControl.getPartyTypeDocumentTypeUsageType(partyType,
+                        documentTypeUsageType);
 
-                if(partyTypeDocumentTypeUsageType != null) {
-                    result.setPartyTypeDocumentTypeUsageType(documentControl.getPartyTypeDocumentTypeUsageTypeTransfer(getUserVisit(), partyTypeDocumentTypeUsageType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyTypeDocumentTypeUsageType.name(), partyTypeName, documentTypeUsageType);
+                if(partyTypeDocumentTypeUsageType == null) {
+                    addExecutionError(ExecutionErrors.UnknownPartyTypeDocumentTypeUsageType.name(), partyTypeName,
+                            documentTypeUsageTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownDocumentTypeUsageTypeName.name(), documentTypeUsageTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
         }
-        
+
+        return partyTypeDocumentTypeUsageType;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
+        var result = DocumentResultFactory.getGetPartyTypeDocumentTypeUsageTypeResult();
+
+        if(partyTypeDocumentTypeUsageType != null) {
+            result.setPartyTypeDocumentTypeUsageType(documentControl.getPartyTypeDocumentTypeUsageTypeTransfer(
+                    getUserVisit(), partyTypeDocumentTypeUsageType));
+        }
+
         return result;
     }
     
