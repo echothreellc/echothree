@@ -20,6 +20,7 @@ import com.echothree.control.user.filter.common.form.DeleteFilterStepElementDesc
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -72,6 +73,9 @@ public class DeleteFilterStepElementDescriptionCommand
     FilterTypeControl filterTypeControl;
 
     @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
     PartyControl partyControl;
 
     
@@ -95,21 +99,21 @@ public class DeleteFilterStepElementDescriptionCommand
                 
                 if(filter != null) {
                     var filterStepName = form.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStep = filterStepControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
                         var filterStepElementName = form.getFilterStepElementName();
-                        var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        var filterStepElement = filterStepControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement != null) {
                             var languageIsoName = form.getLanguageIsoName();
                             var language = partyControl.getLanguageByIsoName(languageIsoName);
                             
                             if(language != null) {
-                                var filterStepElementDescription = filterControl.getFilterStepElementDescriptionForUpdate(filterStepElement, language);
+                                var filterStepElementDescription = filterStepControl.getFilterStepElementDescriptionForUpdate(filterStepElement, language);
                                 
                                 if(filterStepElementDescription != null) {
-                                    filterControl.deleteFilterStepElementDescription(filterStepElementDescription, getPartyPK());
+                                    filterStepControl.deleteFilterStepElementDescription(filterStepElementDescription, getPartyPK());
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownFilterStepElementDescription.name());
                                 }

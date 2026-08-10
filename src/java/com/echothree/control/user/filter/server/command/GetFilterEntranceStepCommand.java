@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterEntranceStepForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,7 +60,7 @@ public class GetFilterEntranceStepCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterStepControl filterStepControl;
 
     @Inject
     FilterStepLogic filterStepLogic;
@@ -82,7 +82,7 @@ public class GetFilterEntranceStepCommand
                 filterStepName);
 
         if(!hasExecutionErrors()) {
-            filterEntranceStep = filterControl.getFilterEntranceStep(filterStep.getLastDetail().getFilter(), filterStep);
+            filterEntranceStep = filterStepControl.getFilterEntranceStep(filterStep.getLastDetail().getFilter(), filterStep);
 
             if(filterEntranceStep == null) {
                 addExecutionError(ExecutionErrors.UnknownFilterEntranceStep.name(),
@@ -101,7 +101,7 @@ public class GetFilterEntranceStepCommand
         var result = FilterResultFactory.getGetFilterEntranceStepResult();
 
         if(filterEntranceStep != null) {
-            result.setFilterEntranceStep(filterControl.getFilterEntranceStepTransfer(getUserVisit(), filterEntranceStep));
+            result.setFilterEntranceStep(filterStepControl.getFilterEntranceStepTransfer(getUserVisit(), filterEntranceStep));
         }
 
         return result;

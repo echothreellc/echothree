@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.filter.server.evaluator;
 
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 public class CachedFilter {
     
     Session session;
-    FilterControl filterControl;
+    FilterStepControl filterStepControl;
     Filter filter;
     Log log;
     
@@ -47,11 +47,11 @@ public class CachedFilter {
     Map<FilterStep, List<FilterStepElementDetail>> filterStepElements;
     
     /** Creates a new instance of CachedFilter */
-    public CachedFilter(Session session, FilterControl filterControl, Filter filter) {
+    public CachedFilter(Session session, FilterStepControl filterStepControl, Filter filter) {
         var filterItemSelector = filter.getLastDetail().getFilterItemSelector();
         
         this.session = session;
-        this.filterControl = filterControl;
+        this.filterStepControl = filterStepControl;
         this.filter = filter;
         this.log = LogFactory.getLog(CachedFilter.class);
         
@@ -74,7 +74,7 @@ public class CachedFilter {
         if(BaseFilterEvaluatorDebugFlags.CachedFilter)
             log.info(">>> cacheFilterSteps");
         
-        Collection<FilterStep> rawFilterSteps = filterControl.getFilterStepsByFilter(filter);
+        Collection<FilterStep> rawFilterSteps = filterStepControl.getFilterStepsByFilter(filter);
         var size = rawFilterSteps.size();
         
         if(BaseFilterEvaluatorDebugFlags.CachedFilter)
@@ -100,7 +100,7 @@ public class CachedFilter {
         if(BaseFilterEvaluatorDebugFlags.CachedFilter)
             log.info(">>> cacheFilterEntraceSteps");
 
-        var rawFilterEntranceSteps = filterControl.getFilterEntranceStepsByFilter(filter);
+        var rawFilterEntranceSteps = filterStepControl.getFilterEntranceStepsByFilter(filter);
         var size = rawFilterEntranceSteps.size();
         
         filterEntranceSteps = new ArrayList<>(size);
@@ -127,7 +127,7 @@ public class CachedFilter {
         filterStepDestinations = new HashMap<>(filterStepsSize);
         
         filterSteps.forEach((filterStep) -> {
-            var rawFilterStepDestinations = filterControl.getFilterStepDestinationsByFromFilterStep(filterStep);
+            var rawFilterStepDestinations = filterStepControl.getFilterStepDestinationsByFromFilterStep(filterStep);
             var rawFilterStepDestinationsSize = rawFilterStepDestinations.size();
             List<FilterStep> filterStepDestinationsList = new ArrayList<>(rawFilterStepDestinationsSize);
             if(BaseFilterEvaluatorDebugFlags.CachedFilter)
@@ -159,7 +159,7 @@ public class CachedFilter {
         filterStepElements = new HashMap<>(filterStepsSize);
         
         filterSteps.forEach((filterStep) -> {
-            var rawFilterStepElements = filterControl.getFilterStepElementsByFilterStep(filterStep);
+            var rawFilterStepElements = filterStepControl.getFilterStepElementsByFilterStep(filterStep);
             var rawFilterStepElementsSize = rawFilterStepElements.size();
             List<FilterStepElementDetail> filterStepElementsList = new ArrayList<>(rawFilterStepElementsSize);
             if(BaseFilterEvaluatorDebugFlags.CachedFilter)

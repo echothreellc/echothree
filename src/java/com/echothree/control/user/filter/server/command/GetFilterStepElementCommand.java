@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepElementForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.filter.server.logic.FilterStepElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -64,7 +64,7 @@ public class GetFilterStepElementCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterStepControl filterStepControl;
 
     @Inject
     FilterStepElementLogic filterStepElementLogic;
@@ -91,7 +91,7 @@ public class GetFilterStepElementCommand
         var result = FilterResultFactory.getGetFilterStepElementResult();
 
         if(filterStepElement != null) {
-            result.setFilterStepElement(filterControl.getFilterStepElementTransfer(getUserVisit(), filterStepElement));
+            result.setFilterStepElement(filterStepControl.getFilterStepElementTransfer(getUserVisit(), filterStepElement));
         }
 
         return result;

@@ -20,6 +20,7 @@ import com.echothree.control.user.filter.common.form.DeleteFilterEntranceStepFor
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,6 +69,9 @@ public class DeleteFilterEntranceStepCommand
     @Inject
     FilterTypeControl filterTypeControl;
 
+    @Inject
+    FilterStepControl filterStepControl;
+
     
     /** Creates a new instance of DeleteFilterEntranceStepCommand */
     public DeleteFilterEntranceStepCommand() {
@@ -89,13 +93,13 @@ public class DeleteFilterEntranceStepCommand
                 
                 if(filter != null) {
                     var filterStepName = form.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStep = filterStepControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
-                        var filterEntranceStep = filterControl.getFilterEntranceStepForUpdate(filter, filterStep);
+                        var filterEntranceStep = filterStepControl.getFilterEntranceStepForUpdate(filter, filterStep);
                         
                         if(filterEntranceStep != null) {
-                            filterControl.deleteFilterEntranceStep(filterEntranceStep, getPartyPK());
+                            filterStepControl.deleteFilterEntranceStep(filterEntranceStep, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownFilterEntranceStep.name());
                         }

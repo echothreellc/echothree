@@ -20,6 +20,7 @@ import com.echothree.control.user.filter.common.form.DeleteFilterStepDestination
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,6 +70,9 @@ public class DeleteFilterStepDestinationCommand
     @Inject
     FilterTypeControl filterTypeControl;
 
+    @Inject
+    FilterStepControl filterStepControl;
+
     
     /** Creates a new instance of DeleteFilterStepDestinationCommand */
     public DeleteFilterStepDestinationCommand() {
@@ -90,17 +94,17 @@ public class DeleteFilterStepDestinationCommand
                 
                 if(filter != null) {
                     var fromFilterStepName = form.getFromFilterStepName();
-                    var fromFilterStep = filterControl.getFilterStepByName(filter, fromFilterStepName);
+                    var fromFilterStep = filterStepControl.getFilterStepByName(filter, fromFilterStepName);
                     
                     if(fromFilterStep != null) {
                         var toFilterStepName = form.getToFilterStepName();
-                        var toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
+                        var toFilterStep = filterStepControl.getFilterStepByName(filter, toFilterStepName);
                         
                         if(toFilterStep != null) {
-                            var filterStepDestination = filterControl.getFilterStepDestinationForUpdate(fromFilterStep, toFilterStep);
+                            var filterStepDestination = filterStepControl.getFilterStepDestinationForUpdate(fromFilterStep, toFilterStep);
                             
                             if(filterStepDestination != null) {
-                                filterControl.deleteFilterStepDestination(filterStepDestination, getPartyPK());
+                                filterStepControl.deleteFilterStepDestination(filterStepDestination, getPartyPK());
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownFilterStepDestination.name());
                             }

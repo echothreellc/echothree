@@ -22,6 +22,7 @@ import com.echothree.model.control.filter.server.control.FilterAdjustmentControl
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -82,6 +83,9 @@ public class CreateFilterStepElementCommand
     FilterTypeControl filterTypeControl;
 
     @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
     SelectorControl selectorControl;
 
     
@@ -107,12 +111,12 @@ public class CreateFilterStepElementCommand
                 
                 if(filter != null) {
                     var filterStepName = form.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStep = filterStepControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
                         var filterStepElementName = form.getFilterStepElementName();
 
-                        filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        filterStepElement = filterStepControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement == null) {
                             var filterItemSelectorName = form.getFilterItemSelectorName();
@@ -142,11 +146,11 @@ public class CreateFilterStepElementCommand
                                     var description = form.getDescription();
                                     var partyPK = getPartyPK();
                                     
-                                    filterStepElement = filterControl.createFilterStepElement(filterStep, filterStepElementName,
+                                    filterStepElement = filterStepControl.createFilterStepElement(filterStep, filterStepElementName,
                                             filterItemSelector, filterAdjustment, partyPK);
                                     
                                     if(description != null) {
-                                        filterControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(),
+                                        filterStepControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(),
                                                 description, partyPK);
                                     }
                                 } else {

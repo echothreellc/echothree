@@ -29,6 +29,7 @@ import com.echothree.model.control.filter.common.exception.UnknownFilterAdjustme
 import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
@@ -56,6 +57,9 @@ public class FilterAdjustmentLogic
 
     @Inject
     FilterKindControl filterKindControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -220,7 +224,7 @@ public class FilterAdjustmentLogic
     public void deleteFilterAdjustment(final ExecutionErrorAccumulator eea, final FilterAdjustment filterAdjustment,
             final BasePK deletedBy) {
         if(filterControl.countFiltersByFilterAdjustment(filterAdjustment) == 0
-                && filterControl.countFilterStepElementsByFilterAdjustment(filterAdjustment) == 0) {
+                && filterStepControl.countFilterStepElementsByFilterAdjustment(filterAdjustment) == 0) {
             filterAdjustmentControl.deleteFilterAdjustment(filterAdjustment, deletedBy);
         } else {
             var filterAdjustmentDetail = filterAdjustment.getLastDetail();

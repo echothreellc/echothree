@@ -20,6 +20,7 @@ import com.echothree.control.user.filter.common.form.CreateFilterStepDestination
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,6 +70,9 @@ public class CreateFilterStepDestinationCommand
     @Inject
     FilterTypeControl filterTypeControl;
 
+    @Inject
+    FilterStepControl filterStepControl;
+
     
     /** Creates a new instance of CreateFilterStepDestinationCommand */
     public CreateFilterStepDestinationCommand() {
@@ -90,18 +94,18 @@ public class CreateFilterStepDestinationCommand
                 
                 if(filter != null) {
                     var fromFilterStepName = form.getFromFilterStepName();
-                    var fromFilterStep = filterControl.getFilterStepByName(filter, fromFilterStepName);
+                    var fromFilterStep = filterStepControl.getFilterStepByName(filter, fromFilterStepName);
                     
                     if(fromFilterStep != null) {
                         var toFilterStepName = form.getToFilterStepName();
-                        var toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
+                        var toFilterStep = filterStepControl.getFilterStepByName(filter, toFilterStepName);
                         
                         if(toFilterStep != null) {
                             if(!fromFilterStep.equals(toFilterStep)) {
-                                var filterStepDestination = filterControl.getFilterStepDestination(fromFilterStep, toFilterStep);
+                                var filterStepDestination = filterStepControl.getFilterStepDestination(fromFilterStep, toFilterStep);
 
                                 if(filterStepDestination == null) {
-                                    filterControl.createFilterStepDestination(fromFilterStep, toFilterStep, getPartyPK());
+                                    filterStepControl.createFilterStepDestination(fromFilterStep, toFilterStep, getPartyPK());
                                 } else {
                                     addExecutionError(ExecutionErrors.DuplicateFilterStepDestination.name());
                                 }

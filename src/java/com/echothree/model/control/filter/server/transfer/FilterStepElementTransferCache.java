@@ -19,7 +19,7 @@ package com.echothree.model.control.filter.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterStepElementTransfer;
 import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.FilterStepElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -33,7 +33,7 @@ public class FilterStepElementTransferCache
     FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterStepControl filterStepControl;
 
     @Inject
     SelectorControl selectorControl;
@@ -52,12 +52,12 @@ public class FilterStepElementTransferCache
         if(filterStepElementTransfer == null) {
 
             var filterStepElementDetail = filterStepElement.getLastDetail();
-            var filterStepTransfer = filterControl.getFilterStepTransfer(userVisit, filterStepElementDetail.getFilterStep());
+            var filterStepTransfer = filterStepControl.getFilterStepTransfer(userVisit, filterStepElementDetail.getFilterStep());
             var filterStepElementName = filterStepElementDetail.getFilterStepElementName();
             var filterItemSelector = filterStepElementDetail.getFilterItemSelector();
             var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
             var filterAdjustmentTransfer = filterAdjustmentControl.getFilterAdjustmentTransfer(userVisit, filterStepElementDetail.getFilterAdjustment());
-            var description = filterControl.getBestFilterStepElementDescription(filterStepElement, getLanguage(userVisit));
+            var description = filterStepControl.getBestFilterStepElementDescription(filterStepElement, getLanguage(userVisit));
             
             filterStepElementTransfer = new FilterStepElementTransfer(filterStepTransfer, filterStepElementName,
                     filterItemSelectorTransfer, filterAdjustmentTransfer, description);

@@ -21,6 +21,7 @@ import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -70,6 +71,9 @@ public class GetFilterStepChoicesCommand
     @Inject
     FilterTypeControl filterTypeControl;
 
+    @Inject
+    FilterStepControl filterStepControl;
+
     
     /** Creates a new instance of GetFilterStepChoicesCommand */
     public GetFilterStepChoicesCommand() {
@@ -94,7 +98,7 @@ public class GetFilterStepChoicesCommand
                     var defaultFilterStepChoice = form.getDefaultFilterStepChoice();
                     var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                     
-                    result.setFilterStepChoices(filterControl.getFilterStepChoices(defaultFilterStepChoice, getPreferredLanguage(),
+                    result.setFilterStepChoices(filterStepControl.getFilterStepChoices(defaultFilterStepChoice, getPreferredLanguage(),
                             allowNullChoice, filter));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);

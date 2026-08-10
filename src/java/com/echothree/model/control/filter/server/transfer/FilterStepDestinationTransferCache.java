@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterStepDestinationTransfer;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.data.filter.server.entity.FilterStepDestination;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class FilterStepDestinationTransferCache
         extends BaseFilterTransferCache<FilterStepDestination, FilterStepDestinationTransfer> {
 
     @Inject
-    FilterControl filterControl;
+    FilterStepControl filterStepControl;
 
     /** Creates a new instance of FilterStepDestinationTransferCache */
     protected FilterStepDestinationTransferCache() {
@@ -40,8 +40,8 @@ public class FilterStepDestinationTransferCache
         var filterStepDestinationTransfer = get(filterStepDestination);
         
         if(filterStepDestinationTransfer == null) {
-            var fromFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getFromFilterStep());
-            var toFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getToFilterStep());
+            var fromFilterStep = filterStepControl.getFilterStepTransfer(userVisit, filterStepDestination.getFromFilterStep());
+            var toFilterStep = filterStepControl.getFilterStepTransfer(userVisit, filterStepDestination.getToFilterStep());
             
             filterStepDestinationTransfer = new FilterStepDestinationTransfer(fromFilterStep, toFilterStep);
             put(userVisit, filterStepDestination, filterStepDestinationTransfer);

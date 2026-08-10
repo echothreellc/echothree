@@ -17,6 +17,7 @@
 package com.echothree.model.control.filter.server.evaluator;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.util.server.persistence.Session;
@@ -26,6 +27,7 @@ public class FilterCache {
     
     Session session;
     FilterControl filterControl;
+    FilterStepControl filterStepControl;
     FilterType filterType;
     
     HashMap cachedFilters;
@@ -36,6 +38,7 @@ public class FilterCache {
         
         this.session = session;
         this.filterControl = filterControl;
+        this.filterStepControl = Session.getModelController(FilterStepControl.class);
         this.filterType = filterType;
         
         cachedFilters = new HashMap();
@@ -58,7 +61,7 @@ public class FilterCache {
             cachedFilter = (CachedFilter)cachedFilters.get(filter);
             
             if(cachedFilter == null) {
-                cachedFilter = new CachedFilter(session, filterControl, filter);
+                cachedFilter = new CachedFilter(session, filterStepControl, filter);
                 cachedFilters.put(filter, cachedFilter);
             }
         } else
