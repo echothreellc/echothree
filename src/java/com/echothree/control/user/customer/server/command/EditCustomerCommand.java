@@ -62,7 +62,7 @@ public class EditCustomerCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -86,7 +86,7 @@ public class EditCustomerCommand
                 new FieldDefinition("RequireReference", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowReferenceDuplicates", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -60,12 +60,12 @@ public class EditReturnTypeShippingMethodCommand
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ReturnTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

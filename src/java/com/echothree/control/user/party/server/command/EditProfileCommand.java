@@ -56,7 +56,7 @@ public class EditProfileCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
         
         customerEditFieldDefinitions = List.of(
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
@@ -73,7 +73,7 @@ public class EditProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                );
+        );
         
         otherEditFieldDefinitions = List.of(
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
@@ -90,7 +90,7 @@ public class EditProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                );
+        );
     }
 
     @Inject

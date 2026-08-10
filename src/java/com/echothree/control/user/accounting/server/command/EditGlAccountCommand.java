@@ -61,7 +61,7 @@ public class EditGlAccountCommand
                 new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, true, null, null),
@@ -71,7 +71,7 @@ public class EditGlAccountCommand
                 new FieldDefinition("GlResourceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

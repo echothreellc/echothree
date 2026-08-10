@@ -48,12 +48,12 @@ public class EditItemShippingTimeCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ShippingStartTime", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("ShippingEndTime", FieldType.DATE_TIME, false, null, null)
-                );
+        );
     }
 
     @Inject

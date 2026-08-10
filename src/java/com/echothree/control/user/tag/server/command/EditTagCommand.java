@@ -60,11 +60,11 @@ public class EditTagCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TagName", FieldType.TAG, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TagName", FieldType.TAG, true, null, null)
-                );
+        );
     }
 
     @Inject

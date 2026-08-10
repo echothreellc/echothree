@@ -46,12 +46,12 @@ public class EditRecoveryAnswerCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Answer", FieldType.STRING, true, 1L, 40L)
-                );
+        );
     }
 
     @Inject

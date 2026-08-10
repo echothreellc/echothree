@@ -55,12 +55,12 @@ public class CreateCommunicationSourceCommand
         );
         
         formEmailFieldDefinitions = List.of(
-            new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, 40L),
-            new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
-            new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
-            new FieldDefinition("ReceiveWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SendWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ReviewEmployeeSelectorName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, 40L),
+                new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
+                new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
+                new FieldDefinition("ReceiveWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SendWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ReviewEmployeeSelectorName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
 

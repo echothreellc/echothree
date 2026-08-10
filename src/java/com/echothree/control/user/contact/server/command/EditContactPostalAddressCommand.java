@@ -70,7 +70,7 @@ public class EditContactPostalAddressCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         // customerFormFieldDefinitions differs from otherFormFieldDefinitions in that when the PartyType
         // executing this command = CUSTOMER, FirstName and LastName are required fields. For all other
@@ -93,7 +93,7 @@ public class EditContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
         
         editOtherFieldDefinitions = List.of(
                 new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
@@ -113,7 +113,7 @@ public class EditContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

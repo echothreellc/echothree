@@ -61,7 +61,7 @@ public class EditEntityGeoPointAttributeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Latitude", FieldType.LATITUDE, true, null, null),
@@ -70,8 +70,7 @@ public class EditEntityGeoPointAttributeCommand
                 new FieldDefinition("ElevationUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Altitude", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("AltitudeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-
-                );
+        );
     }
 
     @Inject

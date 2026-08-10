@@ -50,7 +50,7 @@ public class EditInventoryLocationGroupVolumeCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("HeightUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -59,7 +59,7 @@ public class EditInventoryLocationGroupVolumeCommand
                 new FieldDefinition("Width", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("DepthUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Depth", FieldType.UNSIGNED_LONG, true, null, null)
-                );
+        );
     }
 
     @Inject

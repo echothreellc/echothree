@@ -79,7 +79,7 @@ public class CreateItemDescriptionTypeCommand
                 new FieldDefinition("PreferredMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Quality", FieldType.UNSIGNED_INTEGER, false, null, 100L),
                 new FieldDefinition("ScaleFromParent", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -51,7 +51,7 @@ public class EditEmploymentCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EmploymentName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
@@ -59,7 +59,7 @@ public class EditEmploymentCommand
                 new FieldDefinition("EndTime", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

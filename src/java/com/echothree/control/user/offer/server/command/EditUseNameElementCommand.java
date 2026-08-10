@@ -60,7 +60,7 @@ public class EditUseNameElementCommand
                 new FieldDefinition("UseNameElementName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseNameElementName", FieldType.ENTITY_NAME, true, null, null),
@@ -68,7 +68,7 @@ public class EditUseNameElementCommand
                 new FieldDefinition("Length", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

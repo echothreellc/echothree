@@ -63,11 +63,11 @@ public class EditOfferUseCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SalesOrderSequenceName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

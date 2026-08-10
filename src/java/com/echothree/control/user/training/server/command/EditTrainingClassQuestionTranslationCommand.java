@@ -67,12 +67,12 @@ public class EditTrainingClassQuestionTranslationCommand
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("QuestionMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Question", FieldType.STRING, true, null, null)
-                );
+        );
     }
 
     @Inject

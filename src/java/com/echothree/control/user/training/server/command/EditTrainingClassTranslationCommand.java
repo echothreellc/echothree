@@ -64,7 +64,7 @@ public class EditTrainingClassTranslationCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
@@ -72,7 +72,7 @@ public class EditTrainingClassTranslationCommand
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null),
                 new FieldDefinition("IntroductionMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Introduction", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

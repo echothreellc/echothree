@@ -46,12 +46,12 @@ public class EditPartyTermCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TermName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Taxable", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

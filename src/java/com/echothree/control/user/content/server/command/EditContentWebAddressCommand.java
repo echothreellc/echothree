@@ -59,13 +59,13 @@ public class EditContentWebAddressCommand
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentWebAddressName", FieldType.HOST_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentWebAddressName", FieldType.HOST_NAME, true, null, null),
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

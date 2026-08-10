@@ -46,7 +46,7 @@ public class EditPostalAddressLineElementCommand
                 new FieldDefinition("PostalAddressFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PostalAddressLineSortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("PostalAddressLineElementSortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PostalAddressLineElementSortOrder", FieldType.SIGNED_INTEGER, true, null, null),
@@ -55,7 +55,7 @@ public class EditPostalAddressLineElementCommand
                 new FieldDefinition("AlwaysIncludePrefix", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Suffix", FieldType.STRING, false, 1L, 10L),
                 new FieldDefinition("AlwaysIncludeSuffix", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

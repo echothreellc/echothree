@@ -53,11 +53,11 @@ public class EditPicklistAliasCommand
                 new FieldDefinition("PicklistTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PicklistAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

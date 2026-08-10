@@ -58,12 +58,12 @@ public class EditCommandMessageCommand
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommandMessageKey", FieldType.KEY, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommandMessageKey", FieldType.KEY, true, null, null),
                 new FieldDefinition("Translation", FieldType.STRING, false, 1L, 80L)
-                );
+        );
     }
 
     

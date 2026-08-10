@@ -100,7 +100,7 @@ public class CreateCustomerWithLoginCommand
                 new FieldDefinition("Answer", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("CustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
         
         otherFormFieldDefinitions = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -129,7 +129,7 @@ public class CreateCustomerWithLoginCommand
                 new FieldDefinition("Answer", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("CustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -64,7 +64,7 @@ public class EditTrainingClassPageCommand
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassPageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassPageName", FieldType.ENTITY_NAME, true, null, null),
@@ -74,7 +74,7 @@ public class EditTrainingClassPageCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PageMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Page", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

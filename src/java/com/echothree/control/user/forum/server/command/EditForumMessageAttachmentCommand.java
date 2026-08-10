@@ -50,13 +50,13 @@ public class EditForumMessageAttachmentCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ForumMessageAttachmentSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Clob", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("String", FieldType.STRING, false, 1L, 512L)
-                );
+        );
     }
 
     @Inject

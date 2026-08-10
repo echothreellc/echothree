@@ -46,7 +46,7 @@ public class EditPartyTypePasswordStringPolicyCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForceChangeAfterCreate", FieldType.BOOLEAN, true, null, null),
@@ -68,7 +68,7 @@ public class EditPartyTypePasswordStringPolicyCommand
                 new FieldDefinition("RequiredLowerCaseCount", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MaximumRepeated", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MinimumCharacterTypes", FieldType.UNSIGNED_INTEGER, false, null, null)
-                );
+        );
     }
 
     @Inject

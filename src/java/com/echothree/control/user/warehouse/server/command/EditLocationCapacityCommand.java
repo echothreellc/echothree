@@ -60,11 +60,11 @@ public class EditLocationCapacityCommand
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Capacity", FieldType.UNSIGNED_LONG, true, null, null)
-                );
+        );
     }
 
     @Inject

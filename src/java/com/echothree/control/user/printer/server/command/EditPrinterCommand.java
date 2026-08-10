@@ -59,13 +59,13 @@ public class EditPrinterCommand
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PrinterName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Priority", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

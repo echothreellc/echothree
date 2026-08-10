@@ -65,7 +65,7 @@ public class EditHarmonizedTariffScheduleCodeCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("HarmonizedTariffScheduleCodeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("HarmonizedTariffScheduleCodeName", FieldType.ENTITY_NAME, true, null, null),
@@ -76,7 +76,7 @@ public class EditHarmonizedTariffScheduleCodeCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("OverviewMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -65,13 +65,13 @@ public class EditContactEmailAddressCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("EmailAddress", FieldType.EMAIL_ADDRESS, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject
