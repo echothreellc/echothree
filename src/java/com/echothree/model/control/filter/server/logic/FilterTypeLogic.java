@@ -27,6 +27,8 @@ import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterK
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterTypeException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterTypeNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -46,6 +48,12 @@ public class FilterTypeLogic
 
     @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -75,13 +83,13 @@ public class FilterTypeLogic
 
     public FilterType createFilterType(final ExecutionErrorAccumulator eea, final FilterKind filterKind, final String filterTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+        var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
 
         if(filterType == null) {
-            filterType = filterControl.createFilterType(filterKind, filterTypeName, isDefault, sortOrder, createdBy);
+            filterType = filterTypeControl.createFilterType(filterKind, filterTypeName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                filterControl.createFilterTypeDescription(filterType, language, description, createdBy);
+                filterTypeControl.createFilterTypeDescription(filterType, language, description, createdBy);
             }
         } else {
             handleExecutionError(DuplicateFilterTypeNameException.class, eea, ExecutionErrors.DuplicateFilterTypeName.name(), filterTypeName);
@@ -91,7 +99,7 @@ public class FilterTypeLogic
 
     public FilterType getFilterTypeByName(final ExecutionErrorAccumulator eea, final FilterKind filterKind, final String filterTypeName,
             final EntityPermission entityPermission) {
-        var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName, entityPermission);
+        var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName, entityPermission);
 
         if(filterType == null) {
             handleExecutionError(UnknownFilterTypeNameException.class, eea, ExecutionErrors.UnknownFilterTypeName.name(),
@@ -142,7 +150,7 @@ public class FilterTypeLogic
 
             if(filterKindName == null) {
                 if(allowDefault) {
-                    filterKind = filterControl.getDefaultFilterKind();
+                    filterKind = filterKindControl.getDefaultFilterKind();
 
                     if(filterKind == null) {
                         handleExecutionError(UnknownDefaultFilterKindException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name());
@@ -157,7 +165,7 @@ public class FilterTypeLogic
             if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterTypeName == null) {
                     if(allowDefault) {
-                        filterType = filterControl.getDefaultFilterType(filterKind, entityPermission);
+                        filterType = filterTypeControl.getDefaultFilterType(filterKind, entityPermission);
 
                         if(filterType == null) {
                             handleExecutionError(UnknownDefaultFilterTypeException.class, eea, ExecutionErrors.UnknownDefaultFilterType.name());
@@ -174,7 +182,7 @@ public class FilterTypeLogic
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterType.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                filterType = filterControl.getFilterTypeByEntityInstance(entityInstance, entityPermission);
+                filterType = filterTypeControl.getFilterTypeByEntityInstance(entityInstance, entityPermission);
             }
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -198,7 +206,7 @@ public class FilterTypeLogic
         var filterCount = filterControl.countFiltersByFilterType(filterType);
 
         if(filterCount == 0) {
-            filterControl.deleteFilterType(filterType, deletedBy);
+            filterTypeControl.deleteFilterType(filterType, deletedBy);
         } else {
             handleExecutionError(CannotDeleteFilterTypeInUseException.class, eea, ExecutionErrors.CannotDeleteFilterTypeInUse.name(),
                     filterType.getLastDetail().getFilterKind().getLastDetail().getFilterKindName(),

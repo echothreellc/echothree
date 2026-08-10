@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.filter.server.graphql;
 
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
@@ -89,10 +89,10 @@ public class FilterStepElementObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var filterControl = Session.getModelController(FilterControl.class);
+        var filterStepElementControl = Session.getModelController(FilterStepElementControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterStepElementDescription(filterStepElement, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return filterStepElementControl.getBestFilterStepElementDescription(filterStepElement, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

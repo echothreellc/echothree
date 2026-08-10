@@ -22,6 +22,10 @@ import com.echothree.control.user.filter.common.result.EditFilterStepElementDesc
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterStepElementDescriptionSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -74,6 +78,18 @@ public class EditFilterStepElementDescriptionCommand
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
+
+    @Inject
     PartyControl partyControl;
 
     
@@ -96,11 +112,11 @@ public class EditFilterStepElementDescriptionCommand
     public FilterStepElementDescription getEntity(EditFilterStepElementDescriptionResult result) {
         FilterStepElementDescription filterStepElementDescription = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterTypeName = spec.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
 
             if(filterType != null) {
                 var filterName = spec.getFilterName();
@@ -108,11 +124,11 @@ public class EditFilterStepElementDescriptionCommand
 
                 if(filter != null) {
                     var filterStepName = spec.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStep = filterStepControl.getFilterStepByName(filter, filterStepName);
 
                     if(filterStep != null) {
                         var filterStepElementName = spec.getFilterStepElementName();
-                        var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        var filterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName);
 
                         if(filterStepElement != null) {
                             var languageIsoName = spec.getLanguageIsoName();
@@ -120,9 +136,9 @@ public class EditFilterStepElementDescriptionCommand
 
                             if(language != null) {
                                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                    filterStepElementDescription = filterControl.getFilterStepElementDescription(filterStepElement, language);
+                                    filterStepElementDescription = filterStepElementControl.getFilterStepElementDescription(filterStepElement, language);
                                 } else { // EditMode.UPDATE
-                                    filterStepElementDescription = filterControl.getFilterStepElementDescriptionForUpdate(filterStepElement, language);
+                                    filterStepElementDescription = filterStepElementControl.getFilterStepElementDescriptionForUpdate(filterStepElement, language);
                                 }
 
                                 if(filterStepElementDescription == null) {
@@ -157,7 +173,7 @@ public class EditFilterStepElementDescriptionCommand
 
     @Override
     public void fillInResult(EditFilterStepElementDescriptionResult result, FilterStepElementDescription filterStepElementDescription) {
-        result.setFilterStepElementDescription(filterControl.getFilterStepElementDescriptionTransfer(getUserVisit(), filterStepElementDescription));
+        result.setFilterStepElementDescription(filterStepElementControl.getFilterStepElementDescriptionTransfer(getUserVisit(), filterStepElementDescription));
     }
 
     @Override
@@ -167,11 +183,11 @@ public class EditFilterStepElementDescriptionCommand
 
     @Override
     public void doUpdate(FilterStepElementDescription filterStepElementDescription) {
-        var filterStepElementDescriptionValue = filterControl.getFilterStepElementDescriptionValue(filterStepElementDescription);
+        var filterStepElementDescriptionValue = filterStepElementControl.getFilterStepElementDescriptionValue(filterStepElementDescription);
 
         filterStepElementDescriptionValue.setDescription(edit.getDescription());
 
-        filterControl.updateFilterStepElementDescriptionFromValue(filterStepElementDescriptionValue, getPartyPK());
+        filterStepElementControl.updateFilterStepElementDescriptionFromValue(filterStepElementDescriptionValue, getPartyPK());
     }
     
 }

@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentTypesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -54,7 +54,7 @@ public class GetFilterAdjustmentTypesCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     /** Creates a new instance of GetFilterAdjustmentTypesCommand */
     public GetFilterAdjustmentTypesCommand() {
@@ -68,12 +68,12 @@ public class GetFilterAdjustmentTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return filterControl.countFilterAdjustmentTypes();
+        return filterAdjustmentControl.countFilterAdjustmentTypes();
     }
 
     @Override
     protected Collection<FilterAdjustmentType> getEntities() {
-        return filterControl.getFilterAdjustmentTypes();
+        return filterAdjustmentControl.getFilterAdjustmentTypes();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class GetFilterAdjustmentTypesCommand
                 result.setFilterAdjustmentTypeCount(getTotalEntities());
             }
 
-            result.setFilterAdjustmentTypes(filterControl.getFilterAdjustmentTypeTransfers(getUserVisit(), entities));
+            result.setFilterAdjustmentTypes(filterAdjustmentControl.getFilterAdjustmentTypeTransfers(getUserVisit(), entities));
         }
 
         return result;

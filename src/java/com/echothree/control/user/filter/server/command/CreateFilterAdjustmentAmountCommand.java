@@ -20,7 +20,7 @@ import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentAmoun
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.common.FilterKinds;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -77,7 +77,7 @@ public class CreateFilterAdjustmentAmountCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     CurrencyLogic currencyLogic;
@@ -136,13 +136,13 @@ public class CreateFilterAdjustmentAmountCommand
                     var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment,
+                        var filterAdjustmentAmount = filterAdjustmentControl.getFilterAdjustmentAmount(filterAdjustment,
                                 unitOfMeasureType, currency);
 
                         if(filterAdjustmentAmount == null) {
                             var amount = Long.valueOf(form.getAmount());
 
-                            filterControl.createFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency,
+                            filterAdjustmentControl.createFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency,
                                     amount, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentAmount.name());

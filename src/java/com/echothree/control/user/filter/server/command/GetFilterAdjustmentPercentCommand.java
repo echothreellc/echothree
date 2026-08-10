@@ -20,7 +20,7 @@ import com.echothree.control.user.filter.common.form.GetFilterAdjustmentPercentF
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,7 +66,7 @@ public class GetFilterAdjustmentPercentCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     CurrencyLogic currencyLogic;
@@ -102,7 +102,7 @@ public class GetFilterAdjustmentPercentCommand
                     var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
+                        filterAdjustmentPercent = filterAdjustmentControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
 
                         if(filterAdjustmentPercent == null) {
                             addExecutionError(ExecutionErrors.UnknownFilterAdjustmentPercent.name());
@@ -122,7 +122,7 @@ public class GetFilterAdjustmentPercentCommand
         var result = FilterResultFactory.getGetFilterAdjustmentPercentResult();
 
         if(entity != null) {
-            result.setFilterAdjustmentPercent(filterControl.getFilterAdjustmentPercentTransfer(getUserVisit(), entity));
+            result.setFilterAdjustmentPercent(filterAdjustmentControl.getFilterAdjustmentPercentTransfer(getUserVisit(), entity));
         }
 
         return result;

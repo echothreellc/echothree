@@ -24,7 +24,8 @@ import com.echothree.control.user.filter.common.spec.FilterAdjustmentFixedAmount
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.common.FilterKinds;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -86,7 +87,10 @@ public class EditFilterAdjustmentFixedAmountCommand
     AccountingControl accountingControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     @Inject
     UomControl uomControl;
@@ -111,11 +115,11 @@ public class EditFilterAdjustmentFixedAmountCommand
     public FilterAdjustmentFixedAmount getEntity(EditFilterAdjustmentFixedAmountResult result) {
         FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterAdjustmentName = spec.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
 
             if(filterAdjustment != null) {
                 var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
@@ -149,9 +153,9 @@ public class EditFilterAdjustmentFixedAmountCommand
 
                                 if(currency != null) {
                                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                        filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
+                                        filterAdjustmentFixedAmount = filterAdjustmentControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
                                     } else { // EditMode.UPDATE
-                                        filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmountForUpdate(filterAdjustment, unitOfMeasureType, currency);
+                                        filterAdjustmentFixedAmount = filterAdjustmentControl.getFilterAdjustmentFixedAmountForUpdate(filterAdjustment, unitOfMeasureType, currency);
                                     }
 
                                     if(filterAdjustmentFixedAmount == null) {
@@ -189,7 +193,7 @@ public class EditFilterAdjustmentFixedAmountCommand
 
     @Override
     public void fillInResult(EditFilterAdjustmentFixedAmountResult result, FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
-        result.setFilterAdjustmentFixedAmount(filterControl.getFilterAdjustmentFixedAmountTransfer(getUserVisit(), filterAdjustmentFixedAmount));
+        result.setFilterAdjustmentFixedAmount(filterAdjustmentControl.getFilterAdjustmentFixedAmountTransfer(getUserVisit(), filterAdjustmentFixedAmount));
     }
 
     @Override
@@ -207,11 +211,11 @@ public class EditFilterAdjustmentFixedAmountCommand
 
     @Override
     public void doUpdate(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
-        var filterAdjustmentFixedAmountValue = filterControl.getFilterAdjustmentFixedAmountValue(filterAdjustmentFixedAmount);
+        var filterAdjustmentFixedAmountValue = filterAdjustmentControl.getFilterAdjustmentFixedAmountValue(filterAdjustmentFixedAmount);
 
         filterAdjustmentFixedAmountValue.setUnitAmount(Long.valueOf(edit.getUnitAmount()));
 
-        filterControl.updateFilterAdjustmentFixedAmountFromValue(filterAdjustmentFixedAmountValue, getPartyPK());
+        filterAdjustmentControl.updateFilterAdjustmentFixedAmountFromValue(filterAdjustmentFixedAmountValue, getPartyPK());
     }
 
     @Override

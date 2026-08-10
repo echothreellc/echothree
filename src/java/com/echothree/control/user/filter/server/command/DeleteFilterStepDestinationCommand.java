@@ -18,6 +18,9 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterStepDestinationForm;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,6 +64,15 @@ public class DeleteFilterStepDestinationCommand
     @Inject
     FilterControl filterControl;
 
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
+
     
     /** Creates a new instance of DeleteFilterStepDestinationCommand */
     public DeleteFilterStepDestinationCommand() {
@@ -70,11 +82,11 @@ public class DeleteFilterStepDestinationCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var filterName = form.getFilterName();
@@ -82,17 +94,17 @@ public class DeleteFilterStepDestinationCommand
                 
                 if(filter != null) {
                     var fromFilterStepName = form.getFromFilterStepName();
-                    var fromFilterStep = filterControl.getFilterStepByName(filter, fromFilterStepName);
+                    var fromFilterStep = filterStepControl.getFilterStepByName(filter, fromFilterStepName);
                     
                     if(fromFilterStep != null) {
                         var toFilterStepName = form.getToFilterStepName();
-                        var toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
+                        var toFilterStep = filterStepControl.getFilterStepByName(filter, toFilterStepName);
                         
                         if(toFilterStep != null) {
-                            var filterStepDestination = filterControl.getFilterStepDestinationForUpdate(fromFilterStep, toFilterStep);
+                            var filterStepDestination = filterStepControl.getFilterStepDestinationForUpdate(fromFilterStep, toFilterStep);
                             
                             if(filterStepDestination != null) {
-                                filterControl.deleteFilterStepDestination(filterStepDestination, getPartyPK());
+                                filterStepControl.deleteFilterStepDestination(filterStepDestination, getPartyPK());
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownFilterStepDestination.name());
                             }

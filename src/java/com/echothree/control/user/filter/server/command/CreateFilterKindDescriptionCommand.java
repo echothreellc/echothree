@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterKindDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,7 +58,7 @@ public class CreateFilterKindDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterKindControl filterKindControl;
 
     @Inject
     PartyControl partyControl;
@@ -72,19 +72,19 @@ public class CreateFilterKindDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var filterKindDescription = filterControl.getFilterKindDescription(filterKind, language);
+                var filterKindDescription = filterKindControl.getFilterKindDescription(filterKind, language);
                 
                 if(filterKindDescription == null) {
                     var description = form.getDescription();
                     
-                    filterControl.createFilterKindDescription(filterKind, language, description, getPartyPK());
+                    filterKindControl.createFilterKindDescription(filterKind, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateFilterKindDescription.name());
                 }

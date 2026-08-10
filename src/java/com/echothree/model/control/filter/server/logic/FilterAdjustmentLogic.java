@@ -26,7 +26,10 @@ import com.echothree.model.control.filter.common.exception.DuplicateFilterAdjust
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterAdjustmentException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterAdjustmentNameException;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
@@ -47,7 +50,16 @@ public class FilterAdjustmentLogic
         extends BaseLogic {
 
     @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -89,14 +101,14 @@ public class FilterAdjustmentLogic
     public FilterAdjustment createFilterAdjustment(final ExecutionErrorAccumulator eea, final FilterKind filterKind, final String filterAdjustmentName,
             final FilterAdjustmentSource filterAdjustmentSource, final FilterAdjustmentType filterAdjustmentType, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+        var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
 
         if(filterAdjustment == null) {
-            filterAdjustment = filterControl.createFilterAdjustment(filterKind, filterAdjustmentName, filterAdjustmentSource,
+            filterAdjustment = filterAdjustmentControl.createFilterAdjustment(filterKind, filterAdjustmentName, filterAdjustmentSource,
                     filterAdjustmentType, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                filterControl.createFilterAdjustmentDescription(filterAdjustment, language, description, createdBy);
+                filterAdjustmentControl.createFilterAdjustmentDescription(filterAdjustment, language, description, createdBy);
             }
         } else {
             handleExecutionError(DuplicateFilterAdjustmentNameException.class, eea, ExecutionErrors.DuplicateFilterAdjustmentName.name(), filterAdjustmentName);
@@ -106,7 +118,7 @@ public class FilterAdjustmentLogic
 
     public FilterAdjustment getFilterAdjustmentByName(final ExecutionErrorAccumulator eea, final FilterKind filterKind, final String filterAdjustmentName,
             final EntityPermission entityPermission) {
-        var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName, entityPermission);
+        var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName, entityPermission);
 
         if(filterAdjustment == null) {
             handleExecutionError(UnknownFilterAdjustmentNameException.class, eea, ExecutionErrors.UnknownFilterAdjustmentName.name(),
@@ -157,7 +169,7 @@ public class FilterAdjustmentLogic
 
             if(filterKindName == null) {
                 if(allowDefault) {
-                    filterKind = filterControl.getDefaultFilterKind();
+                    filterKind = filterKindControl.getDefaultFilterKind();
 
                     if(filterKind == null) {
                         handleExecutionError(UnknownDefaultFilterKindException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name());
@@ -172,7 +184,7 @@ public class FilterAdjustmentLogic
             if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterAdjustmentName == null) {
                     if(allowDefault) {
-                        filterAdjustment = filterControl.getDefaultFilterAdjustment(filterKind, entityPermission);
+                        filterAdjustment = filterAdjustmentControl.getDefaultFilterAdjustment(filterKind, entityPermission);
 
                         if(filterAdjustment == null) {
                             handleExecutionError(UnknownDefaultFilterAdjustmentException.class, eea, ExecutionErrors.UnknownDefaultFilterAdjustment.name());
@@ -189,7 +201,7 @@ public class FilterAdjustmentLogic
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterAdjustment.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                filterAdjustment = filterControl.getFilterAdjustmentByEntityInstance(entityInstance, entityPermission);
+                filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByEntityInstance(entityInstance, entityPermission);
             }
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -212,8 +224,8 @@ public class FilterAdjustmentLogic
     public void deleteFilterAdjustment(final ExecutionErrorAccumulator eea, final FilterAdjustment filterAdjustment,
             final BasePK deletedBy) {
         if(filterControl.countFiltersByFilterAdjustment(filterAdjustment) == 0
-                && filterControl.countFilterStepElementsByFilterAdjustment(filterAdjustment) == 0) {
-            filterControl.deleteFilterAdjustment(filterAdjustment, deletedBy);
+                && filterStepElementControl.countFilterStepElementsByFilterAdjustment(filterAdjustment) == 0) {
+            filterAdjustmentControl.deleteFilterAdjustment(filterAdjustment, deletedBy);
         } else {
             var filterAdjustmentDetail = filterAdjustment.getLastDetail();
 

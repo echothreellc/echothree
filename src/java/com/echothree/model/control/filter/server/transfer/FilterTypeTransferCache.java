@@ -18,7 +18,8 @@ package com.echothree.model.control.filter.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +29,10 @@ public class FilterTypeTransferCache
         extends BaseFilterTransferCache<FilterType, FilterTypeTransfer> {
 
     @Inject
-    FilterControl filterControl;
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     /** Creates a new instance of FilterTypeTransferCache */
     protected FilterTypeTransferCache() {
@@ -43,11 +47,11 @@ public class FilterTypeTransferCache
         
         if(filterTypeTransfer == null) {
             var filterTypeDetail = filterType.getLastDetail();
-            var filterKindTransfer = filterControl.getFilterKindTransfer(userVisit, filterTypeDetail.getFilterKind());
+            var filterKindTransfer = filterKindControl.getFilterKindTransfer(userVisit, filterTypeDetail.getFilterKind());
             var filterTypeName = filterTypeDetail.getFilterTypeName();
             var isDefault = filterTypeDetail.getIsDefault();
             var sortOrder = filterTypeDetail.getSortOrder();
-            var description = filterControl.getBestFilterTypeDescription(filterType, getLanguage(userVisit));
+            var description = filterTypeControl.getBestFilterTypeDescription(filterType, getLanguage(userVisit));
             
             filterTypeTransfer = new FilterTypeTransfer(filterKindTransfer, filterTypeName, isDefault, sortOrder, description);
             put(userVisit, filterType, filterTypeTransfer);

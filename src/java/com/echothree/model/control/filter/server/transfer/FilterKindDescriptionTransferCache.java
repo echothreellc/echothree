@@ -19,6 +19,7 @@ package com.echothree.model.control.filter.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterKindDescriptionTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.data.filter.server.entity.FilterKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -30,6 +31,9 @@ public class FilterKindDescriptionTransferCache
     @Inject
     FilterControl filterControl;
 
+    @Inject
+    FilterKindControl filterKindControl;
+
     /** Creates a new instance of FilterKindDescriptionTransferCache */
     protected FilterKindDescriptionTransferCache() {
         super();
@@ -40,7 +44,7 @@ public class FilterKindDescriptionTransferCache
         var filterKindDescriptionTransfer = get(filterKindDescription);
         
         if(filterKindDescriptionTransfer == null) {
-            var filterKindTransfer = filterControl.getFilterKindTransfer(userVisit, filterKindDescription.getFilterKind());
+            var filterKindTransfer = filterKindControl.getFilterKindTransfer(userVisit, filterKindDescription.getFilterKind());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, filterKindDescription.getLanguage());
             
             filterKindDescriptionTransfer = new FilterKindDescriptionTransfer(languageTransfer, filterKindTransfer, filterKindDescription.getDescription());

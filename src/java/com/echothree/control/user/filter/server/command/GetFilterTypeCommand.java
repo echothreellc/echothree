@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterTypeForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.logic.FilterTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +61,7 @@ public class GetFilterTypeCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterTypeControl filterTypeControl;
 
     @Inject
     FilterTypeLogic filterTypeLogic;
@@ -88,7 +88,7 @@ public class GetFilterTypeCommand
         var result = FilterResultFactory.getGetFilterTypeResult();
 
         if(filterType != null) {
-            result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));
+            result.setFilterType(filterTypeControl.getFilterTypeTransfer(getUserVisit(), filterType));
         }
 
         return result;

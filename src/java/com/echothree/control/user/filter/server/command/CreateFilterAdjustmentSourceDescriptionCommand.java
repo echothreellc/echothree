@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentSourceDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,7 +58,7 @@ public class CreateFilterAdjustmentSourceDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     PartyControl partyControl;
@@ -72,19 +72,19 @@ public class CreateFilterAdjustmentSourceDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
-        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var filterAdjustmentSource = filterAdjustmentControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
         
         if(filterAdjustmentSource != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var filterTypeDescription = filterControl.getFilterAdjustmentSourceDescription(filterAdjustmentSource, language);
+                var filterTypeDescription = filterAdjustmentControl.getFilterAdjustmentSourceDescription(filterAdjustmentSource, language);
                 
                 if(filterTypeDescription == null) {
                     var description = form.getDescription();
                     
-                    filterControl.createFilterAdjustmentSourceDescription(filterAdjustmentSource, language, description);
+                    filterAdjustmentControl.createFilterAdjustmentSourceDescription(filterAdjustmentSource, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentSourceDescription.name());
                 }

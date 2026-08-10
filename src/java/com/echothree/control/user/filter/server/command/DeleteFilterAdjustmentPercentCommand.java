@@ -19,7 +19,8 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentPercentForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -67,7 +68,10 @@ public class DeleteFilterAdjustmentPercentCommand
     AccountingControl accountingControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     @Inject
     UomControl uomControl;
@@ -81,11 +85,11 @@ public class DeleteFilterAdjustmentPercentCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterAdjustmentName = form.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
                 if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.PERCENT.name())) {
@@ -116,10 +120,10 @@ public class DeleteFilterAdjustmentPercentCommand
                                 var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    var filterAdjustmentPercent = filterControl.getFilterAdjustmentPercentForUpdate(filterAdjustment, unitOfMeasureType, currency);
+                                    var filterAdjustmentPercent = filterAdjustmentControl.getFilterAdjustmentPercentForUpdate(filterAdjustment, unitOfMeasureType, currency);
                                     
                                     if(filterAdjustmentPercent != null) {
-                                        filterControl.deleteFilterAdjustmentPercent(filterAdjustmentPercent, getPartyPK());
+                                        filterAdjustmentControl.deleteFilterAdjustmentPercent(filterAdjustmentPercent, getPartyPK());
                                     } else {
                                         addExecutionError(ExecutionErrors.UnknownFilterAdjustmentPercent.name());
                                     }
