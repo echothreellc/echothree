@@ -22,7 +22,7 @@
     - If the class being modified is annotated with @ApplicationScoped, @RequestScoped, @CommandScope, @Dependent, or @SentEventSubscriber
         - Control and Logic classes should be injected using `@Inject` annotation
 - Classes annotated with `@CommandScope` and `@SentEventSubscriber` are CDI-managed.
-- Format `COMMAND_SECURITY_DEFINITION` and `FORM_FIELD_DEFINITIONS` consistently:
+- Format all static `CommandSecurityDefinition` and `List<FieldDefinition>` assignments consistently:
     - Indent nested list entries one additional level.
     - Align closing parentheses with their assignment expression.
 - Strings that span multiple lines should use Java text blocks
