@@ -67,7 +67,7 @@ public class EditPaymentMethodCommand
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null),
@@ -76,11 +76,11 @@ public class EditPaymentMethodCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
         
         editCheckFieldDefinitions = List.of(
                 new FieldDefinition("HoldDays", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
         
         editCreditCardFieldDefinitions = List.of(
                 new FieldDefinition("RequestNameOnCard", FieldType.BOOLEAN, true, null, null),
@@ -99,7 +99,7 @@ public class EditPaymentMethodCommand
                 new FieldDefinition("RequireBilling", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RequestIssuer", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RequireIssuer", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

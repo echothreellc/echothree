@@ -90,7 +90,7 @@ public class SearchCustomersCommand
 
         formAliasFieldDefinitions = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

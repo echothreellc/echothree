@@ -65,14 +65,14 @@ public class EditContentPageAreaCommand
                 new FieldDefinition("ContentPageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("ContentPageAreaClob", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("ContentPageAreaUrl", FieldType.URL, false, 1L, 200L)
-                );
+        );
     }
 
     @Inject

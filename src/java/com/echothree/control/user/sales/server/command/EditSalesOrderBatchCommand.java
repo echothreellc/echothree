@@ -65,14 +65,14 @@ public class EditSalesOrderBatchCommand
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Count", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
-                );
+        );
     }
 
     @Inject

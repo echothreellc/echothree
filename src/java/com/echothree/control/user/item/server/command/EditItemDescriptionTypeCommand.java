@@ -69,7 +69,7 @@ public class EditItemDescriptionTypeCommand
                 new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -81,7 +81,7 @@ public class EditItemDescriptionTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
 
         imageFieldDefinitions = List.of(
                 new FieldDefinition("MinimumHeight", FieldType.UNSIGNED_INTEGER, false, null, null),
@@ -93,7 +93,7 @@ public class EditItemDescriptionTypeCommand
                 new FieldDefinition("PreferredMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Quality", FieldType.UNSIGNED_INTEGER, false, null, 100L),
                 new FieldDefinition("ScaleFromParent", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

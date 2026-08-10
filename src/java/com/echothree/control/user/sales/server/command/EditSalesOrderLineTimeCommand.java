@@ -49,11 +49,11 @@ public class EditSalesOrderLineTimeCommand
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderLineSequence", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Time", FieldType.DATE_TIME, true, null, null)
-                );
+        );
     }
 
     @Inject

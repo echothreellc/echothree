@@ -61,11 +61,11 @@ public class EditEntityAppearanceCommand
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -93,7 +93,7 @@ public class CreateContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
         
         otherFormFieldDefinitions = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -114,7 +114,7 @@ public class CreateContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

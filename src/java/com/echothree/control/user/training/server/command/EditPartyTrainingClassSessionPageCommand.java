@@ -63,13 +63,13 @@ public class EditPartyTrainingClassSessionPageCommand
                 new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyTrainingClassSessionSequence", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("PartyTrainingClassSessionPageSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassPageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ReadingStartTime", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("ReadingEndTime", FieldType.DATE_TIME, false, null, null)
-                );
+        );
     }
 
     @Inject

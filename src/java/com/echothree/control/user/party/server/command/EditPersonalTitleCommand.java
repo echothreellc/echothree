@@ -43,13 +43,13 @@ public class EditPersonalTitleCommand
     
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("PersonalTitleId", FieldType.ID, true, null, null)
+                new FieldDefinition("PersonalTitleId", FieldType.ID, true, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         );
     }
 

@@ -69,21 +69,21 @@ public class EditEmployeeCommand
         ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, true, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("EmployeeTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
-            new FieldDefinition("FirstName", FieldType.STRING, true, 1L, 20L),
-            new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
-            new FieldDefinition("LastName", FieldType.STRING, true, 1L, 20L),
-            new FieldDefinition("NameSuffixId", FieldType.ID, false, null, null),
-            new FieldDefinition("PreferredLanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("PreferredCurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("PreferredJavaTimeZoneName", FieldType.TIME_ZONE_NAME, false, null, null),
-            new FieldDefinition("PreferredDateTimeFormatName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EmployeeTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
+                new FieldDefinition("FirstName", FieldType.STRING, true, 1L, 20L),
+                new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
+                new FieldDefinition("LastName", FieldType.STRING, true, 1L, 20L),
+                new FieldDefinition("NameSuffixId", FieldType.ID, false, null, null),
+                new FieldDefinition("PreferredLanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PreferredCurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PreferredJavaTimeZoneName", FieldType.TIME_ZONE_NAME, false, null, null),
+                new FieldDefinition("PreferredDateTimeFormatName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 

@@ -70,7 +70,7 @@ public class EditContactTelephoneCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
@@ -79,7 +79,7 @@ public class EditContactTelephoneCommand
                 new FieldDefinition("TelephoneNumber", FieldType.STRING, true, 1L, 25L),
                 new FieldDefinition("TelephoneExtension", FieldType.NUMBERS, false, 1L, 10L),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

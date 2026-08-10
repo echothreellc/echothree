@@ -43,11 +43,11 @@ public class EditRatingCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("RatingName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("RatingTypeListItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

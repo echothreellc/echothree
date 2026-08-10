@@ -61,11 +61,11 @@ public class EditCustomerTypeContactListCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AddWhenCreated", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

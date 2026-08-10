@@ -60,13 +60,13 @@ public class EditDocumentTypeUsageCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DocumentTypeUsageTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DocumentTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("MaximumInstances", FieldType.SIGNED_INTEGER, false, null, null)
-                );
+        );
     }
 
     @Inject

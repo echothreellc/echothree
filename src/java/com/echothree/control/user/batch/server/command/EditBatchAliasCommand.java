@@ -51,11 +51,11 @@ public class EditBatchAliasCommand
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

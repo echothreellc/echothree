@@ -63,11 +63,11 @@ public class EditItemTaxClassificationCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TaxClassificationName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

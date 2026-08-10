@@ -56,7 +56,7 @@ public class CreateProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                );
+        );
         
         otherFormFieldDefinitions = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -74,7 +74,7 @@ public class CreateProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                );
+        );
     }
 
     @Inject

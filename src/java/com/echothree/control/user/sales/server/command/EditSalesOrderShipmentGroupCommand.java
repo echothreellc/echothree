@@ -69,7 +69,7 @@ public class EditSalesOrderShipmentGroupCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("OrderShipmentGroupSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -77,7 +77,7 @@ public class EditSalesOrderShipmentGroupCommand
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ShippingMethodName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("HoldUntilComplete", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

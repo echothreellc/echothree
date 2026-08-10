@@ -50,7 +50,7 @@ public class EditCommentCommand
     
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommentName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CommentName", FieldType.ENTITY_NAME, true, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
@@ -58,8 +58,8 @@ public class EditCommentCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("ClobComment", FieldType.STRING, false, 1L, null),
-                new FieldDefinition("StringComment", FieldType.STRING, false, 1L, 512L)
                 // BlobComment is not validated
+                new FieldDefinition("StringComment", FieldType.STRING, false, 1L, 512L)
         );
     }
 

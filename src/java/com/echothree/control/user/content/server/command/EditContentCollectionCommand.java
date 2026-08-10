@@ -64,7 +64,7 @@ public class EditContentCollectionCommand
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
@@ -72,7 +72,7 @@ public class EditContentCollectionCommand
                 new FieldDefinition("DefaultUseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSourceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
 
     @Inject

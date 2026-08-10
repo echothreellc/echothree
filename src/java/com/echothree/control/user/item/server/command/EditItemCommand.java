@@ -69,7 +69,7 @@ public class EditItemCommand
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
@@ -88,7 +88,7 @@ public class EditItemCommand
                 new FieldDefinition("AllowAssociatePayments", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

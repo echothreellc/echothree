@@ -51,11 +51,11 @@ public class EditShipmentAliasCommand
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject
