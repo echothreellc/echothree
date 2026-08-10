@@ -19,6 +19,7 @@ package com.echothree.model.control.filter.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterEntranceStepTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.data.filter.server.entity.FilterEntranceStep;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -29,6 +30,9 @@ public class FilterEntranceStepTransferCache
 
     @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
 
     /** Creates a new instance of FilterEntranceStepTransferCache */
     protected FilterEntranceStepTransferCache() {
@@ -41,7 +45,7 @@ public class FilterEntranceStepTransferCache
         
         if(filterEntranceStepTransfer == null) {
             var filter = filterControl.getFilterTransfer(userVisit, filterEntranceStep.getFilter());
-            var filterStep = filterControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
+            var filterStep = filterStepControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
             
             filterEntranceStepTransfer = new FilterEntranceStepTransfer(filter, filterStep);
             put(userVisit, filterEntranceStep, filterEntranceStepTransfer);

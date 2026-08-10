@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.logic;
 
 import com.echothree.model.control.filter.common.exception.DuplicateFilterAdjustmentSourceNameException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterAdjustmentSourceNameException;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -33,7 +33,7 @@ public class FilterAdjustmentSourceLogic
         extends BaseLogic {
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     protected FilterAdjustmentSourceLogic() {
         super();
@@ -46,14 +46,14 @@ public class FilterAdjustmentSourceLogic
     public FilterAdjustmentSource createFilterAdjustmentSource(final ExecutionErrorAccumulator eea, final String filterAdjustmentSourceName,
             final Boolean allowedForInitialAmount, final Boolean isDefault, final Integer sortOrder, final Language language,
             final String description) {
-        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var filterAdjustmentSource = filterAdjustmentControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
 
         if(filterAdjustmentSource == null) {
-            filterAdjustmentSource = filterControl.createFilterAdjustmentSource(filterAdjustmentSourceName, allowedForInitialAmount,
+            filterAdjustmentSource = filterAdjustmentControl.createFilterAdjustmentSource(filterAdjustmentSourceName, allowedForInitialAmount,
                     isDefault, sortOrder);
 
             if(description != null) {
-                filterControl.createFilterAdjustmentSourceDescription(filterAdjustmentSource, language, description);
+                filterAdjustmentControl.createFilterAdjustmentSourceDescription(filterAdjustmentSource, language, description);
             }
         } else {
             handleExecutionError(DuplicateFilterAdjustmentSourceNameException.class, eea, ExecutionErrors.DuplicateFilterAdjustmentSourceName.name(), filterAdjustmentSourceName);
@@ -63,7 +63,7 @@ public class FilterAdjustmentSourceLogic
     }
 
     public FilterAdjustmentSource getFilterAdjustmentSourceByName(final ExecutionErrorAccumulator eea, final String filterAdjustmentSourceName) {
-        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var filterAdjustmentSource = filterAdjustmentControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
 
         if(filterAdjustmentSource == null) {
             handleExecutionError(UnknownFilterAdjustmentSourceNameException.class, eea, ExecutionErrors.UnknownFilterAdjustmentSourceName.name(), filterAdjustmentSourceName);

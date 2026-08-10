@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterStepDestinationsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
 import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -64,7 +64,7 @@ public class GetFilterStepDestinationsCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterStepControl filterStepControl;
 
     @Inject
     FilterStepLogic filterStepLogic;
@@ -100,9 +100,9 @@ public class GetFilterStepDestinationsCommand
 
         if(!hasExecutionErrors()) {
             if(fromFilterStep != null) {
-                total = filterControl.countFilterStepDestinationsByFromFilterStep(fromFilterStep);
+                total = filterStepControl.countFilterStepDestinationsByFromFilterStep(fromFilterStep);
             } else if(toFilterStep != null) {
-                total = filterControl.countFilterStepDestinationsByToFilterStep(toFilterStep);
+                total = filterStepControl.countFilterStepDestinationsByToFilterStep(toFilterStep);
             }
         }
 
@@ -115,9 +115,9 @@ public class GetFilterStepDestinationsCommand
 
         if(!hasExecutionErrors()) {
             if(fromFilterStep != null) {
-                entities = filterControl.getFilterStepDestinationsByFromFilterStep(fromFilterStep);
+                entities = filterStepControl.getFilterStepDestinationsByFromFilterStep(fromFilterStep);
             } else if(toFilterStep != null) {
-                entities = filterControl.getFilterStepDestinationsByToFilterStep(toFilterStep);
+                entities = filterStepControl.getFilterStepDestinationsByToFilterStep(toFilterStep);
             }
         }
 
@@ -132,16 +132,16 @@ public class GetFilterStepDestinationsCommand
             var userVisit = getUserVisit();
 
             if(fromFilterStep != null) {
-                result.setFromFilterStep(filterControl.getFilterStepTransfer(userVisit, fromFilterStep));
+                result.setFromFilterStep(filterStepControl.getFilterStepTransfer(userVisit, fromFilterStep));
             } else if(toFilterStep != null) {
-                result.setToFilterStep(filterControl.getFilterStepTransfer(userVisit, toFilterStep));
+                result.setToFilterStep(filterStepControl.getFilterStepTransfer(userVisit, toFilterStep));
             }
 
             if(session.hasLimit(FilterStepDestinationFactory.class)) {
                 result.setFilterStepDestinationCount(getTotalEntities());
             }
 
-            result.setFilterStepDestinations(filterControl.getFilterStepDestinationTransfers(userVisit, entities));
+            result.setFilterStepDestinations(filterStepControl.getFilterStepDestinationTransfers(userVisit, entities));
         }
 
         return result;

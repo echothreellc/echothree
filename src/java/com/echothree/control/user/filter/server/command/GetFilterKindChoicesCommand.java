@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterKindChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -55,7 +55,7 @@ public class GetFilterKindChoicesCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterKindControl filterKindControl;
 
     
     /** Creates a new instance of GetFilterKindChoicesCommand */
@@ -69,7 +69,7 @@ public class GetFilterKindChoicesCommand
         var defaultFilterKindChoice = form.getDefaultFilterKindChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        result.setFilterKindChoices(filterControl.getFilterKindChoices(defaultFilterKindChoice, getPreferredLanguage(),
+        result.setFilterKindChoices(filterKindControl.getFilterKindChoices(defaultFilterKindChoice, getPreferredLanguage(),
                 allowNullChoice));
         
         return result;

@@ -20,7 +20,7 @@ import com.echothree.control.user.filter.common.form.GetFilterAdjustmentFixedAmo
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,7 +66,7 @@ public class GetFilterAdjustmentFixedAmountCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     CurrencyLogic currencyLogic;
@@ -102,7 +102,7 @@ public class GetFilterAdjustmentFixedAmountCommand
                     var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
+                        filterAdjustmentFixedAmount = filterAdjustmentControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
 
                         if(filterAdjustmentFixedAmount == null) {
                             addExecutionError(ExecutionErrors.UnknownFilterAdjustmentFixedAmount.name());
@@ -122,7 +122,7 @@ public class GetFilterAdjustmentFixedAmountCommand
         var result = FilterResultFactory.getGetFilterAdjustmentFixedAmountResult();
 
         if(entity != null) {
-            result.setFilterAdjustmentFixedAmount(filterControl.getFilterAdjustmentFixedAmountTransfer(getUserVisit(), entity));
+            result.setFilterAdjustmentFixedAmount(filterAdjustmentControl.getFilterAdjustmentFixedAmountTransfer(getUserVisit(), entity));
         }
 
         return result;

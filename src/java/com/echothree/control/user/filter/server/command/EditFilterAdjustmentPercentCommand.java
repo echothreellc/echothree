@@ -23,7 +23,8 @@ import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentPercentSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -80,7 +81,10 @@ public class EditFilterAdjustmentPercentCommand
     AccountingControl accountingControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     @Inject
     UomControl uomControl;
@@ -111,11 +115,11 @@ public class EditFilterAdjustmentPercentCommand
     public FilterAdjustmentPercent getEntity(EditFilterAdjustmentPercentResult result) {
         FilterAdjustmentPercent filterAdjustmentPercent = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterAdjustmentName = spec.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
 
             if(filterAdjustment != null) {
                 var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
@@ -149,9 +153,9 @@ public class EditFilterAdjustmentPercentCommand
 
                                 if(currency != null) {
                                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                        filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
+                                        filterAdjustmentPercent = filterAdjustmentControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
                                     } else { // EditMode.UPDATE
-                                        filterAdjustmentPercent = filterControl.getFilterAdjustmentPercentForUpdate(filterAdjustment, unitOfMeasureType, currency);
+                                        filterAdjustmentPercent = filterAdjustmentControl.getFilterAdjustmentPercentForUpdate(filterAdjustment, unitOfMeasureType, currency);
                                     }
 
                                     if(filterAdjustmentPercent == null) {
@@ -189,7 +193,7 @@ public class EditFilterAdjustmentPercentCommand
 
     @Override
     public void fillInResult(EditFilterAdjustmentPercentResult result, FilterAdjustmentPercent filterAdjustmentPercent) {
-        result.setFilterAdjustmentPercent(filterControl.getFilterAdjustmentPercentTransfer(getUserVisit(), filterAdjustmentPercent));
+        result.setFilterAdjustmentPercent(filterAdjustmentControl.getFilterAdjustmentPercentTransfer(getUserVisit(), filterAdjustmentPercent));
     }
 
     @Override
@@ -199,11 +203,11 @@ public class EditFilterAdjustmentPercentCommand
 
     @Override
     public void doUpdate(FilterAdjustmentPercent filterAdjustmentPercent) {
-        var filterAdjustmentPercentValue = filterControl.getFilterAdjustmentPercentValue(filterAdjustmentPercent);
+        var filterAdjustmentPercentValue = filterAdjustmentControl.getFilterAdjustmentPercentValue(filterAdjustmentPercent);
 
         filterAdjustmentPercentValue.setPercent(Integer.valueOf(edit.getPercent()));
 
-        filterControl.updateFilterAdjustmentPercentFromValue(filterAdjustmentPercentValue, getPartyPK());
+        filterAdjustmentControl.updateFilterAdjustmentPercentFromValue(filterAdjustmentPercentValue, getPartyPK());
     }
 
 }

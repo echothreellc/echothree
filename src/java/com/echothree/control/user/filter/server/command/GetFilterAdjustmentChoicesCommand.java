@@ -18,7 +18,8 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -58,7 +59,10 @@ public class GetFilterAdjustmentChoicesCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     
     /** Creates a new instance of GetFilterAdjustmentChoicesCommand */
@@ -70,13 +74,13 @@ public class GetFilterAdjustmentChoicesCommand
     protected BaseResult execute() {
         var result = FilterResultFactory.getGetFilterAdjustmentChoicesResult();
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var defaultFilterAdjustmentChoice = form.getDefaultFilterAdjustmentChoice();
             var initialAdjustmentsOnly = Boolean.parseBoolean(form.getInitialAdjustmentsOnly());
             
-            result.setFilterAdjustmentChoices(filterControl.getFilterAdjustmentChoices(defaultFilterAdjustmentChoice, getPreferredLanguage(), filterKind, initialAdjustmentsOnly));
+            result.setFilterAdjustmentChoices(filterAdjustmentControl.getFilterAdjustmentChoices(defaultFilterAdjustmentChoice, getPreferredLanguage(), filterKind, initialAdjustmentsOnly));
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }

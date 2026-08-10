@@ -20,6 +20,8 @@ import javax.inject.Inject;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterStepTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,6 +34,12 @@ public class FilterStepTransferCache
 
     @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
 
     @Inject
     SelectorControl selectorControl;
@@ -62,17 +70,17 @@ public class FilterStepTransferCache
             var filterStepName = filterStepDetail.getFilterStepName();
             var filterItemSelector = filterStepDetail.getFilterItemSelector();
             var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
-            var description = filterControl.getBestFilterStepDescription(filterStep, getLanguage(userVisit));
+            var description = filterStepControl.getBestFilterStepDescription(filterStep, getLanguage(userVisit));
             
             filterStepTransfer = new FilterStepTransfer(filter, filterStepName, filterItemSelectorTransfer, description);
             put(userVisit, filterStep, filterStepTransfer);
             
             if(includeFilterStepElements) {
-                filterStepTransfer.setFilterStepElements(new ListWrapper<>(filterControl.getFilterStepElementTransfersByFilterStep(userVisit, filterStep)));
+                filterStepTransfer.setFilterStepElements(new ListWrapper<>(filterStepElementControl.getFilterStepElementTransfersByFilterStep(userVisit, filterStep)));
             }
             
             if(includeFilterStepDestinations) {
-                filterStepTransfer.setFilterStepDestinations(new ListWrapper<>(filterControl.getFilterStepDestinationTransfersByFromFilterStep(userVisit, filterStep)));
+                filterStepTransfer.setFilterStepDestinations(new ListWrapper<>(filterStepControl.getFilterStepDestinationTransfersByFromFilterStep(userVisit, filterStep)));
             }
         }
         

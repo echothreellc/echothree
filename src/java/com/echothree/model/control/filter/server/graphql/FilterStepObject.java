@@ -16,7 +16,8 @@
 
 package com.echothree.model.control.filter.server.graphql;
 
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -94,10 +95,10 @@ public class FilterStepObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var filterControl = Session.getModelController(FilterControl.class);
+        var filterStepControl = Session.getModelController(FilterStepControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterStepDescription(filterStep, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return filterStepControl.getBestFilterStepDescription(filterStep, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -106,11 +107,11 @@ public class FilterStepObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<FilterStepElementObject> getFilterStepElements(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFilterStepElementsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var totalCount = filterControl.countFilterStepElementsByFilterStep(filterStep);
+            var filterStepElementControl = Session.getModelController(FilterStepElementControl.class);
+            var totalCount = filterStepElementControl.countFilterStepElementsByFilterStep(filterStep);
 
             try(var objectLimiter = new ObjectLimiter(env, FilterStepElementConstants.COMPONENT_VENDOR_NAME, FilterStepElementConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = filterControl.getFilterStepElementsByFilterStep(filterStep);
+                var entities = filterStepElementControl.getFilterStepElementsByFilterStep(filterStep);
                 var unitOfMeasureTypes = entities.stream().map(FilterStepElementObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);
@@ -126,11 +127,11 @@ public class FilterStepObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<FilterStepDestinationObject> getFromFilterStepDestinations(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFilterStepDestinationsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var totalCount = filterControl.countFilterStepDestinationsByFromFilterStep(filterStep);
+            var filterStepControl = Session.getModelController(FilterStepControl.class);
+            var totalCount = filterStepControl.countFilterStepDestinationsByFromFilterStep(filterStep);
 
             try(var objectLimiter = new ObjectLimiter(env, FilterStepDestinationConstants.COMPONENT_VENDOR_NAME, FilterStepDestinationConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = filterControl.getFilterStepDestinationsByFromFilterStep(filterStep);
+                var entities = filterStepControl.getFilterStepDestinationsByFromFilterStep(filterStep);
                 var unitOfMeasureTypes = entities.stream().map(FilterStepDestinationObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);
@@ -146,11 +147,11 @@ public class FilterStepObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<FilterStepDestinationObject> getToFilterStepDestinations(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFilterStepDestinationsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var totalCount = filterControl.countFilterStepDestinationsByToFilterStep(filterStep);
+            var filterStepControl = Session.getModelController(FilterStepControl.class);
+            var totalCount = filterStepControl.countFilterStepDestinationsByToFilterStep(filterStep);
 
             try(var objectLimiter = new ObjectLimiter(env, FilterStepDestinationConstants.COMPONENT_VENDOR_NAME, FilterStepDestinationConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = filterControl.getFilterStepDestinationsByToFilterStep(filterStep);
+                var entities = filterStepControl.getFilterStepDestinationsByToFilterStep(filterStep);
                 var unitOfMeasureTypes = entities.stream().map(FilterStepDestinationObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);

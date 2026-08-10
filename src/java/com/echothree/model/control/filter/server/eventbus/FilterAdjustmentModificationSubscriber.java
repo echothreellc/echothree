@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
 import com.echothree.model.control.core.server.eventbus.Function5Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.filter.common.FilterAdjustmentConstants;
@@ -38,7 +40,13 @@ public class FilterAdjustmentModificationSubscriber
     EventControl eventControl;
 
     @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
 
     @Subscribe
     public void receiveSentFilterAdjustmentEvent(SentEvent se) {
@@ -50,7 +58,7 @@ public class FilterAdjustmentModificationSubscriber
         if(FilterAdjustmentConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && FilterAdjustmentConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var filterAdjustment = filterControl.getFilterAdjustmentByEntityInstance(entityInstance);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByEntityInstance(entityInstance);
 
             var filters = filterControl.getFiltersByInitialFilterAdjustment(filterAdjustment);
             for(var filter : filters) {
@@ -59,7 +67,7 @@ public class FilterAdjustmentModificationSubscriber
                         PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
             }
 
-            var filterStepElements = filterControl.getFilterStepElementsByFilterAdjustment(filterAdjustment);
+            var filterStepElements = filterStepElementControl.getFilterStepElementsByFilterAdjustment(filterAdjustment);
             for(var filterStepElement : filterStepElements) {
                 eventControl.sendEvent(filterStepElement.getPrimaryKey(), EventTypes.TOUCH,
                         filterAdjustment.getPrimaryKey(), eventType,

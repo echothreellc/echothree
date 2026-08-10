@@ -18,6 +18,10 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterStepElementDescriptionForm;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -65,6 +69,18 @@ public class CreateFilterStepElementDescriptionCommand
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
+
+    @Inject
     PartyControl partyControl;
 
     
@@ -76,11 +92,11 @@ public class CreateFilterStepElementDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var filterName = form.getFilterName();
@@ -88,23 +104,23 @@ public class CreateFilterStepElementDescriptionCommand
                 
                 if(filter != null) {
                     var filterStepName = form.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    var filterStep = filterStepControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep != null) {
                         var filterStepElementName = form.getFilterStepElementName();
-                        var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+                        var filterStepElement = filterStepElementControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement != null) {
                             var languageIsoName = form.getLanguageIsoName();
                             var language = partyControl.getLanguageByIsoName(languageIsoName);
                             
                             if(language != null) {
-                                var filterStepElementDescription = filterControl.getFilterStepElementDescription(filterStepElement, language);
+                                var filterStepElementDescription = filterStepElementControl.getFilterStepElementDescription(filterStepElement, language);
                                 
                                 if(filterStepElementDescription == null) {
                                     var description = form.getDescription();
                                     
-                                    filterControl.createFilterStepElementDescription(filterStepElement, language, description, getPartyPK());
+                                    filterStepElementControl.createFilterStepElementDescription(filterStepElement, language, description, getPartyPK());
                                 } else {
                                     addExecutionError(ExecutionErrors.DuplicateFilterStepElementDescription.name());
                                 }

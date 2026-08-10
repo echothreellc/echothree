@@ -17,6 +17,7 @@
 package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -93,10 +94,10 @@ public class FilterTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var filterControl = Session.getModelController(FilterControl.class);
+        var filterTypeControl = Session.getModelController(FilterTypeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterTypeDescription(filterType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return filterTypeControl.getBestFilterTypeDescription(filterType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

@@ -17,7 +17,8 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,7 +59,10 @@ public class DeleteFilterAdjustmentDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     @Inject
     PartyControl partyControl;
@@ -72,21 +76,21 @@ public class DeleteFilterAdjustmentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterAdjustmentName = form.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, language);
+                    var filterAdjustmentDescription = filterAdjustmentControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, language);
                     
                     if(filterAdjustmentDescription != null) {
-                        filterControl.deleteFilterAdjustmentDescription(filterAdjustmentDescription, getPartyPK());
+                        filterAdjustmentControl.deleteFilterAdjustmentDescription(filterAdjustmentDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownFilterAdjustmentDescription.name());
                     }

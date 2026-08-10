@@ -17,7 +17,8 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.SetDefaultFilterAdjustmentForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -56,7 +57,10 @@ public class SetDefaultFilterAdjustmentCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     
     /** Creates a new instance of SetDefaultFilterAdjustmentCommand */
@@ -67,15 +71,15 @@ public class SetDefaultFilterAdjustmentCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterAdjustmentName = form.getFilterAdjustmentName();
-            var filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueByNameForUpdate(filterKind, filterAdjustmentName);
+            var filterAdjustmentDetailValue = filterAdjustmentControl.getFilterAdjustmentDetailValueByNameForUpdate(filterKind, filterAdjustmentName);
             
             if(filterAdjustmentDetailValue != null) {
                 filterAdjustmentDetailValue.setIsDefault(true);
-                filterControl.updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, getPartyPK());
+                filterAdjustmentControl.updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
             }

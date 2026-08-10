@@ -19,7 +19,7 @@ package com.echothree.model.control.filter.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentPercentTransfer;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -34,7 +34,7 @@ public class FilterAdjustmentPercentTransferCache
     AccountingControl accountingControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     UomControl uomControl;
@@ -49,7 +49,7 @@ public class FilterAdjustmentPercentTransferCache
         var filterAdjustmentPercentTransfer = get(filterAdjustmentPercent);
         
         if(filterAdjustmentPercentTransfer == null) {
-            var filterAdjustment = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentPercent.getFilterAdjustment());
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentPercent.getFilterAdjustment());
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentPercent.getUnitOfMeasureType());
             var currency = accountingControl.getCurrencyTransfer(userVisit, filterAdjustmentPercent.getCurrency());
             var percent = PercentUtils.getInstance().formatFractionalPercent(filterAdjustmentPercent.getPercent());

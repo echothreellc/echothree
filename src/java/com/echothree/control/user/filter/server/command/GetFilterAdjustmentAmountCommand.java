@@ -20,7 +20,7 @@ import com.echothree.control.user.filter.common.form.GetFilterAdjustmentAmountFo
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,7 +66,7 @@ public class GetFilterAdjustmentAmountCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     CurrencyLogic currencyLogic;
@@ -102,7 +102,7 @@ public class GetFilterAdjustmentAmountCommand
                     var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
+                        filterAdjustmentAmount = filterAdjustmentControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
 
                         if(filterAdjustmentAmount == null) {
                             addExecutionError(ExecutionErrors.UnknownFilterAdjustmentAmount.name());
@@ -122,7 +122,7 @@ public class GetFilterAdjustmentAmountCommand
         var result = FilterResultFactory.getGetFilterAdjustmentAmountResult();
 
         if(entity != null) {
-            result.setFilterAdjustmentAmount(filterControl.getFilterAdjustmentAmountTransfer(getUserVisit(), entity));
+            result.setFilterAdjustmentAmount(filterAdjustmentControl.getFilterAdjustmentAmountTransfer(getUserVisit(), entity));
         }
 
         return result;

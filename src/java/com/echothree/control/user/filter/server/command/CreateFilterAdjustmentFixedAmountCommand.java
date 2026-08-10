@@ -20,7 +20,8 @@ import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentFixed
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.common.FilterKinds;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -80,7 +81,10 @@ public class CreateFilterAdjustmentFixedAmountCommand
     AccountingControl accountingControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     @Inject
     UomControl uomControl;
@@ -112,11 +116,11 @@ public class CreateFilterAdjustmentFixedAmountCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterAdjustmentName = form.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
                 var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
@@ -150,13 +154,13 @@ public class CreateFilterAdjustmentFixedAmountCommand
                                 var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    var filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment,
+                                    var filterAdjustmentFixedAmount = filterAdjustmentControl.getFilterAdjustmentFixedAmount(filterAdjustment,
                                             unitOfMeasureType, currency);
                                     
                                     if(filterAdjustmentFixedAmount == null) {
                                         var unitAmount = Long.valueOf(form.getUnitAmount());
                                         
-                                        filterControl.createFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType,
+                                        filterAdjustmentControl.createFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType,
                                                 currency, unitAmount, getPartyPK());
                                     } else {
                                         addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentFixedAmount.name());

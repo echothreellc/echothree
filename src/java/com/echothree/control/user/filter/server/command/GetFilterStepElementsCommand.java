@@ -18,7 +18,8 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterStepElementsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterStepControl;
+import com.echothree.model.control.filter.server.control.FilterStepElementControl;
 import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -62,7 +63,10 @@ public class GetFilterStepElementsCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterStepControl filterStepControl;
+
+    @Inject
+    FilterStepElementControl filterStepElementControl;
 
     @Inject
     FilterStepLogic filterStepLogic;
@@ -83,12 +87,12 @@ public class GetFilterStepElementsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : filterControl.countFilterStepElementsByFilterStep(filterStep);
+        return hasExecutionErrors() ? null : filterStepElementControl.countFilterStepElementsByFilterStep(filterStep);
     }
 
     @Override
     protected Collection<FilterStepElement> getEntities() {
-        return hasExecutionErrors() ? null : filterControl.getFilterStepElementsByFilterStep(filterStep);
+        return hasExecutionErrors() ? null : filterStepElementControl.getFilterStepElementsByFilterStep(filterStep);
     }
 
     @Override
@@ -98,13 +102,13 @@ public class GetFilterStepElementsCommand
         if(entities != null) {
             var userVisit = getUserVisit();
 
-            result.setFilterStep(filterControl.getFilterStepTransfer(userVisit, filterStep));
+            result.setFilterStep(filterStepControl.getFilterStepTransfer(userVisit, filterStep));
 
             if(session.hasLimit(FilterStepElementFactory.class)) {
                 result.setFilterStepElementCount(getTotalEntities());
             }
 
-            result.setFilterStepElements(filterControl.getFilterStepElementTransfers(userVisit, entities));
+            result.setFilterStepElements(filterStepElementControl.getFilterStepElementTransfers(userVisit, entities));
         }
 
         return result;

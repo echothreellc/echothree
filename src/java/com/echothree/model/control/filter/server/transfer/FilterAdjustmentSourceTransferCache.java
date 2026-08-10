@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentSourceTransfer;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class FilterAdjustmentSourceTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentSource, FilterAdjustmentSourceTransfer> {
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     /** Creates a new instance of FilterAdjustmentSourceTransferCache */
     protected FilterAdjustmentSourceTransferCache() {
@@ -44,7 +44,7 @@ public class FilterAdjustmentSourceTransferCache
             var allowedForInitialAmount = filterAdjustmentSource.getAllowedForInitialAmount();
             var isDefault = filterAdjustmentSource.getIsDefault();
             var sortOrder = filterAdjustmentSource.getSortOrder();
-            var description = filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, getLanguage(userVisit));
+            var description = filterAdjustmentControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, getLanguage(userVisit));
             
             filterAdjustmentSourceTransfer = new FilterAdjustmentSourceTransfer(filterAdjustmentSourceName, allowedForInitialAmount, isDefault,
             sortOrder, description);

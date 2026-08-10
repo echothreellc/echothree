@@ -22,6 +22,8 @@ import com.echothree.control.user.filter.common.result.EditFilterDescriptionResu
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterDescriptionSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -72,6 +74,12 @@ public class EditFilterDescriptionCommand
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
     PartyControl partyControl;
 
     /** Creates a new instance of EditFilterDescriptionCommand */
@@ -93,11 +101,11 @@ public class EditFilterDescriptionCommand
     public FilterDescription getEntity(EditFilterDescriptionResult result) {
         FilterDescription filterDescription = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterTypeName = spec.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
 
             if(filterType != null) {
                 var filterName = spec.getFilterName();

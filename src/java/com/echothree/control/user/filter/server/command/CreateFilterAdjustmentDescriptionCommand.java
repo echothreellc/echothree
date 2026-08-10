@@ -17,7 +17,8 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -59,7 +60,10 @@ public class CreateFilterAdjustmentDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     @Inject
     PartyControl partyControl;
@@ -73,23 +77,23 @@ public class CreateFilterAdjustmentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterAdjustmentName = form.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, language);
+                    var filterAdjustmentDescription = filterAdjustmentControl.getFilterAdjustmentDescription(filterAdjustment, language);
                     
                     if(filterAdjustmentDescription == null) {
                         var description = form.getDescription();
                         
-                        filterControl.createFilterAdjustmentDescription(filterAdjustment, language, description, getPartyPK());
+                        filterAdjustmentControl.createFilterAdjustmentDescription(filterAdjustment, language, description, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentDescription.name(), filterKindName, filterAdjustmentName, languageIsoName);
                     }
