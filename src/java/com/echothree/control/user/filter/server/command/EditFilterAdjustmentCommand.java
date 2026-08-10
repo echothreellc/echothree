@@ -22,6 +22,7 @@ import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResul
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -72,6 +73,9 @@ public class EditFilterAdjustmentCommand
     @Inject
     FilterControl filterControl;
 
+    @Inject
+    FilterKindControl filterKindControl;
+
     
     /** Creates a new instance of EditFilterAdjustmentCommand */
     public EditFilterAdjustmentCommand() {
@@ -95,7 +99,7 @@ public class EditFilterAdjustmentCommand
         FilterAdjustment filterAdjustment = null;
         var filterKindName = spec.getFilterKindName();
 
-        filterKind = filterControl.getFilterKindByName(filterKindName);
+        filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterAdjustmentName = spec.getFilterAdjustmentName();

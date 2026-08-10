@@ -27,6 +27,7 @@ import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterA
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterAdjustmentNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
@@ -48,6 +49,9 @@ public class FilterAdjustmentLogic
 
     @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -157,7 +161,7 @@ public class FilterAdjustmentLogic
 
             if(filterKindName == null) {
                 if(allowDefault) {
-                    filterKind = filterControl.getDefaultFilterKind();
+                    filterKind = filterKindControl.getDefaultFilterKind();
 
                     if(filterKind == null) {
                         handleExecutionError(UnknownDefaultFilterKindException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name());

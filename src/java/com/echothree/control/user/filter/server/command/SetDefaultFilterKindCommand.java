@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.SetDefaultFilterKindForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -54,7 +54,7 @@ public class SetDefaultFilterKindCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterKindControl filterKindControl;
 
     
     /** Creates a new instance of SetDefaultFilterKindCommand */
@@ -65,11 +65,11 @@ public class SetDefaultFilterKindCommand
     @Override
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
-        var filterKindDetailValue = filterControl.getFilterKindDetailValueByNameForUpdate(filterKindName);
+        var filterKindDetailValue = filterKindControl.getFilterKindDetailValueByNameForUpdate(filterKindName);
         
         if(filterKindDetailValue != null) {
             filterKindDetailValue.setIsDefault(true);
-            filterControl.updateFilterKindFromValue(filterKindDetailValue, getPartyPK());
+            filterKindControl.updateFilterKindFromValue(filterKindDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }

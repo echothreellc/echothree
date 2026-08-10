@@ -22,7 +22,7 @@ import com.echothree.control.user.filter.common.form.EditFilterKindDescriptionFo
 import com.echothree.control.user.filter.common.result.EditFilterKindDescriptionResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterKindDescriptionSpec;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -69,7 +69,7 @@ public class EditFilterKindDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterKindControl filterKindControl;
 
     @Inject
     PartyControl partyControl;
@@ -93,7 +93,7 @@ public class EditFilterKindDescriptionCommand
     public FilterKindDescription getEntity(EditFilterKindDescriptionResult result) {
         FilterKindDescription filterKindDescription = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var languageIsoName = spec.getLanguageIsoName();
@@ -101,9 +101,9 @@ public class EditFilterKindDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    filterKindDescription = filterControl.getFilterKindDescription(filterKind, language);
+                    filterKindDescription = filterKindControl.getFilterKindDescription(filterKind, language);
                 } else { // EditMode.UPDATE
-                    filterKindDescription = filterControl.getFilterKindDescriptionForUpdate(filterKind, language);
+                    filterKindDescription = filterKindControl.getFilterKindDescriptionForUpdate(filterKind, language);
                 }
 
                 if(filterKindDescription == null) {
@@ -126,7 +126,7 @@ public class EditFilterKindDescriptionCommand
 
     @Override
     public void fillInResult(EditFilterKindDescriptionResult result, FilterKindDescription filterKindDescription) {
-        result.setFilterKindDescription(filterControl.getFilterKindDescriptionTransfer(getUserVisit(), filterKindDescription));
+        result.setFilterKindDescription(filterKindControl.getFilterKindDescriptionTransfer(getUserVisit(), filterKindDescription));
     }
 
     @Override
@@ -136,11 +136,11 @@ public class EditFilterKindDescriptionCommand
 
     @Override
     public void doUpdate(FilterKindDescription filterKindDescription) {
-        var filterKindDescriptionValue = filterControl.getFilterKindDescriptionValue(filterKindDescription);
+        var filterKindDescriptionValue = filterKindControl.getFilterKindDescriptionValue(filterKindDescription);
 
         filterKindDescriptionValue.setDescription(edit.getDescription());
 
-        filterControl.updateFilterKindDescriptionFromValue(filterKindDescriptionValue, getPartyPK());
+        filterKindControl.updateFilterKindDescriptionFromValue(filterKindDescriptionValue, getPartyPK());
     }
 
 }

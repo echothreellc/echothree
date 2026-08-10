@@ -21,6 +21,7 @@ import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -79,6 +80,9 @@ public class CreateOfferCommand
 
     @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     @Inject
     PartyControl partyControl;
@@ -159,7 +163,7 @@ public class CreateOfferCommand
                             Filter offerItemPriceFilter = null;
 
                             if(offerItemPriceFilterName != null) {
-                                var filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
+                                var filterKind = filterKindControl.getFilterKindByName(FilterKinds.PRICE.name());
                                 var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
 
                                 if(filterType != null) {

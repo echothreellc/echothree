@@ -19,6 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,6 +63,9 @@ public class GetFilterStepChoicesCommand
     @Inject
     FilterControl filterControl;
 
+    @Inject
+    FilterKindControl filterKindControl;
+
     
     /** Creates a new instance of GetFilterStepChoicesCommand */
     public GetFilterStepChoicesCommand() {
@@ -72,7 +76,7 @@ public class GetFilterStepChoicesCommand
     protected BaseResult execute() {
         var result = FilterResultFactory.getGetFilterStepChoicesResult();
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();

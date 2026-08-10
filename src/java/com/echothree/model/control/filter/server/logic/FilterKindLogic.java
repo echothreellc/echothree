@@ -26,6 +26,7 @@ import com.echothree.model.control.filter.common.exception.DuplicateFilterKindNa
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterKindNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -45,6 +46,9 @@ public class FilterKindLogic
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     protected FilterKindLogic() {
@@ -58,13 +62,13 @@ public class FilterKindLogic
     public FilterKind createFilterKind(final ExecutionErrorAccumulator eea, final String filterKindName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind == null) {
-            filterKind = filterControl.createFilterKind(filterKindName, isDefault, sortOrder, createdBy);
+            filterKind = filterKindControl.createFilterKind(filterKindName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                filterControl.createFilterKindDescription(filterKind, language, description, createdBy);
+                filterKindControl.createFilterKindDescription(filterKind, language, description, createdBy);
             }
         } else {
             handleExecutionError(DuplicateFilterKindNameException.class, eea, ExecutionErrors.DuplicateFilterKindName.name(), filterKindName);
@@ -75,7 +79,7 @@ public class FilterKindLogic
 
     public FilterKind getFilterKindByName(final ExecutionErrorAccumulator eea, final String filterKindName,
             final EntityPermission entityPermission) {
-        var filterKind = filterControl.getFilterKindByName(filterKindName, entityPermission);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName, entityPermission);
 
         if(filterKind == null) {
             handleExecutionError(UnknownFilterKindNameException.class, eea, ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
@@ -101,7 +105,7 @@ public class FilterKindLogic
         switch(parameterCount) {
             case 0 -> {
                 if(allowDefault) {
-                    filterKind = filterControl.getDefaultFilterKind(entityPermission);
+                    filterKind = filterKindControl.getDefaultFilterKind(entityPermission);
 
                     if(filterKind == null) {
                         handleExecutionError(UnknownDefaultFilterKindException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name());
@@ -116,7 +120,7 @@ public class FilterKindLogic
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterKind.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        filterKind = filterControl.getFilterKindByEntityInstance(entityInstance, entityPermission);
+                        filterKind = filterKindControl.getFilterKindByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     filterKind = getFilterKindByName(eea, filterKindName, entityPermission);
@@ -145,7 +149,7 @@ public class FilterKindLogic
         var filterAdjustmentCount = filterControl.countFilterAdjustmentsByFilterKind(filterKind);
 
         if(filterTypeCount == 0 && filterAdjustmentCount == 0) {
-            filterControl.deleteFilterKind(filterKind, deletedBy);
+            filterKindControl.deleteFilterKind(filterKind, deletedBy);
         } else {
             handleExecutionError(CannotDeleteFilterKindInUseException.class, eea, ExecutionErrors.CannotDeleteFilterKindInUse.name(),
                     filterKind.getLastDetail().getFilterKindName());

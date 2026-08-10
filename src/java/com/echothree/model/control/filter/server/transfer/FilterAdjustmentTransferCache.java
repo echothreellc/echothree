@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -31,6 +32,9 @@ public class FilterAdjustmentTransferCache
 
     @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterKindControl filterKindControl;
 
     boolean includeFilterAdjustmentAmounts;
     boolean includeFilterAdjustmentFixedAmounts;
@@ -56,7 +60,7 @@ public class FilterAdjustmentTransferCache
         
         if(filterAdjustmentTransfer == null) {
             var filterAdjustmentDetail = filterAdjustment.getLastDetail();
-            var filterKindTransfer = filterControl.getFilterKindTransfer(userVisit, filterAdjustmentDetail.getFilterKind());
+            var filterKindTransfer = filterKindControl.getFilterKindTransfer(userVisit, filterAdjustmentDetail.getFilterKind());
             var filterAdjustmentName = filterAdjustmentDetail.getFilterAdjustmentName();
             var filterAdjustmentSourceTransfer = filterControl.getFilterAdjustmentSourceTransfer(userVisit, filterAdjustmentDetail.getFilterAdjustmentSource());
             var filterAdjustmentType = filterAdjustmentDetail.getFilterAdjustmentType();

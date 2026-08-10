@@ -19,6 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,6 +64,9 @@ public class GetFilterAdjustmentsCommand
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
     FilterKindLogic filterKindLogic;
 
 
@@ -93,7 +97,7 @@ public class GetFilterAdjustmentsCommand
         var result = FilterResultFactory.getGetFilterAdjustmentsResult();
 
         if(entities != null) {
-            result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
+            result.setFilterKind(filterKindControl.getFilterKindTransfer(getUserVisit(), filterKind));
 
             if(session.hasLimit(FilterAdjustmentFactory.class)) {
                 result.setFilterAdjustmentCount(getTotalEntities());

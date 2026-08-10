@@ -19,6 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepDescriptionsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,6 +62,9 @@ public class GetFilterStepDescriptionsCommand
     @Inject
     FilterControl filterControl;
 
+    @Inject
+    FilterKindControl filterKindControl;
+
     
     /** Creates a new instance of GetFilterStepDescriptionsCommand */
     public GetFilterStepDescriptionsCommand() {
@@ -71,14 +75,14 @@ public class GetFilterStepDescriptionsCommand
     protected BaseResult execute() {
         var result = FilterResultFactory.getGetFilterStepDescriptionsResult();
         var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
             var userVisit = getUserVisit();
             var filterTypeName = form.getFilterTypeName();
             var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
-            result.setFilterKind(filterControl.getFilterKindTransfer(userVisit, filterKind));
+            result.setFilterKind(filterKindControl.getFilterKindTransfer(userVisit, filterKind));
             
             if(filterType != null) {
                 var filterName = form.getFilterName();

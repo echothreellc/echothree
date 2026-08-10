@@ -24,6 +24,7 @@ import com.echothree.control.user.filter.common.spec.FilterAdjustmentPercentSpec
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -83,6 +84,9 @@ public class EditFilterAdjustmentPercentCommand
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
     UomControl uomControl;
 
     /** Creates a new instance of EditFilterAdjustmentPercentCommand */
@@ -111,7 +115,7 @@ public class EditFilterAdjustmentPercentCommand
     public FilterAdjustmentPercent getEntity(EditFilterAdjustmentPercentResult result) {
         FilterAdjustmentPercent filterAdjustmentPercent = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterAdjustmentName = spec.getFilterAdjustmentName();

@@ -23,6 +23,7 @@ import com.echothree.control.user.filter.common.result.EditFilterTypeDescription
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterTypeDescriptionSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -72,6 +73,9 @@ public class EditFilterTypeDescriptionCommand
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
     PartyControl partyControl;
 
     /** Creates a new instance of EditFilterTypeDescriptionCommand */
@@ -93,7 +97,7 @@ public class EditFilterTypeDescriptionCommand
     public FilterTypeDescription getEntity(EditFilterTypeDescriptionResult result) {
         FilterTypeDescription filterTypeDescription = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterTypeName = spec.getFilterTypeName();

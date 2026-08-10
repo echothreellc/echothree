@@ -22,6 +22,7 @@ import com.echothree.control.user.filter.common.result.EditFilterStepElementDesc
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterStepElementDescriptionSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -74,6 +75,9 @@ public class EditFilterStepElementDescriptionCommand
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
     PartyControl partyControl;
 
     
@@ -96,7 +100,7 @@ public class EditFilterStepElementDescriptionCommand
     public FilterStepElementDescription getEntity(EditFilterStepElementDescriptionResult result) {
         FilterStepElementDescription filterStepElementDescription = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterTypeName = spec.getFilterTypeName();

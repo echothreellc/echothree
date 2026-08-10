@@ -25,6 +25,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -89,6 +90,9 @@ public class EditFilterAdjustmentAmountCommand
     FilterControl filterControl;
 
     @Inject
+    FilterKindControl filterKindControl;
+
+    @Inject
     UomControl uomControl;
 
     /** Creates a new instance of EditFilterAdjustmentAmountCommand */
@@ -126,7 +130,7 @@ public class EditFilterAdjustmentAmountCommand
     public FilterAdjustmentAmount getEntity(EditFilterAdjustmentAmountResult result) {
         FilterAdjustmentAmount filterAdjustmentAmount = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        var filterKind = filterKindControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
             var filterAdjustmentName = spec.getFilterAdjustmentName();
