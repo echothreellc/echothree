@@ -63,11 +63,11 @@ public class EditLetterContactMechanismPurposeCommand
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Priority", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ContactMechanismPurposeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

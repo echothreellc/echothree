@@ -47,11 +47,11 @@ public class EditCommandMessageTranslationCommand
                 new FieldDefinition("CommandMessageTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommandMessageKey", FieldType.COMMAND_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Translation", FieldType.STRING, true, 1L, 512L)
-                );
+        );
     }
 
     @Inject

@@ -62,11 +62,11 @@ public class EditEntityStringAttributeCommand
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("StringAttribute", FieldType.STRING, true, 1L, 512L)
-                );
+        );
     }
 
     @Inject

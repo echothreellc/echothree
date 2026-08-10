@@ -63,7 +63,7 @@ public class EditCancellationPolicyCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, true, null, null),
@@ -72,7 +72,7 @@ public class EditCancellationPolicyCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PolicyMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

@@ -67,13 +67,13 @@ public class EditPartyTrainingClassSessionAnswerCommand
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyTrainingClassSessionAnswerSequence", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassAnswerName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("QuestionStartTime", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("QuestionEndTime", FieldType.DATE_TIME, false, null, null)
-                );
+        );
     }
 
     @Inject

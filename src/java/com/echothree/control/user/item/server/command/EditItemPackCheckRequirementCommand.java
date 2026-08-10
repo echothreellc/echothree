@@ -47,12 +47,12 @@ public class EditItemPackCheckRequirementCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MinimumQuantity", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("MaximumQuantity", FieldType.UNSIGNED_LONG, false, null, null)
-                );
+        );
     }
 
     @Inject

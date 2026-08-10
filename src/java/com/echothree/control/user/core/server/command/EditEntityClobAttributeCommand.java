@@ -63,12 +63,12 @@ public class EditEntityClobAttributeCommand
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ClobAttribute", FieldType.STRING, true, 1L, null),
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
-                );
+        );
     }
 
     @Inject

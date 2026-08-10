@@ -64,7 +64,7 @@ public class EditTrainingClassQuestionCommand
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null),
@@ -73,7 +73,7 @@ public class EditTrainingClassQuestionCommand
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("QuestionMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Question", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

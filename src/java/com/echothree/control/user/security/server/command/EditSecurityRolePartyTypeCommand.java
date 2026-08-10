@@ -66,11 +66,11 @@ public class EditSecurityRolePartyTypeCommand
                 new FieldDefinition("SecurityRoleGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SecurityRoleName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartySelectorName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

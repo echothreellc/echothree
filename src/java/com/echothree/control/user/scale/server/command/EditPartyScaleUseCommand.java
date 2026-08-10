@@ -62,11 +62,11 @@ public class EditPartyScaleUseCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ScaleUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ScaleName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

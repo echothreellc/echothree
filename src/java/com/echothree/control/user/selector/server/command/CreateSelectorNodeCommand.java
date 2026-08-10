@@ -91,59 +91,59 @@ public class CreateSelectorNodeCommand
                 new FieldDefinition("SelectorBooleanTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LeftSelectorNodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("RightSelectorNodeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         entityListItemFormFieldDefinitions = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         responsibilityTypeFormFieldDefinitions = List.of(
                 new FieldDefinition("ResponsibilityTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         skillTypeFormFieldDefinitions = List.of(
                 new FieldDefinition("SkillTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         trainingClassFormFieldDefinitions = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         workflowStepFormFieldDefinitions = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         itemCategoryFormFieldDefinitions = List.of(
                 new FieldDefinition("ItemCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CheckParents", FieldType.BOOLEAN, true, null, null)
-                );
+        );
         
         itemAccountingCategoryFormFieldDefinitions = List.of(
                 new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CheckParents", FieldType.BOOLEAN, true, null, null)
-                );
+        );
         
         itemPurchasingCategoryFormFieldDefinitions = List.of(
                 new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CheckParents", FieldType.BOOLEAN, true, null, null)
-                );
+        );
         
         paymentMethodFormFieldDefinitions = List.of(
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         paymentProcessorFormFieldDefinitions = List.of(
                 new FieldDefinition("PaymentProcessorName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         geoCodeFormFieldDefinitions = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

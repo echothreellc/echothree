@@ -66,7 +66,7 @@ public class EditPartyPaymentMethodCommand
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
@@ -86,7 +86,7 @@ public class EditPartyPaymentMethodCommand
                 new FieldDefinition("BillingContactMechanismName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IssuerName", FieldType.STRING, false, 1L, 60L),
                 new FieldDefinition("IssuerContactMechanismName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

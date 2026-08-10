@@ -52,14 +52,14 @@ public class CreateTermCommand
                 new FieldDefinition("NetDueDays", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DiscountPercentage", FieldType.FRACTIONAL_PERCENT, true, null, null),
                 new FieldDefinition("DiscountDays", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
         
         dateDrivenFieldDefinitions = List.of(
                 new FieldDefinition("NetDueDayOfMonth", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DueNextMonthDays", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DiscountPercentage", FieldType.FRACTIONAL_PERCENT, true, null, null),
                 new FieldDefinition("DiscountBeforeDayOfMonth", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
     }
 
     @Inject

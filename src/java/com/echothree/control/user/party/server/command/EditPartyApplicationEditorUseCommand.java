@@ -65,13 +65,13 @@ public class EditPartyApplicationEditorUseCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PreferredHeight", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("PreferredWidth", FieldType.UNSIGNED_INTEGER, false, null, null)
-                );
+        );
     }
 
     @Inject

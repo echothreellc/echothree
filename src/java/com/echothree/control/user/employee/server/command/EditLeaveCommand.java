@@ -68,7 +68,7 @@ public class EditLeaveCommand
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LeaveName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
@@ -78,7 +78,7 @@ public class EditLeaveCommand
                 new FieldDefinition("TotalTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LeaveTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LeaveReasonName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

@@ -73,7 +73,7 @@ public class CreatePaymentMethodCommand
         
         formCheckFieldDefinitions = List.of(
                 new FieldDefinition("HoldDays", FieldType.UNSIGNED_INTEGER, true, null, null)
-                );
+        );
         
         formCreditCardFieldDefinitions = List.of(
                 new FieldDefinition("RequestNameOnCard", FieldType.BOOLEAN, true, null, null),
@@ -92,7 +92,7 @@ public class CreatePaymentMethodCommand
                 new FieldDefinition("RequireBilling", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RequestIssuer", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RequireIssuer", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

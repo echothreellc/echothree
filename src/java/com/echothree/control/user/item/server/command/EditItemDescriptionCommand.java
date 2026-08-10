@@ -69,16 +69,16 @@ public class EditItemDescriptionCommand
         ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, false, null, null),
-            new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("ClobDescription", FieldType.STRING, false, 1L, null),
-            new FieldDefinition("StringDescription", FieldType.STRING, false, 1L, 512L)
+                new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, false, null, null),
+                new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ClobDescription", FieldType.STRING, false, 1L, null),
+                new FieldDefinition("StringDescription", FieldType.STRING, false, 1L, 512L)
         );
     }
 

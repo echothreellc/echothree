@@ -51,7 +51,7 @@ public class EditBlogCommentCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PostedTime", FieldType.DATE_TIME, true, null, null),
@@ -59,7 +59,7 @@ public class EditBlogCommentCommand
                 new FieldDefinition("Title", FieldType.STRING, true, 1L, 512L),
                 new FieldDefinition("ContentMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Content", FieldType.STRING, true, null, null)
-                );
+        );
     }
 
     @Inject

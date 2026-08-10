@@ -61,11 +61,11 @@ public class EditServerDescriptionCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
 
     @Inject

@@ -115,7 +115,7 @@ public class EditVendorCommand
                 new FieldDefinition("RequireReference", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowReferenceDuplicates", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null)
-                );
+        );
     }
 
     @Inject

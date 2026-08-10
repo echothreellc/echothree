@@ -67,13 +67,13 @@ public class EditTrainingClassPageTranslationCommand
                 new FieldDefinition("TrainingClassSectionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassPageName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("PageMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Page", FieldType.STRING, true, null, null)
-                );
+        );
     }
 
     @Inject

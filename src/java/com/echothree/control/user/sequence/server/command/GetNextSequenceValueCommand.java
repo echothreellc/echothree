@@ -42,14 +42,14 @@ public class GetNextSequenceValueCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-       COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
-               new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-               new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                       new SecurityRoleDefinition(SecurityRoleGroups.SequenceValue.name(), SecurityRoles.GetNext.name())
-               ))
-       ));
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.SequenceValue.name(), SecurityRoles.GetNext.name())
+                ))
+        ));
 
-         FORM_FIELD_DEFINITIONS = List.of(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),

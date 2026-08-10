@@ -51,7 +51,7 @@ public class EditBlogEntryCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumThreadIconName", FieldType.ENTITY_NAME, false, null, null),
@@ -65,7 +65,7 @@ public class EditBlogEntryCommand
                 new FieldDefinition("Summary", FieldType.STRING, false, null, null),
                 new FieldDefinition("ContentMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Content", FieldType.STRING, true, null, null)
-                );
+        );
     }
 
     @Inject

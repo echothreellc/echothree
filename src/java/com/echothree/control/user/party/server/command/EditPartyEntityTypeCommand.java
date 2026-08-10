@@ -62,11 +62,11 @@ public class EditPartyEntityTypeCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ConfirmDelete", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

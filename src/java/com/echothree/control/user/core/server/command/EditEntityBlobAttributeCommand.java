@@ -59,11 +59,11 @@ public class EditEntityBlobAttributeCommand
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
-                );
+        );
     }
 
     @Inject

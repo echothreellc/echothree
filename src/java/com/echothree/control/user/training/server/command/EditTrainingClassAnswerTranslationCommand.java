@@ -68,14 +68,14 @@ public class EditTrainingClassAnswerTranslationCommand
                 new FieldDefinition("TrainingClassQuestionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrainingClassAnswerName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("AnswerMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Answer", FieldType.STRING, true, null, null),
                 new FieldDefinition("SelectedMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Selected", FieldType.STRING, false, null, null)
-                );
+        );
     }
 
     @Inject

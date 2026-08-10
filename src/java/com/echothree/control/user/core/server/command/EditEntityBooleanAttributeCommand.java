@@ -58,11 +58,11 @@ public class EditEntityBooleanAttributeCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BooleanAttribute", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
 
     @Inject

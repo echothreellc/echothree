@@ -46,7 +46,7 @@ public class EditPartyTypeLockoutPolicyCommand
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LockoutFailureCount", FieldType.UNSIGNED_INTEGER, false, null, null),
@@ -55,7 +55,7 @@ public class EditPartyTypeLockoutPolicyCommand
                 new FieldDefinition("ManualLockoutReset", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("LockoutInactiveTime", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("LockoutInactiveTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

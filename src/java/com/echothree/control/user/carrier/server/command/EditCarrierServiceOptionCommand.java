@@ -64,7 +64,7 @@ public class EditCarrierServiceOptionCommand
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CarrierServiceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CarrierOptionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsRecommended", FieldType.BOOLEAN, true, null, null),
@@ -77,7 +77,7 @@ public class EditCarrierServiceOptionCommand
                 new FieldDefinition("RequiredOrderSelectorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("RecommendedShipmentSelectorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("RequiredShipmentSelectorName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject

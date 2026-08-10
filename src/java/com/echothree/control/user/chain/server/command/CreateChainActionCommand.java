@@ -77,17 +77,17 @@ public class CreateChainActionCommand
         
         letterFormFieldDefinitions = List.of(
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         surveyFormFieldDefinitions = List.of(
                 new FieldDefinition("SurveyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         chainActionSetFormFieldDefinitions = List.of(
                 new FieldDefinition("NextChainActionSetName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DelayTime", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("DelayTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
 
     @Inject

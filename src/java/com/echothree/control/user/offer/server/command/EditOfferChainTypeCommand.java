@@ -60,11 +60,11 @@ public class EditOfferChainTypeCommand
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
 
     @Inject
