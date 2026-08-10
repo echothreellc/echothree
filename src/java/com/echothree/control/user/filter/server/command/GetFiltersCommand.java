@@ -19,6 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFiltersForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.logic.FilterTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,6 +64,9 @@ public class GetFiltersCommand
     FilterControl filterControl;
 
     @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
     FilterTypeLogic filterTypeLogic;
 
 
@@ -97,7 +101,7 @@ public class GetFiltersCommand
                 result.setFilterCount(getTotalEntities());
             }
 
-            result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));
+            result.setFilterType(filterTypeControl.getFilterTypeTransfer(getUserVisit(), filterType));
             result.setFilters(filterControl.getFilterTransfers(getUserVisit(), entities));
         }
 

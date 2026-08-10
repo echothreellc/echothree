@@ -21,7 +21,7 @@ import com.echothree.control.user.filter.common.edit.FilterTypeEdit;
 import com.echothree.control.user.filter.common.result.EditFilterTypeResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -69,7 +69,7 @@ public class EditFilterTypeCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterTypeControl filterTypeControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -102,9 +102,9 @@ public class EditFilterTypeCommand
             var filterTypeName = spec.getFilterTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+                filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             } else { // EditMode.UPDATE
-                filterType = filterControl.getFilterTypeByNameForUpdate(filterKind, filterTypeName);
+                filterType = filterTypeControl.getFilterTypeByNameForUpdate(filterKind, filterTypeName);
             }
 
             if(filterType == null) {
@@ -125,12 +125,12 @@ public class EditFilterTypeCommand
 
     @Override
     public void fillInResult(EditFilterTypeResult result, FilterType filterType) {
-        result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));
+        result.setFilterType(filterTypeControl.getFilterTypeTransfer(getUserVisit(), filterType));
     }
 
     @Override
     public void doLock(FilterTypeEdit edit, FilterType filterType) {
-        var filterTypeDescription = filterControl.getFilterTypeDescription(filterType, getPreferredLanguage());
+        var filterTypeDescription = filterTypeControl.getFilterTypeDescription(filterType, getPreferredLanguage());
         var filterTypeDetail = filterType.getLastDetail();
 
         edit.setFilterTypeName(filterTypeDetail.getFilterTypeName());
@@ -146,7 +146,7 @@ public class EditFilterTypeCommand
     public void canUpdate(FilterType filterType) {
         var filterKindDetail = filterKind.getLastDetail();
         var filterTypeName = edit.getFilterTypeName();
-        var duplicateFilterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+        var duplicateFilterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
 
         if(duplicateFilterType != null && !filterType.equals(duplicateFilterType)) {
             addExecutionError(ExecutionErrors.DuplicateFilterTypeName.name(), filterKindDetail.getFilterKindName(), filterTypeName);
@@ -156,25 +156,25 @@ public class EditFilterTypeCommand
     @Override
     public void doUpdate(FilterType filterType) {
         var partyPK = getPartyPK();
-        var filterTypeDetailValue = filterControl.getFilterTypeDetailValueForUpdate(filterType);
-        var filterTypeDescription = filterControl.getFilterTypeDescriptionForUpdate(filterType, getPreferredLanguage());
+        var filterTypeDetailValue = filterTypeControl.getFilterTypeDetailValueForUpdate(filterType);
+        var filterTypeDescription = filterTypeControl.getFilterTypeDescriptionForUpdate(filterType, getPreferredLanguage());
         var description = edit.getDescription();
 
         filterTypeDetailValue.setFilterTypeName(edit.getFilterTypeName());
         filterTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         filterTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        filterControl.updateFilterTypeFromValue(filterTypeDetailValue, partyPK);
+        filterTypeControl.updateFilterTypeFromValue(filterTypeDetailValue, partyPK);
 
         if(filterTypeDescription == null && description != null) {
-            filterControl.createFilterTypeDescription(filterType, getPreferredLanguage(), description, partyPK);
+            filterTypeControl.createFilterTypeDescription(filterType, getPreferredLanguage(), description, partyPK);
         } else if(filterTypeDescription != null && description == null) {
-            filterControl.deleteFilterTypeDescription(filterTypeDescription, partyPK);
+            filterTypeControl.deleteFilterTypeDescription(filterTypeDescription, partyPK);
         } else if(filterTypeDescription != null && description != null) {
-            var filterTypeDescriptionValue = filterControl.getFilterTypeDescriptionValue(filterTypeDescription);
+            var filterTypeDescriptionValue = filterTypeControl.getFilterTypeDescriptionValue(filterTypeDescription);
 
             filterTypeDescriptionValue.setDescription(description);
-            filterControl.updateFilterTypeDescriptionFromValue(filterTypeDescriptionValue, partyPK);
+            filterTypeControl.updateFilterTypeDescriptionFromValue(filterTypeDescriptionValue, partyPK);
         }
     }
 

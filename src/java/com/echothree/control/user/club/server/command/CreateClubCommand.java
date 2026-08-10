@@ -23,6 +23,7 @@ import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -80,6 +81,9 @@ public class CreateClubCommand
     FilterKindControl filterKindControl;
 
     @Inject
+    FilterTypeControl filterTypeControl;
+
+    @Inject
     SubscriptionControl subscriptionControl;
 
     
@@ -107,7 +111,7 @@ public class CreateClubCommand
                     
                     if(clubPriceFilterName != null) {
                         var filterKind = filterKindControl.getFilterKindByName(FilterKinds.PRICE.name());
-                        var filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
+                        var filterType = filterTypeControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
                         
                         if(filterType != null) {
                             clubPriceFilter = filterControl.getFilterByName(filterType, clubPriceFilterName);

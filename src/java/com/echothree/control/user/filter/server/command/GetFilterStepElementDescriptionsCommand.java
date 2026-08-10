@@ -20,6 +20,7 @@ import com.echothree.control.user.filter.common.form.GetFilterStepElementDescrip
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -66,6 +67,9 @@ public class GetFilterStepElementDescriptionsCommand
     @Inject
     FilterKindControl filterKindControl;
 
+    @Inject
+    FilterTypeControl filterTypeControl;
+
     
     /** Creates a new instance of GetFilterStepElementDescriptionsCommand */
     public GetFilterStepElementDescriptionsCommand() {
@@ -81,7 +85,7 @@ public class GetFilterStepElementDescriptionsCommand
         if(filterKind != null) {
             var userVisit = getUserVisit();
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             result.setFilterKind(filterKindControl.getFilterKindTransfer(userVisit, filterKind));
             
@@ -89,7 +93,7 @@ public class GetFilterStepElementDescriptionsCommand
                 var filterName = form.getFilterName();
                 var filter = filterControl.getFilterByName(filterType, filterName);
                 
-                result.setFilterType(filterControl.getFilterTypeTransfer(userVisit, filterType));
+                result.setFilterType(filterTypeControl.getFilterTypeTransfer(userVisit, filterType));
                 
                 if(filter != null) {
                     var filterStepName = form.getFilterStepName();

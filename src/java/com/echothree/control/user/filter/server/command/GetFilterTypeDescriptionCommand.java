@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterTypeDescriptionForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -60,7 +60,7 @@ public class GetFilterTypeDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterTypeControl filterTypeControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -82,17 +82,17 @@ public class GetFilterTypeDescriptionCommand
 
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
 
             if(filterType != null) {
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var filterTypeDescription = filterControl.getFilterTypeDescription(filterType, language);
+                    var filterTypeDescription = filterTypeControl.getFilterTypeDescription(filterType, language);
 
                     if(filterTypeDescription != null) {
-                        result.setFilterTypeDescription(filterControl.getFilterTypeDescriptionTransfer(getUserVisit(), filterTypeDescription));
+                        result.setFilterTypeDescription(filterTypeControl.getFilterTypeDescriptionTransfer(getUserVisit(), filterTypeDescription));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownFilterTypeDescription.name(), filterKindName, filterTypeName, languageIsoName);
                     }

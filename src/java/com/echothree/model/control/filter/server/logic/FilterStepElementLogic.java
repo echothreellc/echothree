@@ -27,6 +27,7 @@ import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterT
 import com.echothree.model.control.filter.common.exception.UnknownFilterStepElementNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
@@ -47,6 +48,9 @@ public class FilterStepElementLogic
 
     @Inject
     FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -135,7 +139,7 @@ public class FilterStepElementLogic
             if(eea == null || !eea.hasExecutionErrors()) {
                 if(filterTypeName == null) {
                     if(allowDefault) {
-                        filterType = filterControl.getDefaultFilterType(filterKind);
+                        filterType = filterTypeControl.getDefaultFilterType(filterKind);
 
                         if(filterType == null) {
                             handleExecutionError(UnknownDefaultFilterTypeException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name(),

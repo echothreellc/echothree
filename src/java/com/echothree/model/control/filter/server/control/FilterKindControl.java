@@ -57,7 +57,7 @@ public class FilterKindControl
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterTypeControl filterTypeControl;
 
     @Inject
     FilterKindDescriptionTransferCache filterKindDescriptionTransferCache;
@@ -338,7 +338,7 @@ public class FilterKindControl
     }
 
     public void deleteFilterKind(FilterKind filterKind, BasePK deletedBy) {
-        filterControl.deleteFilterTypesByFilterKind(filterKind, deletedBy);
+        filterTypeControl.deleteFilterTypesByFilterKind(filterKind, deletedBy);
         deleteFilterKindDescriptionsByFilterKind(filterKind, deletedBy);
 
         var filterKindDetail = filterKind.getLastDetailForUpdate();
@@ -527,4 +527,3 @@ public class FilterKindControl
     }
 
 }
-

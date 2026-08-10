@@ -20,6 +20,7 @@ import com.echothree.control.user.filter.common.form.GetFilterChoicesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -65,6 +66,9 @@ public class GetFilterChoicesCommand
     @Inject
     FilterKindControl filterKindControl;
 
+    @Inject
+    FilterTypeControl filterTypeControl;
+
     
     /** Creates a new instance of GetFilterChoicesCommand */
     public GetFilterChoicesCommand() {
@@ -79,7 +83,7 @@ public class GetFilterChoicesCommand
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var defaultFilterChoice = form.getDefaultFilterChoice();

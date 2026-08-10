@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterTypeDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -59,7 +59,7 @@ public class DeleteFilterTypeDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterTypeControl filterTypeControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -80,17 +80,17 @@ public class DeleteFilterTypeDescriptionCommand
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            var filterType = filterTypeControl.getFilterTypeByName(filterKind, filterTypeName);
             
             if(filterType != null) {
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var filterTypeDescription = filterControl.getFilterTypeDescriptionForUpdate(filterType, language);
+                    var filterTypeDescription = filterTypeControl.getFilterTypeDescriptionForUpdate(filterType, language);
                     
                     if(filterTypeDescription != null) {
-                        filterControl.deleteFilterTypeDescription(filterTypeDescription, getPartyPK());
+                        filterTypeControl.deleteFilterTypeDescription(filterTypeDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownFilterTypeDescription.name(), filterKindName, filterTypeName, languageIsoName);
                     }

@@ -27,6 +27,7 @@ import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterK
 import com.echothree.model.control.filter.common.exception.UnknownFilterKindNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -47,6 +48,9 @@ public class FilterKindLogic
 
     @Inject
     FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -145,7 +149,7 @@ public class FilterKindLogic
 
     public void deleteFilterKind(final ExecutionErrorAccumulator eea, final FilterKind filterKind,
             final BasePK deletedBy) {
-        var filterTypeCount = filterControl.countFilterTypesByFilterKind(filterKind);
+        var filterTypeCount = filterTypeControl.countFilterTypesByFilterKind(filterKind);
         var filterAdjustmentCount = filterControl.countFilterAdjustmentsByFilterKind(filterKind);
 
         if(filterTypeCount == 0 && filterAdjustmentCount == 0) {

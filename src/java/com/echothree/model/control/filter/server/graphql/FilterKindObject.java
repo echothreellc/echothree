@@ -18,6 +18,7 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -101,11 +102,11 @@ public class FilterKindObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<FilterTypeObject> getFilterTypes(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFilterTypesAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var totalCount = filterControl.countFilterTypesByFilterKind(filterKind);
+            var filterTypeControl = Session.getModelController(FilterTypeControl.class);
+            var totalCount = filterTypeControl.countFilterTypesByFilterKind(filterKind);
 
             try(var objectLimiter = new ObjectLimiter(env, FilterTypeConstants.COMPONENT_VENDOR_NAME, FilterTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = filterControl.getFilterTypes(filterKind);
+                var entities = filterTypeControl.getFilterTypes(filterKind);
                 var filterTypes = entities.stream().map(FilterTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, filterTypes);

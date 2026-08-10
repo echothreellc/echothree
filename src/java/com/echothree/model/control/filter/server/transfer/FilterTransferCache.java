@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,6 +33,9 @@ public class FilterTransferCache
 
     @Inject
     FilterControl filterControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
 
     @Inject
     SelectorControl selectorControl;
@@ -58,7 +62,7 @@ public class FilterTransferCache
         
         if(filterTransfer == null) {
             var filterDetail = filter.getLastDetail();
-            var filterTypeTransfer = filterControl.getFilterTypeTransfer(userVisit, filterDetail.getFilterType());
+            var filterTypeTransfer = filterTypeControl.getFilterTypeTransfer(userVisit, filterDetail.getFilterType());
             var filterName = filterDetail.getFilterName();
             var initialFilterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterDetail.getInitialFilterAdjustment());
             var filterItemSelector = filterDetail.getFilterItemSelector();

@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterTypesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -60,7 +60,7 @@ public class GetFilterTypesCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterTypeControl filterTypeControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -83,12 +83,12 @@ public class GetFilterTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : filterControl.countFilterTypesByFilterKind(filterKind);
+        return hasExecutionErrors() ? null : filterTypeControl.countFilterTypesByFilterKind(filterKind);
     }
 
     @Override
     protected Collection<FilterType> getEntities() {
-        return hasExecutionErrors() ? null : filterControl.getFilterTypes(filterKind);
+        return hasExecutionErrors() ? null : filterTypeControl.getFilterTypes(filterKind);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class GetFilterTypesCommand
             }
 
             result.setFilterKind(filterKindControl.getFilterKindTransfer(getUserVisit(), filterKind));
-            result.setFilterTypes(filterControl.getFilterTypeTransfers(getUserVisit(), entities));
+            result.setFilterTypes(filterTypeControl.getFilterTypeTransfers(getUserVisit(), entities));
         }
 
         return result;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.SetDefaultFilterTypeForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -56,7 +56,7 @@ public class SetDefaultFilterTypeCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterTypeControl filterTypeControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -74,12 +74,12 @@ public class SetDefaultFilterTypeCommand
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
-            var filterTypeDetailValue = filterControl.getFilterTypeDetailValueByNameForUpdate(filterKind,
+            var filterTypeDetailValue = filterTypeControl.getFilterTypeDetailValueByNameForUpdate(filterKind,
                     filterTypeName);
             
             if(filterTypeDetailValue != null) {
                 filterTypeDetailValue.setIsDefault(true);
-                filterControl.updateFilterTypeFromValue(filterTypeDetailValue, getPartyPK());
+                filterTypeControl.updateFilterTypeFromValue(filterTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterKindName, filterTypeName);
             }

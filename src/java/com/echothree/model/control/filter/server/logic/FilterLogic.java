@@ -30,6 +30,7 @@ import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterT
 import com.echothree.model.control.filter.common.exception.UnknownFilterNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
+import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
@@ -63,6 +64,9 @@ public class FilterLogic
 
     @Inject
     FilterKindControl filterKindControl;
+
+    @Inject
+    FilterTypeControl filterTypeControl;
 
     @Inject
     OfferControl offerControl;
@@ -207,7 +211,7 @@ public class FilterLogic
 
             if(filterTypeName == null && !eea.hasExecutionErrors()) {
                 if(allowDefault) {
-                    filterType = filterControl.getDefaultFilterType(filterKind);
+                    filterType = filterTypeControl.getDefaultFilterType(filterKind);
 
                     if(filterType == null) {
                         handleExecutionError(UnknownDefaultFilterTypeException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name(),
