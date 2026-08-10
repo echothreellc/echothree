@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentAmountForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -68,7 +68,7 @@ public class DeleteFilterAdjustmentAmountCommand
     AccountingControl accountingControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -89,7 +89,7 @@ public class DeleteFilterAdjustmentAmountCommand
         
         if(filterKind != null) {
             var filterAdjustmentName = form.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
                 if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.AMOUNT.name())) {
@@ -120,10 +120,10 @@ public class DeleteFilterAdjustmentAmountCommand
                                 var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmountForUpdate(filterAdjustment, unitOfMeasureType, currency);
+                                    var filterAdjustmentAmount = filterAdjustmentControl.getFilterAdjustmentAmountForUpdate(filterAdjustment, unitOfMeasureType, currency);
                                     
                                     if(filterAdjustmentAmount != null) {
-                                        filterControl.deleteFilterAdjustmentAmount(filterAdjustmentAmount, getPartyPK());
+                                        filterAdjustmentControl.deleteFilterAdjustmentAmount(filterAdjustmentAmount, getPartyPK());
                                     } else {
                                         addExecutionError(ExecutionErrors.UnknownFilterAdjustmentAmount.name());
                                     }

@@ -25,7 +25,7 @@ import com.echothree.model.control.filter.common.exception.CannotDeleteFilterKin
 import com.echothree.model.control.filter.common.exception.DuplicateFilterKindNameException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterKindNameException;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.data.filter.server.entity.FilterKind;
@@ -44,7 +44,7 @@ public class FilterKindLogic
         extends BaseLogic {
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -150,7 +150,7 @@ public class FilterKindLogic
     public void deleteFilterKind(final ExecutionErrorAccumulator eea, final FilterKind filterKind,
             final BasePK deletedBy) {
         var filterTypeCount = filterTypeControl.countFilterTypesByFilterKind(filterKind);
-        var filterAdjustmentCount = filterControl.countFilterAdjustmentsByFilterKind(filterKind);
+        var filterAdjustmentCount = filterAdjustmentControl.countFilterAdjustmentsByFilterKind(filterKind);
 
         if(filterTypeCount == 0 && filterAdjustmentCount == 0) {
             filterKindControl.deleteFilterKind(filterKind, deletedBy);

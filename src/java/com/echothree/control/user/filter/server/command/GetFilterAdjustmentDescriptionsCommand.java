@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentDescriptionsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,7 +58,7 @@ public class GetFilterAdjustmentDescriptionsCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -77,13 +77,13 @@ public class GetFilterAdjustmentDescriptionsCommand
         
         if(filterKind != null) {
             var filterAdjustmentName = form.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             result.setFilterKind(filterKindControl.getFilterKindTransfer(getUserVisit(), filterKind));
             
             if(filterAdjustment != null) {
-                result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
-                result.setFilterAdjustmentDescriptions(filterControl.getFilterAdjustmentDescriptionTransfers(getUserVisit(), filterAdjustment));
+                result.setFilterAdjustment(filterAdjustmentControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
+                result.setFilterAdjustmentDescriptions(filterAdjustmentControl.getFilterAdjustmentDescriptionTransfers(getUserVisit(), filterAdjustment));
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
             }

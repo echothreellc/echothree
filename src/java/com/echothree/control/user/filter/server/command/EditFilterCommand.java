@@ -21,6 +21,7 @@ import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
@@ -78,6 +79,9 @@ public class EditFilterCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterControl filterControl;
@@ -184,7 +188,7 @@ public class EditFilterCommand
         } else {
             var initialFilterAdjustmentName = edit.getInitialFilterAdjustmentName();
 
-            initialFilterAdjustment = initialFilterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, initialFilterAdjustmentName);
+            initialFilterAdjustment = initialFilterAdjustmentName == null? null: filterAdjustmentControl.getFilterAdjustmentByName(filterKind, initialFilterAdjustmentName);
 
             if(initialFilterAdjustmentName != null && initialFilterAdjustment == null) {
                 addExecutionError(ExecutionErrors.UnknownInitialFilterAdjustmentName.name(), initialFilterAdjustmentName);

@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentSourceForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -58,7 +58,7 @@ public class CreateFilterAdjustmentSourceCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     
     /** Creates a new instance of CreateFilterAdjustmentSourceCommand */
@@ -69,14 +69,14 @@ public class CreateFilterAdjustmentSourceCommand
     @Override
     protected BaseResult execute() {
         var filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
-        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var filterAdjustmentSource = filterAdjustmentControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
         
         if(filterAdjustmentSource == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var allowedForInitialAmount = Boolean.valueOf(form.getAllowedForInitialAmount());
             
-            filterControl.createFilterAdjustmentSource(filterAdjustmentSourceName, allowedForInitialAmount, isDefault, sortOrder);
+            filterAdjustmentControl.createFilterAdjustmentSource(filterAdjustmentSourceName, allowedForInitialAmount, isDefault, sortOrder);
         } else {
             addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentSourceName.name(), filterAdjustmentSourceName);
         }

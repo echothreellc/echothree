@@ -18,6 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterStepElementForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
@@ -67,6 +68,9 @@ public class CreateFilterStepElementCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterControl filterControl;
@@ -132,7 +136,7 @@ public class CreateFilterStepElementCommand
                             
                             if(filterItemSelectorName == null || filterItemSelector != null) {
                                 var filterAdjustmentName = form.getFilterAdjustmentName();
-                                var filterAdjustment = filterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+                                var filterAdjustment = filterAdjustmentName == null? null: filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
                                 
                                 if(filterAdjustmentName == null || filterAdjustment != null) {
                                     var description = form.getDescription();

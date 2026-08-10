@@ -93,7 +93,7 @@ public class OfferItemPriceFilterEvaluator
             if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
                 log.info("--- filterAdjustmentTypeName = " + filterAdjustmentTypeName);
             if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.AMOUNT.name())) {
-                var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
+                var filterAdjustmentAmount = filterAdjustmentControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentAmount != null) {
                     long amount = filterAdjustmentAmount.getAmount();
@@ -103,13 +103,13 @@ public class OfferItemPriceFilterEvaluator
                         unitPrice = 0;
                 }
             } else if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
-                var filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
+                var filterAdjustmentFixedAmount = filterAdjustmentControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentFixedAmount != null) {
                     unitPrice = filterAdjustmentFixedAmount.getUnitAmount();
                 }
             } else if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.PERCENT.name())) {
-                var filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
+                var filterAdjustmentPercent = filterAdjustmentControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentPercent != null) {
                     int percent = filterAdjustmentPercent.getPercent();

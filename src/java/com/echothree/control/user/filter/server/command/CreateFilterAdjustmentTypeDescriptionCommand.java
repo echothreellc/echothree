@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentTypeDescriptionForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,7 +58,7 @@ public class CreateFilterAdjustmentTypeDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     PartyControl partyControl;
@@ -72,19 +72,19 @@ public class CreateFilterAdjustmentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
-        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentType = filterAdjustmentControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var filterTypeDescription = filterControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
+                var filterTypeDescription = filterAdjustmentControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
                 
                 if(filterTypeDescription == null) {
                     var description = form.getDescription();
                     
-                    filterControl.createFilterAdjustmentTypeDescription(filterAdjustmentType, language, description);
+                    filterAdjustmentControl.createFilterAdjustmentTypeDescription(filterAdjustmentType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentTypeDescription.name());
                 }

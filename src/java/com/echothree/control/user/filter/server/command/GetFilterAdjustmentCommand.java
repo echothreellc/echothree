@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,7 +61,7 @@ public class GetFilterAdjustmentCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterAdjustmentLogic filterAdjustmentLogic;
@@ -89,7 +89,7 @@ public class GetFilterAdjustmentCommand
         var result = FilterResultFactory.getGetFilterAdjustmentResult();
 
         if(filterAdjustment != null) {
-            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
+            result.setFilterAdjustment(filterAdjustmentControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
         }
 
         return result;

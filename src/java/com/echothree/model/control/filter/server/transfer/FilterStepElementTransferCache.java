@@ -18,6 +18,7 @@ package com.echothree.model.control.filter.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterStepElementTransfer;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.FilterStepElement;
@@ -27,6 +28,9 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class FilterStepElementTransferCache
         extends BaseFilterTransferCache<FilterStepElement, FilterStepElementTransfer> {
+
+    @Inject
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterControl filterControl;
@@ -52,7 +56,7 @@ public class FilterStepElementTransferCache
             var filterStepElementName = filterStepElementDetail.getFilterStepElementName();
             var filterItemSelector = filterStepElementDetail.getFilterItemSelector();
             var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
-            var filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterStepElementDetail.getFilterAdjustment());
+            var filterAdjustmentTransfer = filterAdjustmentControl.getFilterAdjustmentTransfer(userVisit, filterStepElementDetail.getFilterAdjustment());
             var description = filterControl.getBestFilterStepElementDescription(filterStepElement, getLanguage(userVisit));
             
             filterStepElementTransfer = new FilterStepElementTransfer(filterStepTransfer, filterStepElementName,

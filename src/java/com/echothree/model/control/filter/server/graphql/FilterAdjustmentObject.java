@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.filter.server.graphql;
 
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -99,10 +99,10 @@ public class FilterAdjustmentObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var filterControl = Session.getModelController(FilterControl.class);
+        var filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterAdjustmentDescription(filterAdjustment, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return filterAdjustmentControl.getBestFilterAdjustmentDescription(filterAdjustment, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -111,8 +111,8 @@ public class FilterAdjustmentObject
         Collection<FilterAdjustmentAmountObject> filterAdjustmentAmountObjects = null;
 
         if(FilterSecurityUtils.getHasFilterAdjustmentAmountsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var filterAdjustmentAmounts = filterControl.getFilterAdjustmentAmounts(filterAdjustment);
+            var filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
+            var filterAdjustmentAmounts = filterAdjustmentControl.getFilterAdjustmentAmounts(filterAdjustment);
 
             filterAdjustmentAmountObjects = new ArrayList<>(filterAdjustmentAmounts.size());
 
@@ -130,8 +130,8 @@ public class FilterAdjustmentObject
         Collection<FilterAdjustmentFixedAmountObject> filterAdjustmentFixedAmountObjects = null;
 
         if(FilterSecurityUtils.getHasFilterAdjustmentFixedAmountsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var filterAdjustmentFixedAmounts = filterControl.getFilterAdjustmentFixedAmounts(filterAdjustment);
+            var filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
+            var filterAdjustmentFixedAmounts = filterAdjustmentControl.getFilterAdjustmentFixedAmounts(filterAdjustment);
 
             filterAdjustmentFixedAmountObjects = new ArrayList<>(filterAdjustmentFixedAmounts.size());
 
@@ -149,8 +149,8 @@ public class FilterAdjustmentObject
         Collection<FilterAdjustmentPercentObject> filterAdjustmentPercentObjects = null;
 
         if(FilterSecurityUtils.getHasFilterAdjustmentPercentsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var filterAdjustmentPercents = filterControl.getFilterAdjustmentPercents(filterAdjustment);
+            var filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
+            var filterAdjustmentPercents = filterAdjustmentControl.getFilterAdjustmentPercents(filterAdjustment);
 
             filterAdjustmentPercentObjects = new ArrayList<>(filterAdjustmentPercents.size());
 

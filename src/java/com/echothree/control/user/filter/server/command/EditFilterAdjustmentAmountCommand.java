@@ -24,7 +24,7 @@ import com.echothree.control.user.filter.common.spec.FilterAdjustmentAmountSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.common.FilterKinds;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -87,7 +87,7 @@ public class EditFilterAdjustmentAmountCommand
     AccountingControl accountingControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -134,7 +134,7 @@ public class EditFilterAdjustmentAmountCommand
 
         if(filterKind != null) {
             var filterAdjustmentName = spec.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
 
             if(filterAdjustment != null) {
                 var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
@@ -169,10 +169,10 @@ public class EditFilterAdjustmentAmountCommand
 
                                 if(currency != null) {
                                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                        filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment,
+                                        filterAdjustmentAmount = filterAdjustmentControl.getFilterAdjustmentAmount(filterAdjustment,
                                                 unitOfMeasureType, currency);
                                     } else { // EditMode.UPDATE
-                                        filterAdjustmentAmount = filterControl.getFilterAdjustmentAmountForUpdate(filterAdjustment,
+                                        filterAdjustmentAmount = filterAdjustmentControl.getFilterAdjustmentAmountForUpdate(filterAdjustment,
                                                 unitOfMeasureType, currency);
                                     }
 
@@ -211,7 +211,7 @@ public class EditFilterAdjustmentAmountCommand
 
     @Override
     public void fillInResult(EditFilterAdjustmentAmountResult result, FilterAdjustmentAmount filterAdjustmentAmount) {
-        result.setFilterAdjustmentAmount(filterControl.getFilterAdjustmentAmountTransfer(getUserVisit(), filterAdjustmentAmount));
+        result.setFilterAdjustmentAmount(filterAdjustmentControl.getFilterAdjustmentAmountTransfer(getUserVisit(), filterAdjustmentAmount));
     }
 
     @Override
@@ -228,11 +228,11 @@ public class EditFilterAdjustmentAmountCommand
 
     @Override
     public void doUpdate(FilterAdjustmentAmount filterAdjustmentAmount) {
-        var filterAdjustmentAmountValue = filterControl.getFilterAdjustmentAmountValue(filterAdjustmentAmount);
+        var filterAdjustmentAmountValue = filterAdjustmentControl.getFilterAdjustmentAmountValue(filterAdjustmentAmount);
 
         filterAdjustmentAmountValue.setAmount(Long.valueOf(edit.getAmount()));
 
-        filterControl.updateFilterAdjustmentAmountFromValue(filterAdjustmentAmountValue, getPartyPK());
+        filterAdjustmentControl.updateFilterAdjustmentAmountFromValue(filterAdjustmentAmountValue, getPartyPK());
     }
 
 }

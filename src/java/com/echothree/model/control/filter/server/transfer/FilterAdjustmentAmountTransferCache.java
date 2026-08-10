@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentAmountTransfer;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -35,7 +35,7 @@ public class FilterAdjustmentAmountTransferCache
     AccountingControl accountingControl;
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     UomControl uomControl;
@@ -50,7 +50,7 @@ public class FilterAdjustmentAmountTransferCache
         var filterAdjustmentAmountTransfer = get(filterAdjustmentAmount);
         
         if(filterAdjustmentAmountTransfer == null) {
-            var filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentAmount.getFilterAdjustment());
+            var filterAdjustmentTransfer = filterAdjustmentControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentAmount.getFilterAdjustment());
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentAmount.getUnitOfMeasureType());
             var currency = filterAdjustmentAmount.getCurrency();
             var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);

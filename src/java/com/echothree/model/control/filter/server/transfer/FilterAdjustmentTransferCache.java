@@ -19,7 +19,7 @@ package com.echothree.model.control.filter.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,7 +31,7 @@ public class FilterAdjustmentTransferCache
         extends BaseFilterTransferCache<FilterAdjustment, FilterAdjustmentTransfer> {
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -62,12 +62,12 @@ public class FilterAdjustmentTransferCache
             var filterAdjustmentDetail = filterAdjustment.getLastDetail();
             var filterKindTransfer = filterKindControl.getFilterKindTransfer(userVisit, filterAdjustmentDetail.getFilterKind());
             var filterAdjustmentName = filterAdjustmentDetail.getFilterAdjustmentName();
-            var filterAdjustmentSourceTransfer = filterControl.getFilterAdjustmentSourceTransfer(userVisit, filterAdjustmentDetail.getFilterAdjustmentSource());
+            var filterAdjustmentSourceTransfer = filterAdjustmentControl.getFilterAdjustmentSourceTransfer(userVisit, filterAdjustmentDetail.getFilterAdjustmentSource());
             var filterAdjustmentType = filterAdjustmentDetail.getFilterAdjustmentType();
-            var filterAdjustmentTypeTransfer = filterAdjustmentType == null ? null : filterControl.getFilterAdjustmentTypeTransfer(userVisit, filterAdjustmentType);
+            var filterAdjustmentTypeTransfer = filterAdjustmentType == null ? null : filterAdjustmentControl.getFilterAdjustmentTypeTransfer(userVisit, filterAdjustmentType);
             var isDefault = filterAdjustmentDetail.getIsDefault();
             var sortOrder = filterAdjustmentDetail.getSortOrder();
-            var description = filterControl.getBestFilterAdjustmentDescription(filterAdjustment, getLanguage(userVisit));
+            var description = filterAdjustmentControl.getBestFilterAdjustmentDescription(filterAdjustment, getLanguage(userVisit));
             
             filterAdjustmentTransfer = new FilterAdjustmentTransfer(filterKindTransfer, filterAdjustmentName,
                     filterAdjustmentSourceTransfer, filterAdjustmentTypeTransfer, isDefault, sortOrder,
@@ -75,15 +75,15 @@ public class FilterAdjustmentTransferCache
             put(userVisit, filterAdjustment, filterAdjustmentTransfer);
             
             if(includeFilterAdjustmentAmounts) {
-                filterAdjustmentTransfer.setFilterAdjustmentAmounts(new ListWrapper<>(filterControl.getFilterAdjustmentAmountTransfers(userVisit, filterAdjustment)));
+                filterAdjustmentTransfer.setFilterAdjustmentAmounts(new ListWrapper<>(filterAdjustmentControl.getFilterAdjustmentAmountTransfers(userVisit, filterAdjustment)));
             }
             
             if(includeFilterAdjustmentFixedAmounts) {
-                filterAdjustmentTransfer.setFilterAdjustmentFixedAmounts(new ListWrapper<>(filterControl.getFilterAdjustmentFixedAmountTransfers(userVisit, filterAdjustment)));
+                filterAdjustmentTransfer.setFilterAdjustmentFixedAmounts(new ListWrapper<>(filterAdjustmentControl.getFilterAdjustmentFixedAmountTransfers(userVisit, filterAdjustment)));
             }
             
             if(includeFilterAdjustmentPercents) {
-                filterAdjustmentTransfer.setFilterAdjustmentPercents(new ListWrapper<>(filterControl.getFilterAdjustmentPercentTransfers(userVisit, filterAdjustment)));
+                filterAdjustmentTransfer.setFilterAdjustmentPercents(new ListWrapper<>(filterAdjustmentControl.getFilterAdjustmentPercentTransfers(userVisit, filterAdjustment)));
             }
         }
 

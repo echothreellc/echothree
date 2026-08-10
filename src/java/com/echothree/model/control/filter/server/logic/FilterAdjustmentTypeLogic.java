@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.logic;
 
 import com.echothree.model.control.filter.common.exception.DuplicateFilterAdjustmentTypeNameException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterAdjustmentTypeNameException;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -33,7 +33,7 @@ public class FilterAdjustmentTypeLogic
         extends BaseLogic {
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     protected FilterAdjustmentTypeLogic() {
         super();
@@ -45,13 +45,13 @@ public class FilterAdjustmentTypeLogic
 
     public FilterAdjustmentType createFilterAdjustmentType(final ExecutionErrorAccumulator eea, final String filterAdjustmentTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description) {
-        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentType = filterAdjustmentControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
 
         if(filterAdjustmentType == null) {
-            filterAdjustmentType = filterControl.createFilterAdjustmentType(filterAdjustmentTypeName, isDefault, sortOrder);
+            filterAdjustmentType = filterAdjustmentControl.createFilterAdjustmentType(filterAdjustmentTypeName, isDefault, sortOrder);
 
             if(description != null) {
-                filterControl.createFilterAdjustmentTypeDescription(filterAdjustmentType, language, description);
+                filterAdjustmentControl.createFilterAdjustmentTypeDescription(filterAdjustmentType, language, description);
             }
         } else {
             handleExecutionError(DuplicateFilterAdjustmentTypeNameException.class, eea, ExecutionErrors.DuplicateFilterAdjustmentTypeName.name(), filterAdjustmentTypeName);
@@ -61,7 +61,7 @@ public class FilterAdjustmentTypeLogic
     }
 
     public FilterAdjustmentType getFilterAdjustmentTypeByName(final ExecutionErrorAccumulator eea, final String filterAdjustmentTypeName) {
-        var filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
+        var filterAdjustmentType = filterAdjustmentControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
 
         if(filterAdjustmentType == null) {
             handleExecutionError(UnknownFilterAdjustmentTypeNameException.class, eea, ExecutionErrors.UnknownFilterAdjustmentTypeName.name(), filterAdjustmentTypeName);

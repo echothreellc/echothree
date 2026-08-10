@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.filter.server.graphql;
 
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.filter.server.control.FilterTypeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
@@ -122,11 +122,11 @@ public class FilterKindObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<FilterAdjustmentObject> getFilterAdjustments(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFilterAdjustmentsAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var totalCount = filterControl.countFilterAdjustmentsByFilterKind(filterKind);
+            var filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
+            var totalCount = filterAdjustmentControl.countFilterAdjustmentsByFilterKind(filterKind);
 
             try(var objectLimiter = new ObjectLimiter(env, FilterAdjustmentConstants.COMPONENT_VENDOR_NAME, FilterAdjustmentConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = filterControl.getFilterAdjustmentsByFilterKind(filterKind);
+                var entities = filterAdjustmentControl.getFilterAdjustmentsByFilterKind(filterKind);
                 var filterAdjustments = entities.stream().map(FilterAdjustmentObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, filterAdjustments);

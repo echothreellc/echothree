@@ -21,7 +21,7 @@ import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentDescriptionResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentDescriptionSpec;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterKindControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -69,7 +69,7 @@ public class EditFilterAdjustmentDescriptionCommand
     }
 
     @Inject
-    FilterControl filterControl;
+    FilterAdjustmentControl filterAdjustmentControl;
 
     @Inject
     FilterKindControl filterKindControl;
@@ -100,7 +100,7 @@ public class EditFilterAdjustmentDescriptionCommand
 
         if(filterKind != null) {
             var filterAdjustmentName = spec.getFilterAdjustmentName();
-            var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            var filterAdjustment = filterAdjustmentControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
 
             if(filterAdjustment != null) {
                 var languageIsoName = spec.getLanguageIsoName();
@@ -108,9 +108,9 @@ public class EditFilterAdjustmentDescriptionCommand
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, language);
+                        filterAdjustmentDescription = filterAdjustmentControl.getFilterAdjustmentDescription(filterAdjustment, language);
                     } else { // EditMode.UPDATE
-                        filterAdjustmentDescription = filterControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, language);
+                        filterAdjustmentDescription = filterAdjustmentControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, language);
                     }
 
                     if(filterAdjustmentDescription == null) {
@@ -136,7 +136,7 @@ public class EditFilterAdjustmentDescriptionCommand
 
     @Override
     public void fillInResult(EditFilterAdjustmentDescriptionResult result, FilterAdjustmentDescription filterAdjustmentDescription) {
-        result.setFilterAdjustmentDescription(filterControl.getFilterAdjustmentDescriptionTransfer(getUserVisit(), filterAdjustmentDescription));
+        result.setFilterAdjustmentDescription(filterAdjustmentControl.getFilterAdjustmentDescriptionTransfer(getUserVisit(), filterAdjustmentDescription));
     }
 
     @Override
@@ -146,12 +146,12 @@ public class EditFilterAdjustmentDescriptionCommand
 
     @Override
     public void doUpdate(FilterAdjustmentDescription filterAdjustmentDescription) {
-        var filterAdjustmentDescriptionValue = filterControl.getFilterAdjustmentDescriptionValue(filterAdjustmentDescription);
+        var filterAdjustmentDescriptionValue = filterAdjustmentControl.getFilterAdjustmentDescriptionValue(filterAdjustmentDescription);
 
         if(filterAdjustmentDescriptionValue != null) {
             filterAdjustmentDescriptionValue.setDescription(edit.getDescription());
 
-            filterControl.updateFilterAdjustmentDescriptionFromValue(filterAdjustmentDescriptionValue, getPartyPK());
+            filterAdjustmentControl.updateFilterAdjustmentDescriptionFromValue(filterAdjustmentDescriptionValue, getPartyPK());
         }
     }
 

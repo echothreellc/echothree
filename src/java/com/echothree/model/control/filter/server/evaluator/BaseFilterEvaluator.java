@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.filter.server.evaluator;
 
+import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
@@ -31,6 +32,7 @@ public class BaseFilterEvaluator {
     protected BasePK evaluatedBy;
     protected Log log;
     
+    protected FilterAdjustmentControl filterAdjustmentControl;
     protected FilterControl filterControl;
     protected FilterCache filterCache;
     protected SelectorCache selectorCache;
@@ -50,6 +52,7 @@ public class BaseFilterEvaluator {
         this.session = session;
         this.evaluatedBy = evaluatedBy;
         
+        filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
         filterControl = Session.getModelController(FilterControl.class);
         filterCache = FilterCacheFactory.getInstance().getFilterCache(session, filterKindName, filterTypeName);
         selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
