@@ -16,8 +16,14 @@
 
 package com.echothree.model.control.document.server.logic;
 
+import com.echothree.control.user.document.common.spec.DocumentUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.MimeTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.document.common.exception.UnknownDocumentNameException;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.document.server.entity.Document;
@@ -30,6 +36,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.lowagie.text.pdf.PdfReader;
 import java.io.IOException;
 import javax.enterprise.context.ApplicationScoped;
@@ -42,6 +49,9 @@ public class DocumentLogic
 
     @Inject
     DocumentControl documentControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected DocumentLogic() {
         super();
@@ -105,6 +115,64 @@ public class DocumentLogic
         }
 
         return document;
+    }
+
+    public Document getDocumentByName(final ExecutionErrorAccumulator eea, final String documentName,
+            final EntityPermission entityPermission) {
+        var document = documentControl.getDocumentByName(documentName, entityPermission);
+
+        if(document == null) {
+            handleExecutionError(UnknownDocumentNameException.class, eea, ExecutionErrors.UnknownDocumentName.name(),
+                    documentName);
+        }
+
+        return document;
+    }
+
+    public Document getDocumentByName(final ExecutionErrorAccumulator eea, final String documentName) {
+        return getDocumentByName(eea, documentName, EntityPermission.READ_ONLY);
+    }
+
+    public Document getDocumentByNameForUpdate(final ExecutionErrorAccumulator eea, final String documentName) {
+        return getDocumentByName(eea, documentName, EntityPermission.READ_WRITE);
+    }
+
+    public Document getDocumentByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final DocumentUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Document document = null;
+        var documentName = universalSpec.getDocumentName();
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (documentName == null ? 0 : 1) + possibleEntitySpecs;
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(possibleEntitySpecs == 1) {
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Document.name());
+
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        document = documentControl.getDocumentByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    document = getDocumentByName(eea, documentName, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea,
+                            ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return document;
+    }
+
+    public Document getDocumentByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final DocumentUniversalSpec universalSpec) {
+        return getDocumentByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Document getDocumentByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final DocumentUniversalSpec universalSpec) {
+        return getDocumentByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public PartyDocument createPartyDocument(final ExecutionErrorAccumulator ema, final Party party, final DocumentType documentType, final MimeType mimeType,

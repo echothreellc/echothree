@@ -14,23 +14,28 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.document.common.result;
+package com.echothree.model.control.document.common.exception;
 
-import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.util.common.exception.BaseException;
+import com.echothree.util.common.message.Message;
 
-public interface GetPartyDocumentsResult
-        extends BaseResult {
+public abstract class BaseDocumentException
+        extends BaseException {
 
-    PartyTransfer getParty();
-    void setParty(PartyTransfer party);
+    protected BaseDocumentException() {
+        super();
+    }
 
-    Long getPartyDocumentCount();
-    void setPartyDocumentCount(Long partyDocumentCount);
+    protected BaseDocumentException(String message) {
+        super(message);
+    }
 
-    List<PartyDocumentTransfer> getPartyDocuments();
-    void setPartyDocuments(List<PartyDocumentTransfer> partyDocuments);
-    
+    protected BaseDocumentException(Throwable cause) {
+        super(cause);
+    }
+
+    protected BaseDocumentException(Message message) {
+        super(message);
+    }
+
 }
