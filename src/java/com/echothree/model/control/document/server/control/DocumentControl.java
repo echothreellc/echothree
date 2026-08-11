@@ -2023,6 +2023,7 @@ public class DocumentControl
                         FROM documentdescriptions, languages
                         WHERE dcmntd_dcmnt_documentid = ? AND dcmntd_thrutime = ? AND dcmntd_lang_languageid = lang_languageid
                         ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
