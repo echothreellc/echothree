@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.document.common.form;
 
-import com.echothree.control.user.document.common.spec.DocumentTypeSpec;
+import com.echothree.control.user.document.common.spec.DocumentTypeUniversalSpec;
 
 public interface GetDocumentTypeForm
-        extends DocumentTypeSpec {
+        extends DocumentTypeUniversalSpec {
     
-    // Nothing additional beyond DocumentTypeSpec
+    // Nothing additional beyond DocumentTypeUniversalSpec
     
 }
