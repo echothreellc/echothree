@@ -61,7 +61,7 @@ public class GetDocumentDescriptionsCommand
     
     /** Creates a new instance of GetDocumentDescriptionsCommand */
     public GetDocumentDescriptionsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
