@@ -21,9 +21,24 @@ import com.echothree.util.common.message.Message;
 public class DuplicateDocumentTypeUsageTypeNameException
         extends BaseDocumentException {
 
-    public DuplicateDocumentTypeUsageTypeNameException() { super(); }
-    public DuplicateDocumentTypeUsageTypeNameException(String message) { super(message); }
-    public DuplicateDocumentTypeUsageTypeNameException(Throwable cause) { super(cause); }
-    public DuplicateDocumentTypeUsageTypeNameException(Message message) { super(message); }
+    /** Creates a new instance of DuplicateDocumentTypeUsageTypeNameException */
+    public DuplicateDocumentTypeUsageTypeNameException() {
+        super();
+    }
+
+    /** Creates a new instance of DuplicateDocumentTypeUsageTypeNameException */
+    public DuplicateDocumentTypeUsageTypeNameException(String message) {
+        super(message);
+    }
+
+    /** Creates a new instance of DuplicateDocumentTypeUsageTypeNameException */
+    public DuplicateDocumentTypeUsageTypeNameException(Throwable cause) {
+        super(cause);
+    }
+
+    /** Creates a new instance of DuplicateDocumentTypeUsageTypeNameException */
+    public DuplicateDocumentTypeUsageTypeNameException(Message message) {
+        super(message);
+    }
 
 }
