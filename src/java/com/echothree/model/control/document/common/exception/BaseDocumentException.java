@@ -22,18 +22,22 @@ import com.echothree.util.common.message.Message;
 public abstract class BaseDocumentException
         extends BaseException {
 
+    /** Creates a new instance of BaseDocumentException */
     protected BaseDocumentException() {
         super();
     }
 
+    /** Creates a new instance of BaseDocumentException */
     protected BaseDocumentException(String message) {
         super(message);
     }
 
+    /** Creates a new instance of BaseDocumentException */
     protected BaseDocumentException(Throwable cause) {
         super(cause);
     }
 
+    /** Creates a new instance of BaseDocumentException */
     protected BaseDocumentException(Message message) {
         super(message);
     }

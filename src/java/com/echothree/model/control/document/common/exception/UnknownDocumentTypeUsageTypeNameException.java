@@ -21,9 +21,24 @@ import com.echothree.util.common.message.Message;
 public class UnknownDocumentTypeUsageTypeNameException
         extends BaseDocumentException {
 
-    public UnknownDocumentTypeUsageTypeNameException() { super(); }
-    public UnknownDocumentTypeUsageTypeNameException(String message) { super(message); }
-    public UnknownDocumentTypeUsageTypeNameException(Throwable cause) { super(cause); }
-    public UnknownDocumentTypeUsageTypeNameException(Message message) { super(message); }
+    /** Creates a new instance of UnknownDocumentTypeUsageTypeNameException */
+    public UnknownDocumentTypeUsageTypeNameException() {
+        super();
+    }
+
+    /** Creates a new instance of UnknownDocumentTypeUsageTypeNameException */
+    public UnknownDocumentTypeUsageTypeNameException(String message) {
+        super(message);
+    }
+
+    /** Creates a new instance of UnknownDocumentTypeUsageTypeNameException */
+    public UnknownDocumentTypeUsageTypeNameException(Throwable cause) {
+        super(cause);
+    }
+
+    /** Creates a new instance of UnknownDocumentTypeUsageTypeNameException */
+    public UnknownDocumentTypeUsageTypeNameException(Message message) {
+        super(message);
+    }
 
 }

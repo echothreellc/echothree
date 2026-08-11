@@ -60,7 +60,7 @@ public class GetDocumentTypeUsageTypeChoicesCommand
     
     /** Creates a new instance of GetDocumentTypeUsageTypeChoicesCommand */
     public GetDocumentTypeUsageTypeChoicesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

@@ -21,18 +21,22 @@ import com.echothree.util.common.message.Message;
 public class UnknownDefaultDocumentTypeException
         extends BaseDocumentException {
 
+    /** Creates a new instance of UnknownDefaultDocumentTypeException */
     public UnknownDefaultDocumentTypeException() {
         super();
     }
 
+    /** Creates a new instance of UnknownDefaultDocumentTypeException */
     public UnknownDefaultDocumentTypeException(String message) {
         super(message);
     }
 
+    /** Creates a new instance of UnknownDefaultDocumentTypeException */
     public UnknownDefaultDocumentTypeException(Throwable cause) {
         super(cause);
     }
 
+    /** Creates a new instance of UnknownDefaultDocumentTypeException */
     public UnknownDefaultDocumentTypeException(Message message) {
         super(message);
     }
