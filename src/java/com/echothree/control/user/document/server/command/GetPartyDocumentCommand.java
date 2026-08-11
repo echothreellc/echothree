@@ -20,25 +20,29 @@ import com.echothree.control.user.document.common.form.GetPartyDocumentForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.document.server.logic.DocumentLogic;
+import com.echothree.model.data.document.server.entity.PartyDocument;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetPartyDocumentCommand
-        extends BaseSimpleCommand<GetPartyDocumentForm> {
+        extends BaseSingleEntityCommand<PartyDocument, GetPartyDocumentForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("DocumentName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("DocumentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
+                new FieldDefinition("Referrer", FieldType.URL, false, null, null)
         );
     }
 
@@ -48,32 +52,42 @@ public class GetPartyDocumentCommand
     @Inject
     ContentLogic contentLogic;
 
-    
+    @Inject
+    DocumentLogic documentLogic;
+
     /** Creates a new instance of GetPartyDocumentCommand */
     public GetPartyDocumentCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = DocumentResultFactory.getGetPartyDocumentResult();
+    protected PartyDocument getEntity() {
+        PartyDocument partyDocument = null;
+
         contentLogic.checkReferrer(this, form.getReferrer());
-        
+
         if(!hasExecutionErrors()) {
-            var documentName = form.getDocumentName();
-            var document = documentControl.getDocumentByName(documentName);
+            var document = documentLogic.getDocumentByUniversalSpec(this, form);
 
-            if(document != null) {
-                var partyDocument = documentControl.getPartyDocumentByDocument(document);
+            if(!hasExecutionErrors()) {
+                partyDocument = documentControl.getPartyDocumentByDocument(document);
 
-                if(partyDocument != null) {
-                    result.setPartyDocument(documentControl.getPartyDocumentTransfer(getUserVisit(), partyDocument));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyDocument.name(), documentName);
+                if(partyDocument == null) {
+                    addExecutionError(ExecutionErrors.UnknownPartyDocument.name(),
+                            document.getLastDetail().getDocumentName());
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownDocumentName.name(), documentName);
             }
+        }
+
+        return partyDocument;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyDocument partyDocument) {
+        var result = DocumentResultFactory.getGetPartyDocumentResult();
+
+        if(partyDocument != null) {
+            result.setPartyDocument(documentControl.getPartyDocumentTransfer(getUserVisit(), partyDocument));
         }
 
         return result;
