@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.associate.common.result;
 
-import com.echothree.model.control.associate.common.transfer.AssociateProgramTransfer;
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
 import com.echothree.util.common.command.BaseResult;
@@ -25,11 +24,11 @@ import java.util.List;
 public interface GetAssociateReferralsResult
         extends BaseResult {
     
-    AssociateProgramTransfer getAssociateProgram();
-    void setAssociateProgram(AssociateProgramTransfer associateProgram);
-    
     AssociateTransfer getAssociate();
     void setAssociate(AssociateTransfer associate);
+
+    Long getAssociateReferralCount();
+    void setAssociateReferralCount(Long associateReferralCount);
     
     List<AssociateReferralTransfer> getAssociateReferrals();
     void setAssociateReferrals(List<AssociateReferralTransfer> associateReferrals);
