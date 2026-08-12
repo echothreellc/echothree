@@ -26,6 +26,9 @@ public interface GetAssociatesResult
     
     AssociateProgramTransfer getAssociateProgram();
     void setAssociateProgram(AssociateProgramTransfer associateProgram);
+
+    Long getAssociateCount();
+    void setAssociateCount(Long associateCount);
     
     List<AssociateTransfer> getAssociates();
     void setAssociates(List<AssociateTransfer> associates);

@@ -33,7 +33,10 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.data.associate.common.pk.AssociatePK;
+import com.echothree.model.data.associate.common.pk.AssociatePartyContactMechanismPK;
 import com.echothree.model.data.associate.common.pk.AssociateProgramPK;
+import com.echothree.model.data.associate.common.pk.AssociateReferralPK;
 import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
@@ -172,7 +175,34 @@ public class AssociateControl
                         """);
     }
 
-    private AssociateProgram getAssociateProgramByName(String associateProgramName, EntityPermission entityPermission) {
+    public long countAssociateProgramsByAssociateSequence(final Sequence associateSequence) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associateprograms
+                        JOIN associateprogramdetails ON ascprgmdt_associateprogramdetailid = ascprgm_activedetailid
+                        WHERE ascprgmdt_associatesequenceid = ?
+                        """, associateSequence);
+    }
+
+    public long countAssociateProgramsByAssociateContactMechanismSequence(final Sequence associateContactMechanismSequence) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associateprograms
+                        JOIN associateprogramdetails ON ascprgmdt_associateprogramdetailid = ascprgm_activedetailid
+                        WHERE ascprgmdt_associatepartycontactmechanismsequenceid = ?
+                        """, associateContactMechanismSequence);
+    }
+
+    public long countAssociateProgramsByAssociateReferralSequence(final Sequence associateReferralSequence) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associateprograms
+                        JOIN associateprogramdetails ON ascprgmdt_associateprogramdetailid = ascprgm_activedetailid
+                        WHERE ascprgmdt_associatereferralsequenceid = ?
+                        """, associateReferralSequence);
+    }
+
+    public AssociateProgram getAssociateProgramByName(String associateProgramName, EntityPermission entityPermission) {
         AssociateProgram associateProgram;
         
         try {
@@ -221,7 +251,7 @@ public class AssociateControl
         return getAssociateProgramDetailValueForUpdate(getAssociateProgramByNameForUpdate(associateProgramName));
     }
     
-    private AssociateProgram getDefaultAssociateProgram(EntityPermission entityPermission) {
+    public AssociateProgram getDefaultAssociateProgram(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -500,6 +530,7 @@ public class AssociateControl
                         FROM associateprogramdescriptions, languages
                         WHERE ascprgmd_ascprgm_associateprogramid = ? AND ascprgmd_thrutime = ? AND ascprgmd_lang_languageid = lang_languageid
                         ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -624,8 +655,50 @@ public class AssociateControl
         
         return associate;
     }
-    
-    private Associate getAssociateByName(AssociateProgram associateProgram, String associateName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Associate */
+    public Associate getAssociateByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new AssociatePK(entityInstance.getEntityUniqueId());
+
+        return associateFactory.getEntityFromPK(entityPermission, pk);
+    }
+
+    public Associate getAssociateByEntityInstance(EntityInstance entityInstance) {
+        return getAssociateByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Associate getAssociateByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getAssociateByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countAssociatesByAssociateProgram(final AssociateProgram associateProgram) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associates
+                        JOIN associatedetails ON ascdt_associatedetailid = asc_activedetailid
+                        WHERE ascdt_ascprgm_associateprogramid = ?
+                        """, associateProgram);
+    }
+
+    public long countAssociatesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associates
+                        JOIN associatedetails ON ascdt_associatedetailid = asc_activedetailid
+                        WHERE ascdt_par_partyid = ?
+                        """, party);
+    }
+
+    public long countAssociatesBySummaryMimeType(final MimeType summaryMimeType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associates
+                        JOIN associatedetails ON ascdt_associatedetailid = asc_activedetailid
+                        WHERE ascdt_summary = ?
+                        """, summaryMimeType);
+    }
+
+    public Associate getAssociateByName(AssociateProgram associateProgram, String associateName, EntityPermission entityPermission) {
         Associate associate;
         
         try {
@@ -687,6 +760,7 @@ public class AssociateControl
                         FROM associates, associatedetails
                         WHERE asc_activedetailid = ascdt_associatedetailid AND ascdt_ascprgm_associateprogramid = ?
                         ORDER BY ascdt_associatename
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -756,7 +830,7 @@ public class AssociateControl
         return associateTransferCache.getTransfer(userVisit, associate);
     }
     
-    public List<AssociateTransfer> getAssociateTransfers(List<Associate> associates, UserVisit userVisit) {
+    public List<AssociateTransfer> getAssociateTransfers(Collection<Associate> associates, UserVisit userVisit) {
         List<AssociateTransfer> associateTransfers = new ArrayList<>(associates.size());
         
         associates.forEach((associate) ->
@@ -858,8 +932,41 @@ public class AssociateControl
         
         return associatePartyContactMechanism;
     }
-    
-    private AssociatePartyContactMechanism getAssociatePartyContactMechanismByName(Associate associate, String associatePartyContactMechanismName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.AssociatePartyContactMechanism */
+    public AssociatePartyContactMechanism getAssociatePartyContactMechanismByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new AssociatePartyContactMechanismPK(entityInstance.getEntityUniqueId());
+
+        return associatePartyContactMechanismFactory.getEntityFromPK(entityPermission, pk);
+    }
+
+    public AssociatePartyContactMechanism getAssociatePartyContactMechanismByEntityInstance(EntityInstance entityInstance) {
+        return getAssociatePartyContactMechanismByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public AssociatePartyContactMechanism getAssociatePartyContactMechanismByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getAssociatePartyContactMechanismByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countAssociatePartyContactMechanismsByAssociate(final Associate associate) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associatepartycontactmechanisms
+                        JOIN associatepartycontactmechanismdetails ON ascpcmdt_associatepartycontactmechanismdetailid = ascpcm_activedetailid
+                        WHERE ascpcmdt_asc_associateid = ?
+                        """, associate);
+    }
+
+    public long countAssociatePartyContactMechanismsByPartyContactMechanism(final PartyContactMechanism partyContactMechanism) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associatepartycontactmechanisms
+                        JOIN associatepartycontactmechanismdetails ON ascpcmdt_associatepartycontactmechanismdetailid = ascpcm_activedetailid
+                        WHERE ascpcmdt_pcm_partycontactmechanismid = ?
+                        """, partyContactMechanism);
+    }
+
+    public AssociatePartyContactMechanism getAssociatePartyContactMechanismByName(Associate associate, String associatePartyContactMechanismName, EntityPermission entityPermission) {
         AssociatePartyContactMechanism associatePartyContactMechanism;
         
         try {
@@ -911,7 +1018,7 @@ public class AssociateControl
         return getAssociatePartyContactMechanismDetailValueForUpdate(getAssociatePartyContactMechanismByNameForUpdate(associate, associatePartyContactMechanismName));
     }
     
-    private AssociatePartyContactMechanism getDefaultAssociatePartyContactMechanism(Associate associate, EntityPermission entityPermission) {
+    public AssociatePartyContactMechanism getDefaultAssociatePartyContactMechanism(Associate associate, EntityPermission entityPermission) {
         AssociatePartyContactMechanism associatePartyContactMechanism;
         
         try {
@@ -971,6 +1078,7 @@ public class AssociateControl
                         WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
                         AND ascpcmdt_asc_associateid = ?
                         ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1015,6 +1123,7 @@ public class AssociateControl
                         WHERE ascpcm_activedetailid = ascpcmdt_associatepartycontactmechanismdetailid
                         AND ascpcmdt_pcm_partycontactmechanismid = ?
                         ORDER BY ascpcmdt_sortorder, ascpcmdt_associatepartycontactmechanismname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1085,7 +1194,7 @@ public class AssociateControl
         return associatePartyContactMechanismTransferCache.getTransfer(userVisit, associatePartyContactMechanism);
     }
     
-    public List<AssociatePartyContactMechanismTransfer> getAssociatePartyContactMechanismTransfers(List<AssociatePartyContactMechanism> associatePartyContactMechanisms, UserVisit userVisit) {
+    public List<AssociatePartyContactMechanismTransfer> getAssociatePartyContactMechanismTransfers(Collection<AssociatePartyContactMechanism> associatePartyContactMechanisms, UserVisit userVisit) {
         List<AssociatePartyContactMechanismTransfer> associatePartyContactMechanismTransfers = new ArrayList<>(associatePartyContactMechanisms.size());
         
         associatePartyContactMechanisms.forEach((associatePartyContactMechanism) ->
@@ -1232,8 +1341,50 @@ public class AssociateControl
         
         return associateReferral;
     }
-    
-    private AssociateReferral getAssociateReferralByName(String associateReferralName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.AssociateReferral */
+    public AssociateReferral getAssociateReferralByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new AssociateReferralPK(entityInstance.getEntityUniqueId());
+
+        return associateReferralFactory.getEntityFromPK(entityPermission, pk);
+    }
+
+    public AssociateReferral getAssociateReferralByEntityInstance(EntityInstance entityInstance) {
+        return getAssociateReferralByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public AssociateReferral getAssociateReferralByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getAssociateReferralByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countAssociateReferralsByAssociate(final Associate associate) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associatereferrals
+                        JOIN associatereferraldetails ON ascrfrdt_associatereferraldetailid = ascrfr_activedetailid
+                        WHERE ascrfrdt_asc_associateid = ?
+                        """, associate);
+    }
+
+    public long countAssociateReferralsByAssociatePartyContactMechanism(final AssociatePartyContactMechanism associatePartyContactMechanism) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associatereferrals
+                        JOIN associatereferraldetails ON ascrfrdt_associatereferraldetailid = ascrfr_activedetailid
+                        WHERE ascrfrdt_ascpcm_associatepartycontactmechanismid = ?
+                        """, associatePartyContactMechanism);
+    }
+
+    public long countAssociateReferralsByTargetEntityInstance(final EntityInstance targetEntityInstance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM associatereferrals
+                        JOIN associatereferraldetails ON ascrfrdt_associatereferraldetailid = ascrfr_activedetailid
+                        WHERE ascrfrdt_targetentityinstanceid = ?
+                        """, targetEntityInstance);
+    }
+
+    public AssociateReferral getAssociateReferralByName(String associateReferralName, EntityPermission entityPermission) {
         AssociateReferral associateReferral;
         
         try {
@@ -1297,6 +1448,7 @@ public class AssociateControl
                         WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
                         AND ascrfrdt_asc_associateid = ?
                         ORDER BY ascrfrdt_associatereferralname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1342,6 +1494,7 @@ public class AssociateControl
                         WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
                         AND ascrfrdt_ascpcm_associatepartycontactmechanismid = ?
                         ORDER BY ascrfrdt_associatereferralname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1387,6 +1540,7 @@ public class AssociateControl
                         WHERE ascrfr_activedetailid = ascrfrdt_associatereferraldetailid
                         AND ascrfrdt_targetentityinstanceid = ?
                         ORDER BY ascrfrdt_associatereferralname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1422,7 +1576,7 @@ public class AssociateControl
         return associateReferralTransferCache.getTransfer(userVisit, associateReferral);
     }
     
-    public List<AssociateReferralTransfer> getAssociateReferralTransfers(List<AssociateReferral> associateReferrals, UserVisit userVisit) {
+    public List<AssociateReferralTransfer> getAssociateReferralTransfers(Collection<AssociateReferral> associateReferrals, UserVisit userVisit) {
         List<AssociateReferralTransfer> associateReferralTransfers = new ArrayList<>(associateReferrals.size());
         
         associateReferrals.forEach((associateReferral) ->
