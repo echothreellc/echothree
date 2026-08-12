@@ -14,23 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.associate.common.result;
+package com.echothree.control.user.associate.common.spec;
 
-import com.echothree.model.control.associate.common.transfer.AssociateProgramTransfer;
-import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetAssociatesResult
-        extends BaseResult {
-    
-    AssociateProgramTransfer getAssociateProgram();
-    void setAssociateProgram(AssociateProgramTransfer associateProgram);
+public interface AssociateProgramUniversalSpec
+        extends AssociateProgramSpec, UniversalEntitySpec {
 
-    Long getAssociateCount();
-    void setAssociateCount(Long associateCount);
-    
-    List<AssociateTransfer> getAssociates();
-    void setAssociates(List<AssociateTransfer> associates);
-    
+    // Nothing additional beyond AssociateProgramSpec, UniversalEntitySpec
+
 }
