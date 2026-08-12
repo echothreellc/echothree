@@ -17,7 +17,6 @@
 package com.echothree.control.user.associate.common.result;
 
 import com.echothree.model.control.associate.common.transfer.AssociatePartyContactMechanismTransfer;
-import com.echothree.model.control.associate.common.transfer.AssociateProgramTransfer;
 import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
@@ -25,11 +24,11 @@ import java.util.List;
 public interface GetAssociatePartyContactMechanismsResult
         extends BaseResult {
     
-    AssociateProgramTransfer getAssociateProgram();
-    void setAssociateProgram(AssociateProgramTransfer associateProgram);
-    
     AssociateTransfer getAssociate();
     void setAssociate(AssociateTransfer associate);
+
+    Long getAssociatePartyContactMechanismCount();
+    void setAssociatePartyContactMechanismCount(Long associatePartyContactMechanismCount);
     
     List<AssociatePartyContactMechanismTransfer> getAssociatePartyContactMechanisms();
     void setAssociatePartyContactMechanisms(List<AssociatePartyContactMechanismTransfer> associatePartyContactMechanisms);
