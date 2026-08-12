@@ -19,32 +19,37 @@ package com.echothree.control.user.associate.server.command;
 import com.echothree.control.user.associate.common.form.GetAssociateForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.associate.server.logic.AssociateLogic;
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.data.associate.server.entity.Associate;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetAssociateCommand
-        extends BaseSimpleCommand<GetAssociateForm> {
+        extends BaseSingleEntityCommand<Associate, GetAssociateForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
 
     @Inject
     AssociateControl associateControl;
 
+    @Inject
+    AssociateLogic associateLogic;
     
     /** Creates a new instance of GetAssociateCommand */
     public GetAssociateCommand() {
@@ -52,24 +57,24 @@ public class GetAssociateCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = AssociateResultFactory.getGetAssociateResult();
-        var associateProgramName = form.getAssociateProgramName();
-        var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
-        
-        if(associateProgram != null) {
-            var associateName = form.getAssociateName();
-            var associate = associateControl.getAssociateByName(associateProgram, associateName);
-            
-            if(associate != null) {
-                result.setAssociate(associateControl.getAssociateTransfer(getUserVisit(), associate));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownAssociateName.name(), associateProgramName, associateName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownAssociateProgramName.name(), associateProgramName);
+    protected Associate getEntity() {
+        var associate = associateLogic.getAssociateByUniversalSpec(this, form, true);
+
+        if(associate != null) {
+            sendEvent(associate.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return associate;
+    }
+
+    @Override
+    protected BaseResult getResult(final Associate associate) {
+        var result = AssociateResultFactory.getGetAssociateResult();
+
+        if(associate != null) {
+            result.setAssociate(associateControl.getAssociateTransfer(getUserVisit(), associate));
+        }
+
         return result;
     }
     
