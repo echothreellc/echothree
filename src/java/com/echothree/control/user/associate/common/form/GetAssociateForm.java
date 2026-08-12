@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.associate.common.form;
 
-import com.echothree.control.user.associate.common.spec.AssociateSpec;
+import com.echothree.control.user.associate.common.spec.AssociateUniversalSpec;
 
 public interface GetAssociateForm
-        extends AssociateSpec {
+        extends AssociateUniversalSpec {
     
-    // Nothing additional beyond AssociateSpec
+    // Nothing additional beyond AssociateUniversalSpec
     
 }
