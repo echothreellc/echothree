@@ -17,14 +17,25 @@
 package com.echothree.model.control.associate.server.logic;
 
 import com.echothree.control.user.associate.common.spec.AssociatePartyContactMechanismSpec;
+import com.echothree.control.user.associate.common.spec.AssociateReferralUniversalSpec;
+import com.echothree.model.control.associate.common.exception.DuplicateAssociateReferralNameException;
+import com.echothree.model.control.associate.common.exception.UnknownAssociateReferralNameException;
 import com.echothree.model.control.associate.server.control.AssociateControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.data.associate.server.entity.Associate;
+import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
@@ -40,12 +51,103 @@ public class AssociateReferralLogic
     @Inject
     EntityInstanceControl entityInstanceControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected AssociateReferralLogic() {
         super();
     }
 
     public static AssociateReferralLogic getInstance() {
         return CDI.current().select(AssociateReferralLogic.class).get();
+    }
+
+    public AssociateReferral createAssociateReferral(final ExecutionErrorAccumulator eea,
+            final String associateReferralName, final Associate associate,
+            final AssociatePartyContactMechanism associatePartyContactMechanism,
+            final EntityInstance targetEntityInstance, final Long associateReferralTime, final BasePK createdBy) {
+        var associateReferral = associateControl.getAssociateReferralByName(associateReferralName);
+
+        if(associateReferral == null) {
+            associateReferral = associateControl.createAssociateReferral(associateReferralName, associate,
+                    associatePartyContactMechanism, targetEntityInstance, associateReferralTime, createdBy);
+        } else {
+            handleExecutionError(DuplicateAssociateReferralNameException.class, eea,
+                    ExecutionErrors.DuplicateAssociateReferralName.name(), associateReferralName);
+        }
+
+        return associateReferral;
+    }
+
+    public AssociateReferral createAssociateReferral(final Associate associate,
+            final AssociatePartyContactMechanism associatePartyContactMechanism,
+            final EntityInstance targetEntityInstance, final Long associateReferralTime, final BasePK createdBy) {
+        return associateControl.createAssociateReferral(associate, associatePartyContactMechanism, targetEntityInstance,
+                associateReferralTime, createdBy);
+    }
+
+    public AssociateReferral getAssociateReferralByName(final ExecutionErrorAccumulator eea,
+            final String associateReferralName, final EntityPermission entityPermission) {
+        var associateReferral = associateControl.getAssociateReferralByName(associateReferralName, entityPermission);
+
+        if(associateReferral == null) {
+            handleExecutionError(UnknownAssociateReferralNameException.class, eea,
+                    ExecutionErrors.UnknownAssociateReferralName.name(), associateReferralName);
+        }
+
+        return associateReferral;
+    }
+
+    public AssociateReferral getAssociateReferralByName(final ExecutionErrorAccumulator eea,
+            final String associateReferralName) {
+        return getAssociateReferralByName(eea, associateReferralName, EntityPermission.READ_ONLY);
+    }
+
+    public AssociateReferral getAssociateReferralByNameForUpdate(final ExecutionErrorAccumulator eea,
+            final String associateReferralName) {
+        return getAssociateReferralByName(eea, associateReferralName, EntityPermission.READ_WRITE);
+    }
+
+    public AssociateReferral getAssociateReferralByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final AssociateReferralUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        AssociateReferral associateReferral = null;
+        var associateReferralName = universalSpec.getAssociateReferralName();
+        var parameterCount = (associateReferralName == null ? 0 : 1)
+                + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(associateReferralName == null) {
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.AssociateReferral.name());
+
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        associateReferral = associateControl.getAssociateReferralByEntityInstance(entityInstance,
+                                entityPermission);
+                    }
+                } else {
+                    associateReferral = getAssociateReferralByName(eea, associateReferralName, entityPermission);
+                }
+            }
+            default -> handleExecutionError(InvalidParameterCountException.class, eea,
+                    ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return associateReferral;
+    }
+
+    public AssociateReferral getAssociateReferralByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final AssociateReferralUniversalSpec universalSpec) {
+        return getAssociateReferralByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public AssociateReferral getAssociateReferralByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final AssociateReferralUniversalSpec universalSpec) {
+        return getAssociateReferralByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteAssociateReferral(final AssociateReferral associateReferral, final BasePK deletedBy) {
+        associateControl.deleteAssociateReferral(associateReferral, deletedBy);
     }
 
     public void handleAssociateReferral(final Session session, final ExecutionErrorAccumulator eea, final AssociatePartyContactMechanismSpec spec,

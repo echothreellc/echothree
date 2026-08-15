@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.document.common.form;
 
-import com.echothree.control.user.document.common.spec.DocumentSpec;
+import com.echothree.control.user.document.common.spec.DocumentUniversalSpec;
 
 public interface GetPartyDocumentForm
-        extends DocumentSpec {
+        extends DocumentUniversalSpec {
     
     String getReferrer();
     void setReferrer(String referrer);

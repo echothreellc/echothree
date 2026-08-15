@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetDocumentTypeUsageTypesResult
         extends BaseResult {
-    
+
+    Long getDocumentTypeUsageTypeCount();
+    void setDocumentTypeUsageTypeCount(Long documentTypeUsageTypeCount);
+
     List<DocumentTypeUsageTypeTransfer> getDocumentTypeUsageTypes();
     void setDocumentTypeUsageTypes(List<DocumentTypeUsageTypeTransfer> documentTypeUsageTypes);
     

@@ -27,6 +27,9 @@ public interface GetPartyDocumentsResult
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
 
+    Long getPartyDocumentCount();
+    void setPartyDocumentCount(Long partyDocumentCount);
+
     List<PartyDocumentTransfer> getPartyDocuments();
     void setPartyDocuments(List<PartyDocumentTransfer> partyDocuments);
     
