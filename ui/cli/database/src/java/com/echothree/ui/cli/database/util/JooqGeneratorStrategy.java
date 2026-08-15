@@ -16,12 +16,15 @@
 
 package com.echothree.ui.cli.database.util;
 
+import com.google.common.base.CaseFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.jooq.codegen.GeneratorStrategy.Mode;
 import org.jooq.codegen.KeepNamesGeneratorStrategy;
 import org.jooq.meta.ColumnDefinition;
 import org.jooq.meta.Definition;
+import org.jooq.meta.ForeignKeyDefinition;
 import org.jooq.meta.TableDefinition;
 import org.jooq.meta.UniqueKeyDefinition;
 
@@ -62,8 +65,33 @@ public class JooqGeneratorStrategy
             return columnNames.get(column.getContainer().getInputName() + "." + column.getInputName());
         } else if(definition instanceof TableDefinition table) {
             return tableNames.get(table.getInputName());
+        }
+
+        return null;
+    }
+
+    private String upperUnderscore(String name) {
+        return CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, name);
+    }
+
+    private String keyTableName(TableDefinition table) {
+        return upperUnderscore(tableNames.get(table.getInputName()));
+    }
+
+    private String keyColumnNames(Iterable<ColumnDefinition> columns) {
+        return java.util.stream.StreamSupport.stream(columns.spliterator(), false)
+                .map(this::javaName)
+                .map(this::upperUnderscore)
+                .collect(Collectors.joining("_AND_"));
+    }
+
+    private String keyIdentifier(Definition definition) {
+        if(definition instanceof ForeignKeyDefinition key) {
+            return keyTableName(key.getKeyTable()) + "_" + keyColumnNames(key.getKeyColumns()) + "_FK";
         } else if(definition instanceof UniqueKeyDefinition key) {
-            return key.getTable().getInputName() + "_" + key.getInputName();
+            var tableName = keyTableName(key.getTable());
+
+            return key.isPrimaryKey() ? tableName + "_PK" : tableName + "_" + keyColumnNames(key.getKeyColumns()) + "_UK";
         }
 
         return null;
@@ -71,7 +99,11 @@ public class JooqGeneratorStrategy
 
     @Override
     public String getJavaIdentifier(Definition definition) {
-        var name = javaName(definition);
+        var name = keyIdentifier(definition);
+
+        if(name == null) {
+            name = javaName(definition);
+        }
 
         return name == null ? super.getJavaIdentifier(definition) : name;
     }
