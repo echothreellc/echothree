@@ -58,16 +58,15 @@ public class DatabaseUtilitiesForJooq {
         return column.getDbColumnName();
     }
 
-    /*
-     * Unlike MySQL, the jOOQ information-schema format identifies a referenced
-     * unique constraint without also naming its table. Qualifying constraint
-     * names with the table keeps PRIMARY and commonly reused index names
-     * unambiguous when the complete MySQL schema is exported.
-     */
     private String constraintName(Index index) {
-        var name = index.getType() == Index.indexPrimaryKey ? "PRIMARY" : index.getName().toLowerCase(Locale.getDefault());
+        return index.getType() == Index.indexPrimaryKey ? "PRIMARY" : index.getName().toLowerCase(Locale.getDefault()) + "_idx";
+    }
 
-        return index.getTable().getDbTableName() + "_" + name;
+    /* jOOQ's XML format omits the referenced table from a referential
+     * constraint. Use its constraint catalog solely to disambiguate MySQL's
+     * table-local PRIMARY and unique-key names. */
+    private String constraintCatalog(Table table) {
+        return table.getDbTableName();
     }
 
     private String foreignKeyName(Column column) throws Exception {
@@ -166,6 +165,7 @@ public class DatabaseUtilitiesForJooq {
             for(var index : table.getIndexes()) {
                 if(index.getType() != Index.indexMultiple) {
                     pw.println("        <table_constraint>");
+                    pw.println("            <constraint_catalog>" + xml(constraintCatalog(table)) + "</constraint_catalog>");
                     pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
                     pw.println("            <constraint_name>" + xml(constraintName(index)) + "</constraint_name>");
                     pw.println("            <constraint_type>" + (index.getType() == Index.indexPrimaryKey ? "PRIMARY KEY" : "UNIQUE") + "</constraint_type>");
@@ -177,6 +177,7 @@ public class DatabaseUtilitiesForJooq {
 
             for(var column : table.getForeignKeys()) {
                 pw.println("        <table_constraint>");
+                pw.println("            <constraint_catalog>" + xml(constraintCatalog(table)) + "</constraint_catalog>");
                 pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
                 pw.println("            <constraint_name>" + xml(foreignKeyName(column)) + "</constraint_name>");
                 pw.println("            <constraint_type>FOREIGN KEY</constraint_type>");
@@ -210,6 +211,7 @@ public class DatabaseUtilitiesForJooq {
 
     private void printKeyColumnUsage(PrintWriter pw, String name, Table table, Column column, int ordinalPosition) throws Exception {
         pw.println("        <key_column_usage>");
+        pw.println("            <constraint_catalog>" + xml(constraintCatalog(table)) + "</constraint_catalog>");
         pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
         pw.println("            <constraint_name>" + xml(name) + "</constraint_name>");
         pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
@@ -226,8 +228,10 @@ public class DatabaseUtilitiesForJooq {
                 var destinationTable = myDatabase.getTable(column.getDestinationTable());
 
                 pw.println("        <referential_constraint>");
+                pw.println("            <constraint_catalog>" + xml(constraintCatalog(table)) + "</constraint_catalog>");
                 pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
                 pw.println("            <constraint_name>" + xml(foreignKeyName(column)) + "</constraint_name>");
+                pw.println("            <unique_constraint_catalog>" + xml(constraintCatalog(destinationTable)) + "</unique_constraint_catalog>");
                 pw.println("            <unique_constraint_schema>" + xml(myDatabase.getName()) + "</unique_constraint_schema>");
                 pw.println("            <unique_constraint_name>" + xml(constraintName(destinationTable.getPrimaryKey())) + "</unique_constraint_name>");
                 switch(column.getOnParentDelete()) {

@@ -23,6 +23,7 @@ import org.jooq.codegen.KeepNamesGeneratorStrategy;
 import org.jooq.meta.ColumnDefinition;
 import org.jooq.meta.Definition;
 import org.jooq.meta.TableDefinition;
+import org.jooq.meta.UniqueKeyDefinition;
 
 public class JooqGeneratorStrategy
         extends KeepNamesGeneratorStrategy {
@@ -61,6 +62,8 @@ public class JooqGeneratorStrategy
             return columnNames.get(column.getContainer().getInputName() + "." + column.getInputName());
         } else if(definition instanceof TableDefinition table) {
             return tableNames.get(table.getInputName());
+        } else if(definition instanceof UniqueKeyDefinition key) {
+            return key.getTable().getInputName() + "_" + key.getInputName();
         }
 
         return null;
