@@ -53,7 +53,7 @@
                  jOOQ may append the schema name to this package if generating multiple schemas,
                  e.g. org.jooq.your.packagename.schema1
                       org.jooq.your.packagename.schema2 -->
-            <packageName>com.echothree.model.jooq</packageName>
+            <packageName>com.echothree.model.jooq.server</packageName>
 
             <!-- The destination directory of your generated classes -->
             <directory>../../../generated/data/java</directory>
