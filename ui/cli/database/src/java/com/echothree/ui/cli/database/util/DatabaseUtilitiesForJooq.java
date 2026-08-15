@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,24 +16,20 @@
 
 package com.echothree.ui.cli.database.util;
 
-import static com.google.common.base.Charsets.UTF_8;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.List;
+import java.util.Locale;
 
 public class DatabaseUtilitiesForJooq {
 
-    boolean verbose;
-    Database myDatabase;
-    List<Component> myComponents;
+    private final Database myDatabase;
 
-    /** Creates a new instance of DatabaseUtilitiesForJava */
+    /** Creates a new instance of DatabaseUtilitiesForJooq. */
     public DatabaseUtilitiesForJooq(boolean verbose, Database theDatabase) {
-        this.verbose = verbose;
         myDatabase = theDatabase;
-        myComponents = theDatabase.getComponents();
     }
 
     public String createXmlDirectory(String baseDirectory) {
@@ -46,185 +42,225 @@ public class DatabaseUtilitiesForJooq {
         return baseDirectory;
     }
 
-    public void exportJooq(String baseDirectory)
-    throws Exception {
-        var directory = createXmlDirectory(baseDirectory);
-        var xmlFileName = "XMLDatabase.xml";
-        var f = new File(directory + File.separatorChar + xmlFileName);
+    private String xml(String value) {
+        return value == null ? "" : value.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
+    }
 
-        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
-            var pw = new PrintWriter(bw);
+    private String tableName(Table table) {
+        return table.getDbTableName();
+    }
 
-            pw.print("""
-                    <?xml version="1.0" encoding="UTF-8"?>
-                    <information_schema xmlns="http://www.jooq.org/xsd/jooq-meta-3.15.0.xsd">
-                        <schemata>
-                            <schema>
-                                <schema_name>%s</schema_name>
-                            </schema>
-                        </schemata>
-                    """.formatted(myDatabase.getName()));
+    private String columnName(Column column) throws Exception {
+        return column.getDbColumnName();
+    }
 
-            // Test only.
-            pw.print("""
-                        <tables>
-                            <table>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                            </table>
-                        </tables>
-                        <columns>
-                            <column>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_PartyTypeId</column_name>
-                                <data_type>bigint</data_type>
-                                <numeric_precision>19</numeric_precision>
-                                <ordinal_position>1</ordinal_position>
-                                <is_nullable>false</is_nullable>
-                            </column>
-                            <column>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_PartyTypeName</column_name>
-                                <data_type>varchar</data_type>
-                                <character_maximum_length>40</character_maximum_length>
-                                <ordinal_position>2</ordinal_position>
-                                <is_nullable>false</is_nullable>
-                            </column>
-                            <column>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_ParentPartyTypeId</column_name>
-                                <data_type>bigint</data_type>
-                                <numeric_precision>19</numeric_precision>
-                                <is_nullable>true</is_nullable>
-                            </column>
-                            <column>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_BillingAccountSequenceTypeId</column_name>
-                                <data_type>bigint</data_type>
-                                <numeric_precision>19</numeric_precision>
-                                <is_nullable>true</is_nullable>
-                            </column>
-                            <column>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_AllowUserLogins</column_name>
-                                <data_type>int</data_type>
-                                <numeric_precision>10</numeric_precision>
-                                <is_nullable>false</is_nullable>
-                            </column>
-                            <column>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_AllowPartyAliases</column_name>
-                                <data_type>int</data_type>
-                                <numeric_precision>10</numeric_precision>
-                                <is_nullable>false</is_nullable>
-                            </column>
-                            <column>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_IsDefault</column_name>
-                                <data_type>int</data_type>
-                                <numeric_precision>10</numeric_precision>
-                                <is_nullable>false</is_nullable>
-                            </column>
-                            <column>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_SortOrder</column_name>
-                                <data_type>int</data_type>
-                                <numeric_precision>10</numeric_precision>
-                                <is_nullable>false</is_nullable>
-                            </column>
-                        </columns>
-                        <table_constraints>
-                            <table_constraint>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>partytypename_idx</constraint_name>
-                                <constraint_type>UNIQUE</constraint_type>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                            </table_constraint>
-                            <table_constraint>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>PRIMARY</constraint_name>
-                                <constraint_type>PRIMARY KEY</constraint_type>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                            </table_constraint>
-                            <!-- <table_constraint>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>ptyp_billingaccountsequencetypeid_fk</constraint_name>
-                                <constraint_type>FOREIGN KEY</constraint_type>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                            </table_constraint> -->
-                            <table_constraint>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>ptyp_parentpartytypeid_fk</constraint_name>
-                                <constraint_type>FOREIGN KEY</constraint_type>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                            </table_constraint>
-                        </table_constraints>
-                        <key_column_usages>
-                            <key_column_usage>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>partytypename_idx</constraint_name>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_PartyTypeName</column_name>
-                                <ordinal_position>1</ordinal_position>
-                            </key_column_usage>
-                            <key_column_usage>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>PRIMARY</constraint_name>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_PartyTypeId</column_name>
-                                <ordinal_position>1</ordinal_position>
-                            </key_column_usage>
-                            <!-- <key_column_usage>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>ptyp_billingaccountsequencetypeid_fk</constraint_name>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_BillingAccountSequenceTypeId</column_name>
-                                <ordinal_position>1</ordinal_position>
-                            </key_column_usage> -->
-                            <key_column_usage>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>ptyp_parentpartytypeid_fk</constraint_name>
-                                <table_schema>echothree</table_schema>
-                                <table_name>PartyTypes</table_name>
-                                <column_name>ptyp_ParentPartyTypeId</column_name>
-                                <ordinal_position>1</ordinal_position>
-                            </key_column_usage>
-                        </key_column_usages>
-                        <referential_constraints>
-                            <!-- <referential_constraint>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>ptyp_billingaccountsequencetypeid_fk</constraint_name>
-                                <unique_constraint_schema>echothree</unique_constraint_schema>
-                                <unique_constraint_name>PRIMARY</unique_constraint_name>
-                            </referential_constraint> -->
-                            <referential_constraint>
-                                <constraint_schema>echothree</constraint_schema>
-                                <constraint_name>ptyp_parentpartytypeid_fk</constraint_name>
-                                <unique_constraint_schema>echothree</unique_constraint_schema>
-                                <unique_constraint_name>PRIMARY</unique_constraint_name>
-                            </referential_constraint>
-                        </referential_constraints>
-                    """);
+    /*
+     * Unlike MySQL, the jOOQ information-schema format identifies a referenced
+     * unique constraint without also naming its table. Qualifying constraint
+     * names with the table keeps PRIMARY and commonly reused index names
+     * unambiguous when the complete MySQL schema is exported.
+     */
+    private String constraintName(Index index) {
+        var name = index.getType() == Index.indexPrimaryKey ? "PRIMARY" : index.getName().toLowerCase(Locale.getDefault());
 
-            pw.print("""
-                    </information_schema>                                   
-                    """);
+        return tableName(index.getTable()) + "_" + name;
+    }
+
+    private String foreignKeyName(Column column) throws Exception {
+        return columnName(column) + "_fk";
+    }
+
+    private Column physicalTypeColumn(Column column) throws Exception {
+        if(column.getType() == ColumnType.columnForeignKey) {
+            var destinationTable = myDatabase.getTable(column.getDestinationTable());
+
+            return physicalTypeColumn(destinationTable.getColumn(column.getDestinationColumn()));
+        }
+
+        return column;
+    }
+
+    private void printColumnType(PrintWriter pw, Column column) throws Exception {
+        var physicalColumn = physicalTypeColumn(column);
+
+        switch(physicalColumn.getType()) {
+            case ColumnType.columnEID, ColumnType.columnLong, ColumnType.columnTime -> {
+                pw.println("                <data_type>bigint</data_type>");
+                pw.println("                <numeric_precision>19</numeric_precision>");
+            }
+            case ColumnType.columnInteger, ColumnType.columnDate -> {
+                pw.println("                <data_type>int</data_type>");
+                pw.println("                <numeric_precision>10</numeric_precision>");
+            }
+            case ColumnType.columnString -> {
+                var maximumLength = physicalColumn.getMaxLength();
+
+                if(maximumLength < 256) {
+                    pw.println("                <data_type>varchar</data_type>");
+                    pw.println("                <character_maximum_length>" + maximumLength + "</character_maximum_length>");
+                } else if(maximumLength < 65536) {
+                    pw.println("                <data_type>text</data_type>");
+                } else if(maximumLength < 1677217) {
+                    pw.println("                <data_type>mediumtext</data_type>");
+                } else {
+                    pw.println("                <data_type>longtext</data_type>");
+                }
+            }
+            case ColumnType.columnBoolean -> {
+                pw.println("                <data_type>bit</data_type>");
+                pw.println("                <numeric_precision>1</numeric_precision>");
+            }
+            case ColumnType.columnCLOB -> pw.println("                <data_type>longtext</data_type>");
+            case ColumnType.columnBLOB -> pw.println("                <data_type>longblob</data_type>");
+            case ColumnType.columnUUID -> {
+                pw.println("                <data_type>binary</data_type>");
+                pw.println("                <character_maximum_length>16</character_maximum_length>");
+            }
+            default -> throw new Exception("Unsupported jOOQ column type " + physicalColumn.getType());
         }
     }
-    
+
+    private void printTables(PrintWriter pw) {
+        pw.println("    <tables>");
+        for(var table : myDatabase.getTables()) {
+            pw.println("        <table>");
+            pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
+            pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
+            if(table.getDescription() != null) {
+                pw.println("            <comment>" + xml(table.getDescription()) + "</comment>");
+            }
+            pw.println("        </table>");
+        }
+        pw.println("    </tables>");
+    }
+
+    private void printColumns(PrintWriter pw) throws Exception {
+        pw.println("    <columns>");
+        for(var table : myDatabase.getTables()) {
+            var ordinalPosition = 1;
+
+            for(var column : table.getColumns()) {
+                pw.println("        <column>");
+                pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
+                pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
+                pw.println("            <column_name>" + xml(columnName(column)) + "</column_name>");
+                printColumnType(pw, column);
+                pw.println("            <ordinal_position>" + ordinalPosition++ + "</ordinal_position>");
+                pw.println("            <is_nullable>" + column.getNullAllowed() + "</is_nullable>");
+                if(column.getDescription() != null) {
+                    pw.println("            <comment>" + xml(column.getDescription()) + "</comment>");
+                }
+                pw.println("        </column>");
+            }
+        }
+        pw.println("    </columns>");
+    }
+
+    private void printTableConstraints(PrintWriter pw) throws Exception {
+        pw.println("    <table_constraints>");
+        for(var table : myDatabase.getTables()) {
+            for(var index : table.getIndexes()) {
+                if(index.getType() != Index.indexMultiple) {
+                    pw.println("        <table_constraint>");
+                    pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
+                    pw.println("            <constraint_name>" + xml(constraintName(index)) + "</constraint_name>");
+                    pw.println("            <constraint_type>" + (index.getType() == Index.indexPrimaryKey ? "PRIMARY KEY" : "UNIQUE") + "</constraint_type>");
+                    pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
+                    pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
+                    pw.println("        </table_constraint>");
+                }
+            }
+
+            for(var column : table.getForeignKeys()) {
+                pw.println("        <table_constraint>");
+                pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
+                pw.println("            <constraint_name>" + xml(foreignKeyName(column)) + "</constraint_name>");
+                pw.println("            <constraint_type>FOREIGN KEY</constraint_type>");
+                pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
+                pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
+                pw.println("        </table_constraint>");
+            }
+        }
+        pw.println("    </table_constraints>");
+    }
+
+    private void printKeyColumnUsages(PrintWriter pw) throws Exception {
+        pw.println("    <key_column_usages>");
+        for(var table : myDatabase.getTables()) {
+            for(var index : table.getIndexes()) {
+                if(index.getType() != Index.indexMultiple) {
+                    var ordinalPosition = 1;
+
+                    for(var column : index.getIndexColumns()) {
+                        printKeyColumnUsage(pw, constraintName(index), table, column, ordinalPosition++);
+                    }
+                }
+            }
+
+            for(var column : table.getForeignKeys()) {
+                printKeyColumnUsage(pw, foreignKeyName(column), table, column, 1);
+            }
+        }
+        pw.println("    </key_column_usages>");
+    }
+
+    private void printKeyColumnUsage(PrintWriter pw, String name, Table table, Column column, int ordinalPosition) throws Exception {
+        pw.println("        <key_column_usage>");
+        pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
+        pw.println("            <constraint_name>" + xml(name) + "</constraint_name>");
+        pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
+        pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
+        pw.println("            <column_name>" + xml(columnName(column)) + "</column_name>");
+        pw.println("            <ordinal_position>" + ordinalPosition + "</ordinal_position>");
+        pw.println("        </key_column_usage>");
+    }
+
+    private void printReferentialConstraints(PrintWriter pw) throws Exception {
+        pw.println("    <referential_constraints>");
+        for(var table : myDatabase.getTables()) {
+            for(var column : table.getForeignKeys()) {
+                var destinationTable = myDatabase.getTable(column.getDestinationTable());
+
+                pw.println("        <referential_constraint>");
+                pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
+                pw.println("            <constraint_name>" + xml(foreignKeyName(column)) + "</constraint_name>");
+                pw.println("            <unique_constraint_schema>" + xml(myDatabase.getName()) + "</unique_constraint_schema>");
+                pw.println("            <unique_constraint_name>" + xml(constraintName(destinationTable.getPrimaryKey())) + "</unique_constraint_name>");
+                switch(column.getOnParentDelete()) {
+                    case Column.parentDelete -> pw.println("            <delete_rule>CASCADE</delete_rule>");
+                    case Column.parentSetNull -> pw.println("            <delete_rule>SET NULL</delete_rule>");
+                    default -> {
+                    }
+                }
+                pw.println("        </referential_constraint>");
+            }
+        }
+        pw.println("    </referential_constraints>");
+    }
+
+    public void exportJooq(String baseDirectory) throws Exception {
+        var directory = createXmlDirectory(baseDirectory);
+        var f = new File(directory + File.separatorChar + "XMLDatabase.xml");
+
+        try(BufferedWriter bw = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8); var pw = new PrintWriter(bw)) {
+            pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            pw.println("<information_schema xmlns=\"http://www.jooq.org/xsd/jooq-meta-3.15.0.xsd\">");
+            pw.println("    <schemata>");
+            pw.println("        <schema>");
+            pw.println("            <schema_name>" + xml(myDatabase.getName()) + "</schema_name>");
+            pw.println("        </schema>");
+            pw.println("    </schemata>");
+            printTables(pw);
+            printColumns(pw);
+            printTableConstraints(pw);
+            printKeyColumnUsages(pw);
+            printReferentialConstraints(pw);
+            pw.println("</information_schema>");
+        }
+    }
+
 }

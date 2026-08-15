@@ -40,7 +40,11 @@
         </database>
 
         <!-- Generation flags: See advanced configuration properties -->
-        <generate/>
+        <generate>
+            <!-- Inbound paths collide with outbound MySQL foreign-key names for
+                 self-references and tables having two keys to the same target. -->
+            <implicitJoinPathsToMany>false</implicitJoinPathsToMany>
+        </generate>
 
         <target>
             <!-- The destination package of your generated classes (within the
