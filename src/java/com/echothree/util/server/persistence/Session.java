@@ -137,7 +137,11 @@ public class Session {
         
         return log;
     }
-    
+
+    public DSLContext getDslContext() {
+        return dslContext;
+    }
+
     public Connection getConnection() {
         return connection;
     }
