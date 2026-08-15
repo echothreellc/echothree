@@ -51,7 +51,7 @@ public class DatabaseUtilitiesForJooq {
     }
 
     private String tableName(Table table) {
-        return table.getDbTableName();
+        return table.getNamePlural();
     }
 
     private String columnName(Column column) throws Exception {
@@ -67,7 +67,7 @@ public class DatabaseUtilitiesForJooq {
     private String constraintName(Index index) {
         var name = index.getType() == Index.indexPrimaryKey ? "PRIMARY" : index.getName().toLowerCase(Locale.getDefault());
 
-        return tableName(index.getTable()) + "_" + name;
+        return index.getTable().getDbTableName() + "_" + name;
     }
 
     private String foreignKeyName(Column column) throws Exception {
