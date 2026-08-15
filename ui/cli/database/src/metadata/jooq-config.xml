@@ -19,7 +19,7 @@
     <generator>
         <!-- A programmatic naming strategy implementation, referenced by class name. -->
         <strategy>
-            <name>org.jooq.codegen.KeepNamesGeneratorStrategy</name>
+            <name>com.echothree.ui.cli.database.util.JooqGeneratorStrategy</name>
         </strategy>
 
         <database>

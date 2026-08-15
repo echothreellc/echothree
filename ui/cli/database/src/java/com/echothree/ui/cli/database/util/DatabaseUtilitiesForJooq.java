@@ -51,7 +51,7 @@ public class DatabaseUtilitiesForJooq {
     }
 
     private String tableName(Table table) {
-        return table.getNamePlural();
+        return table.getDbTableName();
     }
 
     private String columnName(Column column) throws Exception {
@@ -71,7 +71,7 @@ public class DatabaseUtilitiesForJooq {
     }
 
     private String foreignKeyName(Column column) throws Exception {
-        return columnName(column) + "_fk";
+        return column.getDbColumnName() + "_fk";
     }
 
     private Column physicalTypeColumn(Column column) throws Exception {
