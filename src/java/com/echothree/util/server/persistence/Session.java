@@ -295,23 +295,16 @@ public class Session {
 
     public static void setQueryParams(final PreparedStatement ps, final Object... params) {
         try {
-            for(var i = 0; i < params.length; i++) {
-                if(params[i] instanceof BaseEntity) {
-                    ps.setLong(i + 1, ((BaseEntity)params[i]).getPrimaryKey().getEntityId());
-                } else if(params[i] instanceof BasePK) {
-                    ps.setLong(i + 1, ((BasePK)params[i]).getEntityId());
-                } else if(params[i] instanceof Long) {
-                    ps.setLong(i + 1, ((Long)params[i]));
-                } else if(params[i] instanceof Integer) {
-                    ps.setInt(i + 1, ((Integer)params[i]));
-                } else if(params[i] instanceof String) {
-                    ps.setString(i + 1, (String)params[i]);
-                } else {
-                    if(params[i] == null) {
-                        throw new PersistenceDatabaseException("null Object in setQueryParams, index = " + i);
-                    } else {
-                        throw new PersistenceDatabaseException("unsupported Object in setQueryParams, " + params[i].getClass().getCanonicalName() + ", index = " + i);
-                    }
+            for(var param = 0; param < params.length; param++) {
+                switch(params[param]) {
+                    case BaseEntity baseEntity -> ps.setLong(param + 1, baseEntity.getPrimaryKey().getEntityId());
+                    case BasePK basePK -> ps.setLong(param + 1, basePK.getEntityId());
+                    case Long l -> ps.setLong(param + 1, l);
+                    case Integer i -> ps.setInt(param + 1, i);
+                    case String s -> ps.setString(param + 1, s);
+                    case Boolean b -> ps.setBoolean(param + 1, b);
+                    case null -> throw new PersistenceDatabaseException("null Object in setQueryParams, index = " + param);
+                    default -> throw new PersistenceDatabaseException("unsupported Object in setQueryParams, " + params[param].getClass().getCanonicalName() + ", index = " + param);
                 }
             }
         } catch (SQLException se) {
