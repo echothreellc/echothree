@@ -98,7 +98,7 @@ public class Table {
     }
     
     public String getNamePluralLowerCase() {
-        return getNamePlural().toLowerCase(Locale.getDefault());
+        return DatabasePhysicalNames.tableName(this);
     }
     
     public String getNameSingular() {
@@ -110,7 +110,7 @@ public class Table {
     }
     
     public String getColumnPrefixLowerCase() {
-        return getColumnPrefix().toLowerCase(Locale.getDefault());
+        return DatabasePhysicalNames.columnPrefix(this);
     }
     
     public String getChunkSize() {
@@ -320,7 +320,7 @@ public class Table {
     
     public String getDbTableName() {
         if(dbTableName == null) {
-            dbTableName = namePlural.toLowerCase(Locale.getDefault());
+            dbTableName = DatabasePhysicalNames.tableName(this);
         }
         return dbTableName;
     }

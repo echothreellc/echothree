@@ -102,7 +102,7 @@ public class Database {
         
         myTables.add(result);
         myTablesByPlural.put(namePlural, result);
-        myTablesByPluralLowerCase.put(namePlural.toLowerCase(Locale.getDefault()), result);
+        myTablesByPluralLowerCase.put(DatabasePhysicalNames.tableName(namePlural), result);
         myTablesBySingular.put(nameSingular, result);
         myTablesByColumnPrefix.put(columnPrefix, result);
         

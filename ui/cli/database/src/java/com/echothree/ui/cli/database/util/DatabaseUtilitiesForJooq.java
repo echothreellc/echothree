@@ -19,6 +19,7 @@ package com.echothree.ui.cli.database.util;
 import com.echothree.ui.cli.database.util.definition.Column;
 import com.echothree.ui.cli.database.util.definition.ColumnType;
 import com.echothree.ui.cli.database.util.definition.Database;
+import com.echothree.ui.cli.database.util.definition.DatabasePhysicalNames;
 import com.echothree.ui.cli.database.util.definition.Index;
 import com.echothree.ui.cli.database.util.definition.Table;
 import java.io.BufferedWriter;
@@ -26,7 +27,6 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Locale;
 
 public class DatabaseUtilitiesForJooq {
 
@@ -55,27 +55,11 @@ public class DatabaseUtilitiesForJooq {
                 .replace("'", "&apos;");
     }
 
-    private String tableName(Table table) {
-        return table.getDbTableName();
-    }
-
-    private String columnName(Column column) throws Exception {
-        return column.getDbColumnName();
-    }
-
-    private String constraintName(Index index) {
-        return index.getType() == Index.indexPrimaryKey ? "PRIMARY" : index.getName().toLowerCase(Locale.getDefault()) + "_idx";
-    }
-
     /* jOOQ's XML format omits the referenced table from a referential
      * constraint. Use its constraint catalog solely to disambiguate MySQL's
      * table-local PRIMARY and unique-key names. */
     private String constraintCatalog(Table table) {
         return table.getDbTableName();
-    }
-
-    private String foreignKeyName(Column column) throws Exception {
-        return column.getDbColumnName() + "_fk";
     }
 
     private Column physicalTypeColumn(Column column) throws Exception {
@@ -133,7 +117,7 @@ public class DatabaseUtilitiesForJooq {
         for(var table : myDatabase.getTables()) {
             pw.println("        <table>");
             pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
-            pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
+            pw.println("            <table_name>" + xml(DatabasePhysicalNames.tableName(table)) + "</table_name>");
             if(table.getDescription() != null) {
                 pw.println("            <comment>" + xml(table.getDescription()) + "</comment>");
             }
@@ -150,8 +134,8 @@ public class DatabaseUtilitiesForJooq {
             for(var column : table.getColumns()) {
                 pw.println("        <column>");
                 pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
-                pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
-                pw.println("            <column_name>" + xml(columnName(column)) + "</column_name>");
+                pw.println("            <table_name>" + xml(DatabasePhysicalNames.tableName(table)) + "</table_name>");
+                pw.println("            <column_name>" + xml(DatabasePhysicalNames.columnName(column)) + "</column_name>");
                 printColumnType(pw, column);
                 pw.println("            <ordinal_position>" + ordinalPosition++ + "</ordinal_position>");
                 pw.println("            <is_nullable>" + column.getNullAllowed() + "</is_nullable>");
@@ -172,10 +156,10 @@ public class DatabaseUtilitiesForJooq {
                     pw.println("        <table_constraint>");
                     pw.println("            <constraint_catalog>" + xml(constraintCatalog(table)) + "</constraint_catalog>");
                     pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
-                    pw.println("            <constraint_name>" + xml(constraintName(index)) + "</constraint_name>");
+                    pw.println("            <constraint_name>" + xml(DatabasePhysicalNames.indexName(index)) + "</constraint_name>");
                     pw.println("            <constraint_type>" + (index.getType() == Index.indexPrimaryKey ? "PRIMARY KEY" : "UNIQUE") + "</constraint_type>");
                     pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
-                    pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
+                    pw.println("            <table_name>" + xml(DatabasePhysicalNames.tableName(table)) + "</table_name>");
                     pw.println("        </table_constraint>");
                 }
             }
@@ -184,10 +168,10 @@ public class DatabaseUtilitiesForJooq {
                 pw.println("        <table_constraint>");
                 pw.println("            <constraint_catalog>" + xml(constraintCatalog(table)) + "</constraint_catalog>");
                 pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
-                pw.println("            <constraint_name>" + xml(foreignKeyName(column)) + "</constraint_name>");
+                pw.println("            <constraint_name>" + xml(DatabasePhysicalNames.foreignKeyName(column)) + "</constraint_name>");
                 pw.println("            <constraint_type>FOREIGN KEY</constraint_type>");
                 pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
-                pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
+                pw.println("            <table_name>" + xml(DatabasePhysicalNames.tableName(table)) + "</table_name>");
                 pw.println("        </table_constraint>");
             }
         }
@@ -202,13 +186,13 @@ public class DatabaseUtilitiesForJooq {
                     var ordinalPosition = 1;
 
                     for(var column : index.getIndexColumns()) {
-                        printKeyColumnUsage(pw, constraintName(index), table, column, ordinalPosition++);
+                        printKeyColumnUsage(pw, DatabasePhysicalNames.indexName(index), table, column, ordinalPosition++);
                     }
                 }
             }
 
             for(var column : table.getForeignKeys()) {
-                printKeyColumnUsage(pw, foreignKeyName(column), table, column, 1);
+                printKeyColumnUsage(pw, DatabasePhysicalNames.foreignKeyName(column), table, column, 1);
             }
         }
         pw.println("    </key_column_usages>");
@@ -220,8 +204,8 @@ public class DatabaseUtilitiesForJooq {
         pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
         pw.println("            <constraint_name>" + xml(name) + "</constraint_name>");
         pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
-        pw.println("            <table_name>" + xml(tableName(table)) + "</table_name>");
-        pw.println("            <column_name>" + xml(columnName(column)) + "</column_name>");
+        pw.println("            <table_name>" + xml(DatabasePhysicalNames.tableName(table)) + "</table_name>");
+        pw.println("            <column_name>" + xml(DatabasePhysicalNames.columnName(column)) + "</column_name>");
         pw.println("            <ordinal_position>" + ordinalPosition + "</ordinal_position>");
         pw.println("        </key_column_usage>");
     }
@@ -235,10 +219,10 @@ public class DatabaseUtilitiesForJooq {
                 pw.println("        <referential_constraint>");
                 pw.println("            <constraint_catalog>" + xml(constraintCatalog(table)) + "</constraint_catalog>");
                 pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
-                pw.println("            <constraint_name>" + xml(foreignKeyName(column)) + "</constraint_name>");
+                pw.println("            <constraint_name>" + xml(DatabasePhysicalNames.foreignKeyName(column)) + "</constraint_name>");
                 pw.println("            <unique_constraint_catalog>" + xml(constraintCatalog(destinationTable)) + "</unique_constraint_catalog>");
                 pw.println("            <unique_constraint_schema>" + xml(myDatabase.getName()) + "</unique_constraint_schema>");
-                pw.println("            <unique_constraint_name>" + xml(constraintName(destinationTable.getPrimaryKey())) + "</unique_constraint_name>");
+                pw.println("            <unique_constraint_name>" + xml(DatabasePhysicalNames.indexName(destinationTable.getPrimaryKey())) + "</unique_constraint_name>");
                 switch(column.getOnParentDelete()) {
                     case Column.parentDelete -> pw.println("            <delete_rule>CASCADE</delete_rule>");
                     case Column.parentSetNull -> pw.println("            <delete_rule>SET NULL</delete_rule>");

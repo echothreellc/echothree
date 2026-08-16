@@ -322,20 +322,7 @@ public class Column {
     
     public String getDbColumnName(String columnPrefixLowerCase)
             throws Exception {
-        String result;
-        
-        if(type == ColumnType.columnForeignKey) {
-            var fkTable = getTable().getDatabase().getTable(destinationTable);
-
-            var referencesSelf = fkTable.getNamePlural().equals(table.getNamePlural());
-            var columnNameNotPk = !fkTable.getEID().getName().equals(name);
-
-            result = columnPrefixLowerCase + "_" + (referencesSelf || columnNameNotPk? "": fkTable.getColumnPrefixLowerCase() + "_") + name.toLowerCase(Locale.getDefault());
-        } else {
-            result = columnPrefixLowerCase + "_" + name.toLowerCase(Locale.getDefault());
-        }
-        
-        return result;
+        return DatabasePhysicalNames.columnName(this, columnPrefixLowerCase);
     }
     
     public String getDbColumnName()

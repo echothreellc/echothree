@@ -25,6 +25,7 @@ import com.echothree.ui.cli.database.util.current.CurrentTable;
 import com.echothree.ui.cli.database.util.definition.Column;
 import com.echothree.ui.cli.database.util.definition.ColumnType;
 import com.echothree.ui.cli.database.util.definition.Database;
+import com.echothree.ui.cli.database.util.definition.DatabasePhysicalNames;
 import com.echothree.ui.cli.database.util.definition.Index;
 import com.echothree.ui.cli.database.util.definition.Table;
 import java.sql.Connection;
@@ -149,12 +150,12 @@ public abstract class DatabaseUtilities {
      * @param tableName The table name that this SQL is for
      */
     String getCreateTableBeginning(String tableName) {
-        var dbTableName = tableName.toLowerCase(Locale.getDefault());
+        var dbTableName = DatabasePhysicalNames.tableName(tableName);
         
         if(verbose && dbTableName.length() > MAXIMUM_TABLE_NAME_LENGTH)
             log.warn("table \"" + dbTableName + "\" exceeds " + MAXIMUM_TABLE_NAME_LENGTH + " characters");
         
-        return "CREATE TABLE " + tableName.toLowerCase(Locale.getDefault()) + " ( ";
+        return "CREATE TABLE " + dbTableName + " ( ";
     }
     
     /** Returns a string that may represent columns that are needed by, for example,
@@ -191,35 +192,7 @@ public abstract class DatabaseUtilities {
      * column name in all lower case
      */
     String getColumnName(String columnPrefix, String columnName) {
-        return columnPrefix + "_" + columnName.toLowerCase(Locale.getDefault());
-    }
-    
-    /** Returns a string that contains the column prefix, a separator character and the
-     * column name in all lower case, unless it's a foreign key and thinks get unnecessarily
-     * complex
-     */
-    String getColumnName(Column theColumn)
-    throws Exception {
-        String result;
-        
-        if(theColumn.getType() == ColumnType.columnForeignKey) {
-            var theTable = theColumn.getTable();
-            var columnPrefix = theTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-
-            var destinationTableName = theColumn.getDestinationTable();
-            var destinationTable = theTable.getDatabase().getTable(destinationTableName);
-            var destinationColumnName = theColumn.getDestinationColumn();
-            //Column destinationColumn = destinationTable.getColumn(destinationColumnName);
-            var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-
-            var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
-            var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
-            var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-            result = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
-        } else
-            result = getColumnName(theColumn.getTable().getColumnPrefixLowerCase(), theColumn.getName());
-        
-        return result;
+        return DatabasePhysicalNames.columnName(columnPrefix, columnName);
     }
     
     /** Returns a string that contains the column name, with the first character forced
@@ -352,12 +325,8 @@ public abstract class DatabaseUtilities {
         var destinationColumnName = theColumn.getDestinationColumn();
         var destinationColumn = destinationTable.getColumn(destinationColumnName);
 
-        var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-
-        var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
-        var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
-        var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        var fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
+        var fkColumnPrefix = DatabasePhysicalNames.columnPrefix(theColumn);
+        var fkColumnName = DatabasePhysicalNames.columnName(theColumn);
 
         var fkResult = getColumnDefinitionWithName(destinationTable, fkColumnPrefix, fkColumnName, destinationColumn,
                 theColumn);
@@ -416,40 +385,12 @@ public abstract class DatabaseUtilities {
     /** Returns the name to use for an index in the database
      */
     String getIndexName(Index theIndex) {
-        String indexName;
-        
-        if(theIndex.getType() == Index.indexPrimaryKey) {
-            indexName = "PRIMARY";
-        } else {
-            indexName = theIndex.getName().toLowerCase(Locale.getDefault()) + "_idx";
-        }
-        
-        return indexName;
-    }
-    
-    /** Returns the name of a foreign key column that should be used when creating
-     * an index
-     */
-    String getIndexForeignKeyColumnName(String columnPrefix, Column theColumn)
-    throws Exception {
-
-        var destinationTableName = theColumn.getDestinationTable();
-        var destinationTable = theColumn.getTable().getDatabase().getTable(destinationTableName);
-        var destinationColumnName = theColumn.getDestinationColumn();
-        var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-
-        var referencesSelf = theColumn.getTable().getNamePlural().equals(destinationTable.getNamePlural());
-        var differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
-        var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        var fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
-        
-        return fkColumnName;
+        return DatabasePhysicalNames.indexName(theIndex);
     }
     
     /** Returns a comma separated list of column names that are used in the index
      */
     String getIndexColumnList(Index theIndex) throws Exception {
-        var columnPrefix = theIndex.getTable().getColumnPrefix().toLowerCase(Locale.getDefault());
         var result = "";
         var afterFirst = false;
         
@@ -459,10 +400,7 @@ public abstract class DatabaseUtilities {
             else
                 afterFirst = true;
             
-            if(theColumn.getType() == ColumnType.columnForeignKey)
-                result += getIndexForeignKeyColumnName(columnPrefix, theColumn);
-            else
-                result += columnPrefix + "_" + theColumn.getName().toLowerCase(Locale.getDefault());
+            result += DatabasePhysicalNames.columnName(theColumn);
         }
         
         return result;
@@ -498,9 +436,8 @@ public abstract class DatabaseUtilities {
      * @throws Exception Thrown when a database error occurs
      */
     void createMissingTable(Table theTable) throws Exception {
-        var tableName = theTable.getNamePlural();
-        var tableNameLC = tableName.toLowerCase(Locale.getDefault());
-        var columnPrefix = theTable.getColumnPrefix().toLowerCase(Locale.getDefault());
+        var tableNameLC = DatabasePhysicalNames.tableName(theTable);
+        var columnPrefix = DatabasePhysicalNames.columnPrefix(theTable);
 
         var createSQL = new StringBuilder(getCreateTableBeginning(tableNameLC));
         
@@ -689,7 +626,7 @@ public abstract class DatabaseUtilities {
         
         // Check for missing tables.
         for(var theTable: myDatabase.getTables()) {
-            var tableName = theTable.getNamePlural().toLowerCase(Locale.getDefault());
+            var tableName = DatabasePhysicalNames.tableName(theTable);
             
             xmlTables.add(tableName);
 
@@ -742,7 +679,7 @@ public abstract class DatabaseUtilities {
     }
     
     String getAlterTableAddIndex(Index theIndex, String sqlForIndex) {
-        return "ALTER TABLE " + theIndex.getTable().getNamePlural().toLowerCase(Locale.getDefault())  + " ADD " + sqlForIndex;
+        return "ALTER TABLE " + DatabasePhysicalNames.tableName(theIndex.getTable()) + " ADD " + sqlForIndex;
     }
     
     String getAlterTableDropIndex(CurrentIndex ci) {
@@ -799,15 +736,8 @@ public abstract class DatabaseUtilities {
         var destinationColumnName = theFK.getDestinationColumn();
         var destinationColumn = destinationTable.getColumn(destinationColumnName);
 
-        var columnPrefix = theFK.getTable().getColumnPrefix().toLowerCase(Locale.getDefault());
-        var destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
-
-        var fkDestinationColumnName = destinationColumnPrefix + "_" + destinationColumn.getName().toLowerCase(Locale.getDefault());
-
-        var referencesSelf = theFK.getTable().getNamePlural().equals(destinationTable.getNamePlural());
-        var differingColumnName = !referencesSelf && !theFK.getName().equals(destinationColumnName);
-        var fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        var fkSourceColumnName = fkColumnPrefix + theFK.getName().toLowerCase(Locale.getDefault());
+        var fkDestinationColumnName = DatabasePhysicalNames.columnName(destinationColumn);
+        var fkSourceColumnName = DatabasePhysicalNames.columnName(theFK);
 
         var sqlForFK = getForeignKeyDefinition(theFK, theFK.getTable(), fkSourceColumnName, destinationTable, fkDestinationColumnName);
         var alterSQL = getAlterTableAddForeignKey(theFK, sqlForFK);

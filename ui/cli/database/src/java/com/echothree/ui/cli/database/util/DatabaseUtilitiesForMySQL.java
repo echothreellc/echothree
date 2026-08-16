@@ -20,10 +20,10 @@ import com.echothree.ui.cli.database.util.current.CurrentColumn;
 import com.echothree.ui.cli.database.util.definition.Column;
 import com.echothree.ui.cli.database.util.definition.ColumnType;
 import com.echothree.ui.cli.database.util.definition.Database;
+import com.echothree.ui.cli.database.util.definition.DatabasePhysicalNames;
 import com.echothree.ui.cli.database.util.definition.Index;
 import com.echothree.ui.cli.database.util.definition.Table;
 import java.sql.Types;
-import java.util.Locale;
 
 public class DatabaseUtilitiesForMySQL
         extends DatabaseUtilities {
@@ -288,9 +288,9 @@ public class DatabaseUtilitiesForMySQL
     }
     
     @Override
-    String getForeignKeyDefinition(Column theFK, Table sourceTable, String sourceColumnName, Table destinationTable, String destinationColumnName) {
-        var result = "CONSTRAINT " + sourceColumnName + "_fk FOREIGN KEY (" + sourceColumnName + ") REFERENCES "
-                + destinationTable.getNamePlural().toLowerCase(Locale.getDefault()) + "("
+    String getForeignKeyDefinition(Column theFK, Table sourceTable, String sourceColumnName, Table destinationTable, String destinationColumnName) throws Exception {
+        var result = "CONSTRAINT " + DatabasePhysicalNames.foreignKeyName(theFK) + " FOREIGN KEY (" + sourceColumnName + ") REFERENCES "
+                + DatabasePhysicalNames.tableName(destinationTable) + "("
                 + destinationColumnName + ") ON DELETE ";
         switch(theFK.getOnParentDelete()) {
             case Column.parentDelete -> result += "CASCADE";
