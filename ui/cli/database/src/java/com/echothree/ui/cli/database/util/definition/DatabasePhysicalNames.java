@@ -43,7 +43,7 @@ public final class DatabasePhysicalNames {
         var table = column.getTable();
         var result = columnPrefixLowerCase;
 
-        if(column.getType() == ColumnType.columnForeignKey) {
+        if(column.getType() == ColumnDataType.FOREIGN_KEY) {
             var destinationTable = table.getDatabase().getTable(column.getDestinationTable());
             var referencesSelf = destinationTable.getNamePlural().equals(table.getNamePlural());
             var columnNameNotPrimaryKey = !destinationTable.getEID().getName().equals(column.getName());
@@ -69,7 +69,7 @@ public final class DatabasePhysicalNames {
     }
 
     public static String indexName(Index index) {
-        return index.getType() == Index.indexPrimaryKey
+        return index.getType() == IndexType.PRIMARY_KEY
                 ? "PRIMARY"
                 : index.getName().toLowerCase(Locale.ROOT) + "_idx";
     }

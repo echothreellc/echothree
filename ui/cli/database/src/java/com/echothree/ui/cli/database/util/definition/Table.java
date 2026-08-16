@@ -138,7 +138,7 @@ public class Table {
         myColumns.put(attrName, newColumn);
         myColumnsByLowerCase.put(attrName.toLowerCase(Locale.ROOT), newColumn);
         
-        if(newColumn.getType() == ColumnType.columnForeignKey) {
+        if(newColumn.getType() == ColumnDataType.FOREIGN_KEY) {
             foreignKeys.add(newColumn);
         } else {
             notForeignKeys.add(newColumn);
@@ -179,7 +179,7 @@ public class Table {
 
         var newIndex = new Index(this, type, name);
         
-        if(newIndex.getType() == Index.indexPrimaryKey) {
+        if(newIndex.getType() == IndexType.PRIMARY_KEY) {
             if(primaryKey == null) {
                 primaryKey = newIndex;
             } else {
@@ -240,7 +240,7 @@ public class Table {
     public int countColumnsWithDestinationTable(String destinationTable) {
         var totalColumns = 0;
         
-        totalColumns = columns.stream().filter((theColumn) -> (theColumn.getType() == ColumnType.columnForeignKey)).filter((theColumn) -> theColumn.getDestinationTable().equals(destinationTable)).map((_item) -> 1).reduce(totalColumns, Integer::sum);
+        totalColumns = columns.stream().filter((theColumn) -> (theColumn.getType() == ColumnDataType.FOREIGN_KEY)).filter((theColumn) -> theColumn.getDestinationTable().equals(destinationTable)).map((_item) -> 1).reduce(totalColumns, Integer::sum);
         
         return totalColumns;
     }
@@ -249,9 +249,9 @@ public class Table {
         for(var theIndex: indexes) {
             if(theIndex.isColumnInIndex(destinationColumn)) {
                 var indexType = theIndex.getType();
-                if(indexType == Index.indexMultiple)
+                if(indexType == IndexType.MULTIPLE)
                     return true;
-                else if(indexType == Index.indexUnique && (theIndex.countIndexColumns() > 1))
+                else if(indexType == IndexType.UNIQUE && (theIndex.countIndexColumns() > 1))
                     return true;
             }
         }
@@ -264,14 +264,14 @@ public class Table {
     }
     
     public boolean hasEID() {
-        return hasColumnOfType(ColumnType.columnEID);
+        return hasColumnOfType(ColumnDataType.EID);
     }
     
     public Column getEID() {
         Column result = null;
         
         for(var theColumn: columns) {
-            if(theColumn.getType() == ColumnType.columnEID) {
+            if(theColumn.getType() == ColumnDataType.EID) {
                 result = theColumn;
                 break;
             }
@@ -281,18 +281,18 @@ public class Table {
     }
     
     public boolean hasBlob() {
-        return hasColumnOfType(ColumnType.columnBLOB);
+        return hasColumnOfType(ColumnDataType.BLOB);
     }
     
     public boolean hasClob() {
-        return hasColumnOfType(ColumnType.columnCLOB);
+        return hasColumnOfType(ColumnDataType.CLOB);
     }
     
     public boolean hasForeignKey() {
-        return hasColumnOfType(ColumnType.columnForeignKey);
+        return hasColumnOfType(ColumnDataType.FOREIGN_KEY);
     }
     
-    public boolean hasColumnOfType(int columnType) {
+    public boolean hasColumnOfType(ColumnDataType columnType) {
         var result = false;
         
         for(var theColumn: columns) {
@@ -309,7 +309,7 @@ public class Table {
         var result = true;
         
         for(var theColumn: columns) {
-            if((theColumn.getType() != ColumnType.columnEID) && !theColumn.getNullAllowed()) {
+            if((theColumn.getType() != ColumnDataType.EID) && !theColumn.getNullAllowed()) {
                 result = false;
                 break;
             }

@@ -23,10 +23,11 @@ import com.echothree.ui.cli.database.util.current.CurrentForeignKey;
 import com.echothree.ui.cli.database.util.current.CurrentIndex;
 import com.echothree.ui.cli.database.util.current.CurrentTable;
 import com.echothree.ui.cli.database.util.definition.Column;
-import com.echothree.ui.cli.database.util.definition.ColumnType;
+import com.echothree.ui.cli.database.util.definition.ColumnDataType;
 import com.echothree.ui.cli.database.util.definition.Database;
 import com.echothree.ui.cli.database.util.definition.DatabasePhysicalNames;
 import com.echothree.ui.cli.database.util.definition.Index;
+import com.echothree.ui.cli.database.util.definition.IndexType;
 import com.echothree.ui.cli.database.util.definition.Table;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -202,7 +203,7 @@ public abstract class DatabaseUtilities {
         var columnName = theColumn.getName();
         var parameterName = columnName.substring(0, 1).toLowerCase(Locale.getDefault());
         
-        if(theColumn.getType() == ColumnType.columnForeignKey)
+        if(theColumn.getType() == ColumnDataType.FOREIGN_KEY)
             parameterName += columnName.substring(1, columnName.length() - 2) + "PK";
         else
             parameterName += columnName.substring(1);
@@ -213,24 +214,22 @@ public abstract class DatabaseUtilities {
      */
     String getColumnParameterType(Column theColumn)
     throws Exception {
-        String result = null;
-
-        switch(theColumn.getType()) {
-            case ColumnType.columnEID -> result = "Long";
-            case ColumnType.columnInteger -> result = "Integer";
-            case ColumnType.columnLong -> result = "Long";
-            case ColumnType.columnString -> result = "String";
-            case ColumnType.columnBoolean -> result = "Boolean";
-            case ColumnType.columnDate -> result = "Integer";
-            case ColumnType.columnTime -> result = "Long";
-            case ColumnType.columnCLOB -> result = "char []";
-            case ColumnType.columnBLOB -> result = "byte []";
-            case ColumnType.columnForeignKey -> {
+        return switch(theColumn.getType()) {
+            case ColumnDataType.EID -> "Long";
+            case ColumnDataType.INTEGER -> "Integer";
+            case ColumnDataType.LONG -> "Long";
+            case ColumnDataType.STRING -> "String";
+            case ColumnDataType.BOOLEAN -> "Boolean";
+            case ColumnDataType.DATE -> "Integer";
+            case ColumnDataType.TIME -> "Long";
+            case ColumnDataType.CLOB -> "char []";
+            case ColumnDataType.BLOB -> "byte []";
+            case ColumnDataType.FOREIGN_KEY -> {
                 var destinationTable = theColumn.getTable().getDatabase().getTable(theColumn.getDestinationTable());
-                result = destinationTable.getNameSingular() + "Bean";
+                yield destinationTable.getNameSingular() + "Bean";
             }
-        }
-        return result;
+            case ColumnDataType.UUID -> "String";
+        };
     }
     
     /** Returns the SQL needed for a column of type EID
@@ -340,24 +339,19 @@ public abstract class DatabaseUtilities {
 
     String getColumnDefinitionWithName(Table theTable, String columnPrefix,
             String columnName, Column theColumn, Column theFKColumn) throws Exception {
-        String columnResult = null;
-
-        switch(theColumn.getType()) {
-            case ColumnType.columnEID -> columnResult = getEIDDefinition(columnName, theColumn, theFKColumn);
-            case ColumnType.columnInteger -> columnResult = getIntegerDefinition(columnName, theColumn, theFKColumn);
-            case ColumnType.columnLong -> columnResult = getLongDefinition(columnName, theColumn, theFKColumn);
-            case ColumnType.columnString -> columnResult = getStringDefinition(columnName, theColumn, theFKColumn);
-            case ColumnType.columnBoolean -> columnResult = getBooleanDefinition(columnName, theColumn, theFKColumn);
-            case ColumnType.columnDate -> columnResult = getDateDefinition(columnName, theColumn, theFKColumn);
-            case ColumnType.columnTime -> columnResult = getTimeDefinition(columnName, theColumn, theFKColumn);
-            case ColumnType.columnCLOB -> columnResult = getCLOBDefinition(columnName, theColumn);
-            case ColumnType.columnBLOB -> columnResult = getBLOBDefinition(columnName, theColumn);
-            case ColumnType.columnForeignKey ->
-                    columnResult = getForeignKeyDefinition(theTable, columnPrefix, theColumn);
-            case ColumnType.columnUUID -> columnResult = getUUIDDefinition(columnName, theColumn);
-        }
-        
-        return columnResult;
+        return switch(theColumn.getType()) {
+            case ColumnDataType.EID -> getEIDDefinition(columnName, theColumn, theFKColumn);
+            case ColumnDataType.INTEGER -> getIntegerDefinition(columnName, theColumn, theFKColumn);
+            case ColumnDataType.LONG -> getLongDefinition(columnName, theColumn, theFKColumn);
+            case ColumnDataType.STRING -> getStringDefinition(columnName, theColumn, theFKColumn);
+            case ColumnDataType.BOOLEAN -> getBooleanDefinition(columnName, theColumn, theFKColumn);
+            case ColumnDataType.DATE -> getDateDefinition(columnName, theColumn, theFKColumn);
+            case ColumnDataType.TIME -> getTimeDefinition(columnName, theColumn, theFKColumn);
+            case ColumnDataType.CLOB -> getCLOBDefinition(columnName, theColumn);
+            case ColumnDataType.BLOB -> getBLOBDefinition(columnName, theColumn);
+            case ColumnDataType.FOREIGN_KEY -> getForeignKeyDefinition(theTable, columnPrefix, theColumn);
+            case ColumnDataType.UUID -> getUUIDDefinition(columnName, theColumn);
+        };
     }
     
     /** Get the SQL needed to include in either a CREATE TABLE or an ALTER TABLE for
@@ -533,7 +527,7 @@ public abstract class DatabaseUtilities {
         var firstColumnName = firstColumn.getColumnName();
         var theColumn = getColumnByDbName(theTable, firstColumnName);
 
-        if(theColumn != null && theColumn.getType() == ColumnType.columnForeignKey) {
+        if(theColumn != null && theColumn.getType() == ColumnDataType.FOREIGN_KEY) {
             var cfk = ct.getForeignKeyByColumnName(firstColumnName);
 
             neededUpdates.addExtraForeignKey(cfk);
@@ -556,9 +550,9 @@ public abstract class DatabaseUtilities {
                 var indexIncorrect = false;
                 var indexType = theIndex.getType();
                 
-                if(ci.isUnique() == (indexType == Index.indexMultiple)) {
+                if(ci.isUnique() == (indexType == IndexType.MULTIPLE)) {
                     indexIncorrect = true;
-                } else if(ci.isPrimaryKey() != (indexType == Index.indexPrimaryKey)) {
+                } else if(ci.isPrimaryKey() != (indexType == IndexType.PRIMARY_KEY)) {
                     indexIncorrect = true;
                 }
                 
@@ -697,9 +691,9 @@ public abstract class DatabaseUtilities {
     void createMissingIndex(Index theIndex)
             throws Exception {
         var sqlForIndex = switch(theIndex.getType()) {
-            case Index.indexPrimaryKey -> getPrimaryKeyIndex(theIndex);
-            case Index.indexUnique -> getUniqueIndex(theIndex);
-            case Index.indexMultiple -> getMultipleIndex(theIndex);
+            case IndexType.PRIMARY_KEY -> getPrimaryKeyIndex(theIndex);
+            case IndexType.UNIQUE -> getUniqueIndex(theIndex);
+            case IndexType.MULTIPLE -> getMultipleIndex(theIndex);
             default -> null;
         };
 

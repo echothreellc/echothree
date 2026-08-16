@@ -17,7 +17,7 @@
 package com.echothree.ui.cli.database.util;
 
 import com.echothree.ui.cli.database.util.definition.Component;
-import com.echothree.ui.cli.database.util.definition.ColumnType;
+import com.echothree.ui.cli.database.util.definition.ColumnDataType;
 import com.echothree.ui.cli.database.util.definition.Database;
 import com.echothree.ui.cli.database.util.definition.Table;
 import java.io.File;
@@ -226,7 +226,7 @@ public class DatabaseUtilitiesForJava {
         var theColumns = theTable.getColumns();
         
         for(var column: theColumns) {
-            if(column.getType() != ColumnType.columnEID) {
+            if(column.getType() != ColumnDataType.EID) {
                 var variableName = column.getVariableName();
                 
                 pw.println("    private " + column.getTypeAsJavaType() + " " + variableName + ";");
@@ -245,7 +245,7 @@ public class DatabaseUtilitiesForJava {
         
         wroteColumnVariable = false;
         for(var column: theColumns) {
-            if(column.getType() != ColumnType.columnEID) {
+            if(column.getType() != ColumnDataType.EID) {
                 if(wroteColumnVariable)
                     pw.print(", ");
                 pw.print(column.getTypeAsJavaType() + " " + column.getVariableName());
@@ -256,7 +256,7 @@ public class DatabaseUtilitiesForJava {
         pw.println(")");
         pw.println("            throws PersistenceNotNullException {");
         
-        theColumns.stream().filter((column) -> (column.getType() != ColumnType.columnEID)).map((column) -> {
+        theColumns.stream().filter((column) -> (column.getType() != ColumnDataType.EID)).map((column) -> {
             var variableName = column.getVariableName();
             if(!column.getNullAllowed()) {
                 pw.println("        checkForNull(" + variableName + ");");
@@ -293,7 +293,7 @@ public class DatabaseUtilitiesForJava {
         
         wroteColumnVariable = false;
         for(var column: columns) {
-            if(column.getType() != ColumnType.columnEID) {
+            if(column.getType() != ColumnDataType.EID) {
                 if(wroteColumnVariable)
                     pw.print(", ");
                 pw.print(column.getVariableName());
@@ -309,7 +309,7 @@ public class DatabaseUtilitiesForJava {
         
         wroteColumnVariable = false;
         for(var column: columns) {
-            if(column.getType() != ColumnType.columnEID) {
+            if(column.getType() != ColumnDataType.EID) {
                 if(wroteColumnVariable)
                     pw.print(", ");
                 pw.print(column.getTypeAsJavaType() + " " + column.getVariableName());
@@ -324,7 +324,7 @@ public class DatabaseUtilitiesForJava {
         
         wroteColumnVariable = false;
         for(var column: columns) {
-            if(column.getType() != ColumnType.columnEID) {
+            if(column.getType() != ColumnDataType.EID) {
                 if(wroteColumnVariable)
                     pw.print(", ");
                 pw.print(column.getVariableName());
@@ -383,7 +383,7 @@ public class DatabaseUtilitiesForJava {
             
             columns.forEach((column) -> {
                 var columnType = column.getType();
-                if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
+                if (columnType != ColumnDataType.EID && columnType != ColumnDataType.BLOB) {
                     var variableName = column.getVariableName();
                     pw.println("            hashCode = 37 * hashCode + ((" + variableName + " != null) ? " + variableName + ".hashCode() : 0);");
                 }
@@ -406,7 +406,7 @@ public class DatabaseUtilitiesForJava {
 
         columns.forEach((column) -> {
             var columnType = column.getType();
-            if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
+            if (columnType != ColumnDataType.EID && columnType != ColumnDataType.BLOB) {
                 pw.println("                    \", " + column.getVariableName() + "=\" + " + column.getGetFunctionName() + "() +");
             }
         });
@@ -462,7 +462,7 @@ public class DatabaseUtilitiesForJava {
             
             columns.forEach((column) -> {
                 var type = column.getType();
-                if (type != ColumnType.columnEID) {
+                if (type != ColumnDataType.EID) {
                     var getFunctionName = column.getGetFunctionName();
                     var variableSuffixName = column.getVariableSuffixName();
                     var javaType = column.getTypeAsJavaType();
@@ -501,7 +501,7 @@ public class DatabaseUtilitiesForJava {
 
             var variableWritten = false;
             for(var column: columns) {
-                if(column.getType() != ColumnType.columnEID) {
+                if(column.getType() != ColumnDataType.EID) {
                     if(variableWritten)
                         pw.print(" || ");
                     pw.print(column.getVariableName() + "HasBeenModified");
@@ -517,7 +517,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    @Override");
         pw.println("    public void clearHasBeenModified() {");
         
-        columns.stream().filter((column) -> (column.getType() != ColumnType.columnEID)).forEach((column) -> {
+        columns.stream().filter((column) -> (column.getType() != ColumnDataType.EID)).forEach((column) -> {
             pw.println("        " + column.getVariableName() + "HasBeenModified = false;");
         });
         
@@ -526,7 +526,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeValueGetsSets(PrintWriter pw, Table theTable) {
-        theTable.getColumns().stream().filter((column) -> (column.getType() != ColumnType.columnEID)).map((column) -> {
+        theTable.getColumns().stream().filter((column) -> (column.getType() != ColumnDataType.EID)).map((column) -> {
             var getFunctionName = column.getGetFunctionName();
             var variableName = column.getVariableName();
             var javaType = column.getTypeAsJavaType();
@@ -862,7 +862,7 @@ public class DatabaseUtilitiesForJava {
         theTable.getColumns().forEach((column) -> {
             var type = column.getType();
             
-            if (type != ColumnType.columnEID) {
+            if (type != ColumnDataType.EID) {
                 var getFunctionName = column.getGetFunctionName();
                 var setFunctionName = column.getSetFunctionName();
                 var variableName = column.getVariableName();
@@ -876,7 +876,7 @@ public class DatabaseUtilitiesForJava {
                 pw.println("    }");
                 pw.println("    ");
                 
-                if(type == ColumnType.columnForeignKey) {
+                if(type == ColumnDataType.FOREIGN_KEY) {
                     var getEntityFunctionName = column.getGetEntityFunctionName();
                     var fkFactoryClass = column.getFKFactoryClass();
                     
@@ -913,7 +913,7 @@ public class DatabaseUtilitiesForJava {
                 pw.println("    }");
                 pw.println("    ");
                 
-                if(type == ColumnType.columnForeignKey) {
+                if(type == ColumnDataType.FOREIGN_KEY) {
                     pw.println("    public void " + column.getSetEntityFunctionName() + "(" + nullAnnotation + " " + fkEntityClass + " entity) {");
                     pw.println("        " + setFunctionName + "(entity == null ? null : entity.getPrimaryKey());");
                     pw.println("    }");
@@ -1055,12 +1055,12 @@ public class DatabaseUtilitiesForJava {
         for(var column: columns) {
             var type = column.getType();
 
-            if(type == ColumnType.columnEID) {
+            if(type == ColumnDataType.EID) {
                 pkColumn = column.getDbColumnName();
             } else {
                 if(!allColumnsExceptPk.isEmpty())
                     allColumnsExceptPk += ", ";
-                if(type == ColumnType.columnUUID)
+                if(type == ColumnDataType.UUID)
                     allColumnsExceptPk += "BIN_TO_UUID(" + column.getDbColumnName() + ") AS " + column.getDbColumnName();
                 else
                     allColumnsExceptPk += column.getDbColumnName();
@@ -1072,7 +1072,7 @@ public class DatabaseUtilitiesForJava {
                 if(!updateColumns.isEmpty())
                     updateColumns += ", ";
                 updateColumns += column.getDbColumnName();
-                if(type == ColumnType.columnUUID)
+                if(type == ColumnDataType.UUID)
                     updateColumns += " = UUID_TO_BIN(?)";
                 else
                     updateColumns += " = ?";
@@ -1080,7 +1080,7 @@ public class DatabaseUtilitiesForJava {
             
             if(!questionMarks.isEmpty())
                 questionMarks += ", ";
-            if(type == ColumnType.columnUUID)
+            if(type == ColumnDataType.UUID)
                 questionMarks += "UUID_TO_BIN(?)";
             else
                 questionMarks += "?";
@@ -1322,7 +1322,7 @@ public class DatabaseUtilitiesForJava {
         for(var column: columns) {
             var type = column.getType();
 
-            if(type != ColumnType.columnEID) {
+            if(type != ColumnDataType.EID) {
                 var dbColumnName = column.getDbColumnName();
 
                 pw.println("            " + column.getTypeAsJavaType() + " " + dbColumnName + " = _value." + column.getGetFunctionName() + "();");
@@ -1331,25 +1331,25 @@ public class DatabaseUtilitiesForJava {
                 pw.println("            else");
 
                 switch(type) {
-                    case ColumnType.columnInteger ->
+                    case ColumnDataType.INTEGER ->
                             pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnLong ->
+                    case ColumnDataType.LONG ->
                             pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnString ->
+                    case ColumnDataType.STRING ->
                             pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnBoolean ->
+                    case ColumnDataType.BOOLEAN ->
                             pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + "? 1: 0);");
-                    case ColumnType.columnDate ->
+                    case ColumnDataType.DATE ->
                             pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnTime ->
+                    case ColumnDataType.TIME ->
                             pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnForeignKey ->
+                    case ColumnDataType.FOREIGN_KEY ->
                             pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ".getEntityId());");
-                    case ColumnType.columnBLOB ->
+                    case ColumnDataType.BLOB ->
                             pw.println("                _ps.setBinaryStream(" + parameterCount + ", new ByteArrayInputStream(" + dbColumnName + ".byteArrayValue()), " + dbColumnName + ".length());");
-                    case ColumnType.columnCLOB ->
+                    case ColumnDataType.CLOB ->
                             pw.println("                _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
-                    case ColumnType.columnUUID ->
+                    case ColumnDataType.UUID ->
                             pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
                     default -> pw.println("<error>");
                 }
@@ -1460,7 +1460,7 @@ public class DatabaseUtilitiesForJava {
         for(var column: columns) {
             var type = column.getType();
 
-            if(type != ColumnType.columnEID) {
+            if(type != ColumnDataType.EID) {
                 if(!isFirst) {
                     createEntityParameters += ", ";
                     createPkParameters += ", ";
@@ -1472,7 +1472,7 @@ public class DatabaseUtilitiesForJava {
 
                 valueParameters += ", ";
 
-                if(type == ColumnType.columnForeignKey) {
+                if(type == ColumnDataType.FOREIGN_KEY) {
                     createEntityParameters += column.getFKEntityClass() + " " + column.getEntityVariableName();
                     pkParameters += column.getEntityVariableName() + " == null ? null : " + column.getEntityVariableName() + ".getPrimaryKey()";
                     createPkParameters += column.getFKPKClass() + " " + column.getVariableName();
@@ -1510,7 +1510,7 @@ public class DatabaseUtilitiesForJava {
         for(var column: columns) {
             var type = column.getType();
 
-            if(type != ColumnType.columnEID) {
+            if(type != ColumnDataType.EID) {
                 var dbColumnName = column.getDbColumnName();
                 
                 pw.println("        " + column.getTypeAsJavaType() + " " + dbColumnName + " = _value." + column.getGetFunctionName() + "();");
@@ -1519,25 +1519,25 @@ public class DatabaseUtilitiesForJava {
                 pw.println("        else");
 
                 switch(type) {
-                    case ColumnType.columnInteger ->
+                    case ColumnDataType.INTEGER ->
                             pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnLong ->
+                    case ColumnDataType.LONG ->
                             pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnString ->
+                    case ColumnDataType.STRING ->
                             pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnBoolean ->
+                    case ColumnDataType.BOOLEAN ->
                             pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + "? 1: 0);");
-                    case ColumnType.columnDate ->
+                    case ColumnDataType.DATE ->
                             pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnTime ->
+                    case ColumnDataType.TIME ->
                             pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
-                    case ColumnType.columnForeignKey ->
+                    case ColumnDataType.FOREIGN_KEY ->
                             pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ".getEntityId());");
-                    case ColumnType.columnBLOB ->
+                    case ColumnDataType.BLOB ->
                             pw.println("            _ps.setBinaryStream(" + parameterCount + ", new ByteArrayInputStream(" + dbColumnName + ".byteArrayValue()), " + dbColumnName + ".length());");
-                    case ColumnType.columnCLOB ->
+                    case ColumnDataType.CLOB ->
                             pw.println("            _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
-                    case ColumnType.columnUUID ->
+                    case ColumnDataType.UUID ->
                             pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
                     default -> pw.println("<error>");
                 }
@@ -1690,47 +1690,47 @@ public class DatabaseUtilitiesForJava {
         for(var column: theTable.getColumns()) {
             var type = column.getType();
 
-            if(type != ColumnType.columnEID) {
+            if(type != ColumnDataType.EID) {
                 var dbColumnName = column.getDbColumnName();
 
                 switch(type) {
-                    case ColumnType.columnInteger -> {
+                    case ColumnDataType.INTEGER -> {
                         pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnLong -> {
+                    case ColumnDataType.LONG -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnString -> {
+                    case ColumnDataType.STRING -> {
                         pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnBoolean -> {
+                    case ColumnDataType.BOOLEAN -> {
                         pw.println("                Boolean " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ") == 1;");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnDate -> {
+                    case ColumnDataType.DATE -> {
                         pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnTime -> {
+                    case ColumnDataType.TIME -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnForeignKey -> {
+                    case ColumnDataType.FOREIGN_KEY -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", new " + column.getFKPKClass() + "(" + dbColumnName + ")";
                     }
-                    case ColumnType.columnBLOB -> {
+                    case ColumnDataType.BLOB -> {
                         pw.println("                Blob " + dbColumnName + " = rs.getBlob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", new ByteArray(" + dbColumnName + ".getBytes(1L, (int)" + dbColumnName + ".length()))";
                     }
-                    case ColumnType.columnCLOB -> {
+                    case ColumnDataType.CLOB -> {
                         pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
                     }
-                    case ColumnType.columnUUID -> {
+                    case ColumnDataType.UUID -> {
                         pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
@@ -2050,47 +2050,47 @@ public class DatabaseUtilitiesForJava {
         for(var column: theTable.getColumns()) {
             var type = column.getType();
 
-            if(type != ColumnType.columnEID) {
+            if(type != ColumnDataType.EID) {
                 var dbColumnName = column.getDbColumnName();
 
                 switch(type) {
-                    case ColumnType.columnInteger -> {
+                    case ColumnDataType.INTEGER -> {
                         pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnLong -> {
+                    case ColumnDataType.LONG -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnString -> {
+                    case ColumnDataType.STRING -> {
                         pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnBoolean -> {
+                    case ColumnDataType.BOOLEAN -> {
                         pw.println("                Boolean " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ") == 1;");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnDate -> {
+                    case ColumnDataType.DATE -> {
                         pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnTime -> {
+                    case ColumnDataType.TIME -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
-                    case ColumnType.columnForeignKey -> {
+                    case ColumnDataType.FOREIGN_KEY -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: new " + column.getFKPKClass() + "(" + dbColumnName + ")";
                     }
-                    case ColumnType.columnBLOB -> {
+                    case ColumnDataType.BLOB -> {
                         pw.println("                Blob " + dbColumnName + " = rs.getBlob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", new ByteArray(" + dbColumnName + ".getBytes(1L, (int)" + dbColumnName + ".length()))";
                     }
-                    case ColumnType.columnCLOB -> {
+                    case ColumnDataType.CLOB -> {
                         pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
                     }
-                    case ColumnType.columnUUID -> {
+                    case ColumnDataType.UUID -> {
                         pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
                     }

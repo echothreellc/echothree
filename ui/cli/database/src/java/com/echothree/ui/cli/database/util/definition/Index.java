@@ -20,23 +20,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Index {
-    
-    public static final int indexPrimaryKey = 1;
-    public static final int indexUnique = 2;
-    public static final int indexMultiple = 3;
-    
-    static public String indexTypeToString(int type) {
-        return switch(type) {
-            case indexPrimaryKey -> "PrimaryKey";
-            case indexUnique -> "Unique";
-            case indexMultiple -> "Multiple";
-            default -> null;
-        };
+
+    static public String indexTypeToString(IndexType type) {
+        return type.getDefinitionName();
     }
     
     Table table;
     
-    int type;
+    IndexType type;
     String name;
     boolean nameWasSpecified;
     
@@ -49,9 +40,9 @@ public class Index {
         this.nameWasSpecified = name != null;
 
         this.type = switch(type) {
-            case "PrimaryKey" -> indexPrimaryKey;
-            case "Unique" -> indexUnique;
-            case "Multiple" -> indexMultiple;
+            case "PrimaryKey" -> IndexType.PRIMARY_KEY;
+            case "Unique" -> IndexType.UNIQUE;
+            case "Multiple" -> IndexType.MULTIPLE;
             default -> throw new Exception("Illegal index type " + type);
         };
         
@@ -62,7 +53,7 @@ public class Index {
         return table;
     }
     
-    public int getType() {
+    public IndexType getType() {
         return type;
     }
     
@@ -92,7 +83,7 @@ public class Index {
         indexColumns.add(column);
         
         if(indexColumns.size() > 1) {
-            if(!nameWasSpecified && type != indexPrimaryKey) {
+            if(!nameWasSpecified && type != IndexType.PRIMARY_KEY) {
                 throw new Exception("Index with more than one column was not given a name in " + table.getNamePlural());
             }
         }

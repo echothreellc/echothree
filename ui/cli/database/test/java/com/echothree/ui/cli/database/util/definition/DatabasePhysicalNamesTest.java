@@ -32,6 +32,11 @@ public class DatabasePhysicalNamesTest {
         var detailWidgetId = widgetDetails.getColumn("WidgetId");
 
         assertEquals("widgets", DatabasePhysicalNames.tableName(widgets));
+        assertEquals(ColumnDataType.EID, widgetId.getType());
+        assertEquals(ColumnDataType.FOREIGN_KEY, parentWidgetId.getType());
+        assertEquals(ParentDeleteAction.DELETE, parentWidgetId.getOnParentDelete());
+        assertEquals(IndexType.PRIMARY_KEY, widgets.getPrimaryKey().getType());
+        assertEquals(IndexType.UNIQUE, widgets.getIndexes().get(1).getType());
         assertEquals("wdg_widgetid", DatabasePhysicalNames.columnName(widgetId));
         assertEquals("wdg_parentwidgetid", DatabasePhysicalNames.columnName(parentWidgetId));
         assertEquals("custom_parentwidgetid", DatabasePhysicalNames.columnName(parentWidgetId, "custom"));

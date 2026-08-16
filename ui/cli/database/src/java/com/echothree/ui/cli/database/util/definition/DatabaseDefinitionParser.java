@@ -502,7 +502,7 @@ public class DatabaseDefinitionParser
             throws SAXException {
         if(localName.equals("index")) {
             var indexColumns = currentIndex.getIndexColumns().size();
-            var isPrimaryKey = currentIndex.getType() == Index.indexPrimaryKey;
+            var isPrimaryKey = currentIndex.getType() == IndexType.PRIMARY_KEY;
             
             if(indexColumns == 0 && !isPrimaryKey) {
                 var indexName = currentIndex.getName();

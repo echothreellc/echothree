@@ -17,7 +17,7 @@
 package com.echothree.ui.cli.database.util;
 
 import com.echothree.ui.cli.database.util.definition.Column;
-import com.echothree.ui.cli.database.util.definition.ColumnType;
+import com.echothree.ui.cli.database.util.definition.ColumnDataType;
 import com.echothree.ui.cli.database.util.definition.Database;
 import com.echothree.ui.cli.database.util.definition.Table;
 import java.sql.Connection;
@@ -137,7 +137,7 @@ public class DatabaseViewUtilities {
                         viewColumns.append(column.getDbColumnName(table.getColumnPrefixLowerCase()));
 
                         var selectColumnName = column.getDbColumnName();
-                        if(column.getType() == ColumnType.columnUUID)
+                        if(column.getType() == ColumnDataType.UUID)
                             selectColumnName = "BIN_TO_UUID(" + selectColumnName + ") AS " + selectColumnName;
                         selectColumns.append(selectColumnName);
 
@@ -197,7 +197,7 @@ public class DatabaseViewUtilities {
                     viewColumns.append(column.getDbColumnName(table.getColumnPrefixLowerCase()));
 
                     var selectColumnName = column.getDbColumnName();
-                    if(column.getType() == ColumnType.columnUUID)
+                    if(column.getType() == ColumnDataType.UUID)
                         selectColumnName = "BIN_TO_UUID(" + selectColumnName + ") AS " + selectColumnName;
                     selectColumns.append(selectColumnName);
 

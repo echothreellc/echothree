@@ -17,10 +17,12 @@
 package com.echothree.ui.cli.database.util;
 
 import com.echothree.ui.cli.database.util.definition.Column;
-import com.echothree.ui.cli.database.util.definition.ColumnType;
+import com.echothree.ui.cli.database.util.definition.ColumnDataType;
 import com.echothree.ui.cli.database.util.definition.Database;
 import com.echothree.ui.cli.database.util.definition.DatabasePhysicalNames;
 import com.echothree.ui.cli.database.util.definition.Index;
+import com.echothree.ui.cli.database.util.definition.IndexType;
+import com.echothree.ui.cli.database.util.definition.ParentDeleteAction;
 import com.echothree.ui.cli.database.util.definition.Table;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -63,7 +65,7 @@ public class DatabaseUtilitiesForJooq {
     }
 
     private Column physicalTypeColumn(Column column) throws Exception {
-        if(column.getType() == ColumnType.columnForeignKey) {
+        if(column.getType() == ColumnDataType.FOREIGN_KEY) {
             var destinationTable = myDatabase.getTable(column.getDestinationTable());
 
             return physicalTypeColumn(destinationTable.getColumn(column.getDestinationColumn()));
@@ -76,15 +78,15 @@ public class DatabaseUtilitiesForJooq {
         var physicalColumn = physicalTypeColumn(column);
 
         switch(physicalColumn.getType()) {
-            case ColumnType.columnEID, ColumnType.columnLong, ColumnType.columnTime -> {
+            case ColumnDataType.EID, ColumnDataType.LONG, ColumnDataType.TIME -> {
                 pw.println("                <data_type>bigint</data_type>");
                 pw.println("                <numeric_precision>19</numeric_precision>");
             }
-            case ColumnType.columnInteger, ColumnType.columnDate -> {
+            case ColumnDataType.INTEGER, ColumnDataType.DATE -> {
                 pw.println("                <data_type>int</data_type>");
                 pw.println("                <numeric_precision>10</numeric_precision>");
             }
-            case ColumnType.columnString -> {
+            case ColumnDataType.STRING -> {
                 var maximumLength = physicalColumn.getMaxLength();
 
                 if(maximumLength < 256) {
@@ -98,13 +100,13 @@ public class DatabaseUtilitiesForJooq {
                     pw.println("                <data_type>longtext</data_type>");
                 }
             }
-            case ColumnType.columnBoolean -> {
+            case ColumnDataType.BOOLEAN -> {
                 pw.println("                <data_type>bit</data_type>");
                 pw.println("                <numeric_precision>1</numeric_precision>");
             }
-            case ColumnType.columnCLOB -> pw.println("                <data_type>longtext</data_type>");
-            case ColumnType.columnBLOB -> pw.println("                <data_type>longblob</data_type>");
-            case ColumnType.columnUUID -> {
+            case ColumnDataType.CLOB -> pw.println("                <data_type>longtext</data_type>");
+            case ColumnDataType.BLOB -> pw.println("                <data_type>longblob</data_type>");
+            case ColumnDataType.UUID -> {
                 pw.println("                <data_type>binary</data_type>");
                 pw.println("                <character_maximum_length>16</character_maximum_length>");
             }
@@ -152,12 +154,12 @@ public class DatabaseUtilitiesForJooq {
         pw.println("    <table_constraints>");
         for(var table : myDatabase.getTables()) {
             for(var index : table.getIndexes()) {
-                if(index.getType() != Index.indexMultiple) {
+                if(index.getType() != IndexType.MULTIPLE) {
                     pw.println("        <table_constraint>");
                     pw.println("            <constraint_catalog>" + xml(constraintCatalog(table)) + "</constraint_catalog>");
                     pw.println("            <constraint_schema>" + xml(myDatabase.getName()) + "</constraint_schema>");
                     pw.println("            <constraint_name>" + xml(DatabasePhysicalNames.indexName(index)) + "</constraint_name>");
-                    pw.println("            <constraint_type>" + (index.getType() == Index.indexPrimaryKey ? "PRIMARY KEY" : "UNIQUE") + "</constraint_type>");
+                    pw.println("            <constraint_type>" + (index.getType() == IndexType.PRIMARY_KEY ? "PRIMARY KEY" : "UNIQUE") + "</constraint_type>");
                     pw.println("            <table_schema>" + xml(myDatabase.getName()) + "</table_schema>");
                     pw.println("            <table_name>" + xml(DatabasePhysicalNames.tableName(table)) + "</table_name>");
                     pw.println("        </table_constraint>");
@@ -182,7 +184,7 @@ public class DatabaseUtilitiesForJooq {
         pw.println("    <key_column_usages>");
         for(var table : myDatabase.getTables()) {
             for(var index : table.getIndexes()) {
-                if(index.getType() != Index.indexMultiple) {
+                if(index.getType() != IndexType.MULTIPLE) {
                     var ordinalPosition = 1;
 
                     for(var column : index.getIndexColumns()) {
@@ -224,8 +226,8 @@ public class DatabaseUtilitiesForJooq {
                 pw.println("            <unique_constraint_schema>" + xml(myDatabase.getName()) + "</unique_constraint_schema>");
                 pw.println("            <unique_constraint_name>" + xml(DatabasePhysicalNames.indexName(destinationTable.getPrimaryKey())) + "</unique_constraint_name>");
                 switch(column.getOnParentDelete()) {
-                    case Column.parentDelete -> pw.println("            <delete_rule>CASCADE</delete_rule>");
-                    case Column.parentSetNull -> pw.println("            <delete_rule>SET NULL</delete_rule>");
+                    case ParentDeleteAction.DELETE -> pw.println("            <delete_rule>CASCADE</delete_rule>");
+                    case ParentDeleteAction.SET_NULL -> pw.println("            <delete_rule>SET NULL</delete_rule>");
                     default -> {
                     }
                 }
