@@ -20,7 +20,7 @@ import com.echothree.control.user.warehouse.common.form.CreateLocationForm;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -72,7 +72,7 @@ public class CreateLocationCommand
     EntityInstanceControl entityInstanceControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -124,7 +124,7 @@ public class CreateLocationCommand
                             
                             if(!multipleUseError) {
                                 var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-                                var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+                                var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                                 
                                 if(inventoryLocationGroup != null) {
                                     var velocity = Integer.valueOf(form.getVelocity());

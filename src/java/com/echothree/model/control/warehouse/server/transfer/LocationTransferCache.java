@@ -17,7 +17,7 @@
 package com.echothree.model.control.warehouse.server.transfer;
 
 import javax.inject.Inject;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
@@ -34,7 +34,7 @@ public class LocationTransferCache
         extends BaseWarehouseTransferCache<Location, LocationTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     LocationUseTypeControl locationUseTypeControl;
@@ -74,7 +74,7 @@ public class LocationTransferCache
             var locationTypeTransfer = warehouseControl.getLocationTypeTransfer(userVisit, locationDetail.getLocationType());
             var locationUseTypeTransfer = locationUseTypeControl.getLocationUseTypeTransfer(userVisit, locationDetail.getLocationUseType());
             var velocity = locationDetail.getVelocity();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupTransfer(userVisit, locationDetail.getInventoryLocationGroup());
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupTransfer(userVisit, locationDetail.getInventoryLocationGroup());
             var description = warehouseControl.getBestLocationDescription(location, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(location.getPrimaryKey());

@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupCapacitiesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupCapacity;
@@ -47,7 +47,7 @@ public class GetInventoryLocationGroupCapacitiesCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseLogic warehouseLogic;
@@ -65,7 +65,7 @@ public class GetInventoryLocationGroupCapacitiesCommand
         if(!hasExecutionErrors()) {
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
 
-            inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
+            inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
 
             if(inventoryLocationGroup == null) {
                 addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), warehouse.getWarehouseName(), inventoryLocationGroupName);
@@ -75,12 +75,12 @@ public class GetInventoryLocationGroupCapacitiesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : inventoryControl.countInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
+        return hasExecutionErrors() ? null : inventoryLocationGroupControl.countInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
     }
 
     @Override
     protected Collection<InventoryLocationGroupCapacity> getEntities() {
-        return hasExecutionErrors() ? null : inventoryControl.getInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
+        return hasExecutionErrors() ? null : inventoryLocationGroupControl.getInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
     }
 
     @Override
@@ -90,13 +90,13 @@ public class GetInventoryLocationGroupCapacitiesCommand
         if(entities != null) {
             var userVisit = getUserVisit();
 
-            result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroup));
+            result.setInventoryLocationGroup(inventoryLocationGroupControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroup));
 
             if(session.hasLimit(InventoryLocationGroupCapacityFactory.class)) {
                 result.setInventoryLocationGroupCapacityCount(getTotalEntities());
             }
 
-            result.setInventoryLocationGroupCapacities(inventoryControl.getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(userVisit, inventoryLocationGroup));
+            result.setInventoryLocationGroupCapacities(inventoryLocationGroupControl.getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(userVisit, inventoryLocationGroup));
         }
 
         return result;

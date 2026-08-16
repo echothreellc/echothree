@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -56,7 +56,7 @@ public class DeleteInventoryLocationGroupCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -74,10 +74,10 @@ public class DeleteInventoryLocationGroupCommand
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
-                inventoryControl.deleteInventoryLocationGroup(inventoryLocationGroup, getPartyPK());
+                inventoryLocationGroupControl.deleteInventoryLocationGroup(inventoryLocationGroup, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
             }

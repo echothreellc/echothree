@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupCapacityForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -47,7 +47,7 @@ public class CreateInventoryLocationGroupCapacityCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     UomControl uomControl;
@@ -67,7 +67,7 @@ public class CreateInventoryLocationGroupCapacityCommand
 
         if(warehouse != null) {
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouse.getParty(),
                     inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
@@ -79,13 +79,13 @@ public class CreateInventoryLocationGroupCapacityCommand
                     var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                     if(unitOfMeasureType != null) {
-                        var inventoryLocationGroupCapacity = inventoryControl.getInventoryLocationGroupCapacity(inventoryLocationGroup,
+                        var inventoryLocationGroupCapacity = inventoryLocationGroupControl.getInventoryLocationGroupCapacity(inventoryLocationGroup,
                                 unitOfMeasureType);
 
                         if(inventoryLocationGroupCapacity == null) {
                             var capacity = Long.valueOf(form.getCapacity());
 
-                            inventoryControl.createInventoryLocationGroupCapacity(inventoryLocationGroup, unitOfMeasureType,
+                            inventoryLocationGroupControl.createInventoryLocationGroupCapacity(inventoryLocationGroup, unitOfMeasureType,
                                     capacity, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.DuplicateInventoryLocationGroupCapacity.name());

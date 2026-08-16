@@ -60,7 +60,7 @@ public class InventoryTransactionTypeControl
     @Inject
     InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
 
-    /** Creates a new instance of InventoryControl */
+    /** Creates a new instance of InventoryTransactionTypeControl */
     protected InventoryTransactionTypeControl() {
         super();
     }

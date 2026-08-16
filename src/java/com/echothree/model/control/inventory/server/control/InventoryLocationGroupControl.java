@@ -67,7 +67,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 @CommandScope
-public class InventoryControl
+public class InventoryLocationGroupControl
         extends BaseModelControl {
 
     @Inject
@@ -85,8 +85,8 @@ public class InventoryControl
     @Inject
     InventoryLocationGroupVolumeTransferCache inventoryLocationGroupVolumeTransferCache;
 
-    /** Creates a new instance of InventoryControl */
-    protected InventoryControl() {
+    /** Creates a new instance of InventoryLocationGroupControl */
+    protected InventoryLocationGroupControl() {
         super();
     }
     

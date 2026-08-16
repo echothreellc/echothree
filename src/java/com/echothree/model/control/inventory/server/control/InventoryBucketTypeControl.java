@@ -57,7 +57,7 @@ public class InventoryBucketTypeControl
     @Inject
     InventoryBucketTypeDescriptionTransferCache inventoryBucketTypeDescriptionTransferCache;
 
-    /** Creates a new instance of InventoryControl */
+    /** Creates a new instance of InventoryBucketTypeControl */
     protected InventoryBucketTypeControl() {
         super();
     }

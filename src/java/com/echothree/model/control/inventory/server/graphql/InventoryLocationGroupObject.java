@@ -19,7 +19,7 @@ package com.echothree.model.control.inventory.server.graphql;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseSecurityUtils;
@@ -88,10 +88,10 @@ public class InventoryLocationGroupObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
+        var inventoryLocationGroupControl = Session.getModelController(InventoryLocationGroupControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return inventoryLocationGroupControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

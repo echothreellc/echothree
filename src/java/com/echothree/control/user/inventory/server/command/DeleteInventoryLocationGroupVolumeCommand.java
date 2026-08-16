@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupVolumeForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -43,7 +43,7 @@ public class DeleteInventoryLocationGroupVolumeCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -60,14 +60,14 @@ public class DeleteInventoryLocationGroupVolumeCommand
 
         if(warehouse != null) {
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouse.getParty(),
                     inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
-                var inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
+                var inventoryLocationGroupVolume = inventoryLocationGroupControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
 
                 if(inventoryLocationGroupVolume != null) {
-                    inventoryControl.deleteInventoryLocationGroupVolume(inventoryLocationGroupVolume, getPartyPK());
+                    inventoryLocationGroupControl.deleteInventoryLocationGroupVolume(inventoryLocationGroupVolume, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupVolume.name());
                 }

@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupCapacityForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -46,7 +46,7 @@ public class DeleteInventoryLocationGroupCapacityCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     UomControl uomControl;
@@ -66,7 +66,7 @@ public class DeleteInventoryLocationGroupCapacityCommand
 
         if(warehouse != null) {
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouse.getParty(),
                     inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
@@ -78,11 +78,11 @@ public class DeleteInventoryLocationGroupCapacityCommand
                     var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                     if(unitOfMeasureType != null) {
-                        var inventoryLocationGroupCapacity = inventoryControl.getInventoryLocationGroupCapacityForUpdate(inventoryLocationGroup,
+                        var inventoryLocationGroupCapacity = inventoryLocationGroupControl.getInventoryLocationGroupCapacityForUpdate(inventoryLocationGroup,
                                 unitOfMeasureType);
 
                         if(inventoryLocationGroupCapacity != null) {
-                            inventoryControl.deleteInventoryLocationGroupCapacity(inventoryLocationGroupCapacity, getPartyPK());
+                            inventoryLocationGroupControl.deleteInventoryLocationGroupCapacity(inventoryLocationGroupCapacity, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupCapacity.name());
                         }

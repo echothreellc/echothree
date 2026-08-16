@@ -57,7 +57,7 @@ public class InventoryCostingMethodControl
     @Inject
     InventoryCostingMethodDescriptionTransferCache inventoryCostingMethodDescriptionTransferCache;
 
-    /** Creates a new instance of InventoryControl */
+    /** Creates a new instance of InventoryCostingMethodControl */
     protected InventoryCostingMethodControl() {
         super();
     }
