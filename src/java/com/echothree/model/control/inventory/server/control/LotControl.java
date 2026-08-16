@@ -26,6 +26,8 @@ import com.echothree.model.data.inventory.server.factory.LotFactory;
 import com.echothree.model.data.inventory.server.value.LotDetailValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.inventory.server.transfer.LotTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -38,7 +40,10 @@ import javax.inject.Inject;
 
 @CommandScope
 public class LotControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
+
+    @Inject
+    LotTransferCache lotTransferCache;
 
     /** Creates a new instance of LotControl */
     protected LotControl() {

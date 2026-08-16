@@ -31,6 +31,9 @@ import com.echothree.model.data.inventory.server.value.InventoryCostingMethodDes
 import com.echothree.model.data.inventory.server.value.InventoryCostingMethodDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodDescriptionTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -46,7 +49,13 @@ import javax.inject.Inject;
 
 @CommandScope
 public class InventoryCostingMethodControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
+
+    @Inject
+    InventoryCostingMethodTransferCache inventoryCostingMethodTransferCache;
+
+    @Inject
+    InventoryCostingMethodDescriptionTransferCache inventoryCostingMethodDescriptionTransferCache;
 
     /** Creates a new instance of InventoryControl */
     protected InventoryCostingMethodControl() {

@@ -34,6 +34,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorities.AllocationPriorities;
 import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorityDetails.AllocationPriorityDetails;
+import com.echothree.model.control.inventory.server.transfer.AllocationPriorityTransferCache;
+import com.echothree.model.control.inventory.server.transfer.AllocationPriorityDescriptionTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -49,7 +52,13 @@ import javax.inject.Inject;
 
 @CommandScope
 public class AllocationPriorityControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
+
+    @Inject
+    AllocationPriorityTransferCache allocationPriorityTransferCache;
+
+    @Inject
+    AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache;
 
     /** Creates a new instance of AllocationPriorityControl */
     protected AllocationPriorityControl() {

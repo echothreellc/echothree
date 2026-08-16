@@ -84,6 +84,17 @@ import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorit
 import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorityDetails.AllocationPriorityDetails;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupCapacityTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupVolumeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.PartyInventoryLevelTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionGlAccountTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -101,7 +112,7 @@ import javax.inject.Inject;
 
 @CommandScope
 public class InventoryControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
 
     @Inject
     ItemControl itemControl;
@@ -112,6 +123,36 @@ public class InventoryControl
     @Inject
     WarehouseControl warehouseControl;
     
+    @Inject
+    InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache;
+
+    @Inject
+    InventoryLocationGroupDescriptionTransferCache inventoryLocationGroupDescriptionTransferCache;
+
+    @Inject
+    InventoryConditionTransferCache inventoryConditionTransferCache;
+
+    @Inject
+    InventoryConditionDescriptionTransferCache inventoryConditionDescriptionTransferCache;
+
+    @Inject
+    InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache;
+
+    @Inject
+    InventoryLocationGroupVolumeTransferCache inventoryLocationGroupVolumeTransferCache;
+
+    @Inject
+    PartyInventoryLevelTransferCache partyInventoryLevelTransferCache;
+
+    @Inject
+    InventoryConditionUseTransferCache inventoryConditionUseTransferCache;
+
+    @Inject
+    InventoryConditionUseTypeTransferCache inventoryConditionUseTypeTransferCache;
+
+    @Inject
+    InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache;
+
     /** Creates a new instance of InventoryControl */
     protected InventoryControl() {
         super();
