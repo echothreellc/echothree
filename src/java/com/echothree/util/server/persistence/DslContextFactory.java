@@ -57,10 +57,7 @@ public class DslContextFactory {
     }
     
     public DSLContext getDslContext() {
-        var settings = new Settings()
-                .withRenderQuotedNames(RenderQuotedNames.NEVER)     // Defaults to EXPLICIT_DEFAULT_QUOTED
-                .withRenderNameCase(RenderNameCase.LOWER);          // Defaults to AS_IS
-        var dslContent = DSL.using(ds, SQLDialect.MYSQL, settings);
+        var dslContent = DSL.using(ds, SQLDialect.MYSQL);
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getDslContext() returning " + dslContent);
