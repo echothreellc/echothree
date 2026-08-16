@@ -18,6 +18,7 @@ package com.echothree.ui.cli.database.util;
 
 import com.google.common.base.CaseFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.jooq.codegen.GeneratorStrategy.Mode;
@@ -34,6 +35,7 @@ public class JooqGeneratorStrategy
 
     private final Map<String, String> tableNames = new HashMap<>();
     private final Map<String, String> columnNames = new HashMap<>();
+    private final Map<String, String> componentNames = new HashMap<>();
 
     public JooqGeneratorStrategy() {
         try {
@@ -44,12 +46,15 @@ public class JooqGeneratorStrategy
 
             var database = databases.getDatabase("echothree");
 
-            for(var table : database.getTables()) {
-                var dbTableName = table.getDbTableName();
+            for(var component : database.getComponents()) {
+                for(var table : component.getTables()) {
+                    var dbTableName = table.getDbTableName();
 
-                tableNames.put(dbTableName, table.getNamePlural());
-                for(var column : table.getColumns()) {
-                    columnNames.put(dbTableName + "." + column.getDbColumnName(), javaColumnName(column));
+                    tableNames.put(dbTableName, table.getNamePlural());
+                    componentNames.put(dbTableName, component.getName().toLowerCase(Locale.ROOT));
+                    for(var column : table.getColumns()) {
+                        columnNames.put(dbTableName + "." + column.getDbColumnName(), javaColumnName(column));
+                    }
                 }
             }
         } catch(Exception e) {
@@ -117,6 +122,25 @@ public class JooqGeneratorStrategy
         return ConstraintDefinition.class.isAssignableFrom(definitionType)
                 ? "KeyRegistry"
                 : super.getGlobalReferencesJavaClassName(definition, definitionType);
+    }
+
+    @Override
+    public String getJavaPackageName(Definition definition, Mode mode) {
+        var packageName = super.getJavaPackageName(definition, mode);
+
+        if(definition instanceof TableDefinition table) {
+            if(mode == Mode.RECORD) {
+                packageName = packageName.replace(".tables.records", ".records");
+            }
+
+            var componentName = componentNames.get(table.getInputName());
+
+            if(componentName != null) {
+                packageName += "." + componentName;
+            }
+        }
+
+        return packageName;
     }
 
     @Override

@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.jooq.ForeignKey;
 import org.jooq.UniqueKey;
@@ -67,13 +68,17 @@ public class JooqJavaGenerator
         return component + keyType + "Keys";
     }
 
-    private String keysPackage(SchemaDefinition schema) {
-        return getStrategy().getGlobalReferencesJavaPackageName(schema, ConstraintDefinition.class) + ".tables.keys";
+    private String keysPackage(SchemaDefinition schema, String component) {
+        var packageName = getStrategy().getGlobalReferencesJavaPackageName(schema, ConstraintDefinition.class) + ".keys";
+
+        return component == null ? packageName : packageName + "." + component.toLowerCase(Locale.ROOT);
     }
 
-    private JavaWriter newKeysWriter(SchemaDefinition schema, String className, boolean componentClass) {
+    private JavaWriter newKeysWriter(SchemaDefinition schema, String className, String component) {
         var keysFile = getStrategy().getGlobalReferencesFile(schema, ConstraintDefinition.class);
-        var directory = componentClass ? new File(keysFile.getParentFile(), "tables/keys") : keysFile.getParentFile();
+        var directory = component == null
+                ? keysFile.getParentFile()
+                : new File(keysFile.getParentFile(), "keys/" + component.toLowerCase(Locale.ROOT));
 
         return newJavaWriter(new File(directory, className + ".java"));
     }
@@ -129,14 +134,16 @@ public class JooqJavaGenerator
         }
     }
 
-    private void generateKeyClass(SchemaDefinition schema, String className, List<String> componentInterfaces,
-            List<UniqueKeyDefinition> uniqueKeys, List<ForeignKeyDefinition> foreignKeys, boolean componentClass) {
-        var out = newKeysWriter(schema, className, componentClass);
+    private void generateKeyClass(SchemaDefinition schema, String className, String component,
+            List<String> componentInterfaces, List<UniqueKeyDefinition> uniqueKeys,
+            List<ForeignKeyDefinition> foreignKeys) {
+        var componentClass = component != null;
+        var out = newKeysWriter(schema, className, component);
 
         out.refConflicts(getStrategy().getJavaIdentifiers(uniqueKeys));
         out.refConflicts(getStrategy().getJavaIdentifiers(foreignKeys));
         if(componentClass) {
-            out.printPackageSpecification(keysPackage(schema));
+            out.printPackageSpecification(keysPackage(schema, component));
             out.printImports();
         } else {
             printGlobalReferencesPackage(out, schema, ConstraintDefinition.class);
@@ -149,7 +156,6 @@ public class JooqJavaGenerator
         } else {
             out.println("public class %s implements %s {", className,
                     componentInterfaces.stream()
-                            .map(componentInterface -> keysPackage(schema) + "." + componentInterface)
                             .collect(java.util.stream.Collectors.joining(", ")));
         }
 
@@ -179,8 +185,8 @@ public class JooqJavaGenerator
             if(!keys.isEmpty()) {
                 var currentClass = className(component, "Unique");
 
-                generateKeyClass(schema, currentClass, List.of(), keys, List.of(), true);
-                componentInterfaces.add(currentClass);
+                generateKeyClass(schema, currentClass, component, List.of(), keys, List.of());
+                componentInterfaces.add(keysPackage(schema, component) + "." + currentClass);
             }
         }
         for(var component : componentNames.values().stream().distinct().toList()) {
@@ -189,13 +195,13 @@ public class JooqJavaGenerator
             if(!keys.isEmpty()) {
                 var currentClass = className(component, "Foreign");
 
-                generateKeyClass(schema, currentClass, List.of(), List.of(), keys, true);
-                componentInterfaces.add(currentClass);
+                generateKeyClass(schema, currentClass, component, List.of(), List.of(), keys);
+                componentInterfaces.add(keysPackage(schema, component) + "." + currentClass);
             }
         }
 
         generateKeyClass(schema, getStrategy().getGlobalReferencesJavaClassName(schema, ConstraintDefinition.class),
-                componentInterfaces, List.of(), List.of(), false);
+                null, componentInterfaces, List.of(), List.of());
     }
 
 }
