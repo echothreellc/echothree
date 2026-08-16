@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetAllocationPriorityDescriptionsForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -56,7 +56,7 @@ public class GetAllocationPriorityDescriptionsCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     /** Creates a new instance of GetAllocationPriorityDescriptionsCommand */
     public GetAllocationPriorityDescriptionsCommand() {
@@ -67,11 +67,11 @@ public class GetAllocationPriorityDescriptionsCommand
     protected BaseResult execute() {
         var result = InventoryResultFactory.getGetAllocationPriorityDescriptionsResult();
         var allocationPriorityName = form.getAllocationPriorityName();
-        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriority = allocationPriorityControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
-            result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
-            result.setAllocationPriorityDescriptions(inventoryControl.getAllocationPriorityDescriptionTransfersByAllocationPriority(getUserVisit(), allocationPriority));
+            result.setAllocationPriority(allocationPriorityControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
+            result.setAllocationPriorityDescriptions(allocationPriorityControl.getAllocationPriorityDescriptionTransfersByAllocationPriority(getUserVisit(), allocationPriority));
         } else {
             addExecutionError(ExecutionErrors.UnknownAllocationPriorityName.name(), allocationPriorityName);
         }

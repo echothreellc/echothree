@@ -22,7 +22,7 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.customer.common.CustomerProperties;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -50,7 +50,7 @@ public class CustomerTypeTransferCache
     FreeOnBoardControl freeOnBoardControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     @Inject
     OfferUseControl offerUseControl;
@@ -152,7 +152,7 @@ public class CustomerTypeTransferCache
             var defaultReferenceValidationPattern = filterDefaultReferenceValidationPattern ? null : customerTypeDetail.getDefaultReferenceValidationPattern();
             var defaultTaxable = filterDefaultTaxable ? null : customerTypeDetail.getDefaultTaxable();
             var allocationPriority = filterAllocationPriority ? null : customerTypeDetail.getAllocationPriority();
-            var allocationPriorityTransfer = allocationPriority == null ? null : inventoryControl.getAllocationPriorityTransfer(userVisit, allocationPriority);
+            var allocationPriorityTransfer = allocationPriority == null ? null : allocationPriorityControl.getAllocationPriorityTransfer(userVisit, allocationPriority);
             var isDefault = filterIsDefault ? null : customerTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : customerTypeDetail.getSortOrder();
             var description = filterDescription ? null : customerControl.getBestCustomerTypeDescription(customerType, getLanguage(userVisit));

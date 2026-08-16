@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultAllocationPriorityForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -54,7 +54,7 @@ public class SetDefaultAllocationPriorityCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     /** Creates a new instance of SetDefaultAllocationPriorityCommand */
     public SetDefaultAllocationPriorityCommand() {
@@ -64,11 +64,11 @@ public class SetDefaultAllocationPriorityCommand
     @Override
     protected BaseResult execute() {
         var allocationPriorityName = form.getAllocationPriorityName();
-        var allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueByNameForUpdate(allocationPriorityName);
+        var allocationPriorityDetailValue = allocationPriorityControl.getAllocationPriorityDetailValueByNameForUpdate(allocationPriorityName);
 
         if(allocationPriorityDetailValue != null) {
             allocationPriorityDetailValue.setIsDefault(true);
-            inventoryControl.updateAllocationPriorityFromValue(allocationPriorityDetailValue, getPartyPK());
+            allocationPriorityControl.updateAllocationPriorityFromValue(allocationPriorityDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownAllocationPriorityName.name(), allocationPriorityName);
         }

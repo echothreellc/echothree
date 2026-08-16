@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.AllocationPriorityDescriptionTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriorityDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class AllocationPriorityDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<AllocationPriorityDescription, AllocationPriorityDescriptionTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     /** Creates a new instance of AllocationPriorityDescriptionTransferCache */
     protected AllocationPriorityDescriptionTransferCache() {
@@ -40,7 +40,7 @@ public class AllocationPriorityDescriptionTransferCache
         var allocationPriorityDescriptionTransfer = get(allocationPriorityDescription);
         
         if(allocationPriorityDescriptionTransfer == null) {
-            var allocationPriorityTransfer = inventoryControl.getAllocationPriorityTransfer(userVisit, allocationPriorityDescription.getAllocationPriority());
+            var allocationPriorityTransfer = allocationPriorityControl.getAllocationPriorityTransfer(userVisit, allocationPriorityDescription.getAllocationPriority());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, allocationPriorityDescription.getLanguage());
             
             allocationPriorityDescriptionTransfer = new AllocationPriorityDescriptionTransfer(languageTransfer, allocationPriorityTransfer, allocationPriorityDescription.getDescription());
