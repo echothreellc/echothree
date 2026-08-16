@@ -24,7 +24,7 @@ public final class DatabasePhysicalNames {
     }
 
     public static String tableName(String namePlural) {
-        return namePlural.toLowerCase(Locale.getDefault());
+        return namePlural.toLowerCase(Locale.ROOT);
     }
 
     public static String tableName(Table table) {
@@ -32,11 +32,11 @@ public final class DatabasePhysicalNames {
     }
 
     public static String columnPrefix(Table table) {
-        return table.getColumnPrefix().toLowerCase(Locale.getDefault());
+        return table.getColumnPrefix().toLowerCase(Locale.ROOT);
     }
 
     public static String columnName(String columnPrefix, String columnName) {
-        return columnPrefix + "_" + columnName.toLowerCase(Locale.getDefault());
+        return columnPrefix + "_" + columnName.toLowerCase(Locale.ROOT);
     }
 
     public static String columnPrefix(Column column, String columnPrefixLowerCase) throws Exception {
@@ -61,7 +61,7 @@ public final class DatabasePhysicalNames {
     }
 
     public static String columnName(Column column, String columnPrefixLowerCase) throws Exception {
-        return columnPrefix(column, columnPrefixLowerCase) + "_" + column.getName().toLowerCase(Locale.getDefault());
+        return columnPrefix(column, columnPrefixLowerCase) + "_" + column.getName().toLowerCase(Locale.ROOT);
     }
 
     public static String columnName(Column column) throws Exception {
@@ -71,7 +71,7 @@ public final class DatabasePhysicalNames {
     public static String indexName(Index index) {
         return index.getType() == Index.indexPrimaryKey
                 ? "PRIMARY"
-                : index.getName().toLowerCase(Locale.getDefault()) + "_idx";
+                : index.getName().toLowerCase(Locale.ROOT) + "_idx";
     }
 
     public static String foreignKeyName(Column column) throws Exception {

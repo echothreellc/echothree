@@ -136,7 +136,7 @@ public class Table {
         
         columns.add(newColumn);
         myColumns.put(attrName, newColumn);
-        myColumnsByLowerCase.put(attrName.toLowerCase(Locale.getDefault()), newColumn);
+        myColumnsByLowerCase.put(attrName.toLowerCase(Locale.ROOT), newColumn);
         
         if(newColumn.getType() == ColumnType.columnForeignKey) {
             foreignKeys.add(newColumn);

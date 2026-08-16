@@ -226,7 +226,7 @@ public class Column {
     }
     
     public String getNameLowerCase() {
-        return getName().toLowerCase(Locale.getDefault());
+        return getName().toLowerCase(Locale.ROOT);
     }
     
     public int getType() {
