@@ -17,6 +17,7 @@
 package com.echothree.ui.cli.database.util.definition;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -33,14 +34,14 @@ public class Table {
     String chunkSize;
     String description;
     
-    List<Column> columns;
-    List<Index> indexes;
-    List<Column> foreignKeys;
-    List<Column> notForeignKeys;
+    private final List<Column> columns = new ArrayList<>();
+    private final List<Index> indexes = new ArrayList<>();
+    private final List<Column> foreignKeys = new ArrayList<>();
+    private final List<Column> notForeignKeys = new ArrayList<>();
     
-    Map<String, Index> myIndexes;
-    Map<String, Column> myColumns;
-    Map<String, Column> myColumnsByLowerCase;
+    private final Map<String, Index> myIndexes = new HashMap<>();
+    private final Map<String, Column> myColumns = new HashMap<>();
+    private final Map<String, Column> myColumnsByLowerCase = new HashMap<>();
     
     Index primaryKey;
     
@@ -75,14 +76,6 @@ public class Table {
         this.description = description;
         this.primaryKey = null;
         
-        columns = new ArrayList<>();
-        indexes = new ArrayList<>();
-        foreignKeys = new ArrayList<>();
-        notForeignKeys = new ArrayList<>();
-        
-        myIndexes = new HashMap<>();
-        myColumns = new HashMap<>();
-        myColumnsByLowerCase = new HashMap<>();
     }
     
     public Database getDatabase() {
@@ -195,19 +188,19 @@ public class Table {
     }
     
     public List<Column> getColumns() {
-        return columns;
+        return Collections.unmodifiableList(columns);
     }
     
     public List<Index> getIndexes() {
-        return indexes;
+        return Collections.unmodifiableList(indexes);
     }
     
     public List<Column> getForeignKeys() {
-        return foreignKeys;
+        return Collections.unmodifiableList(foreignKeys);
     }
     
     List<Column> getNotForeignKeys() {
-        return notForeignKeys;
+        return Collections.unmodifiableList(notForeignKeys);
     }
     
     public boolean isColumnValid(String dbColumnName) {

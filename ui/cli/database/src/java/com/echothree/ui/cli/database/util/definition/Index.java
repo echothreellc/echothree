@@ -16,6 +16,7 @@
 
 package com.echothree.ui.cli.database.util.definition;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class Index {
     String name;
     boolean nameWasSpecified;
     
-    Set<Column> indexColumns;
+    private final Set<Column> indexColumns = new LinkedHashSet<>();
     
     /** Creates a new instance of Index */
     public Index(Table table, String type, String name) throws Exception {
@@ -45,8 +46,6 @@ public class Index {
             case "Multiple" -> IndexType.MULTIPLE;
             default -> throw new Exception("Illegal index type " + type);
         };
-        
-        indexColumns = new LinkedHashSet<>();
     }
     
     public Table getTable() {
@@ -90,7 +89,7 @@ public class Index {
     }
     
     public Set<Column> getIndexColumns() {
-        return indexColumns;
+        return Collections.unmodifiableSet(indexColumns);
     }
     
     public int countIndexColumns() {

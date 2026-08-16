@@ -17,6 +17,7 @@
 package com.echothree.ui.cli.database.util.definition;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +25,7 @@ public class Component {
     
     String attrName;
 
-    List<Table> tables;
+    private final List<Table> tables = new ArrayList<>();
     
     String pkPackage = null;
     String valuePackage = null;
@@ -35,8 +36,6 @@ public class Component {
     /** Creates a new instance of Component */
     public Component(Database database, String attrName) {
         this.attrName = attrName;
-        
-        tables = new ArrayList<>();
     }
     
     public String getName() {
@@ -44,7 +43,7 @@ public class Component {
     }
     
     public List<Table> getTables() {
-        return tables;
+        return Collections.unmodifiableList(tables);
     }
     
     public void addTable(Table table) {
