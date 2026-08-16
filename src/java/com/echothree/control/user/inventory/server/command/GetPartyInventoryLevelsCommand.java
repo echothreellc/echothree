@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelsForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.inventory.server.control.InventoryLevelControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -72,7 +72,7 @@ public class GetPartyInventoryLevelsCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     InventoryLevelControl inventoryLevelControl;
@@ -171,7 +171,7 @@ public class GetPartyInventoryLevelsCommand
             if(item != null) {
                 result.setItem(itemControl.getItemTransfer(userVisit, item));
             } else if(inventoryCondition != null) {
-                result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition));
+                result.setInventoryCondition(inventoryConditionControl.getInventoryConditionTransfer(userVisit, inventoryCondition));
             } else if(party != null) {
                 var partyType = PartyTypes.valueOf(partyInventoryLevelUtil.getPartyTypeName(party));
 

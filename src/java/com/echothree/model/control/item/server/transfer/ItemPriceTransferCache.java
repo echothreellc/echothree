@@ -18,7 +18,7 @@ package com.echothree.model.control.item.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemPriceTransfer;
@@ -46,7 +46,7 @@ public class ItemPriceTransferCache
     AccountingControl accountingControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -105,7 +105,7 @@ public class ItemPriceTransferCache
         var item = itemPrice.getItem();
         var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
         var inventoryCondition = filterInventoryCondition ? null : itemPrice.getInventoryCondition();
-        var inventoryConditionTransfer = inventoryCondition == null ? null : inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
+        var inventoryConditionTransfer = inventoryCondition == null ? null : inventoryConditionControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
         var unitOfMeasureType = filterUnitOfMeasureType ? null : itemPrice.getUnitOfMeasureType();
         var unitOfMeasureTypeTransfer = unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
         var currency = itemPrice.getCurrency();

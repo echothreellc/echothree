@@ -23,7 +23,7 @@ import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
 import com.echothree.model.control.core.server.eventbus.Function5Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.content.common.ContentCatalogConstants;
@@ -48,7 +48,7 @@ public class ContentCatalogItemModificationSubscriber
     EventControl eventControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -131,7 +131,7 @@ public class ContentCatalogItemModificationSubscriber
         if(InventoryConditionConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && InventoryConditionConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
-            var inventoryCondition = inventoryControl.getInventoryConditionByEntityInstance(entityInstance);
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionByEntityInstance(entityInstance);
             var contentCatalogItems = contentControl.getContentCatalogItemsByInventoryCondition(inventoryCondition);
 
             for(var contentCatalogItem : contentCatalogItems) {

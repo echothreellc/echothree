@@ -18,7 +18,7 @@ package com.echothree.model.control.offer.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
@@ -46,7 +46,7 @@ public class OfferItemPriceTransferCache
     AccountingControl accountingControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     OfferItemControl offerItemControl;
@@ -106,7 +106,7 @@ public class OfferItemPriceTransferCache
         var offerItem = filterOfferItem ? null : offerItemPrice.getOfferItem();
         var offerItemTransfer = offerItem == null ? null : offerItemControl.getOfferItemTransfer(userVisit, offerItem);
         var inventoryCondition = filterInventoryCondition ? null : offerItemPrice.getInventoryCondition();
-        var inventoryConditionTransfer = inventoryCondition == null ? null : inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
+        var inventoryConditionTransfer = inventoryCondition == null ? null : inventoryConditionControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
         var unitOfMeasureType = filterUnitOfMeasureType ? null : offerItemPrice.getUnitOfMeasureType();
         var unitOfMeasureTypeTransfer = unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
         var currency = offerItemPrice.getCurrency();

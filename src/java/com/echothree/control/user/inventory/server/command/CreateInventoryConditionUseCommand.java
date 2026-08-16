@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionUseForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -43,7 +43,7 @@ public class CreateInventoryConditionUseCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of CreateInventoryConditionUseCommand */
     public CreateInventoryConditionUseCommand() {
@@ -53,19 +53,19 @@ public class CreateInventoryConditionUseCommand
     @Override
     protected BaseResult execute() {
         var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var inventoryConditionUseType = inventoryConditionControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
 
         if(inventoryConditionUseType != null) {
             var inventoryConditionName = form.getInventoryConditionName();
-            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
-                var inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType, inventoryCondition);
+                var inventoryConditionUse = inventoryConditionControl.getInventoryConditionUse(inventoryConditionUseType, inventoryCondition);
 
                 if(inventoryConditionUse == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
 
-                    inventoryControl.createInventoryConditionUse(inventoryConditionUseType, inventoryCondition, isDefault, getPartyPK());
+                    inventoryConditionControl.createInventoryConditionUse(inventoryConditionUseType, inventoryCondition, isDefault, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateInventoryConditionUse.name());
                 }

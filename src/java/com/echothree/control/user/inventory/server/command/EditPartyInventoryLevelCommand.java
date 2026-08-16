@@ -22,7 +22,7 @@ import com.echothree.control.user.inventory.common.result.EditPartyInventoryLeve
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.PartyInventoryLevelSpec;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.inventory.server.control.InventoryLevelControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -81,7 +81,7 @@ public class EditPartyInventoryLevelCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     InventoryLevelControl inventoryLevelControl;
@@ -139,7 +139,7 @@ public class EditPartyInventoryLevelCommand
 
                 if(!hasExecutionErrors()) {
                     var inventoryConditionName = spec.getInventoryConditionName();
-                    var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                    var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

@@ -23,7 +23,7 @@ import com.echothree.control.user.item.common.result.EditItemPriceResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -82,7 +82,7 @@ public class EditItemPriceCommand
     AccountingControl accountingControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -124,7 +124,7 @@ public class EditItemPriceCommand
 
         if(item != null) {
             var inventoryConditionName = spec.getInventoryConditionName();
-            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
                 var itemDetail = item.getLastDetail();

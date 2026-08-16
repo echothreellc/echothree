@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionDetail;
@@ -77,10 +77,10 @@ public class InventoryConditionObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
+        var inventoryConditionControl = Session.getModelController(InventoryConditionControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return inventoryControl.getBestInventoryConditionDescription(inventoryCondition, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return inventoryConditionControl.getBestInventoryConditionDescription(inventoryCondition, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

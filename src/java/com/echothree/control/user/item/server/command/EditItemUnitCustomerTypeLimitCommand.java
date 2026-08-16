@@ -23,7 +23,7 @@ import com.echothree.control.user.item.common.result.EditItemUnitCustomerTypeLim
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemUnitCustomerTypeLimitSpec;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemUnitCustomerTypeLimit;
@@ -62,7 +62,7 @@ public class EditItemUnitCustomerTypeLimitCommand
     CustomerControl customerControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -94,7 +94,7 @@ public class EditItemUnitCustomerTypeLimitCommand
 
         if(item != null) {
             var inventoryConditionName = spec.getInventoryConditionName();
-            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
                 var itemDetail = item.getLastDetail();

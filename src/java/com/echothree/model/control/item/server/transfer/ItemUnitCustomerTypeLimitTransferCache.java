@@ -18,7 +18,7 @@ package com.echothree.model.control.item.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.common.transfer.ItemUnitCustomerTypeLimitTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -34,7 +34,7 @@ public class ItemUnitCustomerTypeLimitTransferCache
     CustomerControl customerControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -53,7 +53,7 @@ public class ItemUnitCustomerTypeLimitTransferCache
         
         if(itemUnitCustomerTypeLimitTransfer == null) {
             var item = itemControl.getItemTransfer(userVisit, itemUnitCustomerTypeLimit.getItem());
-            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemUnitCustomerTypeLimit.getInventoryCondition());
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionTransfer(userVisit, itemUnitCustomerTypeLimit.getInventoryCondition());
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemUnitCustomerTypeLimit.getUnitOfMeasureType());
             var customerType = customerControl.getCustomerTypeTransfer(userVisit, itemUnitCustomerTypeLimit.getCustomerType());
             var longMinimumQuantity = itemUnitCustomerTypeLimit.getMinimumQuantity();

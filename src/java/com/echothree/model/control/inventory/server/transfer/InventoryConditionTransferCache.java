@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class InventoryConditionTransferCache
         extends BaseInventoryTransferCache<InventoryCondition, InventoryConditionTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of InventoryConditionTransferCache */
     protected InventoryConditionTransferCache() {
@@ -46,7 +46,7 @@ public class InventoryConditionTransferCache
             var inventoryConditionName = inventoryConditionDetail.getInventoryConditionName();
             var isDefault = inventoryConditionDetail.getIsDefault();
             var sortOrder = inventoryConditionDetail.getSortOrder();
-            var description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage(userVisit));
+            var description = inventoryConditionControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage(userVisit));
             
             inventoryConditionTransfer = new InventoryConditionTransfer(inventoryConditionName, isDefault, sortOrder, description);
             put(userVisit, inventoryCondition, inventoryConditionTransfer);

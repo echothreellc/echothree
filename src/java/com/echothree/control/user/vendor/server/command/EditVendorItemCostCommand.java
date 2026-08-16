@@ -21,7 +21,7 @@ import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
 import com.echothree.control.user.vendor.common.result.EditVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.control.user.vendor.common.spec.VendorItemCostSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -71,7 +71,7 @@ public class EditVendorItemCostCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     UomControl uomControl;
@@ -120,7 +120,7 @@ public class EditVendorItemCostCommand
 
             if(vendorItem != null) {
                 var inventoryConditionName = spec.getInventoryConditionName();
-                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
                 if(inventoryCondition != null) {
                     var unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();

@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionDescriptionForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,7 +58,7 @@ public class GetInventoryConditionDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     PartyControl partyControl;
@@ -72,17 +72,17 @@ public class GetInventoryConditionDescriptionCommand
     protected BaseResult execute() {
         var result = InventoryResultFactory.getGetInventoryConditionDescriptionResult();
         var inventoryConditionName = form.getInventoryConditionName();
-        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
         if(inventoryCondition != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
+                var inventoryConditionDescription = inventoryConditionControl.getInventoryConditionDescription(inventoryCondition, language);
 
                 if(inventoryConditionDescription != null) {
-                    result.setInventoryConditionDescription(inventoryControl.getInventoryConditionDescriptionTransfer(getUserVisit(), inventoryConditionDescription));
+                    result.setInventoryConditionDescription(inventoryConditionControl.getInventoryConditionDescriptionTransfer(getUserVisit(), inventoryConditionDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownInventoryConditionDescription.name(), inventoryConditionName, languageIsoName);
                 }

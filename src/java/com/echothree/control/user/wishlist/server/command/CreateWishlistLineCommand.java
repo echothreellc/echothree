@@ -19,7 +19,7 @@ package com.echothree.control.user.wishlist.server.command;
 import com.echothree.control.user.wishlist.common.form.CreateWishlistLineForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
@@ -63,7 +63,7 @@ public class CreateWishlistLineCommand
     AccountingControl accountingControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -129,11 +129,11 @@ public class CreateWishlistLineCommand
                                     
                                     if(offerItem != null) {
                                         var inventoryConditionName = form.getInventoryConditionName();
-                                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseTypes.SALES_ORDER.name());
+                                        var inventoryConditionUseType = inventoryConditionControl.getInventoryConditionUseTypeByName(InventoryConditionUseTypes.SALES_ORDER.name());
                                         InventoryCondition inventoryCondition = null;
                                         
                                         if(inventoryConditionName == null) {
-                                            var inventoryConditionUse = inventoryControl.getDefaultInventoryConditionUse(inventoryConditionUseType);
+                                            var inventoryConditionUse = inventoryConditionControl.getDefaultInventoryConditionUse(inventoryConditionUseType);
                                             
                                             if(inventoryConditionUse == null) {
                                                 addExecutionError(ExecutionErrors.MissingDefaultInventoryConditionUse.name());
@@ -141,9 +141,9 @@ public class CreateWishlistLineCommand
                                                 inventoryCondition = inventoryConditionUse.getInventoryCondition();
                                             }
                                         } else {
-                                            inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                                            inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
                                             
-                                            if(inventoryControl.getInventoryConditionUse(inventoryConditionUseType, inventoryCondition) == null) {
+                                            if(inventoryConditionControl.getInventoryConditionUse(inventoryConditionUseType, inventoryCondition) == null) {
                                                 addExecutionError(ExecutionErrors.InvalidInventoryCondition.name());
                                             }
                                         }

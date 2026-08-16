@@ -22,7 +22,7 @@ import com.echothree.control.user.inventory.common.form.EditInventoryConditionFo
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -71,7 +71,7 @@ public class EditInventoryConditionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     InventoryConditionLogic inventoryConditionLogic;
@@ -103,12 +103,12 @@ public class EditInventoryConditionCommand
 
     @Override
     public void fillInResult(EditInventoryConditionResult result, InventoryCondition inventoryCondition) {
-        result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));
+        result.setInventoryCondition(inventoryConditionControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));
     }
 
     @Override
     public void doLock(InventoryConditionEdit edit, InventoryCondition inventoryCondition) {
-        var inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, getPreferredLanguage());
+        var inventoryConditionDescription = inventoryConditionControl.getInventoryConditionDescription(inventoryCondition, getPreferredLanguage());
         var inventoryConditionDetail = inventoryCondition.getLastDetail();
 
         edit.setInventoryConditionName(inventoryConditionDetail.getInventoryConditionName());
@@ -123,7 +123,7 @@ public class EditInventoryConditionCommand
     @Override
     public void canUpdate(InventoryCondition inventoryCondition) {
         var inventoryConditionName = edit.getInventoryConditionName();
-        var duplicateInventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var duplicateInventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
         if(duplicateInventoryCondition != null && !inventoryCondition.equals(duplicateInventoryCondition)) {
             addExecutionError(ExecutionErrors.DuplicateInventoryConditionName.name(), inventoryConditionName);
@@ -133,25 +133,25 @@ public class EditInventoryConditionCommand
     @Override
     public void doUpdate(InventoryCondition inventoryCondition) {
         var partyPK = getPartyPK();
-        var inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueForUpdate(inventoryCondition);
-        var inventoryConditionDescription = inventoryControl.getInventoryConditionDescriptionForUpdate(inventoryCondition, getPreferredLanguage());
+        var inventoryConditionDetailValue = inventoryConditionControl.getInventoryConditionDetailValueForUpdate(inventoryCondition);
+        var inventoryConditionDescription = inventoryConditionControl.getInventoryConditionDescriptionForUpdate(inventoryCondition, getPreferredLanguage());
         var description = edit.getDescription();
 
         inventoryConditionDetailValue.setInventoryConditionName(edit.getInventoryConditionName());
         inventoryConditionDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         inventoryConditionDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        inventoryControl.updateInventoryConditionFromValue(inventoryConditionDetailValue, partyPK);
+        inventoryConditionControl.updateInventoryConditionFromValue(inventoryConditionDetailValue, partyPK);
 
         if(inventoryConditionDescription == null && description != null) {
-            inventoryControl.createInventoryConditionDescription(inventoryCondition, getPreferredLanguage(), description, partyPK);
+            inventoryConditionControl.createInventoryConditionDescription(inventoryCondition, getPreferredLanguage(), description, partyPK);
         } else if(inventoryConditionDescription != null && description == null) {
-            inventoryControl.deleteInventoryConditionDescription(inventoryConditionDescription, partyPK);
+            inventoryConditionControl.deleteInventoryConditionDescription(inventoryConditionDescription, partyPK);
         } else if(inventoryConditionDescription != null && description != null) {
-            var inventoryConditionDescriptionValue = inventoryControl.getInventoryConditionDescriptionValue(inventoryConditionDescription);
+            var inventoryConditionDescriptionValue = inventoryConditionControl.getInventoryConditionDescriptionValue(inventoryConditionDescription);
 
             inventoryConditionDescriptionValue.setDescription(description);
-            inventoryControl.updateInventoryConditionDescriptionFromValue(inventoryConditionDescriptionValue, partyPK);
+            inventoryConditionControl.updateInventoryConditionDescriptionFromValue(inventoryConditionDescriptionValue, partyPK);
         }
     }
 

@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeletePartyInventoryLevelForm;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.inventory.server.control.InventoryLevelControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -61,7 +61,7 @@ public class DeletePartyInventoryLevelCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     InventoryLevelControl inventoryLevelControl;
@@ -87,7 +87,7 @@ public class DeletePartyInventoryLevelCommand
 
             if(item != null) {
                 var inventoryConditionName = form.getInventoryConditionName();
-                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
                 if(inventoryCondition != null) {
                     var partyInventoryLevel = inventoryLevelControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);

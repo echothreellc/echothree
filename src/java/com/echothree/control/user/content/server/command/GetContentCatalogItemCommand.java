@@ -22,7 +22,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
@@ -66,7 +66,7 @@ public class GetContentCatalogItemCommand
     ContentControl contentControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -115,8 +115,8 @@ public class GetContentCatalogItemCommand
 
                 if(item != null) {
                     var inventoryConditionName = form.getInventoryConditionName();
-                    var inventoryCondition = inventoryConditionName == null ? inventoryControl.getDefaultInventoryCondition()
-                            : inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                    var inventoryCondition = inventoryConditionName == null ? inventoryConditionControl.getDefaultInventoryCondition()
+                            : inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
                         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();

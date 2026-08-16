@@ -17,7 +17,7 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.DeleteItemKitMemberForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.common.ItemTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -48,7 +48,7 @@ public class DeleteItemKitMemberCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -73,7 +73,7 @@ public class DeleteItemKitMemberCommand
             
             if(itemTypeName.equals(ItemTypes.KIT.name())) {
                 var inventoryConditionName = form.getInventoryConditionName();
-                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
                     var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
@@ -85,7 +85,7 @@ public class DeleteItemKitMemberCommand
                         
                         if(memberItem != null) {
                             var memberInventoryConditionName = form.getMemberInventoryConditionName();
-                            var memberInventoryCondition = inventoryControl.getInventoryConditionByName(memberInventoryConditionName);
+                            var memberInventoryCondition = inventoryConditionControl.getInventoryConditionByName(memberInventoryConditionName);
                             
                             if(memberInventoryCondition != null) {
                                 var memberUnitOfMeasureTypeName = form.getMemberUnitOfMeasureTypeName();
