@@ -149,6 +149,7 @@
     </target>
 
     <target name="persistence" unless="persistence.uptodate" depends="prepare">
+        <ant dir="${dir.home}/ui/cli/database" target="jar" />
         <parallel>
             <ant dir="${dir.home}/ui/cli/database" target="GenerateJava" />
             <ant dir="${dir.home}/ui/cli/database" target="GenerateJooq" />
