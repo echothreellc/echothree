@@ -187,6 +187,7 @@
             <arg value="--generated"/>
             <arg value="${ui.cli.database.generateddir}"/>
         </java>
+        <echo message="Generating jOOQ Java sources..."/>
         <java classpathref="runtime.classpath"
               classname="org.jooq.codegen.GenerationTool"
               fork="true">
@@ -194,6 +195,7 @@
             <sysproperty key="org.jooq.no-tips" value="true" />
             <arg value="${metadata.dir}/jooq-config.xml"/>
         </java>
+        <echo message="   ...done."/>
     </target>
 
     <target name="GenerateDatabase" depends="jar">

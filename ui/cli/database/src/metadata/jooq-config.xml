@@ -15,6 +15,9 @@
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
 <configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.21.1.xsd">
+    <!-- Keep generation output focused on actionable problems. -->
+    <logging>WARN</logging>
+
     <!-- Configure the database connection here -->
     <generator>
         <name>com.echothree.ui.cli.database.util.jooq.JooqJavaGenerator</name>
