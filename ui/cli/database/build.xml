@@ -40,8 +40,8 @@
         <property name="ui.cli.database.testsrcdir" value="${component.home}/test/java" />
         <property name="ui.cli.database.testresourcesdir" value="${component.home}/test/resources" />
         <property name="ui.cli.database.testclassbindir" value="${build.dir}/test-classes" />
-        <property name="ui.cli.database.testresultsdir" value="${component.home}/generated/junit" />
-        <property name="ui.cli.database.testhtmldir" value="${ui.cli.database.testresultsdir}/html" />
+        <property name="ui.cli.database.testgenerateddir" value="${component.home}/generated" />
+        <property name="ui.cli.database.testresultsdir" value="${ui.cli.database.testgenerateddir}/junit" />
 
         <path id="runtime.classpath">
             <file file="${build.lib.dir}/jooq.jar"/>
@@ -153,7 +153,6 @@
 
     <target name="test" depends="test-compile">
         <mkdir dir="${ui.cli.database.testresultsdir}"/>
-        <mkdir dir="${ui.cli.database.testhtmldir}"/>
         <junitlauncher printSummary="true" haltOnFailure="true">
             <classpath refid="test.classpath"/>
             <testclasses outputDir="${ui.cli.database.testresultsdir}" includeEngines="junit-jupiter">
@@ -167,7 +166,7 @@
         </junitlauncher>
         <junitreport todir="${ui.cli.database.testresultsdir}">
             <fileset dir="${ui.cli.database.testresultsdir}" includes="TEST-*.xml"/>
-            <report format="frames" todir="${ui.cli.database.testhtmldir}"/>
+            <report format="frames" todir="${ui.cli.database.testresultsdir}"/>
         </junitreport>
     </target>
 
@@ -251,8 +250,8 @@
     </target>
 
     <target name="clean-test" depends="init">
-        <echo message="Deleting ${ui.cli.database.testresultsdir}" />
-        <delete dir="${ui.cli.database.testresultsdir}" quiet="true"/>
+        <echo message="Deleting ${ui.cli.database.testgenerateddir}" />
+        <delete dir="${ui.cli.database.testgenerateddir}" quiet="true"/>
     </target>
 
     <target name="clean" depends="init">
