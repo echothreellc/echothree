@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -198,11 +198,11 @@ public class Table {
         return columns;
     }
     
-    List<Index> getIndexes() {
+    public List<Index> getIndexes() {
         return indexes;
     }
     
-    List<Column> getForeignKeys() {
+    public List<Column> getForeignKeys() {
         return foreignKeys;
     }
     

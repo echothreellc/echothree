@@ -16,6 +16,10 @@
 
 package com.echothree.ui.cli.database.util;
 
+import com.echothree.ui.cli.database.util.definition.Column;
+import com.echothree.ui.cli.database.util.definition.ColumnType;
+import com.echothree.ui.cli.database.util.definition.Database;
+import com.echothree.ui.cli.database.util.definition.Table;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -235,7 +239,7 @@ public class DatabaseViewUtilities {
             
             if(tableName.endsWith("Detail")) {
                 log.info("Skipping " + tableName);
-            } else if(database.myTablesByPlural.containsKey(tableName + "Details")) {
+            } else if(database.hasTable(tableName + "Details")) {
                 log.info("With details: " + tableName);
                 tablesWithDetails.add(table);
             } else {

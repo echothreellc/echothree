@@ -16,9 +16,9 @@
 
 package com.echothree.ui.cli.database.util.jooq;
 
-import com.echothree.ui.cli.database.util.Column;
-import com.echothree.ui.cli.database.util.DatabaseDefinitionParser;
-import com.echothree.ui.cli.database.util.Databases;
+import com.echothree.ui.cli.database.util.definition.Column;
+import com.echothree.ui.cli.database.util.definition.DatabaseDefinitionParser;
+import com.echothree.ui.cli.database.util.definition.Databases;
 import com.google.common.base.CaseFormat;
 import java.util.HashMap;
 import java.util.Locale;

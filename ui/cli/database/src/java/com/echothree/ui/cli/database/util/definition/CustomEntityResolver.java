@@ -14,9 +14,9 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database;
+package com.echothree.ui.cli.database.util.definition;
 
-import com.echothree.ui.cli.database.util.DatabaseDefinitionParser;
+import com.echothree.ui.cli.database.util.definition.DatabaseDefinitionParser;
 import java.io.IOException;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;

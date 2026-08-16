@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
 import com.google.common.base.Splitter;
 import java.nio.charset.StandardCharsets;
@@ -22,9 +22,9 @@ import java.util.Locale;
 
 public class Column {
     
-    static final int parentNone = 0;
-    static final int parentDelete = 1;
-    static final int parentSetNull = 2;
+    public static final int parentNone = 0;
+    public static final int parentDelete = 1;
+    public static final int parentSetNull = 2;
     
     Table table;
     

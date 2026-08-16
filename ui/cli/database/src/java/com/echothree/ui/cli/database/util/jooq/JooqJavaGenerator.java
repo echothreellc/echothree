@@ -16,8 +16,8 @@
 
 package com.echothree.ui.cli.database.util.jooq;
 
-import com.echothree.ui.cli.database.util.DatabaseDefinitionParser;
-import com.echothree.ui.cli.database.util.Databases;
+import com.echothree.ui.cli.database.util.definition.DatabaseDefinitionParser;
+import com.echothree.ui.cli.database.util.definition.Databases;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

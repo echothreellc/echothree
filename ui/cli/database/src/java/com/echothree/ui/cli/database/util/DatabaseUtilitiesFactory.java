@@ -16,6 +16,7 @@
 
 package com.echothree.ui.cli.database.util;
 
+import com.echothree.ui.cli.database.util.definition.Database;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

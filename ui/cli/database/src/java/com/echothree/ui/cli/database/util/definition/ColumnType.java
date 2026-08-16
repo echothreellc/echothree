@@ -14,21 +14,23 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
+
+import com.echothree.ui.cli.database.util.definition.Column;
 
 public class ColumnType {
     
-    static final int columnEID = 1;
-    static final int columnInteger = 2;
-    static final int columnLong = 3;
-    static final int columnString = 5;
-    static final int columnBoolean = 6;
-    static final int columnDate = 7;
-    static final int columnTime = 8;
-    static final int columnCLOB = 9;
-    static final int columnBLOB = 10;
-    static final int columnForeignKey = 11;
-    static final int columnUUID = 12;
+    public static final int columnEID = 1;
+    public static final int columnInteger = 2;
+    public static final int columnLong = 3;
+    public static final int columnString = 5;
+    public static final int columnBoolean = 6;
+    public static final int columnDate = 7;
+    public static final int columnTime = 8;
+    public static final int columnCLOB = 9;
+    public static final int columnBLOB = 10;
+    public static final int columnForeignKey = 11;
+    public static final int columnUUID = 12;
     
     static public String columnTypeToString(int type) {
         return switch(type) {

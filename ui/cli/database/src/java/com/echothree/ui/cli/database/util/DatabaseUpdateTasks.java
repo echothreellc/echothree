@@ -16,6 +16,10 @@
 
 package com.echothree.ui.cli.database.util;
 
+import com.echothree.ui.cli.database.util.definition.Column;
+import com.echothree.ui.cli.database.util.definition.ColumnType;
+import com.echothree.ui.cli.database.util.definition.Index;
+import com.echothree.ui.cli.database.util.definition.Table;
 import com.echothree.ui.cli.database.util.current.CurrentColumn;
 import com.echothree.ui.cli.database.util.current.CurrentForeignKey;
 import com.echothree.ui.cli.database.util.current.CurrentIndex;

@@ -16,9 +16,9 @@
 
 package com.echothree.ui.cli.database;
 
-import com.echothree.ui.cli.database.util.DatabaseDefinitionParser;
 import com.echothree.ui.cli.database.util.DatabaseUtilitiesFactory;
-import com.echothree.ui.cli.database.util.Databases;
+import com.echothree.ui.cli.database.util.definition.DatabaseDefinitionParser;
+import com.echothree.ui.cli.database.util.definition.Databases;
 import java.io.File;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;

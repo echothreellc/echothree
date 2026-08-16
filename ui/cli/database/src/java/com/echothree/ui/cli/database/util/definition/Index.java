@@ -14,16 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Index {
     
-    static final int indexPrimaryKey = 1;
-    static final int indexUnique = 2;
-    static final int indexMultiple = 3;
+    public static final int indexPrimaryKey = 1;
+    public static final int indexUnique = 2;
+    public static final int indexMultiple = 3;
     
     static public String indexTypeToString(int type) {
         return switch(type) {

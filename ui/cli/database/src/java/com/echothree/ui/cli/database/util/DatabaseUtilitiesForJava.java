@@ -16,6 +16,10 @@
 
 package com.echothree.ui.cli.database.util;
 
+import com.echothree.ui.cli.database.util.definition.Component;
+import com.echothree.ui.cli.database.util.definition.ColumnType;
+import com.echothree.ui.cli.database.util.definition.Database;
+import com.echothree.ui.cli.database.util.definition.Table;
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -2263,7 +2267,7 @@ public class DatabaseUtilitiesForJava {
                     if(notFirst) {
                         pw.println(",");
                     }
-                    pw.print("    " + theTable.nameSingular);
+                    pw.print("    " + theTable.getNameSingular());
                     notFirst = true;
                 }
             }

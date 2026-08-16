@@ -14,9 +14,8 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
-import com.echothree.ui.cli.database.CustomEntityResolver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;

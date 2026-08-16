@@ -16,6 +16,11 @@
 
 package com.echothree.ui.cli.database.util;
 
+import com.echothree.ui.cli.database.util.definition.Column;
+import com.echothree.ui.cli.database.util.definition.ColumnType;
+import com.echothree.ui.cli.database.util.definition.Database;
+import com.echothree.ui.cli.database.util.definition.Index;
+import com.echothree.ui.cli.database.util.definition.Table;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.PrintWriter;

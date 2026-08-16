@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,6 +113,10 @@ public class Database {
     
     public List<Table> getTables() {
         return myTables;
+    }
+
+    public boolean hasTable(String namePlural) {
+        return myTablesByPlural.containsKey(namePlural);
     }
     
     public Table getTable(String namePlural) throws Exception {
