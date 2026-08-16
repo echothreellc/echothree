@@ -19,6 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.CreatePartyInventoryLevelForm;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLevelControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -68,6 +69,9 @@ public class CreatePartyInventoryLevelCommand
 
     @Inject
     InventoryControl inventoryControl;
+
+    @Inject
+    InventoryLevelControl inventoryLevelControl;
 
     @Inject
     ItemControl itemControl;
@@ -124,10 +128,10 @@ public class CreatePartyInventoryLevelCommand
                                         null, ExecutionErrors.UnknownReorderQuantityUnitOfMeasureTypeName.name());
 
                                 if(!hasExecutionErrors()) {
-                                    var partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
+                                    var partyInventoryLevel = inventoryLevelControl.getPartyInventoryLevel(party, item, inventoryCondition);
 
                                     if(partyInventoryLevel == null) {
-                                        inventoryControl.createPartyInventoryLevel(party, item, inventoryCondition, minimumInventory, maximumInventory,
+                                        inventoryLevelControl.createPartyInventoryLevel(party, item, inventoryCondition, minimumInventory, maximumInventory,
                                                 reorderQuantity, getPartyPK());
                                     } else {
                                         addExecutionError(ExecutionErrors.DuplicatePartyInventoryLevel.name(), party.getLastDetail().getPartyName(), itemName,

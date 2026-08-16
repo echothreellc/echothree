@@ -23,6 +23,7 @@ import com.echothree.control.user.inventory.common.result.InventoryResultFactory
 import com.echothree.control.user.inventory.common.spec.PartyInventoryLevelSpec;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLevelControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -83,6 +84,9 @@ public class EditPartyInventoryLevelCommand
     InventoryControl inventoryControl;
 
     @Inject
+    InventoryLevelControl inventoryLevelControl;
+
+    @Inject
     ItemControl itemControl;
 
     @Inject
@@ -139,9 +143,9 @@ public class EditPartyInventoryLevelCommand
 
                     if(inventoryCondition != null) {
                         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                            partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
+                            partyInventoryLevel = inventoryLevelControl.getPartyInventoryLevel(party, item, inventoryCondition);
                         } else { // EditMode.UPDATE
-                            partyInventoryLevel = inventoryControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
+                            partyInventoryLevel = inventoryLevelControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
                         }
 
                         if(partyInventoryLevel == null) {
@@ -166,7 +170,7 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public void fillInResult(EditPartyInventoryLevelResult result, PartyInventoryLevel partyInventoryLevel) {
-        result.setPartyInventoryLevel(inventoryControl.getPartyInventoryLevelTransfer(getUserVisit(), partyInventoryLevel));
+        result.setPartyInventoryLevel(inventoryLevelControl.getPartyInventoryLevelTransfer(getUserVisit(), partyInventoryLevel));
     }
 
     @Override
@@ -216,13 +220,13 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public void doUpdate(PartyInventoryLevel partyInventoryLevel) {
-        var partyInventoryLevelValue = inventoryControl.getPartyInventoryLevelValue(partyInventoryLevel);
+        var partyInventoryLevelValue = inventoryLevelControl.getPartyInventoryLevelValue(partyInventoryLevel);
 
         partyInventoryLevelValue.setMinimumInventory(minimumInventory);
         partyInventoryLevelValue.setMaximumInventory(maximumInventory);
         partyInventoryLevelValue.setReorderQuantity(reorderQuantity);
 
-        inventoryControl.updatePartyInventoryLevelFromValue(partyInventoryLevelValue, getPartyPK());
+        inventoryLevelControl.updatePartyInventoryLevelFromValue(partyInventoryLevelValue, getPartyPK());
     }
 
 }
