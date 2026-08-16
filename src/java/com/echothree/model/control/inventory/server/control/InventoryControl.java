@@ -91,6 +91,9 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorities.AllocationPriorities;
+import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorityDetails.AllocationPriorityDetails;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -2619,11 +2622,11 @@ public class InventoryControl
     }
 
     public long countAllocationPriorities() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM allocationpriorities, allocationprioritydetails
-                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
-                """);
+        return session.getDslContext().selectCount()
+                .from(AllocationPriorities)
+                .join(AllocationPriorityDetails)
+                .onKey(ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK)
+                .fetchSingle(0, long.class);
     }
 
     private static final Map<EntityPermission, String> getAllocationPriorityByNameQueries;
