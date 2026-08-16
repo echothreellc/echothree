@@ -16,6 +16,7 @@
 
 package com.echothree.ui.cli.database.util;
 
+import com.echothree.ui.cli.database.util.definition.Database;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -105,6 +106,11 @@ public final class DatabaseUtilitiesFactory {
 
     public DatabaseUtilitiesForJava getJavaUtilities(boolean verbose, Database theDatabase) {
         return new DatabaseUtilitiesForJava(verbose, theDatabase);
+    }
+
+    public DatabaseUtilitiesForJooq getJooqUtilities(boolean verbose, Database theDatabase)
+            throws Exception {
+        return new DatabaseUtilitiesForJooq(verbose, theDatabase);
     }
 
 }

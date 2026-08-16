@@ -17,8 +17,14 @@
 package com.echothree.ui.cli.database.util;
 
 import com.echothree.ui.cli.database.util.current.CurrentColumn;
+import com.echothree.ui.cli.database.util.definition.Column;
+import com.echothree.ui.cli.database.util.definition.ColumnDataType;
+import com.echothree.ui.cli.database.util.definition.Database;
+import com.echothree.ui.cli.database.util.definition.DatabasePhysicalNames;
+import com.echothree.ui.cli.database.util.definition.Index;
+import com.echothree.ui.cli.database.util.definition.ParentDeleteAction;
+import com.echothree.ui.cli.database.util.definition.Table;
 import java.sql.Types;
-import java.util.Locale;
 
 public class DatabaseUtilitiesForMySQL
         extends DatabaseUtilities {
@@ -174,13 +180,13 @@ public class DatabaseUtilitiesForMySQL
         var result = true;
 
         switch(columnRealType) {
-            case ColumnType.columnEID, ColumnType.columnLong, ColumnType.columnTime ->
+            case ColumnDataType.EID, ColumnDataType.LONG, ColumnDataType.TIME ->
                     result = cc.getType() == Types.BIGINT && cc.getColumnSize() == 19;
-            case ColumnType.columnBoolean ->
+            case ColumnDataType.BOOLEAN ->
                     result = cc.getType() == Types.BIT && cc.getColumnSize() == 1;
-            case ColumnType.columnInteger, ColumnType.columnDate ->
+            case ColumnDataType.INTEGER, ColumnDataType.DATE ->
                     result = cc.getType() == Types.INTEGER && cc.getColumnSize() == 10;
-            case ColumnType.columnString -> {
+            case ColumnDataType.STRING -> {
                 var maxLength = theColumn.getMaxLength();
 
                 if(maxLength < 256) {
@@ -189,16 +195,16 @@ public class DatabaseUtilitiesForMySQL
                     result = cc.getType() == Types.LONGVARCHAR;
                 }
             }
-            case ColumnType.columnCLOB ->
+            case ColumnDataType.CLOB ->
                     result = cc.getType() == Types.LONGVARCHAR && cc.getColumnSize() == 2147483647;
-            case ColumnType.columnBLOB ->
+            case ColumnDataType.BLOB ->
                     result = cc.getType() == Types.LONGVARBINARY && cc.getColumnSize() == 2147483647;
-            case ColumnType.columnForeignKey -> {
+            case ColumnDataType.FOREIGN_KEY -> {
                 var destinationColumn = myDatabase.getTable(theColumn.getDestinationTable()).getColumn(theColumn.getDestinationColumn());
 
                 result = checkColumnDefinition(cc, destinationColumn, true);
             }
-            case ColumnType.columnUUID ->
+            case ColumnDataType.UUID ->
                     result = cc.getType() == Types.BINARY && cc.getColumnSize() == 16;
             default -> {
             }
@@ -283,13 +289,15 @@ public class DatabaseUtilitiesForMySQL
     }
     
     @Override
-    String getForeignKeyDefinition(Column theFK, Table sourceTable, String sourceColumnName, Table destinationTable, String destinationColumnName) {
-        var result = "CONSTRAINT " + sourceColumnName + "_fk FOREIGN KEY (" + sourceColumnName + ") REFERENCES "
-                + destinationTable.getNamePlural().toLowerCase(Locale.getDefault()) + "("
+    String getForeignKeyDefinition(Column theFK, Table sourceTable, String sourceColumnName, Table destinationTable, String destinationColumnName) throws Exception {
+        var result = "CONSTRAINT " + DatabasePhysicalNames.foreignKeyName(theFK) + " FOREIGN KEY (" + sourceColumnName + ") REFERENCES "
+                + DatabasePhysicalNames.tableName(destinationTable) + "("
                 + destinationColumnName + ") ON DELETE ";
         switch(theFK.getOnParentDelete()) {
-            case Column.parentDelete -> result += "CASCADE";
-            case Column.parentSetNull -> result += "SET NULL";
+            case ParentDeleteAction.DELETE -> result += "CASCADE";
+            case ParentDeleteAction.SET_NULL -> result += "SET NULL";
+            case ParentDeleteAction.NONE -> {
+            }
         }
         return result;
     }

@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
 import com.google.common.base.Splitter;
 import java.nio.charset.StandardCharsets;
@@ -22,15 +22,11 @@ import java.util.Locale;
 
 public class Column {
     
-    static final int parentNone = 0;
-    static final int parentDelete = 1;
-    static final int parentSetNull = 2;
-    
     Table table;
     
     String name;
     ColumnType columnType;
-    int type;
+    ColumnDataType type;
     boolean hasMaxLength;
     long maxLength;
     boolean hasTotalDigits;
@@ -40,7 +36,7 @@ public class Column {
     String description;
     String destinationTable;
     String destinationColumn;
-    int onParentDelete;
+    ParentDeleteAction onParentDelete;
     
     String javaType = null;
     String javaSqlType = null;
@@ -75,40 +71,31 @@ public class Column {
         this.destinationTable = destinationTable;
         this.destinationColumn = destinationColumn;
         
-        if(onParentDelete != null) {
-            if(onParentDelete.equals("delete")) {
-                this.onParentDelete = Column.parentDelete;
-            } else if(onParentDelete.equals("setNull")) {
-                this.onParentDelete = Column.parentSetNull;
-            } else {
-                throw new Exception("Illegal onParentDelete \"" + onParentDelete + "\"");
-            }
-        } else
-            this.onParentDelete = Column.parentNone;
+        this.onParentDelete = ParentDeleteAction.fromDefinitionName(onParentDelete);
         
         this.columnType = null;
         switch(type) {
-            case "EID" -> this.type = ColumnType.columnEID;
-            case "Integer" -> this.type = ColumnType.columnInteger;
-            case "Long" -> this.type = ColumnType.columnLong;
+            case "EID" -> this.type = ColumnDataType.EID;
+            case "Integer" -> this.type = ColumnDataType.INTEGER;
+            case "Long" -> this.type = ColumnDataType.LONG;
             case "String" -> {
-                this.type = ColumnType.columnString;
+                this.type = ColumnDataType.STRING;
                 if(!hasMaxLength) {
                     throw new Exception("String column type requires length");
                 }
             }
-            case "Boolean" -> this.type = ColumnType.columnBoolean;
-            case "Date" -> this.type = ColumnType.columnDate;
-            case "Time" -> this.type = ColumnType.columnTime;
-            case "CLOB" -> this.type = ColumnType.columnCLOB;
-            case "BLOB" -> this.type = ColumnType.columnBLOB;
+            case "Boolean" -> this.type = ColumnDataType.BOOLEAN;
+            case "Date" -> this.type = ColumnDataType.DATE;
+            case "Time" -> this.type = ColumnDataType.TIME;
+            case "CLOB" -> this.type = ColumnDataType.CLOB;
+            case "BLOB" -> this.type = ColumnDataType.BLOB;
             case "ForeignKey" -> {
-                this.type = ColumnType.columnForeignKey;
+                this.type = ColumnDataType.FOREIGN_KEY;
                 if(destinationTable == null || destinationColumn == null || onParentDelete == null) {
                     throw new Exception("Foreign Key missing one or more of destinationTable, destinationColumn or onParentDelete");
                 }
             }
-            case "UUID" -> this.type = ColumnType.columnUUID;
+            case "UUID" -> this.type = ColumnDataType.UUID;
             default -> {
                 var types = Splitter.on(':').splitToList(type).toArray(new String[0]);
 
@@ -118,7 +105,7 @@ public class Column {
                     if(currentColumnType == null) {
                         throw new Exception("Illegal column type \"" + type + "\"");
                     } else {
-                        if(this.type != 0 && currentColumnType.getRealType() != this.type) {
+                        if(this.type != null && currentColumnType.getRealType() != this.type) {
                             throw new Exception("Multiple incompatible types used \"" + type + "\"");
 
                         }
@@ -151,7 +138,7 @@ public class Column {
      */
     public String getEntityVariableName() {
         if(entityVariableName == null) {
-            if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
+            if(type == ColumnDataType.FOREIGN_KEY || type == ColumnDataType.EID)
                 entityVariableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length() - 2);
             else
                 entityVariableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1);
@@ -163,7 +150,7 @@ public class Column {
      */
     public String getVariableName() {
         if(variableName == null) {
-            if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
+            if(type == ColumnDataType.FOREIGN_KEY || type == ColumnDataType.EID)
                 variableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length() - 2) + "PK";
             else
                 variableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1);
@@ -175,7 +162,7 @@ public class Column {
      */
     public String getVariableSuffixName() {
         if(variableSuffixName == null) {
-            if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
+            if(type == ColumnDataType.FOREIGN_KEY || type == ColumnDataType.EID)
                 variableSuffixName = name.substring(0, name.length() - 2) + "PK";
             else
                 variableSuffixName = name;
@@ -185,7 +172,7 @@ public class Column {
     
     public String getSetFunctionName() {
         if(setFunctionName == null) {
-            if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
+            if(type == ColumnDataType.FOREIGN_KEY || type == ColumnDataType.EID)
                 setFunctionName = "set" + name.substring(0, name.length() - 2) + "PK";
             else
                 setFunctionName = "set" + name;
@@ -196,7 +183,7 @@ public class Column {
     /** Same as getSetFunctionName, just with a PK on the end if It's for a FK */
     public String getSetEntityFunctionName() {
         if(setEntityFunctionName == null) {
-            if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
+            if(type == ColumnDataType.FOREIGN_KEY || type == ColumnDataType.EID)
                 setEntityFunctionName = "set" + name.substring(0, name.length() - 2);
             else
                 setEntityFunctionName = "set" + name;
@@ -206,7 +193,7 @@ public class Column {
     
     public String getGetFunctionName() {
         if(getFunctionName == null) {
-            if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
+            if(type == ColumnDataType.FOREIGN_KEY || type == ColumnDataType.EID)
                 getFunctionName = "get" + name.substring(0, name.length() - 2) + "PK";
             else
                 getFunctionName = "get" + name;
@@ -217,7 +204,7 @@ public class Column {
     /** Same as getGetFunctionName, just with a PK on the end if It's for a FK */
     public String getGetEntityFunctionName() {
         if(getEntityFunctionName == null) {
-            if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
+            if(type == ColumnDataType.FOREIGN_KEY || type == ColumnDataType.EID)
                 getEntityFunctionName = "get" + name.substring(0, name.length() - 2);
             else
                 getEntityFunctionName = "get" + name;
@@ -226,26 +213,26 @@ public class Column {
     }
     
     public String getNameLowerCase() {
-        return getName().toLowerCase(Locale.getDefault());
+        return getName().toLowerCase(Locale.ROOT);
     }
     
-    public int getType() {
+    public ColumnDataType getType() {
         return type;
     }
     
     public String getTypeAsJavaType() {
         if(javaType == null) {
             switch(type) {
-                case ColumnType.columnEID -> javaType = table.getPKClass();
-                case ColumnType.columnInteger -> javaType = "Integer";
-                case ColumnType.columnLong -> javaType = "Long";
-                case ColumnType.columnString -> javaType = "String";
-                case ColumnType.columnBoolean -> javaType = "Boolean";
-                case ColumnType.columnDate -> javaType = "Integer";
-                case ColumnType.columnTime -> javaType = "Long";
-                case ColumnType.columnCLOB -> javaType = "String";
-                case ColumnType.columnBLOB -> javaType = "ByteArray";
-                case ColumnType.columnForeignKey -> {
+                case ColumnDataType.EID -> javaType = table.getPKClass();
+                case ColumnDataType.INTEGER -> javaType = "Integer";
+                case ColumnDataType.LONG -> javaType = "Long";
+                case ColumnDataType.STRING -> javaType = "String";
+                case ColumnDataType.BOOLEAN -> javaType = "Boolean";
+                case ColumnDataType.DATE -> javaType = "Integer";
+                case ColumnDataType.TIME -> javaType = "Long";
+                case ColumnDataType.CLOB -> javaType = "String";
+                case ColumnDataType.BLOB -> javaType = "ByteArray";
+                case ColumnDataType.FOREIGN_KEY -> {
                     try {
                         var fkTable = getTable().getDatabase().getTable(destinationTable);
                         javaType = fkTable.getPKClass();
@@ -253,7 +240,7 @@ public class Column {
                         javaType = "<error>";
                     }
                 }
-                case ColumnType.columnUUID -> javaType = "String";
+                case ColumnDataType.UUID -> javaType = "String";
             }
         }
         return javaType;
@@ -261,26 +248,26 @@ public class Column {
     
     public String getTypeAsJavaSqlType() {
         if(javaSqlType == null) {
-            switch(type) {
-                case ColumnType.columnEID -> javaSqlType = "BIGINT";
-                case ColumnType.columnInteger -> javaSqlType = "INTEGER";
-                case ColumnType.columnLong -> javaSqlType = "BIGINT";
-                case ColumnType.columnString -> javaSqlType = "VARCHAR";
-                case ColumnType.columnBoolean -> javaSqlType = "BIT";
-                case ColumnType.columnDate -> javaSqlType = "INTEGER";
-                case ColumnType.columnTime -> javaSqlType = "BIGINT";
-                case ColumnType.columnCLOB -> javaSqlType = "CLOB";
-                case ColumnType.columnBLOB -> javaSqlType = "BLOB";
-                case ColumnType.columnForeignKey -> javaSqlType = "BIGINT";
-                case ColumnType.columnUUID -> javaSqlType = "BINARY";
-            }
+            javaSqlType = switch(type) {
+                case ColumnDataType.EID -> "BIGINT";
+                case ColumnDataType.INTEGER -> "INTEGER";
+                case ColumnDataType.LONG -> "BIGINT";
+                case ColumnDataType.STRING -> "VARCHAR";
+                case ColumnDataType.BOOLEAN -> "BIT";
+                case ColumnDataType.DATE -> "INTEGER";
+                case ColumnDataType.TIME -> "BIGINT";
+                case ColumnDataType.CLOB -> "CLOB";
+                case ColumnDataType.BLOB -> "BLOB";
+                case ColumnDataType.FOREIGN_KEY -> "BIGINT";
+                case ColumnDataType.UUID -> "BINARY";
+            };
         }
         return javaSqlType;
     }
     
     public String getFKEntityClass() {
         if(fkEntityClass == null) {
-            if(type == ColumnType.columnForeignKey) {
+            if(type == ColumnDataType.FOREIGN_KEY) {
                 try {
                     var fkTable = getTable().getDatabase().getTable(destinationTable);
                     fkEntityClass = fkTable.getEntityClass();
@@ -294,7 +281,7 @@ public class Column {
     
     public String getFKFactoryClass() {
         if(fkFactoryClass == null) {
-            if(type == ColumnType.columnForeignKey) {
+            if(type == ColumnDataType.FOREIGN_KEY) {
                 try {
                     var fkTable = getTable().getDatabase().getTable(destinationTable);
                     fkFactoryClass = fkTable.getFactoryClass();
@@ -308,7 +295,7 @@ public class Column {
     
     public String getFKPKClass() {
         if(fkPKClass == null) {
-            if(type == ColumnType.columnForeignKey) {
+            if(type == ColumnDataType.FOREIGN_KEY) {
                 try {
                     var fkTable = getTable().getDatabase().getTable(destinationTable);
                     fkPKClass = fkTable.getPKClass();
@@ -322,20 +309,7 @@ public class Column {
     
     public String getDbColumnName(String columnPrefixLowerCase)
             throws Exception {
-        String result;
-        
-        if(type == ColumnType.columnForeignKey) {
-            var fkTable = getTable().getDatabase().getTable(destinationTable);
-
-            var referencesSelf = fkTable.getNamePlural().equals(table.getNamePlural());
-            var columnNameNotPk = !fkTable.getEID().getName().equals(name);
-
-            result = columnPrefixLowerCase + "_" + (referencesSelf || columnNameNotPk? "": fkTable.getColumnPrefixLowerCase() + "_") + name.toLowerCase(Locale.getDefault());
-        } else {
-            result = columnPrefixLowerCase + "_" + name.toLowerCase(Locale.getDefault());
-        }
-        
-        return result;
+        return DatabasePhysicalNames.columnName(this, columnPrefixLowerCase);
     }
     
     public String getDbColumnName()
@@ -398,7 +372,7 @@ public class Column {
         return destinationColumn;
     }
     
-    public int getOnParentDelete() {
+    public ParentDeleteAction getOnParentDelete() {
         return onParentDelete;
     }
     

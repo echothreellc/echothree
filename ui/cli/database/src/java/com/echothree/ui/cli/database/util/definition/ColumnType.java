@@ -14,48 +14,23 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
 public class ColumnType {
-    
-    static final int columnEID = 1;
-    static final int columnInteger = 2;
-    static final int columnLong = 3;
-    static final int columnString = 5;
-    static final int columnBoolean = 6;
-    static final int columnDate = 7;
-    static final int columnTime = 8;
-    static final int columnCLOB = 9;
-    static final int columnBLOB = 10;
-    static final int columnForeignKey = 11;
-    static final int columnUUID = 12;
-    
-    static public String columnTypeToString(int type) {
-        return switch(type) {
-            case columnEID -> "EID";
-            case columnInteger -> "Integer";
-            case columnLong -> "Long";
-            case columnString -> "String";
-            case columnBoolean -> "Boolean";
-            case columnDate -> "Date";
-            case columnTime -> "Time";
-            case columnCLOB -> "CLOB";
-            case columnBLOB -> "BLOB";
-            case columnForeignKey -> "ForeignKey";
-            case columnUUID -> "UUID";
-            default -> null;
-        };
+
+    static public String columnTypeToString(ColumnDataType type) {
+        return type.getDefinitionName();
     }
     
     String type;
-    int realType;
+    ColumnDataType realType;
     boolean hasMaxLength;
     long maxLength;
     boolean hasTotalDigits;
     String description;
     String destinationTable;
     String destinationColumn;
-    int onParentDelete;
+    ParentDeleteAction onParentDelete;
     
     /** Creates a new instance of ColumnType */
     public ColumnType(String type, String realType, String maxLength, String description, String destinationTable, String destinationColumn,
@@ -73,42 +48,34 @@ public class ColumnType {
         this.destinationTable = destinationTable;
         this.destinationColumn = destinationColumn;
         
-        if(onParentDelete != null)  {
-            if(onParentDelete.equals("delete"))
-                this.onParentDelete = Column.parentDelete;
-            else if(onParentDelete.equals("setNull"))
-                this.onParentDelete = Column.parentSetNull;
-            else
-                throw new Exception("Illegal onParentDelete \"" + onParentDelete + "\"");
-        } else
-            this.onParentDelete = Column.parentNone;
+        this.onParentDelete = ParentDeleteAction.fromDefinitionName(onParentDelete);
         
         if(realType.equals("EID"))
-            this.realType = columnEID;
+            this.realType = ColumnDataType.EID;
         else if(realType.equals("Integer"))
-            this.realType = columnInteger;
+            this.realType = ColumnDataType.INTEGER;
         else if(realType.equals("Long"))
-            this.realType = columnLong;
+            this.realType = ColumnDataType.LONG;
         else if(realType.equals("String")) {
-            this.realType = columnString;
+            this.realType = ColumnDataType.STRING;
             if(!hasMaxLength)
                 throw new Exception("String column type requires length");
         } else if(realType.equals("Boolean"))
-            this.realType = columnBoolean;
+            this.realType = ColumnDataType.BOOLEAN;
         else if(realType.equals("Date"))
-            this.realType = columnDate;
+            this.realType = ColumnDataType.DATE;
         else if(realType.equals("Time"))
-            this.realType = columnTime;
+            this.realType = ColumnDataType.TIME;
         else if(realType.equals("CLOB"))
-            this.realType = columnCLOB;
+            this.realType = ColumnDataType.CLOB;
         else if(realType.equals("BLOB"))
-            this.realType = columnBLOB;
+            this.realType = ColumnDataType.BLOB;
         else if(type.equals("ForeignKey")) {
-            this.realType = columnForeignKey;
+            this.realType = ColumnDataType.FOREIGN_KEY;
             if(destinationTable == null || destinationColumn == null || onParentDelete == null)
                 throw new Exception("Foreign Key missing one or more of destinationTable, destinationColumn or onParentDelete");
         } else if(type.equals("UUID"))
-            this.realType = columnUUID;
+            this.realType = ColumnDataType.UUID;
         else
             throw new Exception("Illegal column type \"" + realType + "\"");
     }
@@ -117,7 +84,7 @@ public class ColumnType {
         return type;
     }
     
-    public int getRealType() {
+    public ColumnDataType getRealType() {
         return realType;
     }
     
@@ -145,7 +112,7 @@ public class ColumnType {
         return destinationColumn;
     }
     
-    public int getOnParentDelete() {
+    public ParentDeleteAction getOnParentDelete() {
         return onParentDelete;
     }
     

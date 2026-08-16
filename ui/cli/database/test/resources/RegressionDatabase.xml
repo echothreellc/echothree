@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<database name="RegressionSchema">
+    <components>
+        <component name="Regression">
+            <tables>
+                <table namePlural="Widgets" nameSingular="Widget" columnPrefix="wdg">
+                    <columns>
+                        <column name="WidgetId" type="EID" />
+                        <column name="WidgetName" type="String" maxLength="40" />
+                        <column name="ParentWidgetId" type="ForeignKey" nullAllowed="true"
+                                destinationTable="Widgets" destinationColumn="WidgetId" onParentDelete="delete" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WidgetId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="WidgetName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ParentWidgetId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WidgetDetails" nameSingular="WidgetDetail" columnPrefix="wdgdt">
+                    <columns>
+                        <column name="WidgetDetailId" type="EID" />
+                        <column name="WidgetId" type="ForeignKey"
+                                destinationTable="Widgets" destinationColumn="WidgetId" onParentDelete="delete" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WidgetDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="WidgetId" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

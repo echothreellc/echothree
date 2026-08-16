@@ -149,7 +149,11 @@
     </target>
 
     <target name="persistence" unless="persistence.uptodate" depends="prepare">
-        <ant dir="${dir.home}/ui/cli/database" target="GenerateJava" />
+        <ant dir="${dir.home}/ui/cli/database" target="jar" />
+        <parallel>
+            <ant dir="${dir.home}/ui/cli/database" target="GenerateJava" />
+            <ant dir="${dir.home}/ui/cli/database" target="GenerateJooq" />
+        </parallel>
         <touch file="${dir.home}/generated/data/java/.flagfile" />
     </target>
 
@@ -269,6 +273,7 @@
                 <include name="com/echothree/model/control/*/server/**/*.class" />
                 <include name="com/echothree/service/*/server/**/*.class" />
                 <include name="com/echothree/model/data/*/server/**/*.class" />
+                <include name="com/echothree/model/jooq/server/**/*.class" />
                 <include name="com/echothree/util/server/**/*.class" />
             </fileset>
             

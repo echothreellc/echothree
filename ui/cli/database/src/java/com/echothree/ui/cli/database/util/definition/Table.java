@@ -14,9 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -33,14 +34,14 @@ public class Table {
     String chunkSize;
     String description;
     
-    List<Column> columns;
-    List<Index> indexes;
-    List<Column> foreignKeys;
-    List<Column> notForeignKeys;
+    private final List<Column> columns = new ArrayList<>();
+    private final List<Index> indexes = new ArrayList<>();
+    private final List<Column> foreignKeys = new ArrayList<>();
+    private final List<Column> notForeignKeys = new ArrayList<>();
     
-    Map<String, Index> myIndexes;
-    Map<String, Column> myColumns;
-    Map<String, Column> myColumnsByLowerCase;
+    private final Map<String, Index> myIndexes = new HashMap<>();
+    private final Map<String, Column> myColumns = new HashMap<>();
+    private final Map<String, Column> myColumnsByLowerCase = new HashMap<>();
     
     Index primaryKey;
     
@@ -75,14 +76,6 @@ public class Table {
         this.description = description;
         this.primaryKey = null;
         
-        columns = new ArrayList<>();
-        indexes = new ArrayList<>();
-        foreignKeys = new ArrayList<>();
-        notForeignKeys = new ArrayList<>();
-        
-        myIndexes = new HashMap<>();
-        myColumns = new HashMap<>();
-        myColumnsByLowerCase = new HashMap<>();
     }
     
     public Database getDatabase() {
@@ -98,7 +91,7 @@ public class Table {
     }
     
     public String getNamePluralLowerCase() {
-        return getNamePlural().toLowerCase(Locale.getDefault());
+        return DatabasePhysicalNames.tableName(this);
     }
     
     public String getNameSingular() {
@@ -110,7 +103,7 @@ public class Table {
     }
     
     public String getColumnPrefixLowerCase() {
-        return getColumnPrefix().toLowerCase(Locale.getDefault());
+        return DatabasePhysicalNames.columnPrefix(this);
     }
     
     public String getChunkSize() {
@@ -136,9 +129,9 @@ public class Table {
         
         columns.add(newColumn);
         myColumns.put(attrName, newColumn);
-        myColumnsByLowerCase.put(attrName.toLowerCase(Locale.getDefault()), newColumn);
+        myColumnsByLowerCase.put(attrName.toLowerCase(Locale.ROOT), newColumn);
         
-        if(newColumn.getType() == ColumnType.columnForeignKey) {
+        if(newColumn.getType() == ColumnDataType.FOREIGN_KEY) {
             foreignKeys.add(newColumn);
         } else {
             notForeignKeys.add(newColumn);
@@ -179,7 +172,7 @@ public class Table {
 
         var newIndex = new Index(this, type, name);
         
-        if(newIndex.getType() == Index.indexPrimaryKey) {
+        if(newIndex.getType() == IndexType.PRIMARY_KEY) {
             if(primaryKey == null) {
                 primaryKey = newIndex;
             } else {
@@ -194,20 +187,20 @@ public class Table {
         return newIndex;
     }
     
-    List<Column> getColumns() {
-        return columns;
+    public List<Column> getColumns() {
+        return Collections.unmodifiableList(columns);
     }
     
-    List<Index> getIndexes() {
-        return indexes;
+    public List<Index> getIndexes() {
+        return Collections.unmodifiableList(indexes);
     }
     
-    List<Column> getForeignKeys() {
-        return foreignKeys;
+    public List<Column> getForeignKeys() {
+        return Collections.unmodifiableList(foreignKeys);
     }
     
     List<Column> getNotForeignKeys() {
-        return notForeignKeys;
+        return Collections.unmodifiableList(notForeignKeys);
     }
     
     public boolean isColumnValid(String dbColumnName) {
@@ -240,7 +233,7 @@ public class Table {
     public int countColumnsWithDestinationTable(String destinationTable) {
         var totalColumns = 0;
         
-        totalColumns = columns.stream().filter((theColumn) -> (theColumn.getType() == ColumnType.columnForeignKey)).filter((theColumn) -> theColumn.getDestinationTable().equals(destinationTable)).map((_item) -> 1).reduce(totalColumns, Integer::sum);
+        totalColumns = columns.stream().filter((theColumn) -> (theColumn.getType() == ColumnDataType.FOREIGN_KEY)).filter((theColumn) -> theColumn.getDestinationTable().equals(destinationTable)).map((_item) -> 1).reduce(totalColumns, Integer::sum);
         
         return totalColumns;
     }
@@ -249,9 +242,9 @@ public class Table {
         for(var theIndex: indexes) {
             if(theIndex.isColumnInIndex(destinationColumn)) {
                 var indexType = theIndex.getType();
-                if(indexType == Index.indexMultiple)
+                if(indexType == IndexType.MULTIPLE)
                     return true;
-                else if(indexType == Index.indexUnique && (theIndex.countIndexColumns() > 1))
+                else if(indexType == IndexType.UNIQUE && (theIndex.countIndexColumns() > 1))
                     return true;
             }
         }
@@ -264,14 +257,14 @@ public class Table {
     }
     
     public boolean hasEID() {
-        return hasColumnOfType(ColumnType.columnEID);
+        return hasColumnOfType(ColumnDataType.EID);
     }
     
     public Column getEID() {
         Column result = null;
         
         for(var theColumn: columns) {
-            if(theColumn.getType() == ColumnType.columnEID) {
+            if(theColumn.getType() == ColumnDataType.EID) {
                 result = theColumn;
                 break;
             }
@@ -281,18 +274,18 @@ public class Table {
     }
     
     public boolean hasBlob() {
-        return hasColumnOfType(ColumnType.columnBLOB);
+        return hasColumnOfType(ColumnDataType.BLOB);
     }
     
     public boolean hasClob() {
-        return hasColumnOfType(ColumnType.columnCLOB);
+        return hasColumnOfType(ColumnDataType.CLOB);
     }
     
     public boolean hasForeignKey() {
-        return hasColumnOfType(ColumnType.columnForeignKey);
+        return hasColumnOfType(ColumnDataType.FOREIGN_KEY);
     }
     
-    public boolean hasColumnOfType(int columnType) {
+    public boolean hasColumnOfType(ColumnDataType columnType) {
         var result = false;
         
         for(var theColumn: columns) {
@@ -309,7 +302,7 @@ public class Table {
         var result = true;
         
         for(var theColumn: columns) {
-            if((theColumn.getType() != ColumnType.columnEID) && !theColumn.getNullAllowed()) {
+            if((theColumn.getType() != ColumnDataType.EID) && !theColumn.getNullAllowed()) {
                 result = false;
                 break;
             }
@@ -320,7 +313,7 @@ public class Table {
     
     public String getDbTableName() {
         if(dbTableName == null) {
-            dbTableName = namePlural.toLowerCase(Locale.getDefault());
+            dbTableName = DatabasePhysicalNames.tableName(this);
         }
         return dbTableName;
     }

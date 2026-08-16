@@ -91,6 +91,9 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorities.AllocationPriorities;
+import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorityDetails.AllocationPriorityDetails;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -2619,37 +2622,30 @@ public class InventoryControl
     }
 
     public long countAllocationPriorities() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM allocationpriorities, allocationprioritydetails
-                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
-                """);
+        return session.getDslContext().selectCount()
+                .from(AllocationPriorities)
+                .join(AllocationPriorityDetails)
+                .onKey(ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getAllocationPriorityByNameQueries;
+    public AllocationPriority getAllocationPriorityByName(final String allocationPriorityName,
+            final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(AllocationPriorities.fields())
+                .from(AllocationPriorities)
+                .join(AllocationPriorityDetails)
+                .onKey(ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(AllocationPriorityDetails.AllocationPriorityName.eq(allocationPriorityName));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM allocationpriorities, allocationprioritydetails
-                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
-                AND allocprdt_allocationpriorityname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM allocationpriorities, allocationprioritydetails
-                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
-                AND allocprdt_allocationpriorityname = ?
-                FOR UPDATE
-                """);
-        getAllocationPriorityByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public AllocationPriority getAllocationPriorityByName(String allocationPriorityName, EntityPermission entityPermission) {
-        return allocationPriorityFactory.getEntityFromQuery(entityPermission, getAllocationPriorityByNameQueries,
-                allocationPriorityName);
+        return allocationPriorityFactory.getEntityFromQuery(entityPermission,
+                allocationPriorityFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public AllocationPriority getAllocationPriorityByName(String allocationPriorityName) {
@@ -2668,29 +2664,21 @@ public class InventoryControl
         return getAllocationPriorityDetailValueForUpdate(getAllocationPriorityByNameForUpdate(allocationPriorityName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultAllocationPriorityQueries;
+    public AllocationPriority getDefaultAllocationPriority(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(AllocationPriorities.fields())
+                .from(AllocationPriorities)
+                .join(AllocationPriorityDetails)
+                .onKey(ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(AllocationPriorityDetails.IsDefault.eq(true));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM allocationpriorities, allocationprioritydetails
-                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
-                AND allocprdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM allocationpriorities, allocationprioritydetails
-                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
-                AND allocprdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultAllocationPriorityQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public AllocationPriority getDefaultAllocationPriority(EntityPermission entityPermission) {
-        return allocationPriorityFactory.getEntityFromQuery(entityPermission, getDefaultAllocationPriorityQueries);
+        return allocationPriorityFactory.getEntityFromQuery(entityPermission,
+                allocationPriorityFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public AllocationPriority getDefaultAllocationPriority() {
@@ -2705,29 +2693,24 @@ public class InventoryControl
         return getDefaultAllocationPriorityForUpdate().getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getAllocationPrioritiesQueries;
+    private List<AllocationPriority> getAllocationPriorities(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(AllocationPriorities.fields())
+                .from(AllocationPriorities)
+                .join(AllocationPriorityDetails)
+                .onKey(ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK);
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = switch(entityPermission) {
+            case READ_ONLY -> baseQuery
+                    .orderBy(AllocationPriorityDetails.SortOrder, AllocationPriorityDetails.AllocationPriorityName)
+                    .getSQL() + " _LIMIT_";
+            case READ_WRITE -> baseQuery
+                    .forUpdate()
+                    .getSQL();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM allocationpriorities, allocationprioritydetails
-                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
-                ORDER BY allocprdt_sortorder, allocprdt_allocationpriorityname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM allocationpriorities, allocationprioritydetails
-                WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid
-                FOR UPDATE
-                """);
-        getAllocationPrioritiesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<AllocationPriority> getAllocationPriorities(EntityPermission entityPermission) {
-        return allocationPriorityFactory.getEntitiesFromQuery(entityPermission, getAllocationPrioritiesQueries);
+        return allocationPriorityFactory.getEntitiesFromQuery(entityPermission,
+                allocationPriorityFactory.prepareStatement(sql));
     }
 
     public List<AllocationPriority> getAllocationPriorities() {

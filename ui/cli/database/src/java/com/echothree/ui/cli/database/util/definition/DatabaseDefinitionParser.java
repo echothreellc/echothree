@@ -14,14 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
-import com.echothree.ui.cli.database.CustomEntityResolver;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -502,7 +502,7 @@ public class DatabaseDefinitionParser
             throws SAXException {
         if(localName.equals("index")) {
             var indexColumns = currentIndex.getIndexColumns().size();
-            var isPrimaryKey = currentIndex.getType() == Index.indexPrimaryKey;
+            var isPrimaryKey = currentIndex.getType() == IndexType.PRIMARY_KEY;
             
             if(indexColumns == 0 && !isPrimaryKey) {
                 var indexName = currentIndex.getName();
@@ -570,21 +570,38 @@ public class DatabaseDefinitionParser
         
     }
 
-    public void parseResource(XMLReader parser, String arg)
+    private void parseResource(XMLReader parser, String arg)
             throws IOException, SAXException {
-        parser.parse(new InputSource(DatabaseDefinitionParser.class.getResource(arg).openStream()));
+        var resource = DatabaseDefinitionParser.class.getResource(arg);
+
+        if(resource == null) {
+            throw new IOException("Database definition resource not found: " + arg);
+        }
+
+        try(var inputStream = resource.openStream()) {
+            var inputSource = new InputSource(inputStream);
+            inputSource.setSystemId(resource.toExternalForm());
+            parser.parse(inputSource);
+        }
+    }
+
+    private void setSecurityPropertyIfSupported(XMLReader parser, String property, String value)
+            throws SAXNotSupportedException {
+        try {
+            parser.setProperty(property, value);
+        } catch(SAXNotRecognizedException e) {
+            // Older Xerces versions do not expose the JAXP access restriction properties.
+            // CustomEntityResolver still rejects every external resource except the bundled DTD.
+        }
     }
     
     public void parse(String arg)
             throws Exception {
-        XMLReader parser = null;
-
-        // create parser
-        try {
-            parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
-        } catch (Exception e) {
-            System.err.println("error: Unable to instantiate parser");
-        }
+        var parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        var parser = parserFactory.newSAXParser().getXMLReader();
+        setSecurityPropertyIfSupported(parser, XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        setSecurityPropertyIfSupported(parser, XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
         
         // set parser features
         try {
