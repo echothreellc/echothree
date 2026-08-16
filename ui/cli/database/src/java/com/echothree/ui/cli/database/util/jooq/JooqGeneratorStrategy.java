@@ -55,6 +55,7 @@ public class JooqGeneratorStrategy
 
                     tableNames.put(dbTableName, table.getNamePlural());
                     componentNames.put(dbTableName, component.getName().toLowerCase(Locale.ROOT));
+
                     for(var column : table.getColumns()) {
                         columnNames.put(dbTableName + "." + column.getDbColumnName(), javaColumnName(column));
                     }
@@ -137,7 +138,6 @@ public class JooqGeneratorStrategy
             }
 
             var componentName = componentNames.get(table.getInputName());
-
             if(componentName != null) {
                 packageName += "." + componentName;
             }

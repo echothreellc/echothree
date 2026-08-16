@@ -46,11 +46,11 @@ public class JooqJavaGenerator
 
             parser.parse("/DatabaseDefinition.xml");
 
-            for(var component : databases.getDatabase("echothree").getComponents()) {
-                for(var table : component.getTables()) {
-                    componentNames.put(table.getDbTableName(), component.getName());
-                }
-            }
+            databases.getDatabase("echothree").getComponents().forEach(component ->
+                    component.getTables().forEach(table ->
+                            componentNames.put(table.getDbTableName(), component.getName())
+                    )
+            );
         } catch(Exception e) {
             throw new IllegalStateException("Unable to load jOOQ key components", e);
         }
@@ -144,15 +144,18 @@ public class JooqJavaGenerator
 
         out.refConflicts(getStrategy().getJavaIdentifiers(uniqueKeys));
         out.refConflicts(getStrategy().getJavaIdentifiers(foreignKeys));
+
         if(componentClass) {
             out.printPackageSpecification(keysPackage(schema, component));
             out.printImports();
         } else {
             printGlobalReferencesPackage(out, schema, ConstraintDefinition.class);
         }
+
         printClassJavadoc(out, componentClass
                 ? "Key definitions for the " + className.replace("Keys", "") + " component."
                 : "Internal registry for all generated key definitions.");
+
         if(componentClass) {
             out.println("public interface %s {", className);
         } else {
@@ -165,6 +168,7 @@ public class JooqJavaGenerator
         printForeignKeys(out, foreignKeys);
 
         out.println("}");
+
         closeJavaWriter(out);
     }
 
@@ -176,6 +180,7 @@ public class JooqJavaGenerator
         for(var key : schema.getDatabase().getKeys(schema)) {
             uniqueKeys.get(componentNames.get(key.getTable().getInputName())).add(key);
         }
+
         for(var key : schema.getDatabase().getForeignKeys(schema)) {
             foreignKeys.get(componentNames.get(key.getKeyTable().getInputName())).add(key);
         }
@@ -191,6 +196,7 @@ public class JooqJavaGenerator
                 componentInterfaces.add(keysPackage(schema, component) + "." + currentClass);
             }
         }
+
         for(var component : componentNames.values().stream().distinct().toList()) {
             var keys = foreignKeys.get(component);
 
