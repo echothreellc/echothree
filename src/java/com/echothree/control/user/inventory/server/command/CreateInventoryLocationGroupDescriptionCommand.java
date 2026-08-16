@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupDescriptionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,7 +60,7 @@ public class CreateInventoryLocationGroupDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     PartyControl partyControl;
@@ -81,19 +81,19 @@ public class CreateInventoryLocationGroupDescriptionCommand
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
+                    var inventoryLocationGroupDescription = inventoryLocationGroupControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
 
                     if(inventoryLocationGroupDescription == null) {
                         var description = form.getDescription();
 
-                        inventoryControl.createInventoryLocationGroupDescription(inventoryLocationGroup, language, description, getPartyPK());
+                        inventoryLocationGroupControl.createInventoryLocationGroupDescription(inventoryLocationGroup, language, description, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateInventoryLocationGroupDescription.name());
                     }

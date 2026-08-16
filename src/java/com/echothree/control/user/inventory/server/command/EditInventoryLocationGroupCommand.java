@@ -21,7 +21,7 @@ import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEd
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -70,7 +70,7 @@ public class EditInventoryLocationGroupCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -104,9 +104,9 @@ public class EditInventoryLocationGroupCommand
             var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+                inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
             } else { // EditMode.UPDATE
-                inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
+                inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
             }
 
             if(inventoryLocationGroup == null) {
@@ -126,12 +126,12 @@ public class EditInventoryLocationGroupCommand
 
     @Override
     public void fillInResult(EditInventoryLocationGroupResult result, InventoryLocationGroup inventoryLocationGroup) {
-        result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(getUserVisit(), inventoryLocationGroup));
+        result.setInventoryLocationGroup(inventoryLocationGroupControl.getInventoryLocationGroupTransfer(getUserVisit(), inventoryLocationGroup));
     }
 
     @Override
     public void doLock(InventoryLocationGroupEdit edit, InventoryLocationGroup inventoryLocationGroup) {
-        var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage());
+        var inventoryLocationGroupDescription = inventoryLocationGroupControl.getInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage());
         var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
 
         edit.setInventoryLocationGroupName(inventoryLocationGroupDetail.getInventoryLocationGroupName());
@@ -147,7 +147,7 @@ public class EditInventoryLocationGroupCommand
     public void canUpdate(InventoryLocationGroup inventoryLocationGroup) {
         var warehouseParty = warehouse.getParty();
         var inventoryLocationGroupName = edit.getInventoryLocationGroupName();
-        var duplicateInventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+        var duplicateInventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
 
         if(duplicateInventoryLocationGroup != null && !inventoryLocationGroup.equals(duplicateInventoryLocationGroup)) {
             addExecutionError(ExecutionErrors.DuplicateInventoryLocationGroupName.name(), inventoryLocationGroupName);
@@ -157,25 +157,25 @@ public class EditInventoryLocationGroupCommand
     @Override
     public void doUpdate(InventoryLocationGroup inventoryLocationGroup) {
         var partyPK = getPartyPK();
-        var inventoryLocationGroupDetailValue = inventoryControl.getInventoryLocationGroupDetailValueForUpdate(inventoryLocationGroup);
-        var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, getPreferredLanguage());
+        var inventoryLocationGroupDetailValue = inventoryLocationGroupControl.getInventoryLocationGroupDetailValueForUpdate(inventoryLocationGroup);
+        var inventoryLocationGroupDescription = inventoryLocationGroupControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, getPreferredLanguage());
         var description = edit.getDescription();
 
         inventoryLocationGroupDetailValue.setInventoryLocationGroupName(edit.getInventoryLocationGroupName());
         inventoryLocationGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         inventoryLocationGroupDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        inventoryControl.updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, partyPK);
+        inventoryLocationGroupControl.updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, partyPK);
 
         if(inventoryLocationGroupDescription == null && description != null) {
-            inventoryControl.createInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage(), description, partyPK);
+            inventoryLocationGroupControl.createInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage(), description, partyPK);
         } else if(inventoryLocationGroupDescription != null && description == null) {
-            inventoryControl.deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, partyPK);
+            inventoryLocationGroupControl.deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, partyPK);
         } else if(inventoryLocationGroupDescription != null && description != null) {
-            var inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValue(inventoryLocationGroupDescription);
+            var inventoryLocationGroupDescriptionValue = inventoryLocationGroupControl.getInventoryLocationGroupDescriptionValue(inventoryLocationGroupDescription);
 
             inventoryLocationGroupDescriptionValue.setDescription(description);
-            inventoryControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, partyPK);
+            inventoryLocationGroupControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, partyPK);
         }
     }
 

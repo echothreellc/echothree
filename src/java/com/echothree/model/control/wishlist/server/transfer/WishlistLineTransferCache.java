@@ -18,7 +18,7 @@ package com.echothree.model.control.wishlist.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -34,7 +34,7 @@ public class WishlistLineTransferCache
         extends BaseWishlistTransferCache<OrderLine, WishlistLineTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -65,7 +65,7 @@ public class WishlistLineTransferCache
             var wishlist = wishlistControl.getWishlistTransfer(userVisit, order);
             var orderLineSequence = orderLineDetail.getOrderLineSequence();
             var item = itemControl.getItemTransfer(userVisit, orderLineDetail.getItem());
-            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, orderLineDetail.getInventoryCondition());
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionTransfer(userVisit, orderLineDetail.getInventoryCondition());
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, orderLineDetail.getUnitOfMeasureType());
             var quantity = orderLineDetail.getQuantity();
             var unformattedUnitAmount = orderLineDetail.getUnitAmount();

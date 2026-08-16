@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -47,7 +47,7 @@ public class GetInventoryConditionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     InventoryConditionLogic inventoryConditionLogic;
@@ -73,7 +73,7 @@ public class GetInventoryConditionCommand
         var result = InventoryResultFactory.getGetInventoryConditionResult();
 
         if(entity != null) {
-            result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(getUserVisit(), entity));
+            result.setInventoryCondition(inventoryConditionControl.getInventoryConditionTransfer(getUserVisit(), entity));
         }
 
         return result;

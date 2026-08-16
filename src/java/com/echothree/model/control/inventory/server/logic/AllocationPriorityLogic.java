@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.inventory.common.exception.DuplicateAllocationPriorityNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownAllocationPriorityNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultAllocationPriorityException;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.value.AllocationPriorityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
@@ -42,7 +42,7 @@ public class AllocationPriorityLogic
         extends BaseLogic {
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -58,13 +58,13 @@ public class AllocationPriorityLogic
     public AllocationPriority createAllocationPriority(final ExecutionErrorAccumulator eea, final String allocationPriorityName,
             final Integer priority, final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriority = allocationPriorityControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority == null) {
-            allocationPriority = inventoryControl.createAllocationPriority(allocationPriorityName, priority, isDefault, sortOrder, createdBy);
+            allocationPriority = allocationPriorityControl.createAllocationPriority(allocationPriorityName, priority, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                inventoryControl.createAllocationPriorityDescription(allocationPriority, language, description, createdBy);
+                allocationPriorityControl.createAllocationPriorityDescription(allocationPriority, language, description, createdBy);
             }
         } else {
             handleExecutionError(DuplicateAllocationPriorityNameException.class, eea, ExecutionErrors.DuplicateAllocationPriorityName.name(), allocationPriorityName);
@@ -75,7 +75,7 @@ public class AllocationPriorityLogic
 
     public AllocationPriority getAllocationPriorityByName(final ExecutionErrorAccumulator eea, final String allocationPriorityName,
             final EntityPermission entityPermission) {
-        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName, entityPermission);
+        var allocationPriority = allocationPriorityControl.getAllocationPriorityByName(allocationPriorityName, entityPermission);
 
         if(allocationPriority == null) {
             handleExecutionError(UnknownAllocationPriorityNameException.class, eea, ExecutionErrors.UnknownAllocationPriorityName.name(), allocationPriorityName);
@@ -101,7 +101,7 @@ public class AllocationPriorityLogic
         switch(parameterCount) {
             case 0 -> {
                 if(allowDefault) {
-                    allocationPriority = inventoryControl.getDefaultAllocationPriority(entityPermission);
+                    allocationPriority = allocationPriorityControl.getDefaultAllocationPriority(entityPermission);
 
                     if(allocationPriority == null) {
                         handleExecutionError(UnknownDefaultAllocationPriorityException.class, eea, ExecutionErrors.UnknownDefaultAllocationPriority.name());
@@ -116,7 +116,7 @@ public class AllocationPriorityLogic
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.AllocationPriority.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        allocationPriority = inventoryControl.getAllocationPriorityByEntityInstance(entityInstance, entityPermission);
+                        allocationPriority = allocationPriorityControl.getAllocationPriorityByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     allocationPriority = getAllocationPriorityByName(eea, allocationPriorityName, entityPermission);
@@ -141,12 +141,12 @@ public class AllocationPriorityLogic
 
     public void updateAllocationPriorityFromValue(final AllocationPriorityDetailValue allocationPriorityDetailValue,
             final BasePK updatedBy) {
-        inventoryControl.updateAllocationPriorityFromValue(allocationPriorityDetailValue, updatedBy);
+        allocationPriorityControl.updateAllocationPriorityFromValue(allocationPriorityDetailValue, updatedBy);
     }
     
     public void deleteAllocationPriority(final ExecutionErrorAccumulator eea, final AllocationPriority allocationPriority,
             final BasePK deletedBy) {
-        inventoryControl.deleteAllocationPriority(allocationPriority, deletedBy);
+        allocationPriorityControl.deleteAllocationPriority(allocationPriority, deletedBy);
     }
 
 }

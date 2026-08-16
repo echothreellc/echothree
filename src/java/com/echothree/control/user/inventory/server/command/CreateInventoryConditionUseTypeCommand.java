@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionUseTypeForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -43,7 +43,7 @@ public class CreateInventoryConditionUseTypeCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of CreateInventoryConditionUseTypeCommand */
     public CreateInventoryConditionUseTypeCommand() {
@@ -53,13 +53,13 @@ public class CreateInventoryConditionUseTypeCommand
     @Override
     protected BaseResult execute() {
         var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var inventoryConditionUseType = inventoryConditionControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
 
         if(inventoryConditionUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
 
-            inventoryControl.createInventoryConditionUseType(inventoryConditionUseTypeName, isDefault, sortOrder);
+            inventoryConditionControl.createInventoryConditionUseType(inventoryConditionUseTypeName, isDefault, sortOrder);
         } else {
             addExecutionError(ExecutionErrors.DuplicateInventoryConditionUseTypeName.name(), inventoryConditionUseTypeName);
         }

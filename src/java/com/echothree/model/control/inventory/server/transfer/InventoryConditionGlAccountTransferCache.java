@@ -19,7 +19,7 @@ package com.echothree.model.control.inventory.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionGlAccountTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionGlAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -32,7 +32,7 @@ public class InventoryConditionGlAccountTransferCache
     AccountingControl accountingControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
     
     /** Creates a new instance of InventoryConditionGlAccountTransferCache */
     protected InventoryConditionGlAccountTransferCache() {
@@ -44,7 +44,7 @@ public class InventoryConditionGlAccountTransferCache
         var inventoryConditionGlAccountTransfer = get(inventoryConditionGlAccount);
         
         if(inventoryConditionGlAccountTransfer == null) {
-            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, inventoryConditionGlAccount.getInventoryCondition());
+            var inventoryConditionTransfer = inventoryConditionControl.getInventoryConditionTransfer(userVisit, inventoryConditionGlAccount.getInventoryCondition());
             var itemAccountingCategoryTransfer = accountingControl.getItemAccountingCategoryTransfer(userVisit, inventoryConditionGlAccount.getItemAccountingCategory());
             var inventoryGlAccount = inventoryConditionGlAccount.getInventoryGlAccount();
             var inventoryGlAccountTransfer = inventoryGlAccount == null? null: accountingControl.getGlAccountTransfer(userVisit, inventoryGlAccount);

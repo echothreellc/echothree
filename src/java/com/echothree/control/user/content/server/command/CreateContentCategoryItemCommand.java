@@ -20,7 +20,7 @@ import com.echothree.control.user.content.common.form.CreateContentCategoryItemF
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentLogic;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -74,7 +74,7 @@ public class CreateContentCategoryItemCommand
     ContentControl contentControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -110,7 +110,7 @@ public class CreateContentCategoryItemCommand
                     
                     if(item != null) {
                         var inventoryConditionName = form.getInventoryConditionName();
-                        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                        var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
                         
                         if(inventoryCondition != null) {
                             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();

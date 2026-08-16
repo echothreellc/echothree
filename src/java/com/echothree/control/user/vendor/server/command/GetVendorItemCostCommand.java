@@ -19,7 +19,7 @@ package com.echothree.control.user.vendor.server.command;
 import com.echothree.control.user.vendor.common.form.GetVendorItemCostForm;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -65,7 +65,7 @@ public class GetVendorItemCostCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     PartyControl partyControl;
@@ -118,11 +118,11 @@ public class GetVendorItemCostCommand
 
                 if(vendorItem != null) {
                     var inventoryConditionName = form.getInventoryConditionName();
-                    var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                    var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
-                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseTypes.PURCHASE_ORDER.name());
-                        var inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType,
+                        var inventoryConditionUseType = inventoryConditionControl.getInventoryConditionUseTypeByName(InventoryConditionUseTypes.PURCHASE_ORDER.name());
+                        var inventoryConditionUse = inventoryConditionControl.getInventoryConditionUse(inventoryConditionUseType,
                                 inventoryCondition);
 
                         if(inventoryConditionUse != null) {

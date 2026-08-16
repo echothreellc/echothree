@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupChoicesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -58,7 +58,7 @@ public class GetInventoryLocationGroupChoicesCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -79,7 +79,7 @@ public class GetInventoryLocationGroupChoicesCommand
             var warehouseParty = warehouse.getParty();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-            result.setInventoryLocationGroupChoices(inventoryControl.getInventoryLocationGroupChoicesByWarehouseParty(defaultInventoryLocationGroupChoice,
+            result.setInventoryLocationGroupChoices(inventoryLocationGroupControl.getInventoryLocationGroupChoicesByWarehouseParty(defaultInventoryLocationGroupChoice,
                     getPreferredLanguage(), allowNullChoice, warehouseParty));
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);

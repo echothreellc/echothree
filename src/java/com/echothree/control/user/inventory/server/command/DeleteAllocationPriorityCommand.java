@@ -17,7 +17,6 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -55,9 +54,6 @@ public class DeleteAllocationPriorityCommand
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-
-    @Inject
-    InventoryControl inventoryControl;
 
     @Inject
     AllocationPriorityLogic allocationPriorityLogic;

@@ -21,7 +21,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.party.server.graphql.BasePartyObject;
@@ -102,12 +102,12 @@ public class WarehouseObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<InventoryLocationGroupObject> getInventoryLocationGroups(final DataFetchingEnvironment env) {
         if(InventorySecurityUtils.getHasInventoryLocationGroupsAccess(env)) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
+            var inventoryLocationGroupControl = Session.getModelController(InventoryLocationGroupControl.class);
             var warehouseParty = getWarehouse().getParty();
-            var totalCount = inventoryControl.countInventoryLocationGroupsByWarehouseParty(warehouseParty);
+            var totalCount = inventoryLocationGroupControl.countInventoryLocationGroupsByWarehouseParty(warehouseParty);
 
             try(var objectLimiter = new ObjectLimiter(env, InventoryLocationGroupConstants.COMPONENT_VENDOR_NAME, InventoryLocationGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = inventoryControl.getInventoryLocationGroupsByWarehouseParty(warehouseParty);
+                var entities = inventoryLocationGroupControl.getInventoryLocationGroupsByWarehouseParty(warehouseParty);
                 var items = entities.stream().map(InventoryLocationGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, items);

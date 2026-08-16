@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionUsesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionUse;
@@ -48,7 +48,7 @@ public class GetInventoryConditionUsesCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     InventoryConditionLogic inventoryConditionLogic;
@@ -71,7 +71,7 @@ public class GetInventoryConditionUsesCommand
             if(inventoryConditionName != null) {
                 inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
             } else {
-                inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+                inventoryConditionUseType = inventoryConditionControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
 
                 if(inventoryConditionUseType == null) {
                     addExecutionError(ExecutionErrors.UnknownInventoryConditionUseTypeName.name(), inventoryConditionUseTypeName);
@@ -88,9 +88,9 @@ public class GetInventoryConditionUsesCommand
 
         if(!hasExecutionErrors()) {
             if(inventoryCondition != null) {
-                total = inventoryControl.countInventoryConditionUsesByInventoryCondition(inventoryCondition);
+                total = inventoryConditionControl.countInventoryConditionUsesByInventoryCondition(inventoryCondition);
             } else {
-                total = inventoryControl.countInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType);
+                total = inventoryConditionControl.countInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType);
             }
         }
 
@@ -103,9 +103,9 @@ public class GetInventoryConditionUsesCommand
 
         if(!hasExecutionErrors()) {
             if(inventoryCondition != null) {
-                entities = inventoryControl.getInventoryConditionUsesByInventoryCondition(inventoryCondition);
+                entities = inventoryConditionControl.getInventoryConditionUsesByInventoryCondition(inventoryCondition);
             } else {
-                entities = inventoryControl.getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType);
+                entities = inventoryConditionControl.getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType);
             }
         }
 
@@ -120,16 +120,16 @@ public class GetInventoryConditionUsesCommand
             var userVisit = getUserVisit();
 
             if(inventoryCondition != null) {
-                result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition));
+                result.setInventoryCondition(inventoryConditionControl.getInventoryConditionTransfer(userVisit, inventoryCondition));
             } else {
-                result.setInventoryConditionUseType(inventoryControl.getInventoryConditionUseTypeTransfer(userVisit, inventoryConditionUseType));
+                result.setInventoryConditionUseType(inventoryConditionControl.getInventoryConditionUseTypeTransfer(userVisit, inventoryConditionUseType));
             }
 
             if(session.hasLimit(InventoryConditionUseFactory.class)) {
                 result.setInventoryConditionUseCount(getTotalEntities());
             }
 
-            result.setInventoryConditionUses(inventoryControl.getInventoryConditionUseTransfers(userVisit, entities));
+            result.setInventoryConditionUses(inventoryConditionControl.getInventoryConditionUseTransfers(userVisit, entities));
         }
 
         return result;

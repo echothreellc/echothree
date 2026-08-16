@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.PartyInventoryLevelTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
@@ -30,7 +30,7 @@ public class PartyInventoryLevelTransferCache
         extends BaseInventoryTransferCache<PartyInventoryLevel, PartyInventoryLevelTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -51,7 +51,7 @@ public class PartyInventoryLevelTransferCache
             var partyTransfer = partyControl.getPartyTransfer(userVisit, partyInventoryLevel.getParty());
             var item = partyInventoryLevel.getItem();
             var itemTransfer = itemControl.getItemTransfer(userVisit, item);
-            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, partyInventoryLevel.getInventoryCondition());
+            var inventoryConditionTransfer = inventoryConditionControl.getInventoryConditionTransfer(userVisit, partyInventoryLevel.getInventoryCondition());
             var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
             var minimumInventory = formatUnitOfMeasure(userVisit, unitOfMeasureKind, partyInventoryLevel.getMinimumInventory());
             var maximumInventory = formatUnitOfMeasure(userVisit, unitOfMeasureKind, partyInventoryLevel.getMaximumInventory());

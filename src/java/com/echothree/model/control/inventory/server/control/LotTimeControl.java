@@ -36,6 +36,10 @@ import com.echothree.model.data.inventory.server.value.LotTimeTypeDetailValue;
 import com.echothree.model.data.inventory.server.value.LotTimeValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -51,7 +55,16 @@ import javax.inject.Inject;
 
 @CommandScope
 public class LotTimeControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
+
+    @Inject
+    LotTimeTypeTransferCache lotTimeTypeTransferCache;
+
+    @Inject
+    LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache;
+
+    @Inject
+    LotTimeTransferCache lotTimeTransferCache;
 
     /** Creates a new instance of LotTimeControl */
     protected LotTimeControl() {

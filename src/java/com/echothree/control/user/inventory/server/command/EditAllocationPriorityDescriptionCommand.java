@@ -22,7 +22,7 @@ import com.echothree.control.user.inventory.common.form.EditAllocationPriorityDe
 import com.echothree.control.user.inventory.common.result.EditAllocationPriorityDescriptionResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.AllocationPriorityDescriptionSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -69,7 +69,7 @@ public class EditAllocationPriorityDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     @Inject
     PartyControl partyControl;
@@ -93,7 +93,7 @@ public class EditAllocationPriorityDescriptionCommand
     public AllocationPriorityDescription getEntity(EditAllocationPriorityDescriptionResult result) {
         AllocationPriorityDescription allocationPriorityDescription = null;
         var allocationPriorityName = spec.getAllocationPriorityName();
-        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriority = allocationPriorityControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
             var languageIsoName = spec.getLanguageIsoName();
@@ -101,9 +101,9 @@ public class EditAllocationPriorityDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, language);
+                    allocationPriorityDescription = allocationPriorityControl.getAllocationPriorityDescription(allocationPriority, language);
                 } else { // EditMode.UPDATE
-                    allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, language);
+                    allocationPriorityDescription = allocationPriorityControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, language);
                 }
 
                 if(allocationPriorityDescription == null) {
@@ -126,7 +126,7 @@ public class EditAllocationPriorityDescriptionCommand
 
     @Override
     public void fillInResult(EditAllocationPriorityDescriptionResult result, AllocationPriorityDescription allocationPriorityDescription) {
-        result.setAllocationPriorityDescription(inventoryControl.getAllocationPriorityDescriptionTransfer(getUserVisit(), allocationPriorityDescription));
+        result.setAllocationPriorityDescription(allocationPriorityControl.getAllocationPriorityDescriptionTransfer(getUserVisit(), allocationPriorityDescription));
     }
 
     @Override
@@ -136,10 +136,10 @@ public class EditAllocationPriorityDescriptionCommand
 
     @Override
     public void doUpdate(AllocationPriorityDescription allocationPriorityDescription) {
-        var allocationPriorityDescriptionValue = inventoryControl.getAllocationPriorityDescriptionValue(allocationPriorityDescription);
+        var allocationPriorityDescriptionValue = allocationPriorityControl.getAllocationPriorityDescriptionValue(allocationPriorityDescription);
         allocationPriorityDescriptionValue.setDescription(edit.getDescription());
 
-        inventoryControl.updateAllocationPriorityDescriptionFromValue(allocationPriorityDescriptionValue, getPartyPK());
+        allocationPriorityControl.updateAllocationPriorityDescriptionFromValue(allocationPriorityDescriptionValue, getPartyPK());
     }
 
 }

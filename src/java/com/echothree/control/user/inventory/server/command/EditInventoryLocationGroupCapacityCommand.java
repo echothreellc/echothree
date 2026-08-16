@@ -21,7 +21,7 @@ import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupCa
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupCapacityResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupCapacitySpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -55,7 +55,7 @@ public class EditInventoryLocationGroupCapacityCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     UomControl uomControl;
@@ -85,7 +85,7 @@ public class EditInventoryLocationGroupCapacityCommand
 
         if(warehouse != null) {
             var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
                 var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
@@ -96,7 +96,7 @@ public class EditInventoryLocationGroupCapacityCommand
                     var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                     if(unitOfMeasureType != null) {
-                        inventoryLocationGroupCapacity = inventoryControl.getInventoryLocationGroupCapacity(inventoryLocationGroup,
+                        inventoryLocationGroupCapacity = inventoryLocationGroupControl.getInventoryLocationGroupCapacity(inventoryLocationGroup,
                                 unitOfMeasureType, editModeToEntityPermission(editMode));
 
                         if(inventoryLocationGroupCapacity == null) {
@@ -127,7 +127,7 @@ public class EditInventoryLocationGroupCapacityCommand
 
     @Override
     public void fillInResult(EditInventoryLocationGroupCapacityResult result, InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
-        result.setInventoryLocationGroupCapacity(inventoryControl.getInventoryLocationGroupCapacityTransfer(getUserVisit(), inventoryLocationGroupCapacity));
+        result.setInventoryLocationGroupCapacity(inventoryLocationGroupControl.getInventoryLocationGroupCapacityTransfer(getUserVisit(), inventoryLocationGroupCapacity));
     }
 
     @Override
@@ -141,7 +141,7 @@ public class EditInventoryLocationGroupCapacityCommand
 
         inventoryLocationGroupCapacityValue.setCapacity(Long.valueOf(edit.getCapacity()));
 
-        inventoryControl.updateInventoryLocationGroupCapacityFromValue(inventoryLocationGroupCapacityValue, getPartyPK());
+        inventoryLocationGroupControl.updateInventoryLocationGroupCapacityFromValue(inventoryLocationGroupCapacityValue, getPartyPK());
     }
 
 }

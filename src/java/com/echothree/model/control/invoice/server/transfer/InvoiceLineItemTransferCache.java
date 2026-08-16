@@ -17,7 +17,7 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import javax.inject.Inject;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineItemTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -31,7 +31,7 @@ public class InvoiceLineItemTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineItem, InvoiceLineItemTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     InvoiceControl invoiceControl;
@@ -53,7 +53,7 @@ public class InvoiceLineItemTransferCache
         if(invoiceLineItemTransfer == null) {
             var invoiceLine = invoiceControl.getInvoiceLineTransfer(userVisit, invoiceLineItem.getInvoiceLine());
             var item = itemControl.getItemTransfer(userVisit, invoiceLineItem.getItem());
-            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, invoiceLineItem.getInventoryCondition());
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionTransfer(userVisit, invoiceLineItem.getInventoryCondition());
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, invoiceLineItem.getUnitOfMeasureType());
             var quantity = invoiceLineItem.getQuantity();
             

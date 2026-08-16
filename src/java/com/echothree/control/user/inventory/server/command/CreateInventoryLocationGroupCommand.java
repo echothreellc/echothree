@@ -20,7 +20,7 @@ import com.echothree.control.user.inventory.common.form.CreateInventoryLocationG
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -67,7 +67,7 @@ public class CreateInventoryLocationGroupCommand
     EntityInstanceControl entityInstanceControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -89,7 +89,7 @@ public class CreateInventoryLocationGroupCommand
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty,
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty,
                     inventoryLocationGroupName);
 
             if(inventoryLocationGroup == null) {
@@ -98,7 +98,7 @@ public class CreateInventoryLocationGroupCommand
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
 
-                inventoryLocationGroup = inventoryControl.createInventoryLocationGroup(warehouseParty, inventoryLocationGroupName,
+                inventoryLocationGroup = inventoryLocationGroupControl.createInventoryLocationGroup(warehouseParty, inventoryLocationGroupName,
                         isDefault, sortOrder, getPartyPK());
 
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
@@ -106,7 +106,7 @@ public class CreateInventoryLocationGroupCommand
                         InventoryLocationGroupStatusConstants.WorkflowEntrance_NEW_INVENTORY_LOCATION_GROUP, entityInstance, null, null, createdBy);
 
                 if(description != null) {
-                    inventoryControl.createInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage(),
+                    inventoryLocationGroupControl.createInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage(),
                             description, createdBy);
                 }
             } else {

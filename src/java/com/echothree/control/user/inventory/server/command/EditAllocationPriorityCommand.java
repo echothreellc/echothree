@@ -22,7 +22,7 @@ import com.echothree.control.user.inventory.common.form.EditAllocationPriorityFo
 import com.echothree.control.user.inventory.common.result.EditAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -71,7 +71,7 @@ public class EditAllocationPriorityCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     @Inject
     AllocationPriorityLogic allocationPriorityLogic;
@@ -102,7 +102,7 @@ public class EditAllocationPriorityCommand
         }
 
         if(!hasExecutionErrors()) {
-            result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
+            result.setAllocationPriority(allocationPriorityControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
         }
 
         return allocationPriority;
@@ -115,12 +115,12 @@ public class EditAllocationPriorityCommand
 
     @Override
     public void fillInResult(EditAllocationPriorityResult result, AllocationPriority allocationPriority) {
-        result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
+        result.setAllocationPriority(allocationPriorityControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
     }
 
     @Override
     public void doLock(AllocationPriorityEdit edit, AllocationPriority allocationPriority) {
-        var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, getPreferredLanguage());
+        var allocationPriorityDescription = allocationPriorityControl.getAllocationPriorityDescription(allocationPriority, getPreferredLanguage());
         var allocationPriorityDetail = allocationPriority.getLastDetail();
 
         edit.setAllocationPriorityName(allocationPriorityDetail.getAllocationPriorityName());
@@ -136,7 +136,7 @@ public class EditAllocationPriorityCommand
     @Override
     public void canUpdate(AllocationPriority allocationPriority) {
         var allocationPriorityName = edit.getAllocationPriorityName();
-        var duplicateAllocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var duplicateAllocationPriority = allocationPriorityControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(duplicateAllocationPriority != null && !allocationPriority.equals(duplicateAllocationPriority)) {
             addExecutionError(ExecutionErrors.DuplicateAllocationPriorityName.name(), allocationPriorityName);
@@ -146,8 +146,8 @@ public class EditAllocationPriorityCommand
     @Override
     public void doUpdate(AllocationPriority allocationPriority) {
         var partyPK = getPartyPK();
-        var allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueForUpdate(allocationPriority);
-        var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, getPreferredLanguage());
+        var allocationPriorityDetailValue = allocationPriorityControl.getAllocationPriorityDetailValueForUpdate(allocationPriority);
+        var allocationPriorityDescription = allocationPriorityControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, getPreferredLanguage());
         var description = edit.getDescription();
 
         allocationPriorityDetailValue.setAllocationPriorityName(edit.getAllocationPriorityName());
@@ -158,16 +158,16 @@ public class EditAllocationPriorityCommand
         allocationPriorityLogic.updateAllocationPriorityFromValue(allocationPriorityDetailValue, partyPK);
 
         if(allocationPriorityDescription == null && description != null) {
-            inventoryControl.createAllocationPriorityDescription(allocationPriority, getPreferredLanguage(), description, partyPK);
+            allocationPriorityControl.createAllocationPriorityDescription(allocationPriority, getPreferredLanguage(), description, partyPK);
         } else {
             if(allocationPriorityDescription != null && description == null) {
-                inventoryControl.deleteAllocationPriorityDescription(allocationPriorityDescription, partyPK);
+                allocationPriorityControl.deleteAllocationPriorityDescription(allocationPriorityDescription, partyPK);
             } else {
                 if(allocationPriorityDescription != null && description != null) {
-                    var allocationPriorityDescriptionValue = inventoryControl.getAllocationPriorityDescriptionValue(allocationPriorityDescription);
+                    var allocationPriorityDescriptionValue = allocationPriorityControl.getAllocationPriorityDescriptionValue(allocationPriorityDescription);
 
                     allocationPriorityDescriptionValue.setDescription(description);
-                    inventoryControl.updateAllocationPriorityDescriptionFromValue(allocationPriorityDescriptionValue, partyPK);
+                    allocationPriorityControl.updateAllocationPriorityDescriptionFromValue(allocationPriorityDescriptionValue, partyPK);
                 }
             }
         }

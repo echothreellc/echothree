@@ -22,7 +22,7 @@ import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentCatalogItemTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -43,7 +43,7 @@ public class ContentCatalogItemTransferCache
     ContentControl contentControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -111,7 +111,7 @@ public class ContentCatalogItemTransferCache
             var contentCatalog = filterContentCatalog ? null : contentControl.getContentCatalogTransfer(userVisit, contentCatalogItem.getContentCatalog());
             var item = contentCatalogItem.getItem();
             var itemTransfer = filterItem ? null : itemControl.getItemTransfer(userVisit, item);
-            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, contentCatalogItem.getInventoryCondition());
+            var inventoryConditionTransfer = inventoryConditionControl.getInventoryConditionTransfer(userVisit, contentCatalogItem.getInventoryCondition());
             var unitOfMeasureTypeTransfer = filterUnitOfMeasureType ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, contentCatalogItem.getUnitOfMeasureType());
             var currency = contentCatalogItem.getCurrency();
             var currencyTransfer = filterCurrency ? null : accountingControl.getCurrencyTransfer(userVisit, currency);

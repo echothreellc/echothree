@@ -20,7 +20,7 @@ import com.echothree.model.control.associate.server.logic.AssociateReferralLogic
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemUnitOfMeasureTypeException;
@@ -79,7 +79,7 @@ public class SalesOrderLineLogic
         extends BaseOrderLineLogic {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -222,9 +222,9 @@ public class SalesOrderLineLogic
 
                 // Check InventoryCondition.
                 if(inventoryCondition == null) {
-                    inventoryCondition = inventoryControl.getDefaultInventoryCondition();
+                    inventoryCondition = inventoryConditionControl.getDefaultInventoryCondition();
 
-                    if(inventoryControl == null) {
+                    if(inventoryCondition == null) {
                         handleExecutionError(UnknownDefaultInventoryConditionException.class, eea, ExecutionErrors.UnknownDefaultInventoryCondition.name());
                     }
                 }

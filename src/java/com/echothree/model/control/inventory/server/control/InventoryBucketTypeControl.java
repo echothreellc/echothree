@@ -31,6 +31,9 @@ import com.echothree.model.data.inventory.server.value.InventoryBucketTypeDescri
 import com.echothree.model.data.inventory.server.value.InventoryBucketTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeDescriptionTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -46,9 +49,15 @@ import javax.inject.Inject;
 
 @CommandScope
 public class InventoryBucketTypeControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
 
-    /** Creates a new instance of InventoryControl */
+    @Inject
+    InventoryBucketTypeTransferCache inventoryBucketTypeTransferCache;
+
+    @Inject
+    InventoryBucketTypeDescriptionTransferCache inventoryBucketTypeDescriptionTransferCache;
+
+    /** Creates a new instance of InventoryBucketTypeControl */
     protected InventoryBucketTypeControl() {
         super();
     }

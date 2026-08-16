@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionUseTypeChoicesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -41,7 +41,7 @@ public class GetInventoryConditionUseTypeChoicesCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of GetInventoryConditionUseTypeChoicesCommand */
     public GetInventoryConditionUseTypeChoicesCommand() {
@@ -53,7 +53,7 @@ public class GetInventoryConditionUseTypeChoicesCommand
         var result = InventoryResultFactory.getGetInventoryConditionUseTypeChoicesResult();
         var defaultInventoryConditionUseTypeChoice = form.getDefaultInventoryConditionUseTypeChoice();
 
-        result.setInventoryConditionUseTypeChoices(inventoryControl.getInventoryConditionUseTypeChoices(defaultInventoryConditionUseTypeChoice, getPreferredLanguage()));
+        result.setInventoryConditionUseTypeChoices(inventoryConditionControl.getInventoryConditionUseTypeChoices(defaultInventoryConditionUseTypeChoice, getPreferredLanguage()));
 
         return result;
     }

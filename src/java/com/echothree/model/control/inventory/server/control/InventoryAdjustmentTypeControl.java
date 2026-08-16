@@ -31,6 +31,9 @@ import com.echothree.model.data.inventory.server.value.InventoryAdjustmentTypeDe
 import com.echothree.model.data.inventory.server.value.InventoryAdjustmentTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeDescriptionTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -46,9 +49,15 @@ import javax.inject.Inject;
 
 @CommandScope
 public class InventoryAdjustmentTypeControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
 
-    /** Creates a new instance of InventoryControl */
+    @Inject
+    InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
+
+    @Inject
+    InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
+
+    /** Creates a new instance of InventoryAdjustmentTypeControl */
     protected InventoryAdjustmentTypeControl() {
         super();
     }

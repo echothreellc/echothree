@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupDescriptionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -59,7 +59,7 @@ public class DeleteInventoryLocationGroupDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     PartyControl partyControl;
@@ -80,17 +80,17 @@ public class DeleteInventoryLocationGroupDescriptionCommand
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
                 var languageIsoName = form.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, language);
+                    var inventoryLocationGroupDescription = inventoryLocationGroupControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, language);
 
                     if(inventoryLocationGroupDescription != null) {
-                        inventoryControl.deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, getPartyPK());
+                        inventoryLocationGroupControl.deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupDescription.name());
                     }

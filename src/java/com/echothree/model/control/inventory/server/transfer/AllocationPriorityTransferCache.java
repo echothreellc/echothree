@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.AllocationPriorityTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class AllocationPriorityTransferCache
         extends BaseInventoryTransferCache<AllocationPriority, AllocationPriorityTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     /** Creates a new instance of AllocationPriorityTransferCache */
     protected AllocationPriorityTransferCache() {
@@ -47,7 +47,7 @@ public class AllocationPriorityTransferCache
             var priority = allocationPriorityDetail.getPriority();
             var isDefault = allocationPriorityDetail.getIsDefault();
             var sortOrder = allocationPriorityDetail.getSortOrder();
-            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage(userVisit));
+            var description = allocationPriorityControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage(userVisit));
             
             allocationPriorityTransfer = new AllocationPriorityTransfer(allocationPriorityName, priority, isDefault, sortOrder, description);
             put(userVisit, allocationPriority, allocationPriorityTransfer);

@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.inventory.common.exception.DuplicateInventoryConditionNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryConditionNameException;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -41,7 +41,7 @@ public class InventoryConditionLogic
     extends BaseLogic {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -57,13 +57,13 @@ public class InventoryConditionLogic
     public InventoryCondition createInventoryCondition(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
         if(inventoryCondition == null) {
-            inventoryCondition = inventoryControl.createInventoryCondition(inventoryConditionName, isDefault, sortOrder, createdBy);
+            inventoryCondition = inventoryConditionControl.createInventoryCondition(inventoryConditionName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                inventoryControl.createInventoryConditionDescription(inventoryCondition, language, description, createdBy);
+                inventoryConditionControl.createInventoryConditionDescription(inventoryCondition, language, description, createdBy);
             }
         } else {
             handleExecutionError(DuplicateInventoryConditionNameException.class, eea, ExecutionErrors.DuplicateInventoryConditionName.name(), inventoryConditionName);
@@ -74,7 +74,7 @@ public class InventoryConditionLogic
 
     public InventoryCondition getInventoryConditionByName(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
             final EntityPermission entityPermission) {
-        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName, entityPermission);
+        var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName, entityPermission);
 
         if(inventoryCondition == null) {
             handleExecutionError(UnknownInventoryConditionNameException.class, eea, ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
@@ -100,7 +100,7 @@ public class InventoryConditionLogic
         switch(parameterCount) {
             case 0 -> {
                 if(allowDefault) {
-                    inventoryCondition = inventoryControl.getDefaultInventoryCondition(entityPermission);
+                    inventoryCondition = inventoryConditionControl.getDefaultInventoryCondition(entityPermission);
 
                     if(inventoryCondition == null) {
                         handleExecutionError(UnknownDefaultInventoryConditionException.class, eea, ExecutionErrors.UnknownDefaultInventoryCondition.name());
@@ -115,7 +115,7 @@ public class InventoryConditionLogic
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryCondition.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        inventoryCondition = inventoryControl.getInventoryConditionByEntityInstance(entityInstance, entityPermission);
+                        inventoryCondition = inventoryConditionControl.getInventoryConditionByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     inventoryCondition = getInventoryConditionByName(eea, inventoryConditionName, entityPermission);
@@ -140,7 +140,7 @@ public class InventoryConditionLogic
 
     public void deleteInventoryCondition(final ExecutionErrorAccumulator eea, final InventoryCondition inventoryCondition,
             final BasePK deletedBy) {
-        inventoryControl.deleteInventoryCondition(inventoryCondition, deletedBy);
+        inventoryConditionControl.deleteInventoryCondition(inventoryCondition, deletedBy);
     }
 
 }

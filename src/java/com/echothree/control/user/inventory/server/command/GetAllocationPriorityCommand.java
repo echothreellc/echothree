@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetAllocationPriorityForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,7 +60,7 @@ public class GetAllocationPriorityCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     @Inject
     AllocationPriorityLogic allocationPriorityLogic;
@@ -86,7 +86,7 @@ public class GetAllocationPriorityCommand
         var result = InventoryResultFactory.getGetAllocationPriorityResult();
 
         if(entity != null) {
-            result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), entity));
+            result.setAllocationPriority(allocationPriorityControl.getAllocationPriorityTransfer(getUserVisit(), entity));
         }
 
         return result;

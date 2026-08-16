@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetAllocationPriorityDescriptionForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,7 +58,7 @@ public class GetAllocationPriorityDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     @Inject
     PartyControl partyControl;
@@ -72,17 +72,17 @@ public class GetAllocationPriorityDescriptionCommand
     protected BaseResult execute() {
         var result = InventoryResultFactory.getGetAllocationPriorityDescriptionResult();
         var allocationPriorityName = form.getAllocationPriorityName();
-        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriority = allocationPriorityControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, language);
+                var allocationPriorityDescription = allocationPriorityControl.getAllocationPriorityDescription(allocationPriority, language);
 
                 if(allocationPriorityDescription != null) {
-                    result.setAllocationPriorityDescription(inventoryControl.getAllocationPriorityDescriptionTransfer(getUserVisit(), allocationPriorityDescription));
+                    result.setAllocationPriorityDescription(allocationPriorityControl.getAllocationPriorityDescriptionTransfer(getUserVisit(), allocationPriorityDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownAllocationPriorityDescription.name(), allocationPriorityName, languageIsoName);
                 }
