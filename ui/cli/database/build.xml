@@ -37,6 +37,12 @@
         <property name="ui.cli.database.jardir" value="${build.dir}/jar" />
         <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.jar" />
 
+        <property name="ui.cli.database.testsrcdir" value="${component.home}/test/java" />
+        <property name="ui.cli.database.testresourcesdir" value="${component.home}/test/resources" />
+        <property name="ui.cli.database.testclassbindir" value="${build.dir}/test-classes" />
+        <property name="ui.cli.database.testresultsdir" value="${component.home}/generated/junit" />
+        <property name="ui.cli.database.testhtmldir" value="${ui.cli.database.testresultsdir}/html" />
+
         <path id="runtime.classpath">
             <file file="${build.lib.dir}/jooq.jar"/>
             <file file="${build.lib.dir}/jooq-codegen.jar"/>
@@ -53,6 +59,14 @@
             <file file="${build.lib.dir}/commons-logging.jar"/>
             <file file="${build.lib.dir}/commons-collections.jar"/>
             <file file="${ui.cli.database.jarfile}"/>
+        </path>
+
+        <path id="test.classpath">
+            <pathelement location="${ui.cli.database.classbindir}"/>
+            <pathelement location="${ui.cli.database.testclassbindir}"/>
+            <pathelement location="${ui.cli.database.testresourcesdir}"/>
+            <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            <fileset dir="${build.lib.dir}" includes="**/*.jar"/>
         </path>
     </target>
 
@@ -125,6 +139,36 @@
                 <include name="**/*" />
             </fileset>
         </jar>
+    </target>
+
+    <target name="test-compile" depends="compile">
+        <mkdir dir="${ui.cli.database.testclassbindir}"/>
+        <javac srcdir="${ui.cli.database.testsrcdir}"
+               destdir="${ui.cli.database.testclassbindir}"
+               debug="true"
+               includeAntRuntime="false">
+            <classpath refid="test.classpath"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="test-compile">
+        <mkdir dir="${ui.cli.database.testresultsdir}"/>
+        <mkdir dir="${ui.cli.database.testhtmldir}"/>
+        <junitlauncher printSummary="true" haltOnFailure="true">
+            <classpath refid="test.classpath"/>
+            <testclasses outputDir="${ui.cli.database.testresultsdir}" includeEngines="junit-jupiter">
+                <fileset dir="${ui.cli.database.testclassbindir}" includes="**/*Test.class"/>
+                <fork dir="${component.home}"
+                      timeout="240000"
+                      includeJUnitPlatformLibraries="false"/>
+                <listener type="legacy-plain" sendSysOut="true" sendSysErr="true"/>
+                <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+            </testclasses>
+        </junitlauncher>
+        <junitreport todir="${ui.cli.database.testresultsdir}">
+            <fileset dir="${ui.cli.database.testresultsdir}" includes="TEST-*.xml"/>
+            <report format="frames" todir="${ui.cli.database.testhtmldir}"/>
+        </junitreport>
     </target>
 
     <target name="GenerateJava" depends="jar">
@@ -206,10 +250,16 @@
         </delete>
     </target>
 
+    <target name="clean-test" depends="init">
+        <echo message="Deleting ${ui.cli.database.testresultsdir}" />
+        <delete dir="${ui.cli.database.testresultsdir}" quiet="true"/>
+    </target>
+
     <target name="clean" depends="init">
         <parallel>
             <ant target="clean-generated"/>
             <ant target="clean-build"/>
+            <ant target="clean-test"/>
         </parallel>
     </target>
     
@@ -223,6 +273,7 @@
         <echo>+        ant SetCharacterSetAndCollation    +</echo>
         <echo>+        ant RegenerateDatabase             +</echo>
         <echo>+        ant RegenerateReporting            +</echo>
+        <echo>+        ant test                           +</echo>
         <echo>+                                           +</echo>
         <echo>+-------------------------------------------+</echo>
     </target>

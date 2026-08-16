@@ -584,14 +584,24 @@ public class DatabaseDefinitionParser
             parser.parse(inputSource);
         }
     }
+
+    private void setSecurityPropertyIfSupported(XMLReader parser, String property, String value)
+            throws SAXNotSupportedException {
+        try {
+            parser.setProperty(property, value);
+        } catch(SAXNotRecognizedException e) {
+            // Older Xerces versions do not expose the JAXP access restriction properties.
+            // CustomEntityResolver still rejects every external resource except the bundled DTD.
+        }
+    }
     
     public void parse(String arg)
             throws Exception {
         var parserFactory = SAXParserFactory.newInstance();
         parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
         var parser = parserFactory.newSAXParser().getXMLReader();
-        parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        setSecurityPropertyIfSupported(parser, XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        setSecurityPropertyIfSupported(parser, XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
         
         // set parser features
         try {

@@ -30,12 +30,13 @@ public class CustomEntityResolver implements EntityResolver {
             throws IOException, SAXException {
         // If we don't handle this special case there, the parser will attempt to retrieve the
         // DTD from a file instead of a resource.
-        if(systemId != null && (systemId.equals("DatabaseDefinition.dtd") || systemId.endsWith(DATABASE_DEFINITION_DTD))) {
-            var resource = DatabaseDefinitionParser.class.getResource(DATABASE_DEFINITION_DTD);
+        var resource = DatabaseDefinitionParser.class.getResource(DATABASE_DEFINITION_DTD);
 
-            if(resource == null) {
-                throw new SAXException("Database definition DTD resource not found: " + DATABASE_DEFINITION_DTD);
-            }
+        if(resource == null) {
+            throw new SAXException("Database definition DTD resource not found: " + DATABASE_DEFINITION_DTD);
+        }
+
+        if(systemId != null && (systemId.equals("DatabaseDefinition.dtd") || systemId.equals(resource.toExternalForm()))) {
 
             var inputSource = new InputSource(resource.openStream());
             inputSource.setPublicId(publicId);
