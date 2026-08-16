@@ -14,37 +14,22 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
-import java.util.HashMap;
+public enum ParentDeleteAction {
+    NONE,
+    DELETE,
+    SET_NULL;
 
-public class Databases {
-    
-    HashMap<String, Database> myDatabases;
-    
-    /** Creates a new instance of Databases */
-    public Databases() {
-        myDatabases = new HashMap<>();
-    }
-    
-    public Database addDatabase(String name) {
-        var result = myDatabases.get(name);
-        
-        if(result == null) {
-            result = new Database(name);
-            myDatabases.put(name, result);
+    static ParentDeleteAction fromDefinitionName(String name) throws Exception {
+        if(name == null) {
+            return NONE;
         }
-        
-        return result;
+
+        return switch(name) {
+            case "delete" -> DELETE;
+            case "setNull" -> SET_NULL;
+            default -> throw new Exception("Illegal onParentDelete \"" + name + "\"");
+        };
     }
-    
-    public Database getDatabase(String name) throws Exception {
-        var result = myDatabases.get(name);
-        
-        if(result == null)
-            throw new Exception("Database \"" + name + "\" doesn't exist");
-        
-        return result;
-    }
-    
 }

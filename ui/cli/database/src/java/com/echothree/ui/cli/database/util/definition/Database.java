@@ -14,9 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -26,33 +27,21 @@ public class Database {
     
     String name;
     
-    List<ColumnType> myColumnTypes;
-    Map<String, ColumnType> myColumnTypesByType;
+    private final List<ColumnType> myColumnTypes = new ArrayList<>();
+    private final Map<String, ColumnType> myColumnTypesByType = new HashMap<>();
     
-    List<Table> myTables;
-    Map<String, Table> myTablesByPlural;
-    Map<String, Table> myTablesByPluralLowerCase;
-    Map<String, Table> myTablesBySingular;
-    Map<String, Table> myTablesByColumnPrefix;
+    private final List<Table> myTables = new ArrayList<>();
+    private final Map<String, Table> myTablesByPlural = new HashMap<>();
+    private final Map<String, Table> myTablesByPluralLowerCase = new HashMap<>();
+    private final Map<String, Table> myTablesBySingular = new HashMap<>();
+    private final Map<String, Table> myTablesByColumnPrefix = new HashMap<>();
     
-    List<Component> myComponents;
-    Map<String, Component> myComponentsByName;
+    private final List<Component> myComponents = new ArrayList<>();
+    private final Map<String, Component> myComponentsByName = new HashMap<>();
     
     /** Creates a new instance of Database */
     public Database(String name) {
         this.name = name;
-        
-        myColumnTypes = new ArrayList<>();
-        myColumnTypesByType = new HashMap<>();
-        
-        myTables = new ArrayList<>();
-        myTablesByPlural = new HashMap<>();
-        myTablesByPluralLowerCase = new HashMap<>();
-        myTablesBySingular = new HashMap<>();
-        myTablesByColumnPrefix = new HashMap<>();
-        
-        myComponents = new ArrayList<>();
-        myComponentsByName = new HashMap<>();
     }
     
     public String getName() {
@@ -72,7 +61,7 @@ public class Database {
     }
     
     public List<Component> getComponents() {
-        return myComponents;
+        return Collections.unmodifiableList(myComponents);
     }
     
     public Component getComponentByName(String attrName) throws Exception {
@@ -102,7 +91,7 @@ public class Database {
         
         myTables.add(result);
         myTablesByPlural.put(namePlural, result);
-        myTablesByPluralLowerCase.put(namePlural.toLowerCase(Locale.getDefault()), result);
+        myTablesByPluralLowerCase.put(DatabasePhysicalNames.tableName(namePlural), result);
         myTablesBySingular.put(nameSingular, result);
         myTablesByColumnPrefix.put(columnPrefix, result);
         
@@ -112,7 +101,11 @@ public class Database {
     }
     
     public List<Table> getTables() {
-        return myTables;
+        return Collections.unmodifiableList(myTables);
+    }
+
+    public boolean hasTable(String namePlural) {
+        return myTablesByPlural.containsKey(namePlural);
     }
     
     public Table getTable(String namePlural) throws Exception {

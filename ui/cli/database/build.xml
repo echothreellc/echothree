@@ -37,7 +37,18 @@
         <property name="ui.cli.database.jardir" value="${build.dir}/jar" />
         <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.jar" />
 
+        <property name="ui.cli.database.testsrcdir" value="${component.home}/test/java" />
+        <property name="ui.cli.database.testresourcesdir" value="${component.home}/test/resources" />
+        <property name="ui.cli.database.testclassbindir" value="${build.dir}/test-classes" />
+        <property name="ui.cli.database.testresultsdir" value="${ui.cli.database.generateddir}/junit" />
+
         <path id="runtime.classpath">
+            <file file="${build.lib.dir}/jooq.jar"/>
+            <file file="${build.lib.dir}/jooq-codegen.jar"/>
+            <file file="${build.lib.dir}/jooq-meta.jar"/>
+            <file file="${build.lib.dir}/jakarta.xml.bind-api.jar"/>
+            <file file="${build.lib.dir}/r2dbc-spi.jar"/>
+            <file file="${build.lib.dir}/reactive-streams.jar"/>
             <file file="${build.lib.dir}/mysql-connector-j.jar"/>
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>
@@ -47,6 +58,14 @@
             <file file="${build.lib.dir}/commons-logging.jar"/>
             <file file="${build.lib.dir}/commons-collections.jar"/>
             <file file="${ui.cli.database.jarfile}"/>
+        </path>
+
+        <path id="test.classpath">
+            <pathelement location="${ui.cli.database.classbindir}"/>
+            <pathelement location="${ui.cli.database.testclassbindir}"/>
+            <pathelement location="${ui.cli.database.testresourcesdir}"/>
+            <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            <fileset dir="${build.lib.dir}" includes="**/*.jar"/>
         </path>
     </target>
 
@@ -121,6 +140,35 @@
         </jar>
     </target>
 
+    <target name="test-compile" depends="compile">
+        <mkdir dir="${ui.cli.database.testclassbindir}"/>
+        <javac srcdir="${ui.cli.database.testsrcdir}"
+               destdir="${ui.cli.database.testclassbindir}"
+               debug="true"
+               includeAntRuntime="false">
+            <classpath refid="test.classpath"/>
+        </javac>
+    </target>
+
+    <target name="test" depends="test-compile">
+        <mkdir dir="${ui.cli.database.testresultsdir}"/>
+        <junitlauncher printSummary="true" haltOnFailure="true">
+            <classpath refid="test.classpath"/>
+            <testclasses outputDir="${ui.cli.database.testresultsdir}" includeEngines="junit-jupiter">
+                <fileset dir="${ui.cli.database.testclassbindir}" includes="**/*Test.class"/>
+                <fork dir="${component.home}"
+                      timeout="240000"
+                      includeJUnitPlatformLibraries="false"/>
+                <listener type="legacy-plain" sendSysOut="true" sendSysErr="true"/>
+                <listener type="legacy-xml" sendSysOut="true" sendSysErr="true"/>
+            </testclasses>
+        </junitlauncher>
+        <junitreport todir="${ui.cli.database.testresultsdir}">
+            <fileset dir="${ui.cli.database.testresultsdir}" includes="TEST-*.xml"/>
+            <report format="frames" todir="${ui.cli.database.testresultsdir}"/>
+        </junitreport>
+    </target>
+
     <target name="GenerateJava" depends="jar">
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
@@ -130,7 +178,26 @@
             <arg value="${ui.cli.database.generateddir}"/>
         </java>
     </target>
-        
+
+    <target name="GenerateJooq" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.database.Database"
+              fork="true">
+            <arg value="--jooq"/>
+            <arg value="--generated"/>
+            <arg value="${ui.cli.database.generateddir}"/>
+        </java>
+        <echo message="Generating jOOQ Java sources..."/>
+        <java classpathref="runtime.classpath"
+              classname="org.jooq.codegen.GenerationTool"
+              fork="true">
+            <sysproperty key="org.jooq.no-logo" value="true" />
+            <sysproperty key="org.jooq.no-tips" value="true" />
+            <arg value="${metadata.dir}/jooq-config.xml"/>
+        </java>
+        <echo message="   ...done."/>
+    </target>
+
     <target name="GenerateDatabase" depends="jar">
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
@@ -195,10 +262,12 @@
         <echo>+ Available targets for database utilities: +</echo>
         <echo>+                                           +</echo>
         <echo>+        ant GenerateJava                   +</echo>
+        <echo>+        ant GenerateJooq                   +</echo>
         <echo>+        ant GenerateDatabase               +</echo>
         <echo>+        ant SetCharacterSetAndCollation    +</echo>
         <echo>+        ant RegenerateDatabase             +</echo>
         <echo>+        ant RegenerateReporting            +</echo>
+        <echo>+        ant test                           +</echo>
         <echo>+                                           +</echo>
         <echo>+-------------------------------------------+</echo>
     </target>

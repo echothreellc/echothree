@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "https://example.invalid/DatabaseDefinition.dtd">
+<database name="ExternalDtd" />

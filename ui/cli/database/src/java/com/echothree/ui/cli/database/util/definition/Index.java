@@ -14,33 +14,25 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.definition;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Index {
-    
-    static final int indexPrimaryKey = 1;
-    static final int indexUnique = 2;
-    static final int indexMultiple = 3;
-    
-    static public String indexTypeToString(int type) {
-        return switch(type) {
-            case indexPrimaryKey -> "PrimaryKey";
-            case indexUnique -> "Unique";
-            case indexMultiple -> "Multiple";
-            default -> null;
-        };
+
+    static public String indexTypeToString(IndexType type) {
+        return type.getDefinitionName();
     }
     
     Table table;
     
-    int type;
+    IndexType type;
     String name;
     boolean nameWasSpecified;
     
-    Set<Column> indexColumns;
+    private final Set<Column> indexColumns = new LinkedHashSet<>();
     
     /** Creates a new instance of Index */
     public Index(Table table, String type, String name) throws Exception {
@@ -49,20 +41,18 @@ public class Index {
         this.nameWasSpecified = name != null;
 
         this.type = switch(type) {
-            case "PrimaryKey" -> indexPrimaryKey;
-            case "Unique" -> indexUnique;
-            case "Multiple" -> indexMultiple;
+            case "PrimaryKey" -> IndexType.PRIMARY_KEY;
+            case "Unique" -> IndexType.UNIQUE;
+            case "Multiple" -> IndexType.MULTIPLE;
             default -> throw new Exception("Illegal index type " + type);
         };
-        
-        indexColumns = new LinkedHashSet<>();
     }
     
     public Table getTable() {
         return table;
     }
     
-    public int getType() {
+    public IndexType getType() {
         return type;
     }
     
@@ -92,14 +82,14 @@ public class Index {
         indexColumns.add(column);
         
         if(indexColumns.size() > 1) {
-            if(!nameWasSpecified && type != indexPrimaryKey) {
+            if(!nameWasSpecified && type != IndexType.PRIMARY_KEY) {
                 throw new Exception("Index with more than one column was not given a name in " + table.getNamePlural());
             }
         }
     }
     
     public Set<Column> getIndexColumns() {
-        return indexColumns;
+        return Collections.unmodifiableSet(indexColumns);
     }
     
     public int countIndexColumns() {

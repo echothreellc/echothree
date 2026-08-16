@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<!DOCTYPE database [
+    <!ENTITY externalFile SYSTEM "file:///etc/passwd">
+]>
+<database name="&externalFile;" />

@@ -16,6 +16,10 @@
 
 package com.echothree.ui.cli.database.util;
 
+import com.echothree.ui.cli.database.util.definition.Column;
+import com.echothree.ui.cli.database.util.definition.ColumnDataType;
+import com.echothree.ui.cli.database.util.definition.Index;
+import com.echothree.ui.cli.database.util.definition.Table;
 import com.echothree.ui.cli.database.util.current.CurrentColumn;
 import com.echothree.ui.cli.database.util.current.CurrentForeignKey;
 import com.echothree.ui.cli.database.util.current.CurrentIndex;
@@ -65,7 +69,7 @@ public class DatabaseUpdateTasks {
     public void addColumn(Column column) {
         columnsNeeded.add(column);
         
-        if(column.getType() == ColumnType.columnForeignKey) {
+        if(column.getType() == ColumnDataType.FOREIGN_KEY) {
             addForeignKey(column);
         }
     }
