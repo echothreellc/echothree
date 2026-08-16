@@ -14,8 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util;
+package com.echothree.ui.cli.database.util.jooq;
 
+import com.echothree.ui.cli.database.util.DatabaseDefinitionParser;
+import com.echothree.ui.cli.database.util.Databases;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

@@ -194,7 +194,7 @@ public class Table {
         return newIndex;
     }
     
-    List<Column> getColumns() {
+    public List<Column> getColumns() {
         return columns;
     }
     
