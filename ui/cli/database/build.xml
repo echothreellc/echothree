@@ -40,8 +40,7 @@
         <property name="ui.cli.database.testsrcdir" value="${component.home}/test/java" />
         <property name="ui.cli.database.testresourcesdir" value="${component.home}/test/resources" />
         <property name="ui.cli.database.testclassbindir" value="${build.dir}/test-classes" />
-        <property name="ui.cli.database.testgenerateddir" value="${component.home}/generated" />
-        <property name="ui.cli.database.testresultsdir" value="${ui.cli.database.testgenerateddir}/junit" />
+        <property name="ui.cli.database.testresultsdir" value="${ui.cli.database.generateddir}/junit" />
 
         <path id="runtime.classpath">
             <file file="${build.lib.dir}/jooq.jar"/>
@@ -249,16 +248,10 @@
         </delete>
     </target>
 
-    <target name="clean-test" depends="init">
-        <echo message="Deleting ${ui.cli.database.testgenerateddir}" />
-        <delete dir="${ui.cli.database.testgenerateddir}" quiet="true"/>
-    </target>
-
     <target name="clean" depends="init">
         <parallel>
             <ant target="clean-generated"/>
             <ant target="clean-build"/>
-            <ant target="clean-test"/>
         </parallel>
     </target>
     
