@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import org.jooq.codegen.GeneratorStrategy.Mode;
 import org.jooq.codegen.KeepNamesGeneratorStrategy;
 import org.jooq.meta.ColumnDefinition;
+import org.jooq.meta.ConstraintDefinition;
 import org.jooq.meta.Definition;
 import org.jooq.meta.ForeignKeyDefinition;
 import org.jooq.meta.TableDefinition;
@@ -41,7 +42,9 @@ public class JooqGeneratorStrategy
 
             parser.parse("/DatabaseDefinition.xml");
 
-            for(var table : databases.getDatabase("echothree").getTables()) {
+            var database = databases.getDatabase("echothree");
+
+            for(var table : database.getTables()) {
                 var dbTableName = table.getDbTableName();
 
                 tableNames.put(dbTableName, table.getNamePlural());
@@ -106,6 +109,14 @@ public class JooqGeneratorStrategy
         }
 
         return name == null ? super.getJavaIdentifier(definition) : name;
+    }
+
+    @Override
+    public String getGlobalReferencesJavaClassName(Definition definition,
+            Class<? extends Definition> definitionType) {
+        return ConstraintDefinition.class.isAssignableFrom(definitionType)
+                ? "KeyRegistry"
+                : super.getGlobalReferencesJavaClassName(definition, definitionType);
     }
 
     @Override

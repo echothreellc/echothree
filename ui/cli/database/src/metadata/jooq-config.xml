@@ -17,6 +17,7 @@
 <configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.19.0.xsd">
     <!-- Configure the database connection here -->
     <generator>
+        <name>com.echothree.ui.cli.database.util.JooqJavaGenerator</name>
         <!-- A programmatic naming strategy implementation, referenced by class name. -->
         <strategy>
             <name>com.echothree.ui.cli.database.util.JooqGeneratorStrategy</name>
