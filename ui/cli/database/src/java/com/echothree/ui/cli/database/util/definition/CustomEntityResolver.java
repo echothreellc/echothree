@@ -16,10 +16,10 @@
 
 package com.echothree.ui.cli.database.util.definition;
 
-import com.echothree.ui.cli.database.util.definition.DatabaseDefinitionParser;
 import java.io.IOException;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class CustomEntityResolver implements EntityResolver {
 
@@ -27,14 +27,23 @@ public class CustomEntityResolver implements EntityResolver {
 
     @Override
     public InputSource resolveEntity(String publicId, String systemId)
-            throws IOException {
+            throws IOException, SAXException {
         // If we don't handle this special case there, the parser will attempt to retrieve the
         // DTD from a file instead of a resource.
-        if (systemId.contains(DATABASE_DEFINITION_DTD)) {
-            return new InputSource(DatabaseDefinitionParser.class.getResource(DATABASE_DEFINITION_DTD).openStream());
-        } else {
-            return null;
+        if(systemId != null && (systemId.equals("DatabaseDefinition.dtd") || systemId.endsWith(DATABASE_DEFINITION_DTD))) {
+            var resource = DatabaseDefinitionParser.class.getResource(DATABASE_DEFINITION_DTD);
+
+            if(resource == null) {
+                throw new SAXException("Database definition DTD resource not found: " + DATABASE_DEFINITION_DTD);
+            }
+
+            var inputSource = new InputSource(resource.openStream());
+            inputSource.setPublicId(publicId);
+            inputSource.setSystemId(resource.toExternalForm());
+            return inputSource;
         }
+
+        throw new SAXException("External entity resolution is not permitted: " + systemId);
     }
 
 }

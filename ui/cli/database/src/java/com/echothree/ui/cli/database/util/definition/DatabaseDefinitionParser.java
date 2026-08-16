@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -569,21 +570,28 @@ public class DatabaseDefinitionParser
         
     }
 
-    public void parseResource(XMLReader parser, String arg)
+    private void parseResource(XMLReader parser, String arg)
             throws IOException, SAXException {
-        parser.parse(new InputSource(DatabaseDefinitionParser.class.getResource(arg).openStream()));
+        var resource = DatabaseDefinitionParser.class.getResource(arg);
+
+        if(resource == null) {
+            throw new IOException("Database definition resource not found: " + arg);
+        }
+
+        try(var inputStream = resource.openStream()) {
+            var inputSource = new InputSource(inputStream);
+            inputSource.setSystemId(resource.toExternalForm());
+            parser.parse(inputSource);
+        }
     }
     
     public void parse(String arg)
             throws Exception {
-        XMLReader parser = null;
-
-        // create parser
-        try {
-            parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
-        } catch (Exception e) {
-            System.err.println("error: Unable to instantiate parser");
-        }
+        var parserFactory = SAXParserFactory.newInstance();
+        parserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        var parser = parserFactory.newSAXParser().getXMLReader();
+        parser.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
         
         // set parser features
         try {
