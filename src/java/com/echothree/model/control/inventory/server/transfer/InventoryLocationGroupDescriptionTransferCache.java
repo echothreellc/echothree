@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupDescriptionTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class InventoryLocationGroupDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryLocationGroupDescription, InventoryLocationGroupDescriptionTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     /** Creates a new instance of InventoryLocationGroupDescriptionTransferCache */
     protected InventoryLocationGroupDescriptionTransferCache() {
@@ -40,7 +40,7 @@ public class InventoryLocationGroupDescriptionTransferCache
         var inventoryLocationGroupDescriptionTransfer = get(inventoryLocationGroupDescription);
         
         if(inventoryLocationGroupDescriptionTransfer == null) {
-            var inventoryLocationGroupTransfer = inventoryControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroupDescription.getInventoryLocationGroup());
+            var inventoryLocationGroupTransfer = inventoryLocationGroupControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroupDescription.getInventoryLocationGroup());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryLocationGroupDescription.getLanguage());
             
             inventoryLocationGroupDescriptionTransfer = new InventoryLocationGroupDescriptionTransfer(languageTransfer, inventoryLocationGroupTransfer, inventoryLocationGroupDescription.getDescription());

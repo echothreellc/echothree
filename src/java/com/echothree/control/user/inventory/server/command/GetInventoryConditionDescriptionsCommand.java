@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionDescriptionsForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -56,7 +56,7 @@ public class GetInventoryConditionDescriptionsCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of GetInventoryConditionDescriptionsCommand */
     public GetInventoryConditionDescriptionsCommand() {
@@ -67,11 +67,11 @@ public class GetInventoryConditionDescriptionsCommand
     protected BaseResult execute() {
         var result = InventoryResultFactory.getGetInventoryConditionDescriptionsResult();
         var inventoryConditionName = form.getInventoryConditionName();
-        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
         if(inventoryCondition != null) {
-            result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));
-            result.setInventoryConditionDescriptions(inventoryControl.getInventoryConditionDescriptionTransfersByInventoryCondition(getUserVisit(), inventoryCondition));
+            result.setInventoryCondition(inventoryConditionControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));
+            result.setInventoryConditionDescriptions(inventoryConditionControl.getInventoryConditionDescriptionTransfersByInventoryCondition(getUserVisit(), inventoryCondition));
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
         }

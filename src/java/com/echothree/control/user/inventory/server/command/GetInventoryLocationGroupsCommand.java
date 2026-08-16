@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupsForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,7 +61,7 @@ public class GetInventoryLocationGroupsCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -88,12 +88,12 @@ public class GetInventoryLocationGroupsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return warehouseParty == null ? null : inventoryControl.countInventoryLocationGroupsByWarehouseParty(warehouseParty);
+        return warehouseParty == null ? null : inventoryLocationGroupControl.countInventoryLocationGroupsByWarehouseParty(warehouseParty);
     }
 
     @Override
     protected Collection<InventoryLocationGroup> getEntities() {
-        return warehouseParty == null ? null : inventoryControl.getInventoryLocationGroupsByWarehouseParty(warehouseParty);
+        return warehouseParty == null ? null : inventoryLocationGroupControl.getInventoryLocationGroupsByWarehouseParty(warehouseParty);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class GetInventoryLocationGroupsCommand
                 result.setInventoryLocationGroupCount(getTotalEntities());
             }
 
-            result.setInventoryLocationGroups(inventoryControl.getInventoryLocationGroupTransfers(getUserVisit(), entities));
+            result.setInventoryLocationGroups(inventoryLocationGroupControl.getInventoryLocationGroupTransfers(getUserVisit(), entities));
         }
 
         return result;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.vendor.server.transfer;
 
 import javax.inject.Inject;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.vendor.common.transfer.VendorItemCostTransfer;
@@ -32,7 +32,7 @@ public class VendorItemCostTransferCache
         extends BaseVendorTransferCache<VendorItemCost, VendorItemCostTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     PartyControl partyControl;
@@ -54,7 +54,7 @@ public class VendorItemCostTransferCache
         if(vendorItemCostTransfer == null) {
             var vendorItem = vendorItemCost.getVendorItem();
             var vendorItemTransfer = vendorControl.getVendorItemTransfer(userVisit, vendorItem);
-            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, vendorItemCost.getInventoryCondition());
+            var inventoryConditionTransfer = inventoryConditionControl.getInventoryConditionTransfer(userVisit, vendorItemCost.getInventoryCondition());
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, vendorItemCost.getUnitOfMeasureType());
             var unformattedUnitCost = vendorItemCost.getUnitCost();
             var unitCost = AmountUtils.getInstance().formatCostUnit(partyControl.getPreferredCurrency(vendorItem.getLastDetail().getVendorParty()),

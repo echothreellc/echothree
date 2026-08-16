@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionUseTypesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
 import com.echothree.model.data.inventory.server.factory.InventoryConditionUseTypeFactory;
 import com.echothree.util.common.command.BaseResult;
@@ -40,7 +40,7 @@ public class GetInventoryConditionUseTypesCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of GetInventoryConditionUseTypesCommand */
     public GetInventoryConditionUseTypesCommand() {
@@ -54,12 +54,12 @@ public class GetInventoryConditionUseTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return inventoryControl.countInventoryConditionUseTypes();
+        return inventoryConditionControl.countInventoryConditionUseTypes();
     }
 
     @Override
     protected Collection<InventoryConditionUseType> getEntities() {
-        return inventoryControl.getInventoryConditionUseTypes();
+        return inventoryConditionControl.getInventoryConditionUseTypes();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class GetInventoryConditionUseTypesCommand
                 result.setInventoryConditionUseTypeCount(getTotalEntities());
             }
 
-            result.setInventoryConditionUseTypes(inventoryControl.getInventoryConditionUseTypeTransfers(getUserVisit(), entities));
+            result.setInventoryConditionUseTypes(inventoryConditionControl.getInventoryConditionUseTypeTransfers(getUserVisit(), entities));
         }
 
         return result;

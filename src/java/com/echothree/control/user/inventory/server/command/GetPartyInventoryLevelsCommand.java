@@ -19,7 +19,8 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelsForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
+import com.echothree.model.control.inventory.server.control.InventoryLevelControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
@@ -71,7 +72,10 @@ public class GetPartyInventoryLevelsCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
+
+    @Inject
+    InventoryLevelControl inventoryLevelControl;
 
     @Inject
     ItemControl itemControl;
@@ -129,11 +133,11 @@ public class GetPartyInventoryLevelsCommand
 
         if(!hasExecutionErrors()) {
             if(item != null) {
-                total = inventoryControl.countPartyInventoryLevelsByItem(item);
+                total = inventoryLevelControl.countPartyInventoryLevelsByItem(item);
             } else if(inventoryCondition != null) {
-                total = inventoryControl.countPartyInventoryLevelsByInventoryCondition(inventoryCondition);
+                total = inventoryLevelControl.countPartyInventoryLevelsByInventoryCondition(inventoryCondition);
             } else if(party != null) {
-                total = inventoryControl.countPartyInventoryLevelsByParty(party);
+                total = inventoryLevelControl.countPartyInventoryLevelsByParty(party);
             }
         }
 
@@ -146,11 +150,11 @@ public class GetPartyInventoryLevelsCommand
 
         if(!hasExecutionErrors()) {
             if(item != null) {
-                entities = inventoryControl.getPartyInventoryLevelsByItem(item);
+                entities = inventoryLevelControl.getPartyInventoryLevelsByItem(item);
             } else if(inventoryCondition != null) {
-                entities = inventoryControl.getPartyInventoryLevelsByInventoryCondition(inventoryCondition);
+                entities = inventoryLevelControl.getPartyInventoryLevelsByInventoryCondition(inventoryCondition);
             } else if(party != null) {
-                entities = inventoryControl.getPartyInventoryLevelsByParty(party);
+                entities = inventoryLevelControl.getPartyInventoryLevelsByParty(party);
             }
         }
 
@@ -167,7 +171,7 @@ public class GetPartyInventoryLevelsCommand
             if(item != null) {
                 result.setItem(itemControl.getItemTransfer(userVisit, item));
             } else if(inventoryCondition != null) {
-                result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition));
+                result.setInventoryCondition(inventoryConditionControl.getInventoryConditionTransfer(userVisit, inventoryCondition));
             } else if(party != null) {
                 var partyType = PartyTypes.valueOf(partyInventoryLevelUtil.getPartyTypeName(party));
 
@@ -182,7 +186,7 @@ public class GetPartyInventoryLevelsCommand
                 result.setPartyInventoryLevelCount(getTotalEntities());
             }
 
-            result.setPartyInventoryLevels(inventoryControl.getPartyInventoryLevelTransfers(userVisit, entities));
+            result.setPartyInventoryLevels(inventoryLevelControl.getPartyInventoryLevelTransfers(userVisit, entities));
         }
 
         return result;

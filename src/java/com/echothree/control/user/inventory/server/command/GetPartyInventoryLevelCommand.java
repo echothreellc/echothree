@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLevelControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
@@ -66,7 +66,7 @@ public class GetPartyInventoryLevelCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLevelControl inventoryLevelControl;
 
     @Inject
     ItemControl itemControl;
@@ -105,7 +105,7 @@ public class GetPartyInventoryLevelCommand
                 var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
 
                 if(!hasExecutionErrors()) {
-                    partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
+                    partyInventoryLevel = inventoryLevelControl.getPartyInventoryLevel(party, item, inventoryCondition);
 
                     if(partyInventoryLevel == null) {
                         addExecutionError(ExecutionErrors.UnknownPartyInventoryLevel.name(), party.getLastDetail().getPartyName(), itemName, inventoryCondition.getLastDetail().getInventoryConditionName());
@@ -122,7 +122,7 @@ public class GetPartyInventoryLevelCommand
         var result = InventoryResultFactory.getGetPartyInventoryLevelResult();
 
         if(!hasExecutionErrors()) {
-            result.setPartyInventoryLevel(inventoryControl.getPartyInventoryLevelTransfer(getUserVisit(), partyInventoryLevel));
+            result.setPartyInventoryLevel(inventoryLevelControl.getPartyInventoryLevelTransfer(getUserVisit(), partyInventoryLevel));
         }
 
         return result;

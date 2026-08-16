@@ -18,7 +18,8 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeletePartyInventoryLevelForm;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
+import com.echothree.model.control.inventory.server.control.InventoryLevelControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,7 +61,10 @@ public class DeletePartyInventoryLevelCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
+
+    @Inject
+    InventoryLevelControl inventoryLevelControl;
 
     @Inject
     ItemControl itemControl;
@@ -83,13 +87,13 @@ public class DeletePartyInventoryLevelCommand
 
             if(item != null) {
                 var inventoryConditionName = form.getInventoryConditionName();
-                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
                 if(inventoryCondition != null) {
-                    var partyInventoryLevel = inventoryControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
+                    var partyInventoryLevel = inventoryLevelControl.getPartyInventoryLevelForUpdate(party, item, inventoryCondition);
 
                     if(partyInventoryLevel != null) {
-                        inventoryControl.deletePartyInventoryLevel(partyInventoryLevel, getPartyPK());
+                        inventoryLevelControl.deletePartyInventoryLevel(partyInventoryLevel, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartyInventoryLevel.name());
                     }

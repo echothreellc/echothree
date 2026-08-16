@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupTransfer;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -33,7 +33,7 @@ public class InventoryLocationGroupTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroup, InventoryLocationGroupTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -70,7 +70,7 @@ public class InventoryLocationGroupTransferCache
             var inventoryLocationGroupName = inventoryLocationGroupDetail.getInventoryLocationGroupName();
             var isDefault = inventoryLocationGroupDetail.getIsDefault();
             var sortOrder = inventoryLocationGroupDetail.getSortOrder();
-            var description = inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage(userVisit));
+            var description = inventoryLocationGroupControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
             var inventoryLocationGroupStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -81,14 +81,14 @@ public class InventoryLocationGroupTransferCache
             put(userVisit, inventoryLocationGroup, inventoryLocationGroupTransfer);
             
             if(includeCapacities) {
-                inventoryLocationGroupTransfer.setInventoryLocationGroupCapacities(new ListWrapper<>(inventoryControl.getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(userVisit, inventoryLocationGroup)));
+                inventoryLocationGroupTransfer.setInventoryLocationGroupCapacities(new ListWrapper<>(inventoryLocationGroupControl.getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(userVisit, inventoryLocationGroup)));
             }
             
             if(includeVolume) {
-                var inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
+                var inventoryLocationGroupVolume = inventoryLocationGroupControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
                 
                 if(inventoryLocationGroupVolume != null) {
-                    inventoryLocationGroupTransfer.setInventoryLocationGroupVolume(inventoryControl.getInventoryLocationGroupVolumeTransfer(userVisit, inventoryLocationGroupVolume));
+                    inventoryLocationGroupTransfer.setInventoryLocationGroupVolume(inventoryLocationGroupControl.getInventoryLocationGroupVolumeTransfer(userVisit, inventoryLocationGroupVolume));
                 }
             }
         }

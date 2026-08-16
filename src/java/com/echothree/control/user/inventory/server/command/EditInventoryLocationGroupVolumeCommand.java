@@ -21,7 +21,7 @@ import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupVo
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupVolumeResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
@@ -63,7 +63,7 @@ public class EditInventoryLocationGroupVolumeCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     UomControl uomControl;
@@ -93,13 +93,13 @@ public class EditInventoryLocationGroupVolumeCommand
 
         if(warehouse != null) {
             var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
                 if(editMode.equals(EditMode.UPDATE)) {
-                    inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
+                    inventoryLocationGroupVolume = inventoryLocationGroupControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
                 } else {
-                    inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
+                    inventoryLocationGroupVolume = inventoryLocationGroupControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
                 }
 
                 if(inventoryLocationGroupVolume == null) {
@@ -122,7 +122,7 @@ public class EditInventoryLocationGroupVolumeCommand
 
     @Override
     public void fillInResult(EditInventoryLocationGroupVolumeResult result, InventoryLocationGroupVolume inventoryLocationGroupVolume) {
-        result.setInventoryLocationGroupVolume(inventoryControl.getInventoryLocationGroupVolumeTransfer(getUserVisit(), inventoryLocationGroupVolume));
+        result.setInventoryLocationGroupVolume(inventoryLocationGroupControl.getInventoryLocationGroupVolumeTransfer(getUserVisit(), inventoryLocationGroupVolume));
     }
 
     UnitOfMeasureKind volumeUnitOfMeasureKind;
@@ -214,13 +214,13 @@ public class EditInventoryLocationGroupVolumeCommand
 
     @Override
     public void doUpdate(InventoryLocationGroupVolume inventoryLocationGroupVolume) {
-        var inventoryLocationGroupVolumeValue = inventoryControl.getInventoryLocationGroupVolumeValueForUpdate(inventoryLocationGroupVolume);
+        var inventoryLocationGroupVolumeValue = inventoryLocationGroupControl.getInventoryLocationGroupVolumeValueForUpdate(inventoryLocationGroupVolume);
 
         inventoryLocationGroupVolumeValue.setHeight(height);
         inventoryLocationGroupVolumeValue.setWidth(width);
         inventoryLocationGroupVolumeValue.setDepth(depth);
 
-        inventoryControl.updateInventoryLocationGroupVolumeFromValue(inventoryLocationGroupVolumeValue, getPartyPK());
+        inventoryLocationGroupControl.updateInventoryLocationGroupVolumeFromValue(inventoryLocationGroupVolumeValue, getPartyPK());
     }
 
 }

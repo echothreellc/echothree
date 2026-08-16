@@ -34,6 +34,9 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.model.control.inventory.server.transfer.InventoryTransactionTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryTransactionTypeDescriptionTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -49,9 +52,15 @@ import javax.inject.Inject;
 
 @CommandScope
 public class InventoryTransactionTypeControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
 
-    /** Creates a new instance of InventoryControl */
+    @Inject
+    InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
+
+    @Inject
+    InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
+
+    /** Creates a new instance of InventoryTransactionTypeControl */
     protected InventoryTransactionTypeControl() {
         super();
     }

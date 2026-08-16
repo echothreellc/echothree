@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionUseTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class InventoryConditionUseTransferCache
         extends BaseInventoryTransferCache<InventoryConditionUse, InventoryConditionUseTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of InventoryConditionUseTransferCache */
     protected InventoryConditionUseTransferCache() {
@@ -40,9 +40,9 @@ public class InventoryConditionUseTransferCache
         var inventoryConditionUseTransfer = get(inventoryConditionUse);
         
         if(inventoryConditionUseTransfer == null) {
-            var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeTransfer(userVisit,
+            var inventoryConditionUseType = inventoryConditionControl.getInventoryConditionUseTypeTransfer(userVisit,
                     inventoryConditionUse.getInventoryConditionUseType());
-            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit,
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionTransfer(userVisit,
                     inventoryConditionUse.getInventoryCondition());
             var isDefault = inventoryConditionUse.getIsDefault();
             

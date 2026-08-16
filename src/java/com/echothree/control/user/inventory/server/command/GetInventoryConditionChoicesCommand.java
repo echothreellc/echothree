@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionChoicesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -57,7 +57,7 @@ public class GetInventoryConditionChoicesCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of GetInventoryConditionChoicesCommand */
     public GetInventoryConditionChoicesCommand() {
@@ -68,17 +68,17 @@ public class GetInventoryConditionChoicesCommand
     protected BaseResult execute() {
         var result = InventoryResultFactory.getGetInventoryConditionChoicesResult();
         var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        var inventoryConditionUseType = inventoryConditionUseTypeName == null? null: inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var inventoryConditionUseType = inventoryConditionUseTypeName == null? null: inventoryConditionControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
 
         if(inventoryConditionUseTypeName == null || inventoryConditionUseType != null) {
             var defaultInventoryConditionChoice = form.getDefaultInventoryConditionChoice();
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             if(inventoryConditionUseType == null) {
-                result.setInventoryConditionChoices(inventoryControl.getInventoryConditionChoices(defaultInventoryConditionChoice,
+                result.setInventoryConditionChoices(inventoryConditionControl.getInventoryConditionChoices(defaultInventoryConditionChoice,
                         getPreferredLanguage(), allowNullChoice));
             } else {
-                result.setInventoryConditionChoices(inventoryControl.getInventoryConditionChoicesByInventoryConditionUseType(defaultInventoryConditionChoice,
+                result.setInventoryConditionChoices(inventoryConditionControl.getInventoryConditionChoicesByInventoryConditionUseType(defaultInventoryConditionChoice,
                         getPreferredLanguage(), allowNullChoice, inventoryConditionUseType));
             }
         } else {

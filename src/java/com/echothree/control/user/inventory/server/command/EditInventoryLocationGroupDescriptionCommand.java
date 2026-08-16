@@ -21,7 +21,7 @@ import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupDe
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupDescriptionResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupDescriptionSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -69,7 +69,7 @@ public class EditInventoryLocationGroupDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     PartyControl partyControl;
@@ -100,7 +100,7 @@ public class EditInventoryLocationGroupDescriptionCommand
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
                 var languageIsoName = spec.getLanguageIsoName();
@@ -108,9 +108,9 @@ public class EditInventoryLocationGroupDescriptionCommand
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
+                        inventoryLocationGroupDescription = inventoryLocationGroupControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
                     } else { // EditMode.UPDATE
-                        inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, language);
+                        inventoryLocationGroupDescription = inventoryLocationGroupControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, language);
                     }
 
                     if(inventoryLocationGroupDescription == null) {
@@ -136,7 +136,7 @@ public class EditInventoryLocationGroupDescriptionCommand
 
     @Override
     public void fillInResult(EditInventoryLocationGroupDescriptionResult result, InventoryLocationGroupDescription inventoryLocationGroupDescription) {
-        result.setInventoryLocationGroupDescription(inventoryControl.getInventoryLocationGroupDescriptionTransfer(getUserVisit(), inventoryLocationGroupDescription));
+        result.setInventoryLocationGroupDescription(inventoryLocationGroupControl.getInventoryLocationGroupDescriptionTransfer(getUserVisit(), inventoryLocationGroupDescription));
     }
 
     @Override
@@ -146,11 +146,11 @@ public class EditInventoryLocationGroupDescriptionCommand
 
     @Override
     public void doUpdate(InventoryLocationGroupDescription inventoryLocationGroupDescription) {
-        var inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValue(inventoryLocationGroupDescription);
+        var inventoryLocationGroupDescriptionValue = inventoryLocationGroupControl.getInventoryLocationGroupDescriptionValue(inventoryLocationGroupDescription);
 
         inventoryLocationGroupDescriptionValue.setDescription(edit.getDescription());
 
-        inventoryControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, getPartyPK());
+        inventoryLocationGroupControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, getPartyPK());
     }
 
 }

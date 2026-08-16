@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionUseTypeTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class InventoryConditionUseTypeTransferCache
         extends BaseInventoryTransferCache<InventoryConditionUseType, InventoryConditionUseTypeTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of InventoryConditionUseTypeTransferCache */
     protected InventoryConditionUseTypeTransferCache() {
@@ -43,7 +43,7 @@ public class InventoryConditionUseTypeTransferCache
             var inventoryConditionUseTypeName = inventoryConditionUseType.getInventoryConditionUseTypeName();
             var isDefault = inventoryConditionUseType.getIsDefault();
             var sortOrder = inventoryConditionUseType.getSortOrder();
-            var description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage(userVisit));
+            var description = inventoryConditionControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage(userVisit));
             
             inventoryConditionUseTypeTransfer = new InventoryConditionUseTypeTransfer(inventoryConditionUseTypeName, isDefault,
                     sortOrder, description);

@@ -17,7 +17,7 @@
 package com.echothree.model.control.warehouse.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
@@ -114,7 +114,7 @@ public class WarehouseControl
         extends BaseWarehouseControl {
     
     @Inject
-    protected InventoryControl inventoryControl;
+    protected InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     protected SearchControl searchControl;
@@ -918,7 +918,7 @@ public class WarehouseControl
         
         deleteLocationsByWarehouseParty(party, deletedBy);
         deleteLocationTypesByWarehouseParty(party, deletedBy);
-        inventoryControl.deleteInventoryLocationGroupsByWarehouseParty(party, deletedBy);
+        inventoryLocationGroupControl.deleteInventoryLocationGroupsByWarehouseParty(party, deletedBy);
         
         partyControl.deleteParty(party, deletedBy);
         

@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -58,7 +58,7 @@ public class SetInventoryLocationGroupStatusCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -76,12 +76,12 @@ public class SetInventoryLocationGroupStatusCommand
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
                 var inventoryLocationGroupStatusChoice = form.getInventoryLocationGroupStatusChoice();
 
-                inventoryControl.setInventoryLocationGroupStatus(this, inventoryLocationGroup, inventoryLocationGroupStatusChoice, getPartyPK());
+                inventoryLocationGroupControl.setInventoryLocationGroupStatus(this, inventoryLocationGroup, inventoryLocationGroupStatusChoice, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
             }

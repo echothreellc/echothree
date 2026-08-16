@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryConditionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -54,7 +54,7 @@ public class SetDefaultInventoryConditionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of SetDefaultInventoryConditionCommand */
     public SetDefaultInventoryConditionCommand() {
@@ -64,11 +64,11 @@ public class SetDefaultInventoryConditionCommand
     @Override
     protected BaseResult execute() {
         var inventoryConditionName = form.getInventoryConditionName();
-        var inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueByNameForUpdate(inventoryConditionName);
+        var inventoryConditionDetailValue = inventoryConditionControl.getInventoryConditionDetailValueByNameForUpdate(inventoryConditionName);
 
         if(inventoryConditionDetailValue != null) {
             inventoryConditionDetailValue.setIsDefault(true);
-            inventoryControl.updateInventoryConditionFromValue(inventoryConditionDetailValue, getPartyPK());
+            inventoryConditionControl.updateInventoryConditionFromValue(inventoryConditionDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
         }

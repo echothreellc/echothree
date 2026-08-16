@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityDescriptionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,7 +58,7 @@ public class CreateAllocationPriorityDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     @Inject
     PartyControl partyControl;
@@ -71,19 +71,19 @@ public class CreateAllocationPriorityDescriptionCommand
     @Override
     protected BaseResult execute() {
         var allocationPriorityName = form.getAllocationPriorityName();
-        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriority = allocationPriorityControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, language);
+                var allocationPriorityDescription = allocationPriorityControl.getAllocationPriorityDescription(allocationPriority, language);
 
                 if(allocationPriorityDescription == null) {
                     var description = form.getDescription();
 
-                    inventoryControl.createAllocationPriorityDescription(allocationPriority, language, description, getPartyPK());
+                    allocationPriorityControl.createAllocationPriorityDescription(allocationPriority, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateAllocationPriorityDescription.name(), allocationPriorityName, languageIsoName);
                 }

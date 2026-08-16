@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionUseTypeDescriptionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -44,7 +44,7 @@ public class CreateInventoryConditionUseTypeDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     PartyControl partyControl;
@@ -57,19 +57,19 @@ public class CreateInventoryConditionUseTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var inventoryConditionUseType = inventoryConditionControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
 
         if(inventoryConditionUseType != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var inventoryConditionUseTypeDescription = inventoryControl.getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
+                var inventoryConditionUseTypeDescription = inventoryConditionControl.getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
 
                 if(inventoryConditionUseTypeDescription == null) {
                     var description = form.getDescription();
 
-                    inventoryControl.createInventoryConditionUseTypeDescription(inventoryConditionUseType, language, description);
+                    inventoryConditionControl.createInventoryConditionUseTypeDescription(inventoryConditionUseType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateInventoryConditionUseTypeDescription.name());
                 }

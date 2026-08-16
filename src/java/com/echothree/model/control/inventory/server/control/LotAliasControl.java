@@ -36,6 +36,10 @@ import com.echothree.model.data.inventory.server.value.LotAliasTypeDetailValue;
 import com.echothree.model.data.inventory.server.value.LotAliasValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTransferCache;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -51,7 +55,16 @@ import javax.inject.Inject;
 
 @CommandScope
 public class LotAliasControl
-        extends BaseInventoryControl {
+        extends BaseModelControl {
+
+    @Inject
+    LotAliasTypeTransferCache lotAliasTypeTransferCache;
+
+    @Inject
+    LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache;
+
+    @Inject
+    LotAliasTransferCache lotAliasTransferCache;
 
     /** Creates a new instance of LotAliasControl */
     protected LotAliasControl() {

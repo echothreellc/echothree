@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionUseForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -42,7 +42,7 @@ public class DeleteInventoryConditionUseCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of DeleteInventoryConditionUseCommand */
     public DeleteInventoryConditionUseCommand() {
@@ -52,17 +52,17 @@ public class DeleteInventoryConditionUseCommand
     @Override
     protected BaseResult execute() {
         var inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
+        var inventoryConditionUseType = inventoryConditionControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
 
         if(inventoryConditionUseType != null) {
             var inventoryConditionName = form.getInventoryConditionName();
-            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
-                var inventoryConditionUse = inventoryControl.getInventoryConditionUseForUpdate(inventoryConditionUseType, inventoryCondition);
+                var inventoryConditionUse = inventoryConditionControl.getInventoryConditionUseForUpdate(inventoryConditionUseType, inventoryCondition);
 
                 if(inventoryConditionUse != null) {
-                    inventoryControl.deleteInventoryConditionUse(inventoryConditionUse, getPartyPK());
+                    inventoryConditionControl.deleteInventoryConditionUse(inventoryConditionUse, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownInventoryConditionUse.name());
                 }

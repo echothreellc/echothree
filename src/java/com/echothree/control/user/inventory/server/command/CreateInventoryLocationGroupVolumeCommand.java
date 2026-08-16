@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupVolumeForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
@@ -52,7 +52,7 @@ public class CreateInventoryLocationGroupVolumeCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     UomControl uomControl;
@@ -72,11 +72,11 @@ public class CreateInventoryLocationGroupVolumeCommand
 
         if(warehouse != null) {
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(),
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouse.getParty(),
                     inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
-                var inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
+                var inventoryLocationGroupVolume = inventoryLocationGroupControl.getInventoryLocationGroupVolume(inventoryLocationGroup);
 
                 if(inventoryLocationGroupVolume == null) {
                     var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
@@ -110,7 +110,7 @@ public class CreateInventoryLocationGroupVolumeCommand
                                                 var widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
                                                 var depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
 
-                                                inventoryControl.createInventoryLocationGroupVolume(inventoryLocationGroup, heightConversion.getQuantity(),
+                                                inventoryLocationGroupControl.createInventoryLocationGroupVolume(inventoryLocationGroup, heightConversion.getQuantity(),
                                                         widthConversion.getQuantity(), depthConversion.getQuantity(), getPartyPK());
                                             } else {
                                                 addExecutionError(ExecutionErrors.InvalidDepth.name(), depth);

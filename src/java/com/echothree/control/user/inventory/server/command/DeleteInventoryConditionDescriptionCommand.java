@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionDescriptionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -57,7 +57,7 @@ public class DeleteInventoryConditionDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     PartyControl partyControl;
@@ -70,17 +70,17 @@ public class DeleteInventoryConditionDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryConditionName = form.getInventoryConditionName();
-        var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+        var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
         if(inventoryCondition != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var inventoryConditionDescription = inventoryControl.getInventoryConditionDescriptionForUpdate(inventoryCondition, language);
+                var inventoryConditionDescription = inventoryConditionControl.getInventoryConditionDescriptionForUpdate(inventoryCondition, language);
 
                 if(inventoryConditionDescription != null) {
-                    inventoryControl.deleteInventoryConditionDescription(inventoryConditionDescription, getPartyPK());
+                    inventoryConditionControl.deleteInventoryConditionDescription(inventoryConditionDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownInventoryConditionDescription.name());
                 }

@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetAllocationPrioritiesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -54,7 +54,7 @@ public class GetAllocationPrioritiesCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     /** Creates a new instance of GetAllocationPrioritiesCommand */
     public GetAllocationPrioritiesCommand() {
@@ -68,12 +68,12 @@ public class GetAllocationPrioritiesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return inventoryControl.countAllocationPriorities();
+        return allocationPriorityControl.countAllocationPriorities();
     }
 
     @Override
     protected Collection<AllocationPriority> getEntities() {
-        return inventoryControl.getAllocationPriorities();
+        return allocationPriorityControl.getAllocationPriorities();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class GetAllocationPrioritiesCommand
                 result.setAllocationPriorityCount(getTotalEntities());
             }
 
-            result.setAllocationPriorities(inventoryControl.getAllocationPriorityTransfers(getUserVisit(), entities));
+            result.setAllocationPriorities(allocationPriorityControl.getAllocationPriorityTransfers(getUserVisit(), entities));
         }
 
         return result;

@@ -18,7 +18,7 @@ package com.echothree.model.control.item.server.transfer;
 
 import javax.inject.Inject;
 
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.common.transfer.ItemKitMemberTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -31,7 +31,7 @@ public class ItemKitMemberTransferCache
         extends BaseItemTransferCache<ItemKitMember, ItemKitMemberTransfer> {
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -50,10 +50,10 @@ public class ItemKitMemberTransferCache
         
         if(itemKitMemberTransfer == null) {
             var item = itemControl.getItemTransfer(userVisit, itemKitMember.getItem());
-            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemKitMember.getInventoryCondition());
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionTransfer(userVisit, itemKitMember.getInventoryCondition());
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemKitMember.getUnitOfMeasureType());
             var memberItem = itemControl.getItemTransfer(userVisit, itemKitMember.getMemberItem());
-            var memberInventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemKitMember.getMemberInventoryCondition());
+            var memberInventoryCondition = inventoryConditionControl.getInventoryConditionTransfer(userVisit, itemKitMember.getMemberInventoryCondition());
             var memberUnitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemKitMember.getMemberUnitOfMeasureType());
             var quantity = itemKitMember.getQuantity().toString();
             

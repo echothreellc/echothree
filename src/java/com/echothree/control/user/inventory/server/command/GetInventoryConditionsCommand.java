@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionsForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.factory.InventoryConditionFactory;
 import com.echothree.util.common.command.BaseResult;
@@ -41,7 +41,7 @@ public class GetInventoryConditionsCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     /** Creates a new instance of GetInventoryConditionsCommand */
     public GetInventoryConditionsCommand() {
@@ -55,12 +55,12 @@ public class GetInventoryConditionsCommand
 
     @Override
     protected Long getTotalEntities() {
-        return inventoryControl.countInventoryConditions();
+        return inventoryConditionControl.countInventoryConditions();
     }
 
     @Override
     protected Collection<InventoryCondition> getEntities() {
-        return inventoryControl.getInventoryConditions();
+        return inventoryConditionControl.getInventoryConditions();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class GetInventoryConditionsCommand
                 result.setInventoryConditionCount(getTotalEntities());
             }
 
-            result.setInventoryConditions(inventoryControl.getInventoryConditionTransfers(getUserVisit(), entities));
+            result.setInventoryConditions(inventoryConditionControl.getInventoryConditionTransfers(getUserVisit(), entities));
         }
 
         return result;

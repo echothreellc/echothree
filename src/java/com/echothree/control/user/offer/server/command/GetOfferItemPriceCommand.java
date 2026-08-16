@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetOfferItemPriceForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
@@ -70,7 +70,7 @@ public class GetOfferItemPriceCommand
     AccountingControl accountingControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -112,7 +112,7 @@ public class GetOfferItemPriceCommand
 
                 if(offerItem != null) {
                     var inventoryConditionName = form.getInventoryConditionName();
-                    var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                    var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
                         var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();

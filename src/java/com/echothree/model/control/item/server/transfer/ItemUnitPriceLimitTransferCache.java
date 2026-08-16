@@ -18,7 +18,7 @@ package com.echothree.model.control.item.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.common.transfer.ItemUnitPriceLimitTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -35,7 +35,7 @@ public class ItemUnitPriceLimitTransferCache
     AccountingControl accountingControl;
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -54,7 +54,7 @@ public class ItemUnitPriceLimitTransferCache
         
         if(itemUnitPriceLimitTransfer == null) {
             var item = itemControl.getItemTransfer(userVisit, itemUnitPriceLimit.getItem());
-            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, itemUnitPriceLimit.getInventoryCondition());
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionTransfer(userVisit, itemUnitPriceLimit.getInventoryCondition());
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemUnitPriceLimit.getUnitOfMeasureType());
             var currency = itemUnitPriceLimit.getCurrency();
             var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);

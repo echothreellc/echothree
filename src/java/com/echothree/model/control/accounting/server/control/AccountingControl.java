@@ -59,7 +59,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -200,7 +200,7 @@ public class AccountingControl
     protected FinancialControl financialControl;
 
     @Inject
-    protected InventoryControl inventoryControl;
+    protected InventoryConditionControl inventoryConditionControl;
 
     @Inject
     protected SequenceControl sequenceControl;
@@ -865,7 +865,7 @@ public class AccountingControl
         
         deleteItemAccountingCategoriesByParentItemAccountingCategory(itemAccountingCategory, deletedBy);
         deleteItemAccountingCategoryDescriptionsByItemAccountingCategory(itemAccountingCategory, deletedBy);
-        inventoryControl.deleteInventoryConditionGlAccountsByItemAccountingCategory(itemAccountingCategory, deletedBy);
+        inventoryConditionControl.deleteInventoryConditionGlAccountsByItemAccountingCategory(itemAccountingCategory, deletedBy);
         
         itemAccountingCategoryDetail.setThruTime(session.getStartTime());
         itemAccountingCategory.setActiveDetail(null);

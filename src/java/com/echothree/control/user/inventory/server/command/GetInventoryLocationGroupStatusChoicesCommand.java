@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupStatusChoicesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -59,7 +59,7 @@ public class GetInventoryLocationGroupStatusChoicesCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryLocationGroupControl inventoryLocationGroupControl;
 
     @Inject
     WarehouseControl warehouseControl;
@@ -78,12 +78,12 @@ public class GetInventoryLocationGroupStatusChoicesCommand
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            var inventoryLocationGroup = inventoryLocationGroupControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
 
             if(inventoryLocationGroup != null) {
                 var defaultInventoryLocationGroupStatusChoice = form.getDefaultInventoryLocationGroupStatusChoice();
 
-                result.setInventoryLocationGroupStatusChoices(inventoryControl.getInventoryLocationGroupStatusChoices(defaultInventoryLocationGroupStatusChoice,
+                result.setInventoryLocationGroupStatusChoices(inventoryLocationGroupControl.getInventoryLocationGroupStatusChoices(defaultInventoryLocationGroupStatusChoice,
                         getPreferredLanguage(), inventoryLocationGroup, getPartyPK()));
             } else {
                 addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);

@@ -17,7 +17,7 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemUnitLimitForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -47,7 +47,7 @@ public class CreateItemUnitLimitCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    InventoryConditionControl inventoryConditionControl;
 
     @Inject
     ItemControl itemControl;
@@ -68,7 +68,7 @@ public class CreateItemUnitLimitCommand
         
         if(item != null) {
             var inventoryConditionName = form.getInventoryConditionName();
-            var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+            var inventoryCondition = inventoryConditionControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();

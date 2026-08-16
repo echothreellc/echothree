@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityDescriptionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.AllocationPriorityControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -57,7 +57,7 @@ public class DeleteAllocationPriorityDescriptionCommand
     }
 
     @Inject
-    InventoryControl inventoryControl;
+    AllocationPriorityControl allocationPriorityControl;
 
     @Inject
     PartyControl partyControl;
@@ -70,17 +70,17 @@ public class DeleteAllocationPriorityDescriptionCommand
     @Override
     protected BaseResult execute() {
         var allocationPriorityName = form.getAllocationPriorityName();
-        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriority = allocationPriorityControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                var allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, language);
+                var allocationPriorityDescription = allocationPriorityControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, language);
 
                 if(allocationPriorityDescription != null) {
-                    inventoryControl.deleteAllocationPriorityDescription(allocationPriorityDescription, getPartyPK());
+                    allocationPriorityControl.deleteAllocationPriorityDescription(allocationPriorityDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownAllocationPriorityDescription.name(), allocationPriorityName, languageIsoName);
                 }
