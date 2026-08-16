@@ -20,10 +20,10 @@
 
     <!-- Configure the database connection here -->
     <generator>
-        <name>com.echothree.ui.cli.database.util.jooq.JooqJavaGenerator</name>
+        <name>com.echothree.ui.cli.database.util.jooqgen.JooqJavaGenerator</name>
         <!-- A programmatic naming strategy implementation, referenced by class name. -->
         <strategy>
-            <name>com.echothree.ui.cli.database.util.jooq.JooqGeneratorStrategy</name>
+            <name>com.echothree.ui.cli.database.util.jooqgen.JooqGeneratorStrategy</name>
         </strategy>
 
         <database>

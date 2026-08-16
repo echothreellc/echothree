@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database.util.jooq;
+package com.echothree.ui.cli.database.util.jooqgen;
 
 import com.echothree.ui.cli.database.util.definition.Column;
 import com.echothree.ui.cli.database.util.definition.DatabaseDefinitionParser;
