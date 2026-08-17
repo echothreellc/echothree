@@ -28,6 +28,15 @@
 
         <database>
             <name>org.jooq.meta.xml.XMLDatabase</name>
+
+            <!-- Read metadata only from the model's schema. This is an input
+                 filter used during generation, not a runtime SQL qualifier. -->
+            <inputSchema>echothree</inputSchema>
+
+            <!-- Generate schema-less and catalog-less table metadata. At
+                 runtime, each tenant's datasource selects its database. -->
+            <outputCatalogToDefault>true</outputCatalogToDefault>
+            <outputSchemaToDefault>true</outputSchemaToDefault>
             <properties>
                 <!-- Use any of the SQLDialect values here -->
                 <property>
@@ -45,6 +54,11 @@
 
         <!-- Generation flags: See advanced configuration properties -->
         <generate>
+            <!-- The default output catalog and schema are unnamed, so their
+                 otherwise-empty Java reference classes are unnecessary. -->
+            <defaultCatalog>false</defaultCatalog>
+            <defaultSchema>false</defaultSchema>
+
             <!-- Inbound paths collide with outbound MySQL foreign-key names for
                  self-references and tables having two keys to the same target. -->
             <implicitJoinPathsToMany>false</implicitJoinPathsToMany>
