@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-08-16-01
+
+* jOOQ Code Generation [369](https://gitlab.echothree.com/echothree/echothree/-/work_items/369)
+* Convert GetAssociatePartyContactMechanisms UC to Use BasePaginatedMultipleEntitiesCommand [1763](https://gitlab.echothree.com/echothree/echothree/-/work_items/1763)
+* Convert GetAssociateReferrals UC to Use BasePaginatedMultipleEntitiesCommand [1765](https://gitlab.echothree.com/echothree/echothree/-/work_items/1765)
+* Convert GetAssociates UC to Use BasePaginatedMultipleEntitiesCommand [1766](https://gitlab.echothree.com/echothree/echothree/-/work_items/1766)
+* Convert GetDocumentTypeUsages UC to Use BasePaginatedMultipleEntitiesCommand [1841](https://gitlab.echothree.com/echothree/echothree/-/work_items/1841)
+* Convert GetDocumentTypeUsageTypes UC to Use BasePaginatedMultipleEntitiesCommand [1842](https://gitlab.echothree.com/echothree/echothree/-/work_items/1842)
+* Convert GetPartyDocuments UC to Use BasePaginatedMultipleEntitiesCommand [1843](https://gitlab.echothree.com/echothree/echothree/-/work_items/1843)
+* Convert GetPartyTypeDocumentTypeUsageTypes UC to Use BasePaginatedMultipleEntitiesCommand [1844](https://gitlab.echothree.com/echothree/echothree/-/work_items/1844)
+* Convert GetSalesOrderBatches UC to Use BasePaginatedMultipleEntitiesCommand [1929](https://gitlab.echothree.com/echothree/echothree/-/work_items/1929)
+* Increase Table and Index Name Length Exceeds Warning to 64 Characters [2160](https://gitlab.echothree.com/echothree/echothree/-/work_items/2160)
+* jOOQ 3.21.7 Upgrade [2177](https://gitlab.echothree.com/echothree/echothree/-/work_items/2177)
+* Implement Inventory Costing Methods [2178](https://gitlab.echothree.com/echothree/echothree/-/work_items/2178)
+* Implement Inventory Bucket Types [2195](https://gitlab.echothree.com/echothree/echothree/-/work_items/2195)
+* Migrate Inventory Component to Use Dependency Injection [2199](https://gitlab.echothree.com/echothree/echothree/-/work_items/2199)
+* Migrate Additional Components  to Use Dependency Injection [2200](https://gitlab.echothree.com/echothree/echothree/-/work_items/2200)
+* Correct Effectively Private Warnings From Error Prone [2201](https://gitlab.echothree.com/echothree/echothree/-/work_items/2201)
+* Correct Refactor Switch Warnings From Error Prone [2202](https://gitlab.echothree.com/echothree/echothree/-/work_items/2202)
+* Separate FilterControl Into Separate Controllers [2203](https://gitlab.echothree.com/echothree/echothree/-/work_items/2203)
+* Additional Static Initializer Formatting [2204](https://gitlab.echothree.com/echothree/echothree/-/work_items/2204)
+* Convert GetPartyTypeDocumentTypeUsageType UC to Use BaseSingleEntityCommand [2205](https://gitlab.echothree.com/echothree/echothree/-/work_items/2205)
+* Convert GetPartyDocument to Use BaseSingleEntityCommand [2206](https://gitlab.echothree.com/echothree/echothree/-/work_items/2206)
+* Convert GetDocumentTypeUsageType to Use BaseSingleEntityCommand [2207](https://gitlab.echothree.com/echothree/echothree/-/work_items/2207)
+* Convert GetDocumentTypeUsage to Use BaseSingleEntityCommand [2208](https://gitlab.echothree.com/echothree/echothree/-/work_items/2208)
+* Convert GetDocumentType to Use BaseSingleEntityCommand [2209](https://gitlab.echothree.com/echothree/echothree/-/work_items/2209)
+* Convert GetAssociate UC to Use BaseSingleEntityCommand [2210](https://gitlab.echothree.com/echothree/echothree/-/work_items/2210)
+* Convert GetAssociatePartyContactMechanism UC to Use BaseSingleEntityCommand [2211](https://gitlab.echothree.com/echothree/echothree/-/work_items/2211)
+* Convert GetAssociateProgram UC to Use BaseSingleEntityCommand [2212](https://gitlab.echothree.com/echothree/echothree/-/work_items/2212)
+* Convert GetAssociateReferral UC to Use BaseSingleEntityCommand [2213](https://gitlab.echothree.com/echothree/echothree/-/work_items/2213)
+* Separate InventoryControl Into Separate Controllers [2334](https://gitlab.echothree.com/echothree/echothree/-/work_items/2334)
+
 ## 2026-08-02-01
 
 * Add Inventory Transaction Reasons [44](https://gitlab.echothree.com/echothree/echothree/-/work_items/44)
