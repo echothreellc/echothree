@@ -24,8 +24,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
-import org.jooq.conf.RenderNameCase;
-import org.jooq.conf.RenderQuotedNames;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 
@@ -55,9 +53,15 @@ public class DslContextFactory {
     public static DslContextFactory getInstance() {
         return instance;
     }
+
+    private Settings getSettings() {
+        // The datasource selects the tenant database. Generated schema names
+        // describe the model and must not qualify runtime SQL.
+        return new Settings().withRenderSchema(false);
+    }
     
     public DSLContext getDslContext() {
-        var dslContent = DSL.using(ds, SQLDialect.MYSQL);
+        var dslContent = DSL.using(ds, SQLDialect.MYSQL, getSettings());
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getDslContext() returning " + dslContent);
@@ -66,7 +70,7 @@ public class DslContextFactory {
     }
     
     public DSLContext getNTDslContext() {
-        var dslContent = DSL.using(ntds, SQLDialect.MYSQL);
+        var dslContent = DSL.using(ntds, SQLDialect.MYSQL, getSettings());
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getNTDslContext() returning " + dslContent);

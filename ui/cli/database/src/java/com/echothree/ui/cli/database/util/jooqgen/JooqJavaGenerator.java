@@ -17,6 +17,9 @@
 package com.echothree.ui.cli.database.util.jooqgen;
 
 import com.echothree.ui.cli.database.util.definition.DatabaseDefinitionParser;
+import com.echothree.ui.cli.database.util.definition.ColumnDataType;
+import com.echothree.ui.cli.database.util.definition.Database;
+import com.echothree.ui.cli.database.util.definition.DatabasePhysicalNames;
 import com.echothree.ui.cli.database.util.definition.Databases;
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 import org.jooq.ForeignKey;
 import org.jooq.UniqueKey;
 import org.jooq.codegen.GeneratorStrategy.Mode;
@@ -33,11 +37,14 @@ import org.jooq.meta.ConstraintDefinition;
 import org.jooq.meta.ForeignKeyDefinition;
 import org.jooq.meta.SchemaDefinition;
 import org.jooq.meta.UniqueKeyDefinition;
+import org.jooq.meta.jaxb.ForcedType;
+import org.jooq.meta.jaxb.LambdaConverter;
 
 public class JooqJavaGenerator
         extends JavaGenerator {
 
     private final Map<String, String> componentNames = new LinkedHashMap<>();
+    private final Database definitionDatabase;
 
     public JooqJavaGenerator() {
         try {
@@ -46,7 +53,8 @@ public class JooqJavaGenerator
 
             parser.parse("/DatabaseDefinition.xml");
 
-            databases.getDatabase("echothree").getComponents().forEach(component ->
+            definitionDatabase = databases.getDatabase("echothree");
+            definitionDatabase.getComponents().forEach(component ->
                     component.getTables().forEach(table ->
                             componentNames.put(table.getDbTableName(), component.getName())
                     )
@@ -54,6 +62,65 @@ public class JooqJavaGenerator
         } catch(Exception e) {
             throw new IllegalStateException("Unable to load jOOQ key components", e);
         }
+    }
+
+    /**
+     * Gives each entity ID and every foreign key that references it the same
+     * legacy PK type. jOOQ then accepts a typed PK in predicates while the
+     * converter continues to bind the underlying BIGINT value to JDBC.
+     */
+    List<ForcedType> primaryKeyForcedTypes() {
+        var forcedTypes = new ArrayList<ForcedType>();
+
+        for(var referencedTable : definitionDatabase.getTables()) {
+            var columnExpressions = new ArrayList<String>();
+
+            for(var table : definitionDatabase.getTables()) {
+                for(var column : table.getColumns()) {
+                    if((table.equals(referencedTable) && column.getType() == ColumnDataType.EID)
+                            || referencedTable.getNamePlural().equals(column.getDestinationTable())) {
+                        String qualifiedColumnName;
+
+                        try {
+                            qualifiedColumnName = DatabasePhysicalNames.tableName(table) + "."
+                                    + DatabasePhysicalNames.columnName(column);
+                        } catch(Exception e) {
+                            throw new IllegalStateException("Unable to determine the jOOQ column name for "
+                                    + table.getNamePlural() + "." + column.getName(), e);
+                        }
+
+                        columnExpressions.add(Pattern.quote(qualifiedColumnName));
+                    }
+                }
+            }
+
+            if(!columnExpressions.isEmpty()) {
+                var primaryKeyType = referencedTable.getPKImport();
+
+                forcedTypes.add(new ForcedType()
+                        .withUserType(primaryKeyType)
+                        .withLambdaConverter(new LambdaConverter()
+                                .withFrom("id -> new " + primaryKeyType + "(id)")
+                                .withTo("primaryKey -> primaryKey.getEntityId()")
+                                .withNullable(true))
+                        .withIncludeExpression(String.join("|", columnExpressions))
+                        .withIncludeTypes("(?i:bigint)"));
+            }
+        }
+
+        return forcedTypes;
+    }
+
+    @Override
+    public void generate(final org.jooq.meta.Database database) {
+        var forcedTypes = new ArrayList<>(database.getConfiguredForcedTypes());
+
+        // Expressions intentionally omit the schema so generated types do not
+        // depend on the database selected for any particular tenant.
+        database.setRegexMatchesPartialQualification(true);
+        forcedTypes.addAll(primaryKeyForcedTypes());
+        database.setConfiguredForcedTypes(forcedTypes);
+        super.generate(database);
     }
 
     private <T> Map<String, List<T>> componentLists() {
