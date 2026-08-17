@@ -33,7 +33,9 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorities.AllocationPriorities;
+import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorityDescriptions.AllocationPriorityDescriptions;
 import static com.echothree.model.jooq.server.tables.inventory.AllocationPriorityDetails.AllocationPriorityDetails;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.model.control.inventory.server.transfer.AllocationPriorityTransferCache;
 import com.echothree.model.control.inventory.server.transfer.AllocationPriorityDescriptionTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
@@ -43,10 +45,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -363,28 +362,22 @@ public class AllocationPriorityControl
         return allocationPriorityDescription;
     }
 
-    private static final Map<EntityPermission, String> getAllocationPriorityDescriptionQueries;
+    private AllocationPriorityDescription getAllocationPriorityDescription(final AllocationPriority allocationPriority, final Language language,
+            final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(AllocationPriorityDescriptions.fields())
+                .from(AllocationPriorityDescriptions)
+                .where(AllocationPriorityDescriptions.AllocationPriority.eq(allocationPriority.getPrimaryKey()),
+                        AllocationPriorityDescriptions.Language.eq(language.getPrimaryKey()),
+                        AllocationPriorityDescriptions.ThruTime.eq(Session.MAX_TIME));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM allocationprioritydescriptions
-                WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_lang_languageid = ? AND allocprd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM allocationprioritydescriptions
-                WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_lang_languageid = ? AND allocprd_thrutime = ?
-                FOR UPDATE
-                """);
-        getAllocationPriorityDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private AllocationPriorityDescription getAllocationPriorityDescription(AllocationPriority allocationPriority, Language language, EntityPermission entityPermission) {
-        return allocationPriorityDescriptionFactory.getEntityFromQuery(entityPermission, getAllocationPriorityDescriptionQueries,
-                allocationPriority, language, Session.MAX_TIME);
+        return allocationPriorityDescriptionFactory.getEntityFromQuery(entityPermission,
+                allocationPriorityDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public AllocationPriorityDescription getAllocationPriorityDescription(AllocationPriority allocationPriority, Language language) {
@@ -403,30 +396,29 @@ public class AllocationPriorityControl
         return getAllocationPriorityDescriptionValue(getAllocationPriorityDescriptionForUpdate(allocationPriority, language));
     }
 
-    private static final Map<EntityPermission, String> getAllocationPriorityDescriptionsByAllocationPriorityQueries;
+    private List<AllocationPriorityDescription> getAllocationPriorityDescriptionsByAllocationPriority(final AllocationPriority allocationPriority,
+            final EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(AllocationPriorityDescriptions.fields())
+                    .from(AllocationPriorityDescriptions)
+                    .join(Languages)
+                    .on(AllocationPriorityDescriptions.Language.eq(Languages.Language))
+                    .where(AllocationPriorityDescriptions.AllocationPriority.eq(allocationPriority.getPrimaryKey()),
+                            AllocationPriorityDescriptions.ThruTime.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SortOrder, Languages.LanguageIsoName);
+            case READ_WRITE -> session.getDslContext()
+                    .select(AllocationPriorityDescriptions.fields())
+                    .from(AllocationPriorityDescriptions)
+                    .where(AllocationPriorityDescriptions.AllocationPriority.eq(allocationPriority.getPrimaryKey()),
+                            AllocationPriorityDescriptions.ThruTime.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM allocationprioritydescriptions, languages
-                WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_thrutime = ? AND allocprd_lang_languageid = lang_languageid
-                ORDER BY lang_sortallocation, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM allocationprioritydescriptions
-                WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_thrutime = ?
-                FOR UPDATE
-                """);
-        getAllocationPriorityDescriptionsByAllocationPriorityQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<AllocationPriorityDescription> getAllocationPriorityDescriptionsByAllocationPriority(AllocationPriority allocationPriority, EntityPermission entityPermission) {
-        return allocationPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, getAllocationPriorityDescriptionsByAllocationPriorityQueries,
-                allocationPriority, Session.MAX_TIME);
+        return allocationPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission,
+                allocationPriorityDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<AllocationPriorityDescription> getAllocationPriorityDescriptionsByAllocationPriority(AllocationPriority allocationPriority) {
