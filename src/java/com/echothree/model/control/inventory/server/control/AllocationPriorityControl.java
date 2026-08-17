@@ -136,7 +136,7 @@ public class AllocationPriorityControl
                 .from(AllocationPriorities)
                 .join(AllocationPriorityDetails)
                 .onKey(ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK)
-                .where(AllocationPriorityDetails.AllocationPriorityName.eq(allocationPriorityName));
+                .where(AllocationPriorityDetails.ALLOCATION_PRIORITY_NAME.eq(allocationPriorityName));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -169,7 +169,7 @@ public class AllocationPriorityControl
                 .from(AllocationPriorities)
                 .join(AllocationPriorityDetails)
                 .onKey(ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK)
-                .where(AllocationPriorityDetails.IsDefault.eq(true));
+                .where(AllocationPriorityDetails.IS_DEFAULT.eq(true));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -201,7 +201,7 @@ public class AllocationPriorityControl
 
         var sql = switch(entityPermission) {
             case READ_ONLY -> baseQuery
-                    .orderBy(AllocationPriorityDetails.SortOrder, AllocationPriorityDetails.AllocationPriorityName)
+                    .orderBy(AllocationPriorityDetails.SORT_ORDER, AllocationPriorityDetails.ALLOCATION_PRIORITY_NAME)
                     .getSQL() + " _LIMIT_";
             case READ_WRITE -> baseQuery
                     .forUpdate()
@@ -367,9 +367,9 @@ public class AllocationPriorityControl
         var baseQuery = session.getDslContext()
                 .select(AllocationPriorityDescriptions.fields())
                 .from(AllocationPriorityDescriptions)
-                .where(AllocationPriorityDescriptions.AllocationPriority.eq(allocationPriority.getPrimaryKey()),
-                        AllocationPriorityDescriptions.Language.eq(language.getPrimaryKey()),
-                        AllocationPriorityDescriptions.ThruTime.eq(Session.MAX_TIME));
+                .where(AllocationPriorityDescriptions.ALLOCATION_PRIORITY.eq(allocationPriority.getPrimaryKey()),
+                        AllocationPriorityDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        AllocationPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -403,15 +403,15 @@ public class AllocationPriorityControl
                     .select(AllocationPriorityDescriptions.fields())
                     .from(AllocationPriorityDescriptions)
                     .join(Languages)
-                    .on(AllocationPriorityDescriptions.Language.eq(Languages.Language))
-                    .where(AllocationPriorityDescriptions.AllocationPriority.eq(allocationPriority.getPrimaryKey()),
-                            AllocationPriorityDescriptions.ThruTime.eq(Session.MAX_TIME))
-                    .orderBy(Languages.SortOrder, Languages.LanguageIsoName);
+                    .on(AllocationPriorityDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
+                    .where(AllocationPriorityDescriptions.ALLOCATION_PRIORITY.eq(allocationPriority.getPrimaryKey()),
+                            AllocationPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
             case READ_WRITE -> session.getDslContext()
                     .select(AllocationPriorityDescriptions.fields())
                     .from(AllocationPriorityDescriptions)
-                    .where(AllocationPriorityDescriptions.AllocationPriority.eq(allocationPriority.getPrimaryKey()),
-                            AllocationPriorityDescriptions.ThruTime.eq(Session.MAX_TIME))
+                    .where(AllocationPriorityDescriptions.ALLOCATION_PRIORITY.eq(allocationPriority.getPrimaryKey()),
+                            AllocationPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
                     .forUpdate();
         };
 
