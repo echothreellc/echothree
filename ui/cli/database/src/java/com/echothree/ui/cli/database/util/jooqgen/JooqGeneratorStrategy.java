@@ -86,6 +86,10 @@ public class JooqGeneratorStrategy
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, name);
     }
 
+    String columnIdentifier(String columnName) {
+        return upperUnderscore(columnName);
+    }
+
     private String keyTableName(TableDefinition table) {
         return upperUnderscore(tableNames.get(table.getInputName()));
     }
@@ -111,7 +115,15 @@ public class JooqGeneratorStrategy
 
     @Override
     public String getJavaIdentifier(Definition definition) {
-        var name = keyIdentifier(definition);
+        String name;
+
+        if(definition instanceof ColumnDefinition) {
+            var columnName = javaName(definition);
+
+            name = columnName == null ? null : columnIdentifier(columnName);
+        } else {
+            name = keyIdentifier(definition);
+        }
 
         if(name == null) {
             name = javaName(definition);
