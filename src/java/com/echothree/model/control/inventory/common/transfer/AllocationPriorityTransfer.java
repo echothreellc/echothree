@@ -21,27 +21,27 @@ import com.echothree.util.common.transfer.BaseTransfer;
 public class AllocationPriorityTransfer
         extends BaseTransfer {
     
-    private String inventoryTimeTypeName;
+    private String allocationPriorityName;
     private Integer priority;
     private Boolean isDefault;
     private Integer sortOrder;
     private String description;
     
     /** Creates a new instance of AllocationPriorityTransfer */
-    public AllocationPriorityTransfer(String inventoryTimeTypeName, Integer priority, Boolean isDefault, Integer sortOrder, String description) {
-        this.inventoryTimeTypeName = inventoryTimeTypeName;
+    public AllocationPriorityTransfer(String allocationPriorityName, Integer priority, Boolean isDefault, Integer sortOrder, String description) {
+        this.allocationPriorityName = allocationPriorityName;
         this.priority = priority;
         this.isDefault = isDefault;
         this.sortOrder = sortOrder;
         this.description = description;
     }
 
-    public String getInventoryTimeTypeName() {
-        return inventoryTimeTypeName;
+    public String getAllocationPriorityName() {
+        return allocationPriorityName;
     }
 
-    public void setInventoryTimeTypeName(String inventoryTimeTypeName) {
-        this.inventoryTimeTypeName = inventoryTimeTypeName;
+    public void setAllocationPriorityName(String allocationPriorityName) {
+        this.allocationPriorityName = allocationPriorityName;
     }
 
     public Integer getPriority() {
