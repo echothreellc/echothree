@@ -14,66 +14,68 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common.transfer;
+package com.echothree.ui.web.main.action.inventory.allocationpriority;
 
-import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.view.client.web.struts.BaseActionForm;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts.action.ActionMapping;
 
-public class AllocationPriorityTransfer
-        extends BaseTransfer {
+@SproutForm(name="AllocationPriorityAdd")
+public class AddActionForm
+        extends BaseActionForm {
     
     private String allocationPriorityName;
-    private Integer priority;
+    private String priority;
     private Boolean isDefault;
-    private Integer sortOrder;
+    private String sortOrder;
     private String description;
     
-    /** Creates a new instance of AllocationPriorityTransfer */
-    public AllocationPriorityTransfer(String allocationPriorityName, Integer priority, Boolean isDefault, Integer sortOrder, String description) {
+    public void setAllocationPriorityName(String allocationPriorityName) {
         this.allocationPriorityName = allocationPriorityName;
-        this.priority = priority;
-        this.isDefault = isDefault;
-        this.sortOrder = sortOrder;
-        this.description = description;
     }
-
+    
     public String getAllocationPriorityName() {
         return allocationPriorityName;
     }
 
-    public void setAllocationPriorityName(String allocationPriorityName) {
-        this.allocationPriorityName = allocationPriorityName;
-    }
-
-    public Integer getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(Integer priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
     public Boolean getIsDefault() {
         return isDefault;
     }
-
+    
     public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
     }
-
-    public Integer getSortOrder() {
+    
+    public String getSortOrder() {
         return sortOrder;
     }
-
-    public void setSortOrder(Integer sortOrder) {
+    
+    public void setSortOrder(String sortOrder) {
         this.sortOrder = sortOrder;
     }
-
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     public String getDescription() {
         return description;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
+    
+    @Override
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        super.reset(mapping, request);
+        
+        isDefault = false;
     }
     
 }

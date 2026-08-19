@@ -87,6 +87,12 @@ public interface AttributeConstants {
     String INVENTORY_BUCKET_TYPE_NAME = "inventoryBucketTypeName";
     String INVENTORY_BUCKET_TYPE_DESCRIPTION = "inventoryBucketTypeDescription";
     String INVENTORY_BUCKET_TYPE_DESCRIPTIONS = "inventoryBucketTypeDescriptions";
+    String ALLOCATION_PRIORITY = "allocationPriority";
+    String ALLOCATION_PRIORITIES = "allocationPriorities";
+    String ORIGINAL_ALLOCATION_PRIORITY_NAME = "originalAllocationPriorityName";
+    String ALLOCATION_PRIORITY_NAME = "allocationPriorityName";
+    String ALLOCATION_PRIORITY_DESCRIPTION = "allocationPriorityDescription";
+    String ALLOCATION_PRIORITY_DESCRIPTIONS = "allocationPriorityDescriptions";
     String INVENTORY_LOCATION_GROUP = "inventoryLocationGroup";
     String INVENTORY_LOCATION_GROUPS = "inventoryLocationGroups";
     String LANGUAGE_ISO_NAME = "languageIsoName";

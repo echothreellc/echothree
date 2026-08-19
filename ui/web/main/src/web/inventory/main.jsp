@@ -25,7 +25,7 @@
         <%@ include file="../include/environment-b.jsp" %>
     </head>
     <%@ include file="../include/body-start-b.jsp" %>
-        <et:checkSecurityRoles securityRoles="InventoryCondition.List:InventoryConditionUseType.List:InventoryCostingMethod.List:InventoryBucketType.List" />
+        <et:checkSecurityRoles securityRoles="InventoryCondition.List:InventoryConditionUseType.List:InventoryCostingMethod.List:InventoryBucketType.List:AllocationPriority.List" />
         <%@ include file="../include/breadcrumb/breadcrumbs-start.jsp" %>
             <jsp:include page="../include/breadcrumb/portal.jsp">
                 <jsp:param name="showAsLink" value="true"/>
@@ -45,6 +45,9 @@
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="InventoryBucketType.List">
             <a href="<c:url value="/action/Inventory/InventoryBucketType/Main" />">Inventory Bucket Types</a><br />
+        </et:hasSecurityRole>
+        <et:hasSecurityRole securityRole="AllocationPriority.List">
+            <a href="<c:url value="/action/Inventory/AllocationPriority/Main" />">Allocation Priorities</a><br />
         </et:hasSecurityRole>
     <%@ include file="../include/body-end-b.jsp" %>
 </html>
