@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.common.choice.InventoryBucketTypeChoicesBean;
 import com.echothree.model.control.inventory.common.transfer.InventoryBucketTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryBucketTypeTransfer;
+import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryBucketTypePK;
 import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
@@ -31,20 +33,20 @@ import com.echothree.model.data.inventory.server.value.InventoryBucketTypeDescri
 import com.echothree.model.data.inventory.server.value.InventoryBucketTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeTransferCache;
-import com.echothree.model.control.inventory.server.transfer.InventoryBucketTypeDescriptionTransferCache;
-import com.echothree.util.server.control.BaseModelControl;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_BUCKET_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryBucketTypeDescriptions.InventoryBucketTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryBucketTypeDetails.InventoryBucketTypeDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryBucketTypes.InventoryBucketTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -57,11 +59,13 @@ public class InventoryBucketTypeControl
     @Inject
     InventoryBucketTypeDescriptionTransferCache inventoryBucketTypeDescriptionTransferCache;
 
-    /** Creates a new instance of InventoryBucketTypeControl */
+    /**
+     * Creates a new instance of InventoryBucketTypeControl
+     */
     protected InventoryBucketTypeControl() {
         super();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Adjustment Types
     // --------------------------------------------------------------------------------
@@ -102,7 +106,9 @@ public class InventoryBucketTypeControl
         return inventoryBucketType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryBucketType */
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryBucketType
+     */
     public InventoryBucketType getInventoryBucketTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new InventoryBucketTypePK(entityInstance.getEntityUniqueId());
@@ -123,36 +129,29 @@ public class InventoryBucketTypeControl
     }
 
     public long countInventoryBucketTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM inventorybuckettypes, inventorybuckettypedetails
-                WHERE invbckttyp_activedetailid = invbckttypdt_inventorybuckettypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryBucketTypes)
+                .join(InventoryBucketTypeDetails).onKey(INVENTORY_BUCKET_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getInventoryBucketTypeByNameQueries;
+    public InventoryBucketType getInventoryBucketTypeByName(final String inventoryBucketTypeName,
+            final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryBucketTypes.fields())
+                .from(InventoryBucketTypes)
+                .join(InventoryBucketTypeDetails).onKey(INVENTORY_BUCKET_TYPES_ACTIVE_DETAIL_FK)
+                .where(InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME.eq(inventoryBucketTypeName));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorybuckettypes, inventorybuckettypedetails
-                WHERE invbckttyp_activedetailid = invbckttypdt_inventorybuckettypedetailid
-                AND invbckttypdt_inventorybuckettypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorybuckettypes, inventorybuckettypedetails
-                WHERE invbckttyp_activedetailid = invbckttypdt_inventorybuckettypedetailid
-                AND invbckttypdt_inventorybuckettypename = ?
-                FOR UPDATE
-                """);
-        getInventoryBucketTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public InventoryBucketType getInventoryBucketTypeByName(String inventoryBucketTypeName, EntityPermission entityPermission) {
-        return inventoryBucketTypeFactory.getEntityFromQuery(entityPermission, getInventoryBucketTypeByNameQueries, inventoryBucketTypeName);
+        return inventoryBucketTypeFactory.getEntityFromQuery(entityPermission,
+                inventoryBucketTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryBucketType getInventoryBucketTypeByName(String inventoryBucketTypeName) {
@@ -164,36 +163,27 @@ public class InventoryBucketTypeControl
     }
 
     public InventoryBucketTypeDetailValue getInventoryBucketTypeDetailValueForUpdate(InventoryBucketType inventoryBucketType) {
-        return inventoryBucketType == null? null: inventoryBucketType.getLastDetailForUpdate().getInventoryBucketTypeDetailValue().clone();
+        return inventoryBucketType == null ? null : inventoryBucketType.getLastDetailForUpdate().getInventoryBucketTypeDetailValue().clone();
     }
 
     public InventoryBucketTypeDetailValue getInventoryBucketTypeDetailValueByNameForUpdate(String inventoryBucketTypeName) {
         return getInventoryBucketTypeDetailValueForUpdate(getInventoryBucketTypeByNameForUpdate(inventoryBucketTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultInventoryBucketTypeQueries;
+    public InventoryBucketType getDefaultInventoryBucketType(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryBucketTypes.fields())
+                .from(InventoryBucketTypes)
+                .join(InventoryBucketTypeDetails).onKey(INVENTORY_BUCKET_TYPES_ACTIVE_DETAIL_FK)
+                .where(InventoryBucketTypeDetails.IS_DEFAULT.eq(true));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorybuckettypes, inventorybuckettypedetails
-                WHERE invbckttyp_activedetailid = invbckttypdt_inventorybuckettypedetailid
-                AND invbckttypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorybuckettypes, inventorybuckettypedetails
-                WHERE invbckttyp_activedetailid = invbckttypdt_inventorybuckettypedetailid
-                AND invbckttypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultInventoryBucketTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public InventoryBucketType getDefaultInventoryBucketType(EntityPermission entityPermission) {
-        return inventoryBucketTypeFactory.getEntityFromQuery(entityPermission, getDefaultInventoryBucketTypeQueries);
+        return inventoryBucketTypeFactory.getEntityFromQuery(entityPermission,
+                inventoryBucketTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryBucketType getDefaultInventoryBucketType() {
@@ -208,29 +198,23 @@ public class InventoryBucketTypeControl
         return getDefaultInventoryBucketTypeForUpdate().getLastDetailForUpdate().getInventoryBucketTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getInventoryBucketTypesQueries;
+    private List<InventoryBucketType> getInventoryBucketTypes(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryBucketTypes.fields())
+                .from(InventoryBucketTypes)
+                .join(InventoryBucketTypeDetails).onKey(INVENTORY_BUCKET_TYPES_ACTIVE_DETAIL_FK);
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = switch(entityPermission) {
+            case READ_ONLY -> baseQuery
+                    .orderBy(InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME)
+                    .getSQL() + " _LIMIT_";
+            case READ_WRITE -> baseQuery
+                    .forUpdate()
+                    .getSQL();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorybuckettypes, inventorybuckettypedetails
-                WHERE invbckttyp_activedetailid = invbckttypdt_inventorybuckettypedetailid
-                ORDER BY invbckttypdt_sortorder, invbckttypdt_inventorybuckettypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorybuckettypes, inventorybuckettypedetails
-                WHERE invbckttyp_activedetailid = invbckttypdt_inventorybuckettypedetailid
-                FOR UPDATE
-                """);
-        getInventoryBucketTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<InventoryBucketType> getInventoryBucketTypes(EntityPermission entityPermission) {
-        return inventoryBucketTypeFactory.getEntitiesFromQuery(entityPermission, getInventoryBucketTypesQueries);
+        return inventoryBucketTypeFactory.getEntitiesFromQuery(entityPermission,
+                inventoryBucketTypeFactory.prepareStatement(sql));
     }
 
     public List<InventoryBucketType> getInventoryBucketTypes() {
@@ -282,7 +266,7 @@ public class InventoryBucketTypeControl
             var label = getBestInventoryBucketTypeDescription(inventoryBucketType, language);
             var value = inventoryBucketTypeDetail.getInventoryBucketTypeName();
 
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
 
             var usingDefaultChoice = defaultInventoryBucketTypeChoice != null && defaultInventoryBucketTypeChoice.equals(value);
@@ -298,7 +282,7 @@ public class InventoryBucketTypeControl
             BasePK updatedBy) {
         if(inventoryBucketTypeDetailValue.hasBeenModified()) {
             var inventoryBucketType = inventoryBucketTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     inventoryBucketTypeDetailValue.getInventoryBucketTypePK());
+                    inventoryBucketTypeDetailValue.getInventoryBucketTypePK());
             var inventoryBucketTypeDetail = inventoryBucketType.getActiveDetailForUpdate();
 
             inventoryBucketTypeDetail.setThruTime(session.getStartTime());
@@ -350,7 +334,7 @@ public class InventoryBucketTypeControl
         inventoryBucketType.store();
 
         if(checkDefault) {
-        // Check for default, and pick one if necessary
+            // Check for default, and pick one if necessary
             var defaultInventoryBucketType = getDefaultInventoryBucketType();
             if(defaultInventoryBucketType == null) {
                 var inventoryBucketTypes = getInventoryBucketTypesForUpdate();
@@ -399,28 +383,22 @@ public class InventoryBucketTypeControl
         return inventoryBucketTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getInventoryBucketTypeDescriptionQueries;
+    private InventoryBucketTypeDescription getInventoryBucketTypeDescription(final InventoryBucketType inventoryBucketType,
+            final Language language, final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryBucketTypeDescriptions.fields())
+                .from(InventoryBucketTypeDescriptions)
+                .where(InventoryBucketTypeDescriptions.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()),
+                        InventoryBucketTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        InventoryBucketTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorybuckettypedescriptions
-                WHERE invbckttypd_invbckttyp_inventorybuckettypeid = ? AND invbckttypd_lang_languageid = ? AND invbckttypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorybuckettypedescriptions
-                WHERE invbckttypd_invbckttyp_inventorybuckettypeid = ? AND invbckttypd_lang_languageid = ? AND invbckttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getInventoryBucketTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private InventoryBucketTypeDescription getInventoryBucketTypeDescription(InventoryBucketType inventoryBucketType, Language language, EntityPermission entityPermission) {
-        return inventoryBucketTypeDescriptionFactory.getEntityFromQuery(entityPermission, getInventoryBucketTypeDescriptionQueries,
-                inventoryBucketType, language, Session.MAX_TIME);
+        return inventoryBucketTypeDescriptionFactory.getEntityFromQuery(entityPermission,
+                inventoryBucketTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryBucketTypeDescription getInventoryBucketTypeDescription(InventoryBucketType inventoryBucketType, Language language) {
@@ -432,37 +410,36 @@ public class InventoryBucketTypeControl
     }
 
     public InventoryBucketTypeDescriptionValue getInventoryBucketTypeDescriptionValue(InventoryBucketTypeDescription inventoryBucketTypeDescription) {
-        return inventoryBucketTypeDescription == null? null: inventoryBucketTypeDescription.getInventoryBucketTypeDescriptionValue().clone();
+        return inventoryBucketTypeDescription == null ? null : inventoryBucketTypeDescription.getInventoryBucketTypeDescriptionValue().clone();
     }
 
     public InventoryBucketTypeDescriptionValue getInventoryBucketTypeDescriptionValueForUpdate(InventoryBucketType inventoryBucketType, Language language) {
         return getInventoryBucketTypeDescriptionValue(getInventoryBucketTypeDescriptionForUpdate(inventoryBucketType, language));
     }
 
-    private static final Map<EntityPermission, String> getInventoryBucketTypeDescriptionsByInventoryBucketTypeQueries;
+    private List<InventoryBucketTypeDescription> getInventoryBucketTypeDescriptionsByInventoryBucketType(
+            final InventoryBucketType inventoryBucketType, final EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryBucketTypeDescriptions.fields())
+                    .from(InventoryBucketTypeDescriptions)
+                    .join(Languages)
+                    .on(InventoryBucketTypeDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
+                    .where(InventoryBucketTypeDescriptions.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()),
+                            InventoryBucketTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryBucketTypeDescriptions.fields())
+                    .from(InventoryBucketTypeDescriptions)
+                    .where(InventoryBucketTypeDescriptions.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()),
+                            InventoryBucketTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorybuckettypedescriptions, languages
-                WHERE invbckttypd_invbckttyp_inventorybuckettypeid = ? AND invbckttypd_thrutime = ? AND invbckttypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorybuckettypedescriptions
-                WHERE invbckttypd_invbckttyp_inventorybuckettypeid = ? AND invbckttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getInventoryBucketTypeDescriptionsByInventoryBucketTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<InventoryBucketTypeDescription> getInventoryBucketTypeDescriptionsByInventoryBucketType(InventoryBucketType inventoryBucketType, EntityPermission entityPermission) {
-        return inventoryBucketTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getInventoryBucketTypeDescriptionsByInventoryBucketTypeQueries,
-                inventoryBucketType, Session.MAX_TIME);
+        return inventoryBucketTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
+                inventoryBucketTypeDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<InventoryBucketTypeDescription> getInventoryBucketTypeDescriptionsByInventoryBucketType(InventoryBucketType inventoryBucketType) {
@@ -534,7 +511,7 @@ public class InventoryBucketTypeControl
     public void deleteInventoryBucketTypeDescriptionsByInventoryBucketType(InventoryBucketType inventoryBucketType, BasePK deletedBy) {
         var inventoryBucketTypeDescriptions = getInventoryBucketTypeDescriptionsByInventoryBucketTypeForUpdate(inventoryBucketType);
 
-        inventoryBucketTypeDescriptions.forEach((inventoryBucketTypeDescription) -> 
+        inventoryBucketTypeDescriptions.forEach((inventoryBucketTypeDescription) ->
                 deleteInventoryBucketTypeDescription(inventoryBucketTypeDescription, deletedBy)
         );
     }

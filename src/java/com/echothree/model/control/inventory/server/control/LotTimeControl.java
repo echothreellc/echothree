@@ -21,6 +21,9 @@ import com.echothree.model.control.inventory.common.choice.LotTimeTypeChoicesBea
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.LotTimeTypePK;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -36,20 +39,22 @@ import com.echothree.model.data.inventory.server.value.LotTimeTypeDetailValue;
 import com.echothree.model.data.inventory.server.value.LotTimeValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.control.inventory.server.transfer.LotTimeTypeTransferCache;
-import com.echothree.model.control.inventory.server.transfer.LotTimeTypeDescriptionTransferCache;
-import com.echothree.model.control.inventory.server.transfer.LotTimeTransferCache;
-import com.echothree.util.server.control.BaseModelControl;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.LOT_TIME_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.inventory.LotDetails.LotDetails;
+import static com.echothree.model.jooq.server.tables.inventory.LotTimeTypeDescriptions.LotTimeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.inventory.LotTimeTypeDetails.LotTimeTypeDetails;
+import static com.echothree.model.jooq.server.tables.inventory.LotTimeTypes.LotTimeTypes;
+import static com.echothree.model.jooq.server.tables.inventory.LotTimes.LotTimes;
+import static com.echothree.model.jooq.server.tables.inventory.Lots.Lots;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -66,11 +71,13 @@ public class LotTimeControl
     @Inject
     LotTimeTransferCache lotTimeTransferCache;
 
-    /** Creates a new instance of LotTimeControl */
+    /**
+     * Creates a new instance of LotTimeControl
+     */
     protected LotTimeControl() {
         super();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Lot Time Types
     // --------------------------------------------------------------------------------
@@ -110,7 +117,9 @@ public class LotTimeControl
         return lotTimeType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.LotTimeType */
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.LotTimeType
+     */
     public LotTimeType getLotTimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LotTimeTypePK(entityInstance.getEntityUniqueId());
 
@@ -126,37 +135,25 @@ public class LotTimeControl
     }
 
     public long countLotTimeTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lottimetypes
-                        JOIN lottimetypedetails ON lttimtypdt_lottimetypedetailid = lttimtyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getLotTimeTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lottimetypes, lottimetypedetails
-                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
-                AND lttimtypdt_lottimetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lottimetypes, lottimetypedetails
-                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
-                AND lttimtypdt_lottimetypename = ?
-                FOR UPDATE
-                """);
-        getLotTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(LotTimeTypes)
+                .join(LotTimeTypeDetails).onKey(LOT_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private LotTimeType getLotTimeTypeByName(String lotTimeTypeName, EntityPermission entityPermission) {
-        return lotTimeTypeFactory.getEntityFromQuery(entityPermission, getLotTimeTypeByNameQueries,
-                lotTimeTypeName);
+        var baseQuery = session.getDslContext()
+                .select(LotTimeTypes.fields())
+                .from(LotTimeTypes)
+                .join(LotTimeTypeDetails).onKey(LOT_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(LotTimeTypeDetails.LOT_TIME_TYPE_NAME.eq(lotTimeTypeName));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotTimeTypeFactory.getEntityFromQuery(entityPermission,
+                lotTimeTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotTimeType getLotTimeTypeByName(String lotTimeTypeName) {
@@ -168,36 +165,24 @@ public class LotTimeControl
     }
 
     public LotTimeTypeDetailValue getLotTimeTypeDetailValueForUpdate(LotTimeType lotTimeType) {
-        return lotTimeType == null? null: lotTimeType.getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
+        return lotTimeType == null ? null : lotTimeType.getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
     }
 
     public LotTimeTypeDetailValue getLotTimeTypeDetailValueByNameForUpdate(String lotTimeTypeName) {
         return getLotTimeTypeDetailValueForUpdate(getLotTimeTypeByNameForUpdate(lotTimeTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultLotTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lottimetypes, lottimetypedetails
-                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
-                AND lttimtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lottimetypes, lottimetypedetails
-                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
-                AND lttimtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultLotTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private LotTimeType getDefaultLotTimeType(EntityPermission entityPermission) {
-        return lotTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultLotTimeTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(LotTimeTypes.fields())
+                .from(LotTimeTypes)
+                .join(LotTimeTypeDetails).onKey(LOT_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(LotTimeTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotTimeTypeFactory.getEntityFromQuery(entityPermission,
+                lotTimeTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotTimeType getDefaultLotTimeType() {
@@ -212,29 +197,18 @@ public class LotTimeControl
         return getDefaultLotTimeTypeForUpdate().getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getLotTimeTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lottimetypes, lottimetypedetails
-                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
-                ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lottimetypes, lottimetypedetails
-                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
-                FOR UPDATE
-                """);
-        getLotTimeTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<LotTimeType> getLotTimeTypes(EntityPermission entityPermission) {
-        return lotTimeTypeFactory.getEntitiesFromQuery(entityPermission, getLotTimeTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(LotTimeTypes.fields())
+                .from(LotTimeTypes)
+                .join(LotTimeTypeDetails).onKey(LOT_TIME_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = entityPermission == EntityPermission.READ_ONLY
+                ? baseQuery.orderBy(LotTimeTypeDetails.SORT_ORDER, LotTimeTypeDetails.LOT_TIME_TYPE_NAME) : baseQuery.forUpdate();
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return lotTimeTypeFactory.getEntitiesFromQuery(entityPermission, lotTimeTypeFactory.prepareStatement(sql));
     }
 
     public List<LotTimeType> getLotTimeTypes() {
@@ -285,7 +259,7 @@ public class LotTimeControl
             var label = getBestLotTimeTypeDescription(lotTimeType, language);
             var value = lotTimeTypeDetail.getLotTimeTypeName();
 
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
 
             var usingDefaultChoice = defaultLotTimeTypeChoice != null && defaultLotTimeTypeChoice.equals(value);
@@ -301,7 +275,7 @@ public class LotTimeControl
             BasePK updatedBy) {
         if(lotTimeTypeDetailValue.hasBeenModified()) {
             var lotTimeType = lotTimeTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     lotTimeTypeDetailValue.getLotTimeTypePK());
+                    lotTimeTypeDetailValue.getLotTimeTypePK());
             var lotTimeTypeDetail = lotTimeType.getActiveDetailForUpdate();
 
             lotTimeTypeDetail.setThruTime(session.getStartTime());
@@ -387,28 +361,17 @@ public class LotTimeControl
         return lotTimeTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getLotTimeTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lottimetypedescriptions
-                WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_lang_languageid = ? AND lttimtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lottimetypedescriptions
-                WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_lang_languageid = ? AND lttimtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private LotTimeTypeDescription getLotTimeTypeDescription(LotTimeType lotTimeType, Language language, EntityPermission entityPermission) {
-        return lotTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getLotTimeTypeDescriptionQueries,
-                lotTimeType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(LotTimeTypeDescriptions.fields())
+                .from(LotTimeTypeDescriptions)
+                .where(LotTimeTypeDescriptions.LOT_TIME_TYPE.eq(lotTimeType.getPrimaryKey()),
+                        LotTimeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()), LotTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission,
+                lotTimeTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotTimeTypeDescription getLotTimeTypeDescription(LotTimeType lotTimeType, Language language) {
@@ -420,37 +383,35 @@ public class LotTimeControl
     }
 
     public LotTimeTypeDescriptionValue getLotTimeTypeDescriptionValue(LotTimeTypeDescription lotTimeTypeDescription) {
-        return lotTimeTypeDescription == null? null: lotTimeTypeDescription.getLotTimeTypeDescriptionValue().clone();
+        return lotTimeTypeDescription == null ? null : lotTimeTypeDescription.getLotTimeTypeDescriptionValue().clone();
     }
 
     public LotTimeTypeDescriptionValue getLotTimeTypeDescriptionValueForUpdate(LotTimeType lotTimeType, Language language) {
         return getLotTimeTypeDescriptionValue(getLotTimeTypeDescriptionForUpdate(lotTimeType, language));
     }
 
-    private static final Map<EntityPermission, String> getLotTimeTypeDescriptionsByLotTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lottimetypedescriptions, languages
-                WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_thrutime = ? AND lttimtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lottimetypedescriptions
-                WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotTimeTypeDescriptionsByLotTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<LotTimeTypeDescription> getLotTimeTypeDescriptionsByLotTimeType(LotTimeType lotTimeType, EntityPermission entityPermission) {
-        return lotTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getLotTimeTypeDescriptionsByLotTimeTypeQueries,
-                lotTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(LotTimeTypeDescriptions.fields())
+                    .from(LotTimeTypeDescriptions)
+                    .join(Languages)
+                    .on(LotTimeTypeDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
+                    .where(LotTimeTypeDescriptions.LOT_TIME_TYPE.eq(lotTimeType.getPrimaryKey()),
+                            LotTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LotTimeTypeDescriptions.fields())
+                    .from(LotTimeTypeDescriptions)
+                    .where(LotTimeTypeDescriptions.LOT_TIME_TYPE.eq(lotTimeType.getPrimaryKey()),
+                            LotTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return lotTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
+                lotTimeTypeDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<LotTimeTypeDescription> getLotTimeTypeDescriptionsByLotTimeType(LotTimeType lotTimeType) {
@@ -522,7 +483,7 @@ public class LotTimeControl
     public void deleteLotTimeTypeDescriptionsByLotTimeType(LotTimeType lotTimeType, BasePK deletedBy) {
         var lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeTypeForUpdate(lotTimeType);
 
-        lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) -> 
+        lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) ->
                 deleteLotTimeTypeDescription(lotTimeTypeDescription, deletedBy)
         );
     }
@@ -543,42 +504,34 @@ public class LotTimeControl
     }
 
     public long countLotTimesByLot(Lot lot) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM lottimes
-                WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?
-                """, lot, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(LotTimes)
+                .where(LotTimes.LOT.eq(lot.getPrimaryKey()), LotTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLotTimesByLotTimeType(LotTimeType lotTimeType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM lottimes
-                WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
-                """, lotTimeType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getLotTimeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lottimes
-                WHERE lttim_lt_lotid = ? AND lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lottimes
-                WHERE lttim_lt_lotid = ? AND lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotTimeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(LotTimes)
+                .where(LotTimes.LOT_TIME_TYPE.eq(lotTimeType.getPrimaryKey()), LotTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private LotTime getLotTime(Lot lot, LotTimeType lotTimeType, EntityPermission entityPermission) {
-        return lotTimeFactory.getEntityFromQuery(entityPermission, getLotTimeQueries, lot, lotTimeType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(LotTimes.fields())
+                .from(LotTimes)
+                .where(LotTimes.LOT.eq(lot.getPrimaryKey()), LotTimes.LOT_TIME_TYPE.eq(lotTimeType.getPrimaryKey()),
+                        LotTimes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotTimeFactory.getEntityFromQuery(entityPermission,
+                lotTimeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotTime getLotTime(Lot lot, LotTimeType lotTimeType) {
@@ -590,37 +543,34 @@ public class LotTimeControl
     }
 
     public LotTimeValue getLotTimeValue(LotTime lotTime) {
-        return lotTime == null? null: lotTime.getLotTimeValue().clone();
+        return lotTime == null ? null : lotTime.getLotTimeValue().clone();
     }
 
     public LotTimeValue getLotTimeValueForUpdate(Lot lot, LotTimeType lotTimeType) {
         return getLotTimeValue(getLotTimeForUpdate(lot, lotTimeType));
     }
 
-    private static final Map<EntityPermission, String> getLotTimesByLotQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lottimes, lottimetypes, lottimetypedetails
-                WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?
-                AND lttim_lttimtyp_lottimetypeid = lttimtyp_lottimetypeid AND lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
-                ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lottimes
-                WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotTimesByLotQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<LotTime> getLotTimesByLot(Lot lot, EntityPermission entityPermission) {
-        return lotTimeFactory.getEntitiesFromQuery(entityPermission, getLotTimesByLotQueries, lot, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(LotTimes.fields())
+                    .from(LotTimes)
+                    .join(LotTimeTypes)
+                    .on(LotTimes.LOT_TIME_TYPE.eq(LotTimeTypes.LOT_TIME_TYPE))
+                    .join(LotTimeTypeDetails).onKey(LOT_TIME_TYPES_ACTIVE_DETAIL_FK)
+                    .where(LotTimes.LOT.eq(lot.getPrimaryKey()), LotTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(LotTimeTypeDetails.SORT_ORDER, LotTimeTypeDetails.LOT_TIME_TYPE_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LotTimes.fields())
+                    .from(LotTimes)
+                    .where(LotTimes.LOT.eq(lot.getPrimaryKey()), LotTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return lotTimeFactory.getEntitiesFromQuery(entityPermission,
+                lotTimeFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<LotTime> getLotTimesByLot(Lot lot) {
@@ -631,30 +581,28 @@ public class LotTimeControl
         return getLotTimesByLot(lot, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getLotTimesByLotTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lottimes, lots, lotdetails
-                WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
-                AND lttim_lt_lotid = lttim_lt_lotid AND lt_activedetailid = ltdt_lotdetailid
-                ORDER BY ltdt_lotname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lottimes
-                WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotTimesByLotTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<LotTime> getLotTimesByLotTimeType(LotTimeType lotTimeType, EntityPermission entityPermission) {
-        return lotTimeFactory.getEntitiesFromQuery(entityPermission, getLotTimesByLotTimeTypeQueries, lotTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(LotTimes.fields())
+                    .from(LotTimes)
+                    .join(Lots)
+                    .on(LotTimes.LOT.eq(Lots.LOT))
+                    .join(LotDetails)
+                    .on(Lots.ACTIVE_DETAIL.eq(LotDetails.LOT_DETAIL))
+                    .where(LotTimes.LOT_TIME_TYPE.eq(lotTimeType.getPrimaryKey()), LotTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(LotDetails.LOT_IDENTIFIER);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LotTimes.fields())
+                    .from(LotTimes)
+                    .where(LotTimes.LOT_TIME_TYPE.eq(lotTimeType.getPrimaryKey()), LotTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return lotTimeFactory.getEntitiesFromQuery(entityPermission,
+                lotTimeFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<LotTime> getLotTimesByLotTimeType(LotTimeType lotTimeType) {
@@ -713,7 +661,7 @@ public class LotTimeControl
     }
 
     public void deleteLotTimes(List<LotTime> lotTimes, BasePK deletedBy) {
-        lotTimes.forEach((lotTime) -> 
+        lotTimes.forEach((lotTime) ->
                 deleteLotTime(lotTime, deletedBy)
         );
     }

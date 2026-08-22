@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.common.choice.InventoryCostingMethodChoicesBean;
 import com.echothree.model.control.inventory.common.transfer.InventoryCostingMethodDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryCostingMethodTransfer;
+import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryCostingMethodPK;
 import com.echothree.model.data.inventory.server.entity.InventoryCostingMethod;
@@ -31,20 +33,20 @@ import com.echothree.model.data.inventory.server.value.InventoryCostingMethodDes
 import com.echothree.model.data.inventory.server.value.InventoryCostingMethodDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodTransferCache;
-import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodDescriptionTransferCache;
-import com.echothree.util.server.control.BaseModelControl;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_COSTING_METHODS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryCostingMethodDescriptions.InventoryCostingMethodDescriptions;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryCostingMethodDetails.InventoryCostingMethodDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryCostingMethods.InventoryCostingMethods;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -57,11 +59,13 @@ public class InventoryCostingMethodControl
     @Inject
     InventoryCostingMethodDescriptionTransferCache inventoryCostingMethodDescriptionTransferCache;
 
-    /** Creates a new instance of InventoryCostingMethodControl */
+    /**
+     * Creates a new instance of InventoryCostingMethodControl
+     */
     protected InventoryCostingMethodControl() {
         super();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Adjustment Types
     // --------------------------------------------------------------------------------
@@ -102,7 +106,9 @@ public class InventoryCostingMethodControl
         return inventoryCostingMethod;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryCostingMethod */
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryCostingMethod
+     */
     public InventoryCostingMethod getInventoryCostingMethodByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new InventoryCostingMethodPK(entityInstance.getEntityUniqueId());
@@ -123,36 +129,29 @@ public class InventoryCostingMethodControl
     }
 
     public long countInventoryCostingMethods() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM inventorycostingmethods, inventorycostingmethoddetails
-                WHERE invcm_activedetailid = invcmdt_inventorycostingmethoddetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryCostingMethods)
+                .join(InventoryCostingMethodDetails).onKey(INVENTORY_COSTING_METHODS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getInventoryCostingMethodByNameQueries;
+    public InventoryCostingMethod getInventoryCostingMethodByName(final String inventoryCostingMethodName,
+            final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryCostingMethods.fields())
+                .from(InventoryCostingMethods)
+                .join(InventoryCostingMethodDetails).onKey(INVENTORY_COSTING_METHODS_ACTIVE_DETAIL_FK)
+                .where(InventoryCostingMethodDetails.INVENTORY_COSTING_METHOD_NAME.eq(inventoryCostingMethodName));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorycostingmethods, inventorycostingmethoddetails
-                WHERE invcm_activedetailid = invcmdt_inventorycostingmethoddetailid
-                AND invcmdt_inventorycostingmethodname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorycostingmethods, inventorycostingmethoddetails
-                WHERE invcm_activedetailid = invcmdt_inventorycostingmethoddetailid
-                AND invcmdt_inventorycostingmethodname = ?
-                FOR UPDATE
-                """);
-        getInventoryCostingMethodByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public InventoryCostingMethod getInventoryCostingMethodByName(String inventoryCostingMethodName, EntityPermission entityPermission) {
-        return inventoryCostingMethodFactory.getEntityFromQuery(entityPermission, getInventoryCostingMethodByNameQueries, inventoryCostingMethodName);
+        return inventoryCostingMethodFactory.getEntityFromQuery(entityPermission,
+                inventoryCostingMethodFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryCostingMethod getInventoryCostingMethodByName(String inventoryCostingMethodName) {
@@ -164,36 +163,27 @@ public class InventoryCostingMethodControl
     }
 
     public InventoryCostingMethodDetailValue getInventoryCostingMethodDetailValueForUpdate(InventoryCostingMethod inventoryCostingMethod) {
-        return inventoryCostingMethod == null? null: inventoryCostingMethod.getLastDetailForUpdate().getInventoryCostingMethodDetailValue().clone();
+        return inventoryCostingMethod == null ? null : inventoryCostingMethod.getLastDetailForUpdate().getInventoryCostingMethodDetailValue().clone();
     }
 
     public InventoryCostingMethodDetailValue getInventoryCostingMethodDetailValueByNameForUpdate(String inventoryCostingMethodName) {
         return getInventoryCostingMethodDetailValueForUpdate(getInventoryCostingMethodByNameForUpdate(inventoryCostingMethodName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultInventoryCostingMethodQueries;
+    public InventoryCostingMethod getDefaultInventoryCostingMethod(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryCostingMethods.fields())
+                .from(InventoryCostingMethods)
+                .join(InventoryCostingMethodDetails).onKey(INVENTORY_COSTING_METHODS_ACTIVE_DETAIL_FK)
+                .where(InventoryCostingMethodDetails.IS_DEFAULT.eq(true));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorycostingmethods, inventorycostingmethoddetails
-                WHERE invcm_activedetailid = invcmdt_inventorycostingmethoddetailid
-                AND invcmdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorycostingmethods, inventorycostingmethoddetails
-                WHERE invcm_activedetailid = invcmdt_inventorycostingmethoddetailid
-                AND invcmdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultInventoryCostingMethodQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public InventoryCostingMethod getDefaultInventoryCostingMethod(EntityPermission entityPermission) {
-        return inventoryCostingMethodFactory.getEntityFromQuery(entityPermission, getDefaultInventoryCostingMethodQueries);
+        return inventoryCostingMethodFactory.getEntityFromQuery(entityPermission,
+                inventoryCostingMethodFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryCostingMethod getDefaultInventoryCostingMethod() {
@@ -208,29 +198,23 @@ public class InventoryCostingMethodControl
         return getDefaultInventoryCostingMethodForUpdate().getLastDetailForUpdate().getInventoryCostingMethodDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getInventoryCostingMethodsQueries;
+    private List<InventoryCostingMethod> getInventoryCostingMethods(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryCostingMethods.fields())
+                .from(InventoryCostingMethods)
+                .join(InventoryCostingMethodDetails).onKey(INVENTORY_COSTING_METHODS_ACTIVE_DETAIL_FK);
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = switch(entityPermission) {
+            case READ_ONLY -> baseQuery
+                    .orderBy(InventoryCostingMethodDetails.SORT_ORDER, InventoryCostingMethodDetails.INVENTORY_COSTING_METHOD_NAME)
+                    .getSQL() + " _LIMIT_";
+            case READ_WRITE -> baseQuery
+                    .forUpdate()
+                    .getSQL();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorycostingmethods, inventorycostingmethoddetails
-                WHERE invcm_activedetailid = invcmdt_inventorycostingmethoddetailid
-                ORDER BY invcmdt_sortorder, invcmdt_inventorycostingmethodname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorycostingmethods, inventorycostingmethoddetails
-                WHERE invcm_activedetailid = invcmdt_inventorycostingmethoddetailid
-                FOR UPDATE
-                """);
-        getInventoryCostingMethodsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<InventoryCostingMethod> getInventoryCostingMethods(EntityPermission entityPermission) {
-        return inventoryCostingMethodFactory.getEntitiesFromQuery(entityPermission, getInventoryCostingMethodsQueries);
+        return inventoryCostingMethodFactory.getEntitiesFromQuery(entityPermission,
+                inventoryCostingMethodFactory.prepareStatement(sql));
     }
 
     public List<InventoryCostingMethod> getInventoryCostingMethods() {
@@ -282,7 +266,7 @@ public class InventoryCostingMethodControl
             var label = getBestInventoryCostingMethodDescription(inventoryCostingMethod, language);
             var value = inventoryCostingMethodDetail.getInventoryCostingMethodName();
 
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
 
             var usingDefaultChoice = defaultInventoryCostingMethodChoice != null && defaultInventoryCostingMethodChoice.equals(value);
@@ -298,7 +282,7 @@ public class InventoryCostingMethodControl
             BasePK updatedBy) {
         if(inventoryCostingMethodDetailValue.hasBeenModified()) {
             var inventoryCostingMethod = inventoryCostingMethodFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     inventoryCostingMethodDetailValue.getInventoryCostingMethodPK());
+                    inventoryCostingMethodDetailValue.getInventoryCostingMethodPK());
             var inventoryCostingMethodDetail = inventoryCostingMethod.getActiveDetailForUpdate();
 
             inventoryCostingMethodDetail.setThruTime(session.getStartTime());
@@ -350,7 +334,7 @@ public class InventoryCostingMethodControl
         inventoryCostingMethod.store();
 
         if(checkDefault) {
-        // Check for default, and pick one if necessary
+            // Check for default, and pick one if necessary
             var defaultInventoryCostingMethod = getDefaultInventoryCostingMethod();
             if(defaultInventoryCostingMethod == null) {
                 var inventoryCostingMethods = getInventoryCostingMethodsForUpdate();
@@ -399,28 +383,22 @@ public class InventoryCostingMethodControl
         return inventoryCostingMethodDescription;
     }
 
-    private static final Map<EntityPermission, String> getInventoryCostingMethodDescriptionQueries;
+    private InventoryCostingMethodDescription getInventoryCostingMethodDescription(final InventoryCostingMethod inventoryCostingMethod,
+            final Language language, final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryCostingMethodDescriptions.fields())
+                .from(InventoryCostingMethodDescriptions)
+                .where(InventoryCostingMethodDescriptions.INVENTORY_COSTING_METHOD.eq(inventoryCostingMethod.getPrimaryKey()),
+                        InventoryCostingMethodDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        InventoryCostingMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorycostingmethoddescriptions
-                WHERE invcmd_invcm_inventorycostingmethodid = ? AND invcmd_lang_languageid = ? AND invcmd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorycostingmethoddescriptions
-                WHERE invcmd_invcm_inventorycostingmethodid = ? AND invcmd_lang_languageid = ? AND invcmd_thrutime = ?
-                FOR UPDATE
-                """);
-        getInventoryCostingMethodDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private InventoryCostingMethodDescription getInventoryCostingMethodDescription(InventoryCostingMethod inventoryCostingMethod, Language language, EntityPermission entityPermission) {
-        return inventoryCostingMethodDescriptionFactory.getEntityFromQuery(entityPermission, getInventoryCostingMethodDescriptionQueries,
-                inventoryCostingMethod, language, Session.MAX_TIME);
+        return inventoryCostingMethodDescriptionFactory.getEntityFromQuery(entityPermission,
+                inventoryCostingMethodDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryCostingMethodDescription getInventoryCostingMethodDescription(InventoryCostingMethod inventoryCostingMethod, Language language) {
@@ -432,37 +410,36 @@ public class InventoryCostingMethodControl
     }
 
     public InventoryCostingMethodDescriptionValue getInventoryCostingMethodDescriptionValue(InventoryCostingMethodDescription inventoryCostingMethodDescription) {
-        return inventoryCostingMethodDescription == null? null: inventoryCostingMethodDescription.getInventoryCostingMethodDescriptionValue().clone();
+        return inventoryCostingMethodDescription == null ? null : inventoryCostingMethodDescription.getInventoryCostingMethodDescriptionValue().clone();
     }
 
     public InventoryCostingMethodDescriptionValue getInventoryCostingMethodDescriptionValueForUpdate(InventoryCostingMethod inventoryCostingMethod, Language language) {
         return getInventoryCostingMethodDescriptionValue(getInventoryCostingMethodDescriptionForUpdate(inventoryCostingMethod, language));
     }
 
-    private static final Map<EntityPermission, String> getInventoryCostingMethodDescriptionsByInventoryCostingMethodQueries;
+    private List<InventoryCostingMethodDescription> getInventoryCostingMethodDescriptionsByInventoryCostingMethod(
+            final InventoryCostingMethod inventoryCostingMethod, final EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryCostingMethodDescriptions.fields())
+                    .from(InventoryCostingMethodDescriptions)
+                    .join(Languages)
+                    .on(InventoryCostingMethodDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
+                    .where(InventoryCostingMethodDescriptions.INVENTORY_COSTING_METHOD.eq(inventoryCostingMethod.getPrimaryKey()),
+                            InventoryCostingMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryCostingMethodDescriptions.fields())
+                    .from(InventoryCostingMethodDescriptions)
+                    .where(InventoryCostingMethodDescriptions.INVENTORY_COSTING_METHOD.eq(inventoryCostingMethod.getPrimaryKey()),
+                            InventoryCostingMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorycostingmethoddescriptions, languages
-                WHERE invcmd_invcm_inventorycostingmethodid = ? AND invcmd_thrutime = ? AND invcmd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorycostingmethoddescriptions
-                WHERE invcmd_invcm_inventorycostingmethodid = ? AND invcmd_thrutime = ?
-                FOR UPDATE
-                """);
-        getInventoryCostingMethodDescriptionsByInventoryCostingMethodQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<InventoryCostingMethodDescription> getInventoryCostingMethodDescriptionsByInventoryCostingMethod(InventoryCostingMethod inventoryCostingMethod, EntityPermission entityPermission) {
-        return inventoryCostingMethodDescriptionFactory.getEntitiesFromQuery(entityPermission, getInventoryCostingMethodDescriptionsByInventoryCostingMethodQueries,
-                inventoryCostingMethod, Session.MAX_TIME);
+        return inventoryCostingMethodDescriptionFactory.getEntitiesFromQuery(entityPermission,
+                inventoryCostingMethodDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<InventoryCostingMethodDescription> getInventoryCostingMethodDescriptionsByInventoryCostingMethod(InventoryCostingMethod inventoryCostingMethod) {
@@ -534,7 +511,7 @@ public class InventoryCostingMethodControl
     public void deleteInventoryCostingMethodDescriptionsByInventoryCostingMethod(InventoryCostingMethod inventoryCostingMethod, BasePK deletedBy) {
         var inventoryCostingMethodDescriptions = getInventoryCostingMethodDescriptionsByInventoryCostingMethodForUpdate(inventoryCostingMethod);
 
-        inventoryCostingMethodDescriptions.forEach((inventoryCostingMethodDescription) -> 
+        inventoryCostingMethodDescriptions.forEach((inventoryCostingMethodDescription) ->
                 deleteInventoryCostingMethodDescription(inventoryCostingMethodDescription, deletedBy)
         );
     }
