@@ -833,7 +833,7 @@
                             <indexColumn name="InventoryCostingMethodId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index2">
+                        <index type="Unique" name="Index2">
                             <indexColumn name="PartyId" />
                             <indexColumn name="ThruTime" />
                         </index>
