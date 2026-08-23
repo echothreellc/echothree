@@ -819,7 +819,7 @@
                 <table namePlural="PartyInventoryCostingMethods" nameSingular="PartyInventoryCostingMethod" columnPrefix="parinvcm">
                     <columns>
                         <column name="PartyInventoryCostingMethodId" type="EID" nullAllowed="false" />
-                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="InventoryCostingMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryCostingMethods" destinationColumn="InventoryCostingMethodId" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
