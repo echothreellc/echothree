@@ -20,23 +20,33 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.common.choice.InventoryCostingMethodChoicesBean;
 import com.echothree.model.control.inventory.common.transfer.InventoryCostingMethodDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryCostingMethodTransfer;
+import com.echothree.model.control.inventory.common.transfer.PartyInventoryCostingMethodTransfer;
 import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodDescriptionTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryCostingMethodTransferCache;
+import com.echothree.model.control.inventory.server.transfer.PartyInventoryCostingMethodTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryCostingMethodPK;
 import com.echothree.model.data.inventory.server.entity.InventoryCostingMethod;
 import com.echothree.model.data.inventory.server.entity.InventoryCostingMethodDescription;
+import com.echothree.model.data.inventory.server.entity.PartyInventoryCostingMethod;
 import com.echothree.model.data.inventory.server.factory.InventoryCostingMethodDescriptionFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryCostingMethodDetailFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryCostingMethodFactory;
+import com.echothree.model.data.inventory.server.factory.PartyInventoryCostingMethodFactory;
 import com.echothree.model.data.inventory.server.value.InventoryCostingMethodDescriptionValue;
 import com.echothree.model.data.inventory.server.value.InventoryCostingMethodDetailValue;
+import com.echothree.model.data.inventory.server.value.PartyInventoryCostingMethodValue;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_COSTING_METHODS_ACTIVE_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryCostingMethodDescriptions.InventoryCostingMethodDescriptions;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryCostingMethodDetails.InventoryCostingMethodDetails;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryCostingMethods.InventoryCostingMethods;
+import static com.echothree.model.jooq.server.tables.inventory.PartyInventoryCostingMethods.PartyInventoryCostingMethods;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.party.PartyTypes.PartyTypes;
 import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -59,6 +69,9 @@ public class InventoryCostingMethodControl
     @Inject
     InventoryCostingMethodDescriptionTransferCache inventoryCostingMethodDescriptionTransferCache;
 
+    @Inject
+    PartyInventoryCostingMethodTransferCache partyInventoryCostingMethodTransferCache;
+
     /**
      * Creates a new instance of InventoryCostingMethodControl
      */
@@ -67,7 +80,7 @@ public class InventoryCostingMethodControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Adjustment Types
+    //   Inventory Costing Methods
     // --------------------------------------------------------------------------------
 
     @Inject
@@ -326,6 +339,7 @@ public class InventoryCostingMethodControl
     private void deleteInventoryCostingMethod(InventoryCostingMethod inventoryCostingMethod, boolean checkDefault, BasePK deletedBy) {
         var inventoryCostingMethodDetail = inventoryCostingMethod.getLastDetailForUpdate();
 
+        deletePartyInventoryCostingMethodsByInventoryCostingMethod(inventoryCostingMethod, deletedBy);
         deleteInventoryCostingMethodDescriptionsByInventoryCostingMethod(inventoryCostingMethod, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryCostingMethod(inventoryCostingMethod, deletedBy);
 
@@ -368,7 +382,7 @@ public class InventoryCostingMethodControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Adjustment Type Descriptions
+    //   Inventory Costing Method Descriptions
     // --------------------------------------------------------------------------------
 
     @Inject
@@ -514,6 +528,161 @@ public class InventoryCostingMethodControl
         inventoryCostingMethodDescriptions.forEach((inventoryCostingMethodDescription) ->
                 deleteInventoryCostingMethodDescription(inventoryCostingMethodDescription, deletedBy)
         );
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Party Inventory Costing Methods
+    // --------------------------------------------------------------------------------
+
+    @Inject
+    protected PartyInventoryCostingMethodFactory partyInventoryCostingMethodFactory;
+
+    public PartyInventoryCostingMethod createPartyInventoryCostingMethod(Party party,
+            InventoryCostingMethod inventoryCostingMethod, BasePK createdBy) {
+        var partyInventoryCostingMethod = partyInventoryCostingMethodFactory.create(party, inventoryCostingMethod,
+                session.getStartTime(), Session.MAX_TIME);
+
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyInventoryCostingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return partyInventoryCostingMethod;
+    }
+
+    public long countPartyInventoryCostingMethodsByInventoryCostingMethod(final InventoryCostingMethod inventoryCostingMethod) {
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyInventoryCostingMethods)
+                .where(PartyInventoryCostingMethods.INVENTORY_COSTING_METHOD.eq(inventoryCostingMethod.getPrimaryKey()),
+                        PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
+    private PartyInventoryCostingMethod getPartyInventoryCostingMethod(final Party party,
+            final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(PartyInventoryCostingMethods.fields())
+                .from(PartyInventoryCostingMethods)
+                .where(PartyInventoryCostingMethods.PARTY.eq(party.getPrimaryKey()),
+                        PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return partyInventoryCostingMethodFactory.getEntityFromQuery(entityPermission,
+                partyInventoryCostingMethodFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+    }
+
+    public PartyInventoryCostingMethod getPartyInventoryCostingMethod(Party party) {
+        return getPartyInventoryCostingMethod(party, EntityPermission.READ_ONLY);
+    }
+
+    public PartyInventoryCostingMethod getPartyInventoryCostingMethodForUpdate(Party party) {
+        return getPartyInventoryCostingMethod(party, EntityPermission.READ_WRITE);
+    }
+
+    public PartyInventoryCostingMethodValue getPartyInventoryCostingMethodValue(
+            PartyInventoryCostingMethod partyInventoryCostingMethod) {
+        return partyInventoryCostingMethod == null ? null
+                : partyInventoryCostingMethod.getPartyInventoryCostingMethodValue().clone();
+    }
+
+    public PartyInventoryCostingMethodValue getPartyInventoryCostingMethodValueForUpdate(Party party) {
+        return getPartyInventoryCostingMethodValue(getPartyInventoryCostingMethodForUpdate(party));
+    }
+
+    private List<PartyInventoryCostingMethod> getPartyInventoryCostingMethodsByInventoryCostingMethod(
+            final InventoryCostingMethod inventoryCostingMethod, final EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(PartyInventoryCostingMethods.fields())
+                    .from(PartyInventoryCostingMethods)
+                    .join(Parties).on(PartyInventoryCostingMethods.PARTY.eq(Parties.PARTY))
+                    .join(PartyDetails).on(Parties.LAST_DETAIL.eq(PartyDetails.PARTY_DETAIL))
+                    .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
+                    .where(PartyInventoryCostingMethods.INVENTORY_COSTING_METHOD.eq(inventoryCostingMethod.getPrimaryKey()),
+                            PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyInventoryCostingMethods.fields())
+                    .from(PartyInventoryCostingMethods)
+                    .where(PartyInventoryCostingMethods.INVENTORY_COSTING_METHOD.eq(inventoryCostingMethod.getPrimaryKey()),
+                            PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyInventoryCostingMethodFactory.getEntitiesFromQuery(entityPermission,
+                partyInventoryCostingMethodFactory.prepareStatement(query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "")),
+                query.getBindValues().toArray());
+    }
+
+    public List<PartyInventoryCostingMethod> getPartyInventoryCostingMethodsByInventoryCostingMethod(InventoryCostingMethod inventoryCostingMethod) {
+        return getPartyInventoryCostingMethodsByInventoryCostingMethod(inventoryCostingMethod, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyInventoryCostingMethod> getPartyInventoryCostingMethodsByInventoryCostingMethodForUpdate(InventoryCostingMethod inventoryCostingMethod) {
+        return getPartyInventoryCostingMethodsByInventoryCostingMethod(inventoryCostingMethod, EntityPermission.READ_WRITE);
+    }
+
+    public PartyInventoryCostingMethodTransfer getPartyInventoryCostingMethodTransfer(UserVisit userVisit,
+            PartyInventoryCostingMethod partyInventoryCostingMethod) {
+        return partyInventoryCostingMethodTransferCache.getTransfer(userVisit, partyInventoryCostingMethod);
+    }
+
+    public PartyInventoryCostingMethodTransfer getPartyInventoryCostingMethodTransfer(UserVisit userVisit, Party party) {
+        var partyInventoryCostingMethod = getPartyInventoryCostingMethod(party);
+
+        return partyInventoryCostingMethod == null ? null : partyInventoryCostingMethodTransferCache.getTransfer(userVisit, partyInventoryCostingMethod);
+    }
+
+    public List<PartyInventoryCostingMethodTransfer> getPartyInventoryCostingMethodTransfers(UserVisit userVisit,
+            Collection<PartyInventoryCostingMethod> partyInventoryCostingMethods) {
+        var transfers = new ArrayList<PartyInventoryCostingMethodTransfer>(partyInventoryCostingMethods.size());
+
+        partyInventoryCostingMethods.forEach(value -> transfers.add(partyInventoryCostingMethodTransferCache.getTransfer(userVisit, value)));
+
+        return transfers;
+    }
+
+    public List<PartyInventoryCostingMethodTransfer> getPartyInventoryCostingMethodTransfersByInventoryCostingMethod(UserVisit userVisit,
+            InventoryCostingMethod inventoryCostingMethod) {
+        return getPartyInventoryCostingMethodTransfers(userVisit, getPartyInventoryCostingMethodsByInventoryCostingMethod(inventoryCostingMethod));
+    }
+
+    public void updatePartyInventoryCostingMethodFromValue(
+            PartyInventoryCostingMethodValue partyInventoryCostingMethodValue, BasePK updatedBy) {
+        if(partyInventoryCostingMethodValue.hasBeenModified()) {
+            var partyInventoryCostingMethod = partyInventoryCostingMethodFactory.getEntityFromPK(EntityPermission.READ_WRITE,
+                    partyInventoryCostingMethodValue.getPrimaryKey());
+
+            partyInventoryCostingMethod.setThruTime(session.getStartTime());
+            partyInventoryCostingMethod.store();
+
+            var partyPK = partyInventoryCostingMethod.getPartyPK(); // Not updated
+            var inventoryCostingMethodPK = partyInventoryCostingMethodValue.getInventoryCostingMethodPK();
+
+            partyInventoryCostingMethod = partyInventoryCostingMethodFactory.create(partyPK, inventoryCostingMethodPK,
+                    session.getStartTime(), Session.MAX_TIME);
+
+            sendEvent(partyPK, EventTypes.MODIFY, partyInventoryCostingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deletePartyInventoryCostingMethod(PartyInventoryCostingMethod partyInventoryCostingMethod, BasePK deletedBy) {
+        partyInventoryCostingMethod.setThruTime(session.getStartTime());
+
+        sendEvent(partyInventoryCostingMethod.getPartyPK(), EventTypes.MODIFY, partyInventoryCostingMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deletePartyInventoryCostingMethodByParty(Party party, BasePK deletedBy) {
+        var partyInventoryCostingMethod = getPartyInventoryCostingMethodForUpdate(party);
+
+        if(partyInventoryCostingMethod != null) {
+            deletePartyInventoryCostingMethod(partyInventoryCostingMethod, deletedBy);
+        }
+    }
+
+    public void deletePartyInventoryCostingMethodsByInventoryCostingMethod(InventoryCostingMethod inventoryCostingMethod, BasePK deletedBy) {
+        getPartyInventoryCostingMethodsByInventoryCostingMethodForUpdate(inventoryCostingMethod)
+                .forEach(value -> deletePartyInventoryCostingMethod(value, deletedBy));
     }
 
 }
