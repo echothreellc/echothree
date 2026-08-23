@@ -25,4 +25,6 @@ public interface InventoryOptions {
     String LotIncludeLotAliases = "LotIncludeLotAliases";
     String LotIncludeLotTimes = "LotIncludeLotTimes";
 
+    String PartyInventoryCostingMethodIncludeParty = "PartyInventoryCostingMethodIncludeParty";
+
 }

@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
+import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.PartyInventoryCostingMethodTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryCostingMethodControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -34,8 +35,15 @@ public class PartyInventoryCostingMethodTransferCache
     @Inject
     PartyControl partyControl;
 
+    boolean includeParty;
+
     protected PartyInventoryCostingMethodTransferCache() {
         super();
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeParty = options.contains(InventoryOptions.PartyInventoryCostingMethodIncludeParty);
+        }
     }
 
     @Override
@@ -44,7 +52,7 @@ public class PartyInventoryCostingMethodTransferCache
         var transfer = get(partyInventoryCostingMethod);
 
         if(transfer == null) {
-            var party = partyControl.getPartyTransfer(userVisit, partyInventoryCostingMethod.getParty());
+            var party = includeParty ? partyControl.getPartyTransfer(userVisit, partyInventoryCostingMethod.getParty()) : null;
             var inventoryCostingMethod = inventoryCostingMethodControl.getInventoryCostingMethodTransfer(userVisit,
                     partyInventoryCostingMethod.getInventoryCostingMethod());
 
