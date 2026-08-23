@@ -547,6 +547,15 @@ public class InventoryCostingMethodControl
         return partyInventoryCostingMethod;
     }
 
+    public long countPartyInventoryCostingMethods() {
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyInventoryCostingMethods)
+                .where(PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
     public long countPartyInventoryCostingMethodsByInventoryCostingMethod(final InventoryCostingMethod inventoryCostingMethod) {
         return session.getDslContext()
                 .selectCount()
@@ -557,7 +566,7 @@ public class InventoryCostingMethodControl
                 .orElse(0L);
     }
 
-    private PartyInventoryCostingMethod getPartyInventoryCostingMethod(final Party party,
+    public PartyInventoryCostingMethod getPartyInventoryCostingMethod(final Party party,
             final EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyInventoryCostingMethods.fields())
@@ -620,6 +629,21 @@ public class InventoryCostingMethodControl
 
     public List<PartyInventoryCostingMethod> getPartyInventoryCostingMethodsByInventoryCostingMethodForUpdate(InventoryCostingMethod inventoryCostingMethod) {
         return getPartyInventoryCostingMethodsByInventoryCostingMethod(inventoryCostingMethod, EntityPermission.READ_WRITE);
+    }
+
+    public List<PartyInventoryCostingMethod> getPartyInventoryCostingMethods() {
+        var query = session.getDslContext()
+                .select(PartyInventoryCostingMethods.fields())
+                .from(PartyInventoryCostingMethods)
+                .join(Parties).on(PartyInventoryCostingMethods.PARTY.eq(Parties.PARTY))
+                .join(PartyDetails).on(Parties.LAST_DETAIL.eq(PartyDetails.PARTY_DETAIL))
+                .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
+                .where(PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME);
+
+        return partyInventoryCostingMethodFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY,
+                partyInventoryCostingMethodFactory.prepareStatement(query.getSQL() + " _LIMIT_"),
+                query.getBindValues().toArray());
     }
 
     public PartyInventoryCostingMethodTransfer getPartyInventoryCostingMethodTransfer(UserVisit userVisit,
