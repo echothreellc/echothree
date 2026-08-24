@@ -120,6 +120,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("import javax.enterprise.context.ApplicationScoped;");
         pw.println("import javax.enterprise.inject.spi.CDI;");
         pw.println("import javax.inject.Inject;");
+        pw.println("import org.jooq.ResultQuery;");
         pw.println("import org.slf4j.Logger;");
         pw.println("import org.slf4j.LoggerFactory;");
         pw.println("");
@@ -1024,6 +1025,13 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("        return getEntitiesFromQuery(entityPermission, ps);");
         pw.println("    }");
         pw.println("    ");
+        pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(EntityPermission entityPermission, ResultQuery<?> query)");
+        pw.println("            throws PersistenceDatabaseException {");
+        pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, query.getSQL());");
+        pw.println("        ");
+        pw.println("        return getEntitiesFromQuery(entityPermission, ps, query.getBindValues().toArray());");
+        pw.println("    }");
+        pw.println("    ");
         pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(EntityPermission entityPermission, PreparedStatement ps, final Object... params)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        java.util.List<" + entityClass + "> _entities;");
@@ -1064,6 +1072,13 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
         pw.println("        ");
         pw.println("        return getEntityFromQuery(entityPermission, ps);");
+        pw.println("    }");
+        pw.println("    ");
+        pw.println("    public " + entityClass + " getEntityFromQuery(EntityPermission entityPermission, ResultQuery<?> query)");
+        pw.println("            throws PersistenceDatabaseException {");
+        pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, query.getSQL());");
+        pw.println("        ");
+        pw.println("        return getEntityFromQuery(entityPermission, ps, query.getBindValues().toArray());");
         pw.println("    }");
         pw.println("    ");
         pw.println("    public " + entityClass + " getEntityFromQuery(EntityPermission entityPermission, PreparedStatement ps, final Object... params)");

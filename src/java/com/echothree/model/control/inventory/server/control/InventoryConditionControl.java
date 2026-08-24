@@ -190,10 +190,12 @@ public class InventoryConditionControl
                 .where(InventoryConditionDetails.INVENTORY_CONDITION_NAME.eq(inventoryConditionName),
                         InventoryConditionDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryConditionFactory.getEntityFromQuery(entityPermission,
-                inventoryConditionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryConditionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryCondition getInventoryConditionByName(final String inventoryConditionName) {
@@ -220,10 +222,12 @@ public class InventoryConditionControl
                 .on(InventoryConditions.INVENTORY_CONDITION.eq(InventoryConditionDetails.INVENTORY_CONDITION))
                 .where(InventoryConditionDetails.IS_DEFAULT.eq(true), InventoryConditionDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryConditionFactory.getEntityFromQuery(entityPermission,
-                inventoryConditionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryConditionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryCondition getDefaultInventoryCondition() {
@@ -246,14 +250,14 @@ public class InventoryConditionControl
                 .on(InventoryConditions.INVENTORY_CONDITION.eq(InventoryConditionDetails.INVENTORY_CONDITION))
                 .where(InventoryConditionDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY
-                ? baseQuery.orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME)
-                : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME),
+                    InventoryConditionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryConditionFactory.getEntitiesFromQuery(entityPermission,
-                inventoryConditionFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryConditionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryCondition> getInventoryConditions() {
@@ -464,10 +468,12 @@ public class InventoryConditionControl
                         InventoryConditionDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
                         InventoryConditionDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryConditionDescriptionFactory.getEntityFromQuery(entityPermission,
-                inventoryConditionDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryConditionDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryConditionDescription getInventoryConditionDescription(final InventoryCondition inventoryCondition,
@@ -492,14 +498,15 @@ public class InventoryConditionControl
     private List<InventoryConditionDescription> getInventoryConditionDescriptionsByInventoryCondition(final InventoryCondition inventoryCondition,
             final EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryConditionDescriptions.fields())
                     .from(InventoryConditionDescriptions)
                     .join(Languages)
                     .on(InventoryConditionDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
                     .where(InventoryConditionDescriptions.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
                             InventoryConditionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    InventoryConditionDescriptionFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryConditionDescriptions.fields())
                     .from(InventoryConditionDescriptions)
@@ -508,10 +515,7 @@ public class InventoryConditionControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryConditionDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                inventoryConditionDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryConditionDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryConditionDescription> getInventoryConditionDescriptionsByInventoryCondition(final InventoryCondition inventoryCondition) {
@@ -633,8 +637,10 @@ public class InventoryConditionControl
                 .from(InventoryConditionUseTypes)
                 .orderBy(InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE_NAME);
 
-        return inventoryConditionUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY,
-                inventoryConditionUseTypeFactory.prepareStatement(query.getSQL() + " _LIMIT_"));
+        var limitedQuery = session.applyLimit(query,
+                    InventoryConditionUseTypeFactory.class);
+
+        return inventoryConditionUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, limitedQuery);
     }
 
     public InventoryConditionUseType getInventoryConditionUseTypeByName(String inventoryConditionUseTypeName) {
@@ -643,8 +649,7 @@ public class InventoryConditionControl
                 .from(InventoryConditionUseTypes)
                 .where(InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE_NAME.eq(inventoryConditionUseTypeName));
 
-        return inventoryConditionUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY,
-                inventoryConditionUseTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryConditionUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public InventoryConditionUseTypeChoicesBean getInventoryConditionUseTypeChoices(String defaultInventoryConditionUseTypeChoice, Language language) {
@@ -715,8 +720,7 @@ public class InventoryConditionControl
                 .where(InventoryConditionUseTypeDescriptions.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
                         InventoryConditionUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
 
-        return inventoryConditionUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY,
-                inventoryConditionUseTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryConditionUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public String getBestInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language) {
@@ -795,10 +799,12 @@ public class InventoryConditionControl
                         InventoryConditionUses.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
                         InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryConditionUseFactory.getEntityFromQuery(entityPermission,
-                inventoryConditionUseFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryConditionUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryConditionUse getInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
@@ -824,10 +830,12 @@ public class InventoryConditionControl
                 .where(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
                         InventoryConditionUses.IS_DEFAULT.eq(true), InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryConditionUseFactory.getEntityFromQuery(entityPermission,
-                inventoryConditionUseFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryConditionUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryConditionUse getDefaultInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType) {
@@ -845,14 +853,15 @@ public class InventoryConditionControl
     private List<InventoryConditionUse> getInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition,
             EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryConditionUses.fields())
                     .from(InventoryConditionUses)
                     .join(InventoryConditionUseTypes)
                     .on(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE))
                     .where(InventoryConditionUses.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
                             InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(InventoryConditionUseTypes.SORT_ORDER, InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE_NAME);
+                    .orderBy(InventoryConditionUseTypes.SORT_ORDER, InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE_NAME),
+                    InventoryConditionUseFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryConditionUses.fields())
                     .from(InventoryConditionUses)
@@ -861,10 +870,7 @@ public class InventoryConditionControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryConditionUseFactory.getEntitiesFromQuery(entityPermission,
-                inventoryConditionUseFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryConditionUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryConditionUse> getInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition) {
@@ -882,7 +888,7 @@ public class InventoryConditionControl
     private List<InventoryConditionUse> getInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType,
             EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryConditionUses.fields())
                     .from(InventoryConditionUses)
                     .join(InventoryConditions)
@@ -890,7 +896,8 @@ public class InventoryConditionControl
                     .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_ACTIVE_DETAIL_FK)
                     .where(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
                             InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME),
+                    InventoryConditionUseFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryConditionUses.fields())
                     .from(InventoryConditionUses)
@@ -899,10 +906,7 @@ public class InventoryConditionControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryConditionUseFactory.getEntitiesFromQuery(entityPermission,
-                inventoryConditionUseFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryConditionUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryConditionUse> getInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType) {
@@ -1079,10 +1083,12 @@ public class InventoryConditionControl
                         InventoryConditionGlAccounts.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
                         InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryConditionGlAccountFactory.getEntityFromQuery(entityPermission,
-                inventoryConditionGlAccountFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryConditionGlAccountFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryConditionGlAccount getInventoryConditionGlAccount(InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory) {
@@ -1099,7 +1105,7 @@ public class InventoryConditionControl
 
     private List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryConditionGlAccounts.fields())
                     .from(InventoryConditionGlAccounts)
                     .join(ItemAccountingCategories)
@@ -1107,7 +1113,8 @@ public class InventoryConditionControl
                     .join(ItemAccountingCategoryDetails).onKey(ITEM_ACCOUNTING_CATEGORIES_LAST_DETAIL_FK)
                     .where(InventoryConditionGlAccounts.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
                             InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(ItemAccountingCategoryDetails.SORT_ORDER, ItemAccountingCategoryDetails.ITEM_ACCOUNTING_CATEGORY_NAME);
+                    .orderBy(ItemAccountingCategoryDetails.SORT_ORDER, ItemAccountingCategoryDetails.ITEM_ACCOUNTING_CATEGORY_NAME),
+                    InventoryConditionGlAccountFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryConditionGlAccounts.fields())
                     .from(InventoryConditionGlAccounts)
@@ -1116,10 +1123,7 @@ public class InventoryConditionControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission,
-                inventoryConditionGlAccountFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition) {
@@ -1132,7 +1136,7 @@ public class InventoryConditionControl
 
     private List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryConditionGlAccounts.fields())
                     .from(InventoryConditionGlAccounts)
                     .join(InventoryConditions)
@@ -1141,7 +1145,8 @@ public class InventoryConditionControl
                     .on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
                     .where(InventoryConditionGlAccounts.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
                             InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME),
+                    InventoryConditionGlAccountFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryConditionGlAccounts.fields())
                     .from(InventoryConditionGlAccounts)
@@ -1150,10 +1155,7 @@ public class InventoryConditionControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission,
-                inventoryConditionGlAccountFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory) {
