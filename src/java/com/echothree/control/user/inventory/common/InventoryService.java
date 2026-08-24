@@ -50,6 +50,20 @@ public interface InventoryService
     CommandResult<VoidResult> deleteInventoryCostingMethod(UserVisitPK userVisitPK, DeleteInventoryCostingMethodForm form);
 
     // -------------------------------------------------------------------------
+    //   Party Inventory Costing Methods
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createPartyInventoryCostingMethod(UserVisitPK userVisitPK, CreatePartyInventoryCostingMethodForm form);
+
+    CommandResult<GetPartyInventoryCostingMethodsResult> getPartyInventoryCostingMethods(UserVisitPK userVisitPK, GetPartyInventoryCostingMethodsForm form);
+
+    CommandResult<GetPartyInventoryCostingMethodResult> getPartyInventoryCostingMethod(UserVisitPK userVisitPK, GetPartyInventoryCostingMethodForm form);
+
+    CommandResult<EditPartyInventoryCostingMethodResult> editPartyInventoryCostingMethod(UserVisitPK userVisitPK, EditPartyInventoryCostingMethodForm form);
+
+    CommandResult<VoidResult> deletePartyInventoryCostingMethod(UserVisitPK userVisitPK, DeletePartyInventoryCostingMethodForm form);
+
+    // -------------------------------------------------------------------------
     //   Inventory Costing Method Descriptions
     // -------------------------------------------------------------------------
 

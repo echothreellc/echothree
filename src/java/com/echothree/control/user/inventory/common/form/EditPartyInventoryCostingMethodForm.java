@@ -14,17 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.control.user.inventory.common.form;
 
-public interface InventoryOptions {
-    
-    String InventoryLocationGroupIncludeCapacities = "InventoryLocationGroupIncludeCapacities";
-    String InventoryLocationGroupIncludeVolume     = "InventoryLocationGroupIncludeVolume";
+import com.echothree.control.user.inventory.common.edit.PartyInventoryCostingMethodEdit;
+import com.echothree.control.user.party.common.spec.PartyUniversalSpec;
+import com.echothree.util.common.form.BaseEditForm;
 
-    String LotIncludeUuid = "LotIncludeUuid";
-    String LotIncludeLotAliases = "LotIncludeLotAliases";
-    String LotIncludeLotTimes = "LotIncludeLotTimes";
+public interface EditPartyInventoryCostingMethodForm
+        extends BaseEditForm<PartyUniversalSpec, PartyInventoryCostingMethodEdit> {
 
-    String PartyInventoryCostingMethodIncludeParty = "PartyInventoryCostingMethodIncludeParty";
+    // Nothing additional beyond BaseEditForm
 
 }

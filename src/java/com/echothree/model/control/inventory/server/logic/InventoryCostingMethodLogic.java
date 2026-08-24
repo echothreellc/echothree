@@ -93,6 +93,22 @@ public class InventoryCostingMethodLogic
         return getInventoryCostingMethodByName(eea, inventoryCostingMethodName, EntityPermission.READ_WRITE);
     }
 
+    public InventoryCostingMethod getDefaultInventoryCostingMethod(final ExecutionErrorAccumulator eea,
+            final EntityPermission entityPermission) {
+        var inventoryCostingMethod = inventoryCostingMethodControl.getDefaultInventoryCostingMethod(entityPermission);
+
+        if(inventoryCostingMethod == null) {
+            handleExecutionError(UnknownDefaultInventoryCostingMethodException.class, eea,
+                    ExecutionErrors.UnknownDefaultInventoryCostingMethod.name());
+        }
+
+        return inventoryCostingMethod;
+    }
+
+    public InventoryCostingMethod getDefaultInventoryCostingMethod(final ExecutionErrorAccumulator eea) {
+        return getDefaultInventoryCostingMethod(eea, EntityPermission.READ_ONLY);
+    }
+
     public InventoryCostingMethod getInventoryCostingMethodByUniversalSpec(final ExecutionErrorAccumulator eea,
             final InventoryCostingMethodUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         InventoryCostingMethod inventoryCostingMethod = null;
@@ -102,11 +118,7 @@ public class InventoryCostingMethodLogic
         switch(parameterCount) {
             case 0 -> {
                 if(allowDefault) {
-                    inventoryCostingMethod = inventoryCostingMethodControl.getDefaultInventoryCostingMethod(entityPermission);
-
-                    if(inventoryCostingMethod == null) {
-                        handleExecutionError(UnknownDefaultInventoryCostingMethodException.class, eea, ExecutionErrors.UnknownDefaultInventoryCostingMethod.name());
-                    }
+                    inventoryCostingMethod = getDefaultInventoryCostingMethod(eea, entityPermission);
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }

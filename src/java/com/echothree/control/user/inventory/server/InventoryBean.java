@@ -80,6 +80,35 @@ public class InventoryBean
     }
 
     // -------------------------------------------------------------------------
+    //   Party Inventory Costing Methods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createPartyInventoryCostingMethod(UserVisitPK userVisitPK, CreatePartyInventoryCostingMethodForm form) {
+        return CDI.current().select(CreatePartyInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetPartyInventoryCostingMethodsResult> getPartyInventoryCostingMethods(UserVisitPK userVisitPK, GetPartyInventoryCostingMethodsForm form) {
+        return CDI.current().select(GetPartyInventoryCostingMethodsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetPartyInventoryCostingMethodResult> getPartyInventoryCostingMethod(UserVisitPK userVisitPK, GetPartyInventoryCostingMethodForm form) {
+        return CDI.current().select(GetPartyInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditPartyInventoryCostingMethodResult> editPartyInventoryCostingMethod(UserVisitPK userVisitPK, EditPartyInventoryCostingMethodForm form) {
+        return CDI.current().select(EditPartyInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deletePartyInventoryCostingMethod(UserVisitPK userVisitPK, DeletePartyInventoryCostingMethodForm form) {
+        return CDI.current().select(DeletePartyInventoryCostingMethodCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Inventory Costing Method Descriptions
     // -------------------------------------------------------------------------
 

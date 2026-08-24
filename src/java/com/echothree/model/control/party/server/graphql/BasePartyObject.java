@@ -34,6 +34,9 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.inventory.server.control.InventoryCostingMethodControl;
+import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
+import com.echothree.model.control.inventory.server.graphql.PartyInventoryCostingMethodObject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.subscription.server.graphql.SubscriptionObject;
@@ -247,6 +250,19 @@ public abstract class BasePartyObject
             }
         } else {
             return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("party inventory costing method")
+    public PartyInventoryCostingMethodObject getPartyInventoryCostingMethod(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasPartyInventoryCostingMethodAccess(env)) {
+            var inventoryCostingMethodControl = Session.getModelController(InventoryCostingMethodControl.class);
+            var partyInventoryCostingMethod = inventoryCostingMethodControl.getPartyInventoryCostingMethod(party);
+
+            return partyInventoryCostingMethod == null ? null : new PartyInventoryCostingMethodObject(partyInventoryCostingMethod);
+        } else {
+            return null;
         }
     }
 

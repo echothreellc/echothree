@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.common.choice.InventoryTransactionTypeChoicesBean;
 import com.echothree.model.control.inventory.common.transfer.InventoryTransactionTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryTransactionTypeTransfer;
+import com.echothree.model.control.inventory.server.transfer.InventoryTransactionTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryTransactionTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryTransactionTypePK;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
@@ -34,20 +36,20 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.model.control.inventory.server.transfer.InventoryTransactionTypeTransferCache;
-import com.echothree.model.control.inventory.server.transfer.InventoryTransactionTypeDescriptionTransferCache;
-import com.echothree.util.server.control.BaseModelControl;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTypeDescriptions.InventoryTransactionTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTypeDetails.InventoryTransactionTypeDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTypes.InventoryTransactionTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -60,11 +62,13 @@ public class InventoryTransactionTypeControl
     @Inject
     InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
 
-    /** Creates a new instance of InventoryTransactionTypeControl */
+    /**
+     * Creates a new instance of InventoryTransactionTypeControl
+     */
     protected InventoryTransactionTypeControl() {
         super();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Transaction Types
     // --------------------------------------------------------------------------------
@@ -106,7 +110,9 @@ public class InventoryTransactionTypeControl
         return inventoryTransactionType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryTransactionType */
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryTransactionType
+     */
     public InventoryTransactionType getInventoryTransactionTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new InventoryTransactionTypePK(entityInstance.getEntityUniqueId());
@@ -127,36 +133,26 @@ public class InventoryTransactionTypeControl
     }
 
     public long countInventoryTransactionTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryTransactionTypes)
+                .join(InventoryTransactionTypeDetails).onKey(INVENTORY_TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getInventoryTransactionTypeByNameQueries;
+    public InventoryTransactionType getInventoryTransactionTypeByName(final String inventoryTransactionTypeName,
+            final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryTransactionTypes.fields())
+                .from(InventoryTransactionTypes)
+                .join(InventoryTransactionTypeDetails).onKey(INVENTORY_TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(InventoryTransactionTypeDetails.INVENTORY_TRANSACTION_TYPE_NAME.eq(inventoryTransactionTypeName));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
-                AND invtrxtypdt_inventorytransactiontypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
-                AND invtrxtypdt_inventorytransactiontypename = ?
-                FOR UPDATE
-                """);
-        getInventoryTransactionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public InventoryTransactionType getInventoryTransactionTypeByName(String inventoryTransactionTypeName, EntityPermission entityPermission) {
-        return inventoryTransactionTypeFactory.getEntityFromQuery(entityPermission, getInventoryTransactionTypeByNameQueries, inventoryTransactionTypeName);
+        return inventoryTransactionTypeFactory.getEntityFromQuery(entityPermission,
+                inventoryTransactionTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryTransactionType getInventoryTransactionTypeByName(String inventoryTransactionTypeName) {
@@ -168,36 +164,24 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionTypeDetailValue getInventoryTransactionTypeDetailValueForUpdate(InventoryTransactionType inventoryTransactionType) {
-        return inventoryTransactionType == null? null: inventoryTransactionType.getLastDetailForUpdate().getInventoryTransactionTypeDetailValue().clone();
+        return inventoryTransactionType == null ? null : inventoryTransactionType.getLastDetailForUpdate().getInventoryTransactionTypeDetailValue().clone();
     }
 
     public InventoryTransactionTypeDetailValue getInventoryTransactionTypeDetailValueByNameForUpdate(String inventoryTransactionTypeName) {
         return getInventoryTransactionTypeDetailValueForUpdate(getInventoryTransactionTypeByNameForUpdate(inventoryTransactionTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultInventoryTransactionTypeQueries;
+    public InventoryTransactionType getDefaultInventoryTransactionType(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryTransactionTypes.fields())
+                .from(InventoryTransactionTypes)
+                .join(InventoryTransactionTypeDetails).onKey(INVENTORY_TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(InventoryTransactionTypeDetails.IS_DEFAULT.eq(true));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
-                AND invtrxtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
-                AND invtrxtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultInventoryTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public InventoryTransactionType getDefaultInventoryTransactionType(EntityPermission entityPermission) {
-        return inventoryTransactionTypeFactory.getEntityFromQuery(entityPermission, getDefaultInventoryTransactionTypeQueries);
+        return inventoryTransactionTypeFactory.getEntityFromQuery(entityPermission,
+                inventoryTransactionTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryTransactionType getDefaultInventoryTransactionType() {
@@ -212,29 +196,21 @@ public class InventoryTransactionTypeControl
         return getDefaultInventoryTransactionTypeForUpdate().getLastDetailForUpdate().getInventoryTransactionTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getInventoryTransactionTypesQueries;
+    private List<InventoryTransactionType> getInventoryTransactionTypes(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryTransactionTypes.fields())
+                .from(InventoryTransactionTypes)
+                .join(InventoryTransactionTypeDetails).onKey(INVENTORY_TRANSACTION_TYPES_ACTIVE_DETAIL_FK);
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = entityPermission == EntityPermission.READ_ONLY
+                ? baseQuery.orderBy(InventoryTransactionTypeDetails.SORT_ORDER,
+                InventoryTransactionTypeDetails.INVENTORY_TRANSACTION_TYPE_NAME)
+                : baseQuery.forUpdate();
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
-                ORDER BY invtrxtypdt_sortorder, invtrxtypdt_inventorytransactiontypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorytransactiontypes, inventorytransactiontypedetails
-                WHERE invtrxtyp_activedetailid = invtrxtypdt_inventorytransactiontypedetailid
-                FOR UPDATE
-                """);
-        getInventoryTransactionTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
 
-    private List<InventoryTransactionType> getInventoryTransactionTypes(EntityPermission entityPermission) {
-        return inventoryTransactionTypeFactory.getEntitiesFromQuery(entityPermission, getInventoryTransactionTypesQueries);
+        return inventoryTransactionTypeFactory.getEntitiesFromQuery(entityPermission,
+                inventoryTransactionTypeFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<InventoryTransactionType> getInventoryTransactionTypes() {
@@ -286,7 +262,7 @@ public class InventoryTransactionTypeControl
             var label = getBestInventoryTransactionTypeDescription(inventoryTransactionType, language);
             var value = inventoryTransactionTypeDetail.getInventoryTransactionTypeName();
 
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
 
             var usingDefaultChoice = defaultInventoryTransactionTypeChoice != null && defaultInventoryTransactionTypeChoice.equals(value);
@@ -302,7 +278,7 @@ public class InventoryTransactionTypeControl
             BasePK updatedBy) {
         if(inventoryTransactionTypeDetailValue.hasBeenModified()) {
             var inventoryTransactionType = inventoryTransactionTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     inventoryTransactionTypeDetailValue.getInventoryTransactionTypePK());
+                    inventoryTransactionTypeDetailValue.getInventoryTransactionTypePK());
             var inventoryTransactionTypeDetail = inventoryTransactionType.getActiveDetailForUpdate();
 
             inventoryTransactionTypeDetail.setThruTime(session.getStartTime());
@@ -357,7 +333,7 @@ public class InventoryTransactionTypeControl
         inventoryTransactionType.store();
 
         if(checkDefault) {
-        // Check for default, and pick one if necessary
+            // Check for default, and pick one if necessary
             var defaultInventoryTransactionType = getDefaultInventoryTransactionType();
             if(defaultInventoryTransactionType == null) {
                 var inventoryTransactionTypes = getInventoryTransactionTypesForUpdate();
@@ -406,28 +382,20 @@ public class InventoryTransactionTypeControl
         return inventoryTransactionTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getInventoryTransactionTypeDescriptionQueries;
+    private InventoryTransactionTypeDescription getInventoryTransactionTypeDescription(
+            final InventoryTransactionType inventoryTransactionType, final Language language,
+            final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryTransactionTypeDescriptions.fields())
+                .from(InventoryTransactionTypeDescriptions)
+                .where(InventoryTransactionTypeDescriptions.INVENTORY_TRANSACTION_TYPE.eq(inventoryTransactionType.getPrimaryKey()),
+                        InventoryTransactionTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        InventoryTransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorytransactiontypedescriptions
-                WHERE invtrxtypd_invtrxtyp_inventorytransactiontypeid = ? AND invtrxtypd_lang_languageid = ? AND invtrxtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorytransactiontypedescriptions
-                WHERE invtrxtypd_invtrxtyp_inventorytransactiontypeid = ? AND invtrxtypd_lang_languageid = ? AND invtrxtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getInventoryTransactionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private InventoryTransactionTypeDescription getInventoryTransactionTypeDescription(InventoryTransactionType inventoryTransactionType, Language language, EntityPermission entityPermission) {
-        return inventoryTransactionTypeDescriptionFactory.getEntityFromQuery(entityPermission, getInventoryTransactionTypeDescriptionQueries,
-                inventoryTransactionType, language, Session.MAX_TIME);
+        return inventoryTransactionTypeDescriptionFactory.getEntityFromQuery(entityPermission,
+                inventoryTransactionTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryTransactionTypeDescription getInventoryTransactionTypeDescription(InventoryTransactionType inventoryTransactionType, Language language) {
@@ -439,37 +407,36 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionTypeDescriptionValue getInventoryTransactionTypeDescriptionValue(InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
-        return inventoryTransactionTypeDescription == null? null: inventoryTransactionTypeDescription.getInventoryTransactionTypeDescriptionValue().clone();
+        return inventoryTransactionTypeDescription == null ? null : inventoryTransactionTypeDescription.getInventoryTransactionTypeDescriptionValue().clone();
     }
 
     public InventoryTransactionTypeDescriptionValue getInventoryTransactionTypeDescriptionValueForUpdate(InventoryTransactionType inventoryTransactionType, Language language) {
         return getInventoryTransactionTypeDescriptionValue(getInventoryTransactionTypeDescriptionForUpdate(inventoryTransactionType, language));
     }
 
-    private static final Map<EntityPermission, String> getInventoryTransactionTypeDescriptionsByInventoryTransactionTypeQueries;
+    private List<InventoryTransactionTypeDescription> getInventoryTransactionTypeDescriptionsByInventoryTransactionType(
+            final InventoryTransactionType inventoryTransactionType, final EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryTransactionTypeDescriptions.fields())
+                    .from(InventoryTransactionTypeDescriptions)
+                    .join(Languages)
+                    .on(InventoryTransactionTypeDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
+                    .where(InventoryTransactionTypeDescriptions.INVENTORY_TRANSACTION_TYPE.eq(inventoryTransactionType.getPrimaryKey()),
+                            InventoryTransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryTransactionTypeDescriptions.fields())
+                    .from(InventoryTransactionTypeDescriptions)
+                    .where(InventoryTransactionTypeDescriptions.INVENTORY_TRANSACTION_TYPE.eq(inventoryTransactionType.getPrimaryKey()),
+                            InventoryTransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventorytransactiontypedescriptions, languages
-                WHERE invtrxtypd_invtrxtyp_inventorytransactiontypeid = ? AND invtrxtypd_thrutime = ? AND invtrxtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventorytransactiontypedescriptions
-                WHERE invtrxtypd_invtrxtyp_inventorytransactiontypeid = ? AND invtrxtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getInventoryTransactionTypeDescriptionsByInventoryTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<InventoryTransactionTypeDescription> getInventoryTransactionTypeDescriptionsByInventoryTransactionType(InventoryTransactionType inventoryTransactionType, EntityPermission entityPermission) {
-        return inventoryTransactionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getInventoryTransactionTypeDescriptionsByInventoryTransactionTypeQueries,
-                inventoryTransactionType, Session.MAX_TIME);
+        return inventoryTransactionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
+                inventoryTransactionTypeDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<InventoryTransactionTypeDescription> getInventoryTransactionTypeDescriptionsByInventoryTransactionType(InventoryTransactionType inventoryTransactionType) {
@@ -541,7 +508,7 @@ public class InventoryTransactionTypeControl
     public void deleteInventoryTransactionTypeDescriptionsByInventoryTransactionType(InventoryTransactionType inventoryTransactionType, BasePK deletedBy) {
         var inventoryTransactionTypeDescriptions = getInventoryTransactionTypeDescriptionsByInventoryTransactionTypeForUpdate(inventoryTransactionType);
 
-        inventoryTransactionTypeDescriptions.forEach((inventoryTransactionTypeDescription) -> 
+        inventoryTransactionTypeDescriptions.forEach((inventoryTransactionTypeDescription) ->
                 deleteInventoryTransactionTypeDescription(inventoryTransactionTypeDescription, deletedBy)
         );
     }

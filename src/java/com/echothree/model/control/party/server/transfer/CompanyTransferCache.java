@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.party.server.transfer;
 
+import com.echothree.model.control.inventory.server.control.InventoryCostingMethodControl;
 import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
@@ -51,6 +52,9 @@ public class CompanyTransferCache
     DocumentControl documentControl;
 
     @Inject
+    InventoryCostingMethodControl inventoryCostingMethodControl;
+
+    @Inject
     InvoiceControl invoiceControl;
 
     @Inject
@@ -71,6 +75,7 @@ public class CompanyTransferCache
     boolean includeBillingAccounts;
     boolean includeInvoicesFrom;
     boolean includeInvoicesTo;
+    boolean includePartyInventoryCostingMethod;
     boolean hasInvoiceLimits;
     
     /** Creates a new instance of CompanyTransferCache */
@@ -89,6 +94,7 @@ public class CompanyTransferCache
             includeBillingAccounts = options.contains(PartyOptions.CompanyIncludeBillingAccounts);
             includeInvoicesFrom = options.contains(PartyOptions.CompanyIncludeInvoicesFrom);
             includeInvoicesTo = options.contains(PartyOptions.CompanyIncludeInvoicesTo);
+            includePartyInventoryCostingMethod = options.contains(PartyOptions.CompanyIncludePartyInventoryCostingMethod);
             setIncludeEntityAttributeGroups(options.contains(PartyOptions.CompanyIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(PartyOptions.CompanyIncludeTagScopes));
         }
@@ -168,6 +174,14 @@ public class CompanyTransferCache
                 
                 if(hasInvoiceLimits) {
                     companyTransfer.setInvoicesToCount(invoiceControl.countInvoicesByInvoiceTo(party));
+                }
+            }
+
+            if(includePartyInventoryCostingMethod) {
+                var partyInventoryCostingMethod = inventoryCostingMethodControl.getPartyInventoryCostingMethod(party);
+
+                if(partyInventoryCostingMethod != null) {
+                    companyTransfer.setPartyInventoryCostingMethod(inventoryCostingMethodControl.getPartyInventoryCostingMethodTransfer(userVisit, partyInventoryCostingMethod));
                 }
             }
         }

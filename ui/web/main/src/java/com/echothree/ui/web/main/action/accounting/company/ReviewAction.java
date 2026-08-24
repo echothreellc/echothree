@@ -68,6 +68,7 @@ public class ReviewAction
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.CompanyIncludeInvoicesFrom);
         options.add(PartyOptions.CompanyIncludeInvoicesTo);
+        options.add(PartyOptions.CompanyIncludePartyInventoryCostingMethod);
         options.add(PartyOptions.CompanyIncludeEntityAttributeGroups);
         options.add(PartyOptions.CompanyIncludeTagScopes);
         options.add(PartyOptions.PartyIncludePartyContactMechanisms);

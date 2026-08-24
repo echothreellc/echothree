@@ -26,13 +26,19 @@ import com.echothree.model.data.inventory.server.value.PartyInventoryLevelValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDetails.InventoryConditionDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditions.InventoryConditions;
+import static com.echothree.model.jooq.server.tables.inventory.PartyInventoryLevels.PartyInventoryLevels;
+import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
+import static com.echothree.model.jooq.server.tables.item.Items.Items;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.party.PartyTypes.PartyTypes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +51,9 @@ public class InventoryLevelControl
     @Inject
     PartyInventoryLevelTransferCache partyInventoryLevelTransferCache;
 
-    /** Creates a new instance of InventoryLevelControl */
+    /**
+     * Creates a new instance of InventoryLevelControl
+     */
     protected InventoryLevelControl() {
         super();
     }
@@ -62,261 +70,217 @@ public class InventoryLevelControl
         var partyInventoryLevel = partyInventoryLevelFactory.create(party, item,
                 inventoryCondition, minimumInventory, maximumInventory, reorderQuantity, session.getStartTime(),
                 Session.MAX_TIME);
-        
+
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+
         return partyInventoryLevel;
     }
 
     public long countPartyInventoryLevelsByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyinventorylevels
-                        WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyInventoryLevels)
+                .where(PartyInventoryLevels.ITEM.eq(item.getPrimaryKey()), PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyInventoryLevelsByInventoryCondition(final InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyinventorylevels
-                        WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
-                        """, inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyInventoryLevels)
+                .where(PartyInventoryLevels.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyInventoryLevelsByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyinventorylevels
-                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyInventoryLevels)
+                .where(PartyInventoryLevels.PARTY.eq(party.getPrimaryKey()), PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyInventoryLevel getPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition,
             EntityPermission entityPermission) {
-        PartyInventoryLevel partyInventoryLevel;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyinventorylevels
-                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_itm_itemid = ? AND parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyinventorylevels
-                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_itm_itemid = ? AND parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyInventoryLevels.fields())
+                .from(PartyInventoryLevels)
+                .where(PartyInventoryLevels.PARTY.eq(party.getPrimaryKey()), PartyInventoryLevels.ITEM.eq(item.getPrimaryKey()),
+                        PartyInventoryLevels.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyInventoryLevelFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, item.getPrimaryKey().getEntityId());
-            ps.setLong(3, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            partyInventoryLevel = partyInventoryLevelFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyInventoryLevel;
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return partyInventoryLevelFactory.getEntityFromQuery(entityPermission,
+                partyInventoryLevelFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
-    
+
     public PartyInventoryLevel getPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition) {
         return getPartyInventoryLevel(party, item, inventoryCondition, EntityPermission.READ_ONLY);
     }
-    
+
     public PartyInventoryLevel getPartyInventoryLevelForUpdate(Party party, Item item, InventoryCondition inventoryCondition) {
         return getPartyInventoryLevel(party, item, inventoryCondition, EntityPermission.READ_WRITE);
     }
-    
+
     public PartyInventoryLevelValue getPartyInventoryLevelValue(PartyInventoryLevel partyInventoryLevel) {
-        return partyInventoryLevel == null? null: partyInventoryLevel.getPartyInventoryLevelValue().clone();
+        return partyInventoryLevel == null ? null : partyInventoryLevel.getPartyInventoryLevelValue().clone();
     }
-    
+
     public PartyInventoryLevelValue getPartyInventoryLevelValueForUpdate(Party party, Item item, InventoryCondition inventoryCondition) {
         return getPartyInventoryLevelValue(getPartyInventoryLevelForUpdate(party, item, inventoryCondition));
     }
-    
-    private List<PartyInventoryLevel> getPartyInventoryLevelsByParty(Party party, EntityPermission entityPermission) {
-        List<PartyInventoryLevel> partyInventoryLevels;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyinventorylevels, items, itemdetails, inventoryconditions, inventoryconditiondetails
-                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ?
-                        AND parinvlvl_itm_itemid = itm_itemid AND itm_activedetailid = itmdt_itemdetailid
-                        AND parinvlvl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyinventorylevels
-                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
 
-            var ps = partyInventoryLevelFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyInventoryLevels = partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyInventoryLevels;
+    private List<PartyInventoryLevel> getPartyInventoryLevelsByParty(Party party, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(PartyInventoryLevels.fields())
+                    .from(PartyInventoryLevels)
+                    .join(Items)
+                    .on(PartyInventoryLevels.ITEM.eq(Items.ITEM))
+                    .join(ItemDetails)
+                    .on(Items.ACTIVE_DETAIL.eq(ItemDetails.ITEM_DETAIL))
+                    .join(InventoryConditions)
+                    .on(PartyInventoryLevels.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
+                    .join(InventoryConditionDetails)
+                    .on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
+                    .where(PartyInventoryLevels.PARTY.eq(party.getPrimaryKey()), PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyInventoryLevels.fields())
+                    .from(PartyInventoryLevels)
+                    .where(PartyInventoryLevels.PARTY.eq(party.getPrimaryKey()), PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission,
+                partyInventoryLevelFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<PartyInventoryLevel> getPartyInventoryLevelsByParty(Party party) {
         return getPartyInventoryLevelsByParty(party, EntityPermission.READ_ONLY);
     }
-    
+
     public List<PartyInventoryLevel> getPartyInventoryLevelsByPartyForUpdate(Party party) {
         return getPartyInventoryLevelsByParty(party, EntityPermission.READ_WRITE);
     }
-    
-    private List<PartyInventoryLevel> getPartyInventoryLevelsByItem(Item item, EntityPermission entityPermission) {
-        List<PartyInventoryLevel> partyInventoryLevels;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyinventorylevels, parties, partydetails, partytypes, inventoryconditions, inventoryconditiondetails
-                        WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ?
-                        AND parinvlvl_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
-                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
-                        AND parinvlvl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, invcondt_sortorder, invcondt_inventoryconditionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyinventorylevels
-                        WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
 
-            var ps = partyInventoryLevelFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyInventoryLevels = partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyInventoryLevels;
+    private List<PartyInventoryLevel> getPartyInventoryLevelsByItem(Item item, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(PartyInventoryLevels.fields())
+                    .from(PartyInventoryLevels)
+                    .join(Parties)
+                    .on(PartyInventoryLevels.PARTY.eq(Parties.PARTY))
+                    .join(PartyDetails)
+                    .on(Parties.ACTIVE_DETAIL.eq(PartyDetails.PARTY_DETAIL))
+                    .join(PartyTypes)
+                    .on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
+                    .join(InventoryConditions)
+                    .on(PartyInventoryLevels.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
+                    .join(InventoryConditionDetails)
+                    .on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
+                    .where(PartyInventoryLevels.ITEM.eq(item.getPrimaryKey()), PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME,
+                            InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyInventoryLevels.fields())
+                    .from(PartyInventoryLevels)
+                    .where(PartyInventoryLevels.ITEM.eq(item.getPrimaryKey()), PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission,
+                partyInventoryLevelFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<PartyInventoryLevel> getPartyInventoryLevelsByItem(Item item) {
         return getPartyInventoryLevelsByItem(item, EntityPermission.READ_ONLY);
     }
-    
+
     public List<PartyInventoryLevel> getPartyInventoryLevelsByItemForUpdate(Item item) {
         return getPartyInventoryLevelsByItem(item, EntityPermission.READ_WRITE);
     }
-    
-    private List<PartyInventoryLevel> getPartyInventoryLevelsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<PartyInventoryLevel> partyInventoryLevels;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyinventorylevels, parties, partydetails, partytypes, item, itemdetails
-                        WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
-                        AND parinvlvl_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
-                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
-                        AND parinvlvl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyinventorylevels
-                        WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
 
-            var ps = partyInventoryLevelFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyInventoryLevels = partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyInventoryLevels;
+    private List<PartyInventoryLevel> getPartyInventoryLevelsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(PartyInventoryLevels.fields())
+                    .from(PartyInventoryLevels)
+                    .join(Parties)
+                    .on(PartyInventoryLevels.PARTY.eq(Parties.PARTY))
+                    .join(PartyDetails)
+                    .on(Parties.ACTIVE_DETAIL.eq(PartyDetails.PARTY_DETAIL))
+                    .join(PartyTypes)
+                    .on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
+                    .join(Items)
+                    .on(PartyInventoryLevels.ITEM.eq(Items.ITEM))
+                    .join(ItemDetails)
+                    .on(Items.LAST_DETAIL.eq(ItemDetails.ITEM_DETAIL))
+                    .where(PartyInventoryLevels.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME, ItemDetails.ITEM_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyInventoryLevels.fields())
+                    .from(PartyInventoryLevels)
+                    .where(PartyInventoryLevels.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission,
+                partyInventoryLevelFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<PartyInventoryLevel> getPartyInventoryLevelsByInventoryCondition(InventoryCondition inventoryCondition) {
         return getPartyInventoryLevelsByInventoryCondition(inventoryCondition, EntityPermission.READ_ONLY);
     }
-    
+
     public List<PartyInventoryLevel> getPartyInventoryLevelsByInventoryConditionForUpdate(InventoryCondition inventoryCondition) {
         return getPartyInventoryLevelsByInventoryCondition(inventoryCondition, EntityPermission.READ_WRITE);
     }
-    
+
     public PartyInventoryLevelTransfer getPartyInventoryLevelTransfer(UserVisit userVisit, PartyInventoryLevel partyInventoryLevel) {
         return partyInventoryLevelTransferCache.getTransfer(userVisit, partyInventoryLevel);
     }
-    
+
     public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfers(UserVisit userVisit, Collection<PartyInventoryLevel> partyInventoryLevels) {
         List<PartyInventoryLevelTransfer> partyInventoryLevelTransfers = new ArrayList<>(partyInventoryLevels.size());
-        
+
         partyInventoryLevels.forEach((partyInventoryLevel) ->
                 partyInventoryLevelTransfers.add(partyInventoryLevelTransferCache.getTransfer(userVisit, partyInventoryLevel))
         );
-        
+
         return partyInventoryLevelTransfers;
     }
-    
+
     public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfersByParty(UserVisit userVisit, Party party) {
         return getPartyInventoryLevelTransfers(userVisit, getPartyInventoryLevelsByParty(party));
     }
-    
+
     public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfersByItem(UserVisit userVisit, Item item) {
         return getPartyInventoryLevelTransfers(userVisit, getPartyInventoryLevelsByItem(item));
     }
-    
+
     public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfersByInventoryCondition(UserVisit userVisit, InventoryCondition inventoryCondition) {
         return getPartyInventoryLevelTransfers(userVisit, getPartyInventoryLevelsByInventoryCondition(inventoryCondition));
     }
-    
+
     public void updatePartyInventoryLevelFromValue(PartyInventoryLevelValue partyInventoryLevelValue, BasePK updatedBy) {
         if(partyInventoryLevelValue.hasBeenModified()) {
             var partyInventoryLevel = partyInventoryLevelFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     partyInventoryLevelValue.getPrimaryKey());
-            
+                    partyInventoryLevelValue.getPrimaryKey());
+
             partyInventoryLevel.setThruTime(session.getStartTime());
             partyInventoryLevel.store();
 
@@ -326,39 +290,36 @@ public class InventoryLevelControl
             var minimumInventory = partyInventoryLevelValue.getMinimumInventory();
             var maximumInventory = partyInventoryLevelValue.getMaximumInventory();
             var reorderQuantity = partyInventoryLevelValue.getReorderQuantity();
-            
+
             partyInventoryLevel = partyInventoryLevelFactory.create(partyPK, itemPK, inventoryConditionPK,
                     minimumInventory, maximumInventory, reorderQuantity, session.getStartTime(), Session.MAX_TIME);
-            
+
             sendEvent(partyPK, EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
-    
+
     public void deletePartyInventoryLevel(PartyInventoryLevel partyInventoryLevel, BasePK deletedBy) {
         partyInventoryLevel.setThruTime(session.getStartTime());
-        
+
         sendEvent(partyInventoryLevel.getPartyPK(), EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
-    
+
     public void deletePartyInventoryLevels(List<PartyInventoryLevel> partyInventoryLevels, BasePK deletedBy) {
-        partyInventoryLevels.forEach((partyInventoryLevel) -> 
+        partyInventoryLevels.forEach((partyInventoryLevel) ->
                 deletePartyInventoryLevel(partyInventoryLevel, deletedBy)
         );
     }
-    
+
     public void deletePartyInventoryLevelsByParty(Party party, BasePK deletedBy) {
         deletePartyInventoryLevels(getPartyInventoryLevelsByPartyForUpdate(party), deletedBy);
     }
-    
+
     public void deletePartyInventoryLevelsByItem(Item item, BasePK deletedBy) {
         deletePartyInventoryLevels(getPartyInventoryLevelsByItemForUpdate(item), deletedBy);
     }
-    
-    
+
     public void deletePartyInventoryLevelsByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
         deletePartyInventoryLevels(getPartyInventoryLevelsByInventoryConditionForUpdate(inventoryCondition), deletedBy);
     }
-    
-
 
 }

@@ -55,20 +55,30 @@ import com.echothree.model.data.inventory.server.value.InventoryConditionGlAccou
 import com.echothree.model.data.inventory.server.value.InventoryConditionUseValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.ITEM_ACCOUNTING_CATEGORIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_CONDITIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.accounting.ItemAccountingCategories.ItemAccountingCategories;
+import static com.echothree.model.jooq.server.tables.accounting.ItemAccountingCategoryDetails.ItemAccountingCategoryDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDescriptions.InventoryConditionDescriptions;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDetails.InventoryConditionDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionGlAccounts.InventoryConditionGlAccounts;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionUseTypeDescriptions.InventoryConditionUseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionUseTypes.InventoryConditionUseTypes;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionUses.InventoryConditionUses;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditions.InventoryConditions;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
+import org.jooq.Condition;
 
 @CommandScope
 public class InventoryConditionControl
@@ -98,7 +108,9 @@ public class InventoryConditionControl
     @Inject
     InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache;
 
-    /** Creates a new instance of InventoryConditionControl */
+    /**
+     * Creates a new instance of InventoryConditionControl
+     */
     protected InventoryConditionControl() {
         super();
     }
@@ -117,10 +129,10 @@ public class InventoryConditionControl
             final Integer sortOrder, final BasePK createdBy) {
         var defaultInventoryCondition = getDefaultInventoryCondition();
         var defaultFound = defaultInventoryCondition != null;
-        
+
         if(defaultFound && isDefault) {
             var defaultInventoryConditionDetailValue = getDefaultInventoryConditionDetailValueForUpdate();
-            
+
             defaultInventoryConditionDetailValue.setIsDefault(false);
             updateInventoryConditionFromValue(defaultInventoryConditionDetailValue, false, createdBy);
         } else if(!defaultFound) {
@@ -130,19 +142,21 @@ public class InventoryConditionControl
         var inventoryCondition = inventoryConditionFactory.create();
         var inventoryConditionDetail = inventoryConditionDetailFactory.create(
                 inventoryCondition, inventoryConditionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
-        
+
         // Convert to R/W
         inventoryCondition = inventoryConditionFactory.getEntityFromPK(EntityPermission.READ_WRITE, inventoryCondition.getPrimaryKey());
         inventoryCondition.setActiveDetail(inventoryConditionDetail);
         inventoryCondition.setLastDetail(inventoryConditionDetail);
         inventoryCondition.store();
-        
+
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
-        
+
         return inventoryCondition;
     }
-    
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryCondition */
+
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryCondition
+     */
     public InventoryCondition getInventoryConditionByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new InventoryConditionPK(entityInstance.getEntityUniqueId());
@@ -159,125 +173,117 @@ public class InventoryConditionControl
     }
 
     public long countInventoryConditions() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM inventoryconditions, inventoryconditiondetails
-                WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryConditions)
+                .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
-
-    private static final Map<EntityPermission, String> getInventoryConditionByNameQueries = Map.of(
-            EntityPermission.READ_ONLY, """
-                    SELECT _ALL_
-                    FROM inventoryconditions, inventoryconditiondetails
-                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_inventoryconditionname = ? AND invcondt_thrutime = ?
-                    """,
-            EntityPermission.READ_WRITE, """
-                    SELECT _ALL_
-                    FROM inventoryconditions, inventoryconditiondetails
-                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_inventoryconditionname = ? AND invcondt_thrutime = ?
-                    FOR UPDATE
-                    """);
 
     public InventoryCondition getInventoryConditionByName(final String inventoryConditionName, final EntityPermission entityPermission) {
-        return inventoryConditionFactory.getEntityFromQuery(entityPermission, getInventoryConditionByNameQueries,
-                inventoryConditionName, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(InventoryConditions.fields())
+                .from(InventoryConditions)
+                .join(InventoryConditionDetails)
+                .on(InventoryConditions.INVENTORY_CONDITION.eq(InventoryConditionDetails.INVENTORY_CONDITION))
+                .where(InventoryConditionDetails.INVENTORY_CONDITION_NAME.eq(inventoryConditionName),
+                        InventoryConditionDetails.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return inventoryConditionFactory.getEntityFromQuery(entityPermission,
+                inventoryConditionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
-    
+
     public InventoryCondition getInventoryConditionByName(final String inventoryConditionName) {
         return getInventoryConditionByName(inventoryConditionName, EntityPermission.READ_ONLY);
     }
-    
+
     public InventoryCondition getInventoryConditionByNameForUpdate(final String inventoryConditionName) {
         return getInventoryConditionByName(inventoryConditionName, EntityPermission.READ_WRITE);
     }
-    
+
     public InventoryConditionDetailValue getInventoryConditionDetailValueForUpdate(final InventoryCondition inventoryCondition) {
-        return inventoryCondition == null ? null: inventoryCondition.getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
+        return inventoryCondition == null ? null : inventoryCondition.getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
     }
-    
+
     public InventoryConditionDetailValue getInventoryConditionDetailValueByNameForUpdate(final String inventoryConditionName) {
         return getInventoryConditionDetailValueForUpdate(getInventoryConditionByNameForUpdate(inventoryConditionName));
     }
-    
-    private static final Map<EntityPermission, String> getDefaultInventoryConditionQueries = Map.of(
-            EntityPermission.READ_ONLY, """
-                    SELECT _ALL_
-                    FROM inventoryconditions, inventoryconditiondetails
-                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_isdefault = 1 AND invcondt_thrutime = ?
-                    """,
-            EntityPermission.READ_WRITE, """
-                    SELECT _ALL_
-                    FROM inventoryconditions, inventoryconditiondetails
-                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_isdefault = 1 AND invcondt_thrutime = ?
-                    FOR UPDATE
-                    """);
 
     public InventoryCondition getDefaultInventoryCondition(final EntityPermission entityPermission) {
-        return inventoryConditionFactory.getEntityFromQuery(entityPermission, getDefaultInventoryConditionQueries,
-                Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(InventoryConditions.fields())
+                .from(InventoryConditions)
+                .join(InventoryConditionDetails)
+                .on(InventoryConditions.INVENTORY_CONDITION.eq(InventoryConditionDetails.INVENTORY_CONDITION))
+                .where(InventoryConditionDetails.IS_DEFAULT.eq(true), InventoryConditionDetails.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return inventoryConditionFactory.getEntityFromQuery(entityPermission,
+                inventoryConditionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
-    
+
     public InventoryCondition getDefaultInventoryCondition() {
         return getDefaultInventoryCondition(EntityPermission.READ_ONLY);
     }
-    
+
     public InventoryCondition getDefaultInventoryConditionForUpdate() {
         return getDefaultInventoryCondition(EntityPermission.READ_WRITE);
     }
-    
+
     public InventoryConditionDetailValue getDefaultInventoryConditionDetailValueForUpdate() {
         return getDefaultInventoryConditionForUpdate().getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
     }
-    
-    private static final Map<EntityPermission, String> getInventoryConditionsQueries = Map.of(
-            EntityPermission.READ_ONLY, """
-                    SELECT _ALL_
-                    FROM inventoryconditions, inventoryconditiondetails
-                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ?
-                    ORDER BY invcondt_sortorder, invcondt_inventoryconditionname
-                    _LIMIT_
-                    """,
-            EntityPermission.READ_WRITE, """
-                    SELECT _ALL_
-                    FROM inventoryconditions, inventoryconditiondetails
-                    WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ?
-                    FOR UPDATE
-                    """);
 
     private List<InventoryCondition> getInventoryConditions(final EntityPermission entityPermission) {
-        return inventoryConditionFactory.getEntitiesFromQuery(entityPermission, getInventoryConditionsQueries,
-                Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(InventoryConditions.fields())
+                .from(InventoryConditions)
+                .join(InventoryConditionDetails)
+                .on(InventoryConditions.INVENTORY_CONDITION.eq(InventoryConditionDetails.INVENTORY_CONDITION))
+                .where(InventoryConditionDetails.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY
+                ? baseQuery.orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME)
+                : baseQuery.forUpdate();
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return inventoryConditionFactory.getEntitiesFromQuery(entityPermission,
+                inventoryConditionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<InventoryCondition> getInventoryConditions() {
         return getInventoryConditions(EntityPermission.READ_ONLY);
     }
-    
+
     public List<InventoryCondition> getInventoryConditionsForUpdate() {
         return getInventoryConditions(EntityPermission.READ_WRITE);
     }
-    
+
     public InventoryConditionTransfer getInventoryConditionTransfer(final UserVisit userVisit,
             final InventoryCondition inventoryCondition) {
         return inventoryConditionTransferCache.getTransfer(userVisit, inventoryCondition);
     }
-    
+
     public List<InventoryConditionTransfer> getInventoryConditionTransfers(final UserVisit userVisit,
             final Collection<InventoryCondition> inventoryConditions) {
         var inventoryConditionTransfers = new ArrayList<InventoryConditionTransfer>(inventoryConditions.size());
-        
+
         inventoryConditions.forEach((inventoryCondition) ->
                 inventoryConditionTransfers.add(inventoryConditionTransferCache.getTransfer(userVisit, inventoryCondition))
         );
-        
+
         return inventoryConditionTransfers;
     }
-    
+
     public List<InventoryConditionTransfer> getInventoryConditionTransfers(final UserVisit userVisit) {
         return getInventoryConditionTransfers(userVisit, getInventoryConditions());
     }
-    
+
     public InventoryConditionChoicesBean getInventoryConditionChoices(final String defaultInventoryConditionChoice,
             final Language language, final boolean allowNullChoice) {
         var inventoryConditions = getInventoryConditions();
@@ -285,34 +291,34 @@ public class InventoryConditionControl
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
         String defaultValue = null;
-        
+
         if(allowNullChoice) {
             labels.add("");
             values.add("");
-            
+
             if(defaultInventoryConditionChoice == null) {
                 defaultValue = "";
             }
         }
-        
+
         for(var inventoryCondition : inventoryConditions) {
             var inventoryConditionDetail = inventoryCondition.getLastDetail();
 
             var label = getBestInventoryConditionDescription(inventoryCondition, language);
             var value = inventoryConditionDetail.getInventoryConditionName();
-            
+
             labels.add(label == null ? value : label);
             values.add(value);
-            
+
             var usingDefaultChoice = Objects.equals(defaultInventoryConditionChoice, value);
             if(usingDefaultChoice || (defaultValue == null && inventoryConditionDetail.getIsDefault())) {
                 defaultValue = value;
             }
         }
-        
+
         return new InventoryConditionChoicesBean(labels, values, defaultValue);
     }
-    
+
     public InventoryConditionChoicesBean getInventoryConditionChoicesByInventoryConditionUseType(final String defaultInventoryConditionChoice,
             final Language language, final boolean allowNullChoice, final InventoryConditionUseType inventoryConditionUseType) {
         var inventoryConditionUses = getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType);
@@ -320,23 +326,23 @@ public class InventoryConditionControl
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
         String defaultValue = null;
-        
+
         if(allowNullChoice) {
             labels.add("");
             values.add("");
-            
+
             if(defaultInventoryConditionChoice == null) {
                 defaultValue = "";
             }
         }
-        
+
         for(var inventoryConditionUse : inventoryConditionUses) {
             var inventoryCondition = inventoryConditionUse.getInventoryCondition();
             var inventoryConditionDetail = inventoryCondition.getLastDetail();
 
             var label = getBestInventoryConditionDescription(inventoryCondition, language);
             var value = inventoryConditionDetail.getInventoryConditionName();
-            
+
             labels.add(label == null ? value : label);
             values.add(value);
 
@@ -345,17 +351,17 @@ public class InventoryConditionControl
                 defaultValue = value;
             }
         }
-        
+
         return new InventoryConditionChoicesBean(labels, values, defaultValue);
     }
-    
+
     private void updateInventoryConditionFromValue(final InventoryConditionDetailValue inventoryConditionDetailValue,
             final boolean checkDefault, final BasePK updatedBy) {
         if(inventoryConditionDetailValue.hasBeenModified()) {
             var inventoryCondition = inventoryConditionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     inventoryConditionDetailValue.getInventoryConditionPK());
+                    inventoryConditionDetailValue.getInventoryConditionPK());
             var inventoryConditionDetail = inventoryCondition.getActiveDetailForUpdate();
-            
+
             inventoryConditionDetail.setThruTime(session.getStartTime());
             inventoryConditionDetail.store();
 
@@ -363,15 +369,15 @@ public class InventoryConditionControl
             var inventoryConditionName = inventoryConditionDetailValue.getInventoryConditionName();
             var isDefault = inventoryConditionDetailValue.getIsDefault();
             var sortOrder = inventoryConditionDetailValue.getSortOrder();
-            
+
             if(checkDefault) {
                 var defaultInventoryCondition = getDefaultInventoryCondition();
                 var defaultFound = defaultInventoryCondition != null && !defaultInventoryCondition.equals(inventoryCondition);
-                
+
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
                     var defaultInventoryConditionDetailValue = getDefaultInventoryConditionDetailValueForUpdate();
-                    
+
                     defaultInventoryConditionDetailValue.setIsDefault(false);
                     updateInventoryConditionFromValue(defaultInventoryConditionDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
@@ -379,22 +385,22 @@ public class InventoryConditionControl
                     isDefault = true;
                 }
             }
-            
+
             inventoryConditionDetail = inventoryConditionDetailFactory.create(inventoryConditionPK,
                     inventoryConditionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
-            
+
             inventoryCondition.setActiveDetail(inventoryConditionDetail);
             inventoryCondition.setLastDetail(inventoryConditionDetail);
-            
+
             sendEvent(inventoryConditionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
-    
+
     public void updateInventoryConditionFromValue(final InventoryConditionDetailValue inventoryConditionDetailValue,
             final BasePK updatedBy) {
         updateInventoryConditionFromValue(inventoryConditionDetailValue, true, updatedBy);
     }
-    
+
     public void deleteInventoryCondition(final InventoryCondition inventoryCondition, final BasePK deletedBy) {
         deleteInventoryConditionDescriptionsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionGlAccountsByInventoryCondition(inventoryCondition, deletedBy);
@@ -406,32 +412,32 @@ public class InventoryConditionControl
         itemControl.deleteItemUnitLimitsByInventoryCondition(inventoryCondition, deletedBy);
         itemControl.deleteItemUnitPriceLimitsByInventoryCondition(inventoryCondition, deletedBy);
         vendorControl.deleteVendorItemCostsByInventoryCondition(inventoryCondition, deletedBy);
-        
+
         var inventoryConditionDetail = inventoryCondition.getLastDetailForUpdate();
         inventoryConditionDetail.setThruTime(session.getStartTime());
         inventoryConditionDetail.store();
         inventoryCondition.setActiveDetail(null);
-        
+
         // Check for default, and pick one if necessary
         var defaultInventoryCondition = getDefaultInventoryCondition();
         if(defaultInventoryCondition == null) {
             var inventoryConditions = getInventoryConditionsForUpdate();
-            
+
             if(!inventoryConditions.isEmpty()) {
                 var iter = inventoryConditions.iterator();
                 if(iter.hasNext()) {
                     defaultInventoryCondition = iter.next();
                 }
                 var inventoryConditionDetailValue = Objects.requireNonNull(defaultInventoryCondition).getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
-                
+
                 inventoryConditionDetailValue.setIsDefault(true);
                 updateInventoryConditionFromValue(inventoryConditionDetailValue, false, deletedBy);
             }
         }
-        
+
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Condition Descriptions
     // --------------------------------------------------------------------------------
@@ -443,80 +449,79 @@ public class InventoryConditionControl
             final Language language, final String description, final BasePK createdBy) {
         var inventoryConditionDescription = inventoryConditionDescriptionFactory.create(inventoryCondition,
                 language, description, session.getStartTime(), Session.MAX_TIME);
-        
+
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+
         return inventoryConditionDescription;
     }
 
-    private static final Map<EntityPermission, String> getInventoryConditionDescriptionQueries = Map.of(
-            EntityPermission.READ_ONLY, """
-                    SELECT _ALL_
-                    FROM inventoryconditiondescriptions
-                    WHERE invcond_invcon_inventoryconditionid = ? AND invcond_lang_languageid = ? AND invcond_thrutime = ?
-                    """,
-            EntityPermission.READ_WRITE, """
-                    SELECT _ALL_
-                    FROM inventoryconditiondescriptions
-                    WHERE invcond_invcon_inventoryconditionid = ? AND invcond_lang_languageid = ? AND invcond_thrutime = ?
-                    FOR UPDATE
-                    """);
-
     private InventoryConditionDescription getInventoryConditionDescription(final InventoryCondition inventoryCondition,
             final Language language, final EntityPermission entityPermission) {
-        return inventoryConditionDescriptionFactory.getEntityFromQuery(entityPermission, getInventoryConditionDescriptionQueries,
-                inventoryCondition, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(InventoryConditionDescriptions.fields())
+                .from(InventoryConditionDescriptions)
+                .where(InventoryConditionDescriptions.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        InventoryConditionDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        InventoryConditionDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return inventoryConditionDescriptionFactory.getEntityFromQuery(entityPermission,
+                inventoryConditionDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryConditionDescription getInventoryConditionDescription(final InventoryCondition inventoryCondition,
             final Language language) {
         return getInventoryConditionDescription(inventoryCondition, language, EntityPermission.READ_ONLY);
     }
-    
+
     public InventoryConditionDescription getInventoryConditionDescriptionForUpdate(final InventoryCondition inventoryCondition,
             final Language language) {
         return getInventoryConditionDescription(inventoryCondition, language, EntityPermission.READ_WRITE);
     }
-    
+
     public InventoryConditionDescriptionValue getInventoryConditionDescriptionValue(final InventoryConditionDescription inventoryConditionDescription) {
-        return inventoryConditionDescription == null ? null: inventoryConditionDescription.getInventoryConditionDescriptionValue().clone();
+        return inventoryConditionDescription == null ? null : inventoryConditionDescription.getInventoryConditionDescriptionValue().clone();
     }
-    
+
     public InventoryConditionDescriptionValue getInventoryConditionDescriptionValueForUpdate(final InventoryCondition inventoryCondition,
             final Language language) {
         return getInventoryConditionDescriptionValue(getInventoryConditionDescriptionForUpdate(inventoryCondition, language));
     }
 
-    private static final Map<EntityPermission, String> getInventoryConditionDescriptionsByInventoryConditionQueries = Map.of(
-            EntityPermission.READ_ONLY, """
-                    SELECT _ALL_
-                    FROM inventoryconditiondescriptions, languages
-                    WHERE invcond_invcon_inventoryconditionid = ? AND invcond_thrutime = ? AND invcond_lang_languageid = lang_languageid
-                    ORDER BY lang_sortorder, lang_languageisoname
-                    _LIMIT_
-                    """,
-            EntityPermission.READ_WRITE, """
-                    SELECT _ALL_
-                    FROM inventoryconditiondescriptions
-                    WHERE invcond_invcon_inventoryconditionid = ? AND invcond_thrutime = ?
-                    FOR UPDATE
-                    """);
-
     private List<InventoryConditionDescription> getInventoryConditionDescriptionsByInventoryCondition(final InventoryCondition inventoryCondition,
             final EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryConditionDescriptions.fields())
+                    .from(InventoryConditionDescriptions)
+                    .join(Languages)
+                    .on(InventoryConditionDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
+                    .where(InventoryConditionDescriptions.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            InventoryConditionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryConditionDescriptions.fields())
+                    .from(InventoryConditionDescriptions)
+                    .where(InventoryConditionDescriptions.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            InventoryConditionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
         return inventoryConditionDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                getInventoryConditionDescriptionsByInventoryConditionQueries,
-                inventoryCondition, Session.MAX_TIME);
+                inventoryConditionDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<InventoryConditionDescription> getInventoryConditionDescriptionsByInventoryCondition(final InventoryCondition inventoryCondition) {
         return getInventoryConditionDescriptionsByInventoryCondition(inventoryCondition, EntityPermission.READ_ONLY);
     }
-    
+
     public List<InventoryConditionDescription> getInventoryConditionDescriptionsByInventoryConditionForUpdate(final InventoryCondition inventoryCondition) {
         return getInventoryConditionDescriptionsByInventoryCondition(inventoryCondition, EntityPermission.READ_WRITE);
     }
-    
+
     public String getBestInventoryConditionDescription(final InventoryCondition inventoryCondition, final Language language) {
         var inventoryConditionDescription = getInventoryConditionDescription(inventoryCondition, language);
         String description;
@@ -524,67 +529,67 @@ public class InventoryConditionControl
         if(inventoryConditionDescription == null && !language.getIsDefault()) {
             inventoryConditionDescription = getInventoryConditionDescription(inventoryCondition, partyControl.getDefaultLanguage());
         }
-        
+
         if(inventoryConditionDescription == null) {
             description = inventoryCondition.getLastDetail().getInventoryConditionName();
         } else {
             description = inventoryConditionDescription.getDescription();
         }
-        
+
         return description;
     }
-    
+
     public InventoryConditionDescriptionTransfer getInventoryConditionDescriptionTransfer(final UserVisit userVisit,
             final InventoryConditionDescription inventoryConditionDescription) {
         return inventoryConditionDescriptionTransferCache.getTransfer(userVisit, inventoryConditionDescription);
     }
-    
+
     public List<InventoryConditionDescriptionTransfer> getInventoryConditionDescriptionTransfersByInventoryCondition(final UserVisit userVisit,
             final InventoryCondition inventoryCondition) {
         var inventoryConditionDescriptions = getInventoryConditionDescriptionsByInventoryCondition(inventoryCondition);
         var inventoryConditionDescriptionTransfers = new ArrayList<InventoryConditionDescriptionTransfer>(inventoryConditionDescriptions.size());
-        
+
         inventoryConditionDescriptions.forEach((inventoryConditionDescription) ->
                 inventoryConditionDescriptionTransfers.add(inventoryConditionDescriptionTransferCache.getTransfer(userVisit, inventoryConditionDescription))
         );
-        
+
         return inventoryConditionDescriptionTransfers;
     }
-    
+
     public void updateInventoryConditionDescriptionFromValue(final InventoryConditionDescriptionValue inventoryConditionDescriptionValue,
             final BasePK updatedBy) {
         if(inventoryConditionDescriptionValue.hasBeenModified()) {
             var inventoryConditionDescription = inventoryConditionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, inventoryConditionDescriptionValue.getPrimaryKey());
-            
+
             inventoryConditionDescription.setThruTime(session.getStartTime());
             inventoryConditionDescription.store();
-            
+
             var inventoryCondition = inventoryConditionDescription.getInventoryCondition();
             var language = inventoryConditionDescription.getLanguage();
             var description = inventoryConditionDescriptionValue.getDescription();
-            
+
             inventoryConditionDescription = inventoryConditionDescriptionFactory.create(inventoryCondition, language, description,
                     session.getStartTime(), Session.MAX_TIME);
-            
+
             sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
-    
+
     public void deleteInventoryConditionDescription(final InventoryConditionDescription inventoryConditionDescription, final BasePK deletedBy) {
         inventoryConditionDescription.setThruTime(session.getStartTime());
-        
+
         sendEvent(inventoryConditionDescription.getInventoryConditionPK(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
-        
+
     }
-    
+
     public void deleteInventoryConditionDescriptionsByInventoryCondition(final InventoryCondition inventoryCondition, final BasePK deletedBy) {
         var inventoryConditionDescriptions = getInventoryConditionDescriptionsByInventoryConditionForUpdate(inventoryCondition);
-        
+
         inventoryConditionDescriptions.forEach((inventoryConditionDescription) -> {
             deleteInventoryConditionDescription(inventoryConditionDescription, deletedBy);
         });
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Condition Use Types
     // --------------------------------------------------------------------------------
@@ -597,7 +602,9 @@ public class InventoryConditionControl
         return inventoryConditionUseTypeFactory.create(inventoryConditionUseTypeName, isDefault, sortOrder);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryConditionUseType */
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryConditionUseType
+     */
     public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new InventoryConditionUseTypePK(entityInstance.getEntityUniqueId());
 
@@ -613,46 +620,33 @@ public class InventoryConditionControl
     }
 
     public long countInventoryConditionUseTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionusetypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryConditionUseTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<InventoryConditionUseType> getInventoryConditionUseTypes() {
-        var ps = inventoryConditionUseTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM inventoryconditionusetypes
-                ORDER BY invconut_inventoryconditionusetypename
-                _LIMIT_
-                """);
-        
-        return inventoryConditionUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.getDslContext()
+                .select(InventoryConditionUseTypes.fields())
+                .from(InventoryConditionUseTypes)
+                .orderBy(InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE_NAME);
+
+        return inventoryConditionUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY,
+                inventoryConditionUseTypeFactory.prepareStatement(query.getSQL() + " _LIMIT_"));
     }
-    
+
     public InventoryConditionUseType getInventoryConditionUseTypeByName(String inventoryConditionUseTypeName) {
-        InventoryConditionUseType inventoryConditionUseType;
-        
-        try {
-            var ps = inventoryConditionUseTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM inventoryconditionusetypes
-                    WHERE invconut_inventoryconditionusetypename = ?
-                    """);
-            
-            ps.setString(1, inventoryConditionUseTypeName);
-            
-            
-            inventoryConditionUseType = inventoryConditionUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionUseType;
+        var query = session.getDslContext()
+                .select(InventoryConditionUseTypes.fields())
+                .from(InventoryConditionUseTypes)
+                .where(InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE_NAME.eq(inventoryConditionUseTypeName));
+
+        return inventoryConditionUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY,
+                inventoryConditionUseTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
-    
+
     public InventoryConditionUseTypeChoicesBean getInventoryConditionUseTypeChoices(String defaultInventoryConditionUseTypeChoice, Language language) {
         var inventoryConditionUseTypes = getInventoryConditionUseTypes();
         var size = inventoryConditionUseTypes.size();
@@ -660,29 +654,30 @@ public class InventoryConditionControl
         var values = new ArrayList<String>(size);
         String defaultValue = null;
         Iterator iter = inventoryConditionUseTypes.iterator();
-        
+
         while(iter.hasNext()) {
             var inventoryConditionUseType = (InventoryConditionUseType)iter.next();
-            
+
             var label = getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
             var value = inventoryConditionUseType.getInventoryConditionUseTypeName();
-            
-            labels.add(label == null? value: label);
+
+            labels.add(label == null ? value : label);
             values.add(value);
-            
+
             var usingDefaultChoice = defaultInventoryConditionUseTypeChoice != null && defaultInventoryConditionUseTypeChoice.equals(value);
-            if(usingDefaultChoice || defaultValue == null)
+            if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
+            }
         }
-        
+
         return new InventoryConditionUseTypeChoicesBean(labels, values, defaultValue);
     }
-    
+
     public InventoryConditionUseTypeTransfer getInventoryConditionUseTypeTransfer(UserVisit userVisit,
             InventoryConditionUseType inventoryConditionUseType) {
         return inventoryConditionUseTypeTransferCache.getTransfer(userVisit, inventoryConditionUseType);
     }
-    
+
     public List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypeTransfers(final UserVisit userVisit,
             final Collection<InventoryConditionUseType> inventoryConditionUseTypes) {
         List<InventoryConditionUseTypeTransfer> inventoryConditionUseTypeTransfers = null;
@@ -697,11 +692,11 @@ public class InventoryConditionControl
 
         return inventoryConditionUseTypeTransfers;
     }
-    
+
     public List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypeTransfers(UserVisit userVisit) {
         return getInventoryConditionUseTypeTransfers(userVisit, getInventoryConditionUseTypes());
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Condition Use Type Description
     // --------------------------------------------------------------------------------
@@ -712,45 +707,35 @@ public class InventoryConditionControl
     public InventoryConditionUseTypeDescription createInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language, String description) {
         return inventoryConditionUseTypeDescriptionFactory.create(inventoryConditionUseType, language, description);
     }
-    
+
     public InventoryConditionUseTypeDescription getInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language) {
-        InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription;
-        
-        try {
-            var ps = inventoryConditionUseTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM inventoryconditionusetypedescriptions
-                    WHERE invconutd_invconut_inventoryconditionusetypeid = ? AND invconutd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            inventoryConditionUseTypeDescription = inventoryConditionUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionUseTypeDescription;
+        var query = session.getDslContext()
+                .select(InventoryConditionUseTypeDescriptions.fields())
+                .from(InventoryConditionUseTypeDescriptions)
+                .where(InventoryConditionUseTypeDescriptions.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
+                        InventoryConditionUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return inventoryConditionUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY,
+                inventoryConditionUseTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
-    
+
     public String getBestInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language) {
         String description;
         var inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
-        
+
         if(inventoryConditionUseTypeDescription == null && !language.getIsDefault()) {
             inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, partyControl.getDefaultLanguage());
         }
-        
+
         if(inventoryConditionUseTypeDescription == null) {
             description = inventoryConditionUseType.getInventoryConditionUseTypeName();
         } else {
             description = inventoryConditionUseTypeDescription.getDescription();
         }
-        
+
         return description;
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Condition Uses
     // --------------------------------------------------------------------------------
@@ -762,10 +747,10 @@ public class InventoryConditionControl
             InventoryCondition inventoryCondition, Boolean isDefault, BasePK createdBy) {
         var defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
         var defaultFound = defaultInventoryConditionUse != null;
-        
+
         if(defaultFound && isDefault) {
             var defaultInventoryConditionUseValue = getDefaultInventoryConditionUseValueForUpdate(inventoryConditionUseType);
-            
+
             defaultInventoryConditionUseValue.setIsDefault(false);
             updateInventoryConditionUseFromValue(defaultInventoryConditionUseValue, false, createdBy);
         } else if(!defaultFound) {
@@ -774,242 +759,180 @@ public class InventoryConditionControl
 
         var inventoryConditionUse = inventoryConditionUseFactory.create(inventoryConditionUseType,
                 inventoryCondition, isDefault, session.getStartTime(), Session.MAX_TIME);
-        
+
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(),
                 null, createdBy);
-        
+
         return inventoryConditionUse;
     }
 
     public long countInventoryConditionUsesByInventoryConditionUseType(final InventoryConditionUseType inventoryConditionUseType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionuses
-                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?
-                        """, inventoryConditionUseType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryConditionUses)
+                .where(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
+                        InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countInventoryConditionUsesByInventoryCondition(final InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionuses
-                        WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?
-                        """, inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryConditionUses)
+                .where(InventoryConditionUses.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private InventoryConditionUse getInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        InventoryConditionUse inventoryConditionUse;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionuses
-                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_invcon_inventoryconditionid = ?
-                        AND invconu_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionuses
-                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_invcon_inventoryconditionid = ?
-                        AND invconu_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-            var ps = inventoryConditionUseFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            inventoryConditionUse = inventoryConditionUseFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionUse;
+        var baseQuery = session.getDslContext()
+                .select(InventoryConditionUses.fields())
+                .from(InventoryConditionUses)
+                .where(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
+                        InventoryConditionUses.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return inventoryConditionUseFactory.getEntityFromQuery(entityPermission,
+                inventoryConditionUseFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
-    
+
     public InventoryConditionUse getInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition) {
         return getInventoryConditionUse(inventoryConditionUseType, inventoryCondition, EntityPermission.READ_ONLY);
     }
-    
+
     public InventoryConditionUse getInventoryConditionUseForUpdate(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition) {
         return getInventoryConditionUse(inventoryConditionUseType, inventoryCondition, EntityPermission.READ_WRITE);
     }
-    
+
     public InventoryConditionUseValue getInventoryConditionUseValueForUpdate(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition) {
         return getInventoryConditionUseForUpdate(inventoryConditionUseType, inventoryCondition).getInventoryConditionUseValue().clone();
     }
-    
+
     private InventoryConditionUse getDefaultInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             EntityPermission entityPermission) {
-        InventoryConditionUse inventoryConditionUse;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionuses
-                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_isdefault = 1 AND invconu_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionuses
-                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_isdefault = 1 AND invconu_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-            var ps = inventoryConditionUseFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            inventoryConditionUse = inventoryConditionUseFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionUse;
+        var baseQuery = session.getDslContext()
+                .select(InventoryConditionUses.fields())
+                .from(InventoryConditionUses)
+                .where(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
+                        InventoryConditionUses.IS_DEFAULT.eq(true), InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return inventoryConditionUseFactory.getEntityFromQuery(entityPermission,
+                inventoryConditionUseFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
-    
+
     public InventoryConditionUse getDefaultInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType) {
         return getDefaultInventoryConditionUse(inventoryConditionUseType, EntityPermission.READ_ONLY);
     }
-    
+
     public InventoryConditionUse getDefaultInventoryConditionUseForUpdate(InventoryConditionUseType inventoryConditionUseType) {
         return getDefaultInventoryConditionUse(inventoryConditionUseType, EntityPermission.READ_WRITE);
     }
-    
+
     public InventoryConditionUseValue getDefaultInventoryConditionUseValueForUpdate(InventoryConditionUseType inventoryConditionUseType) {
         return getDefaultInventoryConditionUseForUpdate(inventoryConditionUseType).getInventoryConditionUseValue().clone();
     }
-    
+
     private List<InventoryConditionUse> getInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition,
             EntityPermission entityPermission) {
-        List<InventoryConditionUse> inventoryConditionUses;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionuses, inventoryconditionusetypes
-                        WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?
-                        AND invconu_invconut_inventoryconditionusetypeid = invconut_inventoryconditionusetypeid
-                        ORDER BY invconut_sortorder, invconut_inventoryconditionusetypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionuses
-                        WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryConditionUses.fields())
+                    .from(InventoryConditionUses)
+                    .join(InventoryConditionUseTypes)
+                    .on(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE))
+                    .where(InventoryConditionUses.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionUseTypes.SORT_ORDER, InventoryConditionUseTypes.INVENTORY_CONDITION_USE_TYPE_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryConditionUses.fields())
+                    .from(InventoryConditionUses)
+                    .where(InventoryConditionUses.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = inventoryConditionUseFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            inventoryConditionUses = inventoryConditionUseFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionUses;
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return inventoryConditionUseFactory.getEntitiesFromQuery(entityPermission,
+                inventoryConditionUseFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<InventoryConditionUse> getInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition) {
         return getInventoryConditionUsesByInventoryCondition(inventoryCondition, EntityPermission.READ_ONLY);
     }
-    
+
     public List<InventoryConditionUse> getInventoryConditionUsesByInventoryConditionForUpdate(InventoryCondition inventoryCondition) {
         return getInventoryConditionUsesByInventoryCondition(inventoryCondition, EntityPermission.READ_WRITE);
     }
-    
-    /** Get a List of InventoryConditionUses when the InventoryConditionUseType is allowed to be used by multiple
+
+    /**
+     * Get a List of InventoryConditionUses when the InventoryConditionUseType is allowed to be used by multiple
      * InventoryConditions.
      */
     private List<InventoryConditionUse> getInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType,
             EntityPermission entityPermission) {
-        List<InventoryConditionUse> inventoryConditionUses;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionuses, inventoryconditions, inventoryconditiondetails
-                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?
-                        AND invconu_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_activedetailid = invcondt_inventoryconditiondetailid
-                        ORDER BY invcondt_sortorder, invcondt_inventoryconditionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionuses, inventoryconditions, inventoryconditiondetails
-                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryConditionUses.fields())
+                    .from(InventoryConditionUses)
+                    .join(InventoryConditions)
+                    .on(InventoryConditionUses.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_ACTIVE_DETAIL_FK)
+                    .where(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
+                            InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryConditionUses.fields())
+                    .from(InventoryConditionUses)
+                    .where(InventoryConditionUses.INVENTORY_CONDITION_USE_TYPE.eq(inventoryConditionUseType.getPrimaryKey()),
+                            InventoryConditionUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = inventoryConditionUseFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryConditionUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            inventoryConditionUses = inventoryConditionUseFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionUses;
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return inventoryConditionUseFactory.getEntitiesFromQuery(entityPermission,
+                inventoryConditionUseFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<InventoryConditionUse> getInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType) {
         return getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType, EntityPermission.READ_ONLY);
     }
-    
+
     public List<InventoryConditionUse> getInventoryConditionUsesByInventoryConditionUseTypeForUpdate(InventoryConditionUseType inventoryConditionUseType) {
         return getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType, EntityPermission.READ_WRITE);
     }
-    
+
     public List<InventoryConditionUseTransfer> getInventoryConditionUseTransfers(final UserVisit userVisit,
             final Collection<InventoryConditionUse> inventoryConditionUses) {
         List<InventoryConditionUseTransfer> inventoryConditionUseTransfers = null;
-        
+
         if(inventoryConditionUses != null) {
-            
+
             inventoryConditionUseTransfers = new ArrayList<>(inventoryConditionUses.size());
-            
+
             for(var inventoryConditionUse : inventoryConditionUses) {
                 inventoryConditionUseTransfers.add(inventoryConditionUseTransferCache.getTransfer(userVisit, inventoryConditionUse));
             }
         }
         return inventoryConditionUseTransfers;
     }
-    
+
     public List<InventoryConditionUseTransfer> getInventoryConditionUseTransfersByInventoryCondition(UserVisit userVisit,
             InventoryCondition inventoryCondition) {
         return getInventoryConditionUseTransfers(userVisit, getInventoryConditionUsesByInventoryCondition(inventoryCondition));
     }
-    
+
     public List<InventoryConditionUseTransfer> getInventoryConditionUseTransfersByInventoryConditionUseType(UserVisit userVisit,
             InventoryConditionUseType inventoryConditionUseType) {
         return getInventoryConditionUseTransfers(userVisit, getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType));
@@ -1019,7 +942,7 @@ public class InventoryConditionControl
             BasePK updatedBy) {
         var inventoryConditionUse = inventoryConditionUseFactory.getEntityFromPK(
                 EntityPermission.READ_WRITE, inventoryConditionUseValue.getPrimaryKey());
-        
+
         inventoryConditionUse.setThruTime(session.getStartTime());
         inventoryConditionUse.store();
 
@@ -1027,15 +950,15 @@ public class InventoryConditionControl
         var inventoryConditionUseType = inventoryConditionUse.getInventoryConditionUseType();
         var inventoryConditionPK = inventoryConditionUse.getInventoryConditionPK();
         var isDefault = inventoryConditionUseValue.getIsDefault();
-        
+
         if(checkDefault) {
             var defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
             var defaultFound = defaultInventoryConditionUse != null && !defaultInventoryConditionUse.equals(inventoryConditionUse);
-            
+
             if(isDefault && defaultFound) {
                 // If I'm the default, and a default already existed...
                 var defaultInventoryConditionUseValue = getDefaultInventoryConditionUseValueForUpdate(inventoryConditionUseType);
-                
+
                 defaultInventoryConditionUseValue.setIsDefault(false);
                 updateInventoryConditionUseFromValue(defaultInventoryConditionUseValue, false, updatedBy);
             } else if(!isDefault && !defaultFound) {
@@ -1043,53 +966,54 @@ public class InventoryConditionControl
                 isDefault = true;
             }
         }
-        
+
         inventoryConditionUse = inventoryConditionUseFactory.create(inventoryConditionUseTypePK,
                 inventoryConditionPK, isDefault, session.getStartTime(), Session.MAX_TIME);
-        
+
         sendEvent(inventoryConditionPK, EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(), null, updatedBy);
     }
-    
-    /** Given an InventoryConditionUseValue, update only the isDefault property.
+
+    /**
+     * Given an InventoryConditionUseValue, update only the isDefault property.
      */
     public void updateInventoryConditionUseFromValue(InventoryConditionUseValue inventoryConditionUseValue, BasePK updatedBy) {
         updateInventoryConditionUseFromValue(inventoryConditionUseValue, true, updatedBy);
     }
-    
+
     public void deleteInventoryConditionUse(InventoryConditionUse inventoryConditionUse, BasePK deletedBy) {
         inventoryConditionUse.setThruTime(session.getStartTime());
         inventoryConditionUse.store();
-        
+
         // Check for default, and pick one if necessary
         var inventoryConditionUseType = inventoryConditionUse.getInventoryConditionUseType();
         var defaultInventoryConditionUse = getDefaultInventoryConditionUse(inventoryConditionUseType);
         if(defaultInventoryConditionUse == null) {
             var inventoryConditionUses = getInventoryConditionUsesByInventoryConditionUseTypeForUpdate(inventoryConditionUseType);
-            
+
             if(!inventoryConditionUses.isEmpty()) {
                 Iterator iter = inventoryConditionUses.iterator();
                 if(iter.hasNext()) {
                     defaultInventoryConditionUse = (InventoryConditionUse)iter.next();
                 }
                 var inventoryConditionUseValue = defaultInventoryConditionUse.getInventoryConditionUseValue().clone();
-                
+
                 inventoryConditionUseValue.setIsDefault(true);
                 updateInventoryConditionUseFromValue(inventoryConditionUseValue, false, deletedBy);
             }
         }
-        
+
         sendEvent(inventoryConditionUse.getInventoryConditionPK(), EventTypes.MODIFY,
                 inventoryConditionUse.getPrimaryKey(), null, deletedBy);
     }
-    
+
     public void deleteInventoryConditionUseByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
         var inventoryConditionUses = getInventoryConditionUsesByInventoryConditionForUpdate(inventoryCondition);
-        
-        inventoryConditionUses.forEach((inventoryConditionUse) -> 
+
+        inventoryConditionUses.forEach((inventoryConditionUse) ->
                 deleteInventoryConditionUse(inventoryConditionUse, deletedBy)
         );
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Condition Gl Accounts
     // --------------------------------------------------------------------------------
@@ -1103,213 +1027,148 @@ public class InventoryConditionControl
         var inventoryConditionGlAccount = inventoryConditionGlAccountFactory.create(
                 inventoryCondition, itemAccountingCategory, inventoryGlAccount, salesGlAccount, returnsGlAccount, cogsGlAccount,
                 returnsCogsGlAccount, session.getStartTime(), Session.MAX_TIME);
-        
+
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
-        
+
         return inventoryConditionGlAccount;
     }
 
     public long countInventoryConditionGlAccountByInventoryCondition(final InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ?
-                        """, inventoryCondition, Session.MAX_TIME);
+        return countInventoryConditionGlAccounts(InventoryConditionGlAccounts.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()));
     }
 
     public long countInventoryConditionGlAccountByItemAccountingCategory(final ItemAccountingCategory itemAccountingCategory) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
-                        """, itemAccountingCategory, Session.MAX_TIME);
+        return countInventoryConditionGlAccounts(InventoryConditionGlAccounts.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()));
     }
 
     public long countInventoryConditionGlAccountByInventoryGlAccount(final GlAccount inventoryGlAccount) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_inventoryglaccountid = ? AND invcongla_thrutime = ?
-                        """, inventoryGlAccount, Session.MAX_TIME);
+        return countInventoryConditionGlAccounts(InventoryConditionGlAccounts.INVENTORY_GL_ACCOUNT.eq(inventoryGlAccount.getPrimaryKey()));
     }
 
     public long countInventoryConditionGlAccountBySalesGlAccount(final GlAccount salesGlAccount) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_salesglaccountid = ? AND invcongla_thrutime = ?
-                        """, salesGlAccount, Session.MAX_TIME);
+        return countInventoryConditionGlAccounts(InventoryConditionGlAccounts.SALES_GL_ACCOUNT.eq(salesGlAccount.getPrimaryKey()));
     }
 
     public long countInventoryConditionGlAccountByReturnsGlAccount(final GlAccount returnsGlAccount) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_returnsglaccountid = ? AND invcongla_thrutime = ?
-                        """, returnsGlAccount, Session.MAX_TIME);
+        return countInventoryConditionGlAccounts(InventoryConditionGlAccounts.RETURNS_GL_ACCOUNT.eq(returnsGlAccount.getPrimaryKey()));
     }
 
     public long countInventoryConditionGlAccountByCogsGlAccount(final GlAccount cogsGlAccount) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_cogsglaccountid = ? AND invcongla_thrutime = ?
-                        """, cogsGlAccount, Session.MAX_TIME);
+        return countInventoryConditionGlAccounts(InventoryConditionGlAccounts.COGS_GL_ACCOUNT.eq(cogsGlAccount.getPrimaryKey()));
     }
 
     public long countInventoryConditionGlAccountByReturnsCogsGlAccount(final GlAccount returnsCogsGlAccount) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_returnscogsglaccountid = ? AND invcongla_thrutime = ?
-                        """, returnsCogsGlAccount, Session.MAX_TIME);
+        return countInventoryConditionGlAccounts(InventoryConditionGlAccounts.RETURNS_COGS_GL_ACCOUNT.eq(returnsCogsGlAccount.getPrimaryKey()));
+    }
+
+    private long countInventoryConditionGlAccounts(final Condition condition) {
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryConditionGlAccounts)
+                .where(condition, InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private InventoryConditionGlAccount getInventoryConditionGlAccount(InventoryCondition inventoryCondition,
             ItemAccountingCategory itemAccountingCategory, EntityPermission entityPermission) {
-        InventoryConditionGlAccount inventoryConditionGlAccount;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(InventoryConditionGlAccounts.fields())
+                .from(InventoryConditionGlAccounts)
+                .where(InventoryConditionGlAccounts.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        InventoryConditionGlAccounts.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
+                        InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = inventoryConditionGlAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, itemAccountingCategory.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            inventoryConditionGlAccount = inventoryConditionGlAccountFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionGlAccount;
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return inventoryConditionGlAccountFactory.getEntityFromQuery(entityPermission,
+                inventoryConditionGlAccountFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
-    
+
     public InventoryConditionGlAccount getInventoryConditionGlAccount(InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory) {
         return getInventoryConditionGlAccount(inventoryCondition, itemAccountingCategory, EntityPermission.READ_ONLY);
     }
-    
+
     public InventoryConditionGlAccount getInventoryConditionGlAccountForUpdate(InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory) {
         return getInventoryConditionGlAccount(inventoryCondition, itemAccountingCategory, EntityPermission.READ_WRITE);
     }
-    
+
     public InventoryConditionGlAccountValue getInventoryConditionGlAccountValueForUpdate(InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory) {
         return getInventoryConditionGlAccountForUpdate(inventoryCondition, itemAccountingCategory).getInventoryConditionGlAccountValue().clone();
     }
-    
-    private List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<InventoryConditionGlAccount> inventoryConditionGlAccounts;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionglaccounts, itemaccountingcategories, itemaccountingcategorydetails
-                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ?
-                        AND invcongla_iactgc_itemaccountingcategoryid = iactgc_itemaccountingcategoryid
-                        AND iactgc_lastdetailid = iactgcdt_itemaccountingcategorydetailid
-                        ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
 
-            var ps = inventoryConditionGlAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            inventoryConditionGlAccounts = inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionGlAccounts;
+    private List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryConditionGlAccounts.fields())
+                    .from(InventoryConditionGlAccounts)
+                    .join(ItemAccountingCategories)
+                    .on(InventoryConditionGlAccounts.ITEM_ACCOUNTING_CATEGORY.eq(ItemAccountingCategories.ITEM_ACCOUNTING_CATEGORY))
+                    .join(ItemAccountingCategoryDetails).onKey(ITEM_ACCOUNTING_CATEGORIES_LAST_DETAIL_FK)
+                    .where(InventoryConditionGlAccounts.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemAccountingCategoryDetails.SORT_ORDER, ItemAccountingCategoryDetails.ITEM_ACCOUNTING_CATEGORY_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryConditionGlAccounts.fields())
+                    .from(InventoryConditionGlAccounts)
+                    .where(InventoryConditionGlAccounts.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission,
+                inventoryConditionGlAccountFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition) {
         return getInventoryConditionGlAccountsByInventoryCondition(inventoryCondition, EntityPermission.READ_ONLY);
     }
-    
+
     public List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByInventoryConditionForUpdate(InventoryCondition inventoryCondition) {
         return getInventoryConditionGlAccountsByInventoryCondition(inventoryCondition, EntityPermission.READ_WRITE);
     }
-    
-    private List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, EntityPermission entityPermission) {
-        List<InventoryConditionGlAccount> inventoryConditionGlAccounts;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionglaccounts, inventoryconditions, inventoryconditiondetails
-                        WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
-                        AND invcongla_invcon_inventoryconditionid = invcon_inventoryconditionid
-                        AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        ORDER BY invcondt_sortorder, invcondt_inventoryconditionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM inventoryconditionglaccounts
-                        WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
 
-            var ps = inventoryConditionGlAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            inventoryConditionGlAccounts = inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return inventoryConditionGlAccounts;
+    private List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryConditionGlAccounts.fields())
+                    .from(InventoryConditionGlAccounts)
+                    .join(InventoryConditions)
+                    .on(InventoryConditionGlAccounts.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
+                    .join(InventoryConditionDetails)
+                    .on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
+                    .where(InventoryConditionGlAccounts.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
+                            InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryConditionGlAccounts.fields())
+                    .from(InventoryConditionGlAccounts)
+                    .where(InventoryConditionGlAccounts.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
+                            InventoryConditionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return inventoryConditionGlAccountFactory.getEntitiesFromQuery(entityPermission,
+                inventoryConditionGlAccountFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
-    
+
     public List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory) {
         return getInventoryConditionGlAccountsByItemAccountingCategory(itemAccountingCategory, EntityPermission.READ_ONLY);
     }
-    
+
     public List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByItemAccountingCategoryForUpdate(ItemAccountingCategory itemAccountingCategory) {
         return getInventoryConditionGlAccountsByItemAccountingCategory(itemAccountingCategory, EntityPermission.READ_WRITE);
     }
-    
+
     public void updateInventoryConditionGlAccountFromValue(InventoryConditionGlAccountValue inventoryConditionGlAccountValue, BasePK updatedBy) {
         if(inventoryConditionGlAccountValue.hasBeenModified()) {
             var inventoryConditionGlAccount = inventoryConditionGlAccountFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     inventoryConditionGlAccountValue.getPrimaryKey());
-            
+                    inventoryConditionGlAccountValue.getPrimaryKey());
+
             inventoryConditionGlAccount.setThruTime(session.getStartTime());
             inventoryConditionGlAccount.store();
 
@@ -1320,61 +1179,60 @@ public class InventoryConditionControl
             var returnsGlAccountPK = inventoryConditionGlAccountValue.getReturnsGlAccountPK();
             var cogsGlAccountPK = inventoryConditionGlAccountValue.getCogsGlAccountPK();
             var returnsCogsGlAccountPK = inventoryConditionGlAccountValue.getReturnsCogsGlAccountPK();
-            
+
             inventoryConditionGlAccount = inventoryConditionGlAccountFactory.create(inventoryConditionPK,
                     itemAccountingCategoryPK, inventoryGlAccountPK, salesGlAccountPK, returnsGlAccountPK, cogsGlAccountPK,
                     returnsCogsGlAccountPK, session.getStartTime(), Session.MAX_TIME);
-            
+
             sendEvent(inventoryConditionPK, EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
-    
+
     public InventoryConditionGlAccountTransfer getInventoryConditionGlAccountTransfer(UserVisit userVisit, InventoryConditionGlAccount inventoryConditionGlAccount) {
-        return inventoryConditionGlAccount == null? null: inventoryConditionGlAccountTransferCache.getTransfer(userVisit, inventoryConditionGlAccount);
+        return inventoryConditionGlAccount == null ? null : inventoryConditionGlAccountTransferCache.getTransfer(userVisit, inventoryConditionGlAccount);
     }
-    
+
     public InventoryConditionGlAccountTransfer getInventoryConditionGlAccountTransfer(UserVisit userVisit, InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory) {
         return getInventoryConditionGlAccountTransfer(userVisit, getInventoryConditionGlAccount(inventoryCondition, itemAccountingCategory));
     }
-    
+
     public List<InventoryConditionGlAccountTransfer> getInventoryConditionGlAccountTransfersByInventoryCondition(UserVisit userVisit, InventoryCondition inventoryCondition) {
         var inventoryConditionGlAccounts = getInventoryConditionGlAccountsByInventoryCondition(inventoryCondition);
         List<InventoryConditionGlAccountTransfer> inventoryConditionGlAccountTransfers = new ArrayList<>(inventoryConditionGlAccounts.size());
-        
+
         inventoryConditionGlAccounts.forEach((inventoryConditionGlAccount) ->
                 inventoryConditionGlAccountTransfers.add(inventoryConditionGlAccountTransferCache.getTransfer(userVisit, inventoryConditionGlAccount))
         );
-        
+
         return inventoryConditionGlAccountTransfers;
     }
-    
+
     public void deleteInventoryConditionGlAccount(InventoryConditionGlAccount inventoryConditionGlAccount, BasePK deletedBy) {
         inventoryConditionGlAccount.setThruTime(session.getStartTime());
-        
+
         sendEvent(inventoryConditionGlAccount.getInventoryConditionPK(), EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
-    
+
     public void deleteInventoryConditionGlAccounts(List<InventoryConditionGlAccount> inventoryConditionGlAccounts, BasePK deletedBy) {
-        inventoryConditionGlAccounts.forEach((inventoryConditionGlAccount) -> 
+        inventoryConditionGlAccounts.forEach((inventoryConditionGlAccount) ->
                 deleteInventoryConditionGlAccount(inventoryConditionGlAccount, deletedBy)
         );
     }
-    
+
     public void deleteInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
         deleteInventoryConditionGlAccounts(getInventoryConditionGlAccountsByInventoryConditionForUpdate(inventoryCondition), deletedBy);
     }
-    
+
     public void deleteInventoryConditionGlAccountsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, BasePK deletedBy) {
         deleteInventoryConditionGlAccounts(getInventoryConditionGlAccountsByItemAccountingCategoryForUpdate(itemAccountingCategory), deletedBy);
     }
-    
+
     public void deleteInventoryConditionGlAccountByInventoryConditionAndItemAccountingCategory(InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory, BasePK deletedBy) {
         var inventoryConditionGlAccount = getInventoryConditionGlAccountForUpdate(inventoryCondition, itemAccountingCategory);
-        
-        if(inventoryConditionGlAccount!= null) {
+
+        if(inventoryConditionGlAccount != null) {
             deleteInventoryConditionGlAccount(inventoryConditionGlAccount, deletedBy);
         }
     }
-
 
 }

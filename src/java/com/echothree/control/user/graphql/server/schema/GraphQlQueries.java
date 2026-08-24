@@ -250,6 +250,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryTransacti
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetLotCommand;
 import com.echothree.control.user.inventory.server.command.GetLotsCommand;
+import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodCommand;
+import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodsCommand;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.server.command.GetItemAliasChecksumTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasChecksumTypesCommand;
@@ -640,6 +642,7 @@ import com.echothree.model.control.inventory.server.graphql.InventoryCostingMeth
 import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
+import com.echothree.model.control.inventory.server.graphql.PartyInventoryCostingMethodObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
@@ -981,6 +984,7 @@ import com.echothree.model.data.inventory.common.InventoryCostingMethodConstants
 import com.echothree.model.data.inventory.common.InventoryLocationGroupConstants;
 import com.echothree.model.data.inventory.common.InventoryTransactionTypeConstants;
 import com.echothree.model.data.inventory.common.LotConstants;
+import com.echothree.model.data.inventory.common.PartyInventoryCostingMethodConstants;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
@@ -989,6 +993,7 @@ import com.echothree.model.data.inventory.server.entity.InventoryCostingMethod;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.Lot;
+import com.echothree.model.data.inventory.server.entity.PartyInventoryCostingMethod;
 import com.echothree.model.data.item.common.ItemAliasChecksumTypeConstants;
 import com.echothree.model.data.item.common.ItemAliasConstants;
 import com.echothree.model.data.item.common.ItemAliasTypeConstants;
@@ -5594,6 +5599,68 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryCostingMethods);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("partyInventoryCostingMethod")
+    static PartyInventoryCostingMethodObject partyInventoryCostingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PartyInventoryCostingMethod partyInventoryCostingMethod;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetPartyInventoryCostingMethodForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setUuid(id);
+
+            partyInventoryCostingMethod = CDI.current().select(GetPartyInventoryCostingMethodCommand.class).get()
+                    .getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return partyInventoryCostingMethod == null ? null
+                : new PartyInventoryCostingMethodObject(partyInventoryCostingMethod);
+    }
+
+    @GraphQLField
+    @GraphQLName("partyInventoryCostingMethods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PartyInventoryCostingMethodObject> partyInventoryCostingMethods(
+            final DataFetchingEnvironment env,
+            @GraphQLName("inventoryCostingMethodName") final String inventoryCostingMethodName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        CountingPaginatedData<PartyInventoryCostingMethodObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetPartyInventoryCostingMethodsForm();
+            var command = CDI.current().select(GetPartyInventoryCostingMethodsCommand.class).get();
+
+            commandForm.setInventoryCostingMethodName(inventoryCostingMethodName);
+            commandForm.setUuid(id);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env,
+                        PartyInventoryCostingMethodConstants.COMPONENT_VENDOR_NAME,
+                        PartyInventoryCostingMethodConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+                    var partyInventoryCostingMethods = entities.stream()
+                            .map(PartyInventoryCostingMethodObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, partyInventoryCostingMethods);
                 }
             }
         } catch (NamingException ex) {

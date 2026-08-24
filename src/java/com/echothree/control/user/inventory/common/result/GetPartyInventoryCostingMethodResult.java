@@ -14,17 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.control.user.inventory.common.result;
 
-public interface InventoryOptions {
-    
-    String InventoryLocationGroupIncludeCapacities = "InventoryLocationGroupIncludeCapacities";
-    String InventoryLocationGroupIncludeVolume     = "InventoryLocationGroupIncludeVolume";
+import com.echothree.model.control.inventory.common.transfer.PartyInventoryCostingMethodTransfer;
+import com.echothree.util.common.command.BaseResult;
 
-    String LotIncludeUuid = "LotIncludeUuid";
-    String LotIncludeLotAliases = "LotIncludeLotAliases";
-    String LotIncludeLotTimes = "LotIncludeLotTimes";
+public interface GetPartyInventoryCostingMethodResult
+        extends BaseResult {
 
-    String PartyInventoryCostingMethodIncludeParty = "PartyInventoryCostingMethodIncludeParty";
-
+    PartyInventoryCostingMethodTransfer getPartyInventoryCostingMethod();
+    void setPartyInventoryCostingMethod(PartyInventoryCostingMethodTransfer partyInventoryCostingMethod);
 }
