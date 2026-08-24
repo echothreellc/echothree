@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.common.choice.InventoryAdjustmentTypeChoicesBean;
 import com.echothree.model.control.inventory.common.transfer.InventoryAdjustmentTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryAdjustmentTypeTransfer;
+import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryAdjustmentTypePK;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
@@ -31,20 +33,20 @@ import com.echothree.model.data.inventory.server.value.InventoryAdjustmentTypeDe
 import com.echothree.model.data.inventory.server.value.InventoryAdjustmentTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeTransferCache;
-import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeDescriptionTransferCache;
-import com.echothree.util.server.control.BaseModelControl;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryAdjustmentTypeDescriptions.InventoryAdjustmentTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryAdjustmentTypeDetails.InventoryAdjustmentTypeDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryAdjustmentTypes.InventoryAdjustmentTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -57,11 +59,13 @@ public class InventoryAdjustmentTypeControl
     @Inject
     InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
 
-    /** Creates a new instance of InventoryAdjustmentTypeControl */
+    /**
+     * Creates a new instance of InventoryAdjustmentTypeControl
+     */
     protected InventoryAdjustmentTypeControl() {
         super();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Inventory Adjustment Types
     // --------------------------------------------------------------------------------
@@ -102,7 +106,9 @@ public class InventoryAdjustmentTypeControl
         return inventoryAdjustmentType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryAdjustmentType */
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryAdjustmentType
+     */
     public InventoryAdjustmentType getInventoryAdjustmentTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new InventoryAdjustmentTypePK(entityInstance.getEntityUniqueId());
@@ -123,36 +129,29 @@ public class InventoryAdjustmentTypeControl
     }
 
     public long countInventoryAdjustmentTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
-                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryAdjustmentTypes)
+                .join(InventoryAdjustmentTypeDetails).onKey(INVENTORY_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getInventoryAdjustmentTypeByNameQueries;
+    public InventoryAdjustmentType getInventoryAdjustmentTypeByName(final String inventoryAdjustmentTypeName,
+            final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryAdjustmentTypes.fields())
+                .from(InventoryAdjustmentTypes)
+                .join(InventoryAdjustmentTypeDetails).onKey(INVENTORY_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(InventoryAdjustmentTypeDetails.INVENTORY_ADJUSTMENT_TYPE_NAME.eq(inventoryAdjustmentTypeName));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
-                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
-                AND invadjtypdt_inventoryadjustmenttypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
-                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
-                AND invadjtypdt_inventoryadjustmenttypename = ?
-                FOR UPDATE
-                """);
-        getInventoryAdjustmentTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public InventoryAdjustmentType getInventoryAdjustmentTypeByName(String inventoryAdjustmentTypeName, EntityPermission entityPermission) {
-        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getInventoryAdjustmentTypeByNameQueries, inventoryAdjustmentTypeName);
+        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission,
+                inventoryAdjustmentTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryAdjustmentType getInventoryAdjustmentTypeByName(String inventoryAdjustmentTypeName) {
@@ -164,36 +163,27 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentTypeDetailValue getInventoryAdjustmentTypeDetailValueForUpdate(InventoryAdjustmentType inventoryAdjustmentType) {
-        return inventoryAdjustmentType == null? null: inventoryAdjustmentType.getLastDetailForUpdate().getInventoryAdjustmentTypeDetailValue().clone();
+        return inventoryAdjustmentType == null ? null : inventoryAdjustmentType.getLastDetailForUpdate().getInventoryAdjustmentTypeDetailValue().clone();
     }
 
     public InventoryAdjustmentTypeDetailValue getInventoryAdjustmentTypeDetailValueByNameForUpdate(String inventoryAdjustmentTypeName) {
         return getInventoryAdjustmentTypeDetailValueForUpdate(getInventoryAdjustmentTypeByNameForUpdate(inventoryAdjustmentTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultInventoryAdjustmentTypeQueries;
+    public InventoryAdjustmentType getDefaultInventoryAdjustmentType(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryAdjustmentTypes.fields())
+                .from(InventoryAdjustmentTypes)
+                .join(InventoryAdjustmentTypeDetails).onKey(INVENTORY_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(InventoryAdjustmentTypeDetails.IS_DEFAULT.eq(true));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
-                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
-                AND invadjtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
-                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
-                AND invadjtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultInventoryAdjustmentTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public InventoryAdjustmentType getDefaultInventoryAdjustmentType(EntityPermission entityPermission) {
-        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getDefaultInventoryAdjustmentTypeQueries);
+        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission,
+                inventoryAdjustmentTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryAdjustmentType getDefaultInventoryAdjustmentType() {
@@ -208,29 +198,23 @@ public class InventoryAdjustmentTypeControl
         return getDefaultInventoryAdjustmentTypeForUpdate().getLastDetailForUpdate().getInventoryAdjustmentTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getInventoryAdjustmentTypesQueries;
+    private List<InventoryAdjustmentType> getInventoryAdjustmentTypes(final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryAdjustmentTypes.fields())
+                .from(InventoryAdjustmentTypes)
+                .join(InventoryAdjustmentTypeDetails).onKey(INVENTORY_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK);
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = switch(entityPermission) {
+            case READ_ONLY -> baseQuery
+                    .orderBy(InventoryAdjustmentTypeDetails.SORT_ORDER, InventoryAdjustmentTypeDetails.INVENTORY_ADJUSTMENT_TYPE_NAME)
+                    .getSQL() + " _LIMIT_";
+            case READ_WRITE -> baseQuery
+                    .forUpdate()
+                    .getSQL();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
-                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
-                ORDER BY invadjtypdt_sortorder, invadjtypdt_inventoryadjustmenttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypes, inventoryadjustmenttypedetails
-                WHERE invadjtyp_activedetailid = invadjtypdt_inventoryadjustmenttypedetailid
-                FOR UPDATE
-                """);
-        getInventoryAdjustmentTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<InventoryAdjustmentType> getInventoryAdjustmentTypes(EntityPermission entityPermission) {
-        return inventoryAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission, getInventoryAdjustmentTypesQueries);
+        return inventoryAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission,
+                inventoryAdjustmentTypeFactory.prepareStatement(sql));
     }
 
     public List<InventoryAdjustmentType> getInventoryAdjustmentTypes() {
@@ -282,7 +266,7 @@ public class InventoryAdjustmentTypeControl
             var label = getBestInventoryAdjustmentTypeDescription(inventoryAdjustmentType, language);
             var value = inventoryAdjustmentTypeDetail.getInventoryAdjustmentTypeName();
 
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
 
             var usingDefaultChoice = defaultInventoryAdjustmentTypeChoice != null && defaultInventoryAdjustmentTypeChoice.equals(value);
@@ -298,7 +282,7 @@ public class InventoryAdjustmentTypeControl
             BasePK updatedBy) {
         if(inventoryAdjustmentTypeDetailValue.hasBeenModified()) {
             var inventoryAdjustmentType = inventoryAdjustmentTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     inventoryAdjustmentTypeDetailValue.getInventoryAdjustmentTypePK());
+                    inventoryAdjustmentTypeDetailValue.getInventoryAdjustmentTypePK());
             var inventoryAdjustmentTypeDetail = inventoryAdjustmentType.getActiveDetailForUpdate();
 
             inventoryAdjustmentTypeDetail.setThruTime(session.getStartTime());
@@ -350,7 +334,7 @@ public class InventoryAdjustmentTypeControl
         inventoryAdjustmentType.store();
 
         if(checkDefault) {
-        // Check for default, and pick one if necessary
+            // Check for default, and pick one if necessary
             var defaultInventoryAdjustmentType = getDefaultInventoryAdjustmentType();
             if(defaultInventoryAdjustmentType == null) {
                 var inventoryAdjustmentTypes = getInventoryAdjustmentTypesForUpdate();
@@ -399,28 +383,22 @@ public class InventoryAdjustmentTypeControl
         return inventoryAdjustmentTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getInventoryAdjustmentTypeDescriptionQueries;
+    private InventoryAdjustmentTypeDescription getInventoryAdjustmentTypeDescription(final InventoryAdjustmentType inventoryAdjustmentType,
+            final Language language, final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryAdjustmentTypeDescriptions.fields())
+                .from(InventoryAdjustmentTypeDescriptions)
+                .where(InventoryAdjustmentTypeDescriptions.INVENTORY_ADJUSTMENT_TYPE.eq(inventoryAdjustmentType.getPrimaryKey()),
+                        InventoryAdjustmentTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        InventoryAdjustmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypedescriptions
-                WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_lang_languageid = ? AND invadjtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypedescriptions
-                WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_lang_languageid = ? AND invadjtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getInventoryAdjustmentTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private InventoryAdjustmentTypeDescription getInventoryAdjustmentTypeDescription(InventoryAdjustmentType inventoryAdjustmentType, Language language, EntityPermission entityPermission) {
-        return inventoryAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, getInventoryAdjustmentTypeDescriptionQueries,
-                inventoryAdjustmentType, language, Session.MAX_TIME);
+        return inventoryAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission,
+                inventoryAdjustmentTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public InventoryAdjustmentTypeDescription getInventoryAdjustmentTypeDescription(InventoryAdjustmentType inventoryAdjustmentType, Language language) {
@@ -432,37 +410,36 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentTypeDescriptionValue getInventoryAdjustmentTypeDescriptionValue(InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription) {
-        return inventoryAdjustmentTypeDescription == null? null: inventoryAdjustmentTypeDescription.getInventoryAdjustmentTypeDescriptionValue().clone();
+        return inventoryAdjustmentTypeDescription == null ? null : inventoryAdjustmentTypeDescription.getInventoryAdjustmentTypeDescriptionValue().clone();
     }
 
     public InventoryAdjustmentTypeDescriptionValue getInventoryAdjustmentTypeDescriptionValueForUpdate(InventoryAdjustmentType inventoryAdjustmentType, Language language) {
         return getInventoryAdjustmentTypeDescriptionValue(getInventoryAdjustmentTypeDescriptionForUpdate(inventoryAdjustmentType, language));
     }
 
-    private static final Map<EntityPermission, String> getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentTypeQueries;
+    private List<InventoryAdjustmentTypeDescription> getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(
+            final InventoryAdjustmentType inventoryAdjustmentType, final EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(InventoryAdjustmentTypeDescriptions.fields())
+                    .from(InventoryAdjustmentTypeDescriptions)
+                    .join(Languages)
+                    .on(InventoryAdjustmentTypeDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
+                    .where(InventoryAdjustmentTypeDescriptions.INVENTORY_ADJUSTMENT_TYPE.eq(inventoryAdjustmentType.getPrimaryKey()),
+                            InventoryAdjustmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryAdjustmentTypeDescriptions.fields())
+                    .from(InventoryAdjustmentTypeDescriptions)
+                    .where(InventoryAdjustmentTypeDescriptions.INVENTORY_ADJUSTMENT_TYPE.eq(inventoryAdjustmentType.getPrimaryKey()),
+                            InventoryAdjustmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypedescriptions, languages
-                WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_thrutime = ? AND invadjtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM inventoryadjustmenttypedescriptions
-                WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<InventoryAdjustmentTypeDescription> getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(InventoryAdjustmentType inventoryAdjustmentType, EntityPermission entityPermission) {
-        return inventoryAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentTypeQueries,
-                inventoryAdjustmentType, Session.MAX_TIME);
+        return inventoryAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
+                inventoryAdjustmentTypeDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<InventoryAdjustmentTypeDescription> getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(InventoryAdjustmentType inventoryAdjustmentType) {
@@ -534,7 +511,7 @@ public class InventoryAdjustmentTypeControl
     public void deleteInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(InventoryAdjustmentType inventoryAdjustmentType, BasePK deletedBy) {
         var inventoryAdjustmentTypeDescriptions = getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentTypeForUpdate(inventoryAdjustmentType);
 
-        inventoryAdjustmentTypeDescriptions.forEach((inventoryAdjustmentTypeDescription) -> 
+        inventoryAdjustmentTypeDescriptions.forEach((inventoryAdjustmentTypeDescription) ->
                 deleteInventoryAdjustmentTypeDescription(inventoryAdjustmentTypeDescription, deletedBy)
         );
     }

@@ -41,7 +41,18 @@
             <et:checkSecurityRoles securityRoles="Event.List" />
             <p><font size="+2"><b><c:out value="${company.partyGroup.name}" /></b></font></p>
             <br />
-            <fmt:message key="label.companyName" />: ${company.companyName}<br />
+            <fmt:message key="label.companyName" />: <c:out value="${company.companyName}" /><br />
+            <br />
+            <fmt:message key="label.inventoryCostingMethod" />:
+            <c:choose>
+                <c:when test="${company.partyInventoryCostingMethod != null}">
+                    <c:out value="${company.partyInventoryCostingMethod.inventoryCostingMethod.description}" />
+                </c:when>
+                <c:otherwise>
+                    <i><fmt:message key="phrase.notSet" /></i>
+                </c:otherwise>
+            </c:choose>
+            <br />
             <br />
             <h2>Accounts Payable Invoices</h2>
             <c:choose>

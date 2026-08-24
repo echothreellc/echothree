@@ -59,7 +59,9 @@ public class AllocationPriorityControl
     @Inject
     AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache;
 
-    /** Creates a new instance of AllocationPriorityControl */
+    /**
+     * Creates a new instance of AllocationPriorityControl
+     */
     protected AllocationPriorityControl() {
         super();
     }
@@ -104,7 +106,9 @@ public class AllocationPriorityControl
         return allocationPriority;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.AllocationPriority */
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.AllocationPriority
+     */
     public AllocationPriority getAllocationPriorityByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new AllocationPriorityPK(entityInstance.getEntityUniqueId());
@@ -156,7 +160,7 @@ public class AllocationPriorityControl
     }
 
     public AllocationPriorityDetailValue getAllocationPriorityDetailValueForUpdate(AllocationPriority allocationPriority) {
-        return allocationPriority == null? null: allocationPriority.getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
+        return allocationPriority == null ? null : allocationPriority.getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
     }
 
     public AllocationPriorityDetailValue getAllocationPriorityDetailValueByNameForUpdate(String allocationPriorityName) {
@@ -260,7 +264,7 @@ public class AllocationPriorityControl
             var label = getBestAllocationPriorityDescription(allocationPriority, language);
             var value = allocationPriorityDetail.getAllocationPriorityName();
 
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
 
             var usingDefaultChoice = defaultAllocationPriorityChoice != null && defaultAllocationPriorityChoice.equals(value);
@@ -276,7 +280,7 @@ public class AllocationPriorityControl
             BasePK updatedBy) {
         if(allocationPriorityDetailValue.hasBeenModified()) {
             var allocationPriority = allocationPriorityFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     allocationPriorityDetailValue.getAllocationPriorityPK());
+                    allocationPriorityDetailValue.getAllocationPriorityPK());
             var allocationPriorityDetail = allocationPriority.getActiveDetailForUpdate();
 
             allocationPriorityDetail.setThruTime(session.getStartTime());
@@ -389,7 +393,7 @@ public class AllocationPriorityControl
     }
 
     public AllocationPriorityDescriptionValue getAllocationPriorityDescriptionValue(AllocationPriorityDescription allocationPriorityDescription) {
-        return allocationPriorityDescription == null? null: allocationPriorityDescription.getAllocationPriorityDescriptionValue().clone();
+        return allocationPriorityDescription == null ? null : allocationPriorityDescription.getAllocationPriorityDescriptionValue().clone();
     }
 
     public AllocationPriorityDescriptionValue getAllocationPriorityDescriptionValueForUpdate(AllocationPriority allocationPriority, Language language) {
@@ -490,10 +494,9 @@ public class AllocationPriorityControl
     public void deleteAllocationPriorityDescriptionsByAllocationPriority(AllocationPriority allocationPriority, BasePK deletedBy) {
         var allocationPriorityDescriptions = getAllocationPriorityDescriptionsByAllocationPriorityForUpdate(allocationPriority);
 
-        allocationPriorityDescriptions.forEach((allocationPriorityDescription) -> 
+        allocationPriorityDescriptions.forEach((allocationPriorityDescription) ->
                 deleteAllocationPriorityDescription(allocationPriorityDescription, deletedBy)
         );
     }
-
 
 }

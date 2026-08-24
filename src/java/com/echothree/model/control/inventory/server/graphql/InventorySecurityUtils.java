@@ -30,6 +30,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryLocationG
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypesCommand;
+import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodCommand;
+import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -73,6 +75,14 @@ public interface InventorySecurityUtils {
 
     static boolean getHasInventoryCostingMethodsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryCostingMethodsCommand.class);
+    }
+
+    static boolean getHasPartyInventoryCostingMethodAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyInventoryCostingMethodCommand.class);
+    }
+
+    static boolean getHasPartyInventoryCostingMethodsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyInventoryCostingMethodsCommand.class);
     }
 
     static boolean getHasInventoryAdjustmentTypeAccess(final DataFetchingEnvironment env) {

@@ -731,6 +731,8 @@ public enum ExecutionErrors {
     UnknownPartyFreeOnBoard,
     DuplicatePartyInventoryLevel,
     UnknownPartyInventoryLevel,
+    DuplicatePartyInventoryCostingMethod,
+    UnknownPartyInventoryCostingMethod,
     InvalidItemDescriptionType,
     DuplicateSubscriptionTypeDescription,
     UnknownSubscriptionTypeName,

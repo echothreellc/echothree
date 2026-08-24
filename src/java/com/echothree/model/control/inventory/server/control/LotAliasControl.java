@@ -21,6 +21,9 @@ import com.echothree.model.control.inventory.common.choice.LotAliasTypeChoicesBe
 import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.LotAliasTypePK;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -36,20 +39,22 @@ import com.echothree.model.data.inventory.server.value.LotAliasTypeDetailValue;
 import com.echothree.model.data.inventory.server.value.LotAliasValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.control.inventory.server.transfer.LotAliasTypeTransferCache;
-import com.echothree.model.control.inventory.server.transfer.LotAliasTypeDescriptionTransferCache;
-import com.echothree.model.control.inventory.server.transfer.LotAliasTransferCache;
-import com.echothree.util.server.control.BaseModelControl;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.LOT_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.inventory.LotAliasTypeDescriptions.LotAliasTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.inventory.LotAliasTypeDetails.LotAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.inventory.LotAliasTypes.LotAliasTypes;
+import static com.echothree.model.jooq.server.tables.inventory.LotAliases.LotAliases;
+import static com.echothree.model.jooq.server.tables.inventory.LotDetails.LotDetails;
+import static com.echothree.model.jooq.server.tables.inventory.Lots.Lots;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -66,7 +71,9 @@ public class LotAliasControl
     @Inject
     LotAliasTransferCache lotAliasTransferCache;
 
-    /** Creates a new instance of LotAliasControl */
+    /**
+     * Creates a new instance of LotAliasControl
+     */
     protected LotAliasControl() {
         super();
     }
@@ -110,7 +117,9 @@ public class LotAliasControl
         return lotAliasType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.LotAliasType */
+    /**
+     * Assume that the entityInstance passed to this function is a ECHO_THREE.LotAliasType
+     */
     public LotAliasType getLotAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LotAliasTypePK(entityInstance.getEntityUniqueId());
 
@@ -126,37 +135,25 @@ public class LotAliasControl
     }
 
     public long countLotAliasTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lotaliastypes
-                        JOIN lotaliastypedetails ON ltaltypdt_lotaliastypedetailid = ltaltyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getLotAliasTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliastypes, lotaliastypedetails
-                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
-                AND ltaltypdt_lotaliastypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliastypes, lotaliastypedetails
-                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
-                AND ltaltypdt_lotaliastypename = ?
-                FOR UPDATE
-                """);
-        getLotAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(LotAliasTypes)
+                .join(LotAliasTypeDetails).onKey(LOT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private LotAliasType getLotAliasTypeByName(String lotAliasTypeName, EntityPermission entityPermission) {
-        return lotAliasTypeFactory.getEntityFromQuery(entityPermission, getLotAliasTypeByNameQueries,
-                lotAliasTypeName);
+        var baseQuery = session.getDslContext()
+                .select(LotAliasTypes.fields())
+                .from(LotAliasTypes)
+                .join(LotAliasTypeDetails).onKey(LOT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(LotAliasTypeDetails.LOT_ALIAS_TYPE_NAME.eq(lotAliasTypeName));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotAliasTypeFactory.getEntityFromQuery(entityPermission,
+                lotAliasTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotAliasType getLotAliasTypeByName(String lotAliasTypeName) {
@@ -168,36 +165,24 @@ public class LotAliasControl
     }
 
     public LotAliasTypeDetailValue getLotAliasTypeDetailValueForUpdate(LotAliasType lotAliasType) {
-        return lotAliasType == null? null: lotAliasType.getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
+        return lotAliasType == null ? null : lotAliasType.getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
     }
 
     public LotAliasTypeDetailValue getLotAliasTypeDetailValueByNameForUpdate(String lotAliasTypeName) {
         return getLotAliasTypeDetailValueForUpdate(getLotAliasTypeByNameForUpdate(lotAliasTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultLotAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliastypes, lotaliastypedetails
-                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
-                AND ltaltypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliastypes, lotaliastypedetails
-                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
-                AND ltaltypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultLotAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private LotAliasType getDefaultLotAliasType(EntityPermission entityPermission) {
-        return lotAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultLotAliasTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(LotAliasTypes.fields())
+                .from(LotAliasTypes)
+                .join(LotAliasTypeDetails).onKey(LOT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(LotAliasTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotAliasTypeFactory.getEntityFromQuery(entityPermission,
+                lotAliasTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotAliasType getDefaultLotAliasType() {
@@ -212,29 +197,18 @@ public class LotAliasControl
         return getDefaultLotAliasTypeForUpdate().getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getLotAliasTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliastypes, lotaliastypedetails
-                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
-                ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliastypes, lotaliastypedetails
-                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
-                FOR UPDATE
-                """);
-        getLotAliasTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<LotAliasType> getLotAliasTypes(EntityPermission entityPermission) {
-        return lotAliasTypeFactory.getEntitiesFromQuery(entityPermission, getLotAliasTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(LotAliasTypes.fields())
+                .from(LotAliasTypes)
+                .join(LotAliasTypeDetails).onKey(LOT_ALIAS_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = entityPermission == EntityPermission.READ_ONLY
+                ? baseQuery.orderBy(LotAliasTypeDetails.SORT_ORDER, LotAliasTypeDetails.LOT_ALIAS_TYPE_NAME) : baseQuery.forUpdate();
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return lotAliasTypeFactory.getEntitiesFromQuery(entityPermission, lotAliasTypeFactory.prepareStatement(sql));
     }
 
     public List<LotAliasType> getLotAliasTypes() {
@@ -286,7 +260,7 @@ public class LotAliasControl
             var label = getBestLotAliasTypeDescription(lotAliasType, language);
             var value = lotAliasTypeDetail.getLotAliasTypeName();
 
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
 
             var usingDefaultChoice = defaultLotAliasTypeChoice != null && defaultLotAliasTypeChoice.equals(value);
@@ -374,7 +348,7 @@ public class LotAliasControl
     }
 
     public void deleteLotAliasTypes(List<LotAliasType> lotAliasTypes, BasePK deletedBy) {
-        lotAliasTypes.forEach((lotAliasType) -> 
+        lotAliasTypes.forEach((lotAliasType) ->
                 deleteLotAliasType(lotAliasType, deletedBy)
         );
     }
@@ -395,28 +369,17 @@ public class LotAliasControl
         return lotAliasTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getLotAliasTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliastypedescriptions
-                WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_lang_languageid = ? AND ltaltypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliastypedescriptions
-                WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_lang_languageid = ? AND ltaltypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private LotAliasTypeDescription getLotAliasTypeDescription(LotAliasType lotAliasType, Language language, EntityPermission entityPermission) {
-        return lotAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getLotAliasTypeDescriptionQueries,
-                lotAliasType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(LotAliasTypeDescriptions.fields())
+                .from(LotAliasTypeDescriptions)
+                .where(LotAliasTypeDescriptions.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()),
+                        LotAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()), LotAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission,
+                lotAliasTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotAliasTypeDescription getLotAliasTypeDescription(LotAliasType lotAliasType, Language language) {
@@ -428,37 +391,35 @@ public class LotAliasControl
     }
 
     public LotAliasTypeDescriptionValue getLotAliasTypeDescriptionValue(LotAliasTypeDescription lotAliasTypeDescription) {
-        return lotAliasTypeDescription == null? null: lotAliasTypeDescription.getLotAliasTypeDescriptionValue().clone();
+        return lotAliasTypeDescription == null ? null : lotAliasTypeDescription.getLotAliasTypeDescriptionValue().clone();
     }
 
     public LotAliasTypeDescriptionValue getLotAliasTypeDescriptionValueForUpdate(LotAliasType lotAliasType, Language language) {
         return getLotAliasTypeDescriptionValue(getLotAliasTypeDescriptionForUpdate(lotAliasType, language));
     }
 
-    private static final Map<EntityPermission, String> getLotAliasTypeDescriptionsByLotAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliastypedescriptions, languages
-                WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_thrutime = ? AND ltaltypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliastypedescriptions
-                WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotAliasTypeDescriptionsByLotAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<LotAliasTypeDescription> getLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType, EntityPermission entityPermission) {
-        return lotAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getLotAliasTypeDescriptionsByLotAliasTypeQueries,
-                lotAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(LotAliasTypeDescriptions.fields())
+                    .from(LotAliasTypeDescriptions)
+                    .join(Languages)
+                    .on(LotAliasTypeDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
+                    .where(LotAliasTypeDescriptions.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()),
+                            LotAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LotAliasTypeDescriptions.fields())
+                    .from(LotAliasTypeDescriptions)
+                    .where(LotAliasTypeDescriptions.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()),
+                            LotAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return lotAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
+                lotAliasTypeDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<LotAliasTypeDescription> getLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType) {
@@ -504,7 +465,7 @@ public class LotAliasControl
     public void updateLotAliasTypeDescriptionFromValue(LotAliasTypeDescriptionValue lotAliasTypeDescriptionValue, BasePK updatedBy) {
         if(lotAliasTypeDescriptionValue.hasBeenModified()) {
             var lotAliasTypeDescription = lotAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
-                     lotAliasTypeDescriptionValue.getPrimaryKey());
+                    lotAliasTypeDescriptionValue.getPrimaryKey());
 
             lotAliasTypeDescription.setThruTime(session.getStartTime());
             lotAliasTypeDescription.store();
@@ -530,7 +491,7 @@ public class LotAliasControl
     public void deleteLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType, BasePK deletedBy) {
         var lotAliasTypeDescriptions = getLotAliasTypeDescriptionsByLotAliasTypeForUpdate(lotAliasType);
 
-        lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) -> 
+        lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) ->
                 deleteLotAliasTypeDescription(lotAliasTypeDescription, deletedBy)
         );
     }
@@ -551,43 +512,34 @@ public class LotAliasControl
     }
 
     public long countLotAliasesByLot(final Lot lot) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lotaliases
-                        WHERE ltal_lt_lotid = ? AND ltal_thrutime = ?
-                        """, lot, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(LotAliases)
+                .where(LotAliases.LOT.eq(lot.getPrimaryKey()), LotAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLotAliasesByLotAliasType(final LotAliasType lotAliasType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lotaliases
-                        WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
-                        """, lotAliasType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getLotAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliases
-                WHERE ltal_lt_lotid = ? AND ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliases
-                WHERE ltal_lt_lotid = ? AND ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotAliasQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(LotAliases)
+                .where(LotAliases.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()), LotAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private LotAlias getLotAlias(Lot lot, LotAliasType lotAliasType, EntityPermission entityPermission) {
-        return lotAliasFactory.getEntityFromQuery(entityPermission, getLotAliasQueries,
-                lot, lotAliasType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(LotAliases.fields())
+                .from(LotAliases)
+                .where(LotAliases.LOT.eq(lot.getPrimaryKey()), LotAliases.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()),
+                        LotAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotAliasFactory.getEntityFromQuery(entityPermission,
+                lotAliasFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotAlias getLotAlias(Lot lot, LotAliasType lotAliasType) {
@@ -599,34 +551,24 @@ public class LotAliasControl
     }
 
     public LotAliasValue getLotAliasValue(LotAlias lotAlias) {
-        return lotAlias == null? null: lotAlias.getLotAliasValue().clone();
+        return lotAlias == null ? null : lotAlias.getLotAliasValue().clone();
     }
 
     public LotAliasValue getLotAliasValueForUpdate(Lot lot, LotAliasType lotAliasType) {
         return getLotAliasValue(getLotAliasForUpdate(lot, lotAliasType));
     }
 
-    private static final Map<EntityPermission, String> getLotAliasByAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliases
-                WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_alias = ? AND ltal_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliases
-                WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_alias = ? AND ltal_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private LotAlias getLotAliasByAlias(LotAliasType lotAliasType, String alias, EntityPermission entityPermission) {
-        return lotAliasFactory.getEntityFromQuery(entityPermission, getLotAliasByAliasQueries, lotAliasType, alias, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(LotAliases.fields())
+                .from(LotAliases)
+                .where(LotAliases.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()), LotAliases.ALIAS.eq(alias),
+                        LotAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+
+        return lotAliasFactory.getEntityFromQuery(entityPermission,
+                lotAliasFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
     }
 
     public LotAlias getLotAliasByAlias(LotAliasType lotAliasType, String alias) {
@@ -637,31 +579,28 @@ public class LotAliasControl
         return getLotAliasByAlias(lotAliasType, alias, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getLotAliasesByLotQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliases, lotaliastypes, lotaliastypedetails
-                WHERE ltal_lt_lotid = ? AND ltal_thrutime = ?
-                AND ltal_ltaltyp_lotaliastypeid = ltaltyp_lotaliastypeid AND ltaltyp_lastdetailid = ltaltypdt_lotaliastypedetailid
-                ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliases
-                WHERE ltal_lt_lotid = ? AND ltal_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotAliasesByLotQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<LotAlias> getLotAliasesByLot(Lot lot, EntityPermission entityPermission) {
-        return lotAliasFactory.getEntitiesFromQuery(entityPermission, getLotAliasesByLotQueries,
-                lot, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(LotAliases.fields())
+                    .from(LotAliases)
+                    .join(LotAliasTypes)
+                    .on(LotAliases.LOT_ALIAS_TYPE.eq(LotAliasTypes.LOT_ALIAS_TYPE))
+                    .join(LotAliasTypeDetails)
+                    .on(LotAliasTypes.LAST_DETAIL.eq(LotAliasTypeDetails.LOT_ALIAS_TYPE_DETAIL))
+                    .where(LotAliases.LOT.eq(lot.getPrimaryKey()), LotAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(LotAliasTypeDetails.SORT_ORDER, LotAliasTypeDetails.LOT_ALIAS_TYPE_NAME);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LotAliases.fields())
+                    .from(LotAliases)
+                    .where(LotAliases.LOT.eq(lot.getPrimaryKey()), LotAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return lotAliasFactory.getEntitiesFromQuery(entityPermission,
+                lotAliasFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<LotAlias> getLotAliasesByLot(Lot lot) {
@@ -672,31 +611,28 @@ public class LotAliasControl
         return getLotAliasesByLot(lot, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getLotAliasesByLotAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM lotaliases, lots, lotdetails
-                WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
-                AND ltal_lt_lotid = lt_lotid AND lt_lastdetailid = ltdt_lotdetailid
-                ORDER BY ltdt_lotname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM lotaliases
-                WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
-                FOR UPDATE
-                """);
-        getLotAliasesByLotAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<LotAlias> getLotAliasesByLotAliasType(LotAliasType lotAliasType, EntityPermission entityPermission) {
-        return lotAliasFactory.getEntitiesFromQuery(entityPermission, getLotAliasesByLotAliasTypeQueries,
-                lotAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(LotAliases.fields())
+                    .from(LotAliases)
+                    .join(Lots)
+                    .on(LotAliases.LOT.eq(Lots.LOT))
+                    .join(LotDetails)
+                    .on(Lots.LAST_DETAIL.eq(LotDetails.LOT_DETAIL))
+                    .where(LotAliases.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()), LotAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(LotDetails.LOT_IDENTIFIER);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LotAliases.fields())
+                    .from(LotAliases)
+                    .where(LotAliases.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()), LotAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
+
+        return lotAliasFactory.getEntitiesFromQuery(entityPermission,
+                lotAliasFactory.prepareStatement(sql), query.getBindValues().toArray());
     }
 
     public List<LotAlias> getLotAliasesByLotAliasType(LotAliasType lotAliasType) {
@@ -734,7 +670,7 @@ public class LotAliasControl
 
             var lotPK = lotAlias.getLotPK();
             var lotAliasTypePK = lotAlias.getLotAliasTypePK();
-            var alias  = lotAliasValue.getAlias();
+            var alias = lotAliasValue.getAlias();
 
             lotAlias = lotAliasFactory.create(lotPK, lotAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
 
@@ -752,7 +688,7 @@ public class LotAliasControl
     public void deleteLotAliasesByLotAliasType(LotAliasType lotAliasType, BasePK deletedBy) {
         var lotaliases = getLotAliasesByLotAliasTypeForUpdate(lotAliasType);
 
-        lotaliases.forEach((lotAlias) -> 
+        lotaliases.forEach((lotAlias) ->
                 deleteLotAlias(lotAlias, deletedBy)
         );
     }
@@ -760,7 +696,7 @@ public class LotAliasControl
     public void deleteLotAliasesByLot(Lot lot, BasePK deletedBy) {
         var lotaliases = getLotAliasesByLotForUpdate(lot);
 
-        lotaliases.forEach((lotAlias) -> 
+        lotaliases.forEach((lotAlias) ->
                 deleteLotAlias(lotAlias, deletedBy)
         );
     }

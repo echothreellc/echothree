@@ -29,6 +29,17 @@
      - Opening quotes must be on the line of code before the start of the block
      - Closing quotes must be on the line following the last line of the block, followed immediately by any parameters or the closing parenthesis
 
+### jOOQ Query Conventions
+
+- Use generated jOOQ tables, fields, and foreign keys for SQL queries in Control classes
+- Format query construction as a vertical chain, with each query clause on its own line, including `.select(...)`, `.from(...)`, `.where(...)`, `.orderBy(...)`, and `.forUpdate()`
+- Keep `.onKey(...)` on the same line as its corresponding `.join(...)`
+- Separate `baseQuery`, `query` or `sql`, and factory `return` statements with a blank line
+- Use the `EntityPermission` branch to add `.forUpdate()` for `READ_WRITE` queries
+- Preserve `_LIMIT_` for paginated read-only entity-list queries by appending it to the rendered SQL
+- Pass rendered jOOQ SQL and bind values through the generated entity factory, using `prepareStatement(query.getSQL())` and `query.getBindValues().toArray()`
+- Use `selectCount()`, `fetchOptional(0, Long.class)`, and `orElse(0L)` for count queries
+
 ### Forms, Results, Specs, and Edits Generation
 
 - Forms, Results, Specs, and Edits are defined as interfaces in `...common.form`, `...common.result`, `...common.spec`, and `...common.edit` packages
