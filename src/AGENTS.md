@@ -33,7 +33,7 @@
 
 - Use generated jOOQ tables, fields, and foreign keys for SQL queries in Control classes
 - Format query construction as a vertical chain, with each query clause on its own line, including `.select(...)`, `.from(...)`, `.where(...)`, `.orderBy(...)`, and `.forUpdate()`
-- Keep `.onKey(...)` on the same line as its corresponding `.join(...)`
+- Keep `.onKey(...)` and `.on(...)` on the same line as its corresponding `.join(...)`
 - Separate `baseQuery`, `query` or `sql`, and factory `return` statements with a blank line
 - Use the `EntityPermission` branch to add `.forUpdate()` for `READ_WRITE` queries
 - Apply client pagination to read-only entity-list queries using `session.applyLimit(query, EntityFactory.class)`
