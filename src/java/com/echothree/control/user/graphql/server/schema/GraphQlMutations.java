@@ -4345,6 +4345,98 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject createPartyInventoryCostingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("inventoryCostingMethodName") @GraphQLNonNull final String inventoryCostingMethodName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getCreatePartyInventoryCostingMethodForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setUuid(id);
+            commandForm.setInventoryCostingMethodName(inventoryCostingMethodName);
+
+            mutationResultObject.setCommandResult(InventoryUtil.getHome().createPartyInventoryCostingMethod(
+                    BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editPartyInventoryCostingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("inventoryCostingMethodName") final String inventoryCostingMethodName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = PartyUtil.getHome().getPartyUniversalSpec();
+
+            spec.setPartyName(partyName);
+            spec.setUuid(id);
+
+            var commandForm = InventoryUtil.getHome().getEditPartyInventoryCostingMethodForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = InventoryUtil.getHome().editPartyInventoryCostingMethod(
+                    BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("inventoryCostingMethodName"))
+                    edit.setInventoryCostingMethodName(inventoryCostingMethodName);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = InventoryUtil.getHome().editPartyInventoryCostingMethod(
+                        BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deletePartyInventoryCostingMethod(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getDeletePartyInventoryCostingMethodForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(InventoryUtil.getHome().deletePartyInventoryCostingMethod(
+                    BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultWithIdObject createInventoryBucketType(final DataFetchingEnvironment env,
             @GraphQLName("inventoryBucketTypeName") @GraphQLNonNull final String inventoryBucketTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
