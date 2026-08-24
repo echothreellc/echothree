@@ -56,6 +56,7 @@ public interface PartyOptions {
     String CompanyIncludeBillingAccounts = "CompanyIncludeBillingAccounts";
     String CompanyIncludeInvoicesFrom = "CompanyIncludeInvoicesFrom";
     String CompanyIncludeInvoicesTo = "CompanyIncludeInvoicesTo";
+    String CompanyIncludePartyInventoryCostingMethod = "CompanyIncludePartyInventoryCostingMethod";
     
     String DivisionIncludeEntityAttributeGroups = "DivisionIncludeEntityAttributeGroups";
     String DivisionIncludeTagScopes = "DivisionIncludeTagScopes";

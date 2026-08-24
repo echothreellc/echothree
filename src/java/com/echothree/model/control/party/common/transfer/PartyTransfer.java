@@ -29,6 +29,7 @@ import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.model.control.employee.common.transfer.PartyResponsibilityTransfer;
 import com.echothree.model.control.employee.common.transfer.PartySkillTransfer;
+import com.echothree.model.control.inventory.common.transfer.PartyInventoryCostingMethodTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTransfer;
 import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
@@ -43,6 +44,7 @@ import com.echothree.model.control.term.common.transfer.PartyTermTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.model.control.user.common.transfer.RecoveryAnswerTransfer;
 import com.echothree.model.control.user.common.transfer.UserLoginTransfer;
+import com.echothree.model.data.inventory.server.entity.PartyInventoryCostingMethod;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
 
@@ -73,6 +75,8 @@ public class PartyTransfer
     private ListWrapper<InvoiceTransfer> invoicesFrom;
     private Long invoicesToCount;
     private ListWrapper<InvoiceTransfer> invoicesTo;
+
+    private PartyInventoryCostingMethodTransfer partyInventoryCostingMethod;
 
     private ListWrapper<PartyCreditLimitTransfer> partyCreditLimits;
     private PartyTermTransfer partyTerm;
@@ -455,6 +459,14 @@ public class PartyTransfer
      */
     public void setInvoicesTo(ListWrapper<InvoiceTransfer> invoicesTo) {
         this.invoicesTo = invoicesTo;
+    }
+
+    public PartyInventoryCostingMethodTransfer getPartyInventoryCostingMethod() {
+        return partyInventoryCostingMethod;
+    }
+
+    public void setPartyInventoryCostingMethod(final PartyInventoryCostingMethodTransfer partyInventoryCostingMethod) {
+        this.partyInventoryCostingMethod = partyInventoryCostingMethod;
     }
 
     /**
