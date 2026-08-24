@@ -113,10 +113,12 @@ public class InventoryLevelControl
                         PartyInventoryLevels.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
                         PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return partyInventoryLevelFactory.getEntityFromQuery(entityPermission,
-                partyInventoryLevelFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return partyInventoryLevelFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyInventoryLevel getPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition) {
@@ -137,7 +139,7 @@ public class InventoryLevelControl
 
     private List<PartyInventoryLevel> getPartyInventoryLevelsByParty(Party party, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(PartyInventoryLevels.fields())
                     .from(PartyInventoryLevels)
                     .join(Items)
@@ -149,7 +151,8 @@ public class InventoryLevelControl
                     .join(InventoryConditionDetails)
                     .on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
                     .where(PartyInventoryLevels.PARTY.eq(party.getPrimaryKey()), PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME),
+                    PartyInventoryLevelFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(PartyInventoryLevels.fields())
                     .from(PartyInventoryLevels)
@@ -157,10 +160,7 @@ public class InventoryLevelControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission,
-                partyInventoryLevelFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyInventoryLevel> getPartyInventoryLevelsByParty(Party party) {
@@ -173,7 +173,7 @@ public class InventoryLevelControl
 
     private List<PartyInventoryLevel> getPartyInventoryLevelsByItem(Item item, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(PartyInventoryLevels.fields())
                     .from(PartyInventoryLevels)
                     .join(Parties)
@@ -188,7 +188,7 @@ public class InventoryLevelControl
                     .on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
                     .where(PartyInventoryLevels.ITEM.eq(item.getPrimaryKey()), PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
                     .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME,
-                            InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+                            InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME), PartyInventoryLevelFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(PartyInventoryLevels.fields())
                     .from(PartyInventoryLevels)
@@ -196,10 +196,7 @@ public class InventoryLevelControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission,
-                partyInventoryLevelFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyInventoryLevel> getPartyInventoryLevelsByItem(Item item) {
@@ -212,7 +209,7 @@ public class InventoryLevelControl
 
     private List<PartyInventoryLevel> getPartyInventoryLevelsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(PartyInventoryLevels.fields())
                     .from(PartyInventoryLevels)
                     .join(Parties)
@@ -227,7 +224,8 @@ public class InventoryLevelControl
                     .on(Items.LAST_DETAIL.eq(ItemDetails.ITEM_DETAIL))
                     .where(PartyInventoryLevels.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
                             PartyInventoryLevels.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME, ItemDetails.ITEM_NAME);
+                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME, ItemDetails.ITEM_NAME),
+                    PartyInventoryLevelFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(PartyInventoryLevels.fields())
                     .from(PartyInventoryLevels)
@@ -236,10 +234,7 @@ public class InventoryLevelControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission,
-                partyInventoryLevelFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return partyInventoryLevelFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyInventoryLevel> getPartyInventoryLevelsByInventoryCondition(InventoryCondition inventoryCondition) {

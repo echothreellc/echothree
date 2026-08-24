@@ -150,8 +150,7 @@ public class InventoryBucketTypeControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryBucketTypeFactory.getEntityFromQuery(entityPermission,
-                inventoryBucketTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryBucketTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryBucketType getInventoryBucketTypeByName(String inventoryBucketTypeName) {
@@ -182,8 +181,7 @@ public class InventoryBucketTypeControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryBucketTypeFactory.getEntityFromQuery(entityPermission,
-                inventoryBucketTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryBucketTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryBucketType getDefaultInventoryBucketType() {
@@ -204,17 +202,14 @@ public class InventoryBucketTypeControl
                 .from(InventoryBucketTypes)
                 .join(InventoryBucketTypeDetails).onKey(INVENTORY_BUCKET_TYPES_ACTIVE_DETAIL_FK);
 
-        var sql = switch(entityPermission) {
-            case READ_ONLY -> baseQuery
-                    .orderBy(InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME)
-                    .getSQL() + " _LIMIT_";
-            case READ_WRITE -> baseQuery
-                    .forUpdate()
-                    .getSQL();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME),
+                    InventoryBucketTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryBucketTypeFactory.getEntitiesFromQuery(entityPermission,
-                inventoryBucketTypeFactory.prepareStatement(sql));
+        return inventoryBucketTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryBucketType> getInventoryBucketTypes() {
@@ -397,8 +392,7 @@ public class InventoryBucketTypeControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryBucketTypeDescriptionFactory.getEntityFromQuery(entityPermission,
-                inventoryBucketTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryBucketTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryBucketTypeDescription getInventoryBucketTypeDescription(InventoryBucketType inventoryBucketType, Language language) {
@@ -420,14 +414,15 @@ public class InventoryBucketTypeControl
     private List<InventoryBucketTypeDescription> getInventoryBucketTypeDescriptionsByInventoryBucketType(
             final InventoryBucketType inventoryBucketType, final EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryBucketTypeDescriptions.fields())
                     .from(InventoryBucketTypeDescriptions)
                     .join(Languages)
                     .on(InventoryBucketTypeDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
                     .where(InventoryBucketTypeDescriptions.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()),
                             InventoryBucketTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    InventoryBucketTypeDescriptionFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryBucketTypeDescriptions.fields())
                     .from(InventoryBucketTypeDescriptions)
@@ -436,10 +431,7 @@ public class InventoryBucketTypeControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryBucketTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                inventoryBucketTypeDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryBucketTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryBucketTypeDescription> getInventoryBucketTypeDescriptionsByInventoryBucketType(InventoryBucketType inventoryBucketType) {

@@ -163,8 +163,7 @@ public class InventoryCostingMethodControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryCostingMethodFactory.getEntityFromQuery(entityPermission,
-                inventoryCostingMethodFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryCostingMethodFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryCostingMethod getInventoryCostingMethodByName(String inventoryCostingMethodName) {
@@ -195,8 +194,7 @@ public class InventoryCostingMethodControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryCostingMethodFactory.getEntityFromQuery(entityPermission,
-                inventoryCostingMethodFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryCostingMethodFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryCostingMethod getDefaultInventoryCostingMethod() {
@@ -217,17 +215,14 @@ public class InventoryCostingMethodControl
                 .from(InventoryCostingMethods)
                 .join(InventoryCostingMethodDetails).onKey(INVENTORY_COSTING_METHODS_ACTIVE_DETAIL_FK);
 
-        var sql = switch(entityPermission) {
-            case READ_ONLY -> baseQuery
-                    .orderBy(InventoryCostingMethodDetails.SORT_ORDER, InventoryCostingMethodDetails.INVENTORY_COSTING_METHOD_NAME)
-                    .getSQL() + " _LIMIT_";
-            case READ_WRITE -> baseQuery
-                    .forUpdate()
-                    .getSQL();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(InventoryCostingMethodDetails.SORT_ORDER, InventoryCostingMethodDetails.INVENTORY_COSTING_METHOD_NAME),
+                    InventoryCostingMethodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryCostingMethodFactory.getEntitiesFromQuery(entityPermission,
-                inventoryCostingMethodFactory.prepareStatement(sql));
+        return inventoryCostingMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryCostingMethod> getInventoryCostingMethods() {
@@ -411,8 +406,7 @@ public class InventoryCostingMethodControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryCostingMethodDescriptionFactory.getEntityFromQuery(entityPermission,
-                inventoryCostingMethodDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryCostingMethodDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryCostingMethodDescription getInventoryCostingMethodDescription(InventoryCostingMethod inventoryCostingMethod, Language language) {
@@ -434,14 +428,15 @@ public class InventoryCostingMethodControl
     private List<InventoryCostingMethodDescription> getInventoryCostingMethodDescriptionsByInventoryCostingMethod(
             final InventoryCostingMethod inventoryCostingMethod, final EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryCostingMethodDescriptions.fields())
                     .from(InventoryCostingMethodDescriptions)
                     .join(Languages)
                     .on(InventoryCostingMethodDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
                     .where(InventoryCostingMethodDescriptions.INVENTORY_COSTING_METHOD.eq(inventoryCostingMethod.getPrimaryKey()),
                             InventoryCostingMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    InventoryCostingMethodDescriptionFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryCostingMethodDescriptions.fields())
                     .from(InventoryCostingMethodDescriptions)
@@ -450,10 +445,7 @@ public class InventoryCostingMethodControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryCostingMethodDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                inventoryCostingMethodDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryCostingMethodDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryCostingMethodDescription> getInventoryCostingMethodDescriptionsByInventoryCostingMethod(InventoryCostingMethod inventoryCostingMethod) {
@@ -574,10 +566,12 @@ public class InventoryCostingMethodControl
                 .where(PartyInventoryCostingMethods.PARTY.eq(party.getPrimaryKey()),
                         PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return partyInventoryCostingMethodFactory.getEntityFromQuery(entityPermission,
-                partyInventoryCostingMethodFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return partyInventoryCostingMethodFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyInventoryCostingMethod getPartyInventoryCostingMethod(Party party) {
@@ -601,7 +595,7 @@ public class InventoryCostingMethodControl
     private List<PartyInventoryCostingMethod> getPartyInventoryCostingMethodsByInventoryCostingMethod(
             final InventoryCostingMethod inventoryCostingMethod, final EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(PartyInventoryCostingMethods.fields())
                     .from(PartyInventoryCostingMethods)
                     .join(Parties).on(PartyInventoryCostingMethods.PARTY.eq(Parties.PARTY))
@@ -609,7 +603,8 @@ public class InventoryCostingMethodControl
                     .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
                     .where(PartyInventoryCostingMethods.INVENTORY_COSTING_METHOD.eq(inventoryCostingMethod.getPrimaryKey()),
                             PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME);
+                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME),
+                    PartyInventoryCostingMethodFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(PartyInventoryCostingMethods.fields())
                     .from(PartyInventoryCostingMethods)
@@ -618,9 +613,7 @@ public class InventoryCostingMethodControl
                     .forUpdate();
         };
 
-        return partyInventoryCostingMethodFactory.getEntitiesFromQuery(entityPermission,
-                partyInventoryCostingMethodFactory.prepareStatement(query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "")),
-                query.getBindValues().toArray());
+        return partyInventoryCostingMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyInventoryCostingMethod> getPartyInventoryCostingMethodsByInventoryCostingMethod(InventoryCostingMethod inventoryCostingMethod) {
@@ -641,9 +634,10 @@ public class InventoryCostingMethodControl
                 .where(PartyInventoryCostingMethods.THRU_TIME.eq(Session.MAX_TIME))
                 .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME);
 
-        return partyInventoryCostingMethodFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY,
-                partyInventoryCostingMethodFactory.prepareStatement(query.getSQL() + " _LIMIT_"),
-                query.getBindValues().toArray());
+        var limitedQuery = session.applyLimit(query,
+                    PartyInventoryCostingMethodFactory.class);
+
+        return partyInventoryCostingMethodFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, limitedQuery);
     }
 
     public PartyInventoryCostingMethodTransfer getPartyInventoryCostingMethodTransfer(UserVisit userVisit,
