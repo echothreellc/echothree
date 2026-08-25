@@ -150,10 +150,12 @@ public class LotAliasControl
                 .join(LotAliasTypeDetails).onKey(LOT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
                 .where(LotAliasTypeDetails.LOT_ALIAS_TYPE_NAME.eq(lotAliasTypeName));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return lotAliasTypeFactory.getEntityFromQuery(entityPermission,
-                lotAliasTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return lotAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public LotAliasType getLotAliasTypeByName(String lotAliasTypeName) {
@@ -179,10 +181,12 @@ public class LotAliasControl
                 .join(LotAliasTypeDetails).onKey(LOT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
                 .where(LotAliasTypeDetails.IS_DEFAULT.eq(true));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return lotAliasTypeFactory.getEntityFromQuery(entityPermission,
-                lotAliasTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return lotAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public LotAliasType getDefaultLotAliasType() {
@@ -203,12 +207,14 @@ public class LotAliasControl
                 .from(LotAliasTypes)
                 .join(LotAliasTypeDetails).onKey(LOT_ALIAS_TYPES_ACTIVE_DETAIL_FK);
 
-        var query = entityPermission == EntityPermission.READ_ONLY
-                ? baseQuery.orderBy(LotAliasTypeDetails.SORT_ORDER, LotAliasTypeDetails.LOT_ALIAS_TYPE_NAME) : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LotAliasTypeDetails.SORT_ORDER, LotAliasTypeDetails.LOT_ALIAS_TYPE_NAME),
+                    LotAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return lotAliasTypeFactory.getEntitiesFromQuery(entityPermission, lotAliasTypeFactory.prepareStatement(sql));
+        return lotAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<LotAliasType> getLotAliasTypes() {
@@ -376,10 +382,12 @@ public class LotAliasControl
                 .where(LotAliasTypeDescriptions.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()),
                         LotAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()), LotAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return lotAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission,
-                lotAliasTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return lotAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public LotAliasTypeDescription getLotAliasTypeDescription(LotAliasType lotAliasType, Language language) {
@@ -400,14 +408,15 @@ public class LotAliasControl
 
     private List<LotAliasTypeDescription> getLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(LotAliasTypeDescriptions.fields())
                     .from(LotAliasTypeDescriptions)
                     .join(Languages)
                     .on(LotAliasTypeDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
                     .where(LotAliasTypeDescriptions.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()),
                             LotAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    LotAliasTypeDescriptionFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(LotAliasTypeDescriptions.fields())
                     .from(LotAliasTypeDescriptions)
@@ -416,10 +425,7 @@ public class LotAliasControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return lotAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                lotAliasTypeDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return lotAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<LotAliasTypeDescription> getLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType) {
@@ -536,10 +542,12 @@ public class LotAliasControl
                 .where(LotAliases.LOT.eq(lot.getPrimaryKey()), LotAliases.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()),
                         LotAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return lotAliasFactory.getEntityFromQuery(entityPermission,
-                lotAliasFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return lotAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public LotAlias getLotAlias(Lot lot, LotAliasType lotAliasType) {
@@ -565,10 +573,12 @@ public class LotAliasControl
                 .where(LotAliases.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()), LotAliases.ALIAS.eq(alias),
                         LotAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return lotAliasFactory.getEntityFromQuery(entityPermission,
-                lotAliasFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return lotAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public LotAlias getLotAliasByAlias(LotAliasType lotAliasType, String alias) {
@@ -581,7 +591,7 @@ public class LotAliasControl
 
     private List<LotAlias> getLotAliasesByLot(Lot lot, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(LotAliases.fields())
                     .from(LotAliases)
                     .join(LotAliasTypes)
@@ -589,7 +599,8 @@ public class LotAliasControl
                     .join(LotAliasTypeDetails)
                     .on(LotAliasTypes.LAST_DETAIL.eq(LotAliasTypeDetails.LOT_ALIAS_TYPE_DETAIL))
                     .where(LotAliases.LOT.eq(lot.getPrimaryKey()), LotAliases.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(LotAliasTypeDetails.SORT_ORDER, LotAliasTypeDetails.LOT_ALIAS_TYPE_NAME);
+                    .orderBy(LotAliasTypeDetails.SORT_ORDER, LotAliasTypeDetails.LOT_ALIAS_TYPE_NAME),
+                    LotAliasFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(LotAliases.fields())
                     .from(LotAliases)
@@ -597,10 +608,7 @@ public class LotAliasControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return lotAliasFactory.getEntitiesFromQuery(entityPermission,
-                lotAliasFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return lotAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<LotAlias> getLotAliasesByLot(Lot lot) {
@@ -613,7 +621,7 @@ public class LotAliasControl
 
     private List<LotAlias> getLotAliasesByLotAliasType(LotAliasType lotAliasType, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(LotAliases.fields())
                     .from(LotAliases)
                     .join(Lots)
@@ -621,7 +629,8 @@ public class LotAliasControl
                     .join(LotDetails)
                     .on(Lots.LAST_DETAIL.eq(LotDetails.LOT_DETAIL))
                     .where(LotAliases.LOT_ALIAS_TYPE.eq(lotAliasType.getPrimaryKey()), LotAliases.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(LotDetails.LOT_IDENTIFIER);
+                    .orderBy(LotDetails.LOT_IDENTIFIER),
+                    LotAliasFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(LotAliases.fields())
                     .from(LotAliases)
@@ -629,10 +638,7 @@ public class LotAliasControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return lotAliasFactory.getEntitiesFromQuery(entityPermission,
-                lotAliasFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return lotAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<LotAlias> getLotAliasesByLotAliasType(LotAliasType lotAliasType) {

@@ -147,8 +147,7 @@ public class AllocationPriorityControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return allocationPriorityFactory.getEntityFromQuery(entityPermission,
-                allocationPriorityFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return allocationPriorityFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public AllocationPriority getAllocationPriorityByName(String allocationPriorityName) {
@@ -180,8 +179,7 @@ public class AllocationPriorityControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return allocationPriorityFactory.getEntityFromQuery(entityPermission,
-                allocationPriorityFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return allocationPriorityFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public AllocationPriority getDefaultAllocationPriority() {
@@ -203,17 +201,14 @@ public class AllocationPriorityControl
                 .join(AllocationPriorityDetails)
                 .onKey(ALLOCATION_PRIORITIES_ACTIVE_DETAIL_FK);
 
-        var sql = switch(entityPermission) {
-            case READ_ONLY -> baseQuery
-                    .orderBy(AllocationPriorityDetails.SORT_ORDER, AllocationPriorityDetails.ALLOCATION_PRIORITY_NAME)
-                    .getSQL() + " _LIMIT_";
-            case READ_WRITE -> baseQuery
-                    .forUpdate()
-                    .getSQL();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(AllocationPriorityDetails.SORT_ORDER, AllocationPriorityDetails.ALLOCATION_PRIORITY_NAME),
+                    AllocationPriorityFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return allocationPriorityFactory.getEntitiesFromQuery(entityPermission,
-                allocationPriorityFactory.prepareStatement(sql));
+        return allocationPriorityFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<AllocationPriority> getAllocationPriorities() {
@@ -380,8 +375,7 @@ public class AllocationPriorityControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return allocationPriorityDescriptionFactory.getEntityFromQuery(entityPermission,
-                allocationPriorityDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return allocationPriorityDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public AllocationPriorityDescription getAllocationPriorityDescription(AllocationPriority allocationPriority, Language language) {
@@ -403,14 +397,15 @@ public class AllocationPriorityControl
     private List<AllocationPriorityDescription> getAllocationPriorityDescriptionsByAllocationPriority(final AllocationPriority allocationPriority,
             final EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(AllocationPriorityDescriptions.fields())
                     .from(AllocationPriorityDescriptions)
                     .join(Languages)
                     .on(AllocationPriorityDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
                     .where(AllocationPriorityDescriptions.ALLOCATION_PRIORITY.eq(allocationPriority.getPrimaryKey()),
                             AllocationPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    AllocationPriorityDescriptionFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(AllocationPriorityDescriptions.fields())
                     .from(AllocationPriorityDescriptions)
@@ -419,10 +414,7 @@ public class AllocationPriorityControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return allocationPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                allocationPriorityDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return allocationPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<AllocationPriorityDescription> getAllocationPriorityDescriptionsByAllocationPriority(AllocationPriority allocationPriority) {

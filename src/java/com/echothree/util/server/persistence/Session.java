@@ -42,6 +42,8 @@ import javax.enterprise.inject.spi.CDI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jooq.DSLContext;
+import org.jooq.Select;
+import org.jooq.impl.DSL;
 
 @RequestScoped
 public class Session {
@@ -223,6 +225,30 @@ public class Session {
         }
 
         return result == null ? "" : result;
+    }
+
+    public Select<?> applyLimit(final Select<?> query,
+            final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
+        var result = query;
+
+        if(hasLimits()) {
+            var limit = limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME));
+
+            if(limit != null && limit.getCount() != null) {
+                var count = Long.valueOf(limit.getCount());
+                var rawOffset = limit.getOffset();
+
+                // The QOM methods preserve the completed Select<?> type while adding
+                // optional pagination. Keep this isolated here because the API is experimental.
+                result = result.$limit(DSL.val(count));
+
+                if(rawOffset != null) {
+                    result = result.$offset(DSL.val(Long.valueOf(rawOffset)));
+                }
+            }
+        }
+
+        return result;
     }
 
     /**

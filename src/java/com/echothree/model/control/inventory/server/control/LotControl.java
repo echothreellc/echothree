@@ -125,10 +125,12 @@ public class LotControl
                 .join(LotDetails).onKey(LOTS_ACTIVE_DETAIL_FK)
                 .where(LotDetails.ITEM.eq(item.getPrimaryKey()), LotDetails.LOT_IDENTIFIER.eq(lotIdentifier));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return lotFactory.getEntityFromQuery(entityPermission,
-                lotFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return lotFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Lot getLotByIdentifier(final Item item, final String lotIdentifier) {
@@ -155,12 +157,13 @@ public class LotControl
                 .join(LotDetails).onKey(LOTS_ACTIVE_DETAIL_FK)
                 .where(LotDetails.ITEM.eq(item.getPrimaryKey()));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery.orderBy(LotDetails.LOT_IDENTIFIER) : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery.orderBy(LotDetails.LOT_IDENTIFIER),
+                    LotFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return lotFactory.getEntitiesFromQuery(entityPermission,
-                lotFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return lotFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Lot> getLotsByItem(final Item item) {

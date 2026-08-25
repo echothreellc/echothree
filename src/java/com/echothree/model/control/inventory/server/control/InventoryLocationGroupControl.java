@@ -174,10 +174,12 @@ public class InventoryLocationGroupControl
                 .where(InventoryLocationGroupDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()),
                         InventoryLocationGroupDetails.INVENTORY_LOCATION_GROUP_NAME.eq(inventoryLocationGroupName));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryLocationGroupFactory.getEntityFromQuery(entityPermission,
-                inventoryLocationGroupFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryLocationGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryLocationGroup getInventoryLocationGroupByName(Party warehouseParty, String inventoryLocationGroupName) {
@@ -206,10 +208,12 @@ public class InventoryLocationGroupControl
                 .where(InventoryLocationGroupDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()),
                         InventoryLocationGroupDetails.IS_DEFAULT.eq(true));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryLocationGroupFactory.getEntityFromQuery(entityPermission,
-                inventoryLocationGroupFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryLocationGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryLocationGroup getDefaultInventoryLocationGroup(Party warehouseParty) {
@@ -231,14 +235,14 @@ public class InventoryLocationGroupControl
                 .join(InventoryLocationGroupDetails).onKey(INVENTORY_LOCATION_GROUPS_ACTIVE_DETAIL_FK)
                 .where(InventoryLocationGroupDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()));
 
-        var query = entityPermission == EntityPermission.READ_ONLY
-                ? baseQuery.orderBy(InventoryLocationGroupDetails.SORT_ORDER, InventoryLocationGroupDetails.INVENTORY_LOCATION_GROUP_NAME)
-                : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(InventoryLocationGroupDetails.SORT_ORDER, InventoryLocationGroupDetails.INVENTORY_LOCATION_GROUP_NAME),
+                    InventoryLocationGroupFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryLocationGroupFactory.getEntitiesFromQuery(entityPermission,
-                inventoryLocationGroupFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryLocationGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryLocationGroup> getInventoryLocationGroupsByWarehouseParty(Party warehouseParty) {
@@ -446,10 +450,12 @@ public class InventoryLocationGroupControl
                         InventoryLocationGroupDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
                         InventoryLocationGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryLocationGroupDescriptionFactory.getEntityFromQuery(entityPermission,
-                inventoryLocationGroupDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryLocationGroupDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryLocationGroupDescription getInventoryLocationGroupDescription(InventoryLocationGroup inventoryLocationGroup, Language language) {
@@ -470,14 +476,15 @@ public class InventoryLocationGroupControl
 
     private List<InventoryLocationGroupDescription> getInventoryLocationGroupDescriptionsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryLocationGroupDescriptions.fields())
                     .from(InventoryLocationGroupDescriptions)
                     .join(Languages)
                     .on(InventoryLocationGroupDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
                     .where(InventoryLocationGroupDescriptions.INVENTORY_LOCATION_GROUP.eq(inventoryLocationGroup.getPrimaryKey()),
                             InventoryLocationGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    InventoryLocationGroupDescriptionFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryLocationGroupDescriptions.fields())
                     .from(InventoryLocationGroupDescriptions)
@@ -486,10 +493,7 @@ public class InventoryLocationGroupControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryLocationGroupDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                inventoryLocationGroupDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryLocationGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryLocationGroupDescription> getInventoryLocationGroupDescriptionsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup) {
@@ -603,10 +607,12 @@ public class InventoryLocationGroupControl
                 .where(InventoryLocationGroupVolumes.INVENTORY_LOCATION_GROUP.eq(inventoryLocationGroup.getPrimaryKey()),
                         InventoryLocationGroupVolumes.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryLocationGroupVolumeFactory.getEntityFromQuery(entityPermission,
-                inventoryLocationGroupVolumeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryLocationGroupVolumeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryLocationGroupVolume getInventoryLocationGroupVolume(InventoryLocationGroup inventoryLocationGroup) {
@@ -694,7 +700,7 @@ public class InventoryLocationGroupControl
 
     private List<InventoryLocationGroupCapacity> getInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryInventoryLocationGroupGroup, EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryLocationGroupCapacities.fields())
                     .from(InventoryLocationGroupCapacities)
                     .join(UnitOfMeasureTypeDetails)
@@ -705,7 +711,7 @@ public class InventoryLocationGroupControl
                             InventoryLocationGroupCapacities.THRU_TIME.eq(Session.MAX_TIME),
                             UnitOfMeasureTypeDetails.THRU_TIME.eq(Session.MAX_TIME), UnitOfMeasureKindDetails.THRU_TIME.eq(Session.MAX_TIME))
                     .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
-                            UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME);
+                            UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME), InventoryLocationGroupCapacityFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryLocationGroupCapacities.fields())
                     .from(InventoryLocationGroupCapacities)
@@ -714,10 +720,7 @@ public class InventoryLocationGroupControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryLocationGroupCapacityFactory.getEntitiesFromQuery(entityPermission,
-                inventoryLocationGroupCapacityFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryLocationGroupCapacityFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryLocationGroupCapacity> getInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryInventoryLocationGroupGroup) {
@@ -736,10 +739,12 @@ public class InventoryLocationGroupControl
                         InventoryLocationGroupCapacities.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
                         InventoryLocationGroupCapacities.THRU_TIME.eq(Session.MAX_TIME));
 
-        var query = entityPermission == EntityPermission.READ_ONLY ? baseQuery : baseQuery.forUpdate();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        return inventoryLocationGroupCapacityFactory.getEntityFromQuery(entityPermission,
-                inventoryLocationGroupCapacityFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryLocationGroupCapacityFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryLocationGroupCapacity getInventoryLocationGroupCapacity(InventoryLocationGroup inventoryInventoryLocationGroupGroup, UnitOfMeasureType unitOfMeasureType) {

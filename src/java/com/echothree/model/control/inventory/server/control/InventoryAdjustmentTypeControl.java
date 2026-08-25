@@ -150,8 +150,7 @@ public class InventoryAdjustmentTypeControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission,
-                inventoryAdjustmentTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryAdjustmentType getInventoryAdjustmentTypeByName(String inventoryAdjustmentTypeName) {
@@ -182,8 +181,7 @@ public class InventoryAdjustmentTypeControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission,
-                inventoryAdjustmentTypeFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryAdjustmentTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryAdjustmentType getDefaultInventoryAdjustmentType() {
@@ -204,17 +202,14 @@ public class InventoryAdjustmentTypeControl
                 .from(InventoryAdjustmentTypes)
                 .join(InventoryAdjustmentTypeDetails).onKey(INVENTORY_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK);
 
-        var sql = switch(entityPermission) {
-            case READ_ONLY -> baseQuery
-                    .orderBy(InventoryAdjustmentTypeDetails.SORT_ORDER, InventoryAdjustmentTypeDetails.INVENTORY_ADJUSTMENT_TYPE_NAME)
-                    .getSQL() + " _LIMIT_";
-            case READ_WRITE -> baseQuery
-                    .forUpdate()
-                    .getSQL();
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(InventoryAdjustmentTypeDetails.SORT_ORDER, InventoryAdjustmentTypeDetails.INVENTORY_ADJUSTMENT_TYPE_NAME),
+                    InventoryAdjustmentTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission,
-                inventoryAdjustmentTypeFactory.prepareStatement(sql));
+        return inventoryAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryAdjustmentType> getInventoryAdjustmentTypes() {
@@ -397,8 +392,7 @@ public class InventoryAdjustmentTypeControl
             case READ_WRITE -> baseQuery.forUpdate();
         };
 
-        return inventoryAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission,
-                inventoryAdjustmentTypeDescriptionFactory.prepareStatement(query.getSQL()), query.getBindValues().toArray());
+        return inventoryAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public InventoryAdjustmentTypeDescription getInventoryAdjustmentTypeDescription(InventoryAdjustmentType inventoryAdjustmentType, Language language) {
@@ -420,14 +414,15 @@ public class InventoryAdjustmentTypeControl
     private List<InventoryAdjustmentTypeDescription> getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(
             final InventoryAdjustmentType inventoryAdjustmentType, final EntityPermission entityPermission) {
         var query = switch(entityPermission) {
-            case READ_ONLY -> session.getDslContext()
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(InventoryAdjustmentTypeDescriptions.fields())
                     .from(InventoryAdjustmentTypeDescriptions)
                     .join(Languages)
                     .on(InventoryAdjustmentTypeDescriptions.LANGUAGE.eq(Languages.LANGUAGE))
                     .where(InventoryAdjustmentTypeDescriptions.INVENTORY_ADJUSTMENT_TYPE.eq(inventoryAdjustmentType.getPrimaryKey()),
                             InventoryAdjustmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME);
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    InventoryAdjustmentTypeDescriptionFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(InventoryAdjustmentTypeDescriptions.fields())
                     .from(InventoryAdjustmentTypeDescriptions)
@@ -436,10 +431,7 @@ public class InventoryAdjustmentTypeControl
                     .forUpdate();
         };
 
-        var sql = query.getSQL() + (entityPermission == EntityPermission.READ_ONLY ? " _LIMIT_" : "");
-
-        return inventoryAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                inventoryAdjustmentTypeDescriptionFactory.prepareStatement(sql), query.getBindValues().toArray());
+        return inventoryAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<InventoryAdjustmentTypeDescription> getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(InventoryAdjustmentType inventoryAdjustmentType) {
