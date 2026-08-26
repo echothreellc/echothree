@@ -288,7 +288,7 @@ public interface InventoryService
     CommandResult<EditPartyInventoryLevelResult> editPartyInventoryLevel(UserVisitPK userVisitPK, EditPartyInventoryLevelForm form);
     
     CommandResult<VoidResult> deletePartyInventoryLevel(UserVisitPK userVisitPK, DeletePartyInventoryLevelForm form);
-    
+
     // --------------------------------------------------------------------------------
     //   Allocation Priorities
     // --------------------------------------------------------------------------------
@@ -410,5 +410,13 @@ public interface InventoryService
     CommandResult<EditInventoryBucketTypeDescriptionResult> editInventoryBucketTypeDescription(UserVisitPK userVisitPK, EditInventoryBucketTypeDescriptionForm form);
 
     CommandResult<VoidResult> deleteInventoryBucketTypeDescription(UserVisitPK userVisitPK, DeleteInventoryBucketTypeDescriptionForm form);
+
+    // --------------------------------------------------------------------------------
+    //   Party Buckets
+    // --------------------------------------------------------------------------------
+
+    CommandResult<GetPartyBucketResult> getPartyBucket(UserVisitPK userVisitPK, GetPartyBucketForm form);
+
+    CommandResult<GetPartyBucketsResult> getPartyBuckets(UserVisitPK userVisitPK, GetPartyBucketsForm form);
 
 }
