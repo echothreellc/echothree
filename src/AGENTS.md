@@ -32,6 +32,10 @@
 ### jOOQ Query Conventions
 
 - Use generated jOOQ tables, fields, and foreign keys for SQL queries in Control classes
+- Prefer jOOQ for Control-layer queries
+- For read-only joins to versioned entities, join through `LAST_DETAIL`, not `ACTIVE_DETAIL`
+- Keep read-write queries minimal: select only the entity being locked with `FOR UPDATE`
+- A list query filtered by one foreign key should join and order by the remaining foreign keys that uniquely identify the entity. Use each related entity's semantic sort order and name rather than defaulting to the entity's primary key.
 - Format query construction as a vertical chain, with each query clause on its own line, including `.select(...)`, `.from(...)`, `.where(...)`, `.orderBy(...)`, and `.forUpdate()`
 - Keep `.onKey(...)` and `.on(...)` on the same line as its corresponding `.join(...)`
 - Separate `baseQuery`, `query` or `sql`, and factory `return` statements with a blank line
@@ -39,6 +43,21 @@
 - Apply client pagination to read-only entity-list queries using `session.applyLimit(query, EntityFactory.class)`
 - Pass jOOQ queries directly through the generated entity factory using `getEntityFromQuery(entityPermission, query)` or `getEntitiesFromQuery(entityPermission, query)`
 - Use `selectCount()`, `fetchOptional(0, Long.class)`, and `orElse(0L)` for count queries
+
+### Control and Logic Conventions
+
+- Controls perform persistence operations; Logic classes enforce business rules
+- Follow entity-specific event ownership requirements
+  - For `PartyBucket`, send `TOUCH` events against the associated `Item`; do not make `PartyBucket` the primary event entity
+
+### Command and GraphQL Conventions
+
+- Paginated multiple-entity Commands should support each indexed foreign-key retrieval path exposed by the Control
+- A single-entity Command must accept the names required to resolve the complete unique key
+- Do not request redundant names. For example, an `Item` supplies its `UnitOfMeasureKind`, so a single `PartyBucket` lookup requires only `UnitOfMeasureTypeName`.
+- GraphQL query parameters must match the corresponding Command's complete parameter set
+- Apply `@GraphQLNonNull` exactly when the Command field definition marks the parameter as required
+- When a Command permits alternative identifiers, such as `PartyName`, `CompanyName`, or `WarehouseName`, expose all alternatives in GraphQL and leave them nullable so Command validation can enforce valid combinations
 
 ### Forms, Results, Specs, and Edits Generation
 
