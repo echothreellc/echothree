@@ -570,7 +570,7 @@ public class InventoryBean
     public CommandResult<VoidResult> deletePartyInventoryLevel(UserVisitPK userVisitPK, DeletePartyInventoryLevelForm form) {
         return CDI.current().select(DeletePartyInventoryLevelCommand.class).get().run(userVisitPK, form);
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Allocation Priorities
     // --------------------------------------------------------------------------------
@@ -826,6 +826,20 @@ public class InventoryBean
     @Override
     public CommandResult<VoidResult> deleteInventoryBucketTypeDescription(UserVisitPK userVisitPK, DeleteInventoryBucketTypeDescriptionForm form) {
         return CDI.current().select(DeleteInventoryBucketTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Party Buckets
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<GetPartyBucketResult> getPartyBucket(UserVisitPK userVisitPK, GetPartyBucketForm form) {
+        return CDI.current().select(GetPartyBucketCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetPartyBucketsResult> getPartyBuckets(UserVisitPK userVisitPK, GetPartyBucketsForm form) {
+        return CDI.current().select(GetPartyBucketsCommand.class).get().run(userVisitPK, form);
     }
 
 }

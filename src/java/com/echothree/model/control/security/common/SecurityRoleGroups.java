@@ -239,6 +239,7 @@ public enum SecurityRoleGroups {
     Party,
     PartyAliasType,
     PartyApplicationEditorUse,
+    PartyBucket,
     PartyCancellationPolicy,
     PartyCancellationPolicyStatus,
     PartyCarrier,

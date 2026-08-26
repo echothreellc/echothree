@@ -1000,6 +1000,15 @@
                 <securityRoleDescription languageIsoName="en" description="Party Inventory Level Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PartyBucket" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Party Bucket" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Party Bucket List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Party Bucket Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="AllocationPriority" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Allocation Priority" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8453,6 +8462,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PartyBucket" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PartyBucket" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="AllocationPriority" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="AllocationPriority" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="AllocationPriority" securityRoleName="Delete" />

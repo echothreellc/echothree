@@ -733,6 +733,8 @@ public enum ExecutionErrors {
     UnknownPartyInventoryLevel,
     DuplicatePartyInventoryCostingMethod,
     UnknownPartyInventoryCostingMethod,
+    PartyBucketInUse,
+    UnknownPartyBucket,
     InvalidItemDescriptionType,
     DuplicateSubscriptionTypeDescription,
     UnknownSubscriptionTypeName,
