@@ -45,6 +45,7 @@ public class PartyBucketObject
     @GraphQLDescription("party")
     public PartyObject getParty(final DataFetchingEnvironment env) {
         var party = partyBucket.getParty();
+
         return PartySecurityUtils.getHasPartyAccess(env, party) ? new PartyObject(party) : null;
     }
 
@@ -81,4 +82,5 @@ public class PartyBucketObject
     public Long getQuantity() {
         return partyBucket.getQuantity();
     }
+
 }

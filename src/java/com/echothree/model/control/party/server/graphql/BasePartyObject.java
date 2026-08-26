@@ -34,8 +34,10 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.inventory.server.control.BucketControl;
 import com.echothree.model.control.inventory.server.control.InventoryCostingMethodControl;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
+import com.echothree.model.control.inventory.server.graphql.PartyBucketObject;
 import com.echothree.model.control.inventory.server.graphql.PartyInventoryCostingMethodObject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
@@ -44,6 +46,7 @@ import com.echothree.model.control.subscription.server.graphql.SubscriptionSecur
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.contact.common.PartyContactMechanismConstants;
 import com.echothree.model.data.contactlist.common.PartyContactListConstants;
+import com.echothree.model.data.inventory.common.PartyBucketConstants;
 import com.echothree.model.data.party.common.PartyAliasConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDetail;
@@ -263,6 +266,26 @@ public abstract class BasePartyObject
             return partyInventoryCostingMethod == null ? null : new PartyInventoryCostingMethodObject(partyInventoryCostingMethod);
         } else {
             return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("party bucket")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyBucketObject> getPartyBuckets(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasPartyBucketsAccess(env)) {
+            var contactListControl = Session.getModelController(BucketControl.class);
+            var totalCount = contactListControl.countPartyBucketsByParty(party);
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyBucketConstants.COMPONENT_VENDOR_NAME, PartyBucketConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = contactListControl.getPartyBucketsByParty(party);
+                var partyBuckets = entities.stream().map(PartyBucketObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, partyBuckets);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
     }
 
