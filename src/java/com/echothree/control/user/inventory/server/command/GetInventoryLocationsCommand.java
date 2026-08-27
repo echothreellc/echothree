@@ -134,25 +134,30 @@ public class GetInventoryLocationsCommand
         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
         var inventoryConditionName = form.getInventoryConditionName();
         var warehouseParameterCount = (partyName == null ? 0 : 1) + (warehouseName == null ? 0 : 1);
+        var hasLocationParameters = warehouseParameterCount != 0 || locationName != null;
+        var hasCompleteLocationParameters = warehouseParameterCount == 1 && locationName != null;
+        var hasUnitOfMeasureParameters = unitOfMeasureKindName != null || unitOfMeasureTypeName != null;
+        var hasCompleteUnitOfMeasureParameters = unitOfMeasureKindName != null && unitOfMeasureTypeName != null;
+        var selectorCount = (hasCompleteLocationParameters ? 1 : 0)
+                + (ownerPartyName == null ? 0 : 1)
+                + (itemName == null ? 0 : 1)
+                + (hasCompleteUnitOfMeasureParameters ? 1 : 0)
+                + (inventoryConditionName == null ? 0 : 1);
 
-        if(locationName != null && warehouseParameterCount == 1 && ownerPartyName == null && itemName == null
-                && unitOfMeasureKindName == null && unitOfMeasureTypeName == null && inventoryConditionName == null) {
-            location = locationLogic.getLocation(this, partyName, warehouseName, locationName);
-        } else if(warehouseParameterCount == 0 && locationName == null && ownerPartyName != null && itemName == null
-                && unitOfMeasureKindName == null && unitOfMeasureTypeName == null && inventoryConditionName == null) {
-            ownerParty = inventoryLocationLogic.getOwnerParty(this, ownerPartyName);
-        } else if(warehouseParameterCount == 0 && locationName == null && ownerPartyName == null && itemName != null
-                && unitOfMeasureKindName == null && unitOfMeasureTypeName == null && inventoryConditionName == null) {
-            item = itemLogic.getItemByName(this, itemName);
-        } else if(warehouseParameterCount == 0 && locationName == null && ownerPartyName == null && itemName == null
-                && unitOfMeasureKindName != null && unitOfMeasureTypeName != null && inventoryConditionName == null) {
-            unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKindName,
-                    unitOfMeasureTypeName);
-        } else if(warehouseParameterCount == 0 && locationName == null && ownerPartyName == null && itemName == null
-                && unitOfMeasureKindName == null && unitOfMeasureTypeName == null && inventoryConditionName != null) {
-            inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
-        } else {
+        if((hasLocationParameters && !hasCompleteLocationParameters)
+                || (hasUnitOfMeasureParameters && !hasCompleteUnitOfMeasureParameters)
+                || selectorCount != 1) {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        } else if(hasCompleteLocationParameters) {
+            location = locationLogic.getLocation(this, partyName, warehouseName, locationName);
+        } else if(ownerPartyName != null) {
+            ownerParty = inventoryLocationLogic.getOwnerParty(this, ownerPartyName);
+        } else if(itemName != null) {
+            item = itemLogic.getItemByName(this, itemName);
+        } else if(hasCompleteUnitOfMeasureParameters) {
+            unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKindName, unitOfMeasureTypeName);
+        } else {
+            inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
         }
     }
 
@@ -214,8 +219,7 @@ public class GetInventoryLocationsCommand
             } else if(item != null) {
                 result.setItem(itemControl.getItemTransfer(userVisit, item));
             } else if(inventoryCondition != null) {
-                result.setInventoryCondition(inventoryConditionControl.getInventoryConditionTransfer(userVisit,
-                        inventoryCondition));
+                result.setInventoryCondition(inventoryConditionControl.getInventoryConditionTransfer(userVisit, inventoryCondition));
             }
 
             if(session.hasLimit(InventoryLocationFactory.class)) {
