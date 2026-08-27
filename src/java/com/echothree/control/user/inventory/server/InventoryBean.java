@@ -246,7 +246,7 @@ public class InventoryBean
     public CommandResult<VoidResult> deleteInventoryConditionUse(UserVisitPK userVisitPK, DeleteInventoryConditionUseForm form) {
         return CDI.current().select(DeleteInventoryConditionUseCommand.class).get().run(userVisitPK, form);
     }
-    
+
     // -------------------------------------------------------------------------
     //   Inventory Location Groups
     // -------------------------------------------------------------------------
@@ -361,6 +361,30 @@ public class InventoryBean
     @Override
     public CommandResult<VoidResult> deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form) {
         return CDI.current().select(DeleteInventoryLocationGroupVolumeCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Locations
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createInventoryLocation(UserVisitPK userVisitPK, CreateInventoryLocationForm form) {
+        return CDI.current().select(CreateInventoryLocationCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryLocationsResult> getInventoryLocations(UserVisitPK userVisitPK, GetInventoryLocationsForm form) {
+        return CDI.current().select(GetInventoryLocationsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryLocationResult> getInventoryLocation(UserVisitPK userVisitPK, GetInventoryLocationForm form) {
+        return CDI.current().select(GetInventoryLocationCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryLocation(UserVisitPK userVisitPK, DeleteInventoryLocationForm form) {
+        return CDI.current().select(DeleteInventoryLocationCommand.class).get().run(userVisitPK, form);
     }
 
     // -------------------------------------------------------------------------
