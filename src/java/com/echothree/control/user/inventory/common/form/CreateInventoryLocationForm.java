@@ -16,12 +16,14 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.edit.InventoryLocationEdit;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationSpec;
+import com.echothree.control.user.uom.common.spec.UnitOfMeasureTypeSpec;
 
 public interface CreateInventoryLocationForm
-        extends InventoryLocationSpec, InventoryLocationEdit {
+        extends InventoryLocationSpec, UnitOfMeasureTypeSpec, InventoryConditionSpec {
 
-    // Nothing additional beyond InventoryLocationSpec, InventoryLocationEdit
+    String getOwnerPartyName();
+    void setOwnerPartyName(String ownerPartyName);
 
 }

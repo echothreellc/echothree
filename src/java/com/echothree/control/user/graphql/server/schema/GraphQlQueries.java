@@ -9366,6 +9366,7 @@ public interface GraphQlQueries {
             @GraphQLName("locationName") final String locationName,
             @GraphQLName("ownerPartyName") final String ownerPartyName,
             @GraphQLName("itemName") final String itemName,
+            @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("inventoryConditionName") final String inventoryConditionName) {
         CountingPaginatedData<InventoryLocationObject> data;
@@ -9379,6 +9380,7 @@ public interface GraphQlQueries {
             commandForm.setLocationName(locationName);
             commandForm.setOwnerPartyName(ownerPartyName);
             commandForm.setItemName(itemName);
+            commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setInventoryConditionName(inventoryConditionName);
 

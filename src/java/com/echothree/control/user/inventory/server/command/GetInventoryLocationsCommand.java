@@ -29,6 +29,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.warehouse.server.logic.LocationLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -72,6 +73,7 @@ public class GetInventoryLocationsCommand
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OwnerPartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null)
         );
@@ -107,6 +109,9 @@ public class GetInventoryLocationsCommand
     @Inject
     LocationLogic locationLogic;
 
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     /** Creates a new instance of GetInventoryLocationsCommand */
     public GetInventoryLocationsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -125,25 +130,26 @@ public class GetInventoryLocationsCommand
         var locationName = form.getLocationName();
         var ownerPartyName = form.getOwnerPartyName();
         var itemName = form.getItemName();
+        var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
         var inventoryConditionName = form.getInventoryConditionName();
         var warehouseParameterCount = (partyName == null ? 0 : 1) + (warehouseName == null ? 0 : 1);
 
         if(locationName != null && warehouseParameterCount == 1 && ownerPartyName == null && itemName == null
-                && unitOfMeasureTypeName == null && inventoryConditionName == null) {
+                && unitOfMeasureKindName == null && unitOfMeasureTypeName == null && inventoryConditionName == null) {
             location = locationLogic.getLocation(this, partyName, warehouseName, locationName);
         } else if(warehouseParameterCount == 0 && locationName == null && ownerPartyName != null && itemName == null
-                && unitOfMeasureTypeName == null && inventoryConditionName == null) {
+                && unitOfMeasureKindName == null && unitOfMeasureTypeName == null && inventoryConditionName == null) {
             ownerParty = inventoryLocationLogic.getOwnerParty(this, ownerPartyName);
         } else if(warehouseParameterCount == 0 && locationName == null && ownerPartyName == null && itemName != null
-                && inventoryConditionName == null) {
+                && unitOfMeasureKindName == null && unitOfMeasureTypeName == null && inventoryConditionName == null) {
             item = itemLogic.getItemByName(this, itemName);
-
-            if(!hasExecutionErrors() && unitOfMeasureTypeName != null) {
-                unitOfMeasureType = inventoryLocationLogic.getUnitOfMeasureType(this, item, unitOfMeasureTypeName);
-            }
         } else if(warehouseParameterCount == 0 && locationName == null && ownerPartyName == null && itemName == null
-                && unitOfMeasureTypeName == null && inventoryConditionName != null) {
+                && unitOfMeasureKindName != null && unitOfMeasureTypeName != null && inventoryConditionName == null) {
+            unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKindName,
+                    unitOfMeasureTypeName);
+        } else if(warehouseParameterCount == 0 && locationName == null && ownerPartyName == null && itemName == null
+                && unitOfMeasureKindName == null && unitOfMeasureTypeName == null && inventoryConditionName != null) {
             inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -204,7 +210,6 @@ public class GetInventoryLocationsCommand
             } else if(ownerParty != null) {
                 result.setOwnerParty(partyControl.getPartyTransfer(userVisit, ownerParty));
             } else if(unitOfMeasureType != null) {
-                result.setItem(itemControl.getItemTransfer(userVisit, item));
                 result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType));
             } else if(item != null) {
                 result.setItem(itemControl.getItemTransfer(userVisit, item));

@@ -16,30 +16,14 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryLocationSpec;
+import com.echothree.control.user.uom.common.spec.UnitOfMeasureTypeSpec;
 
 public interface GetInventoryLocationsForm
-        extends BaseForm {
-
-    String getPartyName();
-    void setPartyName(String partyName);
-
-    String getWarehouseName();
-    void setWarehouseName(String warehouseName);
-
-    String getLocationName();
-    void setLocationName(String locationName);
+        extends InventoryLocationSpec, UnitOfMeasureTypeSpec, InventoryConditionSpec {
 
     String getOwnerPartyName();
     void setOwnerPartyName(String ownerPartyName);
-
-    String getItemName();
-    void setItemName(String itemName);
-
-    String getUnitOfMeasureTypeName();
-    void setUnitOfMeasureTypeName(String unitOfMeasureTypeName);
-
-    String getInventoryConditionName();
-    void setInventoryConditionName(String inventoryConditionName);
 
 }
