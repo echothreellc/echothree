@@ -994,6 +994,9 @@
             <entityType entityTypeName="InventoryCostingMethodDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Costing Method Description" />
             </entityType>
+            <entityType entityTypeName="PartyInventoryCostingMethod" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Inventory Costing Method" />
+            </entityType>
             <entityType entityTypeName="InventoryBucketType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Bucket Type" />
             </entityType>
@@ -1035,6 +1038,9 @@
             </entityType>
             <entityType entityTypeName="InventoryLocationGroupVolume" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeVolume languageIsoName="en" description="Inventory Location Group Volume" />
+            </entityType>
+            <entityType entityTypeName="InventoryLocation" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Location" />
             </entityType>
             <entityType entityTypeName="BatchType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Batch Type" />

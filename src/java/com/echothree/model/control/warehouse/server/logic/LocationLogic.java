@@ -16,9 +16,10 @@
 
 package com.echothree.model.control.warehouse.server.logic;
 
+import com.echothree.control.user.inventory.common.spec.InventoryLocationSpec;
 import com.echothree.model.control.warehouse.common.exception.InvalidLocationNameException;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
+import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -35,6 +36,9 @@ public class LocationLogic
     @Inject
     WarehouseControl warehouseControl;
 
+    @Inject
+    WarehouseLogic warehouseLogic;
+
     protected LocationLogic() {
         super();
     }
@@ -43,13 +47,33 @@ public class LocationLogic
         return CDI.current().select(LocationLogic.class).get();
     }
 
+    public Location getLocation(final ExecutionErrorAccumulator eea, final String partyName,
+            final String warehouseName, final String locationName) {
+        Location location = null;
+        var warehouseParty = warehouseLogic.getWarehouseParty(eea, partyName, warehouseName);
+
+        if(warehouseParty != null) {
+            location = warehouseControl.getLocationByName(warehouseParty, locationName);
+
+            if(location == null) {
+                eea.addExecutionError(ExecutionErrors.UnknownLocationName.name(), locationName);
+            }
+        }
+
+        return location;
+    }
+
+    public Location getLocation(final ExecutionErrorAccumulator eea, final InventoryLocationSpec spec) {
+        return getLocation(eea, spec.getPartyName(), spec.getWarehouseName(), spec.getLocationName());
+    }
+
     public void validateLocationName(final ExecutionErrorAccumulator eea, final LocationType locationType, final String locationName) {
         var locationNameElements = warehouseControl.getLocationNameElementsByLocationType(locationType);
         var endIndex = 0;
         var validLocationName = true;
 
         for(var iter = locationNameElements.iterator(); iter.hasNext() && validLocationName;) {
-            var locationNameElement = (LocationNameElement)iter.next();
+            var locationNameElement = iter.next();
             var locationNameElementDetail = locationNameElement.getLastDetail();
             var validationPattern = locationNameElementDetail.getValidationPattern();
 
