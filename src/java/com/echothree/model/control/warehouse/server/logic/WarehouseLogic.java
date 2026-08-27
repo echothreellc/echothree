@@ -33,6 +33,7 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
@@ -171,6 +172,13 @@ public class WarehouseLogic
     public Warehouse getWarehouseByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final WarehouseUniversalSpec universalSpec,
             final boolean allowDefault) {
         return getWarehouseByNameForUpdate(eea, universalSpec.getWarehouseName(), universalSpec.getPartyName(), universalSpec, allowDefault);
+    }
+
+    public Party getWarehouseParty(final ExecutionErrorAccumulator eea, final String partyName,
+            final String warehouseName) {
+        var warehouse = getWarehouseByName(eea, warehouseName, partyName, null, false);
+
+        return warehouse == null ? null : warehouse.getParty();
     }
 
     public void updateWarehouseFromValue(final ExecutionErrorAccumulator eea, final WarehouseValue warehouseValue,

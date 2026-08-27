@@ -610,23 +610,31 @@
                             <indexColumn name="ItemId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index2">
+                        <index type="Unique" name="Index2">
                             <indexColumn name="LocationId" />
+                            <indexColumn name="OwnerPartyId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="InventoryConditionId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="OwnerPartyId" />
+                            <indexColumn name="LocationId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
-                            <indexColumn name="ItemId" />
+                            <indexColumn name="OwnerPartyId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index5">
-                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ItemId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index6">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
                             <indexColumn name="InventoryConditionId" />
                             <indexColumn name="ThruTime" />
                         </index>

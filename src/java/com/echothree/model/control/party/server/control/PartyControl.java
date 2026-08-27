@@ -23,6 +23,7 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.inventory.server.control.InventoryLocationControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.choice.BirthdayFormatChoicesBean;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
@@ -239,6 +240,9 @@ public class PartyControl
 
     @Inject
     protected EmployeeControl employeeControl;
+
+    @Inject
+    protected InventoryLocationControl inventoryLocationControl;
 
     @Inject
     protected PartyApplicationEditorUseControl partyApplicationEditorUseControl;
@@ -2439,6 +2443,7 @@ public class PartyControl
         partyApplicationEditorUseControl.deletePartyApplicationEditorUsesByParty(party, deletedBy);
         contactListControl.deletePartyContactListsByParty(party, deletedBy);
         documentControl.deletePartyDocumentsByParty(party, deletedBy);
+        inventoryLocationControl.deleteInventoryLocationsByOwnerParty(party, deletedBy);
         printerControl.deletePartyPrinterGroupUsesByParty(party, deletedBy);
         scaleControl.deletePartyScaleUsesByParty(party, deletedBy);
         searchControl.deletePartySearchTypePreferencesByParty(party, deletedBy);
@@ -2447,7 +2452,7 @@ public class PartyControl
         securityControl.deletePartySecurityRoleTemplateUseByParty(party, deletedBy);
         termControl.deletePartyCreditLimitsByParty(party, deletedBy);
         termControl.deletePartyTermByParty(party, deletedBy);
-        
+
         if(partyType.getAllowUserLogins()) {
             userControl.deleteRecoveryAnswerByParty(party, deletedBy);
             userControl.deleteUserLoginByParty(party, deletedBy);

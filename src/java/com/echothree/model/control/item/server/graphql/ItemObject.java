@@ -28,6 +28,9 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingDataConn
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.inventory.server.control.InventoryLocationControl;
+import com.echothree.model.control.inventory.server.graphql.InventoryLocationObject;
+import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.item.common.ItemDescriptionTypes;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -47,6 +50,7 @@ import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryO
 import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorSecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
+import com.echothree.model.data.inventory.common.InventoryLocationConstants;
 import com.echothree.model.data.item.common.ItemAliasConstants;
 import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
@@ -386,7 +390,6 @@ public class ItemObject
         }
     }
 
-
     @GraphQLField
     @GraphQLDescription("vendor items")
     @GraphQLNonNull
@@ -401,6 +404,29 @@ public class ItemObject
                 var items = entities.stream().map(VendorItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory locations")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryLocationObject> getInventoryLocations(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryLocationsAccess(env)) {
+            var inventoryLocationControl = Session.getModelController(InventoryLocationControl.class);
+            var totalCount = inventoryLocationControl.countInventoryLocationsByItem(item);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryLocationConstants.COMPONENT_VENDOR_NAME,
+                    InventoryLocationConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryLocationControl.getInventoryLocationsByItem(item);
+                var inventoryLocations = entities.stream()
+                        .map(InventoryLocationObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, inventoryLocations);
             }
         } else {
             return Connections.emptyConnection();

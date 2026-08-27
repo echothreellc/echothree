@@ -190,6 +190,18 @@ public interface InventoryService
     CommandResult<VoidResult> deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form);
 
     // -------------------------------------------------------------------------
+    //   Inventory Locations
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryLocation(UserVisitPK userVisitPK, CreateInventoryLocationForm form);
+
+    CommandResult<GetInventoryLocationsResult> getInventoryLocations(UserVisitPK userVisitPK, GetInventoryLocationsForm form);
+
+    CommandResult<GetInventoryLocationResult> getInventoryLocation(UserVisitPK userVisitPK, GetInventoryLocationForm form);
+
+    CommandResult<VoidResult> deleteInventoryLocation(UserVisitPK userVisitPK, DeleteInventoryLocationForm form);
+
+    // -------------------------------------------------------------------------
     //   Lots
     // -------------------------------------------------------------------------
 
