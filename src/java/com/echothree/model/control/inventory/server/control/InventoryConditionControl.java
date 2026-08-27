@@ -85,6 +85,9 @@ public class InventoryConditionControl
         extends BaseModelControl {
 
     @Inject
+    protected InventoryLocationControl inventoryLocationControl;
+
+    @Inject
     ItemControl itemControl;
 
     @Inject
@@ -409,6 +412,7 @@ public class InventoryConditionControl
         deleteInventoryConditionDescriptionsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionGlAccountsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionUseByInventoryCondition(inventoryCondition, deletedBy);
+        inventoryLocationControl.deleteInventoryLocationsByInventoryCondition(inventoryCondition, deletedBy);
         inventoryLevelControl.deletePartyInventoryLevelsByInventoryCondition(inventoryCondition, deletedBy);
         itemControl.deleteItemPricesByInventoryCondition(inventoryCondition, deletedBy);
         itemControl.deleteItemKitMembersByInventoryCondition(inventoryCondition, deletedBy);
