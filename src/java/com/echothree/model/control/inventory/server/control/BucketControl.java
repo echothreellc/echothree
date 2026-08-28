@@ -17,12 +17,18 @@
 package com.echothree.model.control.inventory.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.inventory.common.transfer.InventoryLocationBucketTransfer;
 import com.echothree.model.control.inventory.common.transfer.PartyBucketTransfer;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationBucketTransferCache;
 import com.echothree.model.control.inventory.server.transfer.PartyBucketTransferCache;
 import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
+import com.echothree.model.data.inventory.server.entity.InventoryLocation;
+import com.echothree.model.data.inventory.server.entity.InventoryLocationBucket;
 import com.echothree.model.data.inventory.server.entity.PartyBucket;
+import com.echothree.model.data.inventory.server.factory.InventoryLocationBucketFactory;
 import com.echothree.model.data.inventory.server.factory.PartyBucketFactory;
+import com.echothree.model.data.inventory.server.value.InventoryLocationBucketValue;
 import com.echothree.model.data.inventory.server.value.PartyBucketValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
@@ -32,6 +38,8 @@ import static com.echothree.model.jooq.server.tables.inventory.InventoryBucketTy
 import static com.echothree.model.jooq.server.tables.inventory.InventoryBucketTypes.InventoryBucketTypes;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDetails.InventoryConditionDetails;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryConditions.InventoryConditions;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryLocationBuckets.InventoryLocationBuckets;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryLocations.InventoryLocations;
 import static com.echothree.model.jooq.server.tables.inventory.PartyBuckets.PartyBuckets;
 import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
 import static com.echothree.model.jooq.server.tables.item.Items.Items;
@@ -39,21 +47,213 @@ import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
 import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import static com.echothree.model.jooq.server.tables.party.PartyTypes.PartyTypes;
 import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindDetails.UnitOfMeasureKindDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKinds.UnitOfMeasureKinds;
 import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeDetails.UnitOfMeasureTypeDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypes.UnitOfMeasureTypes;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationDetails.LocationDetails;
+import static com.echothree.model.jooq.server.tables.warehouse.Locations.Locations;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import org.jooq.Condition;
+import org.jooq.OrderField;
 
 @CommandScope
 public class BucketControl
         extends BaseModelControl {
+
+    // --------------------------------------------------------------------------------
+    //   Inventory Location Buckets
+    // --------------------------------------------------------------------------------
+
+    @Inject
+    protected InventoryLocationBucketFactory inventoryLocationBucketFactory;
+
+    @Inject
+    InventoryLocationBucketTransferCache inventoryLocationBucketTransferCache;
+
+    public InventoryLocationBucket createInventoryLocationBucket(InventoryLocation inventoryLocation,
+            InventoryBucketType inventoryBucketType, Long quantity, BasePK createdBy) {
+        var inventoryLocationBucket = inventoryLocationBucketFactory.create(inventoryLocation, inventoryBucketType, quantity);
+
+        sendEvent(inventoryLocation.getLocationPK(), EventTypes.TOUCH, null, null, createdBy);
+
+        return inventoryLocationBucket;
+    }
+
+    private long countInventoryLocationBuckets(Condition condition) {
+        return session.getDslContext().selectCount().from(InventoryLocationBuckets).where(condition)
+                .fetchOptional(0, Long.class).orElse(0L);
+    }
+
+    public long countInventoryLocationBucketsByInventoryLocation(InventoryLocation inventoryLocation) {
+        return countInventoryLocationBuckets(InventoryLocationBuckets.INVENTORY_LOCATION.eq(inventoryLocation.getPrimaryKey()));
+    }
+
+    public long countInventoryLocationBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType) {
+        return countInventoryLocationBuckets(InventoryLocationBuckets.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()));
+    }
+
+    private InventoryLocationBucket getInventoryLocationBucket(InventoryLocation inventoryLocation,
+            InventoryBucketType inventoryBucketType, EntityPermission permission) {
+        var baseQuery = session.getDslContext().select(InventoryLocationBuckets.fields())
+                .from(InventoryLocationBuckets)
+                .where(InventoryLocationBuckets.INVENTORY_LOCATION.eq(inventoryLocation.getPrimaryKey()),
+                        InventoryLocationBuckets.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()));
+        var query = permission == EntityPermission.READ_WRITE ? baseQuery.forUpdate() : baseQuery;
+
+        return inventoryLocationBucketFactory.getEntityFromQuery(permission, query);
+    }
+
+    public InventoryLocationBucket getInventoryLocationBucket(InventoryLocation inventoryLocation,
+            InventoryBucketType inventoryBucketType) {
+        return getInventoryLocationBucket(inventoryLocation, inventoryBucketType, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryLocationBucket getInventoryLocationBucketForUpdate(InventoryLocation inventoryLocation,
+            InventoryBucketType inventoryBucketType) {
+        return getInventoryLocationBucket(inventoryLocation, inventoryBucketType, EntityPermission.READ_WRITE);
+    }
+
+    public InventoryLocationBucketValue getInventoryLocationBucketValue(InventoryLocationBucket inventoryLocationBucket) {
+        return inventoryLocationBucket == null ? null : inventoryLocationBucket.getInventoryLocationBucketValue().clone();
+    }
+
+    public InventoryLocationBucketValue getInventoryLocationBucketValueForUpdate(InventoryLocation inventoryLocation,
+            InventoryBucketType inventoryBucketType) {
+        return getInventoryLocationBucketValue(getInventoryLocationBucketForUpdate(inventoryLocation, inventoryBucketType));
+    }
+
+    private List<InventoryLocationBucket> getInventoryLocationBuckets(Condition condition, EntityPermission permission,
+            OrderField<?>... orderFields) {
+        var query = switch(permission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(InventoryLocationBuckets.fields())
+                    .from(InventoryLocationBuckets)
+                    .join(InventoryLocations).on(InventoryLocationBuckets.INVENTORY_LOCATION.eq(InventoryLocations.INVENTORY_LOCATION))
+                    .join(Locations).on(InventoryLocations.LOCATION.eq(Locations.LOCATION))
+                    .join(LocationDetails).on(Locations.LAST_DETAIL.eq(LocationDetails.LOCATION_DETAIL))
+                    .join(Parties).on(InventoryLocations.OWNER_PARTY.eq(Parties.PARTY))
+                    .join(PartyDetails).on(Parties.LAST_DETAIL.eq(PartyDetails.PARTY_DETAIL))
+                    .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
+                    .join(Items).on(InventoryLocations.ITEM.eq(Items.ITEM))
+                    .join(ItemDetails).on(Items.LAST_DETAIL.eq(ItemDetails.ITEM_DETAIL))
+                    .join(UnitOfMeasureTypes).on(InventoryLocations.UNIT_OF_MEASURE_TYPE.eq(UnitOfMeasureTypes.UNIT_OF_MEASURE_TYPE))
+                    .join(UnitOfMeasureTypeDetails).on(UnitOfMeasureTypes.LAST_DETAIL.eq(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_DETAIL))
+                    .join(UnitOfMeasureKinds).on(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(UnitOfMeasureKinds.UNIT_OF_MEASURE_KIND))
+                    .join(UnitOfMeasureKindDetails).on(UnitOfMeasureKinds.LAST_DETAIL.eq(UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_DETAIL))
+                    .join(InventoryConditions).on(InventoryLocations.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
+                    .join(InventoryConditionDetails).on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
+                    .join(InventoryBucketTypes).on(InventoryLocationBuckets.INVENTORY_BUCKET_TYPE.eq(InventoryBucketTypes.INVENTORY_BUCKET_TYPE))
+                    .join(InventoryBucketTypeDetails).on(InventoryBucketTypes.LAST_DETAIL.eq(InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_DETAIL))
+                    .where(condition)
+                    .orderBy(orderFields),
+                    InventoryLocationBucketFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryLocationBuckets.fields())
+                    .from(InventoryLocationBuckets)
+                    .where(condition)
+                    .forUpdate();
+        };
+
+        return inventoryLocationBucketFactory.getEntitiesFromQuery(permission, query);
+    }
+
+    private List<InventoryLocationBucket> getInventoryLocationBucketsByInventoryLocation(InventoryLocation inventoryLocation,
+            EntityPermission permission) {
+        return getInventoryLocationBuckets(InventoryLocationBuckets.INVENTORY_LOCATION.eq(inventoryLocation.getPrimaryKey()),
+                permission, InventoryBucketTypeDetails.SORT_ORDER,
+                InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME);
+    }
+
+    public List<InventoryLocationBucket> getInventoryLocationBucketsByInventoryLocation(InventoryLocation inventoryLocation) {
+        return getInventoryLocationBucketsByInventoryLocation(inventoryLocation, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryLocationBucket> getInventoryLocationBucketsByInventoryLocationForUpdate(InventoryLocation inventoryLocation) {
+        return getInventoryLocationBucketsByInventoryLocation(inventoryLocation, EntityPermission.READ_WRITE);
+    }
+
+    private List<InventoryLocationBucket> getInventoryLocationBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType,
+            EntityPermission permission) {
+        return getInventoryLocationBuckets(InventoryLocationBuckets.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()),
+                permission, LocationDetails.LOCATION_NAME, PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME,
+                PartyDetails.PARTY_NAME, ItemDetails.ITEM_NAME, UnitOfMeasureKindDetails.SORT_ORDER,
+                UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME, UnitOfMeasureTypeDetails.SORT_ORDER,
+                UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, InventoryConditionDetails.SORT_ORDER,
+                InventoryConditionDetails.INVENTORY_CONDITION_NAME);
+    }
+
+    public List<InventoryLocationBucket> getInventoryLocationBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType) {
+        return getInventoryLocationBucketsByInventoryBucketType(inventoryBucketType, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryLocationBucket> getInventoryLocationBucketsByInventoryBucketTypeForUpdate(InventoryBucketType inventoryBucketType) {
+        return getInventoryLocationBucketsByInventoryBucketType(inventoryBucketType, EntityPermission.READ_WRITE);
+    }
+
+    public InventoryLocationBucketTransfer getInventoryLocationBucketTransfer(UserVisit userVisit,
+            InventoryLocationBucket inventoryLocationBucket) {
+        return inventoryLocationBucket == null ? null : inventoryLocationBucketTransferCache.getTransfer(userVisit, inventoryLocationBucket);
+    }
+
+    public InventoryLocationBucketTransfer getInventoryLocationBucketTransfer(UserVisit userVisit,
+            InventoryLocation inventoryLocation, InventoryBucketType inventoryBucketType) {
+        return getInventoryLocationBucketTransfer(userVisit, getInventoryLocationBucket(inventoryLocation, inventoryBucketType));
+    }
+
+    public List<InventoryLocationBucketTransfer> getInventoryLocationBucketTransfers(UserVisit userVisit,
+            Collection<InventoryLocationBucket> inventoryLocationBuckets) {
+        var transfers = new ArrayList<InventoryLocationBucketTransfer>(inventoryLocationBuckets.size());
+        inventoryLocationBuckets.forEach(inventoryLocationBucket ->
+                transfers.add(inventoryLocationBucketTransferCache.getTransfer(userVisit, inventoryLocationBucket)));
+        return transfers;
+    }
+
+    public List<InventoryLocationBucketTransfer> getInventoryLocationBucketTransfersByInventoryLocation(UserVisit userVisit,
+            InventoryLocation inventoryLocation) {
+        return getInventoryLocationBucketTransfers(userVisit, getInventoryLocationBucketsByInventoryLocation(inventoryLocation));
+    }
+
+    public List<InventoryLocationBucketTransfer> getInventoryLocationBucketTransfersByInventoryBucketType(UserVisit userVisit,
+            InventoryBucketType inventoryBucketType) {
+        return getInventoryLocationBucketTransfers(userVisit, getInventoryLocationBucketsByInventoryBucketType(inventoryBucketType));
+    }
+
+    public void updateInventoryLocationBucketFromValue(InventoryLocationBucketValue value, BasePK updatedBy) {
+        if(value.hasBeenModified()) {
+            var inventoryLocationBucket = inventoryLocationBucketFactory.getEntityFromPK(EntityPermission.READ_WRITE,
+                    value.getPrimaryKey());
+
+            inventoryLocationBucket.setInventoryLocationBucketValue(value);
+            inventoryLocationBucket.store();
+
+            sendEvent(inventoryLocationBucket.getInventoryLocation().getLocationPK(), EventTypes.TOUCH, null, null, updatedBy);
+        }
+    }
+
+    public void removeInventoryLocationBucket(InventoryLocationBucket inventoryLocationBucket, BasePK removedBy) {
+        inventoryLocationBucket.remove();
+
+        sendEvent(inventoryLocationBucket.getInventoryLocation().getLocationPK(), EventTypes.TOUCH, null, null, removedBy);
+    }
+
+    public void removeInventoryLocationBuckets(List<InventoryLocationBucket> inventoryLocationBuckets, BasePK removedBy) {
+        inventoryLocationBuckets.forEach(inventoryLocationBucket -> removeInventoryLocationBucket(inventoryLocationBucket, removedBy));
+    }
+
+    public void removeInventoryLocationBucketsByInventoryLocation(InventoryLocation inventoryLocation, BasePK removedBy) {
+        removeInventoryLocationBuckets(getInventoryLocationBucketsByInventoryLocationForUpdate(inventoryLocation), removedBy);
+    }
+
+    public void removeInventoryLocationBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType, BasePK removedBy) {
+        removeInventoryLocationBuckets(getInventoryLocationBucketsByInventoryBucketTypeForUpdate(inventoryBucketType), removedBy);
+    }
 
     // --------------------------------------------------------------------------------
     //   Party Buckets
@@ -136,35 +336,44 @@ public class BucketControl
         return getPartyBucketValue(getPartyBucketForUpdate(party, item, unitOfMeasureType, inventoryCondition, inventoryBucketType));
     }
 
-    private List<PartyBucket> getPartyBucketsByParty(Party party, EntityPermission permission) {
+    private List<PartyBucket> getPartyBuckets(Condition condition, EntityPermission permission,
+            OrderField<?>... orderFields) {
         var query = switch(permission) {
             case READ_ONLY -> session.applyLimit(session.getDslContext()
                     .select(PartyBuckets.fields())
                     .from(PartyBuckets)
+                    .join(Parties).on(PartyBuckets.PARTY.eq(Parties.PARTY))
+                    .join(PartyDetails).on(Parties.LAST_DETAIL.eq(PartyDetails.PARTY_DETAIL))
+                    .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
                     .join(Items).on(PartyBuckets.ITEM.eq(Items.ITEM))
                     .join(ItemDetails).on(Items.LAST_DETAIL.eq(ItemDetails.ITEM_DETAIL))
-                    .join(UnitOfMeasureTypeDetails).on(PartyBuckets.UNIT_OF_MEASURE_TYPE.eq(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE))
-                    .join(UnitOfMeasureKindDetails).on(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND))
+                    .join(UnitOfMeasureTypes).on(PartyBuckets.UNIT_OF_MEASURE_TYPE.eq(UnitOfMeasureTypes.UNIT_OF_MEASURE_TYPE))
+                    .join(UnitOfMeasureTypeDetails).on(UnitOfMeasureTypes.LAST_DETAIL.eq(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_DETAIL))
+                    .join(UnitOfMeasureKinds).on(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(UnitOfMeasureKinds.UNIT_OF_MEASURE_KIND))
+                    .join(UnitOfMeasureKindDetails).on(UnitOfMeasureKinds.LAST_DETAIL.eq(UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_DETAIL))
                     .join(InventoryConditions).on(PartyBuckets.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
                     .join(InventoryConditionDetails).on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
                     .join(InventoryBucketTypes).on(PartyBuckets.INVENTORY_BUCKET_TYPE.eq(InventoryBucketTypes.INVENTORY_BUCKET_TYPE))
                     .join(InventoryBucketTypeDetails).on(InventoryBucketTypes.LAST_DETAIL.eq(InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_DETAIL))
-                    .where(PartyBuckets.PARTY.eq(party.getPrimaryKey()),
-                            UnitOfMeasureTypeDetails.THRU_TIME.eq(Session.MAX_TIME),
-                            UnitOfMeasureKindDetails.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(ItemDetails.ITEM_NAME,
-                            UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME,
-                            UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
-                            InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME,
-                            InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME), PartyBucketFactory.class);
+                    .where(condition)
+                    .orderBy(orderFields), PartyBucketFactory.class);
             case READ_WRITE -> session.getDslContext()
                     .select(PartyBuckets.fields())
                     .from(PartyBuckets)
-                    .where(PartyBuckets.PARTY.eq(party.getPrimaryKey()))
+                    .where(condition)
                     .forUpdate();
         };
 
         return partyBucketFactory.getEntitiesFromQuery(permission, query);
+    }
+
+    private List<PartyBucket> getPartyBucketsByParty(Party party, EntityPermission permission) {
+        return getPartyBuckets(PartyBuckets.PARTY.eq(party.getPrimaryKey()), permission,
+                ItemDetails.ITEM_NAME, UnitOfMeasureKindDetails.SORT_ORDER,
+                UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME, UnitOfMeasureTypeDetails.SORT_ORDER,
+                UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, InventoryConditionDetails.SORT_ORDER,
+                InventoryConditionDetails.INVENTORY_CONDITION_NAME, InventoryBucketTypeDetails.SORT_ORDER,
+                InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME);
     }
 
     public List<PartyBucket> getPartyBucketsByParty(Party value) {
@@ -175,36 +384,13 @@ public class BucketControl
         return getPartyBucketsByParty(value, EntityPermission.READ_WRITE);
     }
 
-    private List<PartyBucket> getPartyBucketsByItem(Item value, EntityPermission permission) {
-        var query = switch(permission) {
-            case READ_ONLY -> session.applyLimit(session.getDslContext()
-                    .select(PartyBuckets.fields())
-                    .from(PartyBuckets)
-                    .join(Parties).on(PartyBuckets.PARTY.eq(Parties.PARTY))
-                    .join(PartyDetails).on(Parties.LAST_DETAIL.eq(PartyDetails.PARTY_DETAIL))
-                    .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
-                    .join(UnitOfMeasureTypeDetails).on(PartyBuckets.UNIT_OF_MEASURE_TYPE.eq(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE))
-                    .join(UnitOfMeasureKindDetails).on(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND))
-                    .join(InventoryConditions).on(PartyBuckets.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
-                    .join(InventoryConditionDetails).on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
-                    .join(InventoryBucketTypes).on(PartyBuckets.INVENTORY_BUCKET_TYPE.eq(InventoryBucketTypes.INVENTORY_BUCKET_TYPE))
-                    .join(InventoryBucketTypeDetails).on(InventoryBucketTypes.LAST_DETAIL.eq(InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_DETAIL))
-                    .where(PartyBuckets.ITEM.eq(value.getPrimaryKey()),
-                            UnitOfMeasureTypeDetails.THRU_TIME.eq(Session.MAX_TIME),
-                            UnitOfMeasureKindDetails.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME,
-                            UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME,
-                            UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
-                            InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME,
-                            InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME), PartyBucketFactory.class);
-            case READ_WRITE -> session.getDslContext()
-                    .select(PartyBuckets.fields())
-                    .from(PartyBuckets)
-                    .where(PartyBuckets.ITEM.eq(value.getPrimaryKey()))
-                    .forUpdate();
-        };
-
-        return partyBucketFactory.getEntitiesFromQuery(permission, query);
+    private List<PartyBucket> getPartyBucketsByItem(Item item, EntityPermission permission) {
+        return getPartyBuckets(PartyBuckets.ITEM.eq(item.getPrimaryKey()), permission,
+                PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME,
+                UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME,
+                UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
+                InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME,
+                InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME);
     }
 
     public List<PartyBucket> getPartyBucketsByItem(Item value) {
@@ -215,32 +401,12 @@ public class BucketControl
         return getPartyBucketsByItem(value, EntityPermission.READ_WRITE);
     }
 
-    private List<PartyBucket> getPartyBucketsByUnitOfMeasureType(UnitOfMeasureType value, EntityPermission permission) {
-        var query = switch(permission) {
-            case READ_ONLY -> session.applyLimit(session.getDslContext()
-                    .select(PartyBuckets.fields())
-                    .from(PartyBuckets)
-                    .join(Parties).on(PartyBuckets.PARTY.eq(Parties.PARTY))
-                    .join(PartyDetails).on(Parties.LAST_DETAIL.eq(PartyDetails.PARTY_DETAIL))
-                    .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
-                    .join(Items).on(PartyBuckets.ITEM.eq(Items.ITEM))
-                    .join(ItemDetails).on(Items.LAST_DETAIL.eq(ItemDetails.ITEM_DETAIL))
-                    .join(InventoryConditions).on(PartyBuckets.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
-                    .join(InventoryConditionDetails).on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
-                    .join(InventoryBucketTypes).on(PartyBuckets.INVENTORY_BUCKET_TYPE.eq(InventoryBucketTypes.INVENTORY_BUCKET_TYPE))
-                    .join(InventoryBucketTypeDetails).on(InventoryBucketTypes.LAST_DETAIL.eq(InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_DETAIL))
-                    .where(PartyBuckets.UNIT_OF_MEASURE_TYPE.eq(value.getPrimaryKey()))
-                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME, ItemDetails.ITEM_NAME,
-                            InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME,
-                            InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME), PartyBucketFactory.class);
-            case READ_WRITE -> session.getDslContext()
-                    .select(PartyBuckets.fields())
-                    .from(PartyBuckets)
-                    .where(PartyBuckets.UNIT_OF_MEASURE_TYPE.eq(value.getPrimaryKey()))
-                    .forUpdate();
-        };
-
-        return partyBucketFactory.getEntitiesFromQuery(permission, query);
+    private List<PartyBucket> getPartyBucketsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType,
+            EntityPermission permission) {
+        return getPartyBuckets(PartyBuckets.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()), permission,
+                PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME, ItemDetails.ITEM_NAME,
+                InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME,
+                InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME);
     }
 
     public List<PartyBucket> getPartyBucketsByUnitOfMeasureType(UnitOfMeasureType value) {
@@ -251,36 +417,13 @@ public class BucketControl
         return getPartyBucketsByUnitOfMeasureType(value, EntityPermission.READ_WRITE);
     }
 
-    private List<PartyBucket> getPartyBucketsByInventoryCondition(InventoryCondition value, EntityPermission permission) {
-        var query = switch(permission) {
-            case READ_ONLY -> session.applyLimit(session.getDslContext()
-                    .select(PartyBuckets.fields())
-                    .from(PartyBuckets)
-                    .join(Parties).on(PartyBuckets.PARTY.eq(Parties.PARTY))
-                    .join(PartyDetails).on(Parties.LAST_DETAIL.eq(PartyDetails.PARTY_DETAIL))
-                    .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
-                    .join(Items).on(PartyBuckets.ITEM.eq(Items.ITEM))
-                    .join(ItemDetails).on(Items.LAST_DETAIL.eq(ItemDetails.ITEM_DETAIL))
-                    .join(UnitOfMeasureTypeDetails).on(PartyBuckets.UNIT_OF_MEASURE_TYPE.eq(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE))
-                    .join(UnitOfMeasureKindDetails).on(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND))
-                    .join(InventoryBucketTypes).on(PartyBuckets.INVENTORY_BUCKET_TYPE.eq(InventoryBucketTypes.INVENTORY_BUCKET_TYPE))
-                    .join(InventoryBucketTypeDetails).on(InventoryBucketTypes.LAST_DETAIL.eq(InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_DETAIL))
-                    .where(PartyBuckets.INVENTORY_CONDITION.eq(value.getPrimaryKey()),
-                            UnitOfMeasureTypeDetails.THRU_TIME.eq(Session.MAX_TIME),
-                            UnitOfMeasureKindDetails.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME,
-                            ItemDetails.ITEM_NAME,
-                            UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME,
-                            UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
-                            InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME), PartyBucketFactory.class);
-            case READ_WRITE -> session.getDslContext()
-                    .select(PartyBuckets.fields())
-                    .from(PartyBuckets)
-                    .where(PartyBuckets.INVENTORY_CONDITION.eq(value.getPrimaryKey()))
-                    .forUpdate();
-        };
-
-        return partyBucketFactory.getEntitiesFromQuery(permission, query);
+    private List<PartyBucket> getPartyBucketsByInventoryCondition(InventoryCondition inventoryCondition,
+            EntityPermission permission) {
+        return getPartyBuckets(PartyBuckets.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()), permission,
+                PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME, ItemDetails.ITEM_NAME,
+                UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME,
+                UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
+                InventoryBucketTypeDetails.SORT_ORDER, InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME);
     }
 
     public List<PartyBucket> getPartyBucketsByInventoryCondition(InventoryCondition value) {
@@ -291,34 +434,13 @@ public class BucketControl
         return getPartyBucketsByInventoryCondition(value, EntityPermission.READ_WRITE);
     }
 
-    private List<PartyBucket> getPartyBucketsByInventoryBucketType(InventoryBucketType value, EntityPermission permission) {
-        var query = switch(permission) {
-            case READ_ONLY -> session.applyLimit(session.getDslContext()
-                    .select(PartyBuckets.fields())
-                    .from(PartyBuckets)
-                    .join(Parties).on(PartyBuckets.PARTY.eq(Parties.PARTY))
-                    .join(PartyDetails).on(Parties.LAST_DETAIL.eq(PartyDetails.PARTY_DETAIL))
-                    .join(PartyTypes).on(PartyDetails.PARTY_TYPE.eq(PartyTypes.PARTY_TYPE))
-                    .join(Items).on(PartyBuckets.ITEM.eq(Items.ITEM))
-                    .join(ItemDetails).on(Items.LAST_DETAIL.eq(ItemDetails.ITEM_DETAIL))
-                    .join(UnitOfMeasureTypeDetails).on(PartyBuckets.UNIT_OF_MEASURE_TYPE.eq(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE))
-                    .join(UnitOfMeasureKindDetails).on(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND))
-                    .join(InventoryConditions).on(PartyBuckets.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
-                    .join(InventoryConditionDetails).on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
-                    .where(PartyBuckets.INVENTORY_BUCKET_TYPE.eq(value.getPrimaryKey()),
-                            UnitOfMeasureTypeDetails.THRU_TIME.eq(Session.MAX_TIME), UnitOfMeasureKindDetails.THRU_TIME.eq(Session.MAX_TIME))
-                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME,
-                            ItemDetails.ITEM_NAME,
-                            UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME,
-                            UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
-                            InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME), PartyBucketFactory.class);
-            case READ_WRITE -> session.getDslContext().
-                    select(PartyBuckets.fields())
-                    .from(PartyBuckets)
-                    .where(PartyBuckets.INVENTORY_BUCKET_TYPE.eq(value.getPrimaryKey())).forUpdate();
-        };
-
-        return partyBucketFactory.getEntitiesFromQuery(permission, query);
+    private List<PartyBucket> getPartyBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType,
+            EntityPermission permission) {
+        return getPartyBuckets(PartyBuckets.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()), permission,
+                PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, PartyDetails.PARTY_NAME, ItemDetails.ITEM_NAME,
+                UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME,
+                UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
+                InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME);
     }
 
     public List<PartyBucket> getPartyBucketsByInventoryBucketType(InventoryBucketType value) {
@@ -377,8 +499,9 @@ public class BucketControl
     }
 
     public void removePartyBucket(PartyBucket partyBucket, BasePK removedBy) {
-        sendEvent(partyBucket.getItemPK(), EventTypes.TOUCH, null, null, removedBy);
         partyBucket.remove();
+
+        sendEvent(partyBucket.getItemPK(), EventTypes.TOUCH, null, null, removedBy);
     }
 
     public void removePartyBuckets(List<PartyBucket> partyBuckets, BasePK removedBy) {

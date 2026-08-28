@@ -54,6 +54,9 @@ public class InventoryBucketTypeControl
         extends BaseModelControl {
 
     @Inject
+    BucketControl bucketControl;
+
+    @Inject
     InventoryBucketTypeTransferCache inventoryBucketTypeTransferCache;
 
     @Inject
@@ -323,6 +326,8 @@ public class InventoryBucketTypeControl
 
         deleteInventoryBucketTypeDescriptionsByInventoryBucketType(inventoryBucketType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryBucketType(inventoryBucketType, deletedBy);
+        bucketControl.removePartyBucketsByInventoryBucketType(inventoryBucketType, deletedBy);
+        bucketControl.removeInventoryLocationBucketsByInventoryBucketType(inventoryBucketType, deletedBy);
 
         inventoryBucketTypeDetail.setThruTime(session.getStartTime());
         inventoryBucketType.setActiveDetail(null);

@@ -1,5 +1,6 @@
 ### Coding Conventions
 
+- Every newly added source file must include the repository's full copyright and Apache License 2.0 header. Do not abbreviate, condense, or omit any portion of the standard header; copy it verbatim from an existing neighboring source file.
 - Maintain required alphabetical and type-based ordering for top-level injected dependencies:
     - Generated Factory classes first in alphabetical order.
     - Control classes second in alphabetical order.

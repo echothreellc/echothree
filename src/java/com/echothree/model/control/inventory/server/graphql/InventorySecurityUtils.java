@@ -27,6 +27,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryCondition
 import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLocationBucketCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLocationBucketsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationsCommand;
@@ -79,6 +81,14 @@ public interface InventorySecurityUtils {
 
     static boolean getHasInventoryLocationsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryLocationsCommand.class);
+    }
+
+    static boolean getHasInventoryLocationBucketAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryLocationBucketCommand.class);
+    }
+
+    static boolean getHasInventoryLocationBucketsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryLocationBucketsCommand.class);
     }
 
     static boolean getHasInventoryCostingMethodAccess(final DataFetchingEnvironment env) {

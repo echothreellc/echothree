@@ -59,6 +59,9 @@ public class InventoryLocationControl
         extends BaseModelControl {
 
     @Inject
+    BucketControl bucketControl;
+
+    @Inject
     InventoryLocationTransferCache inventoryLocationTransferCache;
 
     /**
@@ -347,6 +350,8 @@ public class InventoryLocationControl
     }
 
     public void deleteInventoryLocation(InventoryLocation inventoryLocation, BasePK deletedBy) {
+        bucketControl.removeInventoryLocationBucketsByInventoryLocation(inventoryLocation, deletedBy);
+
         inventoryLocation.setThruTime(session.getStartTime());
 
         sendEvent(inventoryLocation.getLocationPK(), EventTypes.MODIFY, inventoryLocation.getPrimaryKey(), EventTypes.DELETE, deletedBy);

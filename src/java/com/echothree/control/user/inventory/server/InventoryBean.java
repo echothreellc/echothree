@@ -388,6 +388,20 @@ public class InventoryBean
     }
 
     // -------------------------------------------------------------------------
+    //   Inventory Location Buckets
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<GetInventoryLocationBucketResult> getInventoryLocationBucket(UserVisitPK userVisitPK, GetInventoryLocationBucketForm form) {
+        return CDI.current().select(GetInventoryLocationBucketCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryLocationBucketsResult> getInventoryLocationBuckets(UserVisitPK userVisitPK, GetInventoryLocationBucketsForm form) {
+        return CDI.current().select(GetInventoryLocationBucketsCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Lots
     // -------------------------------------------------------------------------
 

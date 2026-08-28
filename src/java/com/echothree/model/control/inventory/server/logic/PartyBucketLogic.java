@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.inventory.server.logic;
 
+import com.echothree.model.control.inventory.common.exception.DuplicatePartyBucketException;
 import com.echothree.model.control.inventory.common.exception.PartyBucketInUseException;
 import com.echothree.model.control.inventory.server.control.BucketControl;
 import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
@@ -44,11 +45,26 @@ public class PartyBucketLogic
         super();
     }
 
-    public PartyBucket createPartyBucket(final Party party, final Item item,
+    public PartyBucket createPartyBucket(final ExecutionErrorAccumulator eea, final Party party, final Item item,
             final UnitOfMeasureType unitOfMeasureType, final InventoryCondition inventoryCondition,
             final InventoryBucketType inventoryBucketType, final Long quantity, final BasePK createdBy) {
-        return bucketControl.createPartyBucket(party, item, unitOfMeasureType, inventoryCondition,
-                inventoryBucketType, quantity, createdBy);
+        var partyBucket = getPartyBucket(party, item, unitOfMeasureType, inventoryCondition, inventoryBucketType);
+
+        if(partyBucket == null) {
+            partyBucket = bucketControl.createPartyBucket(party, item, unitOfMeasureType, inventoryCondition,
+                    inventoryBucketType, quantity, createdBy);
+        } else {
+            handleExecutionError(DuplicatePartyBucketException.class, eea,
+                    ExecutionErrors.DuplicatePartyBucket.name());
+        }
+
+        return partyBucket;
+    }
+
+    public PartyBucket getPartyBucket(final Party party, final Item item,
+            final UnitOfMeasureType unitOfMeasureType, final InventoryCondition inventoryCondition,
+            final InventoryBucketType inventoryBucketType) {
+        return bucketControl.getPartyBucket(party, item, unitOfMeasureType, inventoryCondition, inventoryBucketType);
     }
 
     public void updatePartyBucketFromValue(final PartyBucketValue partyBucketValue, final BasePK updatedBy) {
