@@ -202,6 +202,14 @@ public interface InventoryService
     CommandResult<VoidResult> deleteInventoryLocation(UserVisitPK userVisitPK, DeleteInventoryLocationForm form);
 
     // -------------------------------------------------------------------------
+    //   Inventory Location Buckets
+    // -------------------------------------------------------------------------
+
+    CommandResult<GetInventoryLocationBucketResult> getInventoryLocationBucket(UserVisitPK userVisitPK, GetInventoryLocationBucketForm form);
+
+    CommandResult<GetInventoryLocationBucketsResult> getInventoryLocationBuckets(UserVisitPK userVisitPK, GetInventoryLocationBucketsForm form);
+
+    // -------------------------------------------------------------------------
     //   Lots
     // -------------------------------------------------------------------------
 

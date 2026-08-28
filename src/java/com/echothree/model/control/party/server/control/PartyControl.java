@@ -23,6 +23,7 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.inventory.server.control.BucketControl;
 import com.echothree.model.control.inventory.server.control.InventoryLocationControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.choice.BirthdayFormatChoicesBean;
@@ -225,6 +226,9 @@ public class PartyControl
     
     @Inject
     protected AccountingControl accountingControl;
+
+    @Inject
+    BucketControl bucketControl;
 
     @Inject
     protected CancellationPolicyControl cancellationPolicyControl;
@@ -2495,7 +2499,9 @@ public class PartyControl
         deletePartyGroupByParty(party, deletedBy);
         deleteProfileByParty(party, deletedBy);
         deletePartyAliasesByParty(party, deletedBy); 
-        
+
+        bucketControl.removePartyBucketsByParty(party, deletedBy);
+
         removePartyStatusByParty(party);
 
         partyDetail.setThruTime(session.getStartTime());
