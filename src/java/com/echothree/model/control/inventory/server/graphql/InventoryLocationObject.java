@@ -17,6 +17,12 @@
 package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.inventory.server.control.BucketControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.party.server.graphql.PartyObject;
@@ -26,10 +32,16 @@ import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.warehouse.server.graphql.LocationObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseSecurityUtils;
 import com.echothree.model.data.inventory.server.entity.InventoryLocation;
+import com.echothree.model.data.inventory.common.InventoryLocationBucketConstants;
+import com.echothree.util.server.persistence.Session;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("inventory location object")
 @GraphQLName("InventoryLocation")
@@ -75,6 +87,28 @@ public class InventoryLocationObject
     public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
         return InventorySecurityUtils.getHasInventoryConditionAccess(env)
                 ? new InventoryConditionObject(inventoryLocation.getInventoryCondition()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory location buckets")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryLocationBucketObject> getInventoryLocationBuckets(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryLocationBucketsAccess(env)) {
+            var bucketControl = Session.getModelController(BucketControl.class);
+            var totalCount = bucketControl.countInventoryLocationBucketsByInventoryLocation(inventoryLocation);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryLocationBucketConstants.COMPONENT_VENDOR_NAME,
+                    InventoryLocationBucketConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = bucketControl.getInventoryLocationBucketsByInventoryLocation(inventoryLocation);
+                var inventoryLocationBuckets = entities.stream().map(InventoryLocationBucketObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, inventoryLocationBuckets);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

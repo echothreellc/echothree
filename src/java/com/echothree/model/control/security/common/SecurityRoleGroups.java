@@ -160,6 +160,7 @@ public enum SecurityRoleGroups {
     InventoryCondition,
     InventoryCostingMethod,
     InventoryLocation,
+    InventoryLocationBucket,
     InventoryLocationGroup,
     InventoryLocationGroupStatus,
     InventoryTransactionType,

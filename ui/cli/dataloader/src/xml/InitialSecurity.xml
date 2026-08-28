@@ -997,6 +997,15 @@
                 <securityRoleDescription languageIsoName="en" description="Inventory Location Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="InventoryLocationBucket" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Inventory Location Bucket" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Bucket List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Bucket Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PartyInventoryLevel" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Party Inventory Level" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8476,6 +8485,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocation" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocation" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocation" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationBucket" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationBucket" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Delete" />
