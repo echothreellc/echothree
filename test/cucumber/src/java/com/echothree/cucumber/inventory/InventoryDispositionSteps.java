@@ -198,6 +198,22 @@ public class InventoryDispositionSteps implements En {
                     }
                 });
 
+        And("^the user sets the inventory disposition's entity ref to the last inventory disposition added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var deleteInventoryDispositionForm = persona.deleteInventoryDispositionForm;
+                    var inventoryDispositionSpec = persona.inventoryDispositionSpec;
+
+                    assertThat(deleteInventoryDispositionForm != null || inventoryDispositionSpec != null).isTrue();
+                    assertThat(persona.lastEntityRef).isNotNull();
+
+                    if(deleteInventoryDispositionForm != null) {
+                        deleteInventoryDispositionForm.setEntityRef(persona.lastEntityRef);
+                    } else {
+                        inventoryDispositionSpec.setEntityRef(persona.lastEntityRef);
+                    }
+                });
+
         And("^the user sets the inventory disposition's new inventory disposition name to \"([a-zA-Z0-9-_]*)\"$",
                 (String inventoryDispositionName) -> {
                     var persona = CurrentPersona.persona;
