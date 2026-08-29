@@ -24,6 +24,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
@@ -32,6 +33,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObjec
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.data.order.common.OrderPriorityConstants;
+import com.echothree.model.data.order.common.OrderTimeTypeConstants;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.entity.OrderTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -120,6 +122,26 @@ public class OrderTypeObject
         var userControl = Session.getModelController(UserControl.class);
 
         return orderTypeControl.getBestOrderTypeDescription(orderType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("order type times")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OrderTimeTypeObject> getOrderTimeTypes(final DataFetchingEnvironment env) {
+        if(OrderSecurityUtils.getHasOrderTimeTypesAccess(env)) {
+            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
+            var totalCount = orderTimeControl.countOrderTimeTypes(orderType);
+
+            try(var objectLimiter = new ObjectLimiter(env, OrderTimeTypeConstants.COMPONENT_VENDOR_NAME, OrderTimeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = orderTimeControl.getOrderTimeTypes(orderType);
+                var orderTimeTypes = entities.stream().map(OrderTimeTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, orderTimeTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
     @GraphQLField

@@ -57,6 +57,9 @@ public class InventoryTransactionTypeControl
         extends BaseModelControl {
 
     @Inject
+    InventoryTransactionTimeControl inventoryTransactionTimeControl;
+
+    @Inject
     InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
 
     @Inject
@@ -329,6 +332,7 @@ public class InventoryTransactionTypeControl
         var inventoryTransactionTypeDetail = inventoryTransactionType.getLastDetailForUpdate();
 
         deleteInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
+        inventoryTransactionTimeControl.deleteInventoryTransactionTimeTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
 
         inventoryTransactionTypeDetail.setThruTime(session.getStartTime());

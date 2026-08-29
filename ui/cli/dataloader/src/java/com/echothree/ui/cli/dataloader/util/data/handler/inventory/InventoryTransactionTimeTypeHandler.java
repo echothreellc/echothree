@@ -25,52 +25,47 @@ import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class InventoryTransactionTypeHandler
+public class InventoryTransactionTimeTypeHandler
         extends BaseHandler {
 
     InventoryService inventoryService;
     String inventoryTransactionTypeName;
+    String inventoryTransactionTimeTypeName;
     
-    /** Creates a new instance of InventoryTransactionTypeHandler */
-    public InventoryTransactionTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryTransactionTypeName) {
+    /** Creates a new instance of InventoryTransactionTimeTypeHandler */
+    public InventoryTransactionTimeTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler,
+            String inventoryTransactionTypeName, String inventoryTransactionTimeTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
-
+        
         try {
             inventoryService = InventoryUtil.getHome();
         } catch (NamingException ne) {
-            // TODO: Handle Exception
+            throw new SAXException(ne);
         }
-        
+
         this.inventoryTransactionTypeName = inventoryTransactionTypeName;
+        this.inventoryTransactionTimeTypeName = inventoryTransactionTimeTypeName;
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-    throws SAXException {
-        if(localName.equals("inventoryTransactionTypeDescription")) {
-            var commandForm = InventoryFormFactory.getCreateInventoryTransactionTypeDescriptionForm();
-
-            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
-            commandForm.set(getAttrsMap(attrs));
+            throws SAXException {
+        if(localName.equals("inventoryTransactionTimeTypeDescription")) {
+            var commandForm = InventoryFormFactory.getCreateInventoryTransactionTimeTypeDescriptionForm();
             
-            checkCommandResult(inventoryService.createInventoryTransactionTypeDescription(initialDataParser.getUserVisit(), commandForm));
-        } else if(localName.equals("inventoryTransactionTimeType")) {
-            var commandForm = InventoryFormFactory.getCreateInventoryTransactionTimeTypeForm();
-
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransactionTimeTypeName(inventoryTransactionTimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionTimeType(initialDataParser.getUserVisit(), commandForm));
-
-            initialDataParser.pushHandler(new InventoryTransactionTimeTypeHandler(initialDataParser, this,
-                    inventoryTransactionTypeName, commandForm.getInventoryTransactionTimeTypeName()));
+            checkCommandResult(inventoryService.createInventoryTransactionTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
-    throws SAXException {
-        if(localName.equals("inventoryTransactionType")) {
+            throws SAXException {
+        if(localName.equals("inventoryTransactionTimeType")) {
             initialDataParser.popHandler();
         }
     }

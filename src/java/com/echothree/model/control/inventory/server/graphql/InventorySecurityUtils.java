@@ -34,6 +34,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryLocationG
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypesCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodsCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyBucketCommand;
@@ -65,6 +67,14 @@ public interface InventorySecurityUtils {
 
     static boolean getHasInventoryTransactionTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryTransactionTypesCommand.class);
+    }
+
+    static boolean getHasInventoryTransactionTimeTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryTransactionTimeTypeCommand.class);
+    }
+
+    static boolean getHasInventoryTransactionTimeTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryTransactionTimeTypesCommand.class);
     }
 
     static boolean getHasInventoryLocationGroupAccess(final DataFetchingEnvironment env) {
