@@ -75,6 +75,9 @@
             <inventoryTransactionTimeType inventoryTransactionTimeTypeName="TEST_INVENTORY_TRANSACTION_TIME_TYPE" isDefault="true" sortOrder="0">
                 <inventoryTransactionTimeTypeDescription languageIsoName="en" description="Test Inventory Transaction Time Type" />
             </inventoryTransactionTimeType>
+            <inventoryTransactionRoleType inventoryTransactionRoleTypeName="TEST_INVENTORY_TRANSACTION_ROLE_TYPE" isDefault="true" sortOrder="0">
+                <inventoryTransactionRoleTypeDescription languageIsoName="en" description="Test Inventory Transaction Role Type" />
+            </inventoryTransactionRoleType>
         </inventoryTransactionType>
     </inventoryTransactionTypes>
     <lotAliasTypes>
