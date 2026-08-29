@@ -16,6 +16,11 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypesCommand;
+import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTimeTypeObject;
+import com.echothree.model.data.inventory.common.InventoryTransactionTimeTypeConstants;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionTimeType;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
@@ -5518,6 +5523,98 @@ public interface GraphQlQueries {
     }
 
     @GraphQLField
+    @GraphQLName("inventoryTransactionTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryTransactionTypeObject> inventoryTransactionTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<InventoryTransactionTypeObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryTransactionTypesForm();
+            var command = CDI.current().select(GetInventoryTransactionTypesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionTypeConstants.COMPONENT_VENDOR_NAME, InventoryTransactionTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryTransactionTypes = entities.stream()
+                            .map(InventoryTransactionTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryTransactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryTransactionTimeType")
+    static InventoryTransactionTimeTypeObject inventoryTransactionTimeType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransactionTimeTypeName") final String inventoryTransactionTimeTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        InventoryTransactionTimeType inventoryTransactionTimeType;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryTransactionTimeTypeForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransactionTimeTypeName(inventoryTransactionTimeTypeName);
+            commandForm.setUuid(id);
+
+            inventoryTransactionTimeType = 
+                    CDI.current().select(GetInventoryTransactionTimeTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryTransactionTimeType == null ? null : new InventoryTransactionTimeTypeObject(inventoryTransactionTimeType);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryTransactionTimeTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryTransactionTimeTypeObject> inventoryTransactionTimeTypes(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName) {
+        CountingPaginatedData<InventoryTransactionTimeTypeObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryTransactionTimeTypesForm();
+            var command = CDI.current().select(GetInventoryTransactionTimeTypesCommand.class).get();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionTimeTypeConstants.COMPONENT_VENDOR_NAME,
+                        InventoryTransactionTimeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryTransactionTimeTypes = entities.stream()
+                            .map(InventoryTransactionTimeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryTransactionTimeTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
     @GraphQLName("inventoryAdjustmentType")
     static InventoryAdjustmentTypeObject inventoryAdjustmentType(final DataFetchingEnvironment env,
             @GraphQLName("inventoryAdjustmentTypeName") final String inventoryAdjustmentTypeName,
@@ -5810,38 +5907,6 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, partyBuckets);
-                }
-            }
-        } catch (NamingException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        return data;
-    }
-
-    @GraphQLField
-    @GraphQLName("inventoryTransactionTypes")
-    @GraphQLNonNull
-    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    static CountingPaginatedData<InventoryTransactionTypeObject> inventoryTransactionTypes(final DataFetchingEnvironment env) {
-        CountingPaginatedData<InventoryTransactionTypeObject> data;
-
-        try {
-            var commandForm = InventoryUtil.getHome().getGetInventoryTransactionTypesForm();
-            var command = CDI.current().select(GetInventoryTransactionTypesCommand.class).get();
-
-            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
-            if(totalEntities == null) {
-                data = Connections.emptyConnection();
-            } else {
-                try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionTypeConstants.COMPONENT_VENDOR_NAME, InventoryTransactionTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
-                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
-
-                    var inventoryTransactionTypes = entities.stream()
-                            .map(InventoryTransactionTypeObject::new)
-                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
-
-                    data = new CountedObjects<>(objectLimiter, inventoryTransactionTypes);
                 }
             }
         } catch (NamingException ex) {

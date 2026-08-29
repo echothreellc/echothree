@@ -17,7 +17,13 @@
 package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionTimeControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
@@ -25,6 +31,7 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.inventory.common.InventoryTransactionTimeTypeConstants;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -32,7 +39,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("inventory type object")
 @GraphQLName("InventoryTransactionType")
@@ -112,5 +122,28 @@ public class InventoryTransactionTypeObject
         return inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
+    @GraphQLField
+    @GraphQLDescription("inventory transaction time types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryTransactionTimeTypeObject> getInventoryTransactionTimeTypes(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryTransactionTimeTypesAccess(env)) {
+            var inventoryTransactionTime = Session.getModelController(InventoryTransactionTimeControl.class);
+            var totalCount = inventoryTransactionTime.countInventoryTransactionTimeTypes(inventoryTransactionType);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionTimeTypeConstants.COMPONENT_VENDOR_NAME,
+                    InventoryTransactionTimeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryTransactionTime.getInventoryTransactionTimeTypes(inventoryTransactionType);
+                var orderTimeTypes = 
+                        entities.stream()
+                                .map(InventoryTransactionTimeTypeObject::new)
+                                .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, orderTimeTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
 
 }
