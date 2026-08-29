@@ -123,7 +123,7 @@ public class InventoryTransactionTimeControl
         return inventoryTransactionTimeTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
-    public long countInventoryTransactionTimeTypes(InventoryTransactionType inventoryTransactionType) {
+    public long countInventoryTransactionTimeTypesByInventoryTransactionType(InventoryTransactionType inventoryTransactionType) {
         return session.getDslContext()
                 .selectCount()
                 .from(InventoryTransactionTimeTypes)
@@ -131,19 +131,6 @@ public class InventoryTransactionTimeControl
                 .where(InventoryTransactionTimeTypeDetails.INVENTORY_TRANSACTION_TYPE.eq(inventoryTransactionType.getPrimaryKey()))
                 .fetchOptional(0, Long.class)
                 .orElse(0L);
-    }
-
-    public long countInventoryTransactionTimeTypes() {
-        return session.getDslContext()
-                .selectCount()
-                .from(InventoryTransactionTimeTypes)
-                .join(InventoryTransactionTimeTypeDetails).onKey(INVENTORY_TRANSACTION_TIME_TYPES_ACTIVE_DETAIL_FK)
-                .fetchOptional(0, Long.class)
-                .orElse(0L);
-    }
-
-    public long countInventoryTransactionTimeTypesByInventoryTransactionType(InventoryTransactionType inventoryTransactionType) {
-        return countInventoryTransactionTimeTypes(inventoryTransactionType);
     }
 
     public InventoryTransactionTimeType getInventoryTransactionTimeTypeByName(InventoryTransactionType inventoryTransactionType,
@@ -414,15 +401,6 @@ public class InventoryTransactionTimeControl
                 EventTypes.CREATE, createdBy);
 
         return inventoryTransactionTimeTypeDescription;
-    }
-
-    public long countInventoryTransactionTimeTypeDescriptions() {
-        return session.getDslContext()
-                .selectCount()
-                .from(InventoryTransactionTimeTypeDescriptions)
-                .where(InventoryTransactionTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
-                .fetchOptional(0, Long.class)
-                .orElse(0L);
     }
 
     public long countInventoryTransactionTimeTypeDescriptionsByInventoryTransactionTimeType(

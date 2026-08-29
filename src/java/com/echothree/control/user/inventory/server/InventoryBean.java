@@ -873,6 +873,69 @@ public class InventoryBean
     }
 
     // -------------------------------------------------------------------------
+    //   Inventory Transaction Role Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateInventoryTransactionRoleTypeResult> createInventoryTransactionRoleType(UserVisitPK userVisitPK, CreateInventoryTransactionRoleTypeForm form) {
+        return CDI.current().select(CreateInventoryTransactionRoleTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionRoleTypesResult> getInventoryTransactionRoleTypes(UserVisitPK userVisitPK, GetInventoryTransactionRoleTypesForm form) {
+        return CDI.current().select(GetInventoryTransactionRoleTypesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionRoleTypeResult> getInventoryTransactionRoleType(UserVisitPK userVisitPK, GetInventoryTransactionRoleTypeForm form) {
+        return CDI.current().select(GetInventoryTransactionRoleTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionRoleTypeChoicesResult> getInventoryTransactionRoleTypeChoices(UserVisitPK userVisitPK, GetInventoryTransactionRoleTypeChoicesForm form) {
+        return CDI.current().select(GetInventoryTransactionRoleTypeChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultInventoryTransactionRoleType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionRoleTypeForm form) {
+        return CDI.current().select(SetDefaultInventoryTransactionRoleTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryTransactionRoleTypeResult> editInventoryTransactionRoleType(UserVisitPK userVisitPK, EditInventoryTransactionRoleTypeForm form) {
+        return CDI.current().select(EditInventoryTransactionRoleTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryTransactionRoleType(UserVisitPK userVisitPK, DeleteInventoryTransactionRoleTypeForm form) {
+        return CDI.current().select(DeleteInventoryTransactionRoleTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Role Type Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createInventoryTransactionRoleTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionRoleTypeDescriptionForm form) {
+        return CDI.current().select(CreateInventoryTransactionRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionRoleTypeDescriptionsResult> getInventoryTransactionRoleTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionRoleTypeDescriptionsForm form) {
+        return CDI.current().select(GetInventoryTransactionRoleTypeDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryTransactionRoleTypeDescriptionResult> editInventoryTransactionRoleTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionRoleTypeDescriptionForm form) {
+        return CDI.current().select(EditInventoryTransactionRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryTransactionRoleTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionRoleTypeDescriptionForm form) {
+        return CDI.current().select(DeleteInventoryTransactionRoleTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Inventory Bucket Types
     // -------------------------------------------------------------------------
 

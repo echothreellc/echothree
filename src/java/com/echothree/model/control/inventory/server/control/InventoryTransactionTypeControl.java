@@ -60,6 +60,9 @@ public class InventoryTransactionTypeControl
     InventoryTransactionTimeControl inventoryTransactionTimeControl;
 
     @Inject
+    InventoryTransactionRoleControl inventoryTransactionRoleControl;
+
+    @Inject
     InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
 
     @Inject
@@ -333,6 +336,7 @@ public class InventoryTransactionTypeControl
 
         deleteInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionTimeControl.deleteInventoryTransactionTimeTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
+        inventoryTransactionRoleControl.deleteInventoryTransactionRoleTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
 
         inventoryTransactionTypeDetail.setThruTime(session.getStartTime());

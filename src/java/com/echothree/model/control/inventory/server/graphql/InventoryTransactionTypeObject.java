@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.inventory.server.graphql;
 
+import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
+import com.echothree.model.data.inventory.common.InventoryTransactionRoleTypeConstants;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -129,17 +131,39 @@ public class InventoryTransactionTypeObject
     public CountingPaginatedData<InventoryTransactionTimeTypeObject> getInventoryTransactionTimeTypes(final DataFetchingEnvironment env) {
         if(InventorySecurityUtils.getHasInventoryTransactionTimeTypesAccess(env)) {
             var inventoryTransactionTime = Session.getModelController(InventoryTransactionTimeControl.class);
-            var totalCount = inventoryTransactionTime.countInventoryTransactionTimeTypes(inventoryTransactionType);
+            var totalCount = inventoryTransactionTime.countInventoryTransactionTimeTypesByInventoryTransactionType(inventoryTransactionType);
 
             try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionTimeTypeConstants.COMPONENT_VENDOR_NAME,
                     InventoryTransactionTimeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = inventoryTransactionTime.getInventoryTransactionTimeTypes(inventoryTransactionType);
-                var orderTimeTypes = 
-                        entities.stream()
-                                .map(InventoryTransactionTimeTypeObject::new)
-                                .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var orderTimeTypes = entities.stream()
+                        .map(InventoryTransactionTimeTypeObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, orderTimeTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory transaction role types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryTransactionRoleTypeObject> getInventoryTransactionRoleTypes(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryTransactionRoleTypesAccess(env)) {
+            var inventoryTransactionRole = Session.getModelController(InventoryTransactionRoleControl.class);
+            var totalCount = inventoryTransactionRole.countInventoryTransactionRoleTypesByInventoryTransactionType(inventoryTransactionType);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionRoleTypeConstants.COMPONENT_VENDOR_NAME,
+                    InventoryTransactionRoleTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryTransactionRole.getInventoryTransactionRoleTypes(inventoryTransactionType);
+                var roleTypes = entities.stream()
+                        .map(InventoryTransactionRoleTypeObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, roleTypes);
             }
         } else {
             return Connections.emptyConnection();

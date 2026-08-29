@@ -25,62 +25,47 @@ import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class InventoryTransactionTypeHandler
+public class InventoryTransactionRoleTypeHandler
         extends BaseHandler {
 
     InventoryService inventoryService;
     String inventoryTransactionTypeName;
+    String inventoryTransactionRoleTypeName;
     
-    /** Creates a new instance of InventoryTransactionTypeHandler */
-    public InventoryTransactionTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryTransactionTypeName) {
+    /** Creates a new instance of InventoryTransactionRoleTypeHandler */
+    public InventoryTransactionRoleTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler,
+            String inventoryTransactionTypeName, String inventoryTransactionRoleTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
-
+        
         try {
             inventoryService = InventoryUtil.getHome();
         } catch (NamingException ne) {
-            // TODO: Handle Exception
+            throw new SAXException(ne);
         }
-        
+
         this.inventoryTransactionTypeName = inventoryTransactionTypeName;
+        this.inventoryTransactionRoleTypeName = inventoryTransactionRoleTypeName;
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-    throws SAXException {
-        if(localName.equals("inventoryTransactionTypeDescription")) {
-            var commandForm = InventoryFormFactory.getCreateInventoryTransactionTypeDescriptionForm();
-
-            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
-            commandForm.set(getAttrsMap(attrs));
+            throws SAXException {
+        if(localName.equals("inventoryTransactionRoleTypeDescription")) {
+            var commandForm = InventoryFormFactory.getCreateInventoryTransactionRoleTypeDescriptionForm();
             
-            checkCommandResult(inventoryService.createInventoryTransactionTypeDescription(initialDataParser.getUserVisit(), commandForm));
-        } else if(localName.equals("inventoryTransactionTimeType")) {
-            var commandForm = InventoryFormFactory.getCreateInventoryTransactionTimeTypeForm();
-
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransactionRoleTypeName(inventoryTransactionRoleTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionTimeType(initialDataParser.getUserVisit(), commandForm));
-
-            initialDataParser.pushHandler(new InventoryTransactionTimeTypeHandler(initialDataParser, this,
-                    inventoryTransactionTypeName, commandForm.getInventoryTransactionTimeTypeName()));
-        } else if(localName.equals("inventoryTransactionRoleType")) {
-            var commandForm = InventoryFormFactory.getCreateInventoryTransactionRoleTypeForm();
-
-            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
-            commandForm.set(getAttrsMap(attrs));
-
-            checkCommandResult(inventoryService.createInventoryTransactionRoleType(initialDataParser.getUserVisit(), commandForm));
-
-            initialDataParser.pushHandler(new InventoryTransactionRoleTypeHandler(initialDataParser, this,
-                    inventoryTransactionTypeName, commandForm.getInventoryTransactionRoleTypeName()));
+            checkCommandResult(inventoryService.createInventoryTransactionRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
-    throws SAXException {
-        if(localName.equals("inventoryTransactionType")) {
+            throws SAXException {
+        if(localName.equals("inventoryTransactionRoleType")) {
             initialDataParser.popHandler();
         }
     }

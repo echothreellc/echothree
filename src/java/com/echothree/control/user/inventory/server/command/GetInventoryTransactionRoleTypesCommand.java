@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.common.form.GetInventoryTransactionTimeTypesForm;
+import com.echothree.control.user.inventory.common.form.GetInventoryTransactionRoleTypesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryTransactionTimeControl;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
 import com.echothree.model.control.inventory.server.logic.InventoryTransactionTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.InventoryTransactionTimeType;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionRoleType;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
-import com.echothree.model.data.inventory.server.factory.InventoryTransactionTimeTypeFactory;
+import com.echothree.model.data.inventory.server.factory.InventoryTransactionRoleTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -40,8 +40,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
-public class GetInventoryTransactionTimeTypesCommand
-        extends BasePaginatedMultipleEntitiesCommand<InventoryTransactionTimeType, GetInventoryTransactionTimeTypesForm> {
+public class GetInventoryTransactionRoleTypesCommand
+        extends BasePaginatedMultipleEntitiesCommand<InventoryTransactionRoleType, GetInventoryTransactionRoleTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -50,7 +50,7 @@ public class GetInventoryTransactionTimeTypesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.InventoryTransactionTimeType.name(), SecurityRoles.List.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.InventoryTransactionRoleType.name(), SecurityRoles.List.name())
                 ))
         ));
 
@@ -60,7 +60,7 @@ public class GetInventoryTransactionTimeTypesCommand
     }
 
     @Inject
-    InventoryTransactionTimeControl inventoryTransactionTimeControl;
+    InventoryTransactionRoleControl inventoryTransactionRoleControl;
 
     @Inject
     InventoryTransactionTypeControl inventoryTransactionTypeControl;
@@ -68,8 +68,8 @@ public class GetInventoryTransactionTimeTypesCommand
     @Inject
     InventoryTransactionTypeLogic inventoryTransactionTypeLogic;
 
-    /** Creates a new instance of GetInventoryTransactionTimeTypesCommand */
-    public GetInventoryTransactionTimeTypesCommand() {
+    /** Creates a new instance of GetInventoryTransactionRoleTypesCommand */
+    public GetInventoryTransactionRoleTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
@@ -84,28 +84,29 @@ public class GetInventoryTransactionTimeTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return hasExecutionErrors() ? null : inventoryTransactionTimeControl.countInventoryTransactionTimeTypesByInventoryTransactionType(inventoryTransactionType);
+        return hasExecutionErrors() ? null : inventoryTransactionRoleControl.countInventoryTransactionRoleTypesByInventoryTransactionType(inventoryTransactionType);
     }
 
     @Override
-    protected Collection<InventoryTransactionTimeType> getEntities() {
-        return hasExecutionErrors() ? null : inventoryTransactionTimeControl.getInventoryTransactionTimeTypes(inventoryTransactionType);
+    protected Collection<InventoryTransactionRoleType> getEntities() {
+        return hasExecutionErrors() ? null : inventoryTransactionRoleControl.getInventoryTransactionRoleTypes(inventoryTransactionType);
     }
 
     @Override
-    protected BaseResult getResult(Collection<InventoryTransactionTimeType> entities) {
-        var result = InventoryResultFactory.getGetInventoryTransactionTimeTypesResult();
+    protected BaseResult getResult(Collection<InventoryTransactionRoleType> entities) {
+        var result = InventoryResultFactory.getGetInventoryTransactionRoleTypesResult();
 
         if(entities != null) {
             var userVisit = getUserVisit();
 
-            result.setInventoryTransactionType(inventoryTransactionTypeControl.getInventoryTransactionTypeTransfer(userVisit, inventoryTransactionType));
+            result.setInventoryTransactionType(
+                    inventoryTransactionTypeControl.getInventoryTransactionTypeTransfer(userVisit, inventoryTransactionType));
 
-            if(session.hasLimit(InventoryTransactionTimeTypeFactory.class)) {
-                result.setInventoryTransactionTimeTypeCount(getTotalEntities());
+            if(session.hasLimit(InventoryTransactionRoleTypeFactory.class)) {
+                result.setInventoryTransactionRoleTypeCount(getTotalEntities());
             }
 
-            result.setInventoryTransactionTimeTypes(inventoryTransactionTimeControl.getInventoryTransactionTimeTypeTransfers(userVisit, entities));
+            result.setInventoryTransactionRoleTypes(inventoryTransactionRoleControl.getInventoryTransactionRoleTypeTransfers(userVisit, entities));
         }
 
         return result;

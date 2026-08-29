@@ -16,6 +16,11 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypesCommand;
+import com.echothree.model.control.inventory.server.graphql.InventoryTransactionRoleTypeObject;
+import com.echothree.model.data.inventory.common.InventoryTransactionRoleTypeConstants;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionRoleType;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypesCommand;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTimeTypeObject;
@@ -5605,6 +5610,66 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryTransactionTimeTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryTransactionRoleType")
+    static InventoryTransactionRoleTypeObject inventoryTransactionRoleType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransactionRoleTypeName") final String inventoryTransactionRoleTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        InventoryTransactionRoleType inventoryTransactionRoleType;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryTransactionRoleTypeForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransactionRoleTypeName(inventoryTransactionRoleTypeName);
+            commandForm.setUuid(id);
+
+            inventoryTransactionRoleType = 
+                    CDI.current().select(GetInventoryTransactionRoleTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryTransactionRoleType == null ? null : new InventoryTransactionRoleTypeObject(inventoryTransactionRoleType);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryTransactionRoleTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryTransactionRoleTypeObject> inventoryTransactionRoleTypes(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName) {
+        CountingPaginatedData<InventoryTransactionRoleTypeObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryTransactionRoleTypesForm();
+            var command = CDI.current().select(GetInventoryTransactionRoleTypesCommand.class).get();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionRoleTypeConstants.COMPONENT_VENDOR_NAME,
+                        InventoryTransactionRoleTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryTransactionRoleTypes = entities.stream()
+                            .map(InventoryTransactionRoleTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryTransactionRoleTypes);
                 }
             }
         } catch (NamingException ex) {
