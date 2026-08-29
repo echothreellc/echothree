@@ -16,9 +16,8 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
 import com.echothree.control.user.inventory.common.edit.InventoryDispositionEdit;
-import com.echothree.control.user.inventory.common.form.EditInventoryDispositionForm;
+import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
 import com.echothree.control.user.inventory.common.result.EditInventoryDispositionResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryDispositionUniversalSpec;
@@ -29,7 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.InventoryDisposition;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -132,20 +130,15 @@ public class EditInventoryDispositionCommand
 
     @Override
     public void canUpdate(InventoryDisposition inventoryDisposition) {
-        var inventoryTransactionTypeName = spec.getInventoryTransactionTypeName();
-        var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
+        var inventoryTransactionType = inventoryDisposition.getLastDetail().getInventoryTransactionType();
+        var inventoryDispositionName = edit.getInventoryDispositionName();
+        var duplicateInventoryDisposition =
+                inventoryDispositionControl.getInventoryDispositionByName(inventoryTransactionType, inventoryDispositionName);
 
-        if(inventoryTransactionType != null) {
-            var inventoryDispositionName = edit.getInventoryDispositionName();
-            var duplicateInventoryDisposition = 
-                    inventoryDispositionControl.getInventoryDispositionByName(inventoryTransactionType, inventoryDispositionName);
-
-            if(duplicateInventoryDisposition != null && !inventoryDisposition.equals(duplicateInventoryDisposition)) {
-                addExecutionError(ExecutionErrors.DuplicateInventoryDispositionName.name(), inventoryTransactionTypeName,
-                        inventoryDispositionName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
+        if(duplicateInventoryDisposition != null && !inventoryDisposition.equals(duplicateInventoryDisposition)) {
+            addExecutionError(ExecutionErrors.DuplicateInventoryDispositionName.name(),
+                    inventoryTransactionType.getLastDetail().getInventoryTransactionTypeName(),
+                    inventoryDispositionName);
         }
     }
 
