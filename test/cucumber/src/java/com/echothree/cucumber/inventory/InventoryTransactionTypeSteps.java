@@ -178,6 +178,22 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
+        And("^the user sets the inventory transaction type's entity ref to the last inventory transaction added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var deleteInventoryTransactionTypeForm = persona.deleteInventoryTransactionTypeForm;
+                    var inventoryTransactionTypeSpec = persona.inventoryTransactionTypeSpec;
+
+                    assertThat(deleteInventoryTransactionTypeForm != null || inventoryTransactionTypeSpec != null).isTrue();
+                    assertThat(persona.lastEntityRef).isNotNull();
+
+                    if(deleteInventoryTransactionTypeForm != null) {
+                        deleteInventoryTransactionTypeForm.setEntityRef(persona.lastEntityRef);
+                    } else {
+                        inventoryTransactionTypeSpec.setEntityRef(persona.lastEntityRef);
+                    }
+                });
+
         And("^the user sets the inventory transaction type's new inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;

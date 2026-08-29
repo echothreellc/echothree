@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.inventory.server.graphql;
 
+import com.echothree.model.control.inventory.server.control.InventoryDispositionControl;
+import com.echothree.model.data.inventory.common.InventoryDispositionConstants;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
 import com.echothree.model.data.inventory.common.InventoryTransactionRoleTypeConstants;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
@@ -164,6 +166,29 @@ public class InventoryTransactionTypeObject
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, roleTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory dispositions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryDispositionObject> getInventoryDispositions(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryDispositionsAccess(env)) {
+            var inventoryDispositionControl = Session.getModelController(InventoryDispositionControl.class);
+            var totalCount = inventoryDispositionControl.countInventoryDispositionsByInventoryTransactionType(inventoryTransactionType);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryDispositionConstants.COMPONENT_VENDOR_NAME,
+                    InventoryDispositionConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryDispositionControl.getInventoryDispositions(inventoryTransactionType);
+                var dispositions = entities.stream()
+                        .map(InventoryDispositionObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, dispositions);
             }
         } else {
             return Connections.emptyConnection();

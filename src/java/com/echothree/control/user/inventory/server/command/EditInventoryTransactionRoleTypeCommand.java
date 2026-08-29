@@ -18,7 +18,6 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionRoleTypeEdit;
-import com.echothree.control.user.inventory.common.form.EditInventoryTransactionRoleTypeForm;
 import com.echothree.control.user.inventory.common.result.EditInventoryTransactionRoleTypeResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionRoleTypeUniversalSpec;
@@ -29,7 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionRoleType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -132,20 +130,15 @@ public class EditInventoryTransactionRoleTypeCommand
 
     @Override
     public void canUpdate(InventoryTransactionRoleType inventoryTransactionRoleType) {
-        var inventoryTransactionTypeName = spec.getInventoryTransactionTypeName();
-        var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
+        var inventoryTransactionType = inventoryTransactionRoleType.getLastDetail().getInventoryTransactionType();
+        var inventoryTransactionRoleTypeName = edit.getInventoryTransactionRoleTypeName();
+        var duplicateInventoryTransactionRoleType =
+                inventoryTransactionRoleControl.getInventoryTransactionRoleTypeByName(inventoryTransactionType, inventoryTransactionRoleTypeName);
 
-        if(inventoryTransactionType != null) {
-            var inventoryTransactionRoleTypeName = edit.getInventoryTransactionRoleTypeName();
-            var duplicateInventoryTransactionRoleType = 
-                    inventoryTransactionRoleControl.getInventoryTransactionRoleTypeByName(inventoryTransactionType, inventoryTransactionRoleTypeName);
-
-            if(duplicateInventoryTransactionRoleType != null && !inventoryTransactionRoleType.equals(duplicateInventoryTransactionRoleType)) {
-                addExecutionError(ExecutionErrors.DuplicateInventoryTransactionRoleTypeName.name(), inventoryTransactionTypeName,
-                        inventoryTransactionRoleTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
+        if(duplicateInventoryTransactionRoleType != null && !inventoryTransactionRoleType.equals(duplicateInventoryTransactionRoleType)) {
+            addExecutionError(ExecutionErrors.DuplicateInventoryTransactionRoleTypeName.name(),
+                    inventoryTransactionType.getLastDetail().getInventoryTransactionTypeName(),
+                    inventoryTransactionRoleTypeName);
         }
     }
 

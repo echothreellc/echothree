@@ -431,6 +431,7 @@ public interface InventoryService
 
     CommandResult<VoidResult> deleteInventoryTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTimeTypeDescriptionForm form);
 
+    // -------------------------------------------------------------------------
     //   Inventory Transaction Role Types
     // -------------------------------------------------------------------------
 
@@ -459,6 +460,36 @@ public interface InventoryService
     CommandResult<EditInventoryTransactionRoleTypeDescriptionResult> editInventoryTransactionRoleTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionRoleTypeDescriptionForm form);
 
     CommandResult<VoidResult> deleteInventoryTransactionRoleTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionRoleTypeDescriptionForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Dispositions
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateInventoryDispositionResult> createInventoryDisposition(UserVisitPK userVisitPK, CreateInventoryDispositionForm form);
+
+    CommandResult<GetInventoryDispositionsResult> getInventoryDispositions(UserVisitPK userVisitPK, GetInventoryDispositionsForm form);
+
+    CommandResult<GetInventoryDispositionResult> getInventoryDisposition(UserVisitPK userVisitPK, GetInventoryDispositionForm form);
+
+    CommandResult<GetInventoryDispositionChoicesResult> getInventoryDispositionChoices(UserVisitPK userVisitPK, GetInventoryDispositionChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultInventoryDisposition(UserVisitPK userVisitPK, SetDefaultInventoryDispositionForm form);
+
+    CommandResult<EditInventoryDispositionResult> editInventoryDisposition(UserVisitPK userVisitPK, EditInventoryDispositionForm form);
+
+    CommandResult<VoidResult> deleteInventoryDisposition(UserVisitPK userVisitPK, DeleteInventoryDispositionForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Disposition Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryDispositionDescription(UserVisitPK userVisitPK, CreateInventoryDispositionDescriptionForm form);
+
+    CommandResult<GetInventoryDispositionDescriptionsResult> getInventoryDispositionDescriptions(UserVisitPK userVisitPK, GetInventoryDispositionDescriptionsForm form);
+
+    CommandResult<EditInventoryDispositionDescriptionResult> editInventoryDispositionDescription(UserVisitPK userVisitPK, EditInventoryDispositionDescriptionForm form);
+
+    CommandResult<VoidResult> deleteInventoryDispositionDescription(UserVisitPK userVisitPK, DeleteInventoryDispositionDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Inventory Bucket Types

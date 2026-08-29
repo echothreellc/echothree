@@ -936,6 +936,69 @@ public class InventoryBean
     }
 
     // -------------------------------------------------------------------------
+    //   Inventory Dispositions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateInventoryDispositionResult> createInventoryDisposition(UserVisitPK userVisitPK, CreateInventoryDispositionForm form) {
+        return CDI.current().select(CreateInventoryDispositionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryDispositionsResult> getInventoryDispositions(UserVisitPK userVisitPK, GetInventoryDispositionsForm form) {
+        return CDI.current().select(GetInventoryDispositionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryDispositionResult> getInventoryDisposition(UserVisitPK userVisitPK, GetInventoryDispositionForm form) {
+        return CDI.current().select(GetInventoryDispositionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryDispositionChoicesResult> getInventoryDispositionChoices(UserVisitPK userVisitPK, GetInventoryDispositionChoicesForm form) {
+        return CDI.current().select(GetInventoryDispositionChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultInventoryDisposition(UserVisitPK userVisitPK, SetDefaultInventoryDispositionForm form) {
+        return CDI.current().select(SetDefaultInventoryDispositionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryDispositionResult> editInventoryDisposition(UserVisitPK userVisitPK, EditInventoryDispositionForm form) {
+        return CDI.current().select(EditInventoryDispositionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryDisposition(UserVisitPK userVisitPK, DeleteInventoryDispositionForm form) {
+        return CDI.current().select(DeleteInventoryDispositionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Disposition Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createInventoryDispositionDescription(UserVisitPK userVisitPK, CreateInventoryDispositionDescriptionForm form) {
+        return CDI.current().select(CreateInventoryDispositionDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryDispositionDescriptionsResult> getInventoryDispositionDescriptions(UserVisitPK userVisitPK, GetInventoryDispositionDescriptionsForm form) {
+        return CDI.current().select(GetInventoryDispositionDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryDispositionDescriptionResult> editInventoryDispositionDescription(UserVisitPK userVisitPK, EditInventoryDispositionDescriptionForm form) {
+        return CDI.current().select(EditInventoryDispositionDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryDispositionDescription(UserVisitPK userVisitPK, DeleteInventoryDispositionDescriptionForm form) {
+        return CDI.current().select(DeleteInventoryDispositionDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Inventory Bucket Types
     // -------------------------------------------------------------------------
 

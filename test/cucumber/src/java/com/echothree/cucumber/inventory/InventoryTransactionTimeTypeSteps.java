@@ -198,6 +198,22 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     }
                 });
 
+        And("^the user sets the inventory transaction time type's entity ref to the last inventory transaction time type added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var deleteInventoryTransactionTimeTypeForm = persona.deleteInventoryTransactionTimeTypeForm;
+                    var inventoryTransactionTimeTypeSpec = persona.inventoryTransactionTimeTypeSpec;
+
+                    assertThat(deleteInventoryTransactionTimeTypeForm != null || inventoryTransactionTimeTypeSpec != null).isTrue();
+                    assertThat(persona.lastEntityRef).isNotNull();
+
+                    if(deleteInventoryTransactionTimeTypeForm != null) {
+                        deleteInventoryTransactionTimeTypeForm.setEntityRef(persona.lastEntityRef);
+                    } else {
+                        inventoryTransactionTimeTypeSpec.setEntityRef(persona.lastEntityRef);
+                    }
+                });
+
         And("^the user sets the inventory transaction time type's new inventory transaction time type name to \"([a-zA-Z0-9-_]*)\"$",
                 (String inventoryTransactionTimeTypeName) -> {
                     var persona = CurrentPersona.persona;

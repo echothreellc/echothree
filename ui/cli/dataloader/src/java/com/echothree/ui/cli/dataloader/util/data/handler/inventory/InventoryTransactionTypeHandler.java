@@ -74,6 +74,16 @@ public class InventoryTransactionTypeHandler
 
             initialDataParser.pushHandler(new InventoryTransactionRoleTypeHandler(initialDataParser, this,
                     inventoryTransactionTypeName, commandForm.getInventoryTransactionRoleTypeName()));
+        } else if(localName.equals("inventoryDisposition")) {
+            var commandForm = InventoryFormFactory.getCreateInventoryDispositionForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(inventoryService.createInventoryDisposition(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new InventoryDispositionHandler(initialDataParser, this,
+                    inventoryTransactionTypeName, commandForm.getInventoryDispositionName()));
         }
     }
     

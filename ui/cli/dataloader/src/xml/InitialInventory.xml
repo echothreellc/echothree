@@ -78,6 +78,9 @@
             <inventoryTransactionRoleType inventoryTransactionRoleTypeName="TEST_INVENTORY_TRANSACTION_ROLE_TYPE" isDefault="true" sortOrder="0">
                 <inventoryTransactionRoleTypeDescription languageIsoName="en" description="Test Inventory Transaction Role Type" />
             </inventoryTransactionRoleType>
+            <inventoryDisposition inventoryDispositionName="TEST_INVENTORY_DISPOSITION" isDefault="true" sortOrder="0">
+                <inventoryDispositionDescription languageIsoName="en" description="Test Inventory Disposition" />
+            </inventoryDisposition>
         </inventoryTransactionType>
     </inventoryTransactionTypes>
     <lotAliasTypes>

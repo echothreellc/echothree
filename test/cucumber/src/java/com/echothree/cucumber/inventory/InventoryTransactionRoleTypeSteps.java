@@ -198,6 +198,22 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
+        And("^the user sets the inventory transaction role type's entity ref to the last inventory transaction role type added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var deleteInventoryTransactionRoleTypeForm = persona.deleteInventoryTransactionRoleTypeForm;
+                    var inventoryTransactionRoleTypeSpec = persona.inventoryTransactionRoleTypeSpec;
+
+                    assertThat(deleteInventoryTransactionRoleTypeForm != null || inventoryTransactionRoleTypeSpec != null).isTrue();
+                    assertThat(persona.lastEntityRef).isNotNull();
+
+                    if(deleteInventoryTransactionRoleTypeForm != null) {
+                        deleteInventoryTransactionRoleTypeForm.setEntityRef(persona.lastEntityRef);
+                    } else {
+                        inventoryTransactionRoleTypeSpec.setEntityRef(persona.lastEntityRef);
+                    }
+                });
+
         And("^the user sets the inventory transaction role type's new inventory transaction role type name to \"([a-zA-Z0-9-_]*)\"$",
                 (String inventoryTransactionRoleTypeName) -> {
                     var persona = CurrentPersona.persona;

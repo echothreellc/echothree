@@ -16,6 +16,11 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionsCommand;
+import com.echothree.model.control.inventory.server.graphql.InventoryDispositionObject;
+import com.echothree.model.data.inventory.common.InventoryDispositionConstants;
+import com.echothree.model.data.inventory.server.entity.InventoryDisposition;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypesCommand;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionRoleTypeObject;
@@ -5610,6 +5615,66 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryTransactionTimeTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryDisposition")
+    static InventoryDispositionObject inventoryDisposition(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryDispositionName") final String inventoryDispositionName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        InventoryDisposition inventoryDisposition;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryDispositionForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryDispositionName(inventoryDispositionName);
+            commandForm.setUuid(id);
+
+            inventoryDisposition = 
+                    CDI.current().select(GetInventoryDispositionCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryDisposition == null ? null : new InventoryDispositionObject(inventoryDisposition);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryDispositions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryDispositionObject> inventoryDispositions(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName) {
+        CountingPaginatedData<InventoryDispositionObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryDispositionsForm();
+            var command = CDI.current().select(GetInventoryDispositionsCommand.class).get();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryDispositionConstants.COMPONENT_VENDOR_NAME,
+                        InventoryDispositionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryDispositions = entities.stream()
+                            .map(InventoryDispositionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryDispositions);
                 }
             }
         } catch (NamingException ex) {
