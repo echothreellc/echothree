@@ -128,6 +128,7 @@ import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryCostingMethodEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionTimeTypeEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryDispositionEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionRoleTypeEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionTypeEdit;
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
@@ -137,6 +138,7 @@ import com.echothree.control.user.inventory.common.form.CreateInventoryCondition
 import com.echothree.control.user.inventory.common.form.CreateInventoryCostingMethodForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionTimeTypeForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryDispositionForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionRoleTypeForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
@@ -146,6 +148,7 @@ import com.echothree.control.user.inventory.common.form.DeleteInventoryCondition
 import com.echothree.control.user.inventory.common.form.DeleteInventoryCostingMethodForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionTimeTypeForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryDispositionForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionRoleTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionTypeForm;
 import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
@@ -156,6 +159,7 @@ import com.echothree.control.user.inventory.common.spec.InventoryConditionUniver
 import com.echothree.control.user.inventory.common.spec.InventoryCostingMethodUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionTimeTypeUniversalSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryDispositionUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionRoleTypeUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionTypeUniversalSpec;
 import com.echothree.control.user.item.common.edit.ItemAliasEdit;
@@ -581,6 +585,11 @@ public class BasePersona {
     public InventoryTransactionRoleTypeUniversalSpec inventoryTransactionRoleTypeSpec;
     public InventoryTransactionRoleTypeEdit inventoryTransactionRoleTypeEdit;
 
+    public CreateInventoryDispositionForm createInventoryDispositionForm;
+    public DeleteInventoryDispositionForm deleteInventoryDispositionForm;
+    public InventoryDispositionUniversalSpec inventoryDispositionSpec;
+    public InventoryDispositionEdit inventoryDispositionEdit;
+
     public String lastInventoryLocationGroupName;
     public String lastInventoryConditionName;
     public String lastAllocationPriorityName;
@@ -590,6 +599,7 @@ public class BasePersona {
     public String lastInventoryTransactionTypeName;
     public String lastInventoryTransactionTimeTypeName;
     public String lastInventoryTransactionRoleTypeName;
+    public String lastInventoryDispositionName;
 
     // Item
     public CreateItemForm createItemForm;
