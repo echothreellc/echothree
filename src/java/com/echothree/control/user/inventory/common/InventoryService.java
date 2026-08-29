@@ -402,6 +402,36 @@ public interface InventoryService
     CommandResult<VoidResult> deleteInventoryTransactionTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTypeDescriptionForm form);
 
     // -------------------------------------------------------------------------
+    //   Inventory Transaction Time Types
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateInventoryTransactionTimeTypeResult> createInventoryTransactionTimeType(UserVisitPK userVisitPK, CreateInventoryTransactionTimeTypeForm form);
+
+    CommandResult<GetInventoryTransactionTimeTypesResult> getInventoryTransactionTimeTypes(UserVisitPK userVisitPK, GetInventoryTransactionTimeTypesForm form);
+
+    CommandResult<GetInventoryTransactionTimeTypeResult> getInventoryTransactionTimeType(UserVisitPK userVisitPK, GetInventoryTransactionTimeTypeForm form);
+
+    CommandResult<GetInventoryTransactionTimeTypeChoicesResult> getInventoryTransactionTimeTypeChoices(UserVisitPK userVisitPK, GetInventoryTransactionTimeTypeChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultInventoryTransactionTimeType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionTimeTypeForm form);
+
+    CommandResult<EditInventoryTransactionTimeTypeResult> editInventoryTransactionTimeType(UserVisitPK userVisitPK, EditInventoryTransactionTimeTypeForm form);
+
+    CommandResult<VoidResult> deleteInventoryTransactionTimeType(UserVisitPK userVisitPK, DeleteInventoryTransactionTimeTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Time Type Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionTimeTypeDescriptionForm form);
+
+    CommandResult<GetInventoryTransactionTimeTypeDescriptionsResult> getInventoryTransactionTimeTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionTimeTypeDescriptionsForm form);
+
+    CommandResult<EditInventoryTransactionTimeTypeDescriptionResult> editInventoryTransactionTimeTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionTimeTypeDescriptionForm form);
+
+    CommandResult<VoidResult> deleteInventoryTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTimeTypeDescriptionForm form);
+
+    // -------------------------------------------------------------------------
     //   Inventory Bucket Types
     // -------------------------------------------------------------------------
 

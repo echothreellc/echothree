@@ -804,6 +804,75 @@ public class InventoryBean
     }
 
     // -------------------------------------------------------------------------
+    //   Inventory Transaction Time Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateInventoryTransactionTimeTypeResult> createInventoryTransactionTimeType(UserVisitPK userVisitPK,
+            CreateInventoryTransactionTimeTypeForm form) {
+        return CDI.current().select(CreateInventoryTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionTimeTypesResult> getInventoryTransactionTimeTypes(UserVisitPK userVisitPK,
+            GetInventoryTransactionTimeTypesForm form) {
+        return CDI.current().select(GetInventoryTransactionTimeTypesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionTimeTypeResult> getInventoryTransactionTimeType(UserVisitPK userVisitPK,
+            GetInventoryTransactionTimeTypeForm form) {
+        return CDI.current().select(GetInventoryTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionTimeTypeChoicesResult> getInventoryTransactionTimeTypeChoices(UserVisitPK userVisitPK,
+            GetInventoryTransactionTimeTypeChoicesForm form) {
+        return CDI.current().select(GetInventoryTransactionTimeTypeChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultInventoryTransactionTimeType(UserVisitPK userVisitPK,
+            SetDefaultInventoryTransactionTimeTypeForm form) {
+        return CDI.current().select(SetDefaultInventoryTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryTransactionTimeTypeResult> editInventoryTransactionTimeType(UserVisitPK userVisitPK,
+            EditInventoryTransactionTimeTypeForm form) {
+        return CDI.current().select(EditInventoryTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryTransactionTimeType(UserVisitPK userVisitPK, DeleteInventoryTransactionTimeTypeForm form) {
+        return CDI.current().select(DeleteInventoryTransactionTimeTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Time Type Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createInventoryTransactionTimeTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionTimeTypeDescriptionForm form) {
+        return CDI.current().select(CreateInventoryTransactionTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionTimeTypeDescriptionsResult> getInventoryTransactionTimeTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionTimeTypeDescriptionsForm form) {
+        return CDI.current().select(GetInventoryTransactionTimeTypeDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryTransactionTimeTypeDescriptionResult> editInventoryTransactionTimeTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionTimeTypeDescriptionForm form) {
+        return CDI.current().select(EditInventoryTransactionTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTimeTypeDescriptionForm form) {
+        return CDI.current().select(DeleteInventoryTransactionTimeTypeDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Inventory Bucket Types
     // -------------------------------------------------------------------------
 

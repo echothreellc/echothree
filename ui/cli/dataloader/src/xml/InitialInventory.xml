@@ -71,7 +71,10 @@
     </inventoryBucketTypes>
     <inventoryTransactionTypes>
         <inventoryTransactionType inventoryTransactionTypeName="TEST_INVENTORY_TRANSACTION_TYPE" isDefault="true" sortOrder="0">
-            <inventoryTransactionTypeDescription languageIsoName="en" description="Test Inventory Transaction Type" />
+            <inventoryTransactionTypeDescription languageIsoName="en" description="Test Inventory Transaction Type2" />
+            <inventoryTransactionTimeType inventoryTransactionTimeTypeName="TEST_INVENTORY_TRANSACTION_TIME_TYPE" isDefault="true" sortOrder="0">
+                <inventoryTransactionTimeTypeDescription languageIsoName="en" description="Test Inventory Transaction Time Type" />
+            </inventoryTransactionTimeType>
         </inventoryTransactionType>
     </inventoryTransactionTypes>
     <lotAliasTypes>

@@ -1171,6 +1171,31 @@
                 <securityRoleDescription languageIsoName="en" description="Inventory Transaction Type Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="InventoryTransactionTimeType"
+                parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Inventory Transaction Time Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Transaction Time Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Transaction Time Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Transaction Time Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Transaction Time Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Transaction Time Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Transaction Time Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Transaction Time Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ItemComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Item Component" />
         </securityRoleGroup>
@@ -8534,6 +8559,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionTimeType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionTimeType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionTimeType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionTimeType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionTimeType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionTimeType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionTimeType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Item" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Item" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Item" securityRoleName="List" />
