@@ -127,18 +127,24 @@ import com.echothree.control.user.inventory.common.edit.InventoryBucketTypeEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryCostingMethodEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryTransactionTimeTypeEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryTransactionTypeEdit;
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryAdjustmentTypeForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryBucketTypeForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryCostingMethodForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionTimeTypeForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryAdjustmentTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryBucketTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryCostingMethodForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionTimeTypeForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionTypeForm;
 import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
 import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryAdjustmentTypeUniversalSpec;
@@ -146,6 +152,8 @@ import com.echothree.control.user.inventory.common.spec.InventoryBucketTypeUnive
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryCostingMethodUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryTransactionTimeTypeUniversalSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryTransactionTypeUniversalSpec;
 import com.echothree.control.user.item.common.edit.ItemAliasEdit;
 import com.echothree.control.user.item.common.edit.ItemAliasTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdit;
@@ -554,12 +562,24 @@ public class BasePersona {
     public InventoryBucketTypeUniversalSpec inventoryBucketTypeSpec;
     public InventoryBucketTypeEdit inventoryBucketTypeEdit;
 
+    public CreateInventoryTransactionTypeForm createInventoryTransactionTypeForm;
+    public DeleteInventoryTransactionTypeForm deleteInventoryTransactionTypeForm;
+    public InventoryTransactionTypeUniversalSpec inventoryTransactionTypeSpec;
+    public InventoryTransactionTypeEdit inventoryTransactionTypeEdit;
+
+    public CreateInventoryTransactionTimeTypeForm createInventoryTransactionTimeTypeForm;
+    public DeleteInventoryTransactionTimeTypeForm deleteInventoryTransactionTimeTypeForm;
+    public InventoryTransactionTimeTypeUniversalSpec inventoryTransactionTimeTypeSpec;
+    public InventoryTransactionTimeTypeEdit inventoryTransactionTimeTypeEdit;
+
     public String lastInventoryLocationGroupName;
     public String lastInventoryConditionName;
     public String lastAllocationPriorityName;
     public String lastInventoryAdjustmentTypeName;
     public String lastInventoryCostingMethodName;
     public String lastInventoryBucketTypeName;
+    public String lastInventoryTransactionTypeName;
+    public String lastInventoryTransactionTimeTypeName;
 
     // Item
     public CreateItemForm createItemForm;
