@@ -15,10 +15,10 @@ Feature: Employee inventory transaction role type
     Given the employee Test begins using the application
     When the user begins entering a new inventory transaction role type
     And the user sets the inventory transaction role type's inventory transaction type name to "TEST_INVENTORY_TRANSACTION_TYPE"
-    And the user sets the inventory transaction role type's inventory transaction role type name to "CucumberInventoryTransactionRoleType"
+    And the user sets the inventory transaction role type's inventory transaction role type name to "CucumberInventoryTransactionRoleTypeName"
     And the user sets the inventory transaction role type to not be the default
     And the user sets the inventory transaction role type's sort order to "10"
-    And the user sets the inventory transaction role type's description to "Cucumber Inventory Transaction Role Type"
+    And the user sets the inventory transaction role type's description to "Cucumber Inventory Transaction Role Type Name"
     And the user adds the new inventory transaction role type
     Then no error should occur
     When the user begins specifying an inventory transaction role type to edit
@@ -27,11 +27,34 @@ Feature: Employee inventory transaction role type
     When the user begins editing the inventory transaction role type
     Then no error should occur
     And the user sets the inventory transaction role type's sort order to "20"
-    And the user sets the inventory transaction role type's description to "Edited Cucumber Inventory Transaction Role Type"
+    And the user sets the inventory transaction role type's description to "Edited Cucumber Inventory Transaction Role Type Name"
     And the user finishes editing the inventory transaction role type
     Then no error should occur
     When the user begins deleting an inventory transaction role type
     And the user sets the inventory transaction role type's inventory transaction type name to "TEST_INVENTORY_TRANSACTION_TYPE"
     And the user sets the inventory transaction role type's inventory transaction role type name to the last inventory transaction role type added
+    And the user deletes the inventory transaction role type
+    Then no error should occur
+
+  Scenario: Existing employee adds an inventory transaction role type, edits it by entity ref, and then deletes it by entity ref
+    Given the employee Test begins using the application
+    When the user begins entering a new inventory transaction role type
+    And the user sets the inventory transaction role type's inventory transaction type name to "TEST_INVENTORY_TRANSACTION_TYPE"
+    And the user sets the inventory transaction role type's inventory transaction role type name to "CucumberInventoryTransactionRoleTypeRef"
+    And the user sets the inventory transaction role type to not be the default
+    And the user sets the inventory transaction role type's sort order to "10"
+    And the user sets the inventory transaction role type's description to "Cucumber Inventory Transaction Role Type Ref"
+    And the user adds the new inventory transaction role type
+    Then no error should occur
+    When the user begins specifying an inventory transaction role type to edit
+    And the user sets the inventory transaction role type's entity ref to the last inventory transaction role type added
+    When the user begins editing the inventory transaction role type
+    Then no error should occur
+    And the user sets the inventory transaction role type's sort order to "20"
+    And the user sets the inventory transaction role type's description to "Edited Cucumber Inventory Transaction Role Type Ref"
+    And the user finishes editing the inventory transaction role type
+    Then no error should occur
+    When the user begins deleting an inventory transaction role type
+    And the user sets the inventory transaction role type's entity ref to the last inventory transaction role type added
     And the user deletes the inventory transaction role type
     Then no error should occur

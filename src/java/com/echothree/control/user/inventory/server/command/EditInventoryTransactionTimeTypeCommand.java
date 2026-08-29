@@ -18,7 +18,6 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionTimeTypeEdit;
-import com.echothree.control.user.inventory.common.form.EditInventoryTransactionTimeTypeForm;
 import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTimeTypeResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionTimeTypeUniversalSpec;
@@ -29,7 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionTimeType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -132,20 +130,15 @@ public class EditInventoryTransactionTimeTypeCommand
 
     @Override
     public void canUpdate(InventoryTransactionTimeType inventoryTransactionTimeType) {
-        var inventoryTransactionTypeName = spec.getInventoryTransactionTypeName();
-        var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
+        var inventoryTransactionType = inventoryTransactionTimeType.getLastDetail().getInventoryTransactionType();
+        var inventoryTransactionTimeTypeName = edit.getInventoryTransactionTimeTypeName();
+        var duplicateInventoryTransactionTimeType =
+                inventoryTransactionTimeControl.getInventoryTransactionTimeTypeByName(inventoryTransactionType, inventoryTransactionTimeTypeName);
 
-        if(inventoryTransactionType != null) {
-            var inventoryTransactionTimeTypeName = edit.getInventoryTransactionTimeTypeName();
-            var duplicateInventoryTransactionTimeType = 
-                    inventoryTransactionTimeControl.getInventoryTransactionTimeTypeByName(inventoryTransactionType, inventoryTransactionTimeTypeName);
-
-            if(duplicateInventoryTransactionTimeType != null && !inventoryTransactionTimeType.equals(duplicateInventoryTransactionTimeType)) {
-                addExecutionError(ExecutionErrors.DuplicateInventoryTransactionTimeTypeName.name(), inventoryTransactionTypeName,
-                        inventoryTransactionTimeTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
+        if(duplicateInventoryTransactionTimeType != null && !inventoryTransactionTimeType.equals(duplicateInventoryTransactionTimeType)) {
+            addExecutionError(ExecutionErrors.DuplicateInventoryTransactionTimeTypeName.name(),
+                    inventoryTransactionType.getLastDetail().getInventoryTransactionTypeName(),
+                    inventoryTransactionTimeTypeName);
         }
     }
 

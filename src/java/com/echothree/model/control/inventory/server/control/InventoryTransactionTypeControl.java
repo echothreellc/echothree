@@ -57,6 +57,9 @@ public class InventoryTransactionTypeControl
         extends BaseModelControl {
 
     @Inject
+    InventoryDispositionControl inventoryDispositionControl;
+
+    @Inject
     InventoryTransactionTimeControl inventoryTransactionTimeControl;
 
     @Inject
@@ -336,6 +339,7 @@ public class InventoryTransactionTypeControl
 
         deleteInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionTimeControl.deleteInventoryTransactionTimeTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
+        inventoryDispositionControl.deleteInventoryDispositionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionRoleControl.deleteInventoryTransactionRoleTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
 

@@ -190,6 +190,8 @@ public class EditInventoryTransactionTypeCommand
                     }
                 }
             }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
         }
     }
 
