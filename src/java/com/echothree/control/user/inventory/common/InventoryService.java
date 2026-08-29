@@ -431,6 +431,35 @@ public interface InventoryService
 
     CommandResult<VoidResult> deleteInventoryTransactionTimeTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionTimeTypeDescriptionForm form);
 
+    //   Inventory Transaction Role Types
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateInventoryTransactionRoleTypeResult> createInventoryTransactionRoleType(UserVisitPK userVisitPK, CreateInventoryTransactionRoleTypeForm form);
+
+    CommandResult<GetInventoryTransactionRoleTypesResult> getInventoryTransactionRoleTypes(UserVisitPK userVisitPK, GetInventoryTransactionRoleTypesForm form);
+
+    CommandResult<GetInventoryTransactionRoleTypeResult> getInventoryTransactionRoleType(UserVisitPK userVisitPK, GetInventoryTransactionRoleTypeForm form);
+
+    CommandResult<GetInventoryTransactionRoleTypeChoicesResult> getInventoryTransactionRoleTypeChoices(UserVisitPK userVisitPK, GetInventoryTransactionRoleTypeChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultInventoryTransactionRoleType(UserVisitPK userVisitPK, SetDefaultInventoryTransactionRoleTypeForm form);
+
+    CommandResult<EditInventoryTransactionRoleTypeResult> editInventoryTransactionRoleType(UserVisitPK userVisitPK, EditInventoryTransactionRoleTypeForm form);
+
+    CommandResult<VoidResult> deleteInventoryTransactionRoleType(UserVisitPK userVisitPK, DeleteInventoryTransactionRoleTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Role Type Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryTransactionRoleTypeDescription(UserVisitPK userVisitPK, CreateInventoryTransactionRoleTypeDescriptionForm form);
+
+    CommandResult<GetInventoryTransactionRoleTypeDescriptionsResult> getInventoryTransactionRoleTypeDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionRoleTypeDescriptionsForm form);
+
+    CommandResult<EditInventoryTransactionRoleTypeDescriptionResult> editInventoryTransactionRoleTypeDescription(UserVisitPK userVisitPK, EditInventoryTransactionRoleTypeDescriptionForm form);
+
+    CommandResult<VoidResult> deleteInventoryTransactionRoleTypeDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionRoleTypeDescriptionForm form);
+
     // -------------------------------------------------------------------------
     //   Inventory Bucket Types
     // -------------------------------------------------------------------------
