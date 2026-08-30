@@ -66,6 +66,9 @@ public class InventoryTransactionTypeControl
     InventoryTransactionRoleControl inventoryTransactionRoleControl;
 
     @Inject
+    InventoryTransactionReasonControl inventoryTransactionReasonControl;
+
+    @Inject
     InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
 
     @Inject
@@ -339,6 +342,7 @@ public class InventoryTransactionTypeControl
 
         deleteInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionTimeControl.deleteInventoryTransactionTimeTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
+        inventoryTransactionReasonControl.deleteInventoryTransactionReasonsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryDispositionControl.deleteInventoryDispositionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionRoleControl.deleteInventoryTransactionRoleTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);

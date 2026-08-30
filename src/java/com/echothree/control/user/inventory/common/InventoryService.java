@@ -492,6 +492,36 @@ public interface InventoryService
     CommandResult<VoidResult> deleteInventoryDispositionDescription(UserVisitPK userVisitPK, DeleteInventoryDispositionDescriptionForm form);
 
     // -------------------------------------------------------------------------
+    //   Inventory Transaction Reasons
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateInventoryTransactionReasonResult> createInventoryTransactionReason(UserVisitPK userVisitPK, CreateInventoryTransactionReasonForm form);
+
+    CommandResult<GetInventoryTransactionReasonsResult> getInventoryTransactionReasons(UserVisitPK userVisitPK, GetInventoryTransactionReasonsForm form);
+
+    CommandResult<GetInventoryTransactionReasonResult> getInventoryTransactionReason(UserVisitPK userVisitPK, GetInventoryTransactionReasonForm form);
+
+    CommandResult<GetInventoryTransactionReasonChoicesResult> getInventoryTransactionReasonChoices(UserVisitPK userVisitPK, GetInventoryTransactionReasonChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultInventoryTransactionReason(UserVisitPK userVisitPK, SetDefaultInventoryTransactionReasonForm form);
+
+    CommandResult<EditInventoryTransactionReasonResult> editInventoryTransactionReason(UserVisitPK userVisitPK, EditInventoryTransactionReasonForm form);
+
+    CommandResult<VoidResult> deleteInventoryTransactionReason(UserVisitPK userVisitPK, DeleteInventoryTransactionReasonForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Reason Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryTransactionReasonDescription(UserVisitPK userVisitPK, CreateInventoryTransactionReasonDescriptionForm form);
+
+    CommandResult<GetInventoryTransactionReasonDescriptionsResult> getInventoryTransactionReasonDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionReasonDescriptionsForm form);
+
+    CommandResult<EditInventoryTransactionReasonDescriptionResult> editInventoryTransactionReasonDescription(UserVisitPK userVisitPK, EditInventoryTransactionReasonDescriptionForm form);
+
+    CommandResult<VoidResult> deleteInventoryTransactionReasonDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionReasonDescriptionForm form);
+
+    // -------------------------------------------------------------------------
     //   Inventory Bucket Types
     // -------------------------------------------------------------------------
 

@@ -18,6 +18,8 @@ package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.model.control.inventory.server.control.InventoryDispositionControl;
 import com.echothree.model.data.inventory.common.InventoryDispositionConstants;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionReasonControl;
+import com.echothree.model.data.inventory.common.InventoryTransactionReasonConstants;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
 import com.echothree.model.data.inventory.common.InventoryTransactionRoleTypeConstants;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
@@ -189,6 +191,30 @@ public class InventoryTransactionTypeObject
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, dispositions);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory transaction reasons")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryTransactionReasonObject> getInventoryTransactionReasons(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryTransactionReasonsAccess(env)) {
+            var inventoryTransactionReasonControl = Session.getModelController(InventoryTransactionReasonControl.class);
+            var totalCount = inventoryTransactionReasonControl.countInventoryTransactionReasonsByInventoryTransactionType(
+                    inventoryTransactionType);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionReasonConstants.COMPONENT_VENDOR_NAME,
+                    InventoryTransactionReasonConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryTransactionReasonControl.getInventoryTransactionReasons(inventoryTransactionType);
+                var reasons = entities.stream()
+                        .map(InventoryTransactionReasonObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, reasons);
             }
         } else {
             return Connections.emptyConnection();
