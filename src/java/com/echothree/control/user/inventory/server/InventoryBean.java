@@ -999,6 +999,69 @@ public class InventoryBean
     }
 
     // -------------------------------------------------------------------------
+    //   Inventory Transaction Reasons
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateInventoryTransactionReasonResult> createInventoryTransactionReason(UserVisitPK userVisitPK, CreateInventoryTransactionReasonForm form) {
+        return CDI.current().select(CreateInventoryTransactionReasonCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionReasonsResult> getInventoryTransactionReasons(UserVisitPK userVisitPK, GetInventoryTransactionReasonsForm form) {
+        return CDI.current().select(GetInventoryTransactionReasonsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionReasonResult> getInventoryTransactionReason(UserVisitPK userVisitPK, GetInventoryTransactionReasonForm form) {
+        return CDI.current().select(GetInventoryTransactionReasonCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionReasonChoicesResult> getInventoryTransactionReasonChoices(UserVisitPK userVisitPK, GetInventoryTransactionReasonChoicesForm form) {
+        return CDI.current().select(GetInventoryTransactionReasonChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultInventoryTransactionReason(UserVisitPK userVisitPK, SetDefaultInventoryTransactionReasonForm form) {
+        return CDI.current().select(SetDefaultInventoryTransactionReasonCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryTransactionReasonResult> editInventoryTransactionReason(UserVisitPK userVisitPK, EditInventoryTransactionReasonForm form) {
+        return CDI.current().select(EditInventoryTransactionReasonCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryTransactionReason(UserVisitPK userVisitPK, DeleteInventoryTransactionReasonForm form) {
+        return CDI.current().select(DeleteInventoryTransactionReasonCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Transaction Reason Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createInventoryTransactionReasonDescription(UserVisitPK userVisitPK, CreateInventoryTransactionReasonDescriptionForm form) {
+        return CDI.current().select(CreateInventoryTransactionReasonDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryTransactionReasonDescriptionsResult> getInventoryTransactionReasonDescriptions(UserVisitPK userVisitPK, GetInventoryTransactionReasonDescriptionsForm form) {
+        return CDI.current().select(GetInventoryTransactionReasonDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryTransactionReasonDescriptionResult> editInventoryTransactionReasonDescription(UserVisitPK userVisitPK, EditInventoryTransactionReasonDescriptionForm form) {
+        return CDI.current().select(EditInventoryTransactionReasonDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryTransactionReasonDescription(UserVisitPK userVisitPK, DeleteInventoryTransactionReasonDescriptionForm form) {
+        return CDI.current().select(DeleteInventoryTransactionReasonDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Inventory Bucket Types
     // -------------------------------------------------------------------------
 

@@ -345,9 +345,10 @@ public class InventoryTransactionTimeControl
     }
 
     public void deleteInventoryTransactionTimeType(InventoryTransactionTimeType inventoryTransactionTimeType, BasePK deletedBy) {
+        var inventoryTransactionTimeTypeDetail = inventoryTransactionTimeType.getLastDetailForUpdate();
+
         deleteInventoryTransactionTimeTypeDescriptionsByInventoryTransactionTimeType(inventoryTransactionTimeType, deletedBy);
 
-        var inventoryTransactionTimeTypeDetail = inventoryTransactionTimeType.getLastDetailForUpdate();
         inventoryTransactionTimeTypeDetail.setThruTime(session.getStartTime());
         inventoryTransactionTimeType.setActiveDetail(null);
         inventoryTransactionTimeType.store();

@@ -64,6 +64,16 @@ public class InventoryTransactionTypeHandler
 
             initialDataParser.pushHandler(new InventoryTransactionTimeTypeHandler(initialDataParser, this,
                     inventoryTransactionTypeName, commandForm.getInventoryTransactionTimeTypeName()));
+        } else if(localName.equals("inventoryTransactionReason")) {
+            var commandForm = InventoryFormFactory.getCreateInventoryTransactionReasonForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(inventoryService.createInventoryTransactionReason(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new InventoryTransactionReasonHandler(initialDataParser, this,
+                    inventoryTransactionTypeName, commandForm.getInventoryTransactionReasonName()));
         } else if(localName.equals("inventoryTransactionRoleType")) {
             var commandForm = InventoryFormFactory.getCreateInventoryTransactionRoleTypeForm();
 
