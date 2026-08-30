@@ -18,11 +18,11 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryTransactionTypeForm;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
+import com.echothree.model.control.inventory.server.logic.InventoryTransactionTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -56,6 +56,9 @@ public class SetDefaultInventoryTransactionTypeCommand
     @Inject
     InventoryTransactionTypeControl inventoryTransactionTypeControl;
 
+    @Inject
+    InventoryTransactionTypeLogic inventoryTransactionTypeLogic;
+
     /** Creates a new instance of SetDefaultInventoryTransactionTypeCommand */
     public SetDefaultInventoryTransactionTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -63,14 +66,16 @@ public class SetDefaultInventoryTransactionTypeCommand
 
     @Override
     protected BaseResult execute() {
-        var inventoryTransactionTypeName = form.getInventoryTransactionTypeName();
-        var inventoryTransactionTypeDetailValue = inventoryTransactionTypeControl.getInventoryTransactionTypeDetailValueByNameForUpdate(inventoryTransactionTypeName);
+        var inventoryTransactionType = inventoryTransactionTypeLogic.getInventoryTransactionTypeByNameForUpdate(this,
+                form.getInventoryTransactionTypeName());
 
-        if(inventoryTransactionTypeDetailValue != null) {
+        if(!hasExecutionErrors()) {
+            var inventoryTransactionTypeDetailValue = inventoryTransactionTypeControl
+                    .getInventoryTransactionTypeDetailValueForUpdate(inventoryTransactionType);
+
             inventoryTransactionTypeDetailValue.setIsDefault(true);
-            inventoryTransactionTypeControl.updateInventoryTransactionTypeFromValue(inventoryTransactionTypeDetailValue, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
+            inventoryTransactionTypeControl.updateInventoryTransactionTypeFromValue(
+                    inventoryTransactionTypeDetailValue, getPartyPK());
         }
 
         return null;

@@ -16,6 +16,11 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentsCommand;
+import com.echothree.model.control.inventory.server.graphql.InventoryDispositionAdjustmentObject;
+import com.echothree.model.data.inventory.common.InventoryDispositionAdjustmentConstants;
+import com.echothree.model.data.inventory.server.entity.InventoryDispositionAdjustment;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonsCommand;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionReasonObject;
@@ -5680,6 +5685,70 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryDispositions);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryDispositionAdjustment")
+    static InventoryDispositionAdjustmentObject inventoryDispositionAdjustment(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryDispositionName") final String inventoryDispositionName,
+            @GraphQLName("inventoryDispositionAdjustmentName") final String inventoryDispositionAdjustmentName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        InventoryDispositionAdjustment inventoryDispositionAdjustment;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryDispositionAdjustmentForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryDispositionName(inventoryDispositionName);
+            commandForm.setInventoryDispositionAdjustmentName(inventoryDispositionAdjustmentName);
+            commandForm.setUuid(id);
+
+            inventoryDispositionAdjustment =
+                    CDI.current().select(GetInventoryDispositionAdjustmentCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryDispositionAdjustment == null ? null : new InventoryDispositionAdjustmentObject(inventoryDispositionAdjustment);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryDispositionAdjustments")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryDispositionAdjustmentObject> inventoryDispositionAdjustments(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryDispositionName") @GraphQLNonNull final String inventoryDispositionName) {
+        CountingPaginatedData<InventoryDispositionAdjustmentObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryDispositionAdjustmentsForm();
+            var command = CDI.current().select(GetInventoryDispositionAdjustmentsCommand.class).get();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryDispositionName(inventoryDispositionName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryDispositionAdjustmentConstants.COMPONENT_VENDOR_NAME,
+                        InventoryDispositionAdjustmentConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryDispositionAdjustments = entities.stream()
+                            .map(InventoryDispositionAdjustmentObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryDispositionAdjustments);
                 }
             }
         } catch (NamingException ex) {

@@ -18,13 +18,12 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryDispositionForm;
 import com.echothree.model.control.inventory.server.control.InventoryDispositionControl;
-import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
+import com.echothree.model.control.inventory.server.logic.InventoryDispositionLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -59,7 +58,7 @@ public class SetDefaultInventoryDispositionCommand
     InventoryDispositionControl inventoryDispositionControl;
 
     @Inject
-    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+    InventoryDispositionLogic inventoryDispositionLogic;
     
     /** Creates a new instance of SetDefaultInventoryDispositionCommand */
     public SetDefaultInventoryDispositionCommand() {
@@ -68,24 +67,15 @@ public class SetDefaultInventoryDispositionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryTransactionTypeName = form.getInventoryTransactionTypeName();
-        var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
+        var inventoryDisposition = inventoryDispositionLogic.getInventoryDispositionByNameForUpdate(this,
+                form.getInventoryTransactionTypeName(), form.getInventoryDispositionName());
 
-        if(inventoryTransactionType != null) {
-            var inventoryDispositionName = form.getInventoryDispositionName();
-            var inventoryDispositionDetailValue = 
-                    inventoryDispositionControl.getInventoryDispositionDetailValueByNameForUpdate(
-                            inventoryTransactionType, inventoryDispositionName);
+        if(!hasExecutionErrors()) {
+            var inventoryDispositionDetailValue = inventoryDispositionControl
+                    .getInventoryDispositionDetailValueForUpdate(inventoryDisposition);
 
-            if(inventoryDispositionDetailValue != null) {
-                inventoryDispositionDetailValue.setIsDefault(true);
-                inventoryDispositionControl.updateInventoryDispositionFromValue(inventoryDispositionDetailValue, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownInventoryDispositionName.name(), inventoryTransactionTypeName,
-                        inventoryDispositionName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
+            inventoryDispositionDetailValue.setIsDefault(true);
+            inventoryDispositionControl.updateInventoryDispositionFromValue(inventoryDispositionDetailValue, getPartyPK());
         }
 
         return null;

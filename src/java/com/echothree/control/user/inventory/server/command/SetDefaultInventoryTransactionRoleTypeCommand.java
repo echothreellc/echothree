@@ -18,13 +18,12 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryTransactionRoleTypeForm;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
-import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
+import com.echothree.model.control.inventory.server.logic.InventoryTransactionRoleTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -59,7 +58,7 @@ public class SetDefaultInventoryTransactionRoleTypeCommand
     InventoryTransactionRoleControl inventoryTransactionRoleControl;
 
     @Inject
-    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+    InventoryTransactionRoleTypeLogic inventoryTransactionRoleTypeLogic;
     
     /** Creates a new instance of SetDefaultInventoryTransactionRoleTypeCommand */
     public SetDefaultInventoryTransactionRoleTypeCommand() {
@@ -68,24 +67,17 @@ public class SetDefaultInventoryTransactionRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryTransactionTypeName = form.getInventoryTransactionTypeName();
-        var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
+        var inventoryTransactionRoleType = inventoryTransactionRoleTypeLogic
+                .getInventoryTransactionRoleTypeByNameForUpdate(this, form.getInventoryTransactionTypeName(),
+                        form.getInventoryTransactionRoleTypeName());
 
-        if(inventoryTransactionType != null) {
-            var inventoryTransactionRoleTypeName = form.getInventoryTransactionRoleTypeName();
-            var inventoryTransactionRoleTypeDetailValue = 
-                    inventoryTransactionRoleControl.getInventoryTransactionRoleTypeDetailValueByNameForUpdate(
-                            inventoryTransactionType, inventoryTransactionRoleTypeName);
+        if(!hasExecutionErrors()) {
+            var inventoryTransactionRoleTypeDetailValue = inventoryTransactionRoleControl
+                    .getInventoryTransactionRoleTypeDetailValueForUpdate(inventoryTransactionRoleType);
 
-            if(inventoryTransactionRoleTypeDetailValue != null) {
-                inventoryTransactionRoleTypeDetailValue.setIsDefault(true);
-                inventoryTransactionRoleControl.updateInventoryTransactionRoleTypeFromValue(inventoryTransactionRoleTypeDetailValue, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownInventoryTransactionRoleTypeName.name(), inventoryTransactionTypeName,
-                        inventoryTransactionRoleTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
+            inventoryTransactionRoleTypeDetailValue.setIsDefault(true);
+            inventoryTransactionRoleControl.updateInventoryTransactionRoleTypeFromValue(
+                    inventoryTransactionRoleTypeDetailValue, getPartyPK());
         }
 
         return null;

@@ -41,6 +41,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryTransacti
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonsCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodsCommand;
@@ -93,6 +95,14 @@ public interface InventorySecurityUtils {
 
     static boolean getHasInventoryTransactionReasonAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryTransactionReasonCommand.class);
+    }
+
+    static boolean getHasInventoryDispositionAdjustmentAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryDispositionAdjustmentCommand.class);
+    }
+
+    static boolean getHasInventoryDispositionAdjustmentsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryDispositionAdjustmentsCommand.class);
     }
 
     static boolean getHasInventoryTransactionReasonsAccess(final DataFetchingEnvironment env) {

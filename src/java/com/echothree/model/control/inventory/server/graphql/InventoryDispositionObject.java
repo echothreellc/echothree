@@ -25,8 +25,10 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.control.InventoryDispositionControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionReasonControl;
+import com.echothree.model.control.inventory.server.control.InventoryDispositionAdjustmentControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.inventory.common.InventoryTransactionReasonConstants;
+import com.echothree.model.data.inventory.common.InventoryDispositionAdjustmentConstants;
 import com.echothree.model.data.inventory.server.entity.InventoryDisposition;
 import com.echothree.model.data.inventory.server.entity.InventoryDispositionDetail;
 import com.echothree.util.server.persistence.Session;
@@ -119,6 +121,27 @@ public class InventoryDispositionObject
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, reasons);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory disposition adjustments")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryDispositionAdjustmentObject> getInventoryDispositionAdjustments(
+            final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryDispositionAdjustmentsAccess(env)) {
+            var control = Session.getModelController(InventoryDispositionAdjustmentControl.class);
+            var totalCount = control.countInventoryDispositionAdjustmentsByInventoryDisposition(inventoryDisposition);
+            try(var objectLimiter = new ObjectLimiter(env, InventoryDispositionAdjustmentConstants.COMPONENT_VENDOR_NAME,
+                    InventoryDispositionAdjustmentConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = control.getInventoryDispositionAdjustments(inventoryDisposition);
+                var objects = entities.stream().map(InventoryDispositionAdjustmentObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                return new CountedObjects<>(objectLimiter, objects);
             }
         } else {
             return Connections.emptyConnection();

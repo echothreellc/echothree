@@ -18,13 +18,12 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryTransactionTimeTypeForm;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTimeControl;
-import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
+import com.echothree.model.control.inventory.server.logic.InventoryTransactionTimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -59,7 +58,7 @@ public class SetDefaultInventoryTransactionTimeTypeCommand
     InventoryTransactionTimeControl inventoryTransactionTimeControl;
 
     @Inject
-    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+    InventoryTransactionTimeTypeLogic inventoryTransactionTimeTypeLogic;
     
     /** Creates a new instance of SetDefaultInventoryTransactionTimeTypeCommand */
     public SetDefaultInventoryTransactionTimeTypeCommand() {
@@ -68,24 +67,17 @@ public class SetDefaultInventoryTransactionTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryTransactionTypeName = form.getInventoryTransactionTypeName();
-        var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
+        var inventoryTransactionTimeType = inventoryTransactionTimeTypeLogic
+                .getInventoryTransactionTimeTypeByNameForUpdate(this, form.getInventoryTransactionTypeName(),
+                        form.getInventoryTransactionTimeTypeName());
 
-        if(inventoryTransactionType != null) {
-            var inventoryTransactionTimeTypeName = form.getInventoryTransactionTimeTypeName();
-            var inventoryTransactionTimeTypeDetailValue = 
-                    inventoryTransactionTimeControl.getInventoryTransactionTimeTypeDetailValueByNameForUpdate(
-                            inventoryTransactionType, inventoryTransactionTimeTypeName);
+        if(!hasExecutionErrors()) {
+            var inventoryTransactionTimeTypeDetailValue = inventoryTransactionTimeControl
+                    .getInventoryTransactionTimeTypeDetailValueForUpdate(inventoryTransactionTimeType);
 
-            if(inventoryTransactionTimeTypeDetailValue != null) {
-                inventoryTransactionTimeTypeDetailValue.setIsDefault(true);
-                inventoryTransactionTimeControl.updateInventoryTransactionTimeTypeFromValue(inventoryTransactionTimeTypeDetailValue, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownInventoryTransactionTimeTypeName.name(), inventoryTransactionTypeName,
-                        inventoryTransactionTimeTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
+            inventoryTransactionTimeTypeDetailValue.setIsDefault(true);
+            inventoryTransactionTimeControl.updateInventoryTransactionTimeTypeFromValue(
+                    inventoryTransactionTimeTypeDetailValue, getPartyPK());
         }
 
         return null;
