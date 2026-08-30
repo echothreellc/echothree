@@ -345,9 +345,10 @@ public class InventoryTransactionRoleControl
     }
 
     public void deleteInventoryTransactionRoleType(InventoryTransactionRoleType inventoryTransactionRoleType, BasePK deletedBy) {
+        var inventoryTransactionRoleTypeDetail = inventoryTransactionRoleType.getLastDetailForUpdate();
+
         deleteInventoryTransactionRoleTypeDescriptionsByInventoryTransactionRoleType(inventoryTransactionRoleType, deletedBy);
 
-        var inventoryTransactionRoleTypeDetail = inventoryTransactionRoleType.getLastDetailForUpdate();
         inventoryTransactionRoleTypeDetail.setThruTime(session.getStartTime());
         inventoryTransactionRoleType.setActiveDetail(null);
         inventoryTransactionRoleType.store();

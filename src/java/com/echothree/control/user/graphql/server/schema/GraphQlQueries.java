@@ -16,6 +16,11 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonsCommand;
+import com.echothree.model.control.inventory.server.graphql.InventoryTransactionReasonObject;
+import com.echothree.model.data.inventory.common.InventoryTransactionReasonConstants;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionReason;
 import com.echothree.control.user.inventory.server.command.GetInventoryDispositionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryDispositionsCommand;
 import com.echothree.model.control.inventory.server.graphql.InventoryDispositionObject;
@@ -5675,6 +5680,66 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryDispositions);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryTransactionReason")
+    static InventoryTransactionReasonObject inventoryTransactionReason(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransactionReasonName") final String inventoryTransactionReasonName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        InventoryTransactionReason inventoryTransactionReason;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryTransactionReasonForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransactionReasonName(inventoryTransactionReasonName);
+            commandForm.setUuid(id);
+
+            inventoryTransactionReason = 
+                    CDI.current().select(GetInventoryTransactionReasonCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryTransactionReason == null ? null : new InventoryTransactionReasonObject(inventoryTransactionReason);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryTransactionReasons")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryTransactionReasonObject> inventoryTransactionReasons(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName) {
+        CountingPaginatedData<InventoryTransactionReasonObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryTransactionReasonsForm();
+            var command = CDI.current().select(GetInventoryTransactionReasonsCommand.class).get();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionReasonConstants.COMPONENT_VENDOR_NAME,
+                        InventoryTransactionReasonConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryTransactionReasons = entities.stream()
+                            .map(InventoryTransactionReasonObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryTransactionReasons);
                 }
             }
         } catch (NamingException ex) {

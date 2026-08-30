@@ -17,9 +17,16 @@
 package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.control.InventoryDispositionControl;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionReasonControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.inventory.common.InventoryTransactionReasonConstants;
 import com.echothree.model.data.inventory.server.entity.InventoryDisposition;
 import com.echothree.model.data.inventory.server.entity.InventoryDispositionDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +34,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("inventory disposition object")
 @GraphQLName("InventoryDisposition")
@@ -90,6 +100,29 @@ public class InventoryDispositionObject
 
         return inventoryDispositionControl.getBestInventoryDispositionDescription(inventoryDisposition,
                 userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory transaction reasons")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryTransactionReasonObject> getInventoryTransactionReasons(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryTransactionReasonsAccess(env)) {
+            var inventoryTransactionReasonControl = Session.getModelController(InventoryTransactionReasonControl.class);
+            var totalCount = inventoryTransactionReasonControl.countInventoryTransactionReasonsByInventoryDisposition(inventoryDisposition);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryTransactionReasonConstants.COMPONENT_VENDOR_NAME,
+                    InventoryTransactionReasonConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryTransactionReasonControl.getInventoryTransactionReasonsByInventoryDisposition(inventoryDisposition);
+                var reasons = entities.stream()
+                        .map(InventoryTransactionReasonObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, reasons);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

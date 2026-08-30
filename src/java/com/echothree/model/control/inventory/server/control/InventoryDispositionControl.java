@@ -54,6 +54,9 @@ import javax.inject.Inject;
 public class InventoryDispositionControl
         extends BaseModelControl {
 
+    @Inject
+    InventoryTransactionReasonControl inventoryTransactionReasonControl;
+
     /** Creates a new instance of InventoryDispositionControl */
     protected InventoryDispositionControl() {
         super();
@@ -345,9 +348,11 @@ public class InventoryDispositionControl
     }
 
     public void deleteInventoryDisposition(InventoryDisposition inventoryDisposition, BasePK deletedBy) {
-        deleteInventoryDispositionDescriptionsByInventoryDisposition(inventoryDisposition, deletedBy);
-
         var inventoryDispositionDetail = inventoryDisposition.getLastDetailForUpdate();
+
+        deleteInventoryDispositionDescriptionsByInventoryDisposition(inventoryDisposition, deletedBy);
+        inventoryTransactionReasonControl.deleteInventoryTransactionReasonsByInventoryDisposition(inventoryDisposition, deletedBy);
+
         inventoryDispositionDetail.setThruTime(session.getStartTime());
         inventoryDisposition.setActiveDetail(null);
         inventoryDisposition.store();

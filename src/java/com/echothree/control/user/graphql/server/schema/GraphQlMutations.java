@@ -16,6 +16,8 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionReasonResult;
+import com.echothree.control.user.inventory.common.result.EditInventoryTransactionReasonResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryDispositionResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryDispositionResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionRoleTypeResult;
@@ -4895,6 +4897,126 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(InventoryUtil.getHome().deleteInventoryDisposition(BaseGraphQl.getUserVisitPK(env),
+                    commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createInventoryTransactionReason(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransactionReasonName") @GraphQLNonNull final String inventoryTransactionReasonName,
+            @GraphQLName("inventoryDispositionName") @GraphQLNonNull final String inventoryDispositionName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getCreateInventoryTransactionReasonForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransactionReasonName(inventoryTransactionReasonName);
+            commandForm.setInventoryDispositionName(inventoryDispositionName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = InventoryUtil.getHome().createInventoryTransactionReason(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateInventoryTransactionReasonResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editInventoryTransactionReason(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("originalInventoryTransactionReasonName") final String originalInventoryTransactionReasonName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("inventoryTransactionReasonName") final String inventoryTransactionReasonName,
+            @GraphQLName("inventoryDispositionName") final String inventoryDispositionName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = InventoryUtil.getHome().getInventoryTransactionReasonUniversalSpec();
+
+            spec.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            spec.setInventoryTransactionReasonName(originalInventoryTransactionReasonName);
+            spec.setUuid(id);
+
+            var commandForm = InventoryUtil.getHome().getEditInventoryTransactionReasonForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = InventoryUtil.getHome().editInventoryTransactionReason(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditInventoryTransactionReasonResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getInventoryTransactionReason().getEntityInstance());
+
+                if(arguments.containsKey("inventoryTransactionReasonName"))
+                    edit.setInventoryTransactionReasonName(inventoryTransactionReasonName);
+                if(arguments.containsKey("inventoryDispositionName"))
+                    edit.setInventoryDispositionName(inventoryDispositionName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = InventoryUtil.getHome().editInventoryTransactionReason(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteInventoryTransactionReason(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransactionReasonName") final String inventoryTransactionReasonName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getDeleteInventoryTransactionReasonForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransactionReasonName(inventoryTransactionReasonName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(InventoryUtil.getHome().deleteInventoryTransactionReason(BaseGraphQl.getUserVisitPK(env),
                     commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
