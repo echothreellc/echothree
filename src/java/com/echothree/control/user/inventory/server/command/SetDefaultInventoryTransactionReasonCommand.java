@@ -18,13 +18,12 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryTransactionReasonForm;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionReasonControl;
-import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
+import com.echothree.model.control.inventory.server.logic.InventoryTransactionReasonLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -59,7 +58,7 @@ public class SetDefaultInventoryTransactionReasonCommand
     InventoryTransactionReasonControl inventoryTransactionReasonControl;
 
     @Inject
-    InventoryTransactionTypeControl inventoryTransactionTypeControl;
+    InventoryTransactionReasonLogic inventoryTransactionReasonLogic;
     
     /** Creates a new instance of SetDefaultInventoryTransactionReasonCommand */
     public SetDefaultInventoryTransactionReasonCommand() {
@@ -68,24 +67,16 @@ public class SetDefaultInventoryTransactionReasonCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryTransactionTypeName = form.getInventoryTransactionTypeName();
-        var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
+        var inventoryTransactionReason = inventoryTransactionReasonLogic.getInventoryTransactionReasonByNameForUpdate(this,
+                form.getInventoryTransactionTypeName(), form.getInventoryTransactionReasonName());
 
-        if(inventoryTransactionType != null) {
-            var inventoryTransactionReasonName = form.getInventoryTransactionReasonName();
-            var inventoryTransactionReasonDetailValue = 
-                    inventoryTransactionReasonControl.getInventoryTransactionReasonDetailValueByNameForUpdate(
-                            inventoryTransactionType, inventoryTransactionReasonName);
+        if(!hasExecutionErrors()) {
+            var inventoryTransactionReasonDetailValue = inventoryTransactionReasonControl
+                    .getInventoryTransactionReasonDetailValueForUpdate(inventoryTransactionReason);
 
-            if(inventoryTransactionReasonDetailValue != null) {
-                inventoryTransactionReasonDetailValue.setIsDefault(true);
-                inventoryTransactionReasonControl.updateInventoryTransactionReasonFromValue(inventoryTransactionReasonDetailValue, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownInventoryTransactionReasonName.name(), inventoryTransactionTypeName,
-                        inventoryTransactionReasonName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryTransactionTypeName.name(), inventoryTransactionTypeName);
+            inventoryTransactionReasonDetailValue.setIsDefault(true);
+            inventoryTransactionReasonControl.updateInventoryTransactionReasonFromValue(
+                    inventoryTransactionReasonDetailValue, getPartyPK());
         }
 
         return null;

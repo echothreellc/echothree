@@ -57,6 +57,9 @@ public class InventoryDispositionControl
     @Inject
     InventoryTransactionReasonControl inventoryTransactionReasonControl;
 
+    @Inject
+    InventoryDispositionAdjustmentControl inventoryDispositionAdjustmentControl;
+
     /** Creates a new instance of InventoryDispositionControl */
     protected InventoryDispositionControl() {
         super();
@@ -351,6 +354,7 @@ public class InventoryDispositionControl
         var inventoryDispositionDetail = inventoryDisposition.getLastDetailForUpdate();
 
         deleteInventoryDispositionDescriptionsByInventoryDisposition(inventoryDisposition, deletedBy);
+        inventoryDispositionAdjustmentControl.deleteInventoryDispositionAdjustmentsByInventoryDisposition(inventoryDisposition, deletedBy);
         inventoryTransactionReasonControl.deleteInventoryTransactionReasonsByInventoryDisposition(inventoryDisposition, deletedBy);
 
         inventoryDispositionDetail.setThruTime(session.getStartTime());

@@ -80,6 +80,11 @@
             </inventoryTransactionRoleType>
             <inventoryDisposition inventoryDispositionName="TEST_INVENTORY_DISPOSITION" isDefault="true" sortOrder="0">
                 <inventoryDispositionDescription languageIsoName="en" description="Test Inventory Disposition" />
+                <inventoryDispositionAdjustment inventoryDispositionAdjustmentName="TEST_INVENTORY_DISPOSITION_ADJUSTMENT"
+                        inventoryAdjustmentTypeName="SET" inventoryBucketTypeName="TOTAL_SOH" isDefault="true" sortOrder="0">
+                    <inventoryDispositionAdjustmentDescription languageIsoName="en"
+                            description="Test Inventory Disposition Adjustment" />
+                </inventoryDispositionAdjustment>
             </inventoryDisposition>
             <inventoryTransactionReason inventoryTransactionReasonName="TEST_INVENTORY_TRANSACTION_REASON"
                     inventoryDispositionName="TEST_INVENTORY_DISPOSITION" isDefault="true" sortOrder="0">

@@ -999,6 +999,69 @@ public class InventoryBean
     }
 
     // -------------------------------------------------------------------------
+    //   Inventory Disposition Adjustments
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateInventoryDispositionAdjustmentResult> createInventoryDispositionAdjustment(UserVisitPK userVisitPK, CreateInventoryDispositionAdjustmentForm form) {
+        return CDI.current().select(CreateInventoryDispositionAdjustmentCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryDispositionAdjustmentsResult> getInventoryDispositionAdjustments(UserVisitPK userVisitPK, GetInventoryDispositionAdjustmentsForm form) {
+        return CDI.current().select(GetInventoryDispositionAdjustmentsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryDispositionAdjustmentResult> getInventoryDispositionAdjustment(UserVisitPK userVisitPK, GetInventoryDispositionAdjustmentForm form) {
+        return CDI.current().select(GetInventoryDispositionAdjustmentCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryDispositionAdjustmentChoicesResult> getInventoryDispositionAdjustmentChoices(UserVisitPK userVisitPK, GetInventoryDispositionAdjustmentChoicesForm form) {
+        return CDI.current().select(GetInventoryDispositionAdjustmentChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultInventoryDispositionAdjustment(UserVisitPK userVisitPK, SetDefaultInventoryDispositionAdjustmentForm form) {
+        return CDI.current().select(SetDefaultInventoryDispositionAdjustmentCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryDispositionAdjustmentResult> editInventoryDispositionAdjustment(UserVisitPK userVisitPK, EditInventoryDispositionAdjustmentForm form) {
+        return CDI.current().select(EditInventoryDispositionAdjustmentCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryDispositionAdjustment(UserVisitPK userVisitPK, DeleteInventoryDispositionAdjustmentForm form) {
+        return CDI.current().select(DeleteInventoryDispositionAdjustmentCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Inventory Disposition Adjustment Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createInventoryDispositionAdjustmentDescription(UserVisitPK userVisitPK, CreateInventoryDispositionAdjustmentDescriptionForm form) {
+        return CDI.current().select(CreateInventoryDispositionAdjustmentDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryDispositionAdjustmentDescriptionsResult> getInventoryDispositionAdjustmentDescriptions(UserVisitPK userVisitPK, GetInventoryDispositionAdjustmentDescriptionsForm form) {
+        return CDI.current().select(GetInventoryDispositionAdjustmentDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditInventoryDispositionAdjustmentDescriptionResult> editInventoryDispositionAdjustmentDescription(UserVisitPK userVisitPK, EditInventoryDispositionAdjustmentDescriptionForm form) {
+        return CDI.current().select(EditInventoryDispositionAdjustmentDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteInventoryDispositionAdjustmentDescription(UserVisitPK userVisitPK, DeleteInventoryDispositionAdjustmentDescriptionForm form) {
+        return CDI.current().select(DeleteInventoryDispositionAdjustmentDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Inventory Transaction Reasons
     // -------------------------------------------------------------------------
 

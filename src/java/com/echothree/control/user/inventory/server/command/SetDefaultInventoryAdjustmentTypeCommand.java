@@ -18,11 +18,11 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryAdjustmentTypeForm;
 import com.echothree.model.control.inventory.server.control.InventoryAdjustmentTypeControl;
+import com.echothree.model.control.inventory.server.logic.InventoryAdjustmentTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -56,6 +56,9 @@ public class SetDefaultInventoryAdjustmentTypeCommand
     @Inject
     InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
 
+    @Inject
+    InventoryAdjustmentTypeLogic inventoryAdjustmentTypeLogic;
+
     /** Creates a new instance of SetDefaultInventoryAdjustmentTypeCommand */
     public SetDefaultInventoryAdjustmentTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -63,14 +66,16 @@ public class SetDefaultInventoryAdjustmentTypeCommand
 
     @Override
     protected BaseResult execute() {
-        var inventoryAdjustmentTypeName = form.getInventoryAdjustmentTypeName();
-        var inventoryAdjustmentTypeDetailValue = inventoryAdjustmentTypeControl.getInventoryAdjustmentTypeDetailValueByNameForUpdate(inventoryAdjustmentTypeName);
+        var inventoryAdjustmentType = inventoryAdjustmentTypeLogic.getInventoryAdjustmentTypeByNameForUpdate(this,
+                form.getInventoryAdjustmentTypeName());
 
-        if(inventoryAdjustmentTypeDetailValue != null) {
+        if(!hasExecutionErrors()) {
+            var inventoryAdjustmentTypeDetailValue = inventoryAdjustmentTypeControl
+                    .getInventoryAdjustmentTypeDetailValueForUpdate(inventoryAdjustmentType);
+
             inventoryAdjustmentTypeDetailValue.setIsDefault(true);
-            inventoryAdjustmentTypeControl.updateInventoryAdjustmentTypeFromValue(inventoryAdjustmentTypeDetailValue, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryAdjustmentTypeName.name(), inventoryAdjustmentTypeName);
+            inventoryAdjustmentTypeControl.updateInventoryAdjustmentTypeFromValue(
+                    inventoryAdjustmentTypeDetailValue, getPartyPK());
         }
 
         return null;

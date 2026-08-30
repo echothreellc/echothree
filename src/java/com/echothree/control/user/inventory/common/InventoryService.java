@@ -492,6 +492,36 @@ public interface InventoryService
     CommandResult<VoidResult> deleteInventoryDispositionDescription(UserVisitPK userVisitPK, DeleteInventoryDispositionDescriptionForm form);
 
     // -------------------------------------------------------------------------
+    //   Inventory Disposition Adjustments
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateInventoryDispositionAdjustmentResult> createInventoryDispositionAdjustment(UserVisitPK userVisitPK, CreateInventoryDispositionAdjustmentForm form);
+
+    CommandResult<GetInventoryDispositionAdjustmentsResult> getInventoryDispositionAdjustments(UserVisitPK userVisitPK, GetInventoryDispositionAdjustmentsForm form);
+
+    CommandResult<GetInventoryDispositionAdjustmentResult> getInventoryDispositionAdjustment(UserVisitPK userVisitPK, GetInventoryDispositionAdjustmentForm form);
+
+    CommandResult<GetInventoryDispositionAdjustmentChoicesResult> getInventoryDispositionAdjustmentChoices(UserVisitPK userVisitPK, GetInventoryDispositionAdjustmentChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultInventoryDispositionAdjustment(UserVisitPK userVisitPK, SetDefaultInventoryDispositionAdjustmentForm form);
+
+    CommandResult<EditInventoryDispositionAdjustmentResult> editInventoryDispositionAdjustment(UserVisitPK userVisitPK, EditInventoryDispositionAdjustmentForm form);
+
+    CommandResult<VoidResult> deleteInventoryDispositionAdjustment(UserVisitPK userVisitPK, DeleteInventoryDispositionAdjustmentForm form);
+
+    // -------------------------------------------------------------------------
+    //   Inventory Disposition Adjustment Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createInventoryDispositionAdjustmentDescription(UserVisitPK userVisitPK, CreateInventoryDispositionAdjustmentDescriptionForm form);
+
+    CommandResult<GetInventoryDispositionAdjustmentDescriptionsResult> getInventoryDispositionAdjustmentDescriptions(UserVisitPK userVisitPK, GetInventoryDispositionAdjustmentDescriptionsForm form);
+
+    CommandResult<EditInventoryDispositionAdjustmentDescriptionResult> editInventoryDispositionAdjustmentDescription(UserVisitPK userVisitPK, EditInventoryDispositionAdjustmentDescriptionForm form);
+
+    CommandResult<VoidResult> deleteInventoryDispositionAdjustmentDescription(UserVisitPK userVisitPK, DeleteInventoryDispositionAdjustmentDescriptionForm form);
+
+    // -------------------------------------------------------------------------
     //   Inventory Transaction Reasons
     // -------------------------------------------------------------------------
 

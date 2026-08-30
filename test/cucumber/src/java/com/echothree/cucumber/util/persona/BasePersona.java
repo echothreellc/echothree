@@ -130,6 +130,7 @@ import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEd
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionTimeTypeEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryDispositionEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionReasonEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryDispositionAdjustmentEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionRoleTypeEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryTransactionTypeEdit;
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
@@ -141,6 +142,7 @@ import com.echothree.control.user.inventory.common.form.CreateInventoryLocationG
 import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionTimeTypeForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryDispositionForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionReasonForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryDispositionAdjustmentForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionRoleTypeForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
@@ -152,6 +154,7 @@ import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationG
 import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionTimeTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryDispositionForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionReasonForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryDispositionAdjustmentForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionRoleTypeForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryTransactionTypeForm;
 import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
@@ -164,6 +167,7 @@ import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSp
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionTimeTypeUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryDispositionUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionReasonUniversalSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryDispositionAdjustmentUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionRoleTypeUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionTypeUniversalSpec;
 import com.echothree.control.user.item.common.edit.ItemAliasEdit;
@@ -594,6 +598,11 @@ public class BasePersona {
     public InventoryDispositionUniversalSpec inventoryDispositionSpec;
     public InventoryDispositionEdit inventoryDispositionEdit;
 
+    public CreateInventoryDispositionAdjustmentForm createInventoryDispositionAdjustmentForm;
+    public DeleteInventoryDispositionAdjustmentForm deleteInventoryDispositionAdjustmentForm;
+    public InventoryDispositionAdjustmentUniversalSpec inventoryDispositionAdjustmentSpec;
+    public InventoryDispositionAdjustmentEdit inventoryDispositionAdjustmentEdit;
+
     public CreateInventoryTransactionReasonForm createInventoryTransactionReasonForm;
     public DeleteInventoryTransactionReasonForm deleteInventoryTransactionReasonForm;
     public InventoryTransactionReasonUniversalSpec inventoryTransactionReasonSpec;
@@ -609,6 +618,7 @@ public class BasePersona {
     public String lastInventoryTransactionTimeTypeName;
     public String lastInventoryTransactionRoleTypeName;
     public String lastInventoryDispositionName;
+    public String lastInventoryDispositionAdjustmentName;
     public String lastInventoryTransactionReasonName;
 
     // Item

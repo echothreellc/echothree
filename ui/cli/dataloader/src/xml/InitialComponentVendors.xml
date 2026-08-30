@@ -1051,6 +1051,12 @@
             <entityType entityTypeName="InventoryTransactionReasonDescription" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Transaction Reason Description" />
             </entityType>
+            <entityType entityTypeName="InventoryDispositionAdjustment" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Disposition Adjustment" />
+            </entityType>
+            <entityType entityTypeName="InventoryDispositionAdjustmentDescription" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Disposition Adjustment Description" />
+            </entityType>
             <entityType entityTypeName="InventoryLocationGroup" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Location Group" />
             </entityType>

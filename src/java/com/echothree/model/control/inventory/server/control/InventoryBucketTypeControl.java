@@ -54,6 +54,9 @@ public class InventoryBucketTypeControl
         extends BaseModelControl {
 
     @Inject
+    InventoryDispositionAdjustmentControl inventoryDispositionAdjustmentControl;
+
+    @Inject
     BucketControl bucketControl;
 
     @Inject
@@ -325,6 +328,7 @@ public class InventoryBucketTypeControl
         var inventoryBucketTypeDetail = inventoryBucketType.getLastDetailForUpdate();
 
         deleteInventoryBucketTypeDescriptionsByInventoryBucketType(inventoryBucketType, deletedBy);
+        inventoryDispositionAdjustmentControl.deleteInventoryDispositionAdjustmentsByInventoryBucketType(inventoryBucketType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryBucketType(inventoryBucketType, deletedBy);
         bucketControl.removePartyBucketsByInventoryBucketType(inventoryBucketType, deletedBy);
         bucketControl.removeInventoryLocationBucketsByInventoryBucketType(inventoryBucketType, deletedBy);
