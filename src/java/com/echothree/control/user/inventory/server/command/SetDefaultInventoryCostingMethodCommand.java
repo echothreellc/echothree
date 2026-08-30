@@ -18,11 +18,11 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryCostingMethodForm;
 import com.echothree.model.control.inventory.server.control.InventoryCostingMethodControl;
+import com.echothree.model.control.inventory.server.logic.InventoryCostingMethodLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -56,6 +56,9 @@ public class SetDefaultInventoryCostingMethodCommand
     @Inject
     InventoryCostingMethodControl inventoryCostingMethodControl;
 
+    @Inject
+    InventoryCostingMethodLogic inventoryCostingMethodLogic;
+
     /** Creates a new instance of SetDefaultInventoryCostingMethodCommand */
     public SetDefaultInventoryCostingMethodCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -63,14 +66,16 @@ public class SetDefaultInventoryCostingMethodCommand
 
     @Override
     protected BaseResult execute() {
-        var inventoryCostingMethodName = form.getInventoryCostingMethodName();
-        var inventoryCostingMethodDetailValue = inventoryCostingMethodControl.getInventoryCostingMethodDetailValueByNameForUpdate(inventoryCostingMethodName);
+        var inventoryCostingMethod = inventoryCostingMethodLogic.getInventoryCostingMethodByNameForUpdate(this,
+                form.getInventoryCostingMethodName());
 
-        if(inventoryCostingMethodDetailValue != null) {
+        if(!hasExecutionErrors()) {
+            var inventoryCostingMethodDetailValue = inventoryCostingMethodControl
+                    .getInventoryCostingMethodDetailValueForUpdate(inventoryCostingMethod);
+
             inventoryCostingMethodDetailValue.setIsDefault(true);
-            inventoryCostingMethodControl.updateInventoryCostingMethodFromValue(inventoryCostingMethodDetailValue, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryCostingMethodName.name(), inventoryCostingMethodName);
+            inventoryCostingMethodControl.updateInventoryCostingMethodFromValue(
+                    inventoryCostingMethodDetailValue, getPartyPK());
         }
 
         return null;

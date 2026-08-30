@@ -1270,6 +1270,31 @@
                 <securityRoleDescription languageIsoName="en" description="Inventory Transaction Reason Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="InventoryDispositionAdjustment"
+                parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Inventory Disposition Adjustment" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Disposition Adjustment Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Disposition Adjustment Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Disposition Adjustment Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Disposition Adjustment List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Disposition Adjustment Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Disposition Adjustment Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Disposition Adjustment Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ItemComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Item Component" />
         </securityRoleGroup>
@@ -8661,6 +8686,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionReason" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionReason" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryTransactionReason" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryDispositionAdjustment" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryDispositionAdjustment" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryDispositionAdjustment" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryDispositionAdjustment" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryDispositionAdjustment" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryDispositionAdjustment" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryDispositionAdjustment" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Item" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Item" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Item" securityRoleName="List" />

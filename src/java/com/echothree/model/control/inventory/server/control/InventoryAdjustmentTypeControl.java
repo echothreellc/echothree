@@ -54,6 +54,9 @@ public class InventoryAdjustmentTypeControl
         extends BaseModelControl {
 
     @Inject
+    InventoryDispositionAdjustmentControl inventoryDispositionAdjustmentControl;
+
+    @Inject
     InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
 
     @Inject
@@ -322,6 +325,7 @@ public class InventoryAdjustmentTypeControl
         var inventoryAdjustmentTypeDetail = inventoryAdjustmentType.getLastDetailForUpdate();
 
         deleteInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
+        inventoryDispositionAdjustmentControl.deleteInventoryDispositionAdjustmentsByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
 
         inventoryAdjustmentTypeDetail.setThruTime(session.getStartTime());

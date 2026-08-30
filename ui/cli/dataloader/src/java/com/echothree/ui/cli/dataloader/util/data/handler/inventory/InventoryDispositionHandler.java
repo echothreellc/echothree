@@ -59,6 +59,14 @@ public class InventoryDispositionHandler
             commandForm.set(getAttrsMap(attrs));
 
             checkCommandResult(inventoryService.createInventoryDispositionDescription(initialDataParser.getUserVisit(), commandForm));
+        } else if(localName.equals("inventoryDispositionAdjustment")) {
+            var commandForm = InventoryFormFactory.getCreateInventoryDispositionAdjustmentForm();
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryDispositionName(inventoryDispositionName);
+            commandForm.set(getAttrsMap(attrs));
+            checkCommandResult(inventoryService.createInventoryDispositionAdjustment(initialDataParser.getUserVisit(), commandForm));
+            initialDataParser.pushHandler(new InventoryDispositionAdjustmentHandler(initialDataParser, this,
+                    inventoryTransactionTypeName, inventoryDispositionName, commandForm.getInventoryDispositionAdjustmentName()));
         }
     }
     

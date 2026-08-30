@@ -16,6 +16,8 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+import com.echothree.control.user.inventory.common.result.CreateInventoryDispositionAdjustmentResult;
+import com.echothree.control.user.inventory.common.result.EditInventoryDispositionAdjustmentResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionReasonResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryTransactionReasonResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryDispositionResult;
@@ -4897,6 +4899,137 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(InventoryUtil.getHome().deleteInventoryDisposition(BaseGraphQl.getUserVisitPK(env),
+                    commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createInventoryDispositionAdjustment(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryDispositionAdjustmentName") @GraphQLNonNull final String inventoryDispositionAdjustmentName,
+            @GraphQLName("inventoryDispositionName") @GraphQLNonNull final String inventoryDispositionName,
+            @GraphQLName("inventoryAdjustmentTypeName") @GraphQLNonNull final String inventoryAdjustmentTypeName,
+            @GraphQLName("inventoryBucketTypeName") @GraphQLNonNull final String inventoryBucketTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getCreateInventoryDispositionAdjustmentForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryDispositionAdjustmentName(inventoryDispositionAdjustmentName);
+            commandForm.setInventoryDispositionName(inventoryDispositionName);
+            commandForm.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
+            commandForm.setInventoryBucketTypeName(inventoryBucketTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = InventoryUtil.getHome().createInventoryDispositionAdjustment(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateInventoryDispositionAdjustmentResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editInventoryDispositionAdjustment(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryDispositionName") final String inventoryDispositionName,
+            @GraphQLName("originalInventoryDispositionAdjustmentName") final String originalInventoryDispositionAdjustmentName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("inventoryDispositionAdjustmentName") final String inventoryDispositionAdjustmentName,
+            @GraphQLName("inventoryAdjustmentTypeName") final String inventoryAdjustmentTypeName,
+            @GraphQLName("inventoryBucketTypeName") final String inventoryBucketTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = InventoryUtil.getHome().getInventoryDispositionAdjustmentUniversalSpec();
+
+            spec.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            spec.setInventoryDispositionName(inventoryDispositionName);
+            spec.setInventoryDispositionAdjustmentName(originalInventoryDispositionAdjustmentName);
+            spec.setUuid(id);
+
+            var commandForm = InventoryUtil.getHome().getEditInventoryDispositionAdjustmentForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = InventoryUtil.getHome().editInventoryDispositionAdjustment(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditInventoryDispositionAdjustmentResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getInventoryDispositionAdjustment().getEntityInstance());
+
+                if(arguments.containsKey("inventoryDispositionAdjustmentName"))
+                    edit.setInventoryDispositionAdjustmentName(inventoryDispositionAdjustmentName);
+                if(arguments.containsKey("inventoryAdjustmentTypeName"))
+                    edit.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
+                if(arguments.containsKey("inventoryBucketTypeName"))
+                    edit.setInventoryBucketTypeName(inventoryBucketTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = InventoryUtil.getHome().editInventoryDispositionAdjustment(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteInventoryDispositionAdjustment(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryDispositionName") final String inventoryDispositionName,
+            @GraphQLName("inventoryDispositionAdjustmentName") final String inventoryDispositionAdjustmentName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getDeleteInventoryDispositionAdjustmentForm();
+
+            commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryDispositionName(inventoryDispositionName);
+            commandForm.setInventoryDispositionAdjustmentName(inventoryDispositionAdjustmentName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(InventoryUtil.getHome().deleteInventoryDispositionAdjustment(BaseGraphQl.getUserVisitPK(env),
                     commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

@@ -39,7 +39,7 @@ public class InventoryDispositionSteps implements En {
                     persona.createInventoryDispositionForm = InventoryUtil.getHome().getCreateInventoryDispositionForm();
                 });
 
-        And("^the user adds the new inventory disposition",
+        And("^the user adds the new inventory disposition$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionForm = persona.createInventoryDispositionForm;
@@ -72,7 +72,7 @@ public class InventoryDispositionSteps implements En {
                     persona.deleteInventoryDispositionForm = InventoryUtil.getHome().getDeleteInventoryDispositionForm();
                 });
 
-        And("^the user deletes the inventory disposition",
+        And("^the user deletes the inventory disposition$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryDispositionForm = persona.deleteInventoryDispositionForm;
@@ -119,7 +119,7 @@ public class InventoryDispositionSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory disposition",
+        And("^the user finishes editing the inventory disposition$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryDispositionSpec;

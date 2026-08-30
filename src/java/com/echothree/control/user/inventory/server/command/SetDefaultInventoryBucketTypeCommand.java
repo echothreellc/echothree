@@ -18,11 +18,11 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultInventoryBucketTypeForm;
 import com.echothree.model.control.inventory.server.control.InventoryBucketTypeControl;
+import com.echothree.model.control.inventory.server.logic.InventoryBucketTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -56,6 +56,9 @@ public class SetDefaultInventoryBucketTypeCommand
     @Inject
     InventoryBucketTypeControl inventoryBucketTypeControl;
 
+    @Inject
+    InventoryBucketTypeLogic inventoryBucketTypeLogic;
+
     /** Creates a new instance of SetDefaultInventoryBucketTypeCommand */
     public SetDefaultInventoryBucketTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -63,14 +66,16 @@ public class SetDefaultInventoryBucketTypeCommand
 
     @Override
     protected BaseResult execute() {
-        var inventoryBucketTypeName = form.getInventoryBucketTypeName();
-        var inventoryBucketTypeDetailValue = inventoryBucketTypeControl.getInventoryBucketTypeDetailValueByNameForUpdate(inventoryBucketTypeName);
+        var inventoryBucketType = inventoryBucketTypeLogic.getInventoryBucketTypeByNameForUpdate(this,
+                form.getInventoryBucketTypeName());
 
-        if(inventoryBucketTypeDetailValue != null) {
+        if(!hasExecutionErrors()) {
+            var inventoryBucketTypeDetailValue = inventoryBucketTypeControl
+                    .getInventoryBucketTypeDetailValueForUpdate(inventoryBucketType);
+
             inventoryBucketTypeDetailValue.setIsDefault(true);
-            inventoryBucketTypeControl.updateInventoryBucketTypeFromValue(inventoryBucketTypeDetailValue, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryBucketTypeName.name(), inventoryBucketTypeName);
+            inventoryBucketTypeControl.updateInventoryBucketTypeFromValue(
+                    inventoryBucketTypeDetailValue, getPartyPK());
         }
 
         return null;
