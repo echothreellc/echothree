@@ -1,5 +1,22 @@
 # Changelog
 
+## 2026-08-30-01
+
+* Implement Party Inventory Costing Methods [2179](https://gitlab.echothree.com/echothree/echothree/-/work_items/2179)
+* Implement Inventory Transaction Time Types [2180](https://gitlab.echothree.com/echothree/echothree/-/work_items/2180)
+* Implement Inventory Transaction Role Types [2181](https://gitlab.echothree.com/echothree/echothree/-/work_items/2181)
+* Implement Inventory Dispositions [2182](https://gitlab.echothree.com/echothree/echothree/-/work_items/2182)
+* Implement Inventory Disposition Adjustments [2183](https://gitlab.echothree.com/echothree/echothree/-/work_items/2183)
+* Implement Inventory Transaction Reasons [2184](https://gitlab.echothree.com/echothree/echothree/-/work_items/2184)
+* Implement Inventory Location Buckets [2196](https://gitlab.echothree.com/echothree/echothree/-/work_items/2196)
+* Implement Party Buckets [2197](https://gitlab.echothree.com/echothree/echothree/-/work_items/2197)
+* Improve jOOQ Handling of BaseEntity Parameters [2335](https://gitlab.echothree.com/echothree/echothree/-/work_items/2335)
+* Modify TableField Names to Follow Java Conventions [2336](https://gitlab.echothree.com/echothree/echothree/-/work_items/2336)
+* Add UI for Maintaining Allocation Priorities [2338](https://gitlab.echothree.com/echothree/echothree/-/work_items/2338)
+* Less Verbose Limit Handlng With jOOQ [2339](https://gitlab.echothree.com/echothree/echothree/-/work_items/2339)
+* Implement Inventory Locations [2340](https://gitlab.echothree.com/echothree/echothree/-/work_items/2340)
+* Apache Lucene 10.5.1 Upgrade [2350](https://gitlab.echothree.com/echothree/echothree/-/work_items/2350)
+
 ## 2026-08-16-01
 
 * jOOQ Code Generation [369](https://gitlab.echothree.com/echothree/echothree/-/work_items/369)
