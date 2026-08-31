@@ -2,10 +2,14 @@
 
 - For Command classes that Get specific types of entities:
   - For Command classes getting multiple entities extend BasePaginatedMultipleEntitiesCommand
-  - For Command classes getting a single entity extend BasePaginatedSingleEntityCommand
+  - For Command classes getting a single entity extend BaseSingleEntityCommand
   - getUserVisit should only be called once and then reused
 - For Command classes that Edit specific types of entities:
   - Extend BaseAbstractEditCommand
+  - Use `editModeToEntityPermission(editMode)` with a permission-aware Logic or Control lookup instead of branching between read-only and for-update lookup methods.
+  - For description edits, use the description as the edited entity and its owning entity as the lock entity.
+- Prefer Logic-class `ByName` methods when available. After a Logic lookup, guard dependent work with `!hasExecutionErrors()`; after a direct Control lookup, test the returned entity for `null`.
+- Unknown-entity execution errors must include all names in the entity's complete unique key, ordered from parent names to the entity name. Unknown-description errors must additionally include `LanguageIsoName` last.
 - Format all static `CommandSecurityDefinition` and `List<FieldDefinition>` assignments consistently:
   - Indent nested list entries one additional level.
   - Align closing parentheses with their assignment expression.

@@ -18,6 +18,7 @@
 - In Control classes, place generated Factory injections immediately after the comment header for the entity type where they are used.
   - Keep Factory injections alphabetically ordered within each entity section.
 - Controls perform persistence operations; Logic classes enforce business rules
+- Expose Control lookup overloads that accept `EntityPermission` when Commands need to select read-only or read-write behavior via `editModeToEntityPermission(editMode)`; keep convenience read-only and for-update methods delegating to that overload
 - Follow entity-specific event ownership requirements
   - For `PartyBucket`, send `TOUCH` events against the associated `Item`; do not make `PartyBucket` the primary event entity
 
