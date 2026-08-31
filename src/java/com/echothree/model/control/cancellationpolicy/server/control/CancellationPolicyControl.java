@@ -668,7 +668,7 @@ public class CancellationPolicyControl
         return cancellationKindDescription;
     }
     
-    private CancellationKindDescription getCancellationKindDescription(CancellationKind cancellationKind, Language language, EntityPermission entityPermission) {
+    public CancellationKindDescription getCancellationKindDescription(CancellationKind cancellationKind, Language language, EntityPermission entityPermission) {
         CancellationKindDescription cancellationKindDescription;
         
         try {
@@ -1373,7 +1373,7 @@ public class CancellationPolicyControl
                         """, cancellationReason, Session.MAX_TIME);
     }
 
-    private CancellationPolicyReason getCancellationPolicyReason(CancellationPolicy cancellationPolicy, CancellationReason cancellationReason, EntityPermission entityPermission) {
+    public CancellationPolicyReason getCancellationPolicyReason(CancellationPolicy cancellationPolicy, CancellationReason cancellationReason, EntityPermission entityPermission) {
         CancellationPolicyReason cancellationPolicyReason;
         
         try {
@@ -1817,7 +1817,7 @@ public class CancellationPolicyControl
         return getDefaultCancellationReasonForUpdate(cancellationKind).getLastDetailForUpdate().getCancellationReasonDetailValue().clone();
     }
     
-    private CancellationReason getCancellationReasonByName(CancellationKind cancellationKind, String cancellationReasonName, EntityPermission entityPermission) {
+    public CancellationReason getCancellationReasonByName(CancellationKind cancellationKind, String cancellationReasonName, EntityPermission entityPermission) {
         CancellationReason cancellationReason;
         
         try {
@@ -2024,7 +2024,7 @@ public class CancellationPolicyControl
         return cancellationReasonDescription;
     }
     
-    private CancellationReasonDescription getCancellationReasonDescription(CancellationReason cancellationReason, Language language, EntityPermission entityPermission) {
+    public CancellationReasonDescription getCancellationReasonDescription(CancellationReason cancellationReason, Language language, EntityPermission entityPermission) {
         CancellationReasonDescription cancellationReasonDescription;
         
         try {
@@ -2230,7 +2230,7 @@ public class CancellationPolicyControl
                         """, cancellationType, Session.MAX_TIME);
     }
 
-    private CancellationReasonType getCancellationReasonType(CancellationReason cancellationReason, CancellationType cancellationType, EntityPermission entityPermission) {
+    public CancellationReasonType getCancellationReasonType(CancellationReason cancellationReason, CancellationType cancellationType, EntityPermission entityPermission) {
         CancellationReasonType cancellationReasonType;
         
         try {
@@ -2684,7 +2684,7 @@ public class CancellationPolicyControl
         return getDefaultCancellationTypeForUpdate(cancellationKind).getLastDetailForUpdate().getCancellationTypeDetailValue().clone();
     }
     
-    private CancellationType getCancellationTypeByName(CancellationKind cancellationKind, String cancellationTypeName, EntityPermission entityPermission) {
+    public CancellationType getCancellationTypeByName(CancellationKind cancellationKind, String cancellationTypeName, EntityPermission entityPermission) {
         CancellationType cancellationType;
         
         try {
@@ -2888,7 +2888,7 @@ public class CancellationPolicyControl
         return cancellationTypeDescription;
     }
     
-    private CancellationTypeDescription getCancellationTypeDescription(CancellationType cancellationType, Language language, EntityPermission entityPermission) {
+    public CancellationTypeDescription getCancellationTypeDescription(CancellationType cancellationType, Language language, EntityPermission entityPermission) {
         CancellationTypeDescription cancellationTypeDescription;
         
         try {
