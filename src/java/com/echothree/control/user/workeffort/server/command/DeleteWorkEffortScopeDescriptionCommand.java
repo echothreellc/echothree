@@ -79,7 +79,7 @@ public class DeleteWorkEffortScopeDescriptionCommand
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortScopeName);
+                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypeName, workEffortScopeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);

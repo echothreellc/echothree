@@ -70,7 +70,7 @@ public class GetWorkRequirementTypeCommand
             if(workRequirementType != null) {
                 sendEvent(workRequirementType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
+                addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workEffortTypeName, workRequirementTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
