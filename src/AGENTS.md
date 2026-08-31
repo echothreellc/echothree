@@ -11,6 +11,7 @@
 - Reuse dependencies injected by base classes; do not redeclare fields that hide inherited injections.
 - Do not inject a class into itself.
 - Use Logic classes when available (e.g., `ChainKindLogic`, `ChainTypeLogic`).
+- When reporting an unknown or duplicate entity, relationship, or description, pass every name that identifies it to `addExecutionError`, ordered from the outermost parent to the entity itself
 - Use dependency injection when possible using `@Inject` annotation
     - If the class being modified is annotated with @ApplicationScoped, @RequestScoped, @CommandScope, @Dependent, or @SentEventSubscriber
         - Control and Logic classes should be injected using `@Inject` annotation
