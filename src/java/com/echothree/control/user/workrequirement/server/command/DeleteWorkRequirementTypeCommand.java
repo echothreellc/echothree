@@ -66,7 +66,7 @@ public class DeleteWorkRequirementTypeCommand
             if(workRequirementType != null) {
                 workRequirementControl.deleteWorkRequirementType(workRequirementType, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
+                addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workEffortTypeName, workRequirementTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);

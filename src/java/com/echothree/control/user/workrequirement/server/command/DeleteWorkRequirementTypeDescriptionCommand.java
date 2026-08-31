@@ -83,7 +83,7 @@ public class DeleteWorkRequirementTypeDescriptionCommand
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
+                addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workEffortTypeName, workRequirementTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);

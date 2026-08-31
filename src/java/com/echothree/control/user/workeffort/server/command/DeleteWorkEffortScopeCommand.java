@@ -62,7 +62,7 @@ public class DeleteWorkEffortScopeCommand
             if(workEffortScope != null) {
                 workEffortControl.deleteWorkEffortScope(workEffortScope, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortScopeName);
+                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypeName, workEffortScopeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
