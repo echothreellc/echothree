@@ -432,7 +432,7 @@ public class WorkRequirementControl
         return workRequirementTypeDescription;
     }
     
-    private WorkRequirementTypeDescription getWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language,
+    public WorkRequirementTypeDescription getWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language,
             EntityPermission entityPermission) {
         WorkRequirementTypeDescription workRequirementTypeDescription;
         

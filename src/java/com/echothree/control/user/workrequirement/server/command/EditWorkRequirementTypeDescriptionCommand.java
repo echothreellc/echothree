@@ -18,26 +18,26 @@ package com.echothree.control.user.workrequirement.server.command;
 
 import com.echothree.control.user.workrequirement.common.edit.WorkRequirementEditFactory;
 import com.echothree.control.user.workrequirement.common.edit.WorkRequirementTypeDescriptionEdit;
-import com.echothree.control.user.workrequirement.common.form.EditWorkRequirementTypeDescriptionForm;
+import com.echothree.control.user.workrequirement.common.result.EditWorkRequirementTypeDescriptionResult;
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.control.user.workrequirement.common.spec.WorkRequirementTypeDescriptionSpec;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
+import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditWorkRequirementTypeDescriptionCommand
-        extends BaseEditCommand<WorkRequirementTypeDescriptionSpec, WorkRequirementTypeDescriptionEdit> {
+        extends BaseAbstractEditCommand<WorkRequirementTypeDescriptionSpec, WorkRequirementTypeDescriptionEdit,
+                EditWorkRequirementTypeDescriptionResult, WorkRequirementTypeDescription, WorkRequirementType> {
     
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
@@ -55,7 +55,7 @@ public class EditWorkRequirementTypeDescriptionCommand
     }
 
     @Inject
-    PartyControl partyControl;
+    LanguageLogic languageLogic;
 
     @Inject
     WorkEffortControl workEffortControl;
@@ -63,15 +63,24 @@ public class EditWorkRequirementTypeDescriptionCommand
     @Inject
     WorkRequirementControl workRequirementControl;
 
-    
     /** Creates a new instance of EditWorkRequirementTypeDescriptionCommand */
     public EditWorkRequirementTypeDescriptionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = WorkRequirementResultFactory.getEditWorkRequirementTypeDescriptionResult();
+    public EditWorkRequirementTypeDescriptionResult getResult() {
+        return WorkRequirementResultFactory.getEditWorkRequirementTypeDescriptionResult();
+    }
+
+    @Override
+    public WorkRequirementTypeDescriptionEdit getEdit() {
+        return WorkRequirementEditFactory.getWorkRequirementTypeDescriptionEdit();
+    }
+
+    @Override
+    public WorkRequirementTypeDescription getEntity(EditWorkRequirementTypeDescriptionResult result) {
+        WorkRequirementTypeDescription workRequirementTypeDescription = null;
         var workEffortTypeName = spec.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
@@ -81,60 +90,49 @@ public class EditWorkRequirementTypeDescriptionCommand
             
             if(workRequirementType != null) {
                 var languageIsoName = spec.getLanguageIsoName();
-                var language = partyControl.getLanguageByIsoName(languageIsoName);
+                var language = languageLogic.getLanguageByName(this, languageIsoName);
                 
-                if(language != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        var workRequirementTypeDescription = workRequirementControl.getWorkRequirementTypeDescription(workRequirementType, language);
-                        
-                        if(workRequirementTypeDescription != null) {
-                            result.setWorkRequirementTypeDescription(workRequirementControl.getWorkRequirementTypeDescriptionTransfer(getUserVisit(), workRequirementTypeDescription));
-                            
-                            if(lockEntity(workRequirementType)) {
-                                var edit = WorkRequirementEditFactory.getWorkRequirementTypeDescriptionEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setDescription(workRequirementTypeDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(workRequirementType));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeDescription.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var workRequirementTypeDescriptionValue = workRequirementControl.getWorkRequirementTypeDescriptionValueForUpdate(workRequirementType, language);
-                        
-                        if(workRequirementTypeDescriptionValue != null) {
-                            if(lockEntityForUpdate(workRequirementType)) {
-                                try {
-                                    var description = edit.getDescription();
-                                    
-                                    workRequirementTypeDescriptionValue.setDescription(description);
-                                    
-                                    workRequirementControl.updateWorkRequirementTypeDescriptionFromValue(workRequirementTypeDescriptionValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(workRequirementType);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeDescription.name());
-                        }
+                if(!hasExecutionErrors()) {
+                    workRequirementTypeDescription = workRequirementControl.getWorkRequirementTypeDescription(workRequirementType, language,
+                            editModeToEntityPermission(editMode));
+
+                    if(workRequirementTypeDescription == null) {
+                        addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeDescription.name(), workEffortTypeName,
+                                workRequirementTypeName, languageIsoName);
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
+                addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workEffortTypeName, workRequirementTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
         }
-        
-        return result;
+
+        return workRequirementTypeDescription;
+    }
+
+    @Override
+    public WorkRequirementType getLockEntity(WorkRequirementTypeDescription workRequirementTypeDescription) {
+        return workRequirementTypeDescription.getWorkRequirementType();
+    }
+
+    @Override
+    public void fillInResult(EditWorkRequirementTypeDescriptionResult result, WorkRequirementTypeDescription workRequirementTypeDescription) {
+        result.setWorkRequirementTypeDescription(workRequirementControl.getWorkRequirementTypeDescriptionTransfer(getUserVisit(), workRequirementTypeDescription));
+    }
+
+    @Override
+    public void doLock(WorkRequirementTypeDescriptionEdit edit, WorkRequirementTypeDescription workRequirementTypeDescription) {
+        edit.setDescription(workRequirementTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(WorkRequirementTypeDescription workRequirementTypeDescription) {
+        var workRequirementTypeDescriptionValue = workRequirementControl.getWorkRequirementTypeDescriptionValue(workRequirementTypeDescription);
+
+        workRequirementTypeDescriptionValue.setDescription(edit.getDescription());
+
+        workRequirementControl.updateWorkRequirementTypeDescriptionFromValue(workRequirementTypeDescriptionValue, getPartyPK());
     }
     
 }
