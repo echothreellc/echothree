@@ -80,10 +80,10 @@ public class GetWorkRequirementScopeCommand
                         addExecutionError(ExecutionErrors.UnknownWorkRequirementScope.name(), workEffortTypeName, workEffortScopeName, workRequirementTypeName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
+                    addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workEffortTypeName, workRequirementTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortScopeName);
+                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypeName, workEffortScopeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);

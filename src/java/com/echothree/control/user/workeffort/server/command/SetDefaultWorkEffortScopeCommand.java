@@ -56,14 +56,14 @@ public class SetDefaultWorkEffortScopeCommand
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            var workEffortTypePriorityName = form.getWorkEffortScopeName();
-            var workEffortTypePriorityDetailValue = workEffortControl.getWorkEffortScopeDetailValueByNameForUpdate(workEffortType, workEffortTypePriorityName);
+            var workEffortScopeName = form.getWorkEffortScopeName();
+            var workEffortTypePriorityDetailValue = workEffortControl.getWorkEffortScopeDetailValueByNameForUpdate(workEffortType, workEffortScopeName);
             
             if(workEffortTypePriorityDetailValue != null) {
                 workEffortTypePriorityDetailValue.setIsDefault(true);
                 workEffortControl.updateWorkEffortScopeFromValue(workEffortTypePriorityDetailValue, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypePriorityName);
+                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypeName, workEffortScopeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);

@@ -129,7 +129,7 @@ public class EditWorkEffortScopeCommand
             if(workEffortScope != null) {
                 result.setWorkEffortScope(workEffortControl.getWorkEffortScopeTransfer(getUserVisit(), workEffortScope));
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortType, workEffortScopeName);
+                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypeName, workEffortScopeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);

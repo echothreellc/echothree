@@ -78,13 +78,13 @@ public class GetWorkRequirementScopesCommand
                     workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
 
                     if(workEffortScope == null) {
-                        addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortScopeName);
+                        addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypeName, workEffortScopeName);
                     }
                 } else {
                     workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
 
                     if(workRequirementType == null) {
-                        addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
+                        addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workEffortTypeName, workRequirementTypeName);
                     }
                 }
             } else {
