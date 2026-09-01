@@ -25,11 +25,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.cancellationpolicy.server.entity.PartyCancellationPolicy;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -39,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyCancellationPolicyCommand
-        extends BaseSimpleCommand<GetPartyCancellationPolicyForm> {
+        extends BaseSingleEntityCommand<PartyCancellationPolicy, GetPartyCancellationPolicyForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -77,8 +78,8 @@ public class GetPartyCancellationPolicyCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = CancellationPolicyResultFactory.getGetPartyCancellationPolicyResult();
+    protected PartyCancellationPolicy getEntity() {
+        PartyCancellationPolicy partyCancellationPolicy = null;
         var partyName = form.getPartyName();
         var party = partyLogic.getPartyByName(this, partyName);
 
@@ -91,15 +92,24 @@ public class GetPartyCancellationPolicyCommand
                 var cancellationPolicy = cancellationPolicyLogic.getCancellationPolicyByName(this, cancellationKind, cancellationPolicyName);
 
                 if(!hasExecutionErrors()) {
-                    var partyCancellationPolicy = cancellationPolicyControl.getPartyCancellationPolicy(party, cancellationPolicy);
+                    partyCancellationPolicy = cancellationPolicyControl.getPartyCancellationPolicy(party, cancellationPolicy);
 
-                    if(partyCancellationPolicy != null) {
-                        result.setPartyCancellationPolicy(cancellationPolicyControl.getPartyCancellationPolicyTransfer(getUserVisit(), partyCancellationPolicy));
-                    } else {
+                    if(partyCancellationPolicy == null) {
                         addExecutionError(ExecutionErrors.UnknownPartyCancellationPolicy.name(), partyName, cancellationKindName, cancellationPolicyName);
                     }
                 }
             }
+        }
+
+        return partyCancellationPolicy;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyCancellationPolicy partyCancellationPolicy) {
+        var result = CancellationPolicyResultFactory.getGetPartyCancellationPolicyResult();
+
+        if(partyCancellationPolicy != null) {
+            result.setPartyCancellationPolicy(cancellationPolicyControl.getPartyCancellationPolicyTransfer(getUserVisit(), partyCancellationPolicy));
         }
 
         return result;
