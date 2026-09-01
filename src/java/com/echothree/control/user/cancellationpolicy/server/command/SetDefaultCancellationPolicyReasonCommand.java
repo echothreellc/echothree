@@ -86,13 +86,14 @@ public class SetDefaultCancellationPolicyReasonCommand
                         cancellationPolicyReasonValue.setIsDefault(true);
                         cancellationPolicyControl.updateCancellationPolicyReasonFromValue(cancellationPolicyReasonValue, getPartyPK());
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownCancellationPolicyReason.name());
+                        addExecutionError(ExecutionErrors.UnknownCancellationPolicyReason.name(), cancellationKindName, cancellationPolicyName,
+                                cancellationReasonName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
+                    addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationKindName, cancellationReasonName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
+                addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationKindName, cancellationPolicyName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);

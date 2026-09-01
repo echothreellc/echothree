@@ -78,7 +78,7 @@ public class SetDefaultCancellationReasonCommand
                 cancellationReasonDetailValue.setIsDefault(true);
                 cancellationPolicyControl.updateCancellationReasonFromValue(cancellationReasonDetailValue, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
+                addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationKindName, cancellationReasonName);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateCancellationKindName.name(), cancellationKindName);

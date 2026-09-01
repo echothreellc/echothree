@@ -84,7 +84,7 @@ public class DeleteCancellationPolicyCommand
                     cancellationPolicyLogic.deleteCancellationPolicy(cancellationPolicy, getPartyPK());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
+                addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationKindName, cancellationPolicyName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);

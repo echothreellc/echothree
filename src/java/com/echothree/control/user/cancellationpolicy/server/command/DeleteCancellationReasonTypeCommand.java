@@ -90,7 +90,7 @@ public class DeleteCancellationReasonTypeCommand
                     addExecutionError(ExecutionErrors.UnknownCancellationTypeName.name(), cancellationTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
+                addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationKindName, cancellationReasonName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
