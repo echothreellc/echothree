@@ -20,15 +20,15 @@ import com.echothree.control.user.invoice.common.form.GetInvoiceTypeForm;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
+import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.invoice.server.entity.InvoiceType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetInvoiceTypeCommand
-        extends BaseSimpleCommand<GetInvoiceTypeForm> {
+        extends BaseSingleEntityCommand<InvoiceType, GetInvoiceTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,26 +59,33 @@ public class GetInvoiceTypeCommand
     @Inject
     InvoiceControl invoiceControl;
 
-    
+    @Inject
+    InvoiceLogic invoiceLogic;
+
     /** Creates a new instance of GetInvoiceTypeCommand */
     public GetInvoiceTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
+    protected InvoiceType getEntity() {
+        var invoiceType = invoiceLogic.getInvoiceTypeByName(this, form.getInvoiceTypeName());
+
+        if(!hasExecutionErrors()) {
+            sendEvent(invoiceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return invoiceType;
+    }
+
+    @Override
+    protected BaseResult getResult(InvoiceType invoiceType) {
         var result = InvoiceResultFactory.getGetInvoiceTypeResult();
-        var invoiceTypeName = form.getInvoiceTypeName();
-        var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
-        
+
         if(invoiceType != null) {
             result.setInvoiceType(invoiceControl.getInvoiceTypeTransfer(getUserVisit(), invoiceType));
-            
-            sendEvent(invoiceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInvoiceTypeName.name(), invoiceTypeName);
         }
-        
+
         return result;
     }
     
