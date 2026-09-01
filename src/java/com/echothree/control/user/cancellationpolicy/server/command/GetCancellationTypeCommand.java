@@ -19,16 +19,17 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationTypeForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationTypeCommand
-        extends BaseSimpleCommand<GetCancellationTypeForm> {
+        extends BaseSingleEntityCommand<CancellationType, GetCancellationTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,6 +61,8 @@ public class GetCancellationTypeCommand
     @Inject
     CancellationPolicyControl cancellationPolicyControl;
 
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
     
     /** Creates a new instance of GetCancellationTypeCommand */
     public GetCancellationTypeCommand() {
@@ -67,26 +70,33 @@ public class GetCancellationTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CancellationPolicyResultFactory.getGetCancellationTypeResult();
-        var cancellationKindName = form.getCancellationKindName();
-        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+    protected CancellationType getEntity() {
+        CancellationType cancellationType = null;
+        var cancellationKind = cancellationKindLogic.getCancellationKindByName(this, form.getCancellationKindName());
         
-        if(cancellationKind != null) {
+        if(!hasExecutionErrors()) {
             var cancellationTypeName = form.getCancellationTypeName();
-            var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
+
+            cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
             
-            if(cancellationType != null) {
-                result.setCancellationType(cancellationPolicyControl.getCancellationTypeTransfer(getUserVisit(), cancellationType));
-                
-                sendEvent(cancellationType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            } else {
+            if(cancellationType == null) {
                 addExecutionError(ExecutionErrors.UnknownCancellationTypeName.name(), cancellationTypeName);
+            } else {
+                sendEvent(cancellationType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
         }
         
+        return cancellationType;
+    }
+
+    @Override
+    protected BaseResult getResult(CancellationType cancellationType) {
+        var result = CancellationPolicyResultFactory.getGetCancellationTypeResult();
+
+        if(cancellationType != null) {
+            result.setCancellationType(cancellationPolicyControl.getCancellationTypeTransfer(getUserVisit(), cancellationType));
+        }
+
         return result;
     }
     
