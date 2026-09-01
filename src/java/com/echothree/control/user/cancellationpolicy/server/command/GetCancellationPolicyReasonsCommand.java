@@ -98,7 +98,7 @@ public class GetCancellationPolicyReasonsCommand
                     cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
 
                     if(cancellationReason == null) {
-                        addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
+                        addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationKindName, cancellationReasonName);
                     }
                 }
             } else {
