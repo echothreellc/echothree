@@ -79,7 +79,7 @@ public class GetCancellationReasonDescriptionsCommand
                 result.setCancellationReason(cancellationPolicyControl.getCancellationReasonTransfer(getUserVisit(), cancellationReason));
                 result.setCancellationReasonDescriptions(cancellationPolicyControl.getCancellationReasonDescriptionTransfersByCancellationReason(getUserVisit(), cancellationReason));
             } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
+                addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationKindName, cancellationReasonName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
