@@ -24,11 +24,12 @@ import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.invoice.server.entity.InvoiceTimeType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetInvoiceTimeTypeCommand
-        extends BaseSimpleCommand<GetInvoiceTimeTypeForm> {
+        extends BaseSingleEntityCommand<InvoiceTimeType, GetInvoiceTimeTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -70,22 +71,30 @@ public class GetInvoiceTimeTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = InvoiceResultFactory.getGetInvoiceTimeTypeResult();
-        var invoiceTypeName = form.getInvoiceTypeName();
-        var invoiceType = invoiceLogic.getInvoiceTypeByName(this, invoiceTypeName);
+    protected InvoiceTimeType getEntity() {
+        InvoiceTimeType invoiceTimeType = null;
+        var invoiceType = invoiceLogic.getInvoiceTypeByName(this, form.getInvoiceTypeName());
 
         if(!hasExecutionErrors()) {
             var invoiceTimeTypeName = form.getInvoiceTimeTypeName();
-            var invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+            invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
-            if(invoiceTimeType != null) {
-                result.setInvoiceTimeType(invoiceControl.getInvoiceTimeTypeTransfer(getUserVisit(), invoiceTimeType));
-
-                sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            } else {
+            if(invoiceTimeType == null) {
                 addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), invoiceTimeTypeName);
+            } else {
+                sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
+        }
+
+        return invoiceTimeType;
+    }
+
+    @Override
+    protected BaseResult getResult(InvoiceTimeType invoiceTimeType) {
+        var result = InvoiceResultFactory.getGetInvoiceTimeTypeResult();
+
+        if(invoiceTimeType != null) {
+            result.setInvoiceTimeType(invoiceControl.getInvoiceTimeTypeTransfer(getUserVisit(), invoiceTimeType));
         }
 
         return result;
