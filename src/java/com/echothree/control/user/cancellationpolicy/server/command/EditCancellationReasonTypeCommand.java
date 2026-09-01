@@ -18,20 +18,20 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.edit.CancellationPolicyEditFactory;
 import com.echothree.control.user.cancellationpolicy.common.edit.CancellationReasonTypeEdit;
-import com.echothree.control.user.cancellationpolicy.common.form.EditCancellationReasonTypeForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
+import com.echothree.control.user.cancellationpolicy.common.result.EditCancellationReasonTypeResult;
 import com.echothree.control.user.cancellationpolicy.common.spec.CancellationReasonTypeSpec;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -41,7 +41,8 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditCancellationReasonTypeCommand
-        extends BaseEditCommand<CancellationReasonTypeSpec, CancellationReasonTypeEdit> {
+        extends BaseAbstractEditCommand<CancellationReasonTypeSpec, CancellationReasonTypeEdit, EditCancellationReasonTypeResult,
+                CancellationReasonType, CancellationReason> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -70,6 +71,8 @@ public class EditCancellationReasonTypeCommand
     @Inject
     CancellationPolicyControl cancellationPolicyControl;
 
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
     
     /** Creates a new instance of EditCancellationReasonTypeCommand */
     public EditCancellationReasonTypeCommand() {
@@ -77,12 +80,22 @@ public class EditCancellationReasonTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CancellationPolicyResultFactory.getEditCancellationReasonTypeResult();
+    public EditCancellationReasonTypeResult getResult() {
+        return CancellationPolicyResultFactory.getEditCancellationReasonTypeResult();
+    }
+
+    @Override
+    public CancellationReasonTypeEdit getEdit() {
+        return CancellationPolicyEditFactory.getCancellationReasonTypeEdit();
+    }
+
+    @Override
+    public CancellationReasonType getEntity(EditCancellationReasonTypeResult result) {
+        CancellationReasonType cancellationReasonType = null;
         var cancellationKindName = spec.getCancellationKindName();
-        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        var cancellationKind = cancellationKindLogic.getCancellationKindByName(this, cancellationKindName);
         
-        if(cancellationKind != null) {
+        if(!hasExecutionErrors()) {
             var cancellationReasonName = spec.getCancellationReasonName();
             var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
             
@@ -91,58 +104,48 @@ public class EditCancellationReasonTypeCommand
                 var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
                 
                 if(cancellationType != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        var cancellationReasonType = cancellationPolicyControl.getCancellationReasonType(cancellationReason, cancellationType);
-                        
-                        if(cancellationReasonType != null) {
-                            result.setCancellationReasonType(cancellationPolicyControl.getCancellationReasonTypeTransfer(getUserVisit(), cancellationReasonType));
-                            
-                            if(lockEntity(cancellationReason)) {
-                                var edit = CancellationPolicyEditFactory.getCancellationReasonTypeEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setIsDefault(cancellationReasonType.getIsDefault().toString());
-                                edit.setSortOrder(cancellationReasonType.getSortOrder().toString());
-                                
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(cancellationReasonType));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownCancellationReasonType.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var cancellationReasonTypeValue = cancellationPolicyControl.getCancellationReasonTypeValueForUpdate(cancellationReason, cancellationType);
-                        
-                        if(cancellationReasonTypeValue != null) {
-                            if(lockEntityForUpdate(cancellationReason)) {
-                                try {
-                                    cancellationReasonTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                    cancellationReasonTypeValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                    
-                                    cancellationPolicyControl.updateCancellationReasonTypeFromValue(cancellationReasonTypeValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(cancellationReason);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownCancellationReasonType.name());
-                        }
+                    cancellationReasonType = cancellationPolicyControl.getCancellationReasonType(cancellationReason, cancellationType,
+                            editModeToEntityPermission(editMode));
+
+                    if(cancellationReasonType == null) {
+                        addExecutionError(ExecutionErrors.UnknownCancellationReasonType.name(), cancellationKindName, cancellationReasonName,
+                                cancellationTypeName);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownCancellationTypeName.name(), cancellationTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
+                addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationKindName, cancellationReasonName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
         }
-        
-        return result;
+
+        return cancellationReasonType;
+    }
+
+    @Override
+    public CancellationReason getLockEntity(CancellationReasonType cancellationReasonType) {
+        return cancellationReasonType.getCancellationReason();
+    }
+
+    @Override
+    public void fillInResult(EditCancellationReasonTypeResult result, CancellationReasonType cancellationReasonType) {
+        result.setCancellationReasonType(cancellationPolicyControl.getCancellationReasonTypeTransfer(getUserVisit(), cancellationReasonType));
+    }
+
+    @Override
+    public void doLock(CancellationReasonTypeEdit edit, CancellationReasonType cancellationReasonType) {
+        edit.setIsDefault(cancellationReasonType.getIsDefault().toString());
+        edit.setSortOrder(cancellationReasonType.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(CancellationReasonType cancellationReasonType) {
+        var cancellationReasonTypeValue = cancellationReasonType.getCancellationReasonTypeValue().clone();
+
+        cancellationReasonTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        cancellationReasonTypeValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        cancellationPolicyControl.updateCancellationReasonTypeFromValue(cancellationReasonTypeValue, getPartyPK());
     }
     
 }
