@@ -16,9 +16,12 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+import com.echothree.control.user.core.server.command.GetEventsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentsCommand;
+import com.echothree.model.control.core.server.graphql.EventObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryDispositionAdjustmentObject;
+import com.echothree.model.data.core.common.EventConstants;
 import com.echothree.model.data.inventory.common.InventoryDispositionAdjustmentConstants;
 import com.echothree.model.data.inventory.server.entity.InventoryDispositionAdjustment;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonCommand;
@@ -4919,6 +4922,43 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, eventTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("events")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EventObject> events(final DataFetchingEnvironment env,
+            @GraphQLName("id") final String id,
+            @GraphQLName("createdById") final String createdById) {
+        CountingPaginatedData<EventObject> data;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEventsForm();
+            var command = CDI.current().select(GetEventsCommand.class).get();
+
+            commandForm.setUuid(id);
+            commandForm.setCreatedByUuid(createdById);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EventConstants.COMPONENT_VENDOR_NAME, EventConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var events = entities.stream()
+                            .map(EventObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, events);
                 }
             }
         } catch (NamingException ex) {

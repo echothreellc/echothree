@@ -54,7 +54,7 @@ public class EventObject
     @GraphQLField
     @GraphQLDescription("event time sequence")
     @GraphQLNonNull
-    public int getSortOrder() {
+    public int getEventTimeSequence() {
         return event.getEventTimeSequence();
     }
 
