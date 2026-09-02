@@ -1783,8 +1783,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index3">
+                            <indexColumn name="CompanyPartyId" />
                             <indexColumn name="ItemId" />
                             <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
                             <indexColumn name="CompanyPartyId" />
@@ -1837,7 +1839,7 @@
                         <column name="InventoryLayerSequence" type="Integer" nullAllowed="false" />
                         <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId" />
                         <column name="ReceiptQuantity" type="Measurement" nullAllowed="false" />
-                        <column name="UnitAmount" type="Currency" nullAllowed="true" />
+                        <column name="UnitCost" type="Currency" nullAllowed="true" />
                         <column name="Description" type="Description" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
@@ -1860,19 +1862,23 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="InventoryLayerStatuses" nameSingular="InventoryLayerStatus" columnPrefix="invlst">
+                <table namePlural="InventoryLayerBuckets" nameSingular="InventoryLayerBucket" columnPrefix="invlbcktd">
                     <columns>
-                        <column name="InventoryLayerStatusId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLayerBucketId" type="EID" nullAllowed="false" />
                         <column name="InventoryLayerId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLayers" destinationColumn="InventoryLayerId"/>
-                        <column name="QuantityOnHand" type="Measurement" nullAllowed="false" />
-                        <column name="QuantityAllocated" type="Measurement" nullAllowed="false" />
+                        <column name="InventoryBucketTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryBucketTypes" destinationColumn="InventoryBucketTypeId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="InventoryLayerStatusId" />
+                            <indexColumn name="InventoryLayerBucketId" />
                         </index>
-                        <index type="Unique">
+                        <index type="Unique" name="Index1">
                             <indexColumn name="InventoryLayerId" />
+                            <indexColumn name="InventoryBucketTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="InventoryBucketTypeId" />
                         </index>
                     </indexes>
                 </table>
