@@ -18,19 +18,21 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetEmploymentForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.data.employee.server.entity.Employment;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetEmploymentCommand
-        extends BaseSimpleCommand<GetEmploymentForm> {
+        extends BaseSingleEntityCommand<Employment, GetEmploymentForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -43,22 +45,31 @@ public class GetEmploymentCommand
     @Inject
     EmployeeControl employeeControl;
 
-
     /** Creates a new instance of GetEmploymentCommand */
     public GetEmploymentCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getGetEmploymentResult();
+    protected Employment getEntity() {
         var employmentName = form.getEmploymentName();
         var employment = employeeControl.getEmploymentByName(employmentName);
 
         if(employment != null) {
-            result.setEmployment(employeeControl.getEmploymentTransfer(getUserVisit(), employment));
+            sendEvent(employment.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEmployment.name(), employmentName);
+        }
+
+        return employment;
+    }
+
+    @Override
+    protected BaseResult getResult(Employment employment) {
+        var result = EmployeeResultFactory.getGetEmploymentResult();
+
+        if(employment != null) {
+            result.setEmployment(employeeControl.getEmploymentTransfer(getUserVisit(), employment));
         }
 
         return result;
