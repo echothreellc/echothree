@@ -20,19 +20,19 @@ import com.echothree.control.user.workrequirement.common.form.GetWorkRequirement
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetWorkRequirementCommand
-        extends BaseSimpleCommand<GetWorkRequirementForm> {
+        extends BaseSingleEntityCommand<WorkRequirement, GetWorkRequirementForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -44,7 +44,6 @@ public class GetWorkRequirementCommand
 
     @Inject
     WorkRequirementControl workRequirementControl;
-
     
     /** Creates a new instance of GetWorkRequirementCommand */
     public GetWorkRequirementCommand() {
@@ -52,19 +51,27 @@ public class GetWorkRequirementCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = WorkRequirementResultFactory.getGetWorkRequirementResult();
+    protected WorkRequirement getEntity() {
         var workRequirementName = form.getWorkRequirementName();
         var workRequirement = workRequirementControl.getWorkRequirementByName(workRequirementName);
-        
+
         if(workRequirement != null) {
-            result.setWorkRequirement(workRequirementControl.getWorkRequirementTransfer(getUserVisit(), workRequirement));
-            
             sendEvent(workRequirement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkRequirementName.name(), workRequirementName);
         }
-        
+
+        return workRequirement;
+    }
+
+    @Override
+    protected BaseResult getResult(WorkRequirement workRequirement) {
+        var result = WorkRequirementResultFactory.getGetWorkRequirementResult();
+
+        if(workRequirement != null) {
+            result.setWorkRequirement(workRequirementControl.getWorkRequirementTransfer(getUserVisit(), workRequirement));
+        }
+
         return result;
     }
     
