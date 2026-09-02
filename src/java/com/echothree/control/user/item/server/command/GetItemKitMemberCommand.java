@@ -20,17 +20,18 @@ import com.echothree.control.user.item.common.form.GetItemKitMemberForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemKitMemberLogic;
+import com.echothree.model.data.item.server.entity.ItemKitMember;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetItemKitMemberCommand
-        extends BaseSimpleCommand<GetItemKitMemberForm> {
+        extends BaseSingleEntityCommand<ItemKitMember, GetItemKitMemberForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -51,27 +52,30 @@ public class GetItemKitMemberCommand
     @Inject
     ItemKitMemberLogic itemKitMemberLogic;
 
-
     /** Creates a new instance of GetItemKitMemberCommand */
     public GetItemKitMemberCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
-    
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemKitMemberResult();
+    protected ItemKitMember getEntity() {
         var itemName = form.getItemName();
         var inventoryConditionName = form.getInventoryConditionName();
         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
         var memberItemName = form.getMemberItemName();
         var memberInventoryConditionName = form.getMemberInventoryConditionName();
         var memberUnitOfMeasureTypeName = form.getMemberUnitOfMeasureTypeName();
-        var itemKitMember = itemKitMemberLogic.getItemKitMember(this, itemName, inventoryConditionName,
+
+        return itemKitMemberLogic.getItemKitMember(this, itemName, inventoryConditionName,
                 unitOfMeasureTypeName, memberItemName, memberInventoryConditionName,
                 memberUnitOfMeasureTypeName);
+    }
 
-        if(!hasExecutionErrors()) {
+    @Override
+    protected BaseResult getResult(ItemKitMember itemKitMember) {
+        var result = ItemResultFactory.getGetItemKitMemberResult();
+
+        if(itemKitMember != null) {
             result.setItemKitMember(itemControl.getItemKitMemberTransfer(getUserVisit(), itemKitMember));
         }
 
