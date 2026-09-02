@@ -21,18 +21,19 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.data.item.server.entity.ItemShippingTime;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetItemShippingTimeCommand
-        extends BaseSimpleCommand<GetItemShippingTimeForm> {
+        extends BaseSingleEntityCommand<ItemShippingTime, GetItemShippingTimeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -58,26 +59,35 @@ public class GetItemShippingTimeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemShippingTimeResult();
+    protected ItemShippingTime getEntity() {
+        ItemShippingTime itemShippingTime = null;
         var itemName = form.getItemName();
         var item = itemLogic.getItemByName(this, itemName);
-        
+
         if(!hasExecutionErrors()) {
             var customerTypeName = form.getCustomerTypeName();
             var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
 
             if(!hasExecutionErrors()) {
-                var itemShippingTime = itemControl.getItemShippingTime(item, customerType);
+                itemShippingTime = itemControl.getItemShippingTime(item, customerType);
 
-                if(itemShippingTime != null) {
-                    result.setItemShippingTime(itemControl.getItemShippingTimeTransfer(getUserVisit(), itemShippingTime));
-                } else {
+                if(itemShippingTime == null) {
                     addExecutionError(ExecutionErrors.UnknownItemShippingTime.name(), itemName, customerTypeName);
                 }
             }
         }
-        
+
+        return itemShippingTime;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemShippingTime itemShippingTime) {
+        var result = ItemResultFactory.getGetItemShippingTimeResult();
+
+        if(itemShippingTime != null) {
+            result.setItemShippingTime(itemControl.getItemShippingTimeTransfer(getUserVisit(), itemShippingTime));
+        }
+
         return result;
     }
     
