@@ -23,11 +23,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.data.shipment.server.entity.ShipmentType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetShipmentTypeCommand
-        extends BaseSimpleCommand<GetShipmentTypeForm> {
+        extends BaseSingleEntityCommand<ShipmentType, GetShipmentTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,26 +59,33 @@ public class GetShipmentTypeCommand
     @Inject
     ShipmentControl shipmentControl;
 
-    
     /** Creates a new instance of GetShipmentTypeCommand */
     public GetShipmentTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ShipmentResultFactory.getGetShipmentTypeResult();
+    protected ShipmentType getEntity() {
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
-        
+
         if(shipmentType != null) {
-            result.setShipmentType(shipmentControl.getShipmentTypeTransfer(getUserVisit(), shipmentType));
-            
             sendEvent(shipmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
         }
-        
+
+        return shipmentType;
+    }
+
+    @Override
+    protected BaseResult getResult(ShipmentType shipmentType) {
+        var result = ShipmentResultFactory.getGetShipmentTypeResult();
+
+        if(shipmentType != null) {
+            result.setShipmentType(shipmentControl.getShipmentTypeTransfer(getUserVisit(), shipmentType));
+        }
+
         return result;
     }
     
