@@ -24,10 +24,11 @@ import com.echothree.model.control.item.server.logic.HarmonizedTariffScheduleCod
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetHarmonizedTariffScheduleCodeUseTypeCommand
-        extends BaseSimpleCommand<GetHarmonizedTariffScheduleCodeUseTypeForm> {
+        extends BaseSingleEntityCommand<HarmonizedTariffScheduleCodeUseType, GetHarmonizedTariffScheduleCodeUseTypeForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -67,15 +68,23 @@ public class GetHarmonizedTariffScheduleCodeUseTypeCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUseTypeResult();
+    protected HarmonizedTariffScheduleCodeUseType getEntity() {
         var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
         var harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeLogic.getHarmonizedTariffScheduleCodeUseTypeByName(this, harmonizedTariffScheduleCodeUseTypeName);
 
         if(!hasExecutionErrors()) {
-            result.setHarmonizedTariffScheduleCodeUseType(itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(getUserVisit(), harmonizedTariffScheduleCodeUseType));
-
             sendEvent(harmonizedTariffScheduleCodeUseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return harmonizedTariffScheduleCodeUseType;
+    }
+
+    @Override
+    protected BaseResult getResult(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUseTypeResult();
+
+        if(harmonizedTariffScheduleCodeUseType != null) {
+            result.setHarmonizedTariffScheduleCodeUseType(itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(getUserVisit(), harmonizedTariffScheduleCodeUseType));
         }
 
         return result;
