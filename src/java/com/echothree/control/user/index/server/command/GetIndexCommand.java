@@ -27,12 +27,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.index.server.entity.Index;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,7 +41,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetIndexCommand
-        extends BaseSimpleCommand<GetIndexForm> {
+        extends BaseSingleEntityCommand<Index, GetIndexForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -68,25 +67,22 @@ public class GetIndexCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
-    
     /** Creates a new instance of GetIndexCommand */
     public GetIndexCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = IndexResultFactory.getGetIndexResult();
+    protected Index getEntity() {
+        Index index = null;
         var indexName = form.getIndexName();
         var parameterCount = (indexName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            Index index = null;
-
             if(indexName == null) {
                 var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Index.name());
-                
+
                 if(!hasExecutionErrors()) {
                     index = indexControl.getIndexByEntityInstance(entityInstance);
                 }
@@ -99,13 +95,23 @@ public class GetIndexCommand
             }
 
             if(!hasExecutionErrors()) {
-                result.setIndex(indexControl.getIndexTransfer(getUserVisit(), index));
                 sendEvent(index.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return index;
+    }
+
+    @Override
+    protected BaseResult getResult(Index index) {
+        var result = IndexResultFactory.getGetIndexResult();
+
+        if(index != null) {
+            result.setIndex(indexControl.getIndexTransfer(getUserVisit(), index));
+        }
+
         return result;
     }
     
