@@ -20,19 +20,19 @@ import com.echothree.control.user.communication.common.form.GetCommunicationEven
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.communication.server.entity.CommunicationEvent;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCommunicationEventCommand
-        extends BaseSimpleCommand<GetCommunicationEventForm> {
+        extends BaseSingleEntityCommand<CommunicationEvent, GetCommunicationEventForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -51,19 +51,27 @@ public class GetCommunicationEventCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CommunicationResultFactory.getGetCommunicationEventResult();
+    protected CommunicationEvent getEntity() {
         var communicationEventName = form.getCommunicationEventName();
         var communicationEvent = communicationControl.getCommunicationEventByName(communicationEventName);
-        
+
         if(communicationEvent != null) {
-            result.setCommunicationEvent(communicationControl.getCommunicationEventTransfer(getUserVisit(), communicationEvent));
-            
             sendEvent(communicationEvent.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommunicationEventName.name(), communicationEventName);
         }
-        
+
+        return communicationEvent;
+    }
+
+    @Override
+    protected BaseResult getResult(CommunicationEvent communicationEvent) {
+        var result = CommunicationResultFactory.getGetCommunicationEventResult();
+
+        if(communicationEvent != null) {
+            result.setCommunicationEvent(communicationControl.getCommunicationEventTransfer(getUserVisit(), communicationEvent));
+        }
+
         return result;
     }
     
