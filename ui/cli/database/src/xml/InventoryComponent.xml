@@ -1852,12 +1852,12 @@
                             <indexColumn name="InventoryLayerId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Unique" name="Index3">
+                        <index type="Unique" name="Index2">
                             <indexColumn name="InventoryLayerId" />
                             <indexColumn name="InventoryLayerSequence" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index4">
+                        <index type="Multiple">
                             <indexColumn name="InventoryTransactionLineId" />
                         </index>
                     </indexes>
