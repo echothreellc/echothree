@@ -20,19 +20,19 @@ import com.echothree.control.user.communication.common.form.GetCommunicationSour
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.communication.server.entity.CommunicationSource;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCommunicationSourceCommand
-        extends BaseSimpleCommand<GetCommunicationSourceForm> {
+        extends BaseSingleEntityCommand<CommunicationSource, GetCommunicationSourceForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -51,19 +51,27 @@ public class GetCommunicationSourceCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CommunicationResultFactory.getGetCommunicationSourceResult();
+    protected CommunicationSource getEntity() {
         var communicationSourceName = form.getCommunicationSourceName();
         var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
-        
+
         if(communicationSource != null) {
-            result.setCommunicationSource(communicationControl.getCommunicationSourceTransfer(getUserVisit(), communicationSource));
-            
             sendEvent(communicationSource.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommunicationSourceName.name(), communicationSourceName);
         }
-        
+
+        return communicationSource;
+    }
+
+    @Override
+    protected BaseResult getResult(CommunicationSource communicationSource) {
+        var result = CommunicationResultFactory.getGetCommunicationSourceResult();
+
+        if(communicationSource != null) {
+            result.setCommunicationSource(communicationControl.getCommunicationSourceTransfer(getUserVisit(), communicationSource));
+        }
+
         return result;
     }
     
