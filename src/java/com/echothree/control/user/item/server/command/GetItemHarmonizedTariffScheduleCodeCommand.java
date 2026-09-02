@@ -26,11 +26,12 @@ import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCode;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +41,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetItemHarmonizedTariffScheduleCodeCommand
-        extends BaseSimpleCommand<GetItemHarmonizedTariffScheduleCodeForm> {
+        extends BaseSingleEntityCommand<ItemHarmonizedTariffScheduleCode, GetItemHarmonizedTariffScheduleCodeForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -81,8 +82,8 @@ public class GetItemHarmonizedTariffScheduleCodeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemHarmonizedTariffScheduleCodeResult();
+    protected ItemHarmonizedTariffScheduleCode getEntity() {
+        ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode = null;
         var itemName = form.getItemName();
         var item = itemLogic.getItemByName(this, itemName);
 
@@ -95,16 +96,25 @@ public class GetItemHarmonizedTariffScheduleCodeCommand
                 var harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeLogic.getHarmonizedTariffScheduleCodeUseTypeByName(this, harmonizedTariffScheduleCodeUseTypeName);
 
                 if(harmonizedTariffScheduleCodeUseType != null) {
-                    var itemHarmonizedTariffScheduleCode = itemControl.getItemHarmonizedTariffScheduleCode(item, countryGeoCode,
+                    itemHarmonizedTariffScheduleCode = itemControl.getItemHarmonizedTariffScheduleCode(item, countryGeoCode,
                             harmonizedTariffScheduleCodeUseType);
 
-                    if(itemHarmonizedTariffScheduleCode != null) {
-                        result.setItemHarmonizedTariffScheduleCode(itemControl.getItemHarmonizedTariffScheduleCodeTransfer(getUserVisit(), itemHarmonizedTariffScheduleCode));
-                    } else {
+                    if(itemHarmonizedTariffScheduleCode == null) {
                         addExecutionError(ExecutionErrors.UnknownItemHarmonizedTariffScheduleCode.name(), itemName, countryName, harmonizedTariffScheduleCodeUseTypeName);
                     }
                 }
             }
+        }
+
+        return itemHarmonizedTariffScheduleCode;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
+        var result = ItemResultFactory.getGetItemHarmonizedTariffScheduleCodeResult();
+
+        if(itemHarmonizedTariffScheduleCode != null) {
+            result.setItemHarmonizedTariffScheduleCode(itemControl.getItemHarmonizedTariffScheduleCodeTransfer(getUserVisit(), itemHarmonizedTariffScheduleCode));
         }
 
         return result;
