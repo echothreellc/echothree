@@ -21,18 +21,19 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.item.server.entity.ItemPackCheckRequirement;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetItemPackCheckRequirementCommand
-        extends BaseSimpleCommand<GetItemPackCheckRequirementForm> {
+        extends BaseSingleEntityCommand<ItemPackCheckRequirement, GetItemPackCheckRequirementForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -52,15 +53,14 @@ public class GetItemPackCheckRequirementCommand
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
-
     /** Creates a new instance of GetItemPackCheckRequirementCommand */
     public GetItemPackCheckRequirementCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemPackCheckRequirementResult();
+    protected ItemPackCheckRequirement getEntity() {
+        ItemPackCheckRequirement itemPackCheckRequirement = null;
         var itemName = form.getItemName();
         var item = itemLogic.getItemByName(this, itemName);
 
@@ -69,16 +69,25 @@ public class GetItemPackCheckRequirementCommand
             var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
             if(!hasExecutionErrors()) {
-                var itemPackCheckRequirement = itemControl.getItemPackCheckRequirement(item, unitOfMeasureType);
+                itemPackCheckRequirement = itemControl.getItemPackCheckRequirement(item, unitOfMeasureType);
 
-                if(itemPackCheckRequirement != null) {
-                    result.setItemPackCheckRequirement(itemControl.getItemPackCheckRequirementTransfer(getUserVisit(), itemPackCheckRequirement));
-                } else {
+                if(itemPackCheckRequirement == null) {
                     addExecutionError(ExecutionErrors.UnknownItemPackCheckRequirement.name(), itemName, unitOfMeasureTypeName);
                 }
             }
         }
-        
+
+        return itemPackCheckRequirement;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemPackCheckRequirement itemPackCheckRequirement) {
+        var result = ItemResultFactory.getGetItemPackCheckRequirementResult();
+
+        if(itemPackCheckRequirement != null) {
+            result.setItemPackCheckRequirement(itemControl.getItemPackCheckRequirementTransfer(getUserVisit(), itemPackCheckRequirement));
+        }
+
         return result;
     }
     
