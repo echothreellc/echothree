@@ -25,10 +25,11 @@ import com.echothree.model.control.index.server.logic.IndexTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.index.server.entity.IndexField;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetIndexFieldCommand
-        extends BaseSimpleCommand<GetIndexFieldForm> {
+        extends BaseSingleEntityCommand<IndexField, GetIndexFieldForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -66,29 +67,37 @@ public class GetIndexFieldCommand
     @Inject
     IndexTypeLogic indexTypeLogic;
 
-
     /** Creates a new instance of GetIndexFieldCommand */
     public GetIndexFieldCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = IndexResultFactory.getGetIndexFieldResult();
+    protected IndexField getEntity() {
+        IndexField indexField = null;
         var indexTypeName = form.getIndexTypeName();
         var indexType = indexTypeLogic.getIndexTypeByName(this, indexTypeName);
-        
+
         if(!hasExecutionErrors()) {
             var indexFieldName = form.getIndexFieldName();
-            var indexField = indexFieldLogic.getIndexFieldByName(this, indexType, indexFieldName);
-            
+            indexField = indexFieldLogic.getIndexFieldByName(this, indexType, indexFieldName);
+
             if(!hasExecutionErrors()) {
-                result.setIndexField(indexControl.getIndexFieldTransfer(getUserVisit(), indexField));
-                
                 sendEvent(indexField.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         }
-        
+
+        return indexField;
+    }
+
+    @Override
+    protected BaseResult getResult(IndexField indexField) {
+        var result = IndexResultFactory.getGetIndexFieldResult();
+
+        if(indexField != null) {
+            result.setIndexField(indexControl.getIndexFieldTransfer(getUserVisit(), indexField));
+        }
+
         return result;
     }
     
