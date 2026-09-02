@@ -20,18 +20,19 @@ import com.echothree.control.user.communication.common.form.GetCommunicationEven
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCommunicationEventPurposeCommand
-        extends BaseSimpleCommand<GetCommunicationEventPurposeForm> {
+        extends BaseSingleEntityCommand<CommunicationEventPurpose, GetCommunicationEventPurposeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -43,7 +44,6 @@ public class GetCommunicationEventPurposeCommand
 
     @Inject
     CommunicationControl communicationControl;
-    
 
     /** Creates a new instance of GetCommunicationEventPurposeCommand */
     public GetCommunicationEventPurposeCommand() {
@@ -51,19 +51,27 @@ public class GetCommunicationEventPurposeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CommunicationResultFactory.getGetCommunicationEventPurposeResult();
+    protected CommunicationEventPurpose getEntity() {
         var communicationEventPurposeName = form.getCommunicationEventPurposeName();
         var communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
-        
+
         if(communicationEventPurpose != null) {
-            result.setCommunicationEventPurpose(communicationControl.getCommunicationEventPurposeTransfer(getUserVisit(), communicationEventPurpose));
-            
             sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommunicationEventPurposeName.name(), communicationEventPurposeName);
         }
-        
+
+        return communicationEventPurpose;
+    }
+
+    @Override
+    protected BaseResult getResult(CommunicationEventPurpose communicationEventPurpose) {
+        var result = CommunicationResultFactory.getGetCommunicationEventPurposeResult();
+
+        if(communicationEventPurpose != null) {
+            result.setCommunicationEventPurpose(communicationControl.getCommunicationEventPurposeTransfer(getUserVisit(), communicationEventPurpose));
+        }
+
         return result;
     }
     
