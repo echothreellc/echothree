@@ -27,12 +27,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.index.server.entity.IndexType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,7 +41,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetIndexTypeCommand
-        extends BaseSimpleCommand<GetIndexTypeForm> {
+        extends BaseSingleEntityCommand<IndexType, GetIndexTypeForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -68,25 +67,22 @@ public class GetIndexTypeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
-    
     /** Creates a new instance of GetIndexTypeCommand */
     public GetIndexTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = IndexResultFactory.getGetIndexTypeResult();
+    protected IndexType getEntity() {
+        IndexType indexType = null;
         var indexTypeName = form.getIndexTypeName();
         var parameterCount = (indexTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            IndexType indexType = null;
-
             if(indexTypeName == null) {
                 var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.IndexType.name());
-                
+
                 if(!hasExecutionErrors()) {
                     indexType = indexControl.getIndexTypeByEntityInstance(entityInstance);
                 }
@@ -99,13 +95,23 @@ public class GetIndexTypeCommand
             }
 
             if(!hasExecutionErrors()) {
-                result.setIndexType(indexControl.getIndexTypeTransfer(getUserVisit(), indexType));
                 sendEvent(indexType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return indexType;
+    }
+
+    @Override
+    protected BaseResult getResult(IndexType indexType) {
+        var result = IndexResultFactory.getGetIndexTypeResult();
+
+        if(indexType != null) {
+            result.setIndexType(indexControl.getIndexTypeTransfer(getUserVisit(), indexType));
+        }
+
         return result;
     }
     
