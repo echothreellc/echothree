@@ -23,12 +23,12 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.employee.server.entity.EmployeeType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetEmployeeTypeCommand
-        extends BaseSimpleCommand<GetEmployeeTypeForm> {
+        extends BaseSingleEntityCommand<EmployeeType, GetEmployeeTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,26 +59,33 @@ public class GetEmployeeTypeCommand
     @Inject
     EmployeeControl employeeControl;
 
-    
     /** Creates a new instance of GetEmployeeTypeCommand */
     public GetEmployeeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getGetEmployeeTypeResult();
+    protected EmployeeType getEntity() {
         var employeeTypeName = form.getEmployeeTypeName();
         var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
-        
+
         if(employeeType != null) {
-            result.setEmployeeType(employeeControl.getEmployeeTypeTransfer(getUserVisit(), employeeType));
-            
             sendEvent(employeeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEmployeeTypeName.name(), employeeTypeName);
         }
-        
+
+        return employeeType;
+    }
+
+    @Override
+    protected BaseResult getResult(EmployeeType employeeType) {
+        var result = EmployeeResultFactory.getGetEmployeeTypeResult();
+
+        if(employeeType != null) {
+            result.setEmployeeType(employeeControl.getEmployeeTypeTransfer(getUserVisit(), employeeType));
+        }
+
         return result;
     }
     
