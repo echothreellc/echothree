@@ -20,19 +20,19 @@ import com.echothree.control.user.employee.common.form.GetResponsibilityTypeForm
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.employee.server.entity.ResponsibilityType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetResponsibilityTypeCommand
-        extends BaseSimpleCommand<GetResponsibilityTypeForm> {
+        extends BaseSingleEntityCommand<ResponsibilityType, GetResponsibilityTypeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -45,26 +45,33 @@ public class GetResponsibilityTypeCommand
     @Inject
     EmployeeControl employeeControl;
 
-    
     /** Creates a new instance of GetResponsibilityTypeCommand */
     public GetResponsibilityTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getGetResponsibilityTypeResult();
+    protected ResponsibilityType getEntity() {
         var responsibilityTypeName = form.getResponsibilityTypeName();
         var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
-        
+
         if(responsibilityType != null) {
-            result.setResponsibilityType(employeeControl.getResponsibilityTypeTransfer(getUserVisit(), responsibilityType));
-            
             sendEvent(responsibilityType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownResponsibilityTypeName.name(), responsibilityTypeName);
         }
-        
+
+        return responsibilityType;
+    }
+
+    @Override
+    protected BaseResult getResult(ResponsibilityType responsibilityType) {
+        var result = EmployeeResultFactory.getGetResponsibilityTypeResult();
+
+        if(responsibilityType != null) {
+            result.setResponsibilityType(employeeControl.getResponsibilityTypeTransfer(getUserVisit(), responsibilityType));
+        }
+
         return result;
     }
     
