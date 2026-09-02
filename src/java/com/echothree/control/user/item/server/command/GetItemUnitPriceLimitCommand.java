@@ -23,18 +23,19 @@ import com.echothree.model.control.inventory.server.logic.InventoryConditionLogi
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.item.server.entity.ItemUnitPriceLimit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetItemUnitPriceLimitCommand
-        extends BaseSimpleCommand<GetItemUnitPriceLimitForm> {
+        extends BaseSingleEntityCommand<ItemUnitPriceLimit, GetItemUnitPriceLimitForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -68,8 +69,8 @@ public class GetItemUnitPriceLimitCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemUnitPriceLimitResult();
+    protected ItemUnitPriceLimit getEntity() {
+        ItemUnitPriceLimit itemUnitPriceLimit = null;
         var itemName = form.getItemName();
         var item = itemLogic.getItemByName(this, itemName);
 
@@ -87,17 +88,26 @@ public class GetItemUnitPriceLimitCommand
                     var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
 
                     if(!hasExecutionErrors()) {
-                        var itemUnitPriceLimit = itemControl.getItemUnitPriceLimit(item, inventoryCondition, unitOfMeasureType, currency);
+                        itemUnitPriceLimit = itemControl.getItemUnitPriceLimit(item, inventoryCondition, unitOfMeasureType, currency);
 
-                        if(itemUnitPriceLimit != null) {
-                            result.setItemUnitPriceLimit(itemControl.getItemUnitPriceLimitTransfer(getUserVisit(), itemUnitPriceLimit));
-                        } else {
+                        if(itemUnitPriceLimit == null) {
                             addExecutionError(ExecutionErrors.UnknownItemUnitPriceLimit.name(), itemName, inventoryConditionName, unitOfMeasureTypeName,
                                     currencyIsoName);
                         }
                     }
                 }
             }
+        }
+
+        return itemUnitPriceLimit;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemUnitPriceLimit itemUnitPriceLimit) {
+        var result = ItemResultFactory.getGetItemUnitPriceLimitResult();
+
+        if(itemUnitPriceLimit != null) {
+            result.setItemUnitPriceLimit(itemControl.getItemUnitPriceLimitTransfer(getUserVisit(), itemUnitPriceLimit));
         }
 
         return result;
