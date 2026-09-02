@@ -22,18 +22,19 @@ import com.echothree.model.control.inventory.server.logic.InventoryConditionLogi
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.item.server.entity.ItemUnitLimit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetItemUnitLimitCommand
-        extends BaseSimpleCommand<GetItemUnitLimitForm> {
+        extends BaseSingleEntityCommand<ItemUnitLimit, GetItemUnitLimitForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -57,40 +58,47 @@ public class GetItemUnitLimitCommand
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
-
-    
     /** Creates a new instance of GetItemUnitLimitCommand */
     public GetItemUnitLimitCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemUnitLimitResult();
+    protected ItemUnitLimit getEntity() {
+        ItemUnitLimit itemUnitLimit = null;
         var itemName = form.getItemName();
         var item = itemLogic.getItemByName(this, itemName);
-        
+
         if(!hasExecutionErrors()) {
             var inventoryConditionName = form.getInventoryConditionName();
             var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
-            
+
             if(!hasExecutionErrors()) {
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                 var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
                 var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKind, unitOfMeasureTypeName);
-                
+
                 if(!hasExecutionErrors()) {
-                    var itemUnitLimit = itemControl.getItemUnitLimit(item, inventoryCondition, unitOfMeasureType);
-                    
-                    if(itemUnitLimit != null) {
-                        result.setItemUnitLimit(itemControl.getItemUnitLimitTransfer(getUserVisit(), itemUnitLimit));
-                    } else {
+                    itemUnitLimit = itemControl.getItemUnitLimit(item, inventoryCondition, unitOfMeasureType);
+
+                    if(itemUnitLimit == null) {
                         addExecutionError(ExecutionErrors.UnknownItemUnitLimit.name(), itemName, inventoryConditionName, unitOfMeasureTypeName);
                     }
                 }
             }
         }
-        
+
+        return itemUnitLimit;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemUnitLimit itemUnitLimit) {
+        var result = ItemResultFactory.getGetItemUnitLimitResult();
+
+        if(itemUnitLimit != null) {
+            result.setItemUnitLimit(itemControl.getItemUnitLimitTransfer(getUserVisit(), itemUnitLimit));
+        }
+
         return result;
     }
     
