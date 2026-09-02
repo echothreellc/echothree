@@ -18,15 +18,17 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetLeaveForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetLeaveCommand
-        extends BaseSimpleCommand<GetLeaveForm> {
+        extends BaseSingleEntityCommand<Leave, GetLeaveForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,15 +65,25 @@ public class GetLeaveCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getGetLeaveResult();
+    protected Leave getEntity() {
         var leaveName = form.getLeaveName();
         var leave = employeeControl.getLeaveByName(leaveName);
 
         if(leave != null) {
-            result.setLeave(employeeControl.getLeaveTransfer(getUserVisit(), leave));
+            sendEvent(leave.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLeave.name(), leaveName);
+        }
+
+        return leave;
+    }
+
+    @Override
+    protected BaseResult getResult(Leave leave) {
+        var result = EmployeeResultFactory.getGetLeaveResult();
+
+        if(leave != null) {
+            result.setLeave(employeeControl.getLeaveTransfer(getUserVisit(), leave));
         }
 
         return result;
