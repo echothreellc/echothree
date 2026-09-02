@@ -20,19 +20,19 @@ import com.echothree.control.user.employee.common.form.GetSkillTypeForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.employee.server.entity.SkillType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetSkillTypeCommand
-        extends BaseSimpleCommand<GetSkillTypeForm> {
+        extends BaseSingleEntityCommand<SkillType, GetSkillTypeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -45,26 +45,33 @@ public class GetSkillTypeCommand
     @Inject
     EmployeeControl employeeControl;
 
-    
     /** Creates a new instance of GetSkillTypeCommand */
     public GetSkillTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getGetSkillTypeResult();
+    protected SkillType getEntity() {
         var skillTypeName = form.getSkillTypeName();
         var skillType = employeeControl.getSkillTypeByName(skillTypeName);
-        
+
         if(skillType != null) {
-            result.setSkillType(employeeControl.getSkillTypeTransfer(getUserVisit(), skillType));
-            
             sendEvent(skillType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSkillTypeName.name(), skillTypeName);
         }
-        
+
+        return skillType;
+    }
+
+    @Override
+    protected BaseResult getResult(SkillType skillType) {
+        var result = EmployeeResultFactory.getGetSkillTypeResult();
+
+        if(skillType != null) {
+            result.setSkillType(employeeControl.getSkillTypeTransfer(getUserVisit(), skillType));
+        }
+
         return result;
     }
     
