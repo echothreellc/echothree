@@ -21,18 +21,19 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetItemCountryOfOriginCommand
-        extends BaseSimpleCommand<GetItemCountryOfOriginForm> {
+        extends BaseSingleEntityCommand<ItemCountryOfOrigin, GetItemCountryOfOriginForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -52,35 +53,43 @@ public class GetItemCountryOfOriginCommand
     @Inject
     ItemLogic itemLogic;
 
-
     /** Creates a new instance of GetItemCountryOfOriginCommand */
     public GetItemCountryOfOriginCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemCountryOfOriginResult();
+    protected ItemCountryOfOrigin getEntity() {
+        ItemCountryOfOrigin itemCountryOfOrigin = null;
         var itemName = form.getItemName();
         var item = itemLogic.getItemByName(this, itemName);
-        
+
         if(!hasExecutionErrors()) {
             var countryName = form.getCountryName();
             var countryGeoCode = geoControl.getCountryByAlias(countryName);
-            
+
             if(countryGeoCode != null) {
-                var itemCountryOfOrigin = itemControl.getItemCountryOfOrigin(item, countryGeoCode);
-                
-                if(itemCountryOfOrigin != null) {
-                    result.setItemCountryOfOrigin(itemControl.getItemCountryOfOriginTransfer(getUserVisit(), itemCountryOfOrigin));
-                } else {
+                itemCountryOfOrigin = itemControl.getItemCountryOfOrigin(item, countryGeoCode);
+
+                if(itemCountryOfOrigin == null) {
                     addExecutionError(ExecutionErrors.UnknownItemCountryOfOrigin.name(), itemName, countryName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
             }
         }
-        
+
+        return itemCountryOfOrigin;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemCountryOfOrigin itemCountryOfOrigin) {
+        var result = ItemResultFactory.getGetItemCountryOfOriginResult();
+
+        if(itemCountryOfOrigin != null) {
+            result.setItemCountryOfOrigin(itemControl.getItemCountryOfOriginTransfer(getUserVisit(), itemCountryOfOrigin));
+        }
+
         return result;
     }
     
