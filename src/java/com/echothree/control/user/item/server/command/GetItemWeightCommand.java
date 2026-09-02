@@ -22,18 +22,19 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.item.server.logic.ItemWeightTypeLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.item.server.entity.ItemWeight;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetItemWeightCommand
-        extends BaseSimpleCommand<GetItemWeightForm> {
+        extends BaseSingleEntityCommand<ItemWeight, GetItemWeightForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,15 +59,14 @@ public class GetItemWeightCommand
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
-
     /** Creates a new instance of GetItemWeightCommand */
     public GetItemWeightCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemWeightResult();
+    protected ItemWeight getEntity() {
+        ItemWeight itemWeight = null;
         var itemName = form.getItemName();
         var item = itemLogic.getItemByName(this, itemName);
 
@@ -79,17 +79,26 @@ public class GetItemWeightCommand
                 var itemWeightType = itemWeightTypeLogic.getItemWeightTypeByName(this, form.getItemWeightTypeName());
 
                 if(!hasExecutionErrors()) {
-                    var itemWeight = itemControl.getItemWeight(item, unitOfMeasureType, itemWeightType);
+                    itemWeight = itemControl.getItemWeight(item, unitOfMeasureType, itemWeightType);
 
-                    if(itemWeight != null) {
-                        result.setItemWeight(itemControl.getItemWeightTransfer(getUserVisit(), itemWeight));
-                    } else {
+                    if(itemWeight == null) {
                         addExecutionError(ExecutionErrors.UnknownItemWeight.name(), item.getLastDetail().getItemName(),
                                 unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName(),
                                 itemWeightType.getLastDetail().getItemWeightTypeName());
                     }
                 }
             }
+        }
+
+        return itemWeight;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemWeight itemWeight) {
+        var result = ItemResultFactory.getGetItemWeightResult();
+
+        if(itemWeight != null) {
+            result.setItemWeight(itemControl.getItemWeightTransfer(getUserVisit(), itemWeight));
         }
 
         return result;
