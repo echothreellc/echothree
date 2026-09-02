@@ -24,11 +24,12 @@ import com.echothree.model.control.item.server.logic.HarmonizedTariffScheduleCod
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUse;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetHarmonizedTariffScheduleCodeUseCommand
-        extends BaseSimpleCommand<GetHarmonizedTariffScheduleCodeUseForm> {
+        extends BaseSingleEntityCommand<HarmonizedTariffScheduleCodeUse, GetHarmonizedTariffScheduleCodeUseForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -67,32 +68,29 @@ public class GetHarmonizedTariffScheduleCodeUseCommand
     @Inject
     HarmonizedTariffScheduleCodeLogic harmonizedTariffScheduleCodeLogic;
 
-
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeUseCommand */
     public GetHarmonizedTariffScheduleCodeUseCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUseResult();
+    protected HarmonizedTariffScheduleCodeUse getEntity() {
+        HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse = null;
         var countryName = form.getCountryName();
         var geoCode = geoControl.getCountryByAlias(countryName);
-        
+
         if(geoCode != null) {
             var harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
             var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
-            
+
             if(harmonizedTariffScheduleCode != null) {
                 var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
                 var harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeLogic.getHarmonizedTariffScheduleCodeUseTypeByName(this, harmonizedTariffScheduleCodeUseTypeName);
 
                 if(!hasExecutionErrors()) {
-                    var harmonizedTariffScheduleCodeUse = itemControl.getHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
-                    
-                    if(harmonizedTariffScheduleCodeUse != null) {
-                        result.setHarmonizedTariffScheduleCodeUse(itemControl.getHarmonizedTariffScheduleCodeUseTransfer(getUserVisit(), harmonizedTariffScheduleCodeUse));
-                    } else {
+                    harmonizedTariffScheduleCodeUse = itemControl.getHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
+
+                    if(harmonizedTariffScheduleCodeUse == null) {
                         addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUse.name(), countryName, harmonizedTariffScheduleCodeName, harmonizedTariffScheduleCodeUseTypeName);
                     }
                 }
@@ -102,7 +100,18 @@ public class GetHarmonizedTariffScheduleCodeUseCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), countryName);
         }
-        
+
+        return harmonizedTariffScheduleCodeUse;
+    }
+
+    @Override
+    protected BaseResult getResult(HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse) {
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUseResult();
+
+        if(harmonizedTariffScheduleCodeUse != null) {
+            result.setHarmonizedTariffScheduleCodeUse(itemControl.getHarmonizedTariffScheduleCodeUseTransfer(getUserVisit(), harmonizedTariffScheduleCodeUse));
+        }
+
         return result;
     }
     
