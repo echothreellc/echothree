@@ -18,16 +18,17 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.GetLeaveTypeForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.employee.server.entity.LeaveType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetLeaveTypeCommand
-        extends BaseSimpleCommand<GetLeaveTypeForm> {
+        extends BaseSingleEntityCommand<LeaveType, GetLeaveTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,24 +59,33 @@ public class GetLeaveTypeCommand
     @Inject
     EmployeeControl employeeControl;
 
-    
     /** Creates a new instance of GetLeaveTypeCommand */
     public GetLeaveTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getGetLeaveTypeResult();
+    protected LeaveType getEntity() {
         var leaveTypeName = form.getLeaveTypeName();
         var leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
-        
+
         if(leaveType != null) {
-            result.setLeaveType(employeeControl.getLeaveTypeTransfer(getUserVisit(), leaveType));
+            sendEvent(leaveType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLeaveTypeName.name(), leaveTypeName);
         }
-        
+
+        return leaveType;
+    }
+
+    @Override
+    protected BaseResult getResult(LeaveType leaveType) {
+        var result = EmployeeResultFactory.getGetLeaveTypeResult();
+
+        if(leaveType != null) {
+            result.setLeaveType(employeeControl.getLeaveTypeTransfer(getUserVisit(), leaveType));
+        }
+
         return result;
     }
     
