@@ -22,18 +22,19 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.item.server.logic.ItemVolumeTypeLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.item.server.entity.ItemVolume;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetItemVolumeCommand
-        extends BaseSimpleCommand<GetItemVolumeForm> {
+        extends BaseSingleEntityCommand<ItemVolume, GetItemVolumeForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,15 +59,14 @@ public class GetItemVolumeCommand
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
-
     /** Creates a new instance of GetItemVolumeCommand */
     public GetItemVolumeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemVolumeResult();
+    protected ItemVolume getEntity() {
+        ItemVolume itemVolume = null;
         var item = itemLogic.getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
@@ -78,17 +78,26 @@ public class GetItemVolumeCommand
                 var itemVolumeType = itemVolumeTypeLogic.getItemVolumeTypeByName(this, form.getItemVolumeTypeName());
 
                 if(!hasExecutionErrors()) {
-                    var itemVolume = itemControl.getItemVolume(item, unitOfMeasureType, itemVolumeType);
+                    itemVolume = itemControl.getItemVolume(item, unitOfMeasureType, itemVolumeType);
 
-                    if(itemVolume != null) {
-                        result.setItemVolume(itemControl.getItemVolumeTransfer(getUserVisit(), itemVolume));
-                    } else {
+                    if(itemVolume == null) {
                         addExecutionError(ExecutionErrors.UnknownItemVolume.name(), item.getLastDetail().getItemName(),
                                 unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName(),
                                 itemVolumeType.getLastDetail().getItemVolumeTypeName());
                     }
                 }
             }
+        }
+
+        return itemVolume;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemVolume itemVolume) {
+        var result = ItemResultFactory.getGetItemVolumeResult();
+
+        if(itemVolume != null) {
+            result.setItemVolume(itemControl.getItemVolumeTransfer(getUserVisit(), itemVolume));
         }
 
         return result;
