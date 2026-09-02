@@ -23,12 +23,12 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.employee.server.entity.TerminationReason;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetTerminationReasonCommand
-        extends BaseSimpleCommand<GetTerminationReasonForm> {
+        extends BaseSingleEntityCommand<TerminationReason, GetTerminationReasonForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,26 +59,33 @@ public class GetTerminationReasonCommand
     @Inject
     EmployeeControl employeeControl;
 
-    
     /** Creates a new instance of GetTerminationReasonCommand */
     public GetTerminationReasonCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getGetTerminationReasonResult();
+    protected TerminationReason getEntity() {
         var terminationReasonName = form.getTerminationReasonName();
         var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
-        
+
         if(terminationReason != null) {
-            result.setTerminationReason(employeeControl.getTerminationReasonTransfer(getUserVisit(), terminationReason));
-            
             sendEvent(terminationReason.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTerminationReasonName.name(), terminationReasonName);
         }
-        
+
+        return terminationReason;
+    }
+
+    @Override
+    protected BaseResult getResult(TerminationReason terminationReason) {
+        var result = EmployeeResultFactory.getGetTerminationReasonResult();
+
+        if(terminationReason != null) {
+            result.setTerminationReason(employeeControl.getTerminationReasonTransfer(getUserVisit(), terminationReason));
+        }
+
         return result;
     }
     
