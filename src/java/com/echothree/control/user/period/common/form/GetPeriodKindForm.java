@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.period.common.form;
 
-import com.echothree.control.user.period.common.spec.PeriodKindSpec;
+import com.echothree.control.user.period.common.spec.PeriodKindUniversalSpec;
 
 public interface GetPeriodKindForm
-        extends PeriodKindSpec {
+        extends PeriodKindUniversalSpec {
     
-    // Nothing additional beyond PeriodKindSpec
+    // Nothing additional beyond PeriodKindUniversalSpec
     
 }
