@@ -20,19 +20,19 @@ import com.echothree.control.user.comment.common.form.GetCommentForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCommentCommand
-        extends BaseSimpleCommand<GetCommentForm> {
+        extends BaseSingleEntityCommand<Comment, GetCommentForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -45,24 +45,31 @@ public class GetCommentCommand
     @Inject
     CommentControl commentControl;
 
-    
     /** Creates a new instance of GetCommentCommand */
     public GetCommentCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CommentResultFactory.getGetCommentResult();
+    protected Comment getEntity() {
         var commentName = form.getCommentName();
         var comment = commentControl.getCommentByName(commentName);
 
         if(comment != null) {
-            result.setComment(commentControl.getCommentTransfer(getUserVisit(), comment));
-
             sendEvent(comment.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommentName.name(), commentName);
+        }
+
+        return comment;
+    }
+
+    @Override
+    protected BaseResult getResult(Comment comment) {
+        var result = CommentResultFactory.getGetCommentResult();
+
+        if(comment != null) {
+            result.setComment(commentControl.getCommentTransfer(getUserVisit(), comment));
         }
 
         return result;
