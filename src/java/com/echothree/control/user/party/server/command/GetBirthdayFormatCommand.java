@@ -18,16 +18,17 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetBirthdayFormatForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.party.server.entity.BirthdayFormat;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetBirthdayFormatCommand
-        extends BaseSimpleCommand<GetBirthdayFormatForm> {
+        extends BaseSingleEntityCommand<BirthdayFormat, GetBirthdayFormatForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,7 +58,6 @@ public class GetBirthdayFormatCommand
 
     @Inject
     PartyControl partyControl;
-
     
     /** Creates a new instance of GetBirthdayFormatCommand */
     public GetBirthdayFormatCommand() {
@@ -65,15 +65,25 @@ public class GetBirthdayFormatCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getGetBirthdayFormatResult();
+    protected BirthdayFormat getEntity() {
         var birthdayFormatName = form.getBirthdayFormatName();
         var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
         
         if(birthdayFormat != null) {
-            result.setBirthdayFormat(partyControl.getBirthdayFormatTransfer(getUserVisit(), birthdayFormat));
+            sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownBirthdayFormatName.name(), birthdayFormatName);
+        }
+
+        return birthdayFormat;
+    }
+
+    @Override
+    protected BaseResult getResult(BirthdayFormat birthdayFormat) {
+        var result = PartyResultFactory.getGetBirthdayFormatResult();
+
+        if(birthdayFormat != null) {
+            result.setBirthdayFormat(partyControl.getBirthdayFormatTransfer(getUserVisit(), birthdayFormat));
         }
         
         return result;
