@@ -20,17 +20,17 @@ import com.echothree.control.user.party.common.form.GetPreferredLanguageForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetPreferredLanguageCommand
-        extends BaseSimpleCommand<GetPreferredLanguageForm> {
+        extends BaseSingleEntityCommand<Language, GetPreferredLanguageForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -47,12 +47,19 @@ public class GetPreferredLanguageCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getGetPreferredLanguageResult();
+    protected Language getEntity() {
         var language = getPreferredLanguage();
 
-        result.setPreferredLanguage(partyControl.getLanguageTransfer(getUserVisit(), language));
         sendEvent(language.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+
+        return language;
+    }
+
+    @Override
+    protected BaseResult getResult(Language language) {
+        var result = PartyResultFactory.getGetPreferredLanguageResult();
+
+        result.setPreferredLanguage(partyControl.getLanguageTransfer(getUserVisit(), language));
 
         return result;
     }
