@@ -21,14 +21,16 @@ import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.printer.server.control.PrinterControl;
+import com.echothree.model.control.printer.server.logic.PrinterGroupUseTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyPrinterGroupUseCommand
-        extends BaseSimpleCommand<GetPartyPrinterGroupUseForm> {
+        extends BaseSingleEntityCommand<PartyPrinterGroupUse, GetPartyPrinterGroupUseForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,15 +65,16 @@ public class GetPartyPrinterGroupUseCommand
     @Inject
     PartyLogic partyLogic;
 
+    @Inject
+    PrinterGroupUseTypeLogic printerGroupUseTypeLogic;
 
     public GetPartyPrinterGroupUseCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
-    
     @Override
-    protected BaseResult execute() {
-        var result = PrinterResultFactory.getGetPartyPrinterGroupUseResult();
+    protected PartyPrinterGroupUse getEntity() {
+        PartyPrinterGroupUse partyPrinterGroupUse = null;
         var partyName = form.getPartyName();
         Party party;
 
@@ -83,19 +86,26 @@ public class GetPartyPrinterGroupUseCommand
 
         if(!hasExecutionErrors()) {
             var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-            var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+            var printerGroupUseType = printerGroupUseTypeLogic.getPrinterGroupUseTypeByName(this, printerGroupUseTypeName);
 
-            if(printerGroupUseType != null) {
-                var partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
+            if(!hasExecutionErrors()) {
+                partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
 
-                if(partyPrinterGroupUse != null) {
-                    result.setPartyPrinterGroupUse(printerControl.getPartyPrinterGroupUseTransfer(getUserVisit(), partyPrinterGroupUse));
-                } else {
+                if(partyPrinterGroupUse == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyPrinterGroupUse.name(), party.getLastDetail().getPartyName(), printerGroupUseTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPrinterGroupUseTypeName.name(), printerGroupUseTypeName);
             }
+        }
+
+        return partyPrinterGroupUse;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyPrinterGroupUse partyPrinterGroupUse) {
+        var result = PrinterResultFactory.getGetPartyPrinterGroupUseResult();
+
+        if(partyPrinterGroupUse != null) {
+            result.setPartyPrinterGroupUse(printerControl.getPartyPrinterGroupUseTransfer(getUserVisit(), partyPrinterGroupUse));
         }
 
         return result;
