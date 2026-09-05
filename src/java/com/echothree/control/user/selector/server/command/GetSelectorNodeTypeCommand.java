@@ -18,20 +18,21 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorNodeTypeForm;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.selector.server.logic.SelectorNodeTypeLogic;
+import com.echothree.model.data.selector.server.entity.SelectorNodeType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorNodeTypeCommand
-        extends BaseSimpleCommand<GetSelectorNodeTypeForm> {
+        extends BaseSingleEntityCommand<SelectorNodeType, GetSelectorNodeTypeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -44,24 +45,34 @@ public class GetSelectorNodeTypeCommand
     @Inject
     SelectorControl selectorControl;
 
-    
+    @Inject
+    SelectorNodeTypeLogic selectorNodeTypeLogic;
+
     /** Creates a new instance of GetSelectorNodeTypeCommand */
     public GetSelectorNodeTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = SelectorResultFactory.getGetSelectorNodeTypeResult();
+    protected SelectorNodeType getEntity() {
         var selectorNodeTypeName = form.getSelectorNodeTypeName();
-        var selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
-        
+        var selectorNodeType = selectorNodeTypeLogic.getSelectorNodeTypeByName(this, selectorNodeTypeName);
+
+        if(!hasExecutionErrors()) {
+            sendEvent(selectorNodeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return selectorNodeType;
+    }
+
+    @Override
+    protected BaseResult getResult(SelectorNodeType selectorNodeType) {
+        var result = SelectorResultFactory.getGetSelectorNodeTypeResult();
+
         if(selectorNodeType != null) {
             result.setSelectorNodeType(selectorControl.getSelectorNodeTypeTransfer(getUserVisit(), selectorNodeType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSelectorNodeTypeName.name(), selectorNodeTypeName);
         }
-        
+
         return result;
     }
     
