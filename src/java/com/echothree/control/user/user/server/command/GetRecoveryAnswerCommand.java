@@ -20,24 +20,24 @@ package com.echothree.control.user.user.server.command;
 import com.echothree.control.user.user.common.form.GetRecoveryAnswerForm;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.customer.server.logic.CustomerLogic;
+import com.echothree.model.control.party.server.logic.EmployeeLogic;
+import com.echothree.model.control.party.server.logic.PartyLogic;
+import com.echothree.model.control.vendor.server.logic.VendorLogic;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.user.server.entity.RecoveryAnswer;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetRecoveryAnswerCommand
-        extends BaseSimpleCommand<GetRecoveryAnswerForm> {
+        extends BaseSingleEntityCommand<RecoveryAnswer, GetRecoveryAnswerForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -51,17 +51,16 @@ public class GetRecoveryAnswerCommand
     }
 
     @Inject
-    CustomerControl customerControl;
+    CustomerLogic customerLogic;
 
     @Inject
-    EmployeeControl employeeControl;
+    EmployeeLogic employeeLogic;
 
     @Inject
-    PartyControl partyControl;
+    PartyLogic partyLogic;
 
     @Inject
-    VendorControl vendorControl;
-
+    VendorLogic vendorLogic;
     
     /** Creates a new instance of GetRecoveryAnswerCommand */
     public GetRecoveryAnswerCommand() {
@@ -69,8 +68,8 @@ public class GetRecoveryAnswerCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = UserResultFactory.getGetRecoveryAnswerResult();
+    protected RecoveryAnswer getEntity() {
+        RecoveryAnswer recoveryAnswer = null;
         var partyName = form.getPartyName();
         var employeeName = form.getEmployeeName();
         var customerName = form.getCustomerName();
@@ -82,33 +81,24 @@ public class GetRecoveryAnswerCommand
             Party party = null;
             
             if(partyName != null) {
-                party = partyControl.getPartyByName(partyName);
-                if(party == null) {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-                }
+                party = partyLogic.getPartyByName(this, partyName);
             } else if(employeeName != null) {
-                var partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+                var partyEmployee = employeeLogic.getPartyEmployeeByName(this, employeeName, null);
                 
                 if(partyEmployee != null) {
                     party = partyEmployee.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else if(customerName != null) {
-                var customer = customerControl.getCustomerByName(customerName);
+                var customer = customerLogic.getCustomerByName(this, customerName, null, null);
                 
                 if(customer != null) {
                     party = customer.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
                 }
             } else if(vendorName != null) {
-                var vendor = vendorControl.getVendorByName(vendorName);
+                var vendor = vendorLogic.getVendorByName(this, vendorName, null, null);
                 
                 if(vendor != null) {
                     party = vendor.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else {
                 if(self != null) {
@@ -119,11 +109,9 @@ public class GetRecoveryAnswerCommand
             }
             
             if(!hasExecutionErrors()) {
-                var recoveryAnswer = userControl.getRecoveryAnswer(party);
+                recoveryAnswer = userControl.getRecoveryAnswer(party);
                 
                 if(recoveryAnswer != null) {
-                    result.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(getUserVisit(), recoveryAnswer));
-                    
                     sendEvent(recoveryAnswer.getPrimaryKey(), EventTypes.READ, null, null, self.getPrimaryKey());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownRecoveryAnswer.name());
@@ -131,6 +119,17 @@ public class GetRecoveryAnswerCommand
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return recoveryAnswer;
+    }
+
+    @Override
+    protected BaseResult getResult(RecoveryAnswer recoveryAnswer) {
+        var result = UserResultFactory.getGetRecoveryAnswerResult();
+
+        if(recoveryAnswer != null) {
+            result.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(getUserVisit(), recoveryAnswer));
         }
         
         return result;
