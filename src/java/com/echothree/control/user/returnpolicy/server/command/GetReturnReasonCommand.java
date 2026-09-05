@@ -24,11 +24,12 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.control.returnpolicy.server.logic.ReturnKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetReturnReasonCommand
-        extends BaseSimpleCommand<GetReturnReasonForm> {
+        extends BaseSingleEntityCommand<ReturnReason, GetReturnReasonForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,29 +64,37 @@ public class GetReturnReasonCommand
     @Inject
     ReturnKindLogic returnKindLogic;
 
-    
     /** Creates a new instance of GetReturnReasonCommand */
     public GetReturnReasonCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ReturnPolicyResultFactory.getGetReturnReasonResult();
+    protected ReturnReason getEntity() {
+        ReturnReason returnReason = null;
         var returnKindName = form.getReturnKindName();
         var returnKind = returnKindLogic.getReturnKindByName(this, returnKindName);
         
         if(!hasExecutionErrors()) {
             var returnReasonName = form.getReturnReasonName();
-            var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+            returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
             
             if(returnReason != null) {
-                result.setReturnReason(returnPolicyControl.getReturnReasonTransfer(getUserVisit(), returnReason));
-                
                 sendEvent(returnReason.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);
+                addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnKindName, returnReasonName);
             }
+        }
+
+        return returnReason;
+    }
+
+    @Override
+    protected BaseResult getResult(ReturnReason returnReason) {
+        var result = ReturnPolicyResultFactory.getGetReturnReasonResult();
+
+        if(returnReason != null) {
+            result.setReturnReason(returnPolicyControl.getReturnReasonTransfer(getUserVisit(), returnReason));
         }
         
         return result;
