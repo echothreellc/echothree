@@ -23,11 +23,12 @@ import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetServerCommand
-        extends BaseSimpleCommand<GetServerForm> {
+        extends BaseSingleEntityCommand<Server, GetServerForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -65,19 +66,27 @@ public class GetServerCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetServerResult();
+    protected Server getEntity() {
         var serverName = form.getServerName();
         var server = serverControl.getServerByName(serverName);
-        
+
         if(server != null) {
-            result.setServer(serverControl.getServerTransfer(getUserVisit(), server));
-            
             sendEvent(server.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
         }
-        
+
+        return server;
+    }
+
+    @Override
+    protected BaseResult getResult(Server server) {
+        var result = CoreResultFactory.getGetServerResult();
+
+        if(server != null) {
+            result.setServer(serverControl.getServerTransfer(getUserVisit(), server));
+        }
+
         return result;
     }
     
