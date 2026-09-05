@@ -18,20 +18,24 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorNodeForm;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.selector.server.logic.SelectorKindLogic;
+import com.echothree.model.control.selector.server.logic.SelectorLogic;
+import com.echothree.model.control.selector.server.logic.SelectorTypeLogic;
+import com.echothree.model.data.selector.server.entity.SelectorNode;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorNodeCommand
-        extends BaseSimpleCommand<GetSelectorNodeForm> {
+        extends BaseSingleEntityCommand<SelectorNode, GetSelectorNodeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -47,51 +51,60 @@ public class GetSelectorNodeCommand
     @Inject
     SelectorControl selectorControl;
 
-    
+    @Inject
+    SelectorKindLogic selectorKindLogic;
+
+    @Inject
+    SelectorLogic selectorLogic;
+
+    @Inject
+    SelectorTypeLogic selectorTypeLogic;
+
     /** Creates a new instance of GetSelectorNodeCommand */
     public GetSelectorNodeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = SelectorResultFactory.getGetSelectorNodeResult();
+    protected SelectorNode getEntity() {
         var selectorKindName = form.getSelectorKindName();
-        var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        var selectorKind = selectorKindLogic.getSelectorKindByName(this, selectorKindName);
+        SelectorNode selectorNode = null;
         
-        if(selectorKind != null) {
+        if(!hasExecutionErrors()) {
             var selectorTypeName = form.getSelectorTypeName();
-            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+            var selectorType = selectorTypeLogic.getSelectorTypeByName(this, selectorKind, selectorTypeName);
             
-            result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));
-            
-            if(selectorType != null) {
+            if(!hasExecutionErrors()) {
                 var selectorName = form.getSelectorName();
-                var selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                var selector = selectorLogic.getSelectorByName(this, selectorType, selectorName);
                 
-                result.setSelectorType(selectorControl.getSelectorTypeTransfer(getUserVisit(), selectorType));
-                
-                if(selector != null) {
+                if(!hasExecutionErrors()) {
                     var selectorNodeName = form.getSelectorNodeName();
-                    var selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
-                    
-                    result.setSelector(selectorControl.getSelectorTransfer(getUserVisit(), selector));
-                    
-                    if(selectorNode != null) {
-                        result.setSelectorNode(selectorControl.getSelectorNodeTransfer(getUserVisit(), selectorNode));
+                    selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
+
+                    if(selectorNode == null) {
+                        addExecutionError(ExecutionErrors.UnknownSelectorNodeName.name(), selectorKindName, selectorTypeName,
+                                selectorName, selectorNodeName);
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownSelectorNodeName.name(), selectorNodeName);
+                        sendEvent(selectorNode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), selectorTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
         }
-        
+
+        return selectorNode;
+    }
+
+    @Override
+    protected BaseResult getResult(SelectorNode selectorNode) {
+        var result = SelectorResultFactory.getGetSelectorNodeResult();
+        var userVisit = getUserVisit();
+
+        if(selectorNode != null) {
+            result.setSelectorNode(selectorControl.getSelectorNodeTransfer(userVisit, selectorNode));
+        }
+
         return result;
     }
     
