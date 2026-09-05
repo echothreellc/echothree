@@ -26,13 +26,13 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.track.server.control.TrackControl;
+import com.echothree.model.control.track.server.logic.TrackLogic;
 import com.echothree.model.data.track.server.entity.Track;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,7 +42,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetTrackCommand
-        extends BaseSimpleCommand<GetTrackForm> {
+        extends BaseSingleEntityCommand<Track, GetTrackForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -68,6 +68,8 @@ public class GetTrackCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    TrackLogic trackLogic;
     
     /** Creates a new instance of GetTrackCommand */
     public GetTrackCommand() {
@@ -75,14 +77,12 @@ public class GetTrackCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = TrackResultFactory.getGetTrackResult();
+    protected Track getEntity() {
+        Track track = null;
         var trackName = form.getTrackName();
         var parameterCount = (trackName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            Track track = null;
-
             if(trackName == null) {
                 var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Track.name());
@@ -91,19 +91,25 @@ public class GetTrackCommand
                     track = trackControl.getTrackByEntityInstance(entityInstance);
                 }
             } else {
-                track = trackControl.getTrackByName(trackName);
-
-                if(track == null) {
-                    addExecutionError(ExecutionErrors.UnknownTrackName.name(), trackName);
-                }
+                track = trackLogic.getTrackByName(this, trackName);
             }
 
             if(!hasExecutionErrors()) {
-                result.setTrack(trackControl.getTrackTransfer(getUserVisit(), track));
                 sendEvent(track.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return track;
+    }
+
+    @Override
+    protected BaseResult getResult(Track track) {
+        var result = TrackResultFactory.getGetTrackResult();
+
+        if(track != null) {
+            result.setTrack(trackControl.getTrackTransfer(getUserVisit(), track));
         }
         
         return result;
