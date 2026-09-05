@@ -20,19 +20,19 @@ import com.echothree.control.user.party.common.form.GetGenderForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetGenderCommand
-        extends BaseSimpleCommand<GetGenderForm> {
+        extends BaseSingleEntityCommand<Gender, GetGenderForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -44,7 +44,6 @@ public class GetGenderCommand
 
     @Inject
     PartyControl partyControl;
-
     
     /** Creates a new instance of GetGenderCommand */
     public GetGenderCommand() {
@@ -52,17 +51,25 @@ public class GetGenderCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getGetGenderResult();
+    protected Gender getEntity() {
         var genderName = form.getGenderName();
         var gender = partyControl.getGenderByName(genderName);
         
         if(gender != null) {
-            result.setGender(partyControl.getGenderTransfer(getUserVisit(), gender));
-            
             sendEvent(gender.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGenderName.name(), genderName);
+        }
+
+        return gender;
+    }
+
+    @Override
+    protected BaseResult getResult(Gender gender) {
+        var result = PartyResultFactory.getGetGenderResult();
+
+        if(gender != null) {
+            result.setGender(partyControl.getGenderTransfer(getUserVisit(), gender));
         }
         
         return result;
