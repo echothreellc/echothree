@@ -20,19 +20,19 @@ import com.echothree.control.user.rating.common.form.GetRatingForm;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.rating.server.logic.RatingLogic;
+import com.echothree.model.data.rating.server.entity.Rating;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetRatingCommand
-        extends BaseSimpleCommand<GetRatingForm> {
+        extends BaseSingleEntityCommand<Rating, GetRatingForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -45,6 +45,8 @@ public class GetRatingCommand
     @Inject
     RatingControl ratingControl;
 
+    @Inject
+    RatingLogic ratingLogic;
     
     /** Creates a new instance of GetRatingCommand */
     public GetRatingCommand() {
@@ -52,17 +54,22 @@ public class GetRatingCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected Rating getEntity() {
+        var rating = ratingLogic.getRatingByName(this, form.getRatingName());
+
+        if(rating != null) {
+            sendEvent(rating.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return rating;
+    }
+
+    @Override
+    protected BaseResult getResult(Rating rating) {
         var result = RatingResultFactory.getGetRatingResult();
-        var ratingName = form.getRatingName();
-        var rating = ratingControl.getRatingByName(ratingName);
 
         if(rating != null) {
             result.setRating(ratingControl.getRatingTransfer(getUserVisit(), rating));
-
-            sendEvent(rating.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownRatingName.name(), ratingName);
         }
 
         return result;
