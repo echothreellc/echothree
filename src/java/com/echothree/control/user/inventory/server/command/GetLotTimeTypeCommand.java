@@ -23,11 +23,12 @@ import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetLotTimeTypeCommand
-        extends BaseSimpleCommand<GetLotTimeTypeForm> {
+        extends BaseSingleEntityCommand<LotTimeType, GetLotTimeTypeForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,17 +65,25 @@ public class GetLotTimeTypeCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = InventoryResultFactory.getGetLotTimeTypeResult();
+    protected LotTimeType getEntity() {
         var lotTimeTypeName = form.getLotTimeTypeName();
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType != null) {
-            result.setLotTimeType(lotTimeControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
-
             sendEvent(lotTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
+        }
+
+        return lotTimeType;
+    }
+
+    @Override
+    protected BaseResult getResult(LotTimeType lotTimeType) {
+        var result = InventoryResultFactory.getGetLotTimeTypeResult();
+
+        if(lotTimeType != null) {
+            result.setLotTimeType(lotTimeControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
         }
 
         return result;
