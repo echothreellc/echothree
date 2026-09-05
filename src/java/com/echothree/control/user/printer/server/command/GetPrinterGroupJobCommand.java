@@ -18,15 +18,17 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrinterGroupJobForm;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPrinterGroupJobCommand
-        extends BaseSimpleCommand<GetPrinterGroupJobForm> {
+        extends BaseSingleEntityCommand<PrinterGroupJob, GetPrinterGroupJobForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,23 +59,31 @@ public class GetPrinterGroupJobCommand
     @Inject
     PrinterControl printerControl;
 
-
-    
     /** Creates a new instance of GetPrinterGroupJobCommand */
     public GetPrinterGroupJobCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = PrinterResultFactory.getGetPrinterGroupJobResult();
+    protected PrinterGroupJob getEntity() {
         var printerGroupJobName = form.getPrinterGroupJobName();
         var printerGroupJob = printerControl.getPrinterGroupJobByName(printerGroupJobName);
         
         if(printerGroupJob != null) {
-            result.setPrinterGroupJob(printerControl.getPrinterGroupJobTransfer(getUserVisit(), printerGroupJob));
+            sendEvent(printerGroupJob.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPrinterGroupJobName.name(), printerGroupJobName);
+        }
+
+        return printerGroupJob;
+    }
+
+    @Override
+    protected BaseResult getResult(PrinterGroupJob printerGroupJob) {
+        var result = PrinterResultFactory.getGetPrinterGroupJobResult();
+
+        if(printerGroupJob != null) {
+            result.setPrinterGroupJob(printerControl.getPrinterGroupJobTransfer(getUserVisit(), printerGroupJob));
         }
         
         return result;
