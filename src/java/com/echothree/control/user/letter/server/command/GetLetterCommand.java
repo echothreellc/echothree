@@ -24,11 +24,12 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetLetterCommand
-        extends BaseSimpleCommand<GetLetterForm> {
+        extends BaseSingleEntityCommand<Letter, GetLetterForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,30 +65,39 @@ public class GetLetterCommand
     @Inject
     ChainTypeLogic chainTypeLogic;
 
-
     /** Creates a new instance of GetLetterCommand */
     public GetLetterCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = LetterResultFactory.getGetLetterResult();
+    protected Letter getEntity() {
+        Letter letter = null;
         var chainKindName = form.getChainKindName();
         var chainTypeName = form.getChainTypeName();
         var chainType = chainTypeLogic.getChainTypeByName(this, chainKindName, chainTypeName);
 
         if(!hasExecutionErrors()) {
             var letterName = form.getLetterName();
-            var letter = letterControl.getLetterByName(chainType, letterName);
+
+            letter = letterControl.getLetterByName(chainType, letterName);
 
             if(letter != null) {
-                result.setLetter(letterControl.getLetterTransfer(getUserVisit(), letter));
-
                 sendEvent(letter.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownLetterName.name(), letterName);
+                addExecutionError(ExecutionErrors.UnknownLetterName.name(), chainKindName, chainTypeName, letterName);
             }
+        }
+
+        return letter;
+    }
+
+    @Override
+    protected BaseResult getResult(Letter letter) {
+        var result = LetterResultFactory.getGetLetterResult();
+
+        if(letter != null) {
+            result.setLetter(letterControl.getLetterTransfer(getUserVisit(), letter));
         }
 
         return result;
