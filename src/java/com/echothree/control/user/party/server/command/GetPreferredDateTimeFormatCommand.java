@@ -20,17 +20,17 @@ import com.echothree.control.user.party.common.form.GetPreferredDateTimeFormatFo
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetPreferredDateTimeFormatCommand
-        extends BaseSimpleCommand<GetPreferredDateTimeFormatForm> {
+        extends BaseSingleEntityCommand<DateTimeFormat, GetPreferredDateTimeFormatForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -47,12 +47,19 @@ public class GetPreferredDateTimeFormatCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getGetPreferredDateTimeFormatResult();
+    protected DateTimeFormat getEntity() {
         var dateTimeFormat = getPreferredDateTimeFormat();
 
-        result.setPreferredDateTimeFormat(partyControl.getDateTimeFormatTransfer(getUserVisit(), dateTimeFormat));
         sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+
+        return dateTimeFormat;
+    }
+
+    @Override
+    protected BaseResult getResult(DateTimeFormat dateTimeFormat) {
+        var result = PartyResultFactory.getGetPreferredDateTimeFormatResult();
+
+        result.setPreferredDateTimeFormat(partyControl.getDateTimeFormatTransfer(getUserVisit(), dateTimeFormat));
 
         return result;
     }
