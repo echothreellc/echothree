@@ -24,10 +24,11 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
+import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTrainingClassCommand
-        extends BaseSimpleCommand<GetPartyTrainingClassForm> {
+        extends BaseSingleEntityCommand<PartyTrainingClass, GetPartyTrainingClassForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,25 +62,31 @@ public class GetPartyTrainingClassCommand
     @Inject
     PartyTrainingClassLogic partyTrainingClassLogic;
 
-
     /** Creates a new instance of GetPartyTrainingClassCommand */
     public GetPartyTrainingClassCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    
     @Override
-    protected BaseResult execute() {
-        var result = TrainingResultFactory.getGetPartyTrainingClassResult();
+    protected PartyTrainingClass getEntity() {
         var partyTrainingClassName = form.getPartyTrainingClassName();
         var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(this, partyTrainingClassName);
         
         if(!hasExecutionErrors()) {
-            result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(getUserVisit(), partyTrainingClass));
-            
             sendEvent(partyTrainingClass.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return partyTrainingClass;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyTrainingClass partyTrainingClass) {
+        var result = TrainingResultFactory.getGetPartyTrainingClassResult();
+
+        if(partyTrainingClass != null) {
+            result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(getUserVisit(), partyTrainingClass));
+        }
+
         return result;
     }
     
