@@ -21,18 +21,19 @@ import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
+import com.echothree.model.data.comment.server.entity.CommentUsageType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCommentUsageTypeCommand
-        extends BaseSimpleCommand<GetCommentUsageTypeForm> {
+        extends BaseSingleEntityCommand<CommentUsageType, GetCommentUsageTypeForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -57,9 +58,11 @@ public class GetCommentUsageTypeCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
-        var result = CommentResultFactory.getGetCommentUsageTypeResult();
+    protected CommentUsageType getEntity() {
+        CommentUsageType commentUsageType = null;
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
 
         if(!hasExecutionErrors()) {
             var commentTypeName = form.getCommentTypeName();
@@ -67,18 +70,28 @@ public class GetCommentUsageTypeCommand
 
             if(commentType != null) {
                 var commentUsageTypeName = form.getCommentUsageTypeName();
-                var commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
+                commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
 
                 if(commentUsageType != null) {
-                    result.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(getUserVisit(), commentUsageType));
-
                     sendEvent(commentUsageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownCommentUsageTypeName.name(), commentUsageTypeName);
+                    addExecutionError(ExecutionErrors.UnknownCommentUsageTypeName.name(), componentVendorName, entityTypeName,
+                            commentTypeName, commentUsageTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
+                addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), componentVendorName, entityTypeName, commentTypeName);
             }
+        }
+
+        return commentUsageType;
+    }
+
+    @Override
+    protected BaseResult getResult(CommentUsageType commentUsageType) {
+        var result = CommentResultFactory.getGetCommentUsageTypeResult();
+
+        if(commentUsageType != null) {
+            result.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(getUserVisit(), commentUsageType));
         }
 
         return result;
