@@ -20,19 +20,19 @@ import com.echothree.control.user.workeffort.common.form.GetWorkEffortTypeForm;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetWorkEffortTypeCommand
-        extends BaseSimpleCommand<GetWorkEffortTypeForm> {
+        extends BaseSingleEntityCommand<WorkEffortType, GetWorkEffortTypeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -45,24 +45,31 @@ public class GetWorkEffortTypeCommand
     @Inject
     WorkEffortControl workEffortControl;
 
-    
     /** Creates a new instance of GetWorkEffortTypeCommand */
     public GetWorkEffortTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = WorkEffortResultFactory.getGetWorkEffortTypeResult();
+    protected WorkEffortType getEntity() {
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(getUserVisit(), workEffortType));
-            
             sendEvent(workEffortType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
+        }
+
+        return workEffortType;
+    }
+
+    @Override
+    protected BaseResult getResult(WorkEffortType workEffortType) {
+        var result = WorkEffortResultFactory.getGetWorkEffortTypeResult();
+
+        if(workEffortType != null) {
+            result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(getUserVisit(), workEffortType));
         }
         
         return result;
