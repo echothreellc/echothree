@@ -20,15 +20,15 @@ import com.echothree.control.user.core.common.form.GetEditorForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EditorControl;
+import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetEditorCommand
-        extends BaseSimpleCommand<GetEditorForm> {
+        extends BaseSingleEntityCommand<Editor, GetEditorForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,6 +59,8 @@ public class GetEditorCommand
     @Inject
     EditorControl editorControl;
 
+    @Inject
+    EditorLogic editorLogic;
     
     /** Creates a new instance of GetEditorCommand */
     public GetEditorCommand() {
@@ -66,19 +68,25 @@ public class GetEditorCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetEditorResult();
+    protected Editor getEntity() {
         var editorName = form.getEditorName();
-        var editor = editorControl.getEditorByName(editorName);
-        
+        var editor = editorLogic.getEditorByName(this, editorName);
+
+        if(!hasExecutionErrors()) {
+            sendEvent(editor.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return editor;
+    }
+
+    @Override
+    protected BaseResult getResult(Editor editor) {
+        var result = CoreResultFactory.getGetEditorResult();
+
         if(editor != null) {
             result.setEditor(editorControl.getEditorTransfer(getUserVisit(), editor));
-            
-            sendEvent(editor.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEditorName.name(), editorName);
         }
-        
+
         return result;
     }
     
