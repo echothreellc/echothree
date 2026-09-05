@@ -24,10 +24,11 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetBatchAliasTypeCommand
-        extends BaseSimpleCommand<GetBatchAliasTypeForm> {
+        extends BaseSingleEntityCommand<BatchAliasType, GetBatchAliasTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,8 +62,6 @@ public class GetBatchAliasTypeCommand
 
     @Inject
     BatchLogic batchLogic;
-
-
     
     /** Creates a new instance of GetBatchAliasTypeCommand */
     public GetBatchAliasTypeCommand() {
@@ -70,20 +69,29 @@ public class GetBatchAliasTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = BatchResultFactory.getGetBatchAliasTypeResult();
+    protected BatchAliasType getEntity() {
+        BatchAliasType batchAliasType = null;
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchLogic.getBatchTypeByName(this, batchTypeName);
 
         if(!hasExecutionErrors()) {
             var batchAliasTypeName = form.getBatchAliasTypeName();
-            var batchAliasType = batchLogic.getBatchAliasTypeByName(this, batchType, batchAliasTypeName);
+            batchAliasType = batchLogic.getBatchAliasTypeByName(this, batchType, batchAliasTypeName);
 
             if(!hasExecutionErrors()) {
-                result.setBatchAliasType(batchControl.getBatchAliasTypeTransfer(getUserVisit(), batchAliasType));
-
                 sendEvent(batchAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
+        }
+
+        return batchAliasType;
+    }
+
+    @Override
+    protected BaseResult getResult(BatchAliasType batchAliasType) {
+        var result = BatchResultFactory.getGetBatchAliasTypeResult();
+
+        if(batchAliasType != null) {
+            result.setBatchAliasType(batchControl.getBatchAliasTypeTransfer(getUserVisit(), batchAliasType));
         }
         
         return result;
