@@ -19,16 +19,16 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAppearanceCommand
-        extends BaseSimpleCommand<GetEntityAppearanceForm> {
+        extends BaseSingleEntityCommand<EntityAppearance, GetEntityAppearanceForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,7 +60,7 @@ public class GetEntityAppearanceCommand
     AppearanceControl appearanceControl;
 
     @Inject
-    EntityInstanceControl entityInstanceControl;
+    EntityInstanceLogic entityInstanceLogic;
 
     
     /** Creates a new instance of GetEntityAppearanceCommand */
@@ -69,21 +69,28 @@ public class GetEntityAppearanceCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetEntityAppearanceResult();
+    protected EntityAppearance getEntity() {
         var entityRef = form.getEntityRef();
-        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceLogic.getEntityInstanceByEntityRef(this, entityRef);
+        EntityAppearance entityAppearance = null;
 
-        if(entityInstance != null) {
-            var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
+        if(!hasExecutionErrors()) {
+            entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
 
-            if(entityAppearance != null) {
-                result.setEntityAppearance(appearanceControl.getEntityAppearanceTransfer(getUserVisit(), entityAppearance));
-            } else {
+            if(entityAppearance == null) {
                 addExecutionError(ExecutionErrors.UnknownEntityAppearance.name(), entityRef);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
+        }
+
+        return entityAppearance;
+    }
+
+    @Override
+    protected BaseResult getResult(EntityAppearance entityAppearance) {
+        var result = CoreResultFactory.getGetEntityAppearanceResult();
+
+        if(entityAppearance != null) {
+            result.setEntityAppearance(appearanceControl.getEntityAppearanceTransfer(getUserVisit(), entityAppearance));
         }
 
         return result;
