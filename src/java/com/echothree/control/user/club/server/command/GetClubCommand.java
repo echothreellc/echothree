@@ -19,16 +19,16 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.GetClubForm;
 import com.echothree.control.user.club.common.result.ClubResultFactory;
 import com.echothree.model.control.club.server.control.ClubControl;
+import com.echothree.model.control.club.server.logic.ClubLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetClubCommand
-        extends BaseSimpleCommand<GetClubForm> {
+        extends BaseSingleEntityCommand<Club, GetClubForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,6 +59,8 @@ public class GetClubCommand
     @Inject
     ClubControl clubControl;
 
+    @Inject
+    ClubLogic clubLogic;
     
     /** Creates a new instance of GetClubCommand */
     public GetClubCommand() {
@@ -66,17 +68,22 @@ public class GetClubCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ClubResultFactory.getGetClubResult();
-        var clubName = form.getClubName();
-        var club = clubControl.getClubByName(clubName);
+    protected Club getEntity() {
+        var club = clubLogic.getClubByName(this, form.getClubName());
         
         if(club != null) {
-            result.setClub(clubControl.getClubTransfer(getUserVisit(), club));
-            
             sendEvent(club.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownClubName.name(), clubName);
+        }
+
+        return club;
+    }
+
+    @Override
+    protected BaseResult getResult(Club club) {
+        var result = ClubResultFactory.getGetClubResult();
+
+        if(club != null) {
+            result.setClub(clubControl.getClubTransfer(getUserVisit(), club));
         }
         
         return result;
