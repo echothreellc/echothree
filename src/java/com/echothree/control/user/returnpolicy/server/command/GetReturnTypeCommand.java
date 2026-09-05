@@ -23,12 +23,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetReturnTypeCommand
-        extends BaseSimpleCommand<GetReturnTypeForm> {
+        extends BaseSingleEntityCommand<ReturnType, GetReturnTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,7 +59,6 @@ public class GetReturnTypeCommand
 
     @Inject
     ReturnPolicyControl returnPolicyControl;
-
     
     /** Creates a new instance of GetReturnTypeCommand */
     public GetReturnTypeCommand() {
@@ -67,18 +66,16 @@ public class GetReturnTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ReturnPolicyResultFactory.getGetReturnTypeResult();
+    protected ReturnType getEntity() {
+        ReturnType returnType = null;
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
             var returnTypeName = form.getReturnTypeName();
-            var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+            returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
-                result.setReturnType(returnPolicyControl.getReturnTypeTransfer(getUserVisit(), returnType));
-                
                 sendEvent(returnType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownReturnTypeName.name(), returnKindName, returnTypeName);
@@ -87,6 +84,17 @@ public class GetReturnTypeCommand
             addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
         }
         
+        return returnType;
+    }
+
+    @Override
+    protected BaseResult getResult(ReturnType returnType) {
+        var result = ReturnPolicyResultFactory.getGetReturnTypeResult();
+
+        if(returnType != null) {
+            result.setReturnType(returnPolicyControl.getReturnTypeTransfer(getUserVisit(), returnType));
+        }
+
         return result;
     }
     
