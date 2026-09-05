@@ -20,19 +20,19 @@ import com.echothree.control.user.rating.common.form.GetRatingTypeForm;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.rating.server.logic.RatingTypeLogic;
+import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetRatingTypeCommand
-        extends BaseSimpleCommand<GetRatingTypeForm> {
+        extends BaseSingleEntityCommand<RatingType, GetRatingTypeForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -47,38 +47,34 @@ public class GetRatingTypeCommand
     @Inject
     RatingControl ratingControl;
 
-    
+    @Inject
+    RatingTypeLogic ratingTypeLogic;
+
     /** Creates a new instance of GetRatingTypeCommand */
     public GetRatingTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = RatingResultFactory.getGetRatingTypeResult();
+    protected RatingType getEntity() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                var ratingTypeName = form.getRatingTypeName();
-                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
-                
-                if(ratingType != null) {
-                    result.setRatingType(ratingControl.getRatingTypeTransfer(getUserVisit(), ratingType));
+        var entityTypeName = form.getEntityTypeName();
+        var ratingTypeName = form.getRatingTypeName();
+        var ratingType = ratingTypeLogic.getRatingTypeByName(this, componentVendorName, entityTypeName, ratingTypeName);
 
-                    sendEvent(ratingType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownRatingTypeName.name(), ratingTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+        if(ratingType != null) {
+            sendEvent(ratingType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return ratingType;
+    }
+
+    @Override
+    protected BaseResult getResult(RatingType ratingType) {
+        var result = RatingResultFactory.getGetRatingTypeResult();
+
+        if(ratingType != null) {
+            result.setRatingType(ratingControl.getRatingTypeTransfer(getUserVisit(), ratingType));
         }
         
         return result;
