@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.commenttype;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.result.GetCommentTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -60,7 +59,7 @@ public class ReviewAction
 
         var commandResult = CommentUtil.getHome().getCommentType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCommentTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var commentType = result.getCommentType();
 
         if(commentType == null) {
