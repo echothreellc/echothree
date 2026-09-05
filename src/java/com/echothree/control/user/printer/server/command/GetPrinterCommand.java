@@ -18,15 +18,17 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrinterForm;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPrinterCommand
-        extends BaseSimpleCommand<GetPrinterForm> {
+        extends BaseSingleEntityCommand<Printer, GetPrinterForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,23 +59,31 @@ public class GetPrinterCommand
     @Inject
     PrinterControl printerControl;
 
-
-    
     /** Creates a new instance of GetPrinterCommand */
     public GetPrinterCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = PrinterResultFactory.getGetPrinterResult();
+    protected Printer getEntity() {
         var printerName = form.getPrinterName();
         var printer = printerControl.getPrinterByName(printerName);
         
         if(printer != null) {
-            result.setPrinter(printerControl.getPrinterTransfer(getUserVisit(), printer));
+            sendEvent(printer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPrinterName.name(), printerName);
+        }
+
+        return printer;
+    }
+
+    @Override
+    protected BaseResult getResult(Printer printer) {
+        var result = PrinterResultFactory.getGetPrinterResult();
+
+        if(printer != null) {
+            result.setPrinter(printerControl.getPrinterTransfer(getUserVisit(), printer));
         }
         
         return result;
