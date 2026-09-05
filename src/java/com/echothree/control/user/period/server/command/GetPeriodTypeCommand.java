@@ -23,12 +23,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.period.server.entity.PeriodType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPeriodTypeCommand
-        extends BaseSimpleCommand<GetPeriodTypeForm> {
+        extends BaseSingleEntityCommand<PeriodType, GetPeriodTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,7 +59,6 @@ public class GetPeriodTypeCommand
 
     @Inject
     PeriodControl periodControl;
-
     
     /** Creates a new instance of GetPeriodTypeCommand */
     public GetPeriodTypeCommand() {
@@ -67,26 +66,35 @@ public class GetPeriodTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = PeriodResultFactory.getGetPeriodTypeResult();
+    protected PeriodType getEntity() {
+        PeriodType periodType = null;
         var periodKindName = form.getPeriodKindName();
         var periodKind = periodControl.getPeriodKindByName(periodKindName);
         
         if(periodKind != null) {
             var periodTypeName = form.getPeriodTypeName();
-            var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
+            periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
             
             if(periodType != null) {
-                result.setPeriodType(periodControl.getPeriodTypeTransfer(getUserVisit(), periodType));
-                
                 sendEvent(periodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodTypeName);
+                addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodKindName, periodTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownPeriodKindName.name(), periodKindName);
         }
         
+        return periodType;
+    }
+
+    @Override
+    protected BaseResult getResult(PeriodType periodType) {
+        var result = PeriodResultFactory.getGetPeriodTypeResult();
+
+        if(periodType != null) {
+            result.setPeriodType(periodControl.getPeriodTypeTransfer(getUserVisit(), periodType));
+        }
+
         return result;
     }
     
