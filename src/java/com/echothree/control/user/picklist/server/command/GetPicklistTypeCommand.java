@@ -21,14 +21,14 @@ import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
+import com.echothree.model.control.picklist.server.logic.PicklistTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistTypeCommand
-        extends BaseSimpleCommand<GetPicklistTypeForm> {
+        extends BaseSingleEntityCommand<PicklistType, GetPicklistTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,6 +59,8 @@ public class GetPicklistTypeCommand
     @Inject
     PicklistControl picklistControl;
 
+    @Inject
+    PicklistTypeLogic picklistTypeLogic;
     
     /** Creates a new instance of GetPicklistTypeCommand */
     public GetPicklistTypeCommand() {
@@ -66,17 +68,22 @@ public class GetPicklistTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = PicklistResultFactory.getGetPicklistTypeResult();
-        var picklistTypeName = form.getPicklistTypeName();
-        var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
+    protected PicklistType getEntity() {
+        var picklistType = picklistTypeLogic.getPicklistTypeByName(this, form.getPicklistTypeName());
         
         if(picklistType != null) {
-            result.setPicklistType(picklistControl.getPicklistTypeTransfer(getUserVisit(), picklistType));
-            
             sendEvent(picklistType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPicklistTypeName.name(), picklistTypeName);
+        }
+
+        return picklistType;
+    }
+
+    @Override
+    protected BaseResult getResult(PicklistType picklistType) {
+        var result = PicklistResultFactory.getGetPicklistTypeResult();
+
+        if(picklistType != null) {
+            result.setPicklistType(picklistControl.getPicklistTypeTransfer(getUserVisit(), picklistType));
         }
         
         return result;
