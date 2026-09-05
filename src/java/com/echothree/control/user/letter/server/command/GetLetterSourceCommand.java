@@ -23,11 +23,12 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetLetterSourceCommand
-        extends BaseSimpleCommand<GetLetterSourceForm> {
+        extends BaseSingleEntityCommand<LetterSource, GetLetterSourceForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,17 +65,25 @@ public class GetLetterSourceCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = LetterResultFactory.getGetLetterSourceResult();
+    protected LetterSource getEntity() {
         var letterSourceName = form.getLetterSourceName();
         var letterSource = letterControl.getLetterSourceByName(letterSourceName);
 
         if(letterSource != null) {
-            result.setLetterSource(letterControl.getLetterSourceTransfer(getUserVisit(), letterSource));
-
             sendEvent(letterSource.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLetterSourceName.name(), letterSourceName);
+        }
+
+        return letterSource;
+    }
+
+    @Override
+    protected BaseResult getResult(LetterSource letterSource) {
+        var result = LetterResultFactory.getGetLetterSourceResult();
+
+        if(letterSource != null) {
+            result.setLetterSource(letterControl.getLetterSourceTransfer(getUserVisit(), letterSource));
         }
 
         return result;
