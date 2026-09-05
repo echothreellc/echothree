@@ -18,18 +18,18 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPartyEntityTypeForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.model.control.core.server.logic.ComponentVendorLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.party.server.entity.PartyEntityType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -39,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyEntityTypeCommand
-        extends BaseSimpleCommand<GetPartyEntityTypeForm> {
+        extends BaseSingleEntityCommand<PartyEntityType, GetPartyEntityTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,51 +63,49 @@ public class GetPartyEntityTypeCommand
     PartyEntityTypeControl partyEntityTypeControl;
 
     @Inject
-    ComponentVendorLogic componentVendorLogic;
-
-    @Inject
     EntityTypeLogic entityTypeLogic;
 
     @Inject
     PartyLogic partyLogic;
-
 
     /** Creates a new instance of GetPartyEntityTypeCommand */
     public GetPartyEntityTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getGetPartyEntityTypeResult();
+    protected PartyEntityType getEntity() {
+        PartyEntityType partyEntityType = null;
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : partyLogic.getPartyByName(this, partyName);
 
         if(!hasExecutionErrors()) {
             var componentVendorName = form.getComponentVendorName();
-            var componentVendor = componentVendorLogic.getComponentVendorByName(this, componentVendorName);
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
 
             if(!hasExecutionErrors()) {
-                var entityTypeName = form.getEntityTypeName();
-                var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendor, entityTypeName);
+                partyEntityType = partyEntityTypeControl.getPartyEntityType(party, entityType);
 
-                if(!hasExecutionErrors()) {
-                    var partyEntityType = partyEntityTypeControl.getPartyEntityType(party, entityType);
-                    
-                    if(partyEntityType == null) {
-                        if(partyName == null) {
-                            partyEntityType = partyEntityTypeControl.createPartyEntityType(party, entityType, true, getPartyPK());
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownPartyEntityType.name());
-                        }
-                    }
-                    
-                    if(!hasExecutionErrors()) {
-                        result.setPartyEntityType(partyEntityTypeControl.getPartyEntityTypeTransfer(getUserVisit(), partyEntityType));
+                if(partyEntityType == null) {
+                    if(partyName == null) {
+                        partyEntityType = partyEntityTypeControl.createPartyEntityType(party, entityType, true, getPartyPK());
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownPartyEntityType.name(), partyName, componentVendorName, entityTypeName);
                     }
                 }
             }
+        }
+
+        return partyEntityType;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyEntityType partyEntityType) {
+        var result = PartyResultFactory.getGetPartyEntityTypeResult();
+
+        if(partyEntityType != null) {
+            result.setPartyEntityType(partyEntityTypeControl.getPartyEntityTypeTransfer(getUserVisit(), partyEntityType));
         }
 
         return result;
