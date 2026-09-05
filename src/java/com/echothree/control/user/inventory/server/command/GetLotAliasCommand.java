@@ -24,11 +24,12 @@ import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.inventory.server.entity.LotAlias;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetLotAliasCommand
-        extends BaseSimpleCommand<GetLotAliasForm> {
+        extends BaseSingleEntityCommand<LotAlias, GetLotAliasForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -73,8 +74,8 @@ public class GetLotAliasCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = InventoryResultFactory.getGetLotAliasResult();
+    protected LotAlias getEntity() {
+        LotAlias lotAlias = null;
         var item = itemLogic.getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
@@ -86,11 +87,9 @@ public class GetLotAliasCommand
                 var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
                 if(lotAliasType != null) {
-                    var lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
+                    lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
 
-                    if(lotAlias != null) {
-                        result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
-                    } else {
+                    if(lotAlias == null) {
                         addExecutionError(ExecutionErrors.UnknownLotAlias.name(), item.getLastDetail().getItemName(),
                                 lot.getLastDetail().getLotIdentifier(), lotAliasType.getLastDetail().getLotAliasTypeName());
                     }
@@ -98,6 +97,17 @@ public class GetLotAliasCommand
                     addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
                 }
             }
+        }
+
+        return lotAlias;
+    }
+
+    @Override
+    protected BaseResult getResult(LotAlias lotAlias) {
+        var result = InventoryResultFactory.getGetLotAliasResult();
+
+        if(lotAlias != null) {
+            result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
         }
 
         return result;
