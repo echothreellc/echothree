@@ -24,11 +24,15 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassSessionLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassSectionLogic;
+import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
+import com.echothree.model.data.training.server.entity.TrainingClassSection;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +42,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetTrainingClassSectionCommand
-        extends BaseSimpleCommand<GetTrainingClassSectionForm> {
+        extends BaseSingleEntityCommand<TrainingClassSection, GetTrainingClassSectionForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,23 +68,30 @@ public class GetTrainingClassSectionCommand
     @Inject
     PartyTrainingClassSessionLogic partyTrainingClassSessionLogic;
 
-    
+    @Inject
+    TrainingClassLogic trainingClassLogic;
+
+    @Inject
+    TrainingClassSectionLogic trainingClassSectionLogic;
+
+    private PartyTrainingClassSessionSection partyTrainingClassSessionSection;
+
     /** Creates a new instance of GetTrainingClassSectionCommand */
     public GetTrainingClassSectionCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = TrainingResultFactory.getGetTrainingClassSectionResult();
+    protected TrainingClassSection getEntity() {
         var trainingClassName = form.getTrainingClassName();
-        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, false);
+        TrainingClassSection trainingClassSection = null;
 
-        if(trainingClass != null) {
+        if(!hasExecutionErrors()) {
             var trainingClassSectionName = form.getTrainingClassSectionName();
-            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            trainingClassSection = trainingClassSectionLogic.getTrainingClassSectionByName(this, trainingClass, trainingClassSectionName);
 
-            if(trainingClassSection != null) {
+            if(!hasExecutionErrors()) {
                 var partyTrainingClassName = form.getPartyTrainingClassName();
                 var partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
                         : partyTrainingClassSessionLogic.getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
@@ -97,29 +108,38 @@ public class GetTrainingClassSectionCommand
                     }
 
                     if(!hasExecutionErrors()) {
-                        var userVisit = getUserVisit();
                         var partyPK = getPartyPK();
-
-                        result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSection));
 
                         sendEvent(trainingClassSection.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                         if(partyTrainingClassSessionStatus != null) {
-                            var partyTrainingClassSessionSection = trainingControl.createPartyTrainingClassSessionSection(partyTrainingClassSession,
-                                    trainingClassSection, session.getStartTime(), null, partyPK);
+                            partyTrainingClassSessionSection = trainingControl.createPartyTrainingClassSessionSection(
+                                    partyTrainingClassSession, trainingClassSection, session.getStartTime(), null, partyPK);
 
-                            partyTrainingClassSessionLogic.updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
-                                    partyTrainingClassSessionSection, null, null);
-                            
-                            result.setPartyTrainingClassSessionSection(trainingControl.getPartyTrainingClassSessionSectionTransfer(userVisit, partyTrainingClassSessionSection));
+                            partyTrainingClassSessionLogic.updatePartyTrainingClassSessionStatus(session,
+                                    partyTrainingClassSessionStatus, partyTrainingClassSessionSection, null, null);
                         }
                     }
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTrainingClassSectionName.name(), trainingClassName, trainingClassSectionName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
+        }
+
+        return trainingClassSection;
+    }
+
+    @Override
+    protected BaseResult getResult(TrainingClassSection trainingClassSection) {
+        var result = TrainingResultFactory.getGetTrainingClassSectionResult();
+
+        if(trainingClassSection != null) {
+            var userVisit = getUserVisit();
+
+            result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSection));
+
+            if(partyTrainingClassSessionSection != null) {
+                result.setPartyTrainingClassSessionSection(trainingControl.getPartyTrainingClassSessionSectionTransfer(userVisit,
+                        partyTrainingClassSessionSection));
+            }
         }
 
         return result;
