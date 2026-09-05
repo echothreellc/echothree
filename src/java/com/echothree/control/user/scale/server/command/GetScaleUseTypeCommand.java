@@ -18,15 +18,17 @@ package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.GetScaleUseTypeForm;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetScaleUseTypeCommand
-        extends BaseSimpleCommand<GetScaleUseTypeForm> {
+        extends BaseSingleEntityCommand<ScaleUseType, GetScaleUseTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,24 +59,33 @@ public class GetScaleUseTypeCommand
     @Inject
     ScaleControl scaleControl;
 
-    
     /** Creates a new instance of GetScaleUseTypeCommand */
     public GetScaleUseTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ScaleResultFactory.getGetScaleUseTypeResult();
+    protected ScaleUseType getEntity() {
         var scaleUseTypeName = form.getScaleUseTypeName();
         var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
-        
+
+        if(scaleUseType == null) {
+            addExecutionError(ExecutionErrors.UnknownScaleUseTypeName.name(), scaleUseTypeName);
+        } else {
+            sendEvent(scaleUseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return scaleUseType;
+    }
+
+    @Override
+    protected BaseResult getResult(ScaleUseType scaleUseType) {
+        var result = ScaleResultFactory.getGetScaleUseTypeResult();
+
         if(scaleUseType != null) {
             result.setScaleUseType(scaleControl.getScaleUseTypeTransfer(getUserVisit(), scaleUseType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownScaleUseTypeName.name(), scaleUseTypeName);
         }
-        
+
         return result;
     }
     
