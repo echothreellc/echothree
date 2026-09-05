@@ -20,19 +20,19 @@ import com.echothree.control.user.workeffort.common.form.GetWorkEffortForm;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workeffort.server.entity.WorkEffort;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetWorkEffortCommand
-        extends BaseSimpleCommand<GetWorkEffortForm> {
+        extends BaseSingleEntityCommand<WorkEffort, GetWorkEffortForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -44,7 +44,6 @@ public class GetWorkEffortCommand
 
     @Inject
     WorkEffortControl workEffortControl;
-
     
     /** Creates a new instance of GetWorkEffortCommand */
     public GetWorkEffortCommand() {
@@ -52,17 +51,25 @@ public class GetWorkEffortCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = WorkEffortResultFactory.getGetWorkEffortResult();
+    protected WorkEffort getEntity() {
         var workEffortName = form.getWorkEffortName();
         var workEffort = workEffortControl.getWorkEffortByName(workEffortName);
         
         if(workEffort != null) {
-            result.setWorkEffort(workEffortControl.getWorkEffortTransfer(getUserVisit(), workEffort));
-            
             sendEvent(workEffort.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortName.name(), workEffortName);
+        }
+
+        return workEffort;
+    }
+
+    @Override
+    protected BaseResult getResult(WorkEffort workEffort) {
+        var result = WorkEffortResultFactory.getGetWorkEffortResult();
+
+        if(workEffort != null) {
+            result.setWorkEffort(workEffortControl.getWorkEffortTransfer(getUserVisit(), workEffort));
         }
         
         return result;
