@@ -18,19 +18,21 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetCommandForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.ComponentVendorLogic;
+import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCommandCommand
-        extends BaseSimpleCommand<GetCommandForm> {
+        extends BaseSingleEntityCommand<Command, GetCommandForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -50,22 +52,31 @@ public class GetCommandCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetCommandResult();
+    protected Command getEntity() {
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentVendorLogic.getComponentVendorByName(this, componentVendorName);
+        Command command = null;
 
         if(!hasExecutionErrors()) {
             var commandName = form.getCommandName();
-            var command = commandControl.getCommandByName(componentVendor, commandName);
+            command = commandControl.getCommandByName(componentVendor, commandName);
 
-            if(command != null) {
-                var userVisit = getUserVisit();
-
-                result.setCommand(commandControl.getCommandTransfer(userVisit, command));
+            if(command == null) {
+                addExecutionError(ExecutionErrors.UnknownCommandName.name(), componentVendorName, commandName);
             } else {
-                addExecutionError(ExecutionErrors.UnknownCommandName.name(), commandName);
+                sendEvent(command.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
+        }
+
+        return command;
+    }
+
+    @Override
+    protected BaseResult getResult(Command command) {
+        var result = CoreResultFactory.getGetCommandResult();
+
+        if(command != null) {
+            result.setCommand(commandControl.getCommandTransfer(getUserVisit(), command));
         }
 
         return result;
