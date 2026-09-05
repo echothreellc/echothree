@@ -20,19 +20,20 @@ import com.echothree.control.user.comment.common.form.GetCommentTypeForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
+import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCommentTypeCommand
-        extends BaseSimpleCommand<GetCommentTypeForm> {
+        extends BaseSingleEntityCommand<CommentType, GetCommentTypeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -47,43 +48,41 @@ public class GetCommentTypeCommand
     @Inject
     CommentControl commentControl;
 
-    
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of GetCommentTypeCommand */
     public GetCommentTypeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CommentResultFactory.getGetCommentTypeResult();
+    protected CommentType getEntity() {
+        CommentType commentType = null;
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var userVisit = getUserVisit();
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
-            
-            if(entityType != null) {
-                var commentTypeName = form.getCommentTypeName();
-                var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
-                
-                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
-                
-                if(commentType != null) {
-                    result.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));
-                    
-                    sendEvent(commentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
-                }
+        var entityTypeName = form.getEntityTypeName();
+        var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
+
+        if(!hasExecutionErrors()) {
+            var commentTypeName = form.getCommentTypeName();
+            commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+
+            if(commentType != null) {
+                sendEvent(commentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+                addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), componentVendorName, entityTypeName, commentTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+        }
+
+        return commentType;
+    }
+
+    @Override
+    protected BaseResult getResult(CommentType commentType) {
+        var result = CommentResultFactory.getGetCommentTypeResult();
+
+        if(commentType != null) {
+            result.setCommentType(commentControl.getCommentTypeTransfer(getUserVisit(), commentType));
         }
         
         return result;
