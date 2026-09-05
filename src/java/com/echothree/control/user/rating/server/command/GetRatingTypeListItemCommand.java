@@ -21,17 +21,18 @@ import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.rating.server.logic.RatingTypeListItemLogic;
+import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetRatingTypeListItemCommand
-        extends BaseSimpleCommand<GetRatingTypeListItemForm> {
+        extends BaseSingleEntityCommand<RatingTypeListItem, GetRatingTypeListItemForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -50,15 +51,13 @@ public class GetRatingTypeListItemCommand
     @Inject
     RatingTypeListItemLogic ratingTypeListItemLogic;
 
-
     /** Creates a new instance of GetRatingTypeListItemCommand */
     public GetRatingTypeListItemCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = RatingResultFactory.getGetRatingTypeListItemResult();
+    protected RatingTypeListItem getEntity() {
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var ratingTypeName = form.getRatingTypeName();
@@ -66,9 +65,18 @@ public class GetRatingTypeListItemCommand
         var ratingTypeListItem = ratingTypeListItemLogic.getRatingTypeListItemByName(this, componentVendorName, entityTypeName, ratingTypeName, ratingTypeListItemName);
 
         if(!hasExecutionErrors()) {
-            result.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(getUserVisit(), ratingTypeListItem));
-
             sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return ratingTypeListItem;
+    }
+
+    @Override
+    protected BaseResult getResult(RatingTypeListItem ratingTypeListItem) {
+        var result = RatingResultFactory.getGetRatingTypeListItemResult();
+
+        if(ratingTypeListItem != null) {
+            result.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(getUserVisit(), ratingTypeListItem));
         }
 
         return result;
