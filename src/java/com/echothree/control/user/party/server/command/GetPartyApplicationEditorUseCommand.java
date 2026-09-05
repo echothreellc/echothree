@@ -26,11 +26,12 @@ import com.echothree.model.control.party.server.control.PartyApplicationEditorUs
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.party.server.entity.PartyApplicationEditorUse;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +41,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyApplicationEditorUseCommand
-        extends BaseSimpleCommand<GetPartyApplicationEditorUseForm> {
+        extends BaseSingleEntityCommand<PartyApplicationEditorUse, GetPartyApplicationEditorUseForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -72,15 +73,14 @@ public class GetPartyApplicationEditorUseCommand
     @Inject
     PartyLogic partyLogic;
 
-
     /** Creates a new instance of GetPartyApplicationEditorUseCommand */
     public GetPartyApplicationEditorUseCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getGetPartyApplicationEditorUseResult();
+    protected PartyApplicationEditorUse getEntity() {
+        PartyApplicationEditorUse partyApplicationEditorUse = null;
         var partyName = form.getPartyName();
         var party = partyName == null ? getParty() : partyLogic.getPartyByName(this, partyName);
         
@@ -93,73 +93,85 @@ public class GetPartyApplicationEditorUseCommand
                 var applicationEditorUse = applicationLogic.getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     var partyPK = getPartyPK();
-                    
+
+                    partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
+
                     if(partyApplicationEditorUse == null && partyName == null) {
                         partyApplicationEditorUse = partyApplicationEditorUseControl.createPartyApplicationEditorUse(party, applicationEditorUse, null, null, null, partyPK);
                     }
                     
                     if(partyApplicationEditorUse != null) {
-                        var userVisit = getUserVisit();
-                        var partyApplicationEditorUseTransfer = partyApplicationEditorUseControl.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
-                        
-                        // Fill in a few defaults in the TO if the Party is requesting this for themselves.
-                        if(partyName == null) {
-                            var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
-                            var preferredHeight = partyApplicationEditorUseTransfer.getPreferredHeight();
-                            var preferredWidth = partyApplicationEditorUseTransfer.getPreferredWidth();
-                            
-                            if(partyApplicationEditorUseTransfer.getApplicationEditor() == null) {
-                                var applicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
-                                        
-                                if(applicationEditor == null) {
-                                    applicationEditor = applicationControl.getDefaultApplicationEditor(application);
-                                    
-                                    if(applicationEditor == null) {
-                                        addExecutionError(ExecutionErrors.UnknownDefaultApplicationEditor.name(), applicationName);
-                                    }
-                                }
-                                
-                                if(!hasExecutionErrors()) {
-                                    partyApplicationEditorUseTransfer.setApplicationEditor(applicationControl.getApplicationEditorTransfer(userVisit, applicationEditor));
-                                }
-                            }
-
-                            if(preferredHeight == null || preferredWidth == null) {
-                                if(preferredHeight == null) {
-                                    preferredHeight = applicationEditorUseDetail.getDefaultHeight();
-                                }
-
-                                if(preferredWidth == null) {
-                                    preferredWidth = applicationEditorUseDetail.getDefaultWidth();
-                                }
-
-                                if(preferredHeight == null || preferredWidth == null) {
-                                    var editor = partyApplicationEditorUseTransfer.getApplicationEditor().getEditor();
-
-                                    if(preferredHeight == null) {
-                                        preferredHeight = editor.getDefaultHeight();
-                                    }
-
-                                    if(preferredWidth == null) {
-                                        preferredWidth = editor.getDefaultWidth();
-                                    }
-                                }
-
-                                partyApplicationEditorUseTransfer.setPreferredHeight(preferredHeight);
-                                partyApplicationEditorUseTransfer.setPreferredWidth(preferredWidth);
-                            }
-                        }
-                        
-                        result.setPartyApplicationEditorUse(partyApplicationEditorUseTransfer);
-
                         sendEvent(partyApplicationEditorUse.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartyApplicationEditorUse.name(), partyName, applicationName, applicationEditorUseName);
                     }
                 }
             }
+        }
+
+        return partyApplicationEditorUse;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyApplicationEditorUse partyApplicationEditorUse) {
+        var result = PartyResultFactory.getGetPartyApplicationEditorUseResult();
+
+        if(partyApplicationEditorUse != null) {
+            var userVisit = getUserVisit();
+            var partyApplicationEditorUseTransfer = partyApplicationEditorUseControl.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
+
+            // Fill in a few defaults in the TO if the Party is requesting this for themselves.
+            if(form.getPartyName() == null) {
+                var applicationEditorUse = partyApplicationEditorUse.getLastDetail().getApplicationEditorUse();
+                var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
+                var application = applicationEditorUseDetail.getApplication();
+                var preferredHeight = partyApplicationEditorUseTransfer.getPreferredHeight();
+                var preferredWidth = partyApplicationEditorUseTransfer.getPreferredWidth();
+
+                if(partyApplicationEditorUseTransfer.getApplicationEditor() == null) {
+                    var applicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
+
+                    if(applicationEditor == null) {
+                        applicationEditor = applicationControl.getDefaultApplicationEditor(application);
+
+                        if(applicationEditor == null) {
+                            addExecutionError(ExecutionErrors.UnknownDefaultApplicationEditor.name(), form.getApplicationName());
+                        }
+                    }
+
+                    if(!hasExecutionErrors()) {
+                        partyApplicationEditorUseTransfer.setApplicationEditor(applicationControl.getApplicationEditorTransfer(userVisit, applicationEditor));
+                    }
+                }
+
+                if(preferredHeight == null || preferredWidth == null) {
+                    if(preferredHeight == null) {
+                        preferredHeight = applicationEditorUseDetail.getDefaultHeight();
+                    }
+
+                    if(preferredWidth == null) {
+                        preferredWidth = applicationEditorUseDetail.getDefaultWidth();
+                    }
+
+                    if(preferredHeight == null || preferredWidth == null) {
+                        var editor = partyApplicationEditorUseTransfer.getApplicationEditor().getEditor();
+
+                        if(preferredHeight == null) {
+                            preferredHeight = editor.getDefaultHeight();
+                        }
+
+                        if(preferredWidth == null) {
+                            preferredWidth = editor.getDefaultWidth();
+                        }
+                    }
+
+                    partyApplicationEditorUseTransfer.setPreferredHeight(preferredHeight);
+                    partyApplicationEditorUseTransfer.setPreferredWidth(preferredWidth);
+                }
+            }
+
+            result.setPartyApplicationEditorUse(partyApplicationEditorUseTransfer);
         }
         
         return result;
