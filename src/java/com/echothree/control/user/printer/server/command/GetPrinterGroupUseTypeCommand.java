@@ -18,15 +18,17 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypeForm;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.server.logic.PrinterGroupUseTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPrinterGroupUseTypeCommand
-        extends BaseSimpleCommand<GetPrinterGroupUseTypeForm> {
+        extends BaseSingleEntityCommand<PrinterGroupUseType, GetPrinterGroupUseTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,19 +62,27 @@ public class GetPrinterGroupUseTypeCommand
     @Inject
     PrinterGroupUseTypeLogic printerGroupUseTypeLogic;
 
-
     /** Creates a new instance of GetPrinterGroupUseTypeCommand */
     public GetPrinterGroupUseTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
+    protected PrinterGroupUseType getEntity() {
+        var printerGroupUseType = printerGroupUseTypeLogic.getPrinterGroupUseTypeByName(this, form.getPrinterGroupUseTypeName());
+
+        if(printerGroupUseType != null) {
+            sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return printerGroupUseType;
+    }
+
+    @Override
+    protected BaseResult getResult(PrinterGroupUseType printerGroupUseType) {
         var result = PrinterResultFactory.getGetPrinterGroupUseTypeResult();
-        var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-        var printerGroupUseType = printerGroupUseTypeLogic.getPrinterGroupUseTypeByName(this, printerGroupUseTypeName);
-        
-        if(!hasExecutionErrors()) {
+
+        if(printerGroupUseType != null) {
             result.setPrinterGroupUseType(printerControl.getPrinterGroupUseTypeTransfer(getUserVisit(), printerGroupUseType));
         }
         
