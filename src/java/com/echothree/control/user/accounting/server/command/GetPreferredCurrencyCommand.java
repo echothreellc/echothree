@@ -20,17 +20,17 @@ import com.echothree.control.user.accounting.common.form.GetPreferredCurrencyFor
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetPreferredCurrencyCommand
-        extends BaseSimpleCommand<GetPreferredCurrencyForm> {
+        extends BaseSingleEntityCommand<Currency, GetPreferredCurrencyForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -47,12 +47,19 @@ public class GetPreferredCurrencyCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getGetPreferredCurrencyResult();
+    protected Currency getEntity() {
         var currency = getPreferredCurrency();
 
-        result.setPreferredCurrency(accountingControl.getCurrencyTransfer(getUserVisit(), currency));
         sendEvent(currency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+
+        return currency;
+    }
+
+    @Override
+    protected BaseResult getResult(Currency currency) {
+        var result = AccountingResultFactory.getGetPreferredCurrencyResult();
+
+        result.setPreferredCurrency(accountingControl.getCurrencyTransfer(getUserVisit(), currency));
 
         return result;
     }
