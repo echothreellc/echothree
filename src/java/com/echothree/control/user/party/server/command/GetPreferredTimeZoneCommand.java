@@ -20,17 +20,17 @@ import com.echothree.control.user.party.common.form.GetPreferredTimeZoneForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetPreferredTimeZoneCommand
-        extends BaseSimpleCommand<GetPreferredTimeZoneForm> {
+        extends BaseSingleEntityCommand<TimeZone, GetPreferredTimeZoneForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -47,12 +47,19 @@ public class GetPreferredTimeZoneCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getGetPreferredTimeZoneResult();
+    protected TimeZone getEntity() {
         var timeZone = getPreferredTimeZone();
 
-        result.setPreferredTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));
         sendEvent(timeZone.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+
+        return timeZone;
+    }
+
+    @Override
+    protected BaseResult getResult(TimeZone timeZone) {
+        var result = PartyResultFactory.getGetPreferredTimeZoneResult();
+
+        result.setPreferredTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));
 
         return result;
     }
