@@ -24,11 +24,12 @@ import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.picklist.server.logic.PicklistTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.picklist.server.entity.PicklistTimeType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistTimeTypeCommand
-        extends BaseSimpleCommand<GetPicklistTimeTypeForm> {
+        extends BaseSingleEntityCommand<PicklistTimeType, GetPicklistTimeTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -69,21 +70,32 @@ public class GetPicklistTimeTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = PicklistResultFactory.getGetPicklistTimeTypeResult();
-        var picklistType = picklistTypeLogic.getPicklistTypeByName(this, form.getPicklistTypeName());
+    protected PicklistTimeType getEntity() {
+        PicklistTimeType picklistTimeType = null;
+        var picklistTypeName = form.getPicklistTypeName();
+        var picklistType = picklistTypeLogic.getPicklistTypeByName(this, picklistTypeName);
 
         if(!hasExecutionErrors()) {
             var picklistTimeTypeName = form.getPicklistTimeTypeName();
-            var picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
+            
+            picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
             if(picklistTimeType != null) {
-                result.setPicklistTimeType(picklistControl.getPicklistTimeTypeTransfer(getUserVisit(), picklistTimeType));
-
                 sendEvent(picklistTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownPicklistTimeTypeName.name(), picklistTimeTypeName);
+                addExecutionError(ExecutionErrors.UnknownPicklistTimeTypeName.name(), picklistTypeName, picklistTimeTypeName);
             }
+        }
+
+        return picklistTimeType;
+    }
+
+    @Override
+    protected BaseResult getResult(PicklistTimeType picklistTimeType) {
+        var result = PicklistResultFactory.getGetPicklistTimeTypeResult();
+
+        if(picklistTimeType != null) {
+            result.setPicklistTimeType(picklistControl.getPicklistTimeTypeTransfer(getUserVisit(), picklistTimeType));
         }
 
         return result;
