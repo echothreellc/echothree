@@ -23,11 +23,12 @@ import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetLotAliasTypeCommand
-        extends BaseSimpleCommand<GetLotAliasTypeForm> {
+        extends BaseSingleEntityCommand<LotAliasType, GetLotAliasTypeForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,17 +65,25 @@ public class GetLotAliasTypeCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = InventoryResultFactory.getGetLotAliasTypeResult();
+    protected LotAliasType getEntity() {
         var lotAliasTypeName = form.getLotAliasTypeName();
         var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
-            result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
-
             sendEvent(lotAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
+        }
+
+        return lotAliasType;
+    }
+
+    @Override
+    protected BaseResult getResult(LotAliasType lotAliasType) {
+        var result = InventoryResultFactory.getGetLotAliasTypeResult();
+
+        if(lotAliasType != null) {
+            result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
         }
 
         return result;
