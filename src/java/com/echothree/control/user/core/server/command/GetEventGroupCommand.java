@@ -19,17 +19,18 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEventGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.data.core.server.entity.EventGroup;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetEventGroupCommand
-        extends BaseSimpleCommand<GetEventGroupForm> {
+        extends BaseSingleEntityCommand<EventGroup, GetEventGroupForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -45,19 +46,27 @@ public class GetEventGroupCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetEventGroupResult();
+    protected EventGroup getEntity() {
         var eventGroupName = form.getEventGroupName();
         var eventGroup = eventControl.getEventGroupByName(eventGroupName);
-        
+
+        if(eventGroup == null) {
+            addExecutionError(ExecutionErrors.UnknownEventGroupName.name(), eventGroupName);
+        } else {
+            sendEvent(eventGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return eventGroup;
+    }
+
+    @Override
+    protected BaseResult getResult(EventGroup eventGroup) {
+        var result = CoreResultFactory.getGetEventGroupResult();
+
         if(eventGroup != null) {
             result.setEventGroup(eventControl.getEventGroupTransfer(getUserVisit(), eventGroup));
-            
-            sendEvent(eventGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEventGroupName.name(), eventGroupName);
         }
-        
+
         return result;
     }
     

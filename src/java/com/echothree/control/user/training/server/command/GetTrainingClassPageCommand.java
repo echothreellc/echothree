@@ -24,11 +24,16 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassSessionLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassPageLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassSectionLogic;
+import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionPage;
+import com.echothree.model.data.training.server.entity.TrainingClassPage;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +43,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetTrainingClassPageCommand
-        extends BaseSimpleCommand<GetTrainingClassPageForm> {
+        extends BaseSingleEntityCommand<TrainingClassPage, GetTrainingClassPageForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -65,26 +70,37 @@ public class GetTrainingClassPageCommand
     @Inject
     PartyTrainingClassSessionLogic partyTrainingClassSessionLogic;
 
+    @Inject
+    TrainingClassLogic trainingClassLogic;
+
+    @Inject
+    TrainingClassSectionLogic trainingClassSectionLogic;
+
+    @Inject
+    TrainingClassPageLogic trainingClassPageLogic;
+
+    private PartyTrainingClassSessionPage partyTrainingClassSessionPage;
+
     /** Creates a new instance of GetTrainingClassPageCommand */
     public GetTrainingClassPageCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = TrainingResultFactory.getGetTrainingClassPageResult();
+    protected TrainingClassPage getEntity() {
         var trainingClassName = form.getTrainingClassName();
-        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, false);
+        TrainingClassPage trainingClassPage = null;
 
-        if(trainingClass != null) {
+        if(!hasExecutionErrors()) {
             var trainingClassSectionName = form.getTrainingClassSectionName();
-            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSection = trainingClassSectionLogic.getTrainingClassSectionByName(this, trainingClass, trainingClassSectionName);
 
-            if(trainingClassSection != null) {
+            if(!hasExecutionErrors()) {
                 var trainingClassPageName = form.getTrainingClassPageName();
-                var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
+                trainingClassPage = trainingClassPageLogic.getTrainingClassPageByName(this, trainingClassSection, trainingClassPageName);
 
-                if(trainingClassPage != null) {
+                if(!hasExecutionErrors()) {
                     var partyTrainingClassName = form.getPartyTrainingClassName();
                     var partyTrainingClassSessionStatus = partyTrainingClassName == null ? null
                             : partyTrainingClassSessionLogic.getLatestPartyTrainingClassSessionStatusForUpdate(this, partyTrainingClassName);
@@ -101,32 +117,39 @@ public class GetTrainingClassPageCommand
                         }
 
                         if(!hasExecutionErrors()) {
-                            var userVisit = getUserVisit();
                             var partyPK = getPartyPK();
-
-                            result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPage));
 
                             sendEvent(trainingClassPage.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                             if(partyTrainingClassSessionStatus != null) {
-                                var partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,
-                                        trainingClassPage, session.getStartTime(), null, partyPK);
+                                partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(
+                                        partyTrainingClassSession, trainingClassPage, session.getStartTime(), null, partyPK);
 
-                                partyTrainingClassSessionLogic.updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
-                                        null, partyTrainingClassSessionPage, null);
-
-                                result.setPartyTrainingClassSessionPage(trainingControl.getPartyTrainingClassSessionPageTransfer(userVisit, partyTrainingClassSessionPage));
+                                partyTrainingClassSessionLogic.updatePartyTrainingClassSessionStatus(session,
+                                        partyTrainingClassSessionStatus, null, partyTrainingClassSessionPage, null);
                             }
                         }
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTrainingClassPageName.name(), trainingClassName, trainingClassSectionName, trainingClassPageName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTrainingClassSectionName.name(), trainingClassName, trainingClassSectionName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
+        }
+
+        return trainingClassPage;
+    }
+
+    @Override
+    protected BaseResult getResult(TrainingClassPage trainingClassPage) {
+        var result = TrainingResultFactory.getGetTrainingClassPageResult();
+
+        if(trainingClassPage != null) {
+            var userVisit = getUserVisit();
+
+            result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPage));
+
+            if(partyTrainingClassSessionPage != null) {
+                result.setPartyTrainingClassSessionPage(trainingControl.getPartyTrainingClassSessionPageTransfer(userVisit,
+                        partyTrainingClassSessionPage));
+            }
         }
 
         return result;

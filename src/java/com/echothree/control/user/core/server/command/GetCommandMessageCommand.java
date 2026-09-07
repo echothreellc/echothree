@@ -22,11 +22,12 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -35,7 +36,7 @@ import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetCommandMessageCommand
-        extends BaseSimpleCommand<GetCommandMessageForm> {
+        extends BaseSingleEntityCommand<CommandMessage, GetCommandMessageForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,26 +61,35 @@ public class GetCommandMessageCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetCommandMessageResult();
+    protected CommandMessage getEntity() {
         var commandMessageTypeName = form.getCommandMessageTypeName();
         var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
+        CommandMessage commandMessage = null;
         
         if(commandMessageType != null) {
             var commandMessageKey = form.getCommandMessageKey();
-            var commandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+            commandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
-            if(commandMessage != null) {
-                result.setCommandMessage(commandControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
-
-                sendEvent(commandMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            } else {
+            if(commandMessage == null) {
                 addExecutionError(ExecutionErrors.UnknownCommandMessageKey.name(), commandMessageTypeName, commandMessageKey);
+            } else {
+                sendEvent(commandMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName);
         }
-        
+
+        return commandMessage;
+    }
+
+    @Override
+    protected BaseResult getResult(CommandMessage commandMessage) {
+        var result = CoreResultFactory.getGetCommandMessageResult();
+
+        if(commandMessage != null) {
+            result.setCommandMessage(commandControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
+        }
+
         return result;
     }
     

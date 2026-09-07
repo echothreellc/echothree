@@ -23,12 +23,15 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.training.server.logic.TrainingClassAnswerLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassQuestionLogic;
+import com.echothree.model.control.training.server.logic.TrainingClassSectionLogic;
+import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +41,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetTrainingClassAnswerCommand
-        extends BaseSimpleCommand<GetTrainingClassAnswerForm> {
+        extends BaseSingleEntityCommand<TrainingClassAnswer, GetTrainingClassAnswerForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,47 +65,57 @@ public class GetTrainingClassAnswerCommand
     @Inject
     TrainingControl trainingControl;
 
-    
+    @Inject
+    TrainingClassLogic trainingClassLogic;
+
+    @Inject
+    TrainingClassSectionLogic trainingClassSectionLogic;
+
+    @Inject
+    TrainingClassQuestionLogic trainingClassQuestionLogic;
+
+    @Inject
+    TrainingClassAnswerLogic trainingClassAnswerLogic;
+
     /** Creates a new instance of GetTrainingClassAnswerCommand */
     public GetTrainingClassAnswerCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = TrainingResultFactory.getGetTrainingClassAnswerResult();
+    protected TrainingClassAnswer getEntity() {
         var trainingClassName = form.getTrainingClassName();
-        var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
+        var trainingClass = trainingClassLogic.getTrainingClassByName(this, trainingClassName, false);
+        TrainingClassAnswer trainingClassAnswer = null;
 
-        if(trainingClass != null) {
+        if(!hasExecutionErrors()) {
             var trainingClassSectionName = form.getTrainingClassSectionName();
-            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+            var trainingClassSection = trainingClassSectionLogic.getTrainingClassSectionByName(this, trainingClass, trainingClassSectionName);
 
-            if(trainingClassSection != null) {
+            if(!hasExecutionErrors()) {
                 var trainingClassQuestionName = form.getTrainingClassQuestionName();
-                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+                var trainingClassQuestion = trainingClassQuestionLogic.getTrainingClassQuestionByName(this, trainingClassSection, trainingClassQuestionName);
 
-                if(trainingClassQuestion != null) {
+                if(!hasExecutionErrors()) {
                     var trainingClassAnswerName = form.getTrainingClassAnswerName();
-                    var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
+                    trainingClassAnswer = trainingClassAnswerLogic.getTrainingClassAnswerByName(this, trainingClassQuestion, trainingClassAnswerName);
 
-                    if(trainingClassAnswer != null) {
-                        result.setTrainingClassAnswer(trainingControl.getTrainingClassAnswerTransfer(getUserVisit(), trainingClassAnswer));
-
+                    if(!hasExecutionErrors()) {
                         sendEvent(trainingClassAnswer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownTrainingClassAnswerName.name(), trainingClassName, trainingClassSectionName,
-                                trainingClassQuestionName, trainingClassAnswerName);
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTrainingClassQuestionName.name(), trainingClassName, trainingClassSectionName,
-                            trainingClassQuestionName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTrainingClassSectionName.name(), trainingClassName, trainingClassSectionName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
+        }
+
+        return trainingClassAnswer;
+    }
+
+    @Override
+    protected BaseResult getResult(TrainingClassAnswer trainingClassAnswer) {
+        var result = TrainingResultFactory.getGetTrainingClassAnswerResult();
+
+        if(trainingClassAnswer != null) {
+            result.setTrainingClassAnswer(trainingControl.getTrainingClassAnswerTransfer(getUserVisit(), trainingClassAnswer));
         }
 
         return result;

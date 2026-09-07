@@ -24,11 +24,12 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
+import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTrainingClassSessionCommand
-        extends BaseSimpleCommand<GetPartyTrainingClassSessionForm> {
+        extends BaseSingleEntityCommand<PartyTrainingClassSession, GetPartyTrainingClassSessionForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -71,24 +72,33 @@ public class GetPartyTrainingClassSessionCommand
 
     
     @Override
-    protected BaseResult execute() {
-        var result = TrainingResultFactory.getGetPartyTrainingClassSessionResult();
+    protected PartyTrainingClassSession getEntity() {
         var partyTrainingClassName = form.getPartyTrainingClassName();
         var partyTrainingClass = partyTrainingClassLogic.getPartyTrainingClassByName(this, partyTrainingClassName);
+        PartyTrainingClassSession partyTrainingClassSession = null;
         
         if(!hasExecutionErrors()) {
             var partyTrainingClassSessionSequence = Integer.valueOf(form.getPartyTrainingClassSessionSequence());
-            var partyTrainingClassSession = trainingControl.getPartyTrainingClassSessionBySequence(partyTrainingClass, partyTrainingClassSessionSequence);
+            partyTrainingClassSession = trainingControl.getPartyTrainingClassSessionBySequence(partyTrainingClass, partyTrainingClassSessionSequence);
 
             if(partyTrainingClassSession != null) {
-                result.setPartyTrainingClassSession(trainingControl.getPartyTrainingClassSessionTransfer(getUserVisit(), partyTrainingClassSession));
-
                 sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPartyTrainingClassSessionSequence.name(), partyTrainingClassName, form.getPartyTrainingClassSessionSequence());
             }
         }
-        
+
+        return partyTrainingClassSession;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyTrainingClassSession partyTrainingClassSession) {
+        var result = TrainingResultFactory.getGetPartyTrainingClassSessionResult();
+
+        if(partyTrainingClassSession != null) {
+            result.setPartyTrainingClassSession(trainingControl.getPartyTrainingClassSessionTransfer(getUserVisit(), partyTrainingClassSession));
+        }
+
         return result;
     }
     

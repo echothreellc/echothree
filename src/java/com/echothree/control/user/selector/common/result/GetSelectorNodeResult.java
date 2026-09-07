@@ -16,23 +16,11 @@
 
 package com.echothree.control.user.selector.common.result;
 
-import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorNodeTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetSelectorNodeResult
         extends BaseResult {
-    
-    SelectorKindTransfer getSelectorKind();
-    void setSelectorKind(SelectorKindTransfer selectorKind);
-    
-    SelectorTypeTransfer getSelectorType();
-    void setSelectorType(SelectorTypeTransfer selectorType);
-    
-    SelectorTransfer getSelector();
-    void setSelector(SelectorTransfer selector);
     
     SelectorNodeTransfer getSelectorNode();
     void setSelectorNode(SelectorNodeTransfer selectorNode);

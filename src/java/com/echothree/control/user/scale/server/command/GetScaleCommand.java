@@ -18,15 +18,17 @@ package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.GetScaleForm;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetScaleCommand
-        extends BaseSimpleCommand<GetScaleForm> {
+        extends BaseSingleEntityCommand<Scale, GetScaleForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,24 +59,33 @@ public class GetScaleCommand
     @Inject
     ScaleControl scaleControl;
 
-    
     /** Creates a new instance of GetScaleCommand */
     public GetScaleCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ScaleResultFactory.getGetScaleResult();
+    protected Scale getEntity() {
         var scaleName = form.getScaleName();
         var scale = scaleControl.getScaleByName(scaleName);
-        
+
+        if(scale == null) {
+            addExecutionError(ExecutionErrors.UnknownScaleName.name(), scaleName);
+        } else {
+            sendEvent(scale.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return scale;
+    }
+
+    @Override
+    protected BaseResult getResult(Scale scale) {
+        var result = ScaleResultFactory.getGetScaleResult();
+
         if(scale != null) {
             result.setScale(scaleControl.getScaleTransfer(getUserVisit(), scale));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownScaleName.name(), scaleName);
         }
-        
+
         return result;
     }
     

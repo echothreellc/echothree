@@ -23,11 +23,12 @@ import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.Service;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetServiceCommand
-        extends BaseSimpleCommand<GetServiceForm> {
+        extends BaseSingleEntityCommand<Service, GetServiceForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,27 +59,33 @@ public class GetServiceCommand
     @Inject
     ServerControl serverControl;
 
-
-    
     /** Creates a new instance of GetServiceCommand */
     public GetServiceCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetServiceResult();
+    protected Service getEntity() {
         var serviceName = form.getServiceName();
         var service = serverControl.getServiceByName(serviceName);
-        
+
+        if(service == null) {
+            addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);
+        } else {
+            sendEvent(service.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return service;
+    }
+
+    @Override
+    protected BaseResult getResult(Service service) {
+        var result = CoreResultFactory.getGetServiceResult();
+
         if(service != null) {
             result.setService(serverControl.getServiceTransfer(getUserVisit(), service));
-            
-            sendEvent(service.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);
         }
-        
+
         return result;
     }
     

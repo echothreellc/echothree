@@ -22,21 +22,21 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.ApplicationControl;
+import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.core.server.entity.Application;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetApplicationCommand
-        extends BaseSimpleCommand<GetApplicationForm> {
+        extends BaseSingleEntityCommand<Application, GetApplicationForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -52,23 +52,23 @@ public class GetApplicationCommand
     ApplicationControl applicationControl;
 
     @Inject
+    ApplicationLogic applicationLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
-    
     /** Creates a new instance of GetApplicationCommand */
     public GetApplicationCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetApplicationResult();
+    protected Application getEntity() {
         var applicationName = form.getApplicationName();
         var parameterCount = (applicationName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
+        Application application = null;
 
         if(parameterCount == 1) {
-            Application application = null;
-
             if(applicationName == null) {
                 var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Application.name());
@@ -77,21 +77,27 @@ public class GetApplicationCommand
                     application = applicationControl.getApplicationByEntityInstance(entityInstance);
                 }
             } else {
-                application = applicationControl.getApplicationByName(applicationName);
-
-                if(application == null) {
-                    addExecutionError(ExecutionErrors.UnknownApplicationName.name(), applicationName);
-                }
+                application = applicationLogic.getApplicationByName(this, applicationName);
             }
 
-            if(!hasExecutionErrors()) {
-                result.setApplication(applicationControl.getApplicationTransfer(getUserVisit(), application));
+            if(application != null) {
                 sendEvent(application.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return application;
+    }
+
+    @Override
+    protected BaseResult getResult(Application application) {
+        var result = CoreResultFactory.getGetApplicationResult();
+
+        if(application != null) {
+            result.setApplication(applicationControl.getApplicationTransfer(getUserVisit(), application));
+        }
+
         return result;
     }
     

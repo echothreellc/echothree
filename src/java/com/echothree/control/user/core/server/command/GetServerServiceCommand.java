@@ -22,11 +22,12 @@ import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.ServerService;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +37,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetServerServiceCommand
-        extends BaseSimpleCommand<GetServerServiceForm> {
+        extends BaseSingleEntityCommand<ServerService, GetServerServiceForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,8 +58,6 @@ public class GetServerServiceCommand
 
     @Inject
     ServerControl serverControl;
-
-
     
     /** Creates a new instance of GetServerServiceCommand */
     public GetServerServiceCommand() {
@@ -66,21 +65,19 @@ public class GetServerServiceCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetServerServiceResult();
+    protected ServerService getEntity() {
         var serverName = form.getServerName();
         var server = serverControl.getServerByName(serverName);
+        ServerService serverService = null;
 
         if(server != null) {
             var serviceName = form.getServiceName();
             var service = serverControl.getServiceByName(serviceName);
 
             if(service != null) {
-                var serverService = serverControl.getServerService(server, service);
+                serverService = serverControl.getServerService(server, service);
 
-                if(serverService != null) {
-                    result.setServerService(serverControl.getServerServiceTransfer(getUserVisit(), serverService));
-                } else {
+                if(serverService == null) {
                     addExecutionError(ExecutionErrors.UnknownServerService.name(), serverName, serviceName);
                 }
             } else {
@@ -88,6 +85,17 @@ public class GetServerServiceCommand
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
+        }
+
+        return serverService;
+    }
+
+    @Override
+    protected BaseResult getResult(ServerService serverService) {
+        var result = CoreResultFactory.getGetServerServiceResult();
+
+        if(serverService != null) {
+            result.setServerService(serverControl.getServerServiceTransfer(getUserVisit(), serverService));
         }
 
         return result;
