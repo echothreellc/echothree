@@ -45,6 +45,9 @@ import org.jooq.Condition;
 public class InventoryTransactionControl
         extends BaseModelControl {
 
+    @Inject
+    InventoryTransactionTimeControl inventoryTransactionTimeControl;
+
     /**
      * Creates a new instance of InventoryTransactionControl
      */
@@ -219,7 +222,7 @@ public class InventoryTransactionControl
         var inventoryTransactionDetail = inventoryTransaction.getLastDetailForUpdate();
 
         removeInventoryTransactionStatusByInventoryTransaction(inventoryTransaction);
-        // TODO: deleteInventoryTransactionTimesByInventoryTransaction(inventoryTransaction, deletedBy);
+        inventoryTransactionTimeControl.deleteInventoryTransactionTimesByInventoryTransaction(inventoryTransaction, deletedBy);
         // TODO: deleteInventoryTransactionRolesByInventoryTransaction(inventoryTransaction, deletedBy);
         // TODO: deleteInventoryTransactionLinesByInventoryTransaction(inventoryTransaction, deletedBy);
 
