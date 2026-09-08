@@ -2393,6 +2393,7 @@ public enum ExecutionErrors {
     UnknownDefaultInventoryTransactionType,
     UnknownInventoryTransactionTypeDescription,
     DuplicateInventoryTransactionTypeDescription,
+    UnknownInventoryTransactionTime,
     DuplicateInventoryTransactionTimeTypeName,
     UnknownInventoryTransactionTimeTypeName,
     UnknownDefaultInventoryTransactionTimeType,
