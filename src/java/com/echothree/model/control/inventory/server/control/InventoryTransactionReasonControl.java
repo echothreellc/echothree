@@ -55,6 +55,9 @@ import javax.inject.Inject;
 public class InventoryTransactionReasonControl
         extends BaseModelControl {
 
+    @Inject
+    InventoryTransactionLineControl inventoryTransactionLineControl;
+
     /** Creates a new instance of InventoryTransactionReasonControl */
     protected InventoryTransactionReasonControl() {
         super();
@@ -390,6 +393,7 @@ public class InventoryTransactionReasonControl
         var inventoryTransactionReasonDetail = inventoryTransactionReason.getLastDetailForUpdate();
 
         deleteInventoryTransactionReasonDescriptionsByInventoryTransactionReason(inventoryTransactionReason, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLinesByInventoryTransactionReason(inventoryTransactionReason, deletedBy);
 
         inventoryTransactionReasonDetail.setThruTime(session.getStartTime());
         inventoryTransactionReason.setActiveDetail(null);
