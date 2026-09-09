@@ -2419,6 +2419,8 @@ public enum ExecutionErrors {
     UnknownDefaultInventoryTransactionRoleType,
     UnknownInventoryTransactionRoleTypeDescription,
     DuplicateInventoryTransactionRoleTypeDescription,
+    DuplicateInventoryTransactionLineSequence,
+    UnknownInventoryTransactionLineSequence,
     DuplicateInventoryTransactionName,
     UnknownInventoryTransactionName,
     InvalidInventoryTransactionType,
