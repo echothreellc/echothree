@@ -1518,13 +1518,14 @@
                         <index type="PrimaryKey">
                             <indexColumn name="InventoryTransactionRoleId" />
                         </index>
-                        <index type="Multiple" name="Index1">
-                            <indexColumn name="InventoryTransactionId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Unique" name="Index2">
+                        <index type="Unique" name="Index1">
                             <indexColumn name="InventoryTransactionId" />
                             <indexColumn name="InventoryTransactionRoleTypeId" />
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="InventoryTransactionId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
