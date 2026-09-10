@@ -264,7 +264,7 @@
             <fileset dir="${dir.home}/build/classes">
                 <include name="com/echothree/control/user/*/common/**/*.class" />
                 <include name="com/echothree/model/control/*/common/**/*.class" />
-                <include name="com/echothree/model/avro/common/**/*.class" />
+                <include name="com/echothree/model/avro/*/common/**/*.class" />
                 <include name="com/echothree/model/data/*/common/**/*.class" />
                 <include name="com/echothree/util/common/**/*.class" />
                 <include name="com/echothree/view/common/**/*.class" />
@@ -290,7 +290,7 @@
             <fileset dir="${dir.home}/build/classes">
                 <include name="com/echothree/control/user/*/common/**/*.class" />
                 <include name="com/echothree/model/control/*/common/**/*.class" />
-                <include name="com/echothree/model/avro/common/**/*.class" />
+                <include name="com/echothree/model/avro/*/common/**/*.class" />
                 <include name="com/echothree/model/data/*/common/**/*.class" />
                 <include name="com/echothree/util/common/**/*.class" />
                 <include name="com/echothree/view/common/**/*.class" />
@@ -350,6 +350,7 @@
                 <include name="cloudevents-api.jar" />
                 <include name="cloudevents-core.jar" />
                 <include name="cloudevents-json-jackson.jar" />
+                <include name="cloudevents-kafka.jar" />
                 <include name="commons-codec.jar" />
                 <include name="graphql-java.jar" />
                 <include name="graphql-java-extended-scalars.jar" />

@@ -25,19 +25,21 @@ import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.net.MediaType;
 import fish.payara.cloud.connectors.kafka.api.KafkaConnectionFactory;
+import io.cloudevents.CloudEvent;
 import io.cloudevents.core.builder.CloudEventBuilder;
 import io.cloudevents.jackson.JsonFormat;
+import io.cloudevents.kafka.KafkaMessageFactory;
+import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.Future;
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.header.Headers;
-import org.apache.kafka.common.header.internals.RecordHeader;
-import org.apache.kafka.common.header.internals.RecordHeaders;
+import org.apache.kafka.clients.producer.RecordMetadata;
 
 @ApplicationScoped
 public class EventTopic {
@@ -45,27 +47,32 @@ public class EventTopic {
     @Resource(name = "java:/KafkaConnectionFactory")
     KafkaConnectionFactory kafkaConnectionFactory;
 
+    // Feature flags
+    private static final boolean SEND_JSON_EVENTS = true;
+    private static final boolean SEND_AVRO_EVENTS = false;
+
     // Kafka
-    private static final String TOPIC = "echothree-events-json";
+    private static final String TOPIC_JSON = "echothree-events-json";
+    private static final String TOPIC_AVRO = "echothree-events-avro";
 
     // CloudEvents
     private static final URI EVENT_SOURCE = URI.create("urn:echothree:events");
-
-    private static final Headers HEADERS_CLOUD_EVENT = new RecordHeaders()
-            .add(new RecordHeader("content-type", JsonFormat.CONTENT_TYPE.getBytes(StandardCharsets.UTF_8)));
 
     // Keep the namespace stable so the same eventId always produces the same UUIDv5.
     private static final UUID NAMESPACE = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL).generate(EVENT_SOURCE.toString());
     private static final NameBasedGenerator EVENT_ID_GENERATOR = Generators.nameBasedGenerator(NAMESPACE);
 
     // Jackson
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final JsonFormat CLOUD_EVENT_JSON_FORMAT = new JsonFormat();
+    // Initialized only when JSON publishing is used.
+    private static class JsonSerialization {
+        private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+        private static final JsonFormat CLOUD_EVENT_JSON_FORMAT = new JsonFormat();
+    }
 
     protected EventTopic() {}
 
     public void sendEvent(Event event) {
-        if(kafkaConnectionFactory != null) {
+        if((SEND_JSON_EVENTS || SEND_AVRO_EVENTS) && kafkaConnectionFactory != null) {
             try {
                 try(var kafkaConnection = kafkaConnectionFactory.createConnection()) {
                     var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
@@ -81,50 +88,71 @@ public class EventTopic {
                     var relatedEventTypeName = relatedEventType == null ? null : relatedEventType.getEventTypeName();
                     var createdByEntityRef = EntityInstanceUtils.getEntityRefByEntityInstance(event.getCreatedBy());
 
-//                    var value = "eventId = " + eventId
-//                            + ", eventTime = " + eventTime
-//                            + ", eventTimeSequence = " + eventTimeSequence
-//                            + ", entityRef = " + entityRef
-//                            + ", id = " + id
-//                            + ", eventType = " + eventTypeName
-//                            + ", relatedEntityInstance = " + relatedEntityRef
-//                            + ", relatedEventType = " + relatedEventTypeName
-//                            + ", createdByEntityInstance = " + createdByEntityRef;
-
-//                    var eventValue = com.echothree.model.avro.core.common.Event.newBuilder()
-//                            .setEventId(eventId)
-//                            .setEventTime(eventTime)
-//                            .setEventTimeSequence(eventTimeSequence)
-//                            .setEntityRef(entityRef)
-//                            .setId(id)
-//                            .setEventTypeName(eventTypeName)
-//                            .setRelatedEntityRef(relatedEntityRef)
-//                            .setRelatedEventTypeName(relatedEventTypeName)
-//                            .setCreatedByEntityRef(createdByEntityRef)
-//                            .build();
-
-                    var eventJsonObject = new com.echothree.model.control.core.server.kafka.Event(eventId, eventTime,
+                    var eventData = new com.echothree.model.control.core.server.kafka.Event(eventId, eventTime,
                             eventTimeSequence, entityRef, id, eventTypeName, relatedEntityRef, relatedEventTypeName,
                             createdByEntityRef);
                     var cloudEvent = CloudEventBuilder.v1()
                             .withId(EVENT_ID_GENERATOR.generate(eventId.toString()).toString())
                             .withSource(EVENT_SOURCE)
-                            .withType("com.echothree.event." + eventTypeName)
+                            .withType("com.echothree.model.control.core.common.EventTypes." + eventTypeName)
                             .withSubject(entityRef)
                             .withTime(Instant.ofEpochMilli(eventTime).atOffset(ZoneOffset.UTC))
-                            .withData(MediaType.JSON_UTF_8.toString(), OBJECT_MAPPER.writeValueAsBytes(eventJsonObject))
                             .build();
-                    var eventJson = new String(CLOUD_EVENT_JSON_FORMAT.serialize(cloudEvent), StandardCharsets.UTF_8);
+                    var futures = new ArrayList<Future<RecordMetadata>>(2);
 
-                    var future = kafkaConnection.send(new ProducerRecord<>(TOPIC, null,
-                            eventTime, entityRef, eventJson, HEADERS_CLOUD_EVENT));
+                    if(SEND_JSON_EVENTS) {
+                        futures.add(kafkaConnection.send(createJsonRecord(eventData, cloudEvent)));
+                    }
 
-                    future.get();
+                    if(SEND_AVRO_EVENTS) {
+                        futures.add(kafkaConnection.send(createAvroRecord(eventData, cloudEvent)));
+                    }
+
+                    for(var future : futures) {
+                        future.get();
+                    }
                 }
             } catch(Exception e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private ProducerRecord<String, byte[]> createJsonRecord(com.echothree.model.control.core.server.kafka.Event eventData,
+            CloudEvent cloudEvent) throws IOException {
+        var jsonCloudEvent = CloudEventBuilder.from(cloudEvent)
+                .withData(MediaType.JSON_UTF_8.toString(), JsonSerialization.OBJECT_MAPPER.writeValueAsBytes(eventData))
+                .build();
+
+        return KafkaMessageFactory.createWriter(TOPIC_JSON, null, eventData.eventTime(), eventData.entityRef())
+                .writeStructured(jsonCloudEvent, JsonSerialization.CLOUD_EVENT_JSON_FORMAT);
+    }
+
+    private ProducerRecord<String, byte[]> createAvroRecord(com.echothree.model.control.core.server.kafka.Event eventData,
+            CloudEvent cloudEvent) throws IOException {
+        var eventAvro = com.echothree.model.avro.core.common.Event.newBuilder()
+                .setEventId(eventData.eventId())
+                .setEventTime(eventData.eventTime())
+                .setEventTimeSequence(eventData.eventTimeSequence())
+                .setEntityRef(eventData.entityRef())
+                .setId(eventData.id())
+                .setEventTypeName(eventData.eventTypeName())
+                .setRelatedEntityRef(eventData.relatedEntityRef())
+                .setRelatedEventTypeName(eventData.relatedEventTypeName())
+                .setCreatedByEntityRef(eventData.createdByEntityRef())
+                .build();
+        // Single-object encoding includes the schema fingerprint for the generated decoder.
+        var avroBuffer = eventAvro.toByteBuffer();
+        var avroBytes = new byte[avroBuffer.remaining()];
+
+        avroBuffer.get(avroBytes);
+
+        var avroCloudEvent = CloudEventBuilder.from(cloudEvent)
+                .withData("avro/binary", avroBytes)
+                .build();
+
+        return KafkaMessageFactory.createWriter(TOPIC_AVRO, null, eventData.eventTime(), eventData.entityRef())
+                .writeBinary(avroCloudEvent);
     }
 
 }
