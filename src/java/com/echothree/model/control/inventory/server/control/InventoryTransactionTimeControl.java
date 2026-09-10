@@ -25,27 +25,38 @@ import com.echothree.model.control.inventory.server.transfer.InventoryTransactio
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryTransactionTimeTypePK;
 import com.echothree.model.data.inventory.server.entity.InventoryTransaction;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionLine;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionLineTime;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionTime;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionTimeType;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionTimeTypeDescription;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
+import com.echothree.model.data.inventory.server.factory.InventoryTransactionLineTimeFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionTimeFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionTimeTypeDescriptionFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionTimeTypeDetailFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionTimeTypeFactory;
+import com.echothree.model.data.inventory.server.value.InventoryTransactionLineTimeValue;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionTimeTypeDescriptionValue;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionTimeTypeDetailValue;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionTimeValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_LINES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_TIME_TYPES_ACTIVE_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_TIME_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_TYPES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionDetails.InventoryTransactionDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLineDetails.InventoryTransactionLineDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLineTimes.InventoryTransactionLineTimes;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLines.InventoryTransactionLines;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTimeTypeDescriptions.InventoryTransactionTimeTypeDescriptions;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTimeTypeDetails.InventoryTransactionTimeTypeDetails;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTimeTypes.InventoryTransactionTimeTypes;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTimes.InventoryTransactionTimes;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTypeDetails.InventoryTransactionTypeDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTypes.InventoryTransactionTypes;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactions.InventoryTransactions;
 import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
@@ -359,6 +370,7 @@ public class InventoryTransactionTimeControl
 
         deleteInventoryTransactionTimeTypeDescriptionsByInventoryTransactionTimeType(inventoryTransactionTimeType, deletedBy);
         deleteInventoryTransactionTimesByInventoryTransactionTimeType(inventoryTransactionTimeType, deletedBy);
+        deleteInventoryTransactionLineTimesByInventoryTransactionTimeType(inventoryTransactionTimeType, deletedBy);
 
         inventoryTransactionTimeTypeDetail.setThruTime(session.getStartTime());
         inventoryTransactionTimeType.setActiveDetail(null);
@@ -761,6 +773,186 @@ public class InventoryTransactionTimeControl
     public void deleteInventoryTransactionTimesByInventoryTransactionTimeType(InventoryTransactionTimeType inventoryTransactionTimeType,
             BasePK deletedBy) {
         deleteInventoryTransactionTimes(getInventoryTransactionTimesByInventoryTransactionTimeTypeForUpdate(inventoryTransactionTimeType), deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Inventory Transaction Line Times
+    // --------------------------------------------------------------------------------
+
+    @Inject
+    protected InventoryTransactionLineTimeFactory inventoryTransactionLineTimeFactory;
+
+    public InventoryTransactionLineTime createInventoryTransactionLineTime(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionTimeType inventoryTransactionTimeType, Long time, BasePK createdBy) {
+        var inventoryTransactionLineTime = inventoryTransactionLineTimeFactory.create(inventoryTransactionLine, inventoryTransactionTimeType, time,
+                session.getStartTime(), Session.MAX_TIME);
+
+        sendEvent(inventoryTransactionLine.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionLineTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return inventoryTransactionLineTime;
+    }
+
+    private long countInventoryTransactionLineTimes(Condition condition) {
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryTransactionLineTimes)
+                .where(condition, InventoryTransactionLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
+    public long countInventoryTransactionLineTimesByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine) {
+        return countInventoryTransactionLineTimes(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()));
+    }
+
+    public long countInventoryTransactionLineTimesByInventoryTransactionTimeType(InventoryTransactionTimeType inventoryTransactionTimeType) {
+        return countInventoryTransactionLineTimes(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_TIME_TYPE.eq(inventoryTransactionTimeType.getPrimaryKey()));
+    }
+
+    public boolean inventoryTransactionLineTimeExists(InventoryTransactionLine inventoryTransactionLine, InventoryTransactionTimeType inventoryTransactionTimeType) {
+        return countInventoryTransactionLineTimes(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey())
+                .and(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_TIME_TYPE.eq(inventoryTransactionTimeType.getPrimaryKey()))) != 0;
+    }
+
+    public InventoryTransactionLineTime getInventoryTransactionLineTime(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionTimeType inventoryTransactionTimeType, EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryTransactionLineTimes.fields())
+                .from(InventoryTransactionLineTimes)
+                .where(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()),
+                        InventoryTransactionLineTimes.INVENTORY_TRANSACTION_TIME_TYPE.eq(inventoryTransactionTimeType.getPrimaryKey()),
+                        InventoryTransactionLineTimes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return inventoryTransactionLineTimeFactory.getEntityFromQuery(entityPermission, query);
+    }
+
+    public InventoryTransactionLineTime getInventoryTransactionLineTime(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionTimeType inventoryTransactionTimeType) {
+        return getInventoryTransactionLineTime(inventoryTransactionLine, inventoryTransactionTimeType, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryTransactionLineTime getInventoryTransactionLineTimeForUpdate(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionTimeType inventoryTransactionTimeType) {
+        return getInventoryTransactionLineTime(inventoryTransactionLine, inventoryTransactionTimeType, EntityPermission.READ_WRITE);
+    }
+
+    public InventoryTransactionLineTimeValue getInventoryTransactionLineTimeValue(InventoryTransactionLineTime inventoryTransactionLineTime) {
+        return inventoryTransactionLineTime == null ? null : inventoryTransactionLineTime.getInventoryTransactionLineTimeValue().clone();
+    }
+
+    public InventoryTransactionLineTimeValue getInventoryTransactionLineTimeValueForUpdate(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionTimeType inventoryTransactionTimeType) {
+        return getInventoryTransactionLineTimeValue(getInventoryTransactionLineTimeForUpdate(inventoryTransactionLine, inventoryTransactionTimeType));
+    }
+
+    private List<InventoryTransactionLineTime> getInventoryTransactionLineTimesByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine,
+            EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(InventoryTransactionLineTimes.fields())
+                    .from(InventoryTransactionLineTimes)
+                    .join(InventoryTransactionTimeTypes).on(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_TIME_TYPE.eq(InventoryTransactionTimeTypes.INVENTORY_TRANSACTION_TIME_TYPE))
+                    .join(InventoryTransactionTimeTypeDetails).onKey(INVENTORY_TRANSACTION_TIME_TYPES_LAST_DETAIL_FK)
+                    .where(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()),
+                            InventoryTransactionLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryTransactionTimeTypeDetails.SORT_ORDER, InventoryTransactionTimeTypeDetails.INVENTORY_TRANSACTION_TIME_TYPE_NAME),
+                    InventoryTransactionLineTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryTransactionLineTimes.fields())
+                    .from(InventoryTransactionLineTimes)
+                    .where(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()),
+                            InventoryTransactionLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return inventoryTransactionLineTimeFactory.getEntitiesFromQuery(entityPermission, query);
+    }
+
+    public List<InventoryTransactionLineTime> getInventoryTransactionLineTimesByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine) {
+        return getInventoryTransactionLineTimesByInventoryTransactionLine(inventoryTransactionLine, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineTime> getInventoryTransactionLineTimesByInventoryTransactionLineForUpdate(InventoryTransactionLine inventoryTransactionLine) {
+        return getInventoryTransactionLineTimesByInventoryTransactionLine(inventoryTransactionLine, EntityPermission.READ_WRITE);
+    }
+
+    private List<InventoryTransactionLineTime> getInventoryTransactionLineTimesByInventoryTransactionTimeType(InventoryTransactionTimeType inventoryTransactionTimeType,
+            EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(InventoryTransactionLineTimes.fields())
+                    .from(InventoryTransactionLineTimes)
+                    .join(InventoryTransactionLines).on(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_LINE.eq(InventoryTransactionLines.INVENTORY_TRANSACTION_LINE))
+                    .join(InventoryTransactionLineDetails).onKey(INVENTORY_TRANSACTION_LINES_LAST_DETAIL_FK)
+                    .join(InventoryTransactions).on(InventoryTransactionLineDetails.INVENTORY_TRANSACTION.eq(InventoryTransactions.INVENTORY_TRANSACTION))
+                    .join(InventoryTransactionDetails).onKey(INVENTORY_TRANSACTIONS_LAST_DETAIL_FK)
+                    .join(InventoryTransactionTypes).on(InventoryTransactionDetails.INVENTORY_TRANSACTION_TYPE.eq(InventoryTransactionTypes.INVENTORY_TRANSACTION_TYPE))
+                    .join(InventoryTransactionTypeDetails).onKey(INVENTORY_TRANSACTION_TYPES_LAST_DETAIL_FK)
+                    .where(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_TIME_TYPE.eq(inventoryTransactionTimeType.getPrimaryKey()),
+                            InventoryTransactionLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryTransactionTypeDetails.SORT_ORDER, InventoryTransactionTypeDetails.INVENTORY_TRANSACTION_TYPE_NAME,
+                            InventoryTransactionDetails.INVENTORY_TRANSACTION_NAME, InventoryTransactionLineDetails.INVENTORY_TRANSACTION_LINE_SEQUENCE),
+                    InventoryTransactionLineTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryTransactionLineTimes.fields())
+                    .from(InventoryTransactionLineTimes)
+                    .where(InventoryTransactionLineTimes.INVENTORY_TRANSACTION_TIME_TYPE.eq(inventoryTransactionTimeType.getPrimaryKey()),
+                            InventoryTransactionLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return inventoryTransactionLineTimeFactory.getEntitiesFromQuery(entityPermission, query);
+    }
+
+    public List<InventoryTransactionLineTime> getInventoryTransactionLineTimesByInventoryTransactionTimeType(InventoryTransactionTimeType inventoryTransactionTimeType) {
+        return getInventoryTransactionLineTimesByInventoryTransactionTimeType(inventoryTransactionTimeType, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineTime> getInventoryTransactionLineTimesByInventoryTransactionTimeTypeForUpdate(InventoryTransactionTimeType inventoryTransactionTimeType) {
+        return getInventoryTransactionLineTimesByInventoryTransactionTimeType(inventoryTransactionTimeType, EntityPermission.READ_WRITE);
+    }
+
+    public void updateInventoryTransactionLineTimeFromValue(InventoryTransactionLineTimeValue inventoryTransactionLineTimeValue, BasePK updatedBy) {
+        if(inventoryTransactionLineTimeValue.hasBeenModified()) {
+            var inventoryTransactionLineTime = inventoryTransactionLineTimeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
+                    inventoryTransactionLineTimeValue.getPrimaryKey());
+
+            inventoryTransactionLineTime.setThruTime(session.getStartTime());
+            inventoryTransactionLineTime.store();
+
+            var inventoryTransactionLinePK = inventoryTransactionLineTime.getInventoryTransactionLinePK(); // Not updated
+            var inventoryTransactionTimeTypePK = inventoryTransactionLineTime.getInventoryTransactionTimeTypePK(); // Not updated
+            var time = inventoryTransactionLineTimeValue.getTime();
+
+            inventoryTransactionLineTime = inventoryTransactionLineTimeFactory.create(inventoryTransactionLinePK, inventoryTransactionTimeTypePK, time,
+                    session.getStartTime(), Session.MAX_TIME);
+
+            sendEvent(inventoryTransactionLinePK, EventTypes.MODIFY, inventoryTransactionLineTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteInventoryTransactionLineTime(InventoryTransactionLineTime inventoryTransactionLineTime, BasePK deletedBy) {
+        inventoryTransactionLineTime.setThruTime(session.getStartTime());
+
+        sendEvent(inventoryTransactionLineTime.getInventoryTransactionLinePK(), EventTypes.MODIFY, inventoryTransactionLineTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteInventoryTransactionLineTimes(List<InventoryTransactionLineTime> inventoryTransactionLineTimes, BasePK deletedBy) {
+        inventoryTransactionLineTimes.forEach(inventoryTransactionLineTime -> deleteInventoryTransactionLineTime(inventoryTransactionLineTime, deletedBy));
+    }
+
+    public void deleteInventoryTransactionLineTimesByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine, BasePK deletedBy) {
+        deleteInventoryTransactionLineTimes(getInventoryTransactionLineTimesByInventoryTransactionLineForUpdate(inventoryTransactionLine), deletedBy);
+    }
+
+    public void deleteInventoryTransactionLineTimesByInventoryTransactionTimeType(InventoryTransactionTimeType inventoryTransactionTimeType,
+            BasePK deletedBy) {
+        deleteInventoryTransactionLineTimes(getInventoryTransactionLineTimesByInventoryTransactionTimeTypeForUpdate(inventoryTransactionTimeType), deletedBy);
     }
 
 }
