@@ -20,14 +20,20 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.EntityInstanceUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.NameBasedGenerator;
 import com.google.common.net.MediaType;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import fish.payara.cloud.connectors.kafka.api.KafkaConnectionFactory;
+import io.cloudevents.core.builder.CloudEventBuilder;
+import io.cloudevents.jackson.JsonFormat;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.UUID;
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
-import org.apache.http.HttpHeaders;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeader;
@@ -39,12 +45,22 @@ public class EventTopic {
     @Resource(name = "java:/KafkaConnectionFactory")
     KafkaConnectionFactory kafkaConnectionFactory;
 
+    // Kafka
     private static final String TOPIC = "echothree-events-json";
 
-    private final Gson gson = new GsonBuilder().serializeNulls().create();
+    // CloudEvents
+    private static final URI EVENT_SOURCE = URI.create("urn:echothree:events");
 
-    private final Headers HEADERS_JSON = new RecordHeaders()
-            .add(new RecordHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8.toString().getBytes(StandardCharsets.UTF_8)));
+    private static final Headers HEADERS_CLOUD_EVENT = new RecordHeaders()
+            .add(new RecordHeader("content-type", JsonFormat.CONTENT_TYPE.getBytes(StandardCharsets.UTF_8)));
+
+    // Keep the namespace stable so the same eventId always produces the same UUIDv5.
+    private static final UUID NAMESPACE = Generators.nameBasedGenerator(NameBasedGenerator.NAMESPACE_URL).generate(EVENT_SOURCE.toString());
+    private static final NameBasedGenerator EVENT_ID_GENERATOR = Generators.nameBasedGenerator(NAMESPACE);
+
+    // Jackson
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonFormat CLOUD_EVENT_JSON_FORMAT = new JsonFormat();
 
     protected EventTopic() {}
 
@@ -90,10 +106,18 @@ public class EventTopic {
                     var eventJsonObject = new com.echothree.model.control.core.server.kafka.Event(eventId, eventTime,
                             eventTimeSequence, entityRef, id, eventTypeName, relatedEntityRef, relatedEventTypeName,
                             createdByEntityRef);
-                    var eventJson = gson.toJson(eventJsonObject);
+                    var cloudEvent = CloudEventBuilder.v1()
+                            .withId(EVENT_ID_GENERATOR.generate(eventId.toString()).toString())
+                            .withSource(EVENT_SOURCE)
+                            .withType("com.echothree.event." + eventTypeName)
+                            .withSubject(entityRef)
+                            .withTime(Instant.ofEpochMilli(eventTime).atOffset(ZoneOffset.UTC))
+                            .withData(MediaType.JSON_UTF_8.toString(), OBJECT_MAPPER.writeValueAsBytes(eventJsonObject))
+                            .build();
+                    var eventJson = new String(CLOUD_EVENT_JSON_FORMAT.serialize(cloudEvent), StandardCharsets.UTF_8);
 
                     var future = kafkaConnection.send(new ProducerRecord<>(TOPIC, null,
-                            eventTime, entityRef, eventJson, HEADERS_JSON));
+                            eventTime, entityRef, eventJson, HEADERS_CLOUD_EVENT));
 
                     future.get();
                 }

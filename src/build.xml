@@ -347,6 +347,9 @@
                 <include name="antlr4-runtime.jar" />
                 <include name="caffeine.jar" />
                 <include name="classgraph.jar" />
+                <include name="cloudevents-api.jar" />
+                <include name="cloudevents-core.jar" />
+                <include name="cloudevents-json-jackson.jar" />
                 <include name="commons-codec.jar" />
                 <include name="graphql-java.jar" />
                 <include name="graphql-java-extended-scalars.jar" />
@@ -358,6 +361,9 @@
                 <include name="httpcore.jar" />
                 <include name="icu4j.jar" />
                 <include name="itext.jar" />
+                <include name="jackson-annotations.jar" />
+                <include name="jackson-core.jar" />
+                <include name="jackson-databind.jar" />
                 <include name="java-dataloader.jar"/>
                 <include name="java-uuid-generator.jar"/>
                 <include name="jooq.jar"/>
