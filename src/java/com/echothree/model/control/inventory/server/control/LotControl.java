@@ -45,6 +45,9 @@ public class LotControl
         extends BaseModelControl {
 
     @Inject
+    InventoryTransactionLineControl inventoryTransactionLineControl;
+
+    @Inject
     LotTransferCache lotTransferCache;
 
     /**
@@ -219,6 +222,9 @@ public class LotControl
 
     public void deleteLot(final Lot lot, final BasePK deletedBy) {
         var lotDetail = lot.getLastDetailForUpdate();
+
+        inventoryTransactionLineControl.deleteInventoryTransactionLinesByLot(lot, deletedBy);
+
         lotDetail.setThruTime(session.getStartTime());
         lotDetail.store();
         lot.setActiveDetail(null);

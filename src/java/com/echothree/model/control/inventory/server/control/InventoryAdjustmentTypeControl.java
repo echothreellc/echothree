@@ -57,6 +57,9 @@ public class InventoryAdjustmentTypeControl
     InventoryDispositionAdjustmentControl inventoryDispositionAdjustmentControl;
 
     @Inject
+    InventoryTransactionLineControl inventoryTransactionLineControl;
+
+    @Inject
     InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
 
     @Inject
@@ -326,7 +329,7 @@ public class InventoryAdjustmentTypeControl
 
         deleteInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
         inventoryDispositionAdjustmentControl.deleteInventoryDispositionAdjustmentsByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
-        // TODO: deleteInventoryTransactionsByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLinesByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
 
         inventoryAdjustmentTypeDetail.setThruTime(session.getStartTime());
         inventoryAdjustmentType.setActiveDetail(null);
