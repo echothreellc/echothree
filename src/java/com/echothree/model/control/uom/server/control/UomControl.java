@@ -19,6 +19,7 @@ package com.echothree.model.control.uom.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.server.control.BucketControl;
 import com.echothree.model.control.inventory.server.control.InventoryLocationControl;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionLineControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureKindChoicesBean;
@@ -103,6 +104,9 @@ public class UomControl
 
     @Inject
     protected InventoryLocationControl inventoryLocationControl;
+
+    @Inject
+    protected InventoryTransactionLineControl inventoryTransactionLineControl;
 
     @Inject
     protected ItemControl itemControl;
@@ -1042,6 +1046,7 @@ public class UomControl
         deleteUnitOfMeasureTypeWeightByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         bucketControl.removePartyBucketsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         inventoryLocationControl.deleteInventoryLocationsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLineSourcesBySourceUnitOfMeasureType(unitOfMeasureType, deletedBy);
         itemControl.deleteItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         vendorControl.deleteVendorItemCostsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
 

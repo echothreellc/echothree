@@ -25,6 +25,7 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.inventory.server.control.BucketControl;
 import com.echothree.model.control.inventory.server.control.InventoryLocationControl;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionLineControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.choice.BirthdayFormatChoicesBean;
@@ -248,6 +249,9 @@ public class PartyControl
 
     @Inject
     protected InventoryLocationControl inventoryLocationControl;
+
+    @Inject
+    protected InventoryTransactionLineControl inventoryTransactionLineControl;
 
     @Inject
     protected InventoryTransactionRoleControl inventoryTransactionRoleControl;
@@ -2452,6 +2456,7 @@ public class PartyControl
         contactListControl.deletePartyContactListsByParty(party, deletedBy);
         documentControl.deletePartyDocumentsByParty(party, deletedBy);
         inventoryLocationControl.deleteInventoryLocationsByOwnerParty(party, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLineSourcesBySourceOwnerParty(party, deletedBy);
         inventoryTransactionRoleControl.deleteInventoryTransactionRolesByParty(party, deletedBy);
         printerControl.deletePartyPrinterGroupUsesByParty(party, deletedBy);
         scaleControl.deletePartyScaleUsesByParty(party, deletedBy);

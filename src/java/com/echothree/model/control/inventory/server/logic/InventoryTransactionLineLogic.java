@@ -26,12 +26,18 @@ import com.echothree.model.control.inventory.common.exception.InvalidInventoryTr
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransactionLineSequenceException;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionLineControl;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryTransaction;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionLine;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionLineSource;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionReason;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionLineDetailValue;
+import com.echothree.model.data.inventory.server.value.InventoryTransactionLineSourceValue;
 import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -60,6 +66,10 @@ public class InventoryTransactionLineLogic
     protected InventoryTransactionLineLogic() {
         super();
     }
+
+    // --------------------------------------------------------------------------------
+    //   Inventory Transaction Lines
+    // --------------------------------------------------------------------------------
 
     public InventoryTransactionLine createInventoryTransactionLine(final ExecutionErrorAccumulator eea,
             final String inventoryTransactionTypeName, final String inventoryTransactionName,
@@ -214,6 +224,22 @@ public class InventoryTransactionLineLogic
     public void deleteInventoryTransactionLine(final ExecutionErrorAccumulator eea, final InventoryTransactionLine inventoryTransactionLine,
             final BasePK deletedBy) {
         inventoryTransactionLineControl.deleteInventoryTransactionLine(inventoryTransactionLine, deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Inventory Transaction Line Sources
+    // --------------------------------------------------------------------------------
+
+    public InventoryTransactionLineSource createInventoryTransactionLineSource(final InventoryTransactionLine inventoryTransactionLine,
+            final Party sourceOwnerParty, final Location sourceLocation, final InventoryCondition sourceInventoryCondition,
+            final UnitOfMeasureType sourceUnitOfMeasureType, final BasePK createdBy) {
+        return inventoryTransactionLineControl.createInventoryTransactionLineSource(inventoryTransactionLine, sourceOwnerParty,
+                sourceLocation, sourceInventoryCondition, sourceUnitOfMeasureType, createdBy);
+    }
+
+    public void updateInventoryTransactionLineSourceFromValue(final InventoryTransactionLineSourceValue inventoryTransactionLineSourceValue,
+            final BasePK updatedBy) {
+        inventoryTransactionLineControl.updateInventoryTransactionLineSourceFromValue(inventoryTransactionLineSourceValue, updatedBy);
     }
 
 }

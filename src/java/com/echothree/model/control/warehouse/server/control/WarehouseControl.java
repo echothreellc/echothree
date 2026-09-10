@@ -18,6 +18,7 @@ package com.echothree.model.control.warehouse.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.server.control.InventoryLocationControl;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionLineControl;
 import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -119,6 +120,9 @@ public class WarehouseControl
 
     @Inject
     protected InventoryLocationGroupControl inventoryLocationGroupControl;
+
+    @Inject
+    protected InventoryTransactionLineControl inventoryTransactionLineControl;
 
     @Inject
     protected SearchControl searchControl;
@@ -2261,6 +2265,7 @@ public class WarehouseControl
         deleteLocationCapacitiesByLocation(location, deletedBy);
         deleteLocationDescriptionsByLocation(location, deletedBy);
         inventoryLocationControl.deleteInventoryLocationsByLocation(location, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLineSourcesBySourceLocation(location, deletedBy);
 
         var locationDetail = location.getLastDetailForUpdate();
         locationDetail.setThruTime(session.getStartTime());
