@@ -8,6 +8,9 @@
     </configurations>
     <dependencies>
         <dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.25" conf="sources->sources" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="sources->sources" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.6" conf="sources->sources" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.6" conf="sources->sources" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="sources->sources" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.2.4" conf="sources->sources" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="sources->sources" />
@@ -37,6 +40,10 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
         <!-- keeping kafka-jca-api at 0.8.0 until truly forked -->
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="sources->sources" />
+        <dependency org="io.cloudevents" name="cloudevents-api" rev="5.0.0" conf="sources->sources" />
+        <dependency org="io.cloudevents" name="cloudevents-core" rev="5.0.0" conf="sources->sources" />
+        <dependency org="io.cloudevents" name="cloudevents-json-jackson" rev="5.0.0" conf="sources->sources" />
+        <dependency org="io.cloudevents" name="cloudevents-kafka" rev="5.0.0" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.33.0" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.33.0" conf="sources->sources" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.186" conf="sources->sources" />
@@ -102,6 +109,9 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
 
         <dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.25" conf="javadoc->javadoc" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="javadoc->javadoc" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.6" conf="javadoc->javadoc" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.6" conf="javadoc->javadoc" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="javadoc->javadoc" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.2.4" conf="javadoc->javadoc" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="javadoc->javadoc" />
@@ -131,6 +141,10 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
         <!-- keeping kafka-jca-api at 0.8.0 until truly forked -->
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="javadoc->javadoc" />
+        <dependency org="io.cloudevents" name="cloudevents-api" rev="5.0.0" conf="javadoc->javadoc" />
+        <dependency org="io.cloudevents" name="cloudevents-core" rev="5.0.0" conf="javadoc->javadoc" />
+        <dependency org="io.cloudevents" name="cloudevents-json-jackson" rev="5.0.0" conf="javadoc->javadoc" />
+        <dependency org="io.cloudevents" name="cloudevents-kafka" rev="5.0.0" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.33.0" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.33.0" conf="javadoc->javadoc" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.186" conf="javadoc->javadoc" />
@@ -195,6 +209,9 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
 
         <dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.25" conf="binaries->default" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="binaries->default" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.6" conf="binaries->default" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.6" conf="binaries->default" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="binaries->default" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.2.4" conf="binaries->default" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="binaries->default" />
@@ -226,6 +243,10 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
         <!-- keeping kafka-jca-api at 0.8.0 until truly forked -->
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="binaries->default" />
+        <dependency org="io.cloudevents" name="cloudevents-api" rev="5.0.0" conf="binaries->default" />
+        <dependency org="io.cloudevents" name="cloudevents-core" rev="5.0.0" conf="binaries->default" />
+        <dependency org="io.cloudevents" name="cloudevents-json-jackson" rev="5.0.0" conf="binaries->default" />
+        <dependency org="io.cloudevents" name="cloudevents-kafka" rev="5.0.0" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.33.0" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.33.0" conf="binaries->default" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.186" conf="binaries->default" />

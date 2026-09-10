@@ -194,6 +194,10 @@
       <root url="jar://$PROJECT_DIR$/build/lib/pretty-formatter.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/teamcity-formatter.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/usage-formatter.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/cloudevents-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/cloudevents-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/cloudevents-json-jackson.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/cloudevents-kafka.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -274,6 +278,13 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xercesImpl-javadoc.jar!/xs" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/junit-jupiter-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/junit-platform-launcher-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/cloudevents-api-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/cloudevents-core-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/cloudevents-json-jackson-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/cloudevents-kafka-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jackson-annotations-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jackson-core-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jackson-databind-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib-sources/activation-sources.jar!/" />
@@ -368,6 +379,13 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-backward-codecs-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/reload4j-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/junit-platform-launcher-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/cloudevents-api-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/cloudevents-core-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/cloudevents-json-jackson-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/cloudevents-kafka-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jackson-annotations-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jackson-core-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jackson-databind-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

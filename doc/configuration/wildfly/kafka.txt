@@ -9,6 +9,8 @@
                                 class-name="fish.payara.cloud.connectors.kafka.outbound.KafkaManagedConnectionFactory"
                                 jndi-name="java:/KafkaConnectionFactory" pool-name="ConnectionFactory">
                             <config-property name="bootstrapServersConfig">kafka1.echothree.com:9092,kafka2.echothree.com:9092,kafka3.echothree.com:9092</config-property>
+                            <!-- Both JSON and Avro event values can be serialized by the application, use ByteArraySerializer. -->
+                            <config-property name="valueSerializer">org.apache.kafka.common.serialization.ByteArraySerializer</config-property>
                             <config-property name="acks">all</config-property>
                             <config-property name="enableIdempotence">true</config-property>
                             <config-property name="transactionIdPrefix">EchoThree</config-property>
@@ -22,3 +24,9 @@
                     </connection-definitions>
                 </resource-adapter>
             </resource-adapters>
+
+Event topics:
+- echothree-events-json: structured CloudEvent JSON, UTF-8 encoded.
+- echothree-events-avro: binary-mode CloudEvent with Avro single-object encoding.
+  CloudEvent metadata is in ce_* Kafka headers; content-type is avro/binary.
+  Decode values with com.echothree.model.avro.core.common.Event.fromByteBuffer.
