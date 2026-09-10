@@ -23,15 +23,18 @@ import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryTransaction;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionLine;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionLineDestination;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionLineSource;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionLineStatus;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionReason;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionLineDetailFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionLineFactory;
+import com.echothree.model.data.inventory.server.factory.InventoryTransactionLineDestinationFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionLineSourceFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionLineStatusFactory;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionLineDetailValue;
+import com.echothree.model.data.inventory.server.value.InventoryTransactionLineDestinationValue;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionLineSourceValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
@@ -43,6 +46,7 @@ import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKey
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_TYPES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionDetails.InventoryTransactionDetails;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLineDetails.InventoryTransactionLineDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLineDestinations.InventoryTransactionLineDestinations;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLineSources.InventoryTransactionLineSources;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLineStatuses.InventoryTransactionLineStatuses;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLines.InventoryTransactionLines;
@@ -348,7 +352,7 @@ public class InventoryTransactionLineControl
 
         removeInventoryTransactionLineStatusByInventoryTransactionLine(inventoryTransactionLine);
         deleteInventoryTransactionLineSourceByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
-        // TODO: deleteInventoryTransactionLineDestinationByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
+        deleteInventoryTransactionLineDestinationByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
         // TODO: deleteInventoryTransactionLineTimesByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
         // TODO: deleteInventoryTransactionLineRolesByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
         // TODO: deleteInventoryLayersByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
@@ -614,6 +618,221 @@ public class InventoryTransactionLineControl
 
         if(inventoryTransactionLineSource != null) {
             deleteInventoryTransactionLineSource(inventoryTransactionLineSource, deletedBy);
+        }
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Inventory Transaction Line Destinations
+    // --------------------------------------------------------------------------------
+
+    @Inject
+    protected InventoryTransactionLineDestinationFactory inventoryTransactionLineDestinationFactory;
+
+    public InventoryTransactionLineDestination createInventoryTransactionLineDestination(InventoryTransactionLine inventoryTransactionLine,
+            Party destinationOwnerParty, Location destinationLocation, InventoryCondition destinationInventoryCondition,
+            UnitOfMeasureType destinationUnitOfMeasureType, BasePK createdBy) {
+        var inventoryTransactionLineDestination = inventoryTransactionLineDestinationFactory.create(inventoryTransactionLine, destinationOwnerParty,
+                destinationLocation, destinationInventoryCondition, destinationUnitOfMeasureType, session.getStartTime(), Session.MAX_TIME);
+
+        sendEvent(inventoryTransactionLine.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionLineDestination.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return inventoryTransactionLineDestination;
+    }
+
+    private long countInventoryTransactionLineDestinations(Condition condition) {
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryTransactionLineDestinations)
+                .where(condition, InventoryTransactionLineDestinations.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
+    public long countInventoryTransactionLineDestinationsByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine) {
+        return countInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()));
+    }
+
+    public boolean inventoryTransactionLineDestinationExists(InventoryTransactionLine inventoryTransactionLine) {
+        return countInventoryTransactionLineDestinationsByInventoryTransactionLine(inventoryTransactionLine) != 0;
+    }
+
+    public InventoryTransactionLineDestination getInventoryTransactionLineDestination(InventoryTransactionLine inventoryTransactionLine,
+            EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryTransactionLineDestinations.fields())
+                .from(InventoryTransactionLineDestinations)
+                .where(InventoryTransactionLineDestinations.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()),
+                        InventoryTransactionLineDestinations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return inventoryTransactionLineDestinationFactory.getEntityFromQuery(entityPermission, query);
+    }
+
+    public InventoryTransactionLineDestination getInventoryTransactionLineDestination(InventoryTransactionLine inventoryTransactionLine) {
+        return getInventoryTransactionLineDestination(inventoryTransactionLine, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryTransactionLineDestination getInventoryTransactionLineDestinationForUpdate(InventoryTransactionLine inventoryTransactionLine) {
+        return getInventoryTransactionLineDestination(inventoryTransactionLine, EntityPermission.READ_WRITE);
+    }
+
+    public InventoryTransactionLineDestinationValue getInventoryTransactionLineDestinationValue(InventoryTransactionLineDestination inventoryTransactionLineDestination) {
+        return inventoryTransactionLineDestination == null ? null : inventoryTransactionLineDestination.getInventoryTransactionLineDestinationValue().clone();
+    }
+
+    public InventoryTransactionLineDestinationValue getInventoryTransactionLineDestinationValueForUpdate(InventoryTransactionLine inventoryTransactionLine) {
+        return getInventoryTransactionLineDestinationValue(getInventoryTransactionLineDestinationForUpdate(inventoryTransactionLine));
+    }
+
+    private List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinations(Condition condition, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(InventoryTransactionLineDestinations.fields())
+                    .from(InventoryTransactionLineDestinations)
+                    .join(InventoryTransactionLines).on(InventoryTransactionLineDestinations.INVENTORY_TRANSACTION_LINE.eq(InventoryTransactionLines.INVENTORY_TRANSACTION_LINE))
+                    .join(InventoryTransactionLineDetails).onKey(INVENTORY_TRANSACTION_LINES_LAST_DETAIL_FK)
+                    .join(InventoryTransactions).on(InventoryTransactionLineDetails.INVENTORY_TRANSACTION.eq(InventoryTransactions.INVENTORY_TRANSACTION))
+                    .join(InventoryTransactionDetails).onKey(INVENTORY_TRANSACTIONS_LAST_DETAIL_FK)
+                    .join(InventoryTransactionTypes).on(InventoryTransactionDetails.INVENTORY_TRANSACTION_TYPE.eq(InventoryTransactionTypes.INVENTORY_TRANSACTION_TYPE))
+                    .join(InventoryTransactionTypeDetails).onKey(INVENTORY_TRANSACTION_TYPES_LAST_DETAIL_FK)
+                    .where(condition, InventoryTransactionLineDestinations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryTransactionTypeDetails.SORT_ORDER, InventoryTransactionTypeDetails.INVENTORY_TRANSACTION_TYPE_NAME,
+                            InventoryTransactionDetails.INVENTORY_TRANSACTION_NAME, InventoryTransactionLineDetails.INVENTORY_TRANSACTION_LINE_SEQUENCE),
+                    InventoryTransactionLineDestinationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryTransactionLineDestinations.fields())
+                    .from(InventoryTransactionLineDestinations)
+                    .where(condition, InventoryTransactionLineDestinations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return inventoryTransactionLineDestinationFactory.getEntitiesFromQuery(entityPermission, query);
+    }
+
+    public long countInventoryTransactionLineDestinationsByDestinationOwnerParty(Party destinationOwnerParty) {
+        return countInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.DESTINATION_OWNER_PARTY.eq(destinationOwnerParty.getPrimaryKey()));
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationOwnerParty(Party destinationOwnerParty,
+            EntityPermission entityPermission) {
+        return getInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.DESTINATION_OWNER_PARTY.eq(destinationOwnerParty.getPrimaryKey()), entityPermission);
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationOwnerParty(Party destinationOwnerParty) {
+        return getInventoryTransactionLineDestinationsByDestinationOwnerParty(destinationOwnerParty, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationOwnerPartyForUpdate(Party destinationOwnerParty) {
+        return getInventoryTransactionLineDestinationsByDestinationOwnerParty(destinationOwnerParty, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteInventoryTransactionLineDestinationsByDestinationOwnerParty(Party destinationOwnerParty, BasePK deletedBy) {
+        deleteInventoryTransactionLineDestinations(getInventoryTransactionLineDestinationsByDestinationOwnerPartyForUpdate(destinationOwnerParty), deletedBy);
+    }
+
+    public long countInventoryTransactionLineDestinationsByDestinationLocation(Location destinationLocation) {
+        return countInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.DESTINATION_LOCATION.eq(destinationLocation.getPrimaryKey()));
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationLocation(Location destinationLocation,
+            EntityPermission entityPermission) {
+        return getInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.DESTINATION_LOCATION.eq(destinationLocation.getPrimaryKey()), entityPermission);
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationLocation(Location destinationLocation) {
+        return getInventoryTransactionLineDestinationsByDestinationLocation(destinationLocation, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationLocationForUpdate(Location destinationLocation) {
+        return getInventoryTransactionLineDestinationsByDestinationLocation(destinationLocation, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteInventoryTransactionLineDestinationsByDestinationLocation(Location destinationLocation, BasePK deletedBy) {
+        deleteInventoryTransactionLineDestinations(getInventoryTransactionLineDestinationsByDestinationLocationForUpdate(destinationLocation), deletedBy);
+    }
+
+    public long countInventoryTransactionLineDestinationsByDestinationInventoryCondition(InventoryCondition destinationInventoryCondition) {
+        return countInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.DESTINATION_INVENTORY_CONDITION.eq(destinationInventoryCondition.getPrimaryKey()));
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationInventoryCondition(InventoryCondition destinationInventoryCondition,
+            EntityPermission entityPermission) {
+        return getInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.DESTINATION_INVENTORY_CONDITION.eq(destinationInventoryCondition.getPrimaryKey()), entityPermission);
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationInventoryCondition(InventoryCondition destinationInventoryCondition) {
+        return getInventoryTransactionLineDestinationsByDestinationInventoryCondition(destinationInventoryCondition, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationInventoryConditionForUpdate(InventoryCondition destinationInventoryCondition) {
+        return getInventoryTransactionLineDestinationsByDestinationInventoryCondition(destinationInventoryCondition, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteInventoryTransactionLineDestinationsByDestinationInventoryCondition(InventoryCondition destinationInventoryCondition, BasePK deletedBy) {
+        deleteInventoryTransactionLineDestinations(getInventoryTransactionLineDestinationsByDestinationInventoryConditionForUpdate(destinationInventoryCondition), deletedBy);
+    }
+
+    public long countInventoryTransactionLineDestinationsByDestinationUnitOfMeasureType(UnitOfMeasureType destinationUnitOfMeasureType) {
+        return countInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.DESTINATION_UNIT_OF_MEASURE_TYPE.eq(destinationUnitOfMeasureType.getPrimaryKey()));
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationUnitOfMeasureType(UnitOfMeasureType destinationUnitOfMeasureType,
+            EntityPermission entityPermission) {
+        return getInventoryTransactionLineDestinations(InventoryTransactionLineDestinations.DESTINATION_UNIT_OF_MEASURE_TYPE.eq(destinationUnitOfMeasureType.getPrimaryKey()), entityPermission);
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationUnitOfMeasureType(UnitOfMeasureType destinationUnitOfMeasureType) {
+        return getInventoryTransactionLineDestinationsByDestinationUnitOfMeasureType(destinationUnitOfMeasureType, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineDestination> getInventoryTransactionLineDestinationsByDestinationUnitOfMeasureTypeForUpdate(UnitOfMeasureType destinationUnitOfMeasureType) {
+        return getInventoryTransactionLineDestinationsByDestinationUnitOfMeasureType(destinationUnitOfMeasureType, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteInventoryTransactionLineDestinationsByDestinationUnitOfMeasureType(UnitOfMeasureType destinationUnitOfMeasureType, BasePK deletedBy) {
+        deleteInventoryTransactionLineDestinations(getInventoryTransactionLineDestinationsByDestinationUnitOfMeasureTypeForUpdate(destinationUnitOfMeasureType), deletedBy);
+    }
+
+    public void updateInventoryTransactionLineDestinationFromValue(InventoryTransactionLineDestinationValue inventoryTransactionLineDestinationValue,
+            BasePK updatedBy) {
+        if(inventoryTransactionLineDestinationValue.hasBeenModified()) {
+            var inventoryTransactionLineDestination = inventoryTransactionLineDestinationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
+                    inventoryTransactionLineDestinationValue.getPrimaryKey());
+
+            inventoryTransactionLineDestination.setThruTime(session.getStartTime());
+            inventoryTransactionLineDestination.store();
+
+            var inventoryTransactionLinePK = inventoryTransactionLineDestination.getInventoryTransactionLinePK(); // Not updated
+
+            inventoryTransactionLineDestination = inventoryTransactionLineDestinationFactory.create(inventoryTransactionLinePK,
+                    inventoryTransactionLineDestinationValue.getDestinationOwnerPartyPK(), inventoryTransactionLineDestinationValue.getDestinationLocationPK(),
+                    inventoryTransactionLineDestinationValue.getDestinationInventoryConditionPK(), inventoryTransactionLineDestinationValue.getDestinationUnitOfMeasureTypePK(),
+                    session.getStartTime(), Session.MAX_TIME);
+
+            sendEvent(inventoryTransactionLinePK, EventTypes.MODIFY, inventoryTransactionLineDestination.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteInventoryTransactionLineDestination(InventoryTransactionLineDestination inventoryTransactionLineDestination, BasePK deletedBy) {
+        inventoryTransactionLineDestination.setThruTime(session.getStartTime());
+
+        sendEvent(inventoryTransactionLineDestination.getInventoryTransactionLinePK(), EventTypes.MODIFY,
+                inventoryTransactionLineDestination.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteInventoryTransactionLineDestinations(List<InventoryTransactionLineDestination> inventoryTransactionLineDestinations, BasePK deletedBy) {
+        inventoryTransactionLineDestinations.forEach(inventoryTransactionLineDestination -> deleteInventoryTransactionLineDestination(inventoryTransactionLineDestination, deletedBy));
+    }
+
+    public void deleteInventoryTransactionLineDestinationByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine, BasePK deletedBy) {
+        var inventoryTransactionLineDestination = getInventoryTransactionLineDestinationForUpdate(inventoryTransactionLine);
+
+        if(inventoryTransactionLineDestination != null) {
+            deleteInventoryTransactionLineDestination(inventoryTransactionLineDestination, deletedBy);
         }
     }
 

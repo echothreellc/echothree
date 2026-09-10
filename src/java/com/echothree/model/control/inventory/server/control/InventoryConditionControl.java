@@ -421,6 +421,7 @@ public class InventoryConditionControl
         bucketControl.removePartyBucketsByInventoryCondition(inventoryCondition, deletedBy);
         inventoryLocationControl.deleteInventoryLocationsByInventoryCondition(inventoryCondition, deletedBy);
         inventoryTransactionLineControl.deleteInventoryTransactionLineSourcesBySourceInventoryCondition(inventoryCondition, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLineDestinationsByDestinationInventoryCondition(inventoryCondition, deletedBy);
         inventoryLevelControl.deletePartyInventoryLevelsByInventoryCondition(inventoryCondition, deletedBy);
         itemControl.deleteItemPricesByInventoryCondition(inventoryCondition, deletedBy);
         itemControl.deleteItemKitMembersByInventoryCondition(inventoryCondition, deletedBy);

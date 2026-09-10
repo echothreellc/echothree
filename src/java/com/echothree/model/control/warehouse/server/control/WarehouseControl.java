@@ -2266,6 +2266,7 @@ public class WarehouseControl
         deleteLocationDescriptionsByLocation(location, deletedBy);
         inventoryLocationControl.deleteInventoryLocationsByLocation(location, deletedBy);
         inventoryTransactionLineControl.deleteInventoryTransactionLineSourcesBySourceLocation(location, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLineDestinationsByDestinationLocation(location, deletedBy);
 
         var locationDetail = location.getLastDetailForUpdate();
         locationDetail.setThruTime(session.getStartTime());
