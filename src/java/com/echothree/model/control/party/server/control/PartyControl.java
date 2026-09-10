@@ -2457,6 +2457,7 @@ public class PartyControl
         documentControl.deletePartyDocumentsByParty(party, deletedBy);
         inventoryLocationControl.deleteInventoryLocationsByOwnerParty(party, deletedBy);
         inventoryTransactionLineControl.deleteInventoryTransactionLineSourcesBySourceOwnerParty(party, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLineDestinationsByDestinationOwnerParty(party, deletedBy);
         inventoryTransactionRoleControl.deleteInventoryTransactionRolesByParty(party, deletedBy);
         printerControl.deletePartyPrinterGroupUsesByParty(party, deletedBy);
         scaleControl.deletePartyScaleUsesByParty(party, deletedBy);
