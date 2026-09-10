@@ -1072,6 +1072,9 @@
             <entityType entityTypeName="InventoryTransactionLineTime" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Transaction Line Time" />
             </entityType>
+            <entityType entityTypeName="InventoryTransactionLineRole" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Transaction Line Role" />
+            </entityType>
             <entityType entityTypeName="InventoryDispositionAdjustment" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Disposition Adjustment" />
             </entityType>

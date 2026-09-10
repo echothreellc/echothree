@@ -70,6 +70,9 @@ public class InventoryTransactionLineControl
     InventoryTransactionControl inventoryTransactionControl;
 
     @Inject
+    InventoryTransactionRoleControl inventoryTransactionRoleControl;
+
+    @Inject
     InventoryTransactionTimeControl inventoryTransactionTimeControl;
 
     /** Creates a new instance of InventoryTransactionLineControl */
@@ -357,7 +360,7 @@ public class InventoryTransactionLineControl
         deleteInventoryTransactionLineSourceByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
         deleteInventoryTransactionLineDestinationByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
         inventoryTransactionTimeControl.deleteInventoryTransactionLineTimesByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
-        // TODO: deleteInventoryTransactionLineRolesByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
+        inventoryTransactionRoleControl.deleteInventoryTransactionLineRolesByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
         // TODO: deleteInventoryLayersByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
 
         inventoryTransactionLineDetail.setThruTime(session.getStartTime());
