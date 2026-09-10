@@ -145,6 +145,34 @@
     </module>
 
     <module>
+        <ejb>cloudevents-api.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>cloudevents-core.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>cloudevents-json-jackson.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>cloudevents-kafka.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>jackson-annotations.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>jackson-core.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>jackson-databind.jar</ejb>
+    </module>
+
+    <module>
         <ejb>echothree-server.jar</ejb>
     </module>
     
