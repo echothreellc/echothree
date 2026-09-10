@@ -1730,6 +1730,7 @@
                         <index type="Unique" name="Index2">
                             <indexColumn name="InventoryTransactionLineId" />
                             <indexColumn name="InventoryTransactionRoleTypeId" />
+                            <indexColumn name="PartyId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">

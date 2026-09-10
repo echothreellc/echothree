@@ -25,14 +25,18 @@ import com.echothree.model.control.inventory.server.transfer.InventoryTransactio
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryTransactionRoleTypePK;
 import com.echothree.model.data.inventory.server.entity.InventoryTransaction;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionLine;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionLineRole;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionRole;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionRoleType;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionRoleTypeDescription;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
+import com.echothree.model.data.inventory.server.factory.InventoryTransactionLineRoleFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionRoleFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionRoleTypeDescriptionFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionRoleTypeDetailFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryTransactionRoleTypeFactory;
+import com.echothree.model.data.inventory.server.value.InventoryTransactionLineRoleValue;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionRoleTypeDescriptionValue;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionRoleTypeDetailValue;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionRoleValue;
@@ -40,10 +44,15 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_LINES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_ROLE_TYPES_ACTIVE_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_ROLE_TYPES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTION_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionDetails.InventoryTransactionDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLineDetails.InventoryTransactionLineDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLineRoles.InventoryTransactionLineRoles;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionLines.InventoryTransactionLines;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionRoleTypeDescriptions.InventoryTransactionRoleTypeDescriptions;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionRoleTypeDetails.InventoryTransactionRoleTypeDetails;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionRoleTypes.InventoryTransactionRoleTypes;
@@ -51,7 +60,6 @@ import static com.echothree.model.jooq.server.tables.inventory.InventoryTransact
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTypeDetails.InventoryTransactionTypeDetails;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionTypes.InventoryTransactionTypes;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactions.InventoryTransactions;
-import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
 import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
@@ -366,6 +374,7 @@ public class InventoryTransactionRoleControl
 
         deleteInventoryTransactionRoleTypeDescriptionsByInventoryTransactionRoleType(inventoryTransactionRoleType, deletedBy);
         deleteInventoryTransactionRolesByInventoryTransactionRoleType(inventoryTransactionRoleType, deletedBy);
+        deleteInventoryTransactionLineRolesByInventoryTransactionRoleType(inventoryTransactionRoleType, deletedBy);
 
         inventoryTransactionRoleTypeDetail.setThruTime(session.getStartTime());
         inventoryTransactionRoleType.setActiveDetail(null);
@@ -801,6 +810,218 @@ public class InventoryTransactionRoleControl
 
     public void deleteInventoryTransactionRolesByParty(Party party, BasePK deletedBy) {
         deleteInventoryTransactionRoles(getInventoryTransactionRolesByPartyForUpdate(party), deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Inventory Transaction Line Roles
+    // --------------------------------------------------------------------------------
+
+    @Inject
+    protected InventoryTransactionLineRoleFactory inventoryTransactionLineRoleFactory;
+
+    public InventoryTransactionLineRole createInventoryTransactionLineRole(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionRoleType inventoryTransactionRoleType, Party party, BasePK createdBy) {
+        var inventoryTransactionLineRole = inventoryTransactionLineRoleFactory.create(inventoryTransactionLine, inventoryTransactionRoleType, party,
+                session.getStartTime(), Session.MAX_TIME);
+
+        sendEvent(inventoryTransactionLine.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionLineRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return inventoryTransactionLineRole;
+    }
+
+    private long countInventoryTransactionLineRoles(Condition condition) {
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryTransactionLineRoles)
+                .where(condition, InventoryTransactionLineRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
+    public long countInventoryTransactionLineRolesByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine) {
+        return countInventoryTransactionLineRoles(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()));
+    }
+
+    public long countInventoryTransactionLineRolesByInventoryTransactionRoleType(InventoryTransactionRoleType inventoryTransactionRoleType) {
+        return countInventoryTransactionLineRoles(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_ROLE_TYPE.eq(inventoryTransactionRoleType.getPrimaryKey()));
+    }
+
+    public long countInventoryTransactionLineRolesByParty(Party party) {
+        return countInventoryTransactionLineRoles(InventoryTransactionLineRoles.PARTY.eq(party.getPrimaryKey()));
+    }
+
+    public boolean inventoryTransactionLineRoleExists(InventoryTransactionLine inventoryTransactionLine, InventoryTransactionRoleType inventoryTransactionRoleType,
+            Party party) {
+        return countInventoryTransactionLineRoles(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey())
+                .and(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_ROLE_TYPE.eq(inventoryTransactionRoleType.getPrimaryKey()))
+                .and(InventoryTransactionLineRoles.PARTY.eq(party.getPrimaryKey()))) != 0;
+    }
+
+    public InventoryTransactionLineRole getInventoryTransactionLineRole(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionRoleType inventoryTransactionRoleType, Party party, EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryTransactionLineRoles.fields())
+                .from(InventoryTransactionLineRoles)
+                .where(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()),
+                        InventoryTransactionLineRoles.INVENTORY_TRANSACTION_ROLE_TYPE.eq(inventoryTransactionRoleType.getPrimaryKey()),
+                        InventoryTransactionLineRoles.PARTY.eq(party.getPrimaryKey()),
+                        InventoryTransactionLineRoles.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return inventoryTransactionLineRoleFactory.getEntityFromQuery(entityPermission, query);
+    }
+
+    public InventoryTransactionLineRole getInventoryTransactionLineRole(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionRoleType inventoryTransactionRoleType, Party party) {
+        return getInventoryTransactionLineRole(inventoryTransactionLine, inventoryTransactionRoleType, party, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryTransactionLineRole getInventoryTransactionLineRoleForUpdate(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionRoleType inventoryTransactionRoleType, Party party) {
+        return getInventoryTransactionLineRole(inventoryTransactionLine, inventoryTransactionRoleType, party, EntityPermission.READ_WRITE);
+    }
+
+    public InventoryTransactionLineRoleValue getInventoryTransactionLineRoleValue(InventoryTransactionLineRole inventoryTransactionLineRole) {
+        return inventoryTransactionLineRole == null ? null : inventoryTransactionLineRole.getInventoryTransactionLineRoleValue().clone();
+    }
+
+    public InventoryTransactionLineRoleValue getInventoryTransactionLineRoleValueForUpdate(InventoryTransactionLine inventoryTransactionLine,
+            InventoryTransactionRoleType inventoryTransactionRoleType, Party party) {
+        return getInventoryTransactionLineRoleValue(getInventoryTransactionLineRoleForUpdate(inventoryTransactionLine, inventoryTransactionRoleType, party));
+    }
+
+    private List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine,
+            EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(InventoryTransactionLineRoles.fields())
+                    .from(InventoryTransactionLineRoles)
+                    .join(InventoryTransactionRoleTypes).on(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_ROLE_TYPE.eq(InventoryTransactionRoleTypes.INVENTORY_TRANSACTION_ROLE_TYPE))
+                    .join(InventoryTransactionRoleTypeDetails).onKey(INVENTORY_TRANSACTION_ROLE_TYPES_LAST_DETAIL_FK)
+                    .join(Parties).on(InventoryTransactionLineRoles.PARTY.eq(Parties.PARTY))
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()),
+                            InventoryTransactionLineRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryTransactionRoleTypeDetails.SORT_ORDER, InventoryTransactionRoleTypeDetails.INVENTORY_TRANSACTION_ROLE_TYPE_NAME,
+                            PartyDetails.PARTY_NAME),
+                    InventoryTransactionLineRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryTransactionLineRoles.fields())
+                    .from(InventoryTransactionLineRoles)
+                    .where(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_LINE.eq(inventoryTransactionLine.getPrimaryKey()),
+                            InventoryTransactionLineRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return inventoryTransactionLineRoleFactory.getEntitiesFromQuery(entityPermission, query);
+    }
+
+    public List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine) {
+        return getInventoryTransactionLineRolesByInventoryTransactionLine(inventoryTransactionLine, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByInventoryTransactionLineForUpdate(InventoryTransactionLine inventoryTransactionLine) {
+        return getInventoryTransactionLineRolesByInventoryTransactionLine(inventoryTransactionLine, EntityPermission.READ_WRITE);
+    }
+
+    private List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByInventoryTransactionRoleType(InventoryTransactionRoleType inventoryTransactionRoleType,
+            EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(InventoryTransactionLineRoles.fields())
+                    .from(InventoryTransactionLineRoles)
+                    .join(InventoryTransactionLines).on(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_LINE.eq(InventoryTransactionLines.INVENTORY_TRANSACTION_LINE))
+                    .join(InventoryTransactionLineDetails).onKey(INVENTORY_TRANSACTION_LINES_LAST_DETAIL_FK)
+                    .join(InventoryTransactions).on(InventoryTransactionLineDetails.INVENTORY_TRANSACTION.eq(InventoryTransactions.INVENTORY_TRANSACTION))
+                    .join(InventoryTransactionDetails).onKey(INVENTORY_TRANSACTIONS_LAST_DETAIL_FK)
+                    .join(Parties).on(InventoryTransactionLineRoles.PARTY.eq(Parties.PARTY))
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_ROLE_TYPE.eq(inventoryTransactionRoleType.getPrimaryKey()),
+                            InventoryTransactionLineRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryTransactionDetails.INVENTORY_TRANSACTION_NAME, InventoryTransactionLineDetails.INVENTORY_TRANSACTION_LINE_SEQUENCE, PartyDetails.PARTY_NAME),
+                    InventoryTransactionLineRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryTransactionLineRoles.fields())
+                    .from(InventoryTransactionLineRoles)
+                    .where(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_ROLE_TYPE.eq(inventoryTransactionRoleType.getPrimaryKey()),
+                            InventoryTransactionLineRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return inventoryTransactionLineRoleFactory.getEntitiesFromQuery(entityPermission, query);
+    }
+
+    public List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByInventoryTransactionRoleType(InventoryTransactionRoleType inventoryTransactionRoleType) {
+        return getInventoryTransactionLineRolesByInventoryTransactionRoleType(inventoryTransactionRoleType, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByInventoryTransactionRoleTypeForUpdate(InventoryTransactionRoleType inventoryTransactionRoleType) {
+        return getInventoryTransactionLineRolesByInventoryTransactionRoleType(inventoryTransactionRoleType, EntityPermission.READ_WRITE);
+    }
+
+    private List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByParty(Party party, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(InventoryTransactionLineRoles.fields())
+                    .from(InventoryTransactionLineRoles)
+                    .join(InventoryTransactionLines).on(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_LINE.eq(InventoryTransactionLines.INVENTORY_TRANSACTION_LINE))
+                    .join(InventoryTransactionLineDetails).onKey(INVENTORY_TRANSACTION_LINES_LAST_DETAIL_FK)
+                    .join(InventoryTransactions).on(InventoryTransactionLineDetails.INVENTORY_TRANSACTION.eq(InventoryTransactions.INVENTORY_TRANSACTION))
+                    .join(InventoryTransactionDetails).onKey(INVENTORY_TRANSACTIONS_LAST_DETAIL_FK)
+                    .join(InventoryTransactionTypes).on(InventoryTransactionDetails.INVENTORY_TRANSACTION_TYPE.eq(InventoryTransactionTypes.INVENTORY_TRANSACTION_TYPE))
+                    .join(InventoryTransactionTypeDetails).onKey(INVENTORY_TRANSACTION_TYPES_LAST_DETAIL_FK)
+                    .join(InventoryTransactionRoleTypes).on(InventoryTransactionLineRoles.INVENTORY_TRANSACTION_ROLE_TYPE.eq(InventoryTransactionRoleTypes.INVENTORY_TRANSACTION_ROLE_TYPE))
+                    .join(InventoryTransactionRoleTypeDetails).onKey(INVENTORY_TRANSACTION_ROLE_TYPES_LAST_DETAIL_FK)
+                    .where(InventoryTransactionLineRoles.PARTY.eq(party.getPrimaryKey()),
+                            InventoryTransactionLineRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryTransactionTypeDetails.SORT_ORDER, InventoryTransactionTypeDetails.INVENTORY_TRANSACTION_TYPE_NAME,
+                            InventoryTransactionDetails.INVENTORY_TRANSACTION_NAME, InventoryTransactionLineDetails.INVENTORY_TRANSACTION_LINE_SEQUENCE,
+                            InventoryTransactionRoleTypeDetails.SORT_ORDER, InventoryTransactionRoleTypeDetails.INVENTORY_TRANSACTION_ROLE_TYPE_NAME),
+                    InventoryTransactionLineRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryTransactionLineRoles.fields())
+                    .from(InventoryTransactionLineRoles)
+                    .where(InventoryTransactionLineRoles.PARTY.eq(party.getPrimaryKey()),
+                            InventoryTransactionLineRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return inventoryTransactionLineRoleFactory.getEntitiesFromQuery(entityPermission, query);
+    }
+
+    public List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByParty(Party party) {
+        return getInventoryTransactionLineRolesByParty(party, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryTransactionLineRole> getInventoryTransactionLineRolesByPartyForUpdate(Party party) {
+        return getInventoryTransactionLineRolesByParty(party, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteInventoryTransactionLineRole(InventoryTransactionLineRole inventoryTransactionLineRole, BasePK deletedBy) {
+        inventoryTransactionLineRole.setThruTime(session.getStartTime());
+
+        sendEvent(inventoryTransactionLineRole.getInventoryTransactionLinePK(), EventTypes.MODIFY, inventoryTransactionLineRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteInventoryTransactionLineRoles(List<InventoryTransactionLineRole> inventoryTransactionLineRoles, BasePK deletedBy) {
+        inventoryTransactionLineRoles.forEach(inventoryTransactionLineRole -> deleteInventoryTransactionLineRole(inventoryTransactionLineRole, deletedBy));
+    }
+
+    public void deleteInventoryTransactionLineRolesByInventoryTransactionLine(InventoryTransactionLine inventoryTransactionLine, BasePK deletedBy) {
+        deleteInventoryTransactionLineRoles(getInventoryTransactionLineRolesByInventoryTransactionLineForUpdate(inventoryTransactionLine), deletedBy);
+    }
+
+    public void deleteInventoryTransactionLineRolesByInventoryTransactionRoleType(InventoryTransactionRoleType inventoryTransactionRoleType,
+            BasePK deletedBy) {
+        deleteInventoryTransactionLineRoles(getInventoryTransactionLineRolesByInventoryTransactionRoleTypeForUpdate(inventoryTransactionRoleType), deletedBy);
+    }
+
+    public void deleteInventoryTransactionLineRolesByParty(Party party, BasePK deletedBy) {
+        deleteInventoryTransactionLineRoles(getInventoryTransactionLineRolesByPartyForUpdate(party), deletedBy);
     }
 
 }
