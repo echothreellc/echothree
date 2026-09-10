@@ -91,6 +91,9 @@ public class InventoryConditionControl
     InventoryLocationControl inventoryLocationControl;
 
     @Inject
+    InventoryTransactionLineControl inventoryTransactionLineControl;
+
+    @Inject
     ItemControl itemControl;
 
     @Inject
@@ -417,6 +420,7 @@ public class InventoryConditionControl
         deleteInventoryConditionUseByInventoryCondition(inventoryCondition, deletedBy);
         bucketControl.removePartyBucketsByInventoryCondition(inventoryCondition, deletedBy);
         inventoryLocationControl.deleteInventoryLocationsByInventoryCondition(inventoryCondition, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLineSourcesBySourceInventoryCondition(inventoryCondition, deletedBy);
         inventoryLevelControl.deletePartyInventoryLevelsByInventoryCondition(inventoryCondition, deletedBy);
         itemControl.deleteItemPricesByInventoryCondition(inventoryCondition, deletedBy);
         itemControl.deleteItemKitMembersByInventoryCondition(inventoryCondition, deletedBy);

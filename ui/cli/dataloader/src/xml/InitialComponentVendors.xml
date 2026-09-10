@@ -1063,6 +1063,9 @@
             <entityType entityTypeName="InventoryTransactionLine" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Transaction Line" />
             </entityType>
+            <entityType entityTypeName="InventoryTransactionLineSource" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Transaction Line Source" />
+            </entityType>
             <entityType entityTypeName="InventoryDispositionAdjustment" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Disposition Adjustment" />
             </entityType>
