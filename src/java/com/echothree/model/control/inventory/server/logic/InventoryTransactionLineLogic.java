@@ -29,10 +29,12 @@ import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryTransaction;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionLine;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionLineDestination;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionLineSource;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionReason;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionLineDetailValue;
+import com.echothree.model.data.inventory.server.value.InventoryTransactionLineDestinationValue;
 import com.echothree.model.data.inventory.server.value.InventoryTransactionLineSourceValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
@@ -240,6 +242,22 @@ public class InventoryTransactionLineLogic
     public void updateInventoryTransactionLineSourceFromValue(final InventoryTransactionLineSourceValue inventoryTransactionLineSourceValue,
             final BasePK updatedBy) {
         inventoryTransactionLineControl.updateInventoryTransactionLineSourceFromValue(inventoryTransactionLineSourceValue, updatedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Inventory Transaction Line Destinations
+    // --------------------------------------------------------------------------------
+
+    public InventoryTransactionLineDestination createInventoryTransactionLineDestination(final InventoryTransactionLine inventoryTransactionLine,
+            final Party destinationOwnerParty, final Location destinationLocation, final InventoryCondition destinationInventoryCondition,
+            final UnitOfMeasureType destinationUnitOfMeasureType, final BasePK createdBy) {
+        return inventoryTransactionLineControl.createInventoryTransactionLineDestination(inventoryTransactionLine, destinationOwnerParty,
+                destinationLocation, destinationInventoryCondition, destinationUnitOfMeasureType, createdBy);
+    }
+
+    public void updateInventoryTransactionLineDestinationFromValue(final InventoryTransactionLineDestinationValue inventoryTransactionLineDestinationValue,
+            final BasePK updatedBy) {
+        inventoryTransactionLineControl.updateInventoryTransactionLineDestinationFromValue(inventoryTransactionLineDestinationValue, updatedBy);
     }
 
 }

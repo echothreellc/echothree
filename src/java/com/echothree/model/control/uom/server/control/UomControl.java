@@ -1047,6 +1047,7 @@ public class UomControl
         bucketControl.removePartyBucketsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         inventoryLocationControl.deleteInventoryLocationsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         inventoryTransactionLineControl.deleteInventoryTransactionLineSourcesBySourceUnitOfMeasureType(unitOfMeasureType, deletedBy);
+        inventoryTransactionLineControl.deleteInventoryTransactionLineDestinationsByDestinationUnitOfMeasureType(unitOfMeasureType, deletedBy);
         itemControl.deleteItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         vendorControl.deleteVendorItemCostsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
 
