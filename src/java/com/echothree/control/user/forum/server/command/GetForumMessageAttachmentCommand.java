@@ -21,19 +21,21 @@ import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
+import com.echothree.model.control.forum.server.logic.ForumMessageLogic;
 import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
+import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetForumMessageAttachmentCommand
-        extends BaseSimpleCommand<GetForumMessageAttachmentForm> {
+        extends BaseSingleEntityCommand<ForumMessageAttachment, GetForumMessageAttachmentForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -52,39 +54,48 @@ public class GetForumMessageAttachmentCommand
     ContentLogic contentLogic;
 
     @Inject
+    ForumMessageLogic forumMessageLogic;
+
+    @Inject
     ForumRoleTypeLogic forumRoleTypeLogic;
 
-    
     /** Creates a new instance of GetForumMessageAttachmentCommand */
     public GetForumMessageAttachmentCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ForumResultFactory.getGetForumMessageAttachmentResult();
+    protected ForumMessageAttachment getEntity() {
+        ForumMessageAttachment forumMessageAttachment = null;
         contentLogic.checkReferrer(this, form.getReferrer());
 
         if(!hasExecutionErrors()) {
             var forumMessageName = form.getForumMessageName();
-            var forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
+            var forumMessage = forumMessageLogic.getForumMessageByNameForUpdate(this, forumMessageName);
 
-            if(forumMessage != null) {
+            if(!hasExecutionErrors()) {
                 if(forumRoleTypeLogic.isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
                     var forumMessageAttachmentSequence = Integer.valueOf(form.getForumMessageAttachmentSequence());
-                    var forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
+                    forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 
-                    if(forumMessageAttachment != null) {
-                        result.setForumMessageAttachment(forumControl.getForumMessageAttachmentTransfer(getUserVisit(), forumMessageAttachment));
-                    } else {
+                    if(forumMessageAttachment == null) {
                         addExecutionError(ExecutionErrors.UnknownForumMessageAttachment.name(), forumMessageName, forumMessageAttachmentSequence.toString());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownForumMessageName.name(), forumMessageName);
             }
+        }
+
+        return hasExecutionErrors() ? null : forumMessageAttachment;
+    }
+
+    @Override
+    protected BaseResult getResult(ForumMessageAttachment forumMessageAttachment) {
+        var result = ForumResultFactory.getGetForumMessageAttachmentResult();
+
+        if(forumMessageAttachment != null) {
+            result.setForumMessageAttachment(forumControl.getForumMessageAttachmentTransfer(getUserVisit(), forumMessageAttachment));
         }
 
         return result;
