@@ -20,18 +20,19 @@ import com.echothree.control.user.forum.common.form.GetForumGroupForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.forum.server.control.ForumControl;
+import com.echothree.model.control.forum.server.logic.ForumGroupLogic;
+import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetForumGroupCommand
-        extends BaseSimpleCommand<GetForumGroupForm> {
+        extends BaseSingleEntityCommand<ForumGroup, GetForumGroupForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -44,25 +45,33 @@ public class GetForumGroupCommand
     @Inject
     ForumControl forumControl;
 
-    
+    @Inject
+    ForumGroupLogic forumGroupLogic;
+
     /** Creates a new instance of GetForumGroupCommand */
     public GetForumGroupCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ForumResultFactory.getGetForumGroupResult();
-        var forumGroupName = form.getForumGroupName();
-        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
+    protected ForumGroup getEntity() {
+        var forumGroup = forumGroupLogic.getForumGroupByName(this, form.getForumGroupName());
         
+        if(!hasExecutionErrors()) {
+            sendEvent(forumGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return forumGroup;
+    }
+
+    @Override
+    protected BaseResult getResult(ForumGroup forumGroup) {
+        var result = ForumResultFactory.getGetForumGroupResult();
+
         if(forumGroup != null) {
             result.setForumGroup(forumControl.getForumGroupTransfer(getUserVisit(), forumGroup));
-            sendEvent(forumGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownForumGroupName.name(), forumGroupName);
         }
-        
+
         return result;
     }
     
