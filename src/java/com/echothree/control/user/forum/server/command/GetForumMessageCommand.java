@@ -18,12 +18,10 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumMessageForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
+import com.echothree.model.control.forum.server.logic.ForumMessageLogic;
 import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
@@ -31,14 +29,14 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetForumMessageCommand
-        extends BaseSimpleCommand<GetForumMessageForm> {
+        extends BaseSingleEntityCommand<ForumMessage, GetForumMessageForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -54,10 +52,10 @@ public class GetForumMessageCommand
     ForumControl forumControl;
 
     @Inject
-    EntityInstanceLogic entityInstanceLogic;
+    ForumMessageLogic forumMessageLogic;
 
     @Inject
-    ForumRoleTypeLogic forumLogic;
+    ForumRoleTypeLogic forumRoleTypeLogic;
 
     /** Creates a new instance of GetForumMessageCommand */
     public GetForumMessageCommand() {
@@ -65,46 +63,36 @@ public class GetForumMessageCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ForumResultFactory.getGetForumMessageResult();
-        var forumMessageName = form.getForumMessageName();
-        var parameterCount = (forumMessageName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
+    protected ForumMessage getEntity() {
+        var forumMessage = forumMessageLogic.getForumMessageByUniversalSpec(this, form);
 
-        if(parameterCount == 1) {
-            ForumMessage forumMessage = null;
-
-            if(forumMessageName == null) {
-                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
-                        EntityTypes.ForumMessage.name());
-                
-                if(!hasExecutionErrors()) {
-                    forumMessage = forumControl.getForumMessageByEntityInstance(entityInstance);
-                }
-            } else {
-                forumMessage = forumControl.getForumMessageByName(forumMessageName);
-
-                if(forumMessage == null) {
-                    addExecutionError(ExecutionErrors.UnknownForumMessageName.name(), forumMessageName);
-                }
-            }
-            
-            if(!hasExecutionErrors()) {
-                if(forumMessage.getLastDetail().getPostedTime() <= session.getStartTime()
-                        || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
-                    if(form.getUuid() != null || forumLogic.isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
-                        result.setForumMessage(forumControl.getForumMessageTransfer(getUserVisit(), forumMessage));
+        if(!hasExecutionErrors() && forumMessage != null) {
+            // UUID lookup bypasses the reader-role check, but never the publication-time check.
+            if(forumMessage.getLastDetail().getPostedTime() <= session.getStartTime()
+                    || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
+                if(form.getUuid() != null || forumRoleTypeLogic.isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
+                    if(!hasExecutionErrors()) {
                         sendEvent(forumMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnpublishedForumMessage.name(), forumMessage.getLastDetail().getForumMessageName());
+                    addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
                 }
+            } else {
+                addExecutionError(ExecutionErrors.UnpublishedForumMessage.name(), forumMessage.getLastDetail().getForumMessageName());
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return hasExecutionErrors() ? null : forumMessage;
+    }
+
+    @Override
+    protected BaseResult getResult(ForumMessage forumMessage) {
+        var result = ForumResultFactory.getGetForumMessageResult();
+
+        if(forumMessage != null) {
+            result.setForumMessage(forumControl.getForumMessageTransfer(getUserVisit(), forumMessage));
+        }
+
         return result;
     }
     
