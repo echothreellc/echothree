@@ -1765,7 +1765,6 @@
                     <columns>
                         <column name="InventoryCostingPoolDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryCostingPoolId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryCostingPools" destinationColumn="InventoryCostingPoolId" />
-                        <column name="InventoryCostingPoolName" type="Name" nullAllowed="false" />
                         <column name="CompanyPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
                         <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
@@ -1781,35 +1780,31 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
-                            <indexColumn name="InventoryCostingPoolName" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Unique" name="Index3">
                             <indexColumn name="CompanyPartyId" />
                             <indexColumn name="ItemId" />
                             <indexColumn name="InventoryConditionId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index4">
+                        <index type="Multiple">
                             <indexColumn name="CompanyPartyId" />
                         </index>
-                        <index type="Multiple" name="Index5">
+                        <index type="Multiple">
                             <indexColumn name="ItemId" />
                         </index>
-                        <index type="Multiple" name="Index6">
+                        <index type="Multiple">
                             <indexColumn name="InventoryConditionId" />
                         </index>
                     </indexes>
                 </table>
                 <table namePlural="InventoryCostingPoolStatuses" nameSingular="InventoryCostingPoolStatus" columnPrefix="invcplst">
                     <columns>
-                        <column name="InventoryLayerStatusId" type="EID" nullAllowed="false" />
+                        <column name="InventoryCostingPoolStatusId" type="EID" nullAllowed="false" />
                         <column name="InventoryCostingPoolId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryCostingPools" destinationColumn="InventoryCostingPoolId"/>
                         <column name="InventoryLayerSequence" type="Integer" nullAllowed="false" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="InventoryLayerStatusId" />
+                            <indexColumn name="InventoryCostingPoolStatusId" />
                         </index>
                         <index type="Unique">
                             <indexColumn name="InventoryCostingPoolId" />
