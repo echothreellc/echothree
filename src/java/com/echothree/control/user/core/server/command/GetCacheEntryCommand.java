@@ -19,19 +19,19 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetCacheEntryForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.CacheEntryControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.CacheEntry;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCacheEntryCommand
-        extends BaseSimpleCommand<GetCacheEntryForm> {
+        extends BaseSingleEntityCommand<CacheEntry, GetCacheEntryForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -44,24 +44,40 @@ public class GetCacheEntryCommand
     @Inject
     CacheEntryControl cacheEntryControl;
 
-    
     /** Creates a new instance of GetCacheEntryCommand */
     public GetCacheEntryCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetCacheEntryResult();
+    protected CacheEntry getEntity() {
         var cacheEntryKey = form.getCacheEntryKey();
-        var cacheEntryTransfer = cacheEntryControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);
+        var cacheEntry = cacheEntryControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 
-        if(cacheEntryTransfer != null) {
-            result.setCacheEntry(cacheEntryTransfer);
-        } else {
+        if(cacheEntry != null) {
+            var validUntilTime = cacheEntry.getValidUntilTime();
+
+            if(validUntilTime != null && validUntilTime < session.getStartTime()) {
+                cacheEntryControl.removeCacheEntry(cacheEntry);
+                cacheEntry = null;
+            }
+        }
+
+        if(cacheEntry == null) {
             addExecutionError(ExecutionErrors.UnknownCacheEntryKey.name(), cacheEntryKey);
         }
-        
+
+        return cacheEntry;
+    }
+
+    @Override
+    protected BaseResult getResult(CacheEntry cacheEntry) {
+        var result = CoreResultFactory.getGetCacheEntryResult();
+
+        if(cacheEntry != null) {
+            result.setCacheEntry(cacheEntryControl.getCacheEntryTransfer(getUserVisit(), cacheEntry));
+        }
+
         return result;
     }
     
