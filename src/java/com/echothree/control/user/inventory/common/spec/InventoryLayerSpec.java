@@ -14,13 +14,12 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.inventory.common.form;
+package com.echothree.control.user.inventory.common.spec;
 
-import com.echothree.control.user.inventory.common.spec.InventoryCostingPoolUniversalSpec;
+public interface InventoryLayerSpec
+        extends InventoryCostingPoolSpec {
 
-public interface GetInventoryCostingPoolForm
-        extends InventoryCostingPoolUniversalSpec {
-
-    // Nothing additional beyond InventoryCostingPoolUniversalSpec
+    String getInventoryLayerSequence();
+    void setInventoryLayerSequence(String inventoryLayerSequence);
 
 }

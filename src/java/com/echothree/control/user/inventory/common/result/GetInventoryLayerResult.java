@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.inventory.common.form;
+package com.echothree.control.user.inventory.common.result;
 
-import com.echothree.control.user.inventory.common.spec.InventoryCostingPoolUniversalSpec;
+import com.echothree.model.control.inventory.common.transfer.InventoryLayerTransfer;
+import com.echothree.util.common.command.BaseResult;
 
-public interface GetInventoryCostingPoolForm
-        extends InventoryCostingPoolUniversalSpec {
+public interface GetInventoryLayerResult
+        extends BaseResult {
 
-    // Nothing additional beyond InventoryCostingPoolUniversalSpec
+    InventoryLayerTransfer getInventoryLayer();
+    void setInventoryLayer(InventoryLayerTransfer inventoryLayer);
 
 }

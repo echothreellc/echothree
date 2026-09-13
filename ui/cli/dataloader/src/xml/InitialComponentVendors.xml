@@ -1000,6 +1000,9 @@
             <entityType entityTypeName="InventoryCostingPool" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Costing Pool" />
             </entityType>
+            <entityType entityTypeName="InventoryLayer" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Layer" />
+            </entityType>
             <entityType entityTypeName="InventoryBucketType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Bucket Type" />
             </entityType>

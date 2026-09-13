@@ -162,6 +162,7 @@ public enum SecurityRoleGroups {
     InventoryCostingPool,
     InventoryDisposition,
     InventoryDispositionAdjustment,
+    InventoryLayer,
     InventoryLocation,
     InventoryLocationBucket,
     InventoryLocationGroup,

@@ -16,6 +16,18 @@
 
 package com.echothree.model.control.inventory.server.graphql;
 
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import graphql.annotations.connection.GraphQLConnection;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
+import com.echothree.util.server.persistence.Session;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.data.inventory.common.InventoryLayerConstants;
+import com.echothree.model.control.inventory.server.control.InventoryLayerControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
@@ -70,6 +82,28 @@ public class InventoryCostingPoolObject
     public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
         return InventorySecurityUtils.getHasInventoryConditionAccess(env)
                 ? new InventoryConditionObject(getInventoryCostingPoolDetail().getInventoryCondition()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory layers")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryLayerObject> getInventoryLayers(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryLayersAccess(env)) {
+            var inventoryLayerControl = Session.getModelController(InventoryLayerControl.class);
+            var totalCount = inventoryLayerControl.countInventoryLayersByInventoryCostingPool(inventoryCostingPool);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryLayerConstants.COMPONENT_VENDOR_NAME, InventoryLayerConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryLayerControl.getInventoryLayersByInventoryCostingPool(inventoryCostingPool);
+                var inventoryLayers = entities.stream()
+                        .map(InventoryLayerObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, inventoryLayers);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
