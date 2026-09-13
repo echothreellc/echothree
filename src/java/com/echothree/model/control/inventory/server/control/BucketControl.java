@@ -17,17 +17,23 @@
 package com.echothree.model.control.inventory.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.inventory.common.transfer.InventoryLayerBucketTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationBucketTransfer;
 import com.echothree.model.control.inventory.common.transfer.PartyBucketTransfer;
+import com.echothree.model.control.inventory.server.transfer.InventoryLayerBucketTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryLocationBucketTransferCache;
 import com.echothree.model.control.inventory.server.transfer.PartyBucketTransferCache;
 import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
+import com.echothree.model.data.inventory.server.entity.InventoryLayer;
+import com.echothree.model.data.inventory.server.entity.InventoryLayerBucket;
 import com.echothree.model.data.inventory.server.entity.InventoryLocation;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationBucket;
 import com.echothree.model.data.inventory.server.entity.PartyBucket;
+import com.echothree.model.data.inventory.server.factory.InventoryLayerBucketFactory;
 import com.echothree.model.data.inventory.server.factory.InventoryLocationBucketFactory;
 import com.echothree.model.data.inventory.server.factory.PartyBucketFactory;
+import com.echothree.model.data.inventory.server.value.InventoryLayerBucketValue;
 import com.echothree.model.data.inventory.server.value.InventoryLocationBucketValue;
 import com.echothree.model.data.inventory.server.value.PartyBucketValue;
 import com.echothree.model.data.item.server.entity.Item;
@@ -38,12 +44,18 @@ import static com.echothree.model.jooq.server.tables.inventory.InventoryBucketTy
 import static com.echothree.model.jooq.server.tables.inventory.InventoryBucketTypes.InventoryBucketTypes;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDetails.InventoryConditionDetails;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryConditions.InventoryConditions;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryCostingPoolDetails.InventoryCostingPoolDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryCostingPools.InventoryCostingPools;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryLayerBuckets.InventoryLayerBuckets;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryLayerDetails.InventoryLayerDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryLayers.InventoryLayers;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryLocationBuckets.InventoryLocationBuckets;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryLocations.InventoryLocations;
 import static com.echothree.model.jooq.server.tables.inventory.PartyBuckets.PartyBuckets;
 import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
 import static com.echothree.model.jooq.server.tables.item.Items.Items;
 import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyCompanies.PartyCompanies;
 import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import static com.echothree.model.jooq.server.tables.party.PartyTypes.PartyTypes;
 import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindDetails.UnitOfMeasureKindDetails;
@@ -56,6 +68,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -526,6 +539,193 @@ public class BucketControl
 
     public void removePartyBucketsByInventoryBucketType(InventoryBucketType value, BasePK removedBy) {
         removePartyBuckets(getPartyBucketsByInventoryBucketTypeForUpdate(value), removedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Inventory Layer Buckets
+    // --------------------------------------------------------------------------------
+
+    @Inject
+    protected InventoryLayerBucketFactory inventoryLayerBucketFactory;
+
+    @Inject
+    InventoryLayerBucketTransferCache inventoryLayerBucketTransferCache;
+
+    public InventoryLayerBucket createInventoryLayerBucket(InventoryLayer inventoryLayer,
+            InventoryBucketType inventoryBucketType, Long quantity, BasePK createdBy) {
+        var inventoryLayerBucket = inventoryLayerBucketFactory.create(inventoryLayer, inventoryBucketType, quantity);
+
+        sendEvent(inventoryLayer.getPrimaryKey(), EventTypes.TOUCH, null, null, createdBy);
+
+        return inventoryLayerBucket;
+    }
+
+    private long countInventoryLayerBuckets(Condition condition) {
+        return session.getDslContext()
+                .selectCount()
+                .from(InventoryLayerBuckets)
+                .where(condition)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
+    public long countInventoryLayerBucketsByInventoryLayer(InventoryLayer inventoryLayer) {
+        return countInventoryLayerBuckets(InventoryLayerBuckets.INVENTORY_LAYER.eq(inventoryLayer.getPrimaryKey()));
+    }
+
+    public long countInventoryLayerBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType) {
+        return countInventoryLayerBuckets(InventoryLayerBuckets.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()));
+    }
+
+    public InventoryLayerBucket getInventoryLayerBucket(InventoryLayer inventoryLayer,
+            InventoryBucketType inventoryBucketType, EntityPermission permission) {
+        var baseQuery = session.getDslContext()
+                .select(InventoryLayerBuckets.fields())
+                .from(InventoryLayerBuckets)
+                .where(InventoryLayerBuckets.INVENTORY_LAYER.eq(inventoryLayer.getPrimaryKey()),
+                        InventoryLayerBuckets.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()));
+
+        var query = permission == EntityPermission.READ_WRITE ? baseQuery.forUpdate() : baseQuery;
+
+        return inventoryLayerBucketFactory.getEntityFromQuery(permission, query);
+    }
+
+    public InventoryLayerBucket getInventoryLayerBucket(InventoryLayer inventoryLayer,
+            InventoryBucketType inventoryBucketType) {
+        return getInventoryLayerBucket(inventoryLayer, inventoryBucketType, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryLayerBucket getInventoryLayerBucketForUpdate(InventoryLayer inventoryLayer,
+            InventoryBucketType inventoryBucketType) {
+        return getInventoryLayerBucket(inventoryLayer, inventoryBucketType, EntityPermission.READ_WRITE);
+    }
+
+    public InventoryLayerBucketValue getInventoryLayerBucketValue(InventoryLayerBucket inventoryLayerBucket) {
+        return inventoryLayerBucket == null ? null : inventoryLayerBucket.getInventoryLayerBucketValue().clone();
+    }
+
+    public InventoryLayerBucketValue getInventoryLayerBucketValueForUpdate(InventoryLayer inventoryLayer,
+            InventoryBucketType inventoryBucketType) {
+        return getInventoryLayerBucketValue(getInventoryLayerBucketForUpdate(inventoryLayer, inventoryBucketType));
+    }
+
+    private List<InventoryLayerBucket> getInventoryLayerBuckets(Condition condition, EntityPermission permission,
+            OrderField<?>... orderFields) {
+        var query = switch(permission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                            .select(InventoryLayerBuckets.fields())
+                            .from(InventoryLayerBuckets)
+                            .join(InventoryLayers).on(InventoryLayerBuckets.INVENTORY_LAYER.eq(InventoryLayers.INVENTORY_LAYER))
+                            .join(InventoryLayerDetails).on(InventoryLayers.LAST_DETAIL.eq(InventoryLayerDetails.INVENTORY_LAYER_DETAIL))
+                            .join(InventoryCostingPools).on(InventoryLayerDetails.INVENTORY_COSTING_POOL.eq(InventoryCostingPools.INVENTORY_COSTING_POOL))
+                            .join(InventoryCostingPoolDetails).on(InventoryCostingPools.LAST_DETAIL.eq(InventoryCostingPoolDetails.INVENTORY_COSTING_POOL_DETAIL))
+                            .join(PartyCompanies).on(InventoryCostingPoolDetails.COMPANY_PARTY.eq(PartyCompanies.PARTY))
+                            .join(Items).on(InventoryCostingPoolDetails.ITEM.eq(Items.ITEM))
+                            .join(ItemDetails).on(Items.LAST_DETAIL.eq(ItemDetails.ITEM_DETAIL))
+                            .join(InventoryConditions).on(InventoryCostingPoolDetails.INVENTORY_CONDITION.eq(InventoryConditions.INVENTORY_CONDITION))
+                            .join(InventoryConditionDetails).on(InventoryConditions.LAST_DETAIL.eq(InventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
+                            .join(InventoryBucketTypes).on(InventoryLayerBuckets.INVENTORY_BUCKET_TYPE.eq(InventoryBucketTypes.INVENTORY_BUCKET_TYPE))
+                            .join(InventoryBucketTypeDetails).on(InventoryBucketTypes.LAST_DETAIL.eq(InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_DETAIL))
+                            .where(condition, PartyCompanies.THRU_TIME.eq(Session.MAX_TIME))
+                            .orderBy(orderFields),
+                    InventoryLayerBucketFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(InventoryLayerBuckets.fields())
+                    .from(InventoryLayerBuckets)
+                    .where(condition)
+                    .forUpdate();
+        };
+
+        return inventoryLayerBucketFactory.getEntitiesFromQuery(permission, query);
+    }
+
+    private List<InventoryLayerBucket> getInventoryLayerBucketsByInventoryLayer(InventoryLayer inventoryLayer,
+            EntityPermission permission) {
+        return getInventoryLayerBuckets(InventoryLayerBuckets.INVENTORY_LAYER.eq(inventoryLayer.getPrimaryKey()),
+                permission, InventoryBucketTypeDetails.SORT_ORDER,
+                InventoryBucketTypeDetails.INVENTORY_BUCKET_TYPE_NAME);
+    }
+
+    public List<InventoryLayerBucket> getInventoryLayerBucketsByInventoryLayer(InventoryLayer inventoryLayer) {
+        return getInventoryLayerBucketsByInventoryLayer(inventoryLayer, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryLayerBucket> getInventoryLayerBucketsByInventoryLayerForUpdate(InventoryLayer inventoryLayer) {
+        return getInventoryLayerBucketsByInventoryLayer(inventoryLayer, EntityPermission.READ_WRITE);
+    }
+
+    private List<InventoryLayerBucket> getInventoryLayerBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType,
+            EntityPermission permission) {
+        return getInventoryLayerBuckets(InventoryLayerBuckets.INVENTORY_BUCKET_TYPE.eq(inventoryBucketType.getPrimaryKey()),
+                permission, PartyCompanies.SORT_ORDER, PartyCompanies.PARTY_COMPANY_NAME, ItemDetails.ITEM_NAME,
+                InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME,
+                InventoryLayerDetails.INVENTORY_LAYER_SEQUENCE);
+    }
+
+    public List<InventoryLayerBucket> getInventoryLayerBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType) {
+        return getInventoryLayerBucketsByInventoryBucketType(inventoryBucketType, EntityPermission.READ_ONLY);
+    }
+
+    public List<InventoryLayerBucket> getInventoryLayerBucketsByInventoryBucketTypeForUpdate(InventoryBucketType inventoryBucketType) {
+        return getInventoryLayerBucketsByInventoryBucketType(inventoryBucketType, EntityPermission.READ_WRITE);
+    }
+
+    public InventoryLayerBucketTransfer getInventoryLayerBucketTransfer(UserVisit userVisit,
+            InventoryLayerBucket inventoryLayerBucket) {
+        return inventoryLayerBucket == null ? null : inventoryLayerBucketTransferCache.getTransfer(userVisit, inventoryLayerBucket);
+    }
+
+    public InventoryLayerBucketTransfer getInventoryLayerBucketTransfer(UserVisit userVisit,
+            InventoryLayer inventoryLayer, InventoryBucketType inventoryBucketType) {
+        return getInventoryLayerBucketTransfer(userVisit, getInventoryLayerBucket(inventoryLayer, inventoryBucketType));
+    }
+
+    public List<InventoryLayerBucketTransfer> getInventoryLayerBucketTransfers(UserVisit userVisit,
+            Collection<InventoryLayerBucket> inventoryLayerBuckets) {
+        var transfers = new ArrayList<InventoryLayerBucketTransfer>(inventoryLayerBuckets.size());
+        inventoryLayerBuckets.forEach(inventoryLayerBucket ->
+                transfers.add(inventoryLayerBucketTransferCache.getTransfer(userVisit, inventoryLayerBucket)));
+        return transfers;
+    }
+
+    public List<InventoryLayerBucketTransfer> getInventoryLayerBucketTransfersByInventoryLayer(UserVisit userVisit,
+            InventoryLayer inventoryLayer) {
+        return getInventoryLayerBucketTransfers(userVisit, getInventoryLayerBucketsByInventoryLayer(inventoryLayer));
+    }
+
+    public List<InventoryLayerBucketTransfer> getInventoryLayerBucketTransfersByInventoryBucketType(UserVisit userVisit,
+            InventoryBucketType inventoryBucketType) {
+        return getInventoryLayerBucketTransfers(userVisit, getInventoryLayerBucketsByInventoryBucketType(inventoryBucketType));
+    }
+
+    public void updateInventoryLayerBucketFromValue(InventoryLayerBucketValue value, BasePK updatedBy) {
+        if(value.hasBeenModified()) {
+            var inventoryLayerBucket = inventoryLayerBucketFactory.getEntityFromPK(EntityPermission.READ_WRITE,
+                    value.getPrimaryKey());
+
+            inventoryLayerBucket.setInventoryLayerBucketValue(value);
+            inventoryLayerBucket.store();
+
+            sendEvent(inventoryLayerBucket.getInventoryLayerPK(), EventTypes.TOUCH, null, null, updatedBy);
+        }
+    }
+
+    public void removeInventoryLayerBucket(InventoryLayerBucket inventoryLayerBucket, BasePK removedBy) {
+        inventoryLayerBucket.remove();
+
+        sendEvent(inventoryLayerBucket.getInventoryLayerPK(), EventTypes.TOUCH, null, null, removedBy);
+    }
+
+    public void removeInventoryLayerBuckets(List<InventoryLayerBucket> inventoryLayerBuckets, BasePK removedBy) {
+        inventoryLayerBuckets.forEach(inventoryLayerBucket -> removeInventoryLayerBucket(inventoryLayerBucket, removedBy));
+    }
+
+    public void removeInventoryLayerBucketsByInventoryLayer(InventoryLayer inventoryLayer, BasePK removedBy) {
+        removeInventoryLayerBuckets(getInventoryLayerBucketsByInventoryLayerForUpdate(inventoryLayer), removedBy);
+    }
+
+    public void removeInventoryLayerBucketsByInventoryBucketType(InventoryBucketType inventoryBucketType, BasePK removedBy) {
+        removeInventoryLayerBuckets(getInventoryLayerBucketsByInventoryBucketTypeForUpdate(inventoryBucketType), removedBy);
     }
 
 }

@@ -1141,6 +1141,15 @@
                 <securityRoleDescription languageIsoName="en" description="Inventory Layer Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="InventoryLayerBucket" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Inventory Layer Bucket" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Layer Bucket List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Layer Bucket Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="InventoryBucketType" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Inventory Bucket Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8666,6 +8675,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCostingPool" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLayer" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLayer" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLayerBucket" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLayerBucket" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryBucketType" securityRoleName="Delete" />

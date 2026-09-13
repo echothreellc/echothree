@@ -101,7 +101,8 @@ public class InventoryLocationObject
             try(var objectLimiter = new ObjectLimiter(env, InventoryLocationBucketConstants.COMPONENT_VENDOR_NAME,
                     InventoryLocationBucketConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = bucketControl.getInventoryLocationBucketsByInventoryLocation(inventoryLocation);
-                var inventoryLocationBuckets = entities.stream().map(InventoryLocationBucketObject::new)
+                var inventoryLocationBuckets = entities.stream()
+                        .map(InventoryLocationBucketObject::new)
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, inventoryLocationBuckets);

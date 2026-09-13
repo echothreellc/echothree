@@ -251,6 +251,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryDispositi
 import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryDispositionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryDispositionsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLayerBucketCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLayerBucketsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLayerCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLayersCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationBucketCommand;
@@ -664,6 +666,7 @@ import com.echothree.model.control.inventory.server.graphql.InventoryCostingMeth
 import com.echothree.model.control.inventory.server.graphql.InventoryCostingPoolObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryDispositionAdjustmentObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryDispositionObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryLayerBucketObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryLayerObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryLocationBucketObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
@@ -1017,6 +1020,7 @@ import com.echothree.model.data.inventory.common.InventoryCostingMethodConstants
 import com.echothree.model.data.inventory.common.InventoryCostingPoolConstants;
 import com.echothree.model.data.inventory.common.InventoryDispositionAdjustmentConstants;
 import com.echothree.model.data.inventory.common.InventoryDispositionConstants;
+import com.echothree.model.data.inventory.common.InventoryLayerBucketConstants;
 import com.echothree.model.data.inventory.common.InventoryLayerConstants;
 import com.echothree.model.data.inventory.common.InventoryLocationBucketConstants;
 import com.echothree.model.data.inventory.common.InventoryLocationConstants;
@@ -1037,6 +1041,7 @@ import com.echothree.model.data.inventory.server.entity.InventoryCostingPool;
 import com.echothree.model.data.inventory.server.entity.InventoryDisposition;
 import com.echothree.model.data.inventory.server.entity.InventoryDispositionAdjustment;
 import com.echothree.model.data.inventory.server.entity.InventoryLayer;
+import com.echothree.model.data.inventory.server.entity.InventoryLayerBucket;
 import com.echothree.model.data.inventory.server.entity.InventoryLocation;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationBucket;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -9926,6 +9931,81 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryLocations);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryLayerBucket")
+    static InventoryLayerBucketObject inventoryLayerBucket(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("companyName") final String companyName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("inventoryLayerSequence") @GraphQLNonNull final String inventoryLayerSequence,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryBucketTypeName") @GraphQLNonNull final String inventoryBucketTypeName) {
+        InventoryLayerBucket inventoryLayerBucket;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryLayerBucketForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setCompanyName(companyName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryLayerSequence(inventoryLayerSequence);
+            commandForm.setInventoryBucketTypeName(inventoryBucketTypeName);
+
+            inventoryLayerBucket = CDI.current().select(GetInventoryLayerBucketCommand.class).get()
+                    .getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryLayerBucket == null ? null : new InventoryLayerBucketObject(inventoryLayerBucket);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryLayerBuckets")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryLayerBucketObject> inventoryLayerBuckets(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("companyName") final String companyName,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("inventoryLayerSequence") final String inventoryLayerSequence,
+            @GraphQLName("itemName") final String itemName,
+            @GraphQLName("inventoryBucketTypeName") final String inventoryBucketTypeName) {
+        CountingPaginatedData<InventoryLayerBucketObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryLayerBucketsForm();
+            var command = CDI.current().select(GetInventoryLayerBucketsCommand.class).get();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setCompanyName(companyName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryLayerSequence(inventoryLayerSequence);
+            commandForm.setInventoryBucketTypeName(inventoryBucketTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryLayerBucketConstants.COMPONENT_VENDOR_NAME,
+                        InventoryLayerBucketConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+                    var inventoryLayerBuckets = entities.stream()
+                            .map(InventoryLayerBucketObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryLayerBuckets);
                 }
             }
         } catch (NamingException ex) {

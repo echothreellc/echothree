@@ -163,6 +163,7 @@ public enum SecurityRoleGroups {
     InventoryDisposition,
     InventoryDispositionAdjustment,
     InventoryLayer,
+    InventoryLayerBucket,
     InventoryLocation,
     InventoryLocationBucket,
     InventoryLocationGroup,

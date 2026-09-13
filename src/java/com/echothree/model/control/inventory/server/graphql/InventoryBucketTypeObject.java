@@ -26,6 +26,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.inventory.server.control.InventoryBucketTypeControl;
 import com.echothree.model.control.inventory.server.control.BucketControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.inventory.common.InventoryLayerBucketConstants;
 import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
 import com.echothree.model.data.inventory.server.entity.InventoryBucketTypeDetail;
 import com.echothree.model.data.inventory.common.InventoryLocationBucketConstants;
@@ -132,6 +133,29 @@ public class InventoryBucketTypeObject
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, partyBuckets);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory layer buckets")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryLayerBucketObject> getInventoryLayerBuckets(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryLayerBucketsAccess(env)) {
+            var bucketControl = Session.getModelController(BucketControl.class);
+            var totalCount = bucketControl.countInventoryLayerBucketsByInventoryBucketType(inventoryBucketType);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryLayerBucketConstants.COMPONENT_VENDOR_NAME,
+                    InventoryLayerBucketConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = bucketControl.getInventoryLayerBucketsByInventoryBucketType(inventoryBucketType);
+                var inventoryLayerBuckets = entities.stream()
+                        .map(InventoryLayerBucketObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, inventoryLayerBuckets);
             }
         } else {
             return Connections.emptyConnection();
