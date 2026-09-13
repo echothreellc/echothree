@@ -20,20 +20,21 @@ import com.echothree.control.user.core.common.form.GetEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetEntityBlobAttributeCommand
-        extends BaseSimpleCommand<GetEntityBlobAttributeForm> {
+        extends BaseSingleEntityCommand<EntityBlobAttribute, GetEntityBlobAttributeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -55,6 +56,8 @@ public class GetEntityBlobAttributeCommand
     @Inject
     ContentLogic contentLogic;
 
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
     
     /** Creates a new instance of GetEntityBlobAttributeCommand */
     public GetEntityBlobAttributeCommand() {
@@ -62,21 +65,21 @@ public class GetEntityBlobAttributeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetEntityBlobAttributeResult();
+    protected EntityBlobAttribute getEntity() {
+        EntityBlobAttribute entityBlobAttribute = null;
         var entityRef = form.getEntityRef();
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
             var entityAttributeName = form.getEntityAttributeName();
-            var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
+            var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
             
-            if(entityAttribute != null) {
+            if(!hasExecutionErrors()) {
                 var languageIsoName = form.getLanguageIsoName();
                 var language = languageIsoName == null ? null : partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(languageIsoName == null || language != null) {
-                    var entityBlobAttribute = language == null ? coreControl.getBestEntityBlobAttribute(entityAttribute, entityInstance, getPreferredLanguage())
+                    entityBlobAttribute = language == null ? coreControl.getBestEntityBlobAttribute(entityAttribute, entityInstance, getPreferredLanguage())
                             : coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
                     
                     if(entityBlobAttribute != null) {
@@ -86,8 +89,8 @@ public class GetEntityBlobAttributeCommand
                             contentLogic.checkReferrer(this, form.getReferrer());
                         }
                         
-                        if(!hasExecutionErrors()) {
-                            result.setEntityBlobAttribute(coreControl.getEntityBlobAttributeTransfer(getUserVisit(), entityBlobAttribute, entityInstance));
+                        if(hasExecutionErrors()) {
+                            entityBlobAttribute = null;
                         }
                     } else {
                         var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
@@ -99,16 +102,23 @@ public class GetEntityBlobAttributeCommand
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
-            } else {
-                var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-                
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttributeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
         
+        return entityBlobAttribute;
+    }
+
+    @Override
+    protected BaseResult getResult(EntityBlobAttribute entityBlobAttribute) {
+        var result = CoreResultFactory.getGetEntityBlobAttributeResult();
+
+        if(entityBlobAttribute != null) {
+            result.setEntityBlobAttribute(coreControl.getEntityBlobAttributeTransfer(getUserVisit(), entityBlobAttribute,
+                    entityBlobAttribute.getEntityInstance()));
+        }
+
         return result;
     }
     
