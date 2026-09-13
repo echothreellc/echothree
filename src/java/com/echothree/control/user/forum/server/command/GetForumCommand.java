@@ -18,26 +18,24 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
+import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.forum.server.logic.ForumRoleTypeLogic;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetForumCommand
-        extends BaseSimpleCommand<GetForumForm> {
+        extends BaseSingleEntityCommand<Forum, GetForumForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -53,52 +51,40 @@ public class GetForumCommand
     ForumControl forumControl;
 
     @Inject
-    EntityInstanceLogic entityInstanceLogic;
+    ForumLogic forumLogic;
 
     @Inject
     ForumRoleTypeLogic forumRoleTypeLogic;
 
-    
     /** Creates a new instance of GetForumCommand */
     public GetForumCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ForumResultFactory.getGetForumResult();
-        var forumName = form.getForumName();
-        var parameterCount = (forumName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
+    protected Forum getEntity() {
+        var forum = forumLogic.getForumByUniversalSpec(this, form);
 
-        if(parameterCount == 1) {
-            Forum forum = null;
-
-            if(forumName == null) {
-                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
-                        EntityTypes.Forum.name());
-                
-                if(!hasExecutionErrors()) {
-                    forum = forumControl.getForumByEntityInstance(entityInstance);
-                }
-            } else {
-                forum = forumControl.getForumByName(forumName);
-
-                if(forum == null) {
-                    addExecutionError(ExecutionErrors.UnknownForumName.name(), forumName);
-                }
-            }
-
+        if(!hasExecutionErrors() && forum != null) {
             // If the UUID for the Forum is specified, then bypass the ForumRoleType check.
-            if(!hasExecutionErrors()) {
-                if(form.getUuid() != null || forumRoleTypeLogic.isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
-                    result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
+            if(form.getUuid() != null || forumRoleTypeLogic.isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+                if(!hasExecutionErrors()) {
                     sendEvent(forum.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }
             } else {
                 addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return hasExecutionErrors() ? null : forum;
+    }
+
+    @Override
+    protected BaseResult getResult(Forum forum) {
+        var result = ForumResultFactory.getGetForumResult();
+
+        if(forum != null) {
+            result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
         }
 
         return result;
