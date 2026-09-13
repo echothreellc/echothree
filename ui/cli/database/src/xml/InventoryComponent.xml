@@ -1798,13 +1798,13 @@
                 </table>
                 <table namePlural="InventoryCostingPoolStatuses" nameSingular="InventoryCostingPoolStatus" columnPrefix="invcplst">
                     <columns>
-                        <column name="InventoryLayerStatusId" type="EID" nullAllowed="false" />
+                        <column name="InventoryCostingPoolStatusId" type="EID" nullAllowed="false" />
                         <column name="InventoryCostingPoolId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryCostingPools" destinationColumn="InventoryCostingPoolId"/>
                         <column name="InventoryLayerSequence" type="Integer" nullAllowed="false" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="InventoryLayerStatusId" />
+                            <indexColumn name="InventoryCostingPoolStatusId" />
                         </index>
                         <index type="Unique">
                             <indexColumn name="InventoryCostingPoolId" />

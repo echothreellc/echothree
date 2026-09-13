@@ -997,6 +997,9 @@
             <entityType entityTypeName="PartyInventoryCostingMethod" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Inventory Costing Method" />
             </entityType>
+            <entityType entityTypeName="InventoryCostingPool" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Costing Pool" />
+            </entityType>
             <entityType entityTypeName="InventoryBucketType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Bucket Type" />
             </entityType>

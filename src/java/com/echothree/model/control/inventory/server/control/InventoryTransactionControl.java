@@ -84,9 +84,9 @@ public class InventoryTransactionControl
         inventoryTransaction.setLastDetail(inventoryTransactionDetail);
         inventoryTransaction.store();
 
-        sendEvent(inventoryTransaction.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
-
         createInventoryTransactionStatus(inventoryTransaction);
+
+        sendEvent(inventoryTransaction.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return inventoryTransaction;
     }

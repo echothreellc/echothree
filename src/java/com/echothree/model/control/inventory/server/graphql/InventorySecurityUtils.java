@@ -47,6 +47,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryTransacti
 import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodsCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyBucketCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryCostingPoolCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryCostingPoolsCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyBucketsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
@@ -179,6 +181,14 @@ public interface InventorySecurityUtils {
 
     static boolean getHasPartyBucketsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyBucketsCommand.class);
+    }
+
+    static boolean getHasInventoryCostingPoolAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryCostingPoolCommand.class);
+    }
+
+    static boolean getHasInventoryCostingPoolsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryCostingPoolsCommand.class);
     }
 
 }

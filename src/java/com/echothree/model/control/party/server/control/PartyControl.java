@@ -24,6 +24,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.inventory.server.control.BucketControl;
+import com.echothree.model.control.inventory.server.control.InventoryCostingPoolControl;
 import com.echothree.model.control.inventory.server.control.InventoryLocationControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionLineControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
@@ -246,6 +247,9 @@ public class PartyControl
 
     @Inject
     protected EmployeeControl employeeControl;
+
+    @Inject
+    InventoryCostingPoolControl inventoryCostingPoolControl;
 
     @Inject
     protected InventoryLocationControl inventoryLocationControl;
@@ -2512,6 +2516,7 @@ public class PartyControl
         deleteProfileByParty(party, deletedBy);
         deletePartyAliasesByParty(party, deletedBy); 
 
+        inventoryCostingPoolControl.deleteInventoryCostingPoolsByCompanyParty(party, deletedBy);
         bucketControl.removePartyBucketsByParty(party, deletedBy);
 
         removePartyStatusByParty(party);

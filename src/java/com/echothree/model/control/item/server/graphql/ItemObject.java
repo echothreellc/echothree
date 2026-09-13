@@ -16,6 +16,9 @@
 
 package com.echothree.model.control.item.server.graphql;
 
+import com.echothree.model.data.inventory.common.InventoryCostingPoolConstants;
+import com.echothree.model.control.inventory.server.graphql.InventoryCostingPoolObject;
+import com.echothree.model.control.inventory.server.control.InventoryCostingPoolControl;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
@@ -427,6 +430,28 @@ public class ItemObject
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, inventoryLocations);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory costing pools")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryCostingPoolObject> getInventoryCostingPools(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryCostingPoolsAccess(env)) {
+            var inventoryCostingPoolControl = Session.getModelController(InventoryCostingPoolControl.class);
+            var totalCount = inventoryCostingPoolControl.countInventoryCostingPoolsByItem(item);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryCostingPoolConstants.COMPONENT_VENDOR_NAME, InventoryCostingPoolConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryCostingPoolControl.getInventoryCostingPoolsByItem(item);
+                var inventoryCostingPools = entities.stream()
+                        .map(InventoryCostingPoolObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, inventoryCostingPools);
             }
         } else {
             return Connections.emptyConnection();

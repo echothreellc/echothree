@@ -589,4 +589,12 @@ public interface InventoryService
 
     CommandResult<GetPartyBucketsResult> getPartyBuckets(UserVisitPK userVisitPK, GetPartyBucketsForm form);
 
+    // --------------------------------------------------------------------------------
+    //   Inventory Costing Pools
+    // --------------------------------------------------------------------------------
+
+    CommandResult<GetInventoryCostingPoolResult> getInventoryCostingPool(UserVisitPK userVisitPK, GetInventoryCostingPoolForm form);
+
+    CommandResult<GetInventoryCostingPoolsResult> getInventoryCostingPools(UserVisitPK userVisitPK, GetInventoryCostingPoolsForm form);
+
 }
