@@ -64,6 +64,9 @@ public class InventoryLayerControl
     protected InventoryLayerFactory inventoryLayerFactory;
 
     @Inject
+    BucketControl bucketControl;
+
+    @Inject
     InventoryCostingPoolControl inventoryCostingPoolControl;
 
     @Inject
@@ -275,6 +278,8 @@ public class InventoryLayerControl
     public void deleteInventoryLayer(InventoryLayer inventoryLayer, BasePK deletedBy) {
         inventoryLayer = inventoryLayerFactory.getEntityFromPK(EntityPermission.READ_WRITE, inventoryLayer.getPrimaryKey());
         var inventoryLayerDetail = inventoryLayer.getLastDetailForUpdate();
+
+        bucketControl.removeInventoryLayerBucketsByInventoryLayer(inventoryLayer, deletedBy);
 
         inventoryLayerDetail.setThruTime(session.getStartTime());
         inventoryLayer.setActiveDetail(null);

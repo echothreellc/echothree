@@ -1229,4 +1229,18 @@ public class InventoryBean
         return CDI.current().select(GetInventoryLayersCommand.class).get().run(userVisitPK, form);
     }
 
+    // -------------------------------------------------------------------------
+    //   Inventory Layer Buckets
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<GetInventoryLayerBucketResult> getInventoryLayerBucket(UserVisitPK userVisitPK, GetInventoryLayerBucketForm form) {
+        return CDI.current().select(GetInventoryLayerBucketCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryLayerBucketsResult> getInventoryLayerBuckets(UserVisitPK userVisitPK, GetInventoryLayerBucketsForm form) {
+        return CDI.current().select(GetInventoryLayerBucketsCommand.class).get().run(userVisitPK, form);
+    }
+
 }

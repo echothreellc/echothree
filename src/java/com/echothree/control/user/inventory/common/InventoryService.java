@@ -605,4 +605,12 @@ public interface InventoryService
 
     CommandResult<GetInventoryLayersResult> getInventoryLayers(UserVisitPK userVisitPK, GetInventoryLayersForm form);
 
+    // -------------------------------------------------------------------------
+    //   Inventory Layer Buckets
+    // -------------------------------------------------------------------------
+
+    CommandResult<GetInventoryLayerBucketResult> getInventoryLayerBucket(UserVisitPK userVisitPK, GetInventoryLayerBucketForm form);
+
+    CommandResult<GetInventoryLayerBucketsResult> getInventoryLayerBuckets(UserVisitPK userVisitPK, GetInventoryLayerBucketsForm form);
+
 }
