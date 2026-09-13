@@ -16,6 +16,16 @@
 
 package com.echothree.model.control.inventory.server.graphql;
 
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import graphql.annotations.connection.GraphQLConnection;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.data.inventory.common.InventoryCostingPoolConstants;
+import com.echothree.model.control.inventory.server.control.InventoryCostingPoolControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
@@ -83,4 +93,26 @@ public class InventoryConditionObject
         return inventoryConditionControl.getBestInventoryConditionDescription(inventoryCondition, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
+    @GraphQLField
+    @GraphQLDescription("inventory costing pools")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryCostingPoolObject> getInventoryCostingPools(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryCostingPoolsAccess(env)) {
+            var inventoryCostingPoolControl = Session.getModelController(InventoryCostingPoolControl.class);
+            var totalCount = inventoryCostingPoolControl.countInventoryCostingPoolsByInventoryCondition(inventoryCondition);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryCostingPoolConstants.COMPONENT_VENDOR_NAME, InventoryCostingPoolConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryCostingPoolControl.getInventoryCostingPoolsByInventoryCondition(inventoryCondition);
+                var inventoryCostingPools = entities.stream()
+                        .map(InventoryCostingPoolObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, inventoryCostingPools);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }

@@ -739,6 +739,8 @@ public enum ExecutionErrors {
     DuplicateInventoryLocationBucket,
     PartyBucketInUse,
     UnknownPartyBucket,
+    DuplicateInventoryCostingPool,
+    UnknownInventoryCostingPool,
     UnknownInventoryLocationBucket,
     InvalidItemDescriptionType,
     DuplicateSubscriptionTypeDescription,

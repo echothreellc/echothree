@@ -1201,4 +1201,18 @@ public class InventoryBean
         return CDI.current().select(GetPartyBucketsCommand.class).get().run(userVisitPK, form);
     }
 
+    // --------------------------------------------------------------------------------
+    //   Inventory Costing Pools
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<GetInventoryCostingPoolResult> getInventoryCostingPool(UserVisitPK userVisitPK, GetInventoryCostingPoolForm form) {
+        return CDI.current().select(GetInventoryCostingPoolCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryCostingPoolsResult> getInventoryCostingPools(UserVisitPK userVisitPK, GetInventoryCostingPoolsForm form) {
+        return CDI.current().select(GetInventoryCostingPoolsCommand.class).get().run(userVisitPK, form);
+    }
+
 }
