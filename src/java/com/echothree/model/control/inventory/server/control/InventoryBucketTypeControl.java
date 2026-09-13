@@ -329,9 +329,9 @@ public class InventoryBucketTypeControl
 
         deleteInventoryBucketTypeDescriptionsByInventoryBucketType(inventoryBucketType, deletedBy);
         inventoryDispositionAdjustmentControl.deleteInventoryDispositionAdjustmentsByInventoryBucketType(inventoryBucketType, deletedBy);
-        // TODO: deleteInventoryTransactionsByInventoryBucketType(inventoryBucketType, deletedBy);
         bucketControl.removePartyBucketsByInventoryBucketType(inventoryBucketType, deletedBy);
         bucketControl.removeInventoryLocationBucketsByInventoryBucketType(inventoryBucketType, deletedBy);
+        bucketControl.removeInventoryLayerBucketsByInventoryBucketType(inventoryBucketType, deletedBy);
 
         inventoryBucketTypeDetail.setThruTime(session.getStartTime());
         inventoryBucketType.setActiveDetail(null);
