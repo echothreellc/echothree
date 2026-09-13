@@ -92,29 +92,4 @@ public class PartyBucketLogic
         removePartyBuckets(eea, List.of(partyBucketForUpdate), removedBy);
     }
 
-    public void removePartyBucketsByParty(final ExecutionErrorAccumulator eea, final Party party,
-            final BasePK removedBy) {
-        removePartyBuckets(eea, bucketControl.getPartyBucketsByPartyForUpdate(party), removedBy);
-    }
-
-    public void removePartyBucketsByItem(final ExecutionErrorAccumulator eea, final Item item,
-            final BasePK removedBy) {
-        removePartyBuckets(eea, bucketControl.getPartyBucketsByItemForUpdate(item), removedBy);
-    }
-
-    public void removePartyBucketsByUnitOfMeasureType(final ExecutionErrorAccumulator eea,
-            final UnitOfMeasureType unitOfMeasureType, final BasePK removedBy) {
-        removePartyBuckets(eea, bucketControl.getPartyBucketsByUnitOfMeasureTypeForUpdate(unitOfMeasureType), removedBy);
-    }
-
-    public void removePartyBucketsByInventoryCondition(final ExecutionErrorAccumulator eea,
-            final InventoryCondition inventoryCondition, final BasePK removedBy) {
-        removePartyBuckets(eea, bucketControl.getPartyBucketsByInventoryConditionForUpdate(inventoryCondition), removedBy);
-    }
-
-    public void removePartyBucketsByInventoryBucketType(final ExecutionErrorAccumulator eea,
-            final InventoryBucketType inventoryBucketType, final BasePK removedBy) {
-        removePartyBuckets(eea, bucketControl.getPartyBucketsByInventoryBucketTypeForUpdate(inventoryBucketType), removedBy);
-    }
-
 }

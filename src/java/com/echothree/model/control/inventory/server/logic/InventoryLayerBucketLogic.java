@@ -102,16 +102,4 @@ public class InventoryLayerBucketLogic
         removeInventoryLayerBuckets(eea, List.of(inventoryLayerBucketForUpdate), removedBy);
     }
 
-    public void removeInventoryLayerBucketsByInventoryLayer(final ExecutionErrorAccumulator eea,
-            final InventoryLayer inventoryLayer, final BasePK removedBy) {
-        removeInventoryLayerBuckets(eea,
-                bucketControl.getInventoryLayerBucketsByInventoryLayerForUpdate(inventoryLayer), removedBy);
-    }
-
-    public void removeInventoryLayerBucketsByInventoryBucketType(final ExecutionErrorAccumulator eea,
-            final InventoryBucketType inventoryBucketType, final BasePK removedBy) {
-        removeInventoryLayerBuckets(eea,
-                bucketControl.getInventoryLayerBucketsByInventoryBucketTypeForUpdate(inventoryBucketType), removedBy);
-    }
-
 }

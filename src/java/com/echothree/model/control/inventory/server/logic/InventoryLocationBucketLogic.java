@@ -90,16 +90,4 @@ public class InventoryLocationBucketLogic
         removeInventoryLocationBuckets(eea, List.of(inventoryLocationBucketForUpdate), removedBy);
     }
 
-    public void removeInventoryLocationBucketsByInventoryLocation(final ExecutionErrorAccumulator eea,
-            final InventoryLocation inventoryLocation, final BasePK removedBy) {
-        removeInventoryLocationBuckets(eea,
-                bucketControl.getInventoryLocationBucketsByInventoryLocationForUpdate(inventoryLocation), removedBy);
-    }
-
-    public void removeInventoryLocationBucketsByInventoryBucketType(final ExecutionErrorAccumulator eea,
-            final InventoryBucketType inventoryBucketType, final BasePK removedBy) {
-        removeInventoryLocationBuckets(eea,
-                bucketControl.getInventoryLocationBucketsByInventoryBucketTypeForUpdate(inventoryBucketType), removedBy);
-    }
-
 }
