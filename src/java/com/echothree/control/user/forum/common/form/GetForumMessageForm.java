@@ -16,12 +16,11 @@
 
 package com.echothree.control.user.forum.common.form;
 
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
+import com.echothree.control.user.forum.common.spec.ForumMessageUniversalSpec;
 
 public interface GetForumMessageForm
-        extends ForumMessageSpec, UniversalEntitySpec {
+        extends ForumMessageUniversalSpec {
     
-    // Nothing additional beyond ForumMessageSpec, UniversalEntitySpec
+    // Nothing additional beyond ForumMessageUniversalSpec
     
 }
