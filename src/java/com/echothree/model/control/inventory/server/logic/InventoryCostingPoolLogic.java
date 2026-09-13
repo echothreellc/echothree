@@ -16,6 +16,11 @@
 
 package com.echothree.model.control.inventory.server.logic;
 
+import com.echothree.control.user.inventory.common.spec.InventoryCostingPoolUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.inventory.common.exception.DuplicateInventoryCostingPoolException;
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryCostingPoolException;
 import com.echothree.model.control.inventory.server.control.InventoryCostingPoolControl;
@@ -48,6 +53,9 @@ public class InventoryCostingPoolLogic
 
     @Inject
     CompanyLogic companyLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     @Inject
     InventoryConditionLogic inventoryConditionLogic;
@@ -116,6 +124,44 @@ public class InventoryCostingPoolLogic
     public InventoryCostingPool getInventoryCostingPool(final Party companyParty, final Item item,
             final InventoryCondition inventoryCondition) {
         return getInventoryCostingPool(companyParty, item, inventoryCondition, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryCostingPool getInventoryCostingPoolByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final InventoryCostingPoolUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        var companyName = universalSpec.getCompanyName();
+        var partyName = universalSpec.getPartyName();
+        var itemName = universalSpec.getItemName();
+        var inventoryConditionName = universalSpec.getInventoryConditionName();
+        var companyParameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1);
+        var hasNameParameters = companyParameterCount != 0 || itemName != null || inventoryConditionName != null;
+        var hasCompleteName = companyParameterCount == 1 && itemName != null && inventoryConditionName != null;
+        var entitySpecCount = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+        InventoryCostingPool inventoryCostingPool = null;
+
+        if(hasCompleteName && entitySpecCount == 0) {
+            inventoryCostingPool = getInventoryCostingPoolByName(eea, companyName, partyName, itemName, inventoryConditionName, entityPermission);
+        } else if(!hasNameParameters && entitySpecCount == 1) {
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryCostingPool.name());
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                inventoryCostingPool = inventoryCostingPoolControl.getInventoryCostingPoolByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return inventoryCostingPool;
+    }
+
+    public InventoryCostingPool getInventoryCostingPoolByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final InventoryCostingPoolUniversalSpec universalSpec) {
+        return getInventoryCostingPoolByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryCostingPool getInventoryCostingPoolByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final InventoryCostingPoolUniversalSpec universalSpec) {
+        return getInventoryCostingPoolByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public void deleteInventoryCostingPool(final InventoryCostingPool inventoryCostingPool, final BasePK deletedBy) {

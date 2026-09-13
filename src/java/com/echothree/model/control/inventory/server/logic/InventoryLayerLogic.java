@@ -16,6 +16,11 @@
 
 package com.echothree.model.control.inventory.server.logic;
 
+import com.echothree.control.user.inventory.common.spec.InventoryLayerUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.inventory.common.exception.DuplicateInventoryLayerSequenceException;
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryLayerSequenceException;
 import com.echothree.model.control.inventory.server.control.InventoryLayerControl;
@@ -41,6 +46,9 @@ public class InventoryLayerLogic
 
     @Inject
     PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     @Inject
     InventoryCostingPoolLogic inventoryCostingPoolLogic;
@@ -117,6 +125,46 @@ public class InventoryLayerLogic
     public InventoryLayer getInventoryLayerByName(final ExecutionErrorAccumulator eea, final String companyName, final String partyName,
             final String itemName, final String inventoryConditionName, final Integer inventoryLayerSequence) {
         return getInventoryLayerByName(eea, companyName, partyName, itemName, inventoryConditionName, inventoryLayerSequence, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryLayer getInventoryLayerByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final InventoryLayerUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        var companyName = universalSpec.getCompanyName();
+        var partyName = universalSpec.getPartyName();
+        var itemName = universalSpec.getItemName();
+        var inventoryConditionName = universalSpec.getInventoryConditionName();
+        var inventoryLayerSequence = universalSpec.getInventoryLayerSequence();
+        var companyParameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1);
+        var hasNameParameters = companyParameterCount != 0 || itemName != null || inventoryConditionName != null || inventoryLayerSequence != null;
+        var hasCompleteName = companyParameterCount == 1 && itemName != null && inventoryConditionName != null
+                && inventoryLayerSequence != null;
+        var entitySpecCount = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+        InventoryLayer inventoryLayer = null;
+
+        if(hasCompleteName && entitySpecCount == 0) {
+            inventoryLayer = getInventoryLayerByName(eea, companyName, partyName, itemName, inventoryConditionName, Integer.valueOf(inventoryLayerSequence), entityPermission);
+        } else if(!hasNameParameters && entitySpecCount == 1) {
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryLayer.name());
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                inventoryLayer = inventoryLayerControl.getInventoryLayerByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return inventoryLayer;
+    }
+
+    public InventoryLayer getInventoryLayerByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final InventoryLayerUniversalSpec universalSpec) {
+        return getInventoryLayerByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryLayer getInventoryLayerByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final InventoryLayerUniversalSpec universalSpec) {
+        return getInventoryLayerByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public void updateInventoryLayerFromValue(final InventoryLayerDetailValue value, final BasePK updatedBy) {

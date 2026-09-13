@@ -49,8 +49,10 @@ public class GetInventoryCostingPoolCommand
     private static final List<FieldDefinition> FORM_FIELD_DEFINITIONS = List.of(
             new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null)
+            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+            new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
     );
 
     @Inject
@@ -65,8 +67,7 @@ public class GetInventoryCostingPoolCommand
 
     @Override
     protected InventoryCostingPool getEntity() {
-        return inventoryCostingPoolLogic.getInventoryCostingPoolByName(this, form.getCompanyName(), form.getPartyName(),
-                form.getItemName(), form.getInventoryConditionName());
+        return inventoryCostingPoolLogic.getInventoryCostingPoolByUniversalSpec(this, form);
     }
 
     @Override

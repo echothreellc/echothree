@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.spec.InventoryLayerSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryLayerUniversalSpec;
 
 public interface GetInventoryLayerForm
-        extends InventoryLayerSpec {
+        extends InventoryLayerUniversalSpec {
 
-    // Nothing additional beyond InventoryLayerSpec
+    // Nothing additional beyond InventoryLayerUniversalSpec
 
 }

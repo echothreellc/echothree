@@ -16,34 +16,6 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
-import com.echothree.control.user.core.server.command.GetEventsCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentsCommand;
-import com.echothree.model.control.core.server.graphql.EventObject;
-import com.echothree.model.control.inventory.server.graphql.InventoryDispositionAdjustmentObject;
-import com.echothree.model.data.core.common.EventConstants;
-import com.echothree.model.data.inventory.common.InventoryDispositionAdjustmentConstants;
-import com.echothree.model.data.inventory.server.entity.InventoryDispositionAdjustment;
-import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonsCommand;
-import com.echothree.model.control.inventory.server.graphql.InventoryTransactionReasonObject;
-import com.echothree.model.data.inventory.common.InventoryTransactionReasonConstants;
-import com.echothree.model.data.inventory.server.entity.InventoryTransactionReason;
-import com.echothree.control.user.inventory.server.command.GetInventoryDispositionCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryDispositionsCommand;
-import com.echothree.model.control.inventory.server.graphql.InventoryDispositionObject;
-import com.echothree.model.data.inventory.common.InventoryDispositionConstants;
-import com.echothree.model.data.inventory.server.entity.InventoryDisposition;
-import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypeCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypesCommand;
-import com.echothree.model.control.inventory.server.graphql.InventoryTransactionRoleTypeObject;
-import com.echothree.model.data.inventory.common.InventoryTransactionRoleTypeConstants;
-import com.echothree.model.data.inventory.server.entity.InventoryTransactionRoleType;
-import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypeCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypesCommand;
-import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTimeTypeObject;
-import com.echothree.model.data.inventory.common.InventoryTransactionTimeTypeConstants;
-import com.echothree.model.data.inventory.server.entity.InventoryTransactionTimeType;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
@@ -180,6 +152,7 @@ import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetEventTypeCommand;
 import com.echothree.control.user.core.server.command.GetEventTypesCommand;
+import com.echothree.control.user.core.server.command.GetEventsCommand;
 import com.echothree.control.user.core.server.command.GetFontStyleCommand;
 import com.echothree.control.user.core.server.command.GetFontStylesCommand;
 import com.echothree.control.user.core.server.command.GetFontWeightCommand;
@@ -272,22 +245,32 @@ import com.echothree.control.user.inventory.server.command.GetInventoryCondition
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryCostingMethodsCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryLocationCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryCostingPoolCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryCostingPoolsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionAdjustmentsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryDispositionsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLayerCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLayersCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationBucketCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationBucketsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLocationCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryLocationsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionReasonsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionRoleTypesCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypeCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTimeTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetLotCommand;
 import com.echothree.control.user.inventory.server.command.GetLotsCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyBucketCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryCostingPoolCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryLayerCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyBucketsCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryCostingPoolsCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryLayersCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodCommand;
 import com.echothree.control.user.inventory.server.command.GetPartyInventoryCostingMethodsCommand;
 import com.echothree.control.user.item.common.ItemUtil;
@@ -630,6 +613,7 @@ import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.core.server.graphql.EntityTypeObject;
+import com.echothree.model.control.core.server.graphql.EventObject;
 import com.echothree.model.control.core.server.graphql.EventTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
 import com.echothree.model.control.core.server.graphql.FontWeightObject;
@@ -677,14 +661,19 @@ import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentT
 import com.echothree.model.control.inventory.server.graphql.InventoryBucketTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryCostingMethodObject;
-import com.echothree.model.control.inventory.server.graphql.InventoryLocationObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryCostingPoolObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryDispositionAdjustmentObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryDispositionObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryLayerObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryLocationBucketObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryLocationObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryTransactionReasonObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryTransactionRoleTypeObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTimeTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.inventory.server.graphql.PartyBucketObject;
-import com.echothree.model.control.inventory.server.graphql.InventoryCostingPoolObject;
-import com.echothree.model.control.inventory.server.graphql.InventoryLayerObject;
 import com.echothree.model.control.inventory.server.graphql.PartyInventoryCostingMethodObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
@@ -944,6 +933,7 @@ import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
+import com.echothree.model.data.core.common.EventConstants;
 import com.echothree.model.data.core.common.EventTypeConstants;
 import com.echothree.model.data.core.common.FontStyleConstants;
 import com.echothree.model.data.core.common.FontWeightConstants;
@@ -1024,28 +1014,38 @@ import com.echothree.model.data.inventory.common.InventoryAdjustmentTypeConstant
 import com.echothree.model.data.inventory.common.InventoryBucketTypeConstants;
 import com.echothree.model.data.inventory.common.InventoryConditionConstants;
 import com.echothree.model.data.inventory.common.InventoryCostingMethodConstants;
-import com.echothree.model.data.inventory.common.InventoryLocationConstants;
+import com.echothree.model.data.inventory.common.InventoryCostingPoolConstants;
+import com.echothree.model.data.inventory.common.InventoryDispositionAdjustmentConstants;
+import com.echothree.model.data.inventory.common.InventoryDispositionConstants;
+import com.echothree.model.data.inventory.common.InventoryLayerConstants;
 import com.echothree.model.data.inventory.common.InventoryLocationBucketConstants;
+import com.echothree.model.data.inventory.common.InventoryLocationConstants;
 import com.echothree.model.data.inventory.common.InventoryLocationGroupConstants;
+import com.echothree.model.data.inventory.common.InventoryTransactionReasonConstants;
+import com.echothree.model.data.inventory.common.InventoryTransactionRoleTypeConstants;
+import com.echothree.model.data.inventory.common.InventoryTransactionTimeTypeConstants;
 import com.echothree.model.data.inventory.common.InventoryTransactionTypeConstants;
 import com.echothree.model.data.inventory.common.LotConstants;
 import com.echothree.model.data.inventory.common.PartyBucketConstants;
-import com.echothree.model.data.inventory.common.InventoryCostingPoolConstants;
-import com.echothree.model.data.inventory.common.InventoryLayerConstants;
 import com.echothree.model.data.inventory.common.PartyInventoryCostingMethodConstants;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.inventory.server.entity.InventoryBucketType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryCostingMethod;
+import com.echothree.model.data.inventory.server.entity.InventoryCostingPool;
+import com.echothree.model.data.inventory.server.entity.InventoryDisposition;
+import com.echothree.model.data.inventory.server.entity.InventoryDispositionAdjustment;
+import com.echothree.model.data.inventory.server.entity.InventoryLayer;
 import com.echothree.model.data.inventory.server.entity.InventoryLocation;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationBucket;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionReason;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionRoleType;
+import com.echothree.model.data.inventory.server.entity.InventoryTransactionTimeType;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.PartyBucket;
-import com.echothree.model.data.inventory.server.entity.InventoryCostingPool;
-import com.echothree.model.data.inventory.server.entity.InventoryLayer;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryCostingMethod;
 import com.echothree.model.data.item.common.ItemAliasChecksumTypeConstants;
 import com.echothree.model.data.item.common.ItemAliasConstants;
@@ -6235,8 +6235,9 @@ public interface GraphQlQueries {
     static InventoryCostingPoolObject inventoryCostingPool(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("companyName") final String companyName,
-            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
-            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName) {
+            @GraphQLName("itemName") final String itemName,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("id") @GraphQLID final String id) {
         InventoryCostingPool inventoryCostingPool;
 
         try {
@@ -6246,6 +6247,7 @@ public interface GraphQlQueries {
             commandForm.setCompanyName(companyName);
             commandForm.setItemName(itemName);
             commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUuid(id);
 
             inventoryCostingPool = CDI.current().select(GetInventoryCostingPoolCommand.class).get()
                     .getEntityForGraphQl(getUserVisitPK(env), commandForm);
@@ -6302,9 +6304,10 @@ public interface GraphQlQueries {
     static InventoryLayerObject inventoryLayer(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("companyName") final String companyName,
-            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
-            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
-            @GraphQLName("inventoryLayerSequence") @GraphQLNonNull final String inventoryLayerSequence) {
+            @GraphQLName("itemName") final String itemName,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("inventoryLayerSequence") final String inventoryLayerSequence,
+            @GraphQLName("id") @GraphQLID final String id) {
         InventoryLayer inventoryLayer;
 
         try {
@@ -6315,6 +6318,7 @@ public interface GraphQlQueries {
             commandForm.setItemName(itemName);
             commandForm.setInventoryConditionName(inventoryConditionName);
             commandForm.setInventoryLayerSequence(inventoryLayerSequence);
+            commandForm.setUuid(id);
 
             inventoryLayer = CDI.current().select(GetInventoryLayerCommand.class).get()
                     .getEntityForGraphQl(getUserVisitPK(env), commandForm);
