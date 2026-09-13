@@ -22,11 +22,12 @@ import com.echothree.model.control.core.server.control.EncryptionKeyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.BaseEncryptionKey;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +37,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetBaseEncryptionKeyCommand
-        extends BaseSimpleCommand<GetBaseEncryptionKeyForm> {
+        extends BaseSingleEntityCommand<BaseEncryptionKey, GetBaseEncryptionKeyForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,7 +57,6 @@ public class GetBaseEncryptionKeyCommand
 
     @Inject
     EncryptionKeyControl encryptionKeyControl;
-
     
     /** Creates a new instance of GetBaseEncryptionKeyCommand */
     public GetBaseEncryptionKeyCommand() {
@@ -64,23 +64,26 @@ public class GetBaseEncryptionKeyCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetBaseEncryptionKeyResult();
+    protected BaseEncryptionKey getEntity() {
         var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        var baseEncryptionKey = baseEncryptionKeyName == null? null: encryptionKeyControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
-        
-        if(baseEncryptionKeyName == null || baseEncryptionKey != null) {
-            var userVisit = getUserVisit();
-            
-            if(baseEncryptionKey == null) {
-                result.setBaseEncryptionKey(encryptionKeyControl.getActiveBaseEncryptionKeyTransfer(userVisit));
-            } else {
-                result.setBaseEncryptionKey(encryptionKeyControl.getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey));
-            }
-        } else {
+        var baseEncryptionKey = baseEncryptionKeyName == null ? encryptionKeyControl.getActiveBaseEncryptionKey()
+                : encryptionKeyControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
+
+        if(baseEncryptionKeyName != null && baseEncryptionKey == null) {
             addExecutionError(ExecutionErrors.UnknownBaseEncryptionKeyName.name(), baseEncryptionKeyName);
         }
-        
+
+        return baseEncryptionKey;
+    }
+
+    @Override
+    protected BaseResult getResult(BaseEncryptionKey baseEncryptionKey) {
+        var result = CoreResultFactory.getGetBaseEncryptionKeyResult();
+
+        if(baseEncryptionKey != null) {
+            result.setBaseEncryptionKey(encryptionKeyControl.getBaseEncryptionKeyTransfer(getUserVisit(), baseEncryptionKey));
+        }
+
         return result;
     }
     
