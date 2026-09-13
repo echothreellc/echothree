@@ -597,4 +597,12 @@ public interface InventoryService
 
     CommandResult<GetInventoryCostingPoolsResult> getInventoryCostingPools(UserVisitPK userVisitPK, GetInventoryCostingPoolsForm form);
 
+    // --------------------------------------------------------------------------------
+    //   Inventory Layers
+    // --------------------------------------------------------------------------------
+
+    CommandResult<GetInventoryLayerResult> getInventoryLayer(UserVisitPK userVisitPK, GetInventoryLayerForm form);
+
+    CommandResult<GetInventoryLayersResult> getInventoryLayers(UserVisitPK userVisitPK, GetInventoryLayersForm form);
+
 }

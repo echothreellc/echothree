@@ -67,6 +67,9 @@ public class InventoryCostingPoolControl
     protected InventoryCostingPoolFactory inventoryCostingPoolFactory;
 
     @Inject
+    InventoryLayerControl inventoryLayerControl;
+
+    @Inject
     InventoryCostingPoolTransferCache inventoryCostingPoolTransferCache;
 
     protected InventoryCostingPoolControl() {
@@ -290,7 +293,8 @@ public class InventoryCostingPoolControl
                 inventoryCostingPool.getPrimaryKey());
         var inventoryCostingPoolDetail = inventoryCostingPool.getLastDetailForUpdate();
 
-        deleteInventoryCostingPoolStatusByInventoryCostingPool(inventoryCostingPool);
+        inventoryLayerControl.deleteInventoryLayersByInventoryCostingPool(inventoryCostingPool, deletedBy);
+        removeInventoryCostingPoolStatusByInventoryCostingPool(inventoryCostingPool);
 
         inventoryCostingPoolDetail.setThruTime(session.getStartTime());
         inventoryCostingPool.setActiveDetail(null);
@@ -349,7 +353,7 @@ public class InventoryCostingPoolControl
         return getInventoryCostingPoolStatus(inventoryCostingPool, EntityPermission.READ_WRITE);
     }
 
-    private void deleteInventoryCostingPoolStatusByInventoryCostingPool(InventoryCostingPool inventoryCostingPool) {
+    private void removeInventoryCostingPoolStatusByInventoryCostingPool(InventoryCostingPool inventoryCostingPool) {
         var status = getInventoryCostingPoolStatusForUpdate(inventoryCostingPool);
 
         if(status != null) {

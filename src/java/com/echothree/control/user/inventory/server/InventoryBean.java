@@ -1215,4 +1215,18 @@ public class InventoryBean
         return CDI.current().select(GetInventoryCostingPoolsCommand.class).get().run(userVisitPK, form);
     }
 
+    // --------------------------------------------------------------------------------
+    //   Inventory Layers
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<GetInventoryLayerResult> getInventoryLayer(UserVisitPK userVisitPK, GetInventoryLayerForm form) {
+        return CDI.current().select(GetInventoryLayerCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetInventoryLayersResult> getInventoryLayers(UserVisitPK userVisitPK, GetInventoryLayersForm form) {
+        return CDI.current().select(GetInventoryLayersCommand.class).get().run(userVisitPK, form);
+    }
+
 }
