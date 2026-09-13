@@ -67,6 +67,9 @@ public class InventoryTransactionLineControl
         extends BaseModelControl {
 
     @Inject
+    InventoryLayerControl inventoryLayerControl;
+
+    @Inject
     InventoryTransactionControl inventoryTransactionControl;
 
     @Inject
@@ -361,7 +364,7 @@ public class InventoryTransactionLineControl
         deleteInventoryTransactionLineDestinationByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
         inventoryTransactionTimeControl.deleteInventoryTransactionLineTimesByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
         inventoryTransactionRoleControl.deleteInventoryTransactionLineRolesByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
-        // TODO: deleteInventoryLayersByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
+        inventoryLayerControl.deleteInventoryLayersByInventoryTransactionLine(inventoryTransactionLine, deletedBy);
 
         inventoryTransactionLineDetail.setThruTime(session.getStartTime());
         inventoryTransactionLine.setActiveDetail(null);

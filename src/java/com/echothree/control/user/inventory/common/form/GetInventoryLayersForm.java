@@ -16,11 +16,13 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.spec.InventoryCostingPoolUniversalSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryCostingPoolSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryTransactionTypeSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryTransactionLineSpec;
 
-public interface GetInventoryCostingPoolForm
-        extends InventoryCostingPoolUniversalSpec {
+public interface GetInventoryLayersForm
+        extends InventoryCostingPoolSpec, InventoryTransactionTypeSpec, InventoryTransactionLineSpec {
 
-    // Nothing additional beyond InventoryCostingPoolUniversalSpec
+    // Nothing additional beyond InventoryCostingPoolSpec, InventoryTransactionTypeSpec, InventoryTransactionLineSpec
 
 }

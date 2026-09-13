@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.common.form.GetInventoryCostingPoolForm;
+import com.echothree.control.user.inventory.common.form.GetInventoryLayerForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryCostingPoolControl;
-import com.echothree.model.control.inventory.server.logic.InventoryCostingPoolLogic;
+import com.echothree.model.control.inventory.server.control.InventoryLayerControl;
+import com.echothree.model.control.inventory.server.logic.InventoryLayerLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.InventoryCostingPool;
+import com.echothree.model.data.inventory.server.entity.InventoryLayer;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -36,13 +36,13 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
-public class GetInventoryCostingPoolCommand
-        extends BaseSingleEntityCommand<InventoryCostingPool, GetInventoryCostingPoolForm> {
+public class GetInventoryLayerCommand
+        extends BaseSingleEntityCommand<InventoryLayer, GetInventoryLayerForm> {
 
     private static final CommandSecurityDefinition COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
             new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
             new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.InventoryCostingPool.name(), SecurityRoles.Review.name())
+                    new SecurityRoleDefinition(SecurityRoleGroups.InventoryLayer.name(), SecurityRoles.Review.name())
             ))
     ));
 
@@ -51,31 +51,32 @@ public class GetInventoryCostingPoolCommand
             new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("ItemName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("InventoryLayerSequence", FieldType.UNSIGNED_INTEGER, false, null, null),
             new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
             new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
     );
 
     @Inject
-    InventoryCostingPoolControl inventoryCostingPoolControl;
+    InventoryLayerControl inventoryLayerControl;
 
     @Inject
-    InventoryCostingPoolLogic inventoryCostingPoolLogic;
+    InventoryLayerLogic inventoryLayerLogic;
 
-    public GetInventoryCostingPoolCommand() {
+    public GetInventoryLayerCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
-    protected InventoryCostingPool getEntity() {
-        return inventoryCostingPoolLogic.getInventoryCostingPoolByUniversalSpec(this, form);
+    protected InventoryLayer getEntity() {
+        return inventoryLayerLogic.getInventoryLayerByUniversalSpec(this, form);
     }
 
     @Override
-    protected BaseResult getResult(InventoryCostingPool inventoryCostingPool) {
-        var result = InventoryResultFactory.getGetInventoryCostingPoolResult();
+    protected BaseResult getResult(InventoryLayer inventoryLayer) {
+        var result = InventoryResultFactory.getGetInventoryLayerResult();
 
         if(!hasExecutionErrors()) {
-            result.setInventoryCostingPool(inventoryCostingPoolControl.getInventoryCostingPoolTransfer(getUserVisit(), inventoryCostingPool));
+            result.setInventoryLayer(inventoryLayerControl.getInventoryLayerTransfer(getUserVisit(), inventoryLayer));
         }
 
         return result;

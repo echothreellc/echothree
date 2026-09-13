@@ -1833,6 +1833,7 @@
                     <columns>
                         <column name="InventoryLayerDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryLayerId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLayers" destinationColumn="InventoryLayerId" />
+                        <column name="InventoryCostingPoolId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryCostingPools" destinationColumn="InventoryCostingPoolId" />
                         <column name="InventoryLayerSequence" type="Integer" nullAllowed="false" />
                         <column name="InventoryTransactionLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionLines" destinationColumn="InventoryTransactionLineId" />
                         <column name="ReceiptQuantity" type="Measurement" nullAllowed="false" />
@@ -1850,7 +1851,7 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
-                            <indexColumn name="InventoryLayerId" />
+                            <indexColumn name="InventoryCostingPoolId" />
                             <indexColumn name="InventoryLayerSequence" />
                             <indexColumn name="ThruTime" />
                         </index>
