@@ -23,6 +23,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.license.server.control.LicenseControl;
+import com.echothree.model.control.license.server.logic.LicenseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,7 +32,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -41,7 +42,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetLicenseTypeCommand
-        extends BaseSimpleCommand<GetLicenseTypeForm> {
+        extends BaseSingleEntityCommand<LicenseType, GetLicenseTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -67,6 +68,8 @@ public class GetLicenseTypeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    LicenseTypeLogic licenseTypeLogic;
     
     /** Creates a new instance of GetLicenseTypeCommand */
     public GetLicenseTypeCommand() {
@@ -74,14 +77,12 @@ public class GetLicenseTypeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = LicenseResultFactory.getGetLicenseTypeResult();
+    protected LicenseType getEntity() {
+        LicenseType licenseType = null;
         var licenseTypeName = form.getLicenseTypeName();
         var parameterCount = (licenseTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            LicenseType licenseType = null;
-
             if(licenseTypeName == null) {
                 var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.LicenseType.name());
@@ -90,21 +91,27 @@ public class GetLicenseTypeCommand
                     licenseType = licenseControl.getLicenseTypeByEntityInstance(entityInstance);
                 }
             } else {
-                licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
-
-                if(licenseType == null) {
-                    addExecutionError(ExecutionErrors.UnknownLicenseTypeName.name(), licenseTypeName);
-                }
+                licenseType = licenseTypeLogic.getLicenseTypeByName(this, licenseTypeName);
             }
 
-            if(!hasExecutionErrors()) {
-                result.setLicenseType(licenseControl.getLicenseTypeTransfer(getUserVisit(), licenseType));
+            if(licenseType != null) {
                 sendEvent(licenseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
+        return licenseType;
+    }
+
+    @Override
+    protected BaseResult getResult(LicenseType licenseType) {
+        var result = LicenseResultFactory.getGetLicenseTypeResult();
+
+        if(licenseType != null) {
+            result.setLicenseType(licenseControl.getLicenseTypeTransfer(getUserVisit(), licenseType));
+        }
+
         return result;
     }
     
