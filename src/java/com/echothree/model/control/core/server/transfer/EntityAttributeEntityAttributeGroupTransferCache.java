@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityAttributeEntityAttributeGroupTransfer;
-
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,7 +36,7 @@ public class EntityAttributeEntityAttributeGroupTransferCache
         
         if(entityAttributeEntityAttributeGroupTransfer == null) {
             var entityAttributeTransfer = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityAttributeEntityAttributeGroup.getEntityAttribute(), entityInstance) : null;
-            var entityAttributeGroupTransfer = entityInstance == null ? coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeEntityAttributeGroup.getEntityAttributeGroup(), entityInstance) : null;
+            var entityAttributeGroupTransfer = entityInstance == null ? entityAttributeGroupControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeEntityAttributeGroup.getEntityAttributeGroup(), entityInstance) : null;
             var sortOrder = entityAttributeEntityAttributeGroup.getSortOrder();
             
             entityAttributeEntityAttributeGroupTransfer = new EntityAttributeEntityAttributeGroupTransfer(entityAttributeTransfer, entityAttributeGroupTransfer, sortOrder);

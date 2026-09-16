@@ -18,19 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeGroupChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributeGroupChoicesCommand
@@ -52,6 +53,9 @@ public class GetEntityAttributeGroupChoicesCommand
         );
     }
     
+    @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
     /** Creates a new instance of GetEntityAttributeGroupChoicesCommand */
     public GetEntityAttributeGroupChoicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -63,7 +67,7 @@ public class GetEntityAttributeGroupChoicesCommand
         var defaultEntityAttributeGroupChoice = form.getDefaultEntityAttributeGroupChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        result.setEntityAttributeGroupChoices(coreControl.getEntityAttributeGroupChoices(defaultEntityAttributeGroupChoice, getPreferredLanguage(), allowNullChoice));
+        result.setEntityAttributeGroupChoices(entityAttributeGroupControl.getEntityAttributeGroupChoices(defaultEntityAttributeGroupChoice, getPreferredLanguage(), allowNullChoice));
         
         return result;
     }

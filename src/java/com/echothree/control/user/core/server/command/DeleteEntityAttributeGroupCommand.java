@@ -17,20 +17,21 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DeleteEntityAttributeGroupCommand
@@ -52,6 +53,9 @@ public class DeleteEntityAttributeGroupCommand
         );
     }
     
+    @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
     /** Creates a new instance of DeleteEntityAttributeGroupCommand */
     public DeleteEntityAttributeGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -60,10 +64,10 @@ public class DeleteEntityAttributeGroupCommand
     @Override
     protected BaseResult execute() {
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var entityAttributeGroup = coreControl.getEntityAttributeGroupByNameForUpdate(entityAttributeGroupName);
+        var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByNameForUpdate(entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
-            coreControl.deleteEntityAttributeGroup(entityAttributeGroup, getPartyPK());
+            entityAttributeGroupControl.deleteEntityAttributeGroup(entityAttributeGroup, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);
         }

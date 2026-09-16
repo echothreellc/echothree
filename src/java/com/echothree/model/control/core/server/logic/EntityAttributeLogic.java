@@ -71,6 +71,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityMultipleLi
 import com.echothree.model.control.core.common.exception.UnknownEntityStringDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityTimeDefaultException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByBlobEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByBooleanEntityAttributeQuery;
@@ -159,6 +160,9 @@ public class EntityAttributeLogic
         extends BaseLogic {
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     IndexControl indexControl;
 
     @Inject
@@ -222,7 +226,7 @@ public class EntityAttributeLogic
     }
     
     public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName) {
-        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
 
         if(entityAttributeGroup == null) {
             handleExecutionError(UnknownEntityAttributeGroupNameException.class, eea, ExecutionErrors.UnknownEntityAttributeGroupName.name(),
@@ -239,7 +243,7 @@ public class EntityAttributeLogic
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);
+            entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);
         }
 
         return entityAttributeGroup;

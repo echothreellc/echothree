@@ -18,21 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
-import com.echothree.control.user.core.common.form.EditEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -70,6 +69,9 @@ public class EditEntityAttributeEntityAttributeGroupCommand
     }
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     EntityAttributeLogic entityAttributeLogic;
 
     
@@ -99,9 +101,9 @@ public class EditEntityAttributeEntityAttributeGroupCommand
             if(!hasExecutionErrors()) {
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
+                    entityAttributeEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
                 } else { // EditMode.UPDATE
-                    entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroupForUpdate(entityAttribute, entityAttributeGroup);
+                    entityAttributeEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupForUpdate(entityAttribute, entityAttributeGroup);
                 }
 
                 if(entityAttributeEntityAttributeGroup == null) {
@@ -126,7 +128,7 @@ public class EditEntityAttributeEntityAttributeGroupCommand
     @Override
     public void fillInResult(EditEntityAttributeEntityAttributeGroupResult result, EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup) {
 
-        result.setEntityAttributeEntityAttributeGroup(coreControl.getEntityAttributeEntityAttributeGroupTransfer(getUserVisit(), entityAttributeEntityAttributeGroup, null));
+        result.setEntityAttributeEntityAttributeGroup(entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupTransfer(getUserVisit(), entityAttributeEntityAttributeGroup, null));
     }
 
     @Override
@@ -136,11 +138,11 @@ public class EditEntityAttributeEntityAttributeGroupCommand
 
     @Override
     public void doUpdate(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup) {
-        var entityAttributeEntityAttributeGroupValue = coreControl.getEntityAttributeEntityAttributeGroupValue(entityAttributeEntityAttributeGroup);
+        var entityAttributeEntityAttributeGroupValue = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupValue(entityAttributeEntityAttributeGroup);
         
         entityAttributeEntityAttributeGroupValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateEntityAttributeEntityAttributeGroupFromValue(entityAttributeEntityAttributeGroupValue, getPartyPK());
+        entityAttributeGroupControl.updateEntityAttributeEntityAttributeGroupFromValue(entityAttributeEntityAttributeGroupValue, getPartyPK());
     }
     
 }

@@ -17,15 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupDescriptionForm;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,6 +57,9 @@ public class CreateEntityAttributeGroupDescriptionCommand
     }
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     PartyControl partyControl;
 
     
@@ -68,19 +71,19 @@ public class CreateEntityAttributeGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
+                var entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
                 
                 if(entityAttributeGroupDescription == null) {
                     var description = form.getDescription();
                     
-                    coreControl.createEntityAttributeGroupDescription(entityAttributeGroup, language, description, getPartyPK());
+                    entityAttributeGroupControl.createEntityAttributeGroupDescription(entityAttributeGroup, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateEntityAttributeGroupDescription.name(), entityAttributeGroupName, languageIsoName);
                 }

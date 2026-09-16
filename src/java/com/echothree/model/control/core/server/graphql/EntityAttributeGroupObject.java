@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -89,10 +90,10 @@ public class EntityAttributeGroupObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityAttributeGroupControl = Session.getModelController(EntityAttributeGroupControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return entityAttributeGroupControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 
@@ -103,11 +104,12 @@ public class EntityAttributeGroupObject
     public CountingPaginatedData<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
 //      if(CoreSecurityUtils.getHasEntityAttributesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeGroupControl = Session.getModelController(EntityAttributeGroupControl.class);
             var entityType = entityInstance == null ? null : entityInstance.getEntityType();
 
             long totalCount;
             if(entityType == null) {
-                totalCount = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+                totalCount = entityAttributeGroupControl.countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
             } else {
                 totalCount = coreControl.countEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup, entityType);
             }
@@ -115,7 +117,7 @@ public class EntityAttributeGroupObject
             try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 Collection<EntityAttribute> entities;
                 if(entityType == null) {
-                    var entityAttributeGroupEntityAttributes = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+                    var entityAttributeGroupEntityAttributes = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
 
                     entities = new ArrayList<>(entityAttributeGroupEntityAttributes.size());
                     entityAttributeGroupEntityAttributes.forEach(eagea -> entities.add(eagea.getEntityAttribute()));
@@ -140,8 +142,8 @@ public class EntityAttributeGroupObject
         Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
 
         if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+            var entityAttributeGroupControl = Session.getModelController(EntityAttributeGroupControl.class);
+            var entityAttributeEntityAttributeGroups = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
 
             entityAttributeEntityAttributeGroupObjects = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
 

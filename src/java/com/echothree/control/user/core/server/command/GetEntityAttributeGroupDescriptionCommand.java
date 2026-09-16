@@ -18,15 +18,15 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeGroupDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,6 +57,9 @@ public class GetEntityAttributeGroupDescriptionCommand
     }
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     PartyControl partyControl;
 
     
@@ -69,17 +72,17 @@ public class GetEntityAttributeGroupDescriptionCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetEntityAttributeGroupDescriptionResult();
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
+                var entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
                 
                 if(entityAttributeGroupDescription != null) {
-                    result.setEntityAttributeGroupDescription(coreControl.getEntityAttributeGroupDescriptionTransfer(getUserVisit(), entityAttributeGroupDescription, null));
+                    result.setEntityAttributeGroupDescription(entityAttributeGroupControl.getEntityAttributeGroupDescriptionTransfer(getUserVisit(), entityAttributeGroupDescription, null));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupDescription.name(), entityAttributeGroupName, languageIsoName);
                 }

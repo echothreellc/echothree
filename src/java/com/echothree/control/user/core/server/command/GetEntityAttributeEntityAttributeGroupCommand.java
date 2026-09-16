@@ -18,12 +18,12 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -60,6 +60,9 @@ public class GetEntityAttributeEntityAttributeGroupCommand
     }
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     EntityAttributeLogic entityAttributeLogic;
 
     
@@ -78,7 +81,7 @@ public class GetEntityAttributeEntityAttributeGroupCommand
 
             if(!hasExecutionErrors()) {
 
-                result = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
+                result = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
 
                 if(result == null) {
                     var entityAttributeDetail = entityAttribute.getLastDetail();
@@ -100,7 +103,7 @@ public class GetEntityAttributeEntityAttributeGroupCommand
 
         if(entity != null) {
 
-            result.setEntityAttributeEntityAttributeGroup(coreControl.getEntityAttributeEntityAttributeGroupTransfer(getUserVisit(), entity, null));
+            result.setEntityAttributeEntityAttributeGroup(entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupTransfer(getUserVisit(), entity, null));
         }
 
         return result;

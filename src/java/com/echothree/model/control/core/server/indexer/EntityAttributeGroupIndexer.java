@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.indexer;
 
 import com.echothree.model.control.core.server.analyzer.EntityAttributeGroupAnalyzer;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
@@ -25,8 +26,9 @@ import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
-import javax.enterprise.context.Dependent;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -36,6 +38,9 @@ import org.apache.lucene.util.BytesRef;
 @Dependent
 public class EntityAttributeGroupIndexer
         extends BaseIndexer<EntityAttributeGroup> {
+
+    @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
 
     @Override
     public BaseIndexer<EntityAttributeGroup> setup(final ExecutionErrorAccumulator eea, final Index index) {
@@ -49,13 +54,13 @@ public class EntityAttributeGroupIndexer
     
     @Override
     protected EntityAttributeGroup getEntity(final EntityInstance entityInstance) {
-        return coreControl.getEntityAttributeGroupByEntityInstance(entityInstance);
+        return entityAttributeGroupControl.getEntityAttributeGroupByEntityInstance(entityInstance);
     }
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityAttributeGroup entityAttributeGroup) {
         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
-        var description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, language);
+        var description = entityAttributeGroupControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, entityAttributeGroup.getPrimaryKey());
 

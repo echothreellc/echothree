@@ -17,15 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupDescriptionForm;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -56,6 +56,9 @@ public class DeleteEntityAttributeGroupDescriptionCommand
     }
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     PartyControl partyControl;
 
     
@@ -67,17 +70,17 @@ public class DeleteEntityAttributeGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
             var languageIsoName = form.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, language);
+                var entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, language);
                 
                 if(entityAttributeGroupDescription != null) {
-                    coreControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, getPartyPK());
+                    entityAttributeGroupControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupDescription.name(), entityAttributeGroupName, languageIsoName);
                 }

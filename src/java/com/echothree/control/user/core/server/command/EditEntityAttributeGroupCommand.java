@@ -18,25 +18,25 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
-import com.echothree.control.user.core.common.form.EditEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditEntityAttributeGroupCommand
@@ -66,6 +66,9 @@ public class EditEntityAttributeGroupCommand
         );
     }
     
+    @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
     /** Creates a new instance of EditEntityAttributeGroupCommand */
     public EditEntityAttributeGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -87,13 +90,13 @@ public class EditEntityAttributeGroupCommand
         var entityAttributeGroupName = spec.getEntityAttributeGroupName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+            entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
 
             if(entityAttributeGroup == null) {
                 addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);
             }
         } else { // EditMode.UPDATE
-            entityAttributeGroup = coreControl.getEntityAttributeGroupByNameForUpdate(entityAttributeGroupName);
+            entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByNameForUpdate(entityAttributeGroupName);
         }
 
         return entityAttributeGroup;
@@ -107,12 +110,12 @@ public class EditEntityAttributeGroupCommand
     @Override
     public void fillInResult(EditEntityAttributeGroupResult result, EntityAttributeGroup entityAttributeGroup) {
         
-        result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
+        result.setEntityAttributeGroup(entityAttributeGroupControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
     }
     
     @Override
     public void doLock(EntityAttributeGroupEdit edit, EntityAttributeGroup entityAttributeGroup) {
-        var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage());
+        var entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage());
         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
         edit.setEntityAttributeGroupName(entityAttributeGroupDetail.getEntityAttributeGroupName());
@@ -127,7 +130,7 @@ public class EditEntityAttributeGroupCommand
     @Override
     public void canUpdate(EntityAttributeGroup entityAttributeGroup) {
         var entityAttributeGroupName = edit.getEntityAttributeGroupName();
-        var duplicateEntityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var duplicateEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
 
         if(duplicateEntityAttributeGroup != null && !entityAttributeGroup.equals(duplicateEntityAttributeGroup)) {
             addExecutionError(ExecutionErrors.DuplicateEntityAttributeGroupName.name(), entityAttributeGroupName);
@@ -137,25 +140,25 @@ public class EditEntityAttributeGroupCommand
     @Override
     public void doUpdate(EntityAttributeGroup entityAttributeGroup) {
         var partyPK = getPartyPK();
-        var entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueForUpdate(entityAttributeGroup);
-        var entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, getPreferredLanguage());
+        var entityAttributeGroupDetailValue = entityAttributeGroupControl.getEntityAttributeGroupDetailValueForUpdate(entityAttributeGroup);
+        var entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, getPreferredLanguage());
         var description = edit.getDescription();
 
         entityAttributeGroupDetailValue.setEntityAttributeGroupName(edit.getEntityAttributeGroupName());
         entityAttributeGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         entityAttributeGroupDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        coreControl.updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, partyPK);
+        entityAttributeGroupControl.updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, partyPK);
 
         if(entityAttributeGroupDescription == null && description != null) {
-            coreControl.createEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage(), description, partyPK);
+            entityAttributeGroupControl.createEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage(), description, partyPK);
         } else if(entityAttributeGroupDescription != null && description == null) {
-            coreControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, partyPK);
+            entityAttributeGroupControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, partyPK);
         } else if(entityAttributeGroupDescription != null && description != null) {
-            var entityAttributeGroupDescriptionValue = coreControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
+            var entityAttributeGroupDescriptionValue = entityAttributeGroupControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
 
             entityAttributeGroupDescriptionValue.setDescription(description);
-            coreControl.updateEntityAttributeGroupDescriptionFromValue(entityAttributeGroupDescriptionValue, partyPK);
+            entityAttributeGroupControl.updateEntityAttributeGroupDescriptionFromValue(entityAttributeGroupDescriptionValue, partyPK);
         }
     }
     
