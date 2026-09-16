@@ -46,19 +46,43 @@ import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_DETAILS_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_GROUP_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_GROUPS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_GROUP_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeDetails.EntityAttributeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeEntityAttributeGroups.EntityAttributeEntityAttributeGroups;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeGroupDescriptions.EntityAttributeGroupDescriptions;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeGroupDetails.EntityAttributeGroupDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeGroups.EntityAttributeGroups;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributes.EntityAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
-import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
-import static java.lang.Math.toIntExact;
+import org.jooq.Condition;
+import org.jooq.Select;
+import static org.jooq.impl.DSL.exists;
 
 @CommandScope
 public class EntityAttributeGroupControl
@@ -127,55 +151,55 @@ public class EntityAttributeGroupControl
     }
 
     public long countEntityAttributeGroups() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributegroups, entityattributegroupdetails
-                WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeGroups)
+                .where(EntityAttributeGroups.ACTIVE_DETAIL.isNotNull())
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityAttributeGroupsByEntityType(EntityType entityType) {
-        var count = session.queryForLong("""
-                                SELECT COUNT(*)
-                                FROM (
-                                    SELECT COUNT(*)
-                                    FROM entityattributegroups
-                                    JOIN entityattributegroupdetails ON enagp_lastdetailid = enagpdt_entityattributegroupdetailid
-                                    JOIN entityattributeentityattributegroups ON enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_thrutime = ?
-                                    JOIN entityattributes ON enaenagp_ena_entityattributeid = ena_entityattributeid
-                                    JOIN entityattributedetails ON ena_lastdetailid = enadt_entityattributedetailid
-                                    WHERE enadt_ent_entitytypeid = ?
-                                    GROUP BY enagp_entityattributegroupid
-                                ) AS entityattributegroups
-                                """, Session.MAX_TIME, entityType);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeGroups)
+                .where(EntityAttributeGroups.LAST_DETAIL.isNotNull(), entityAttributeGroupHasEntityType(entityType))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
 
-        return count == null ? 0L : count;
+    private Condition entityAttributeGroupHasEntityType(EntityType entityType) {
+        return exists(session.getDslContext()
+                .selectOne()
+                .from(EntityAttributeEntityAttributeGroups)
+                .join(EntityAttributes).onKey(ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK)
+                .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
+                .where(EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP.eq(EntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP),
+                        EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey())));
+    }
+
+    private List<EntityAttributeGroup> getEntityAttributeGroups(Condition condition, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributeGroups.fields())
+                    .from(EntityAttributeGroups)
+                    .join(EntityAttributeGroupDetails).onKey(ENTITY_ATTRIBUTE_GROUPS_LAST_DETAIL_FK)
+                    .where(condition)
+                    .orderBy(EntityAttributeGroupDetails.SORT_ORDER, EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_NAME),
+                    EntityAttributeGroupFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributeGroups.fields())
+                    .from(EntityAttributeGroups)
+                    .where(condition)
+                    .forUpdate();
+        };
+
+        return entityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     private List<EntityAttributeGroup> getEntityAttributeGroups(EntityPermission entityPermission) {
-        String query = null;
-
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM entityattributegroups, entityattributegroupdetails
-                    WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid
-                    ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM entityattributegroups, entityattributegroupdetails
-                    WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid
-                    FOR UPDATE
-                    """;
-        }
-
-        var ps = entityAttributeGroupFactory.prepareStatement(query);
-
-        return entityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, ps);
+        return getEntityAttributeGroups(EntityAttributeGroups.ACTIVE_DETAIL.isNotNull(), entityPermission);
     }
 
     public List<EntityAttributeGroup> getEntityAttributeGroups() {
@@ -187,45 +211,8 @@ public class EntityAttributeGroupControl
     }
 
     private List<EntityAttributeGroup> getEntityAttributeGroupsByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<EntityAttributeGroup> entityAttributeGroups;
-
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails
-                        WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid
-                        AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ?
-                        AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
-                        GROUP BY enagp_entityattributegroupid
-                        ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails
-                        WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid
-                        AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ?
-                        AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
-                        GROUP BY enagp_entityattributegroupid
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeGroupFactory.prepareStatement(query);
-
-            ps.setLong(1, Session.MAX_TIME);
-            ps.setLong(2, entityType.getPrimaryKey().getEntityId());
-
-            entityAttributeGroups = entityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributeGroups;
+        return getEntityAttributeGroups(EntityAttributeGroups.LAST_DETAIL.isNotNull()
+                .and(entityAttributeGroupHasEntityType(entityType)), entityPermission);
     }
 
     public List<EntityAttributeGroup> getEntityAttributeGroupsByEntityType(EntityType entityType) {
@@ -236,27 +223,28 @@ public class EntityAttributeGroupControl
         return getEntityAttributeGroupsByEntityType(entityType, EntityPermission.READ_WRITE);
     }
 
+    private EntityAttributeGroup getEntityAttributeGroup(Condition condition, EntityPermission entityPermission) {
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(EntityAttributeGroups.fields())
+                    .from(EntityAttributeGroups)
+                    .join(EntityAttributeGroupDetails).onKey(ENTITY_ATTRIBUTE_GROUPS_LAST_DETAIL_FK)
+                    .where(EntityAttributeGroups.ACTIVE_DETAIL.isNotNull(), condition);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributeGroups.fields())
+                    .from(EntityAttributeGroups)
+                    .where(EntityAttributeGroups.ACTIVE_DETAIL.in(session.getDslContext()
+                            .select(EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_DETAIL)
+                            .from(EntityAttributeGroupDetails)
+                            .where(condition)))
+                    .forUpdate();
+        };
+
+        return entityAttributeGroupFactory.getEntityFromQuery(entityPermission, query);
+    }
+
     private EntityAttributeGroup getDefaultEntityAttributeGroup(EntityPermission entityPermission) {
-        String query = null;
-
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM entityattributegroups, entityattributegroupdetails
-                    WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM entityattributegroups, entityattributegroupdetails
-                    WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
-
-        var ps = entityAttributeGroupFactory.prepareStatement(query);
-
-        return entityAttributeGroupFactory.getEntityFromQuery(entityPermission, ps);
+        return getEntityAttributeGroup(EntityAttributeGroupDetails.IS_DEFAULT.eq(true), entityPermission);
     }
 
     public EntityAttributeGroup getDefaultEntityAttributeGroup() {
@@ -272,36 +260,8 @@ public class EntityAttributeGroupControl
     }
 
     public EntityAttributeGroup getEntityAttributeGroupByName(String entityAttributeGroupName, EntityPermission entityPermission) {
-        EntityAttributeGroup entityAttributeGroup;
-
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributegroups, entityattributegroupdetails
-                        WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_entityattributegroupname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributegroups, entityattributegroupdetails
-                        WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_entityattributegroupname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeGroupFactory.prepareStatement(query);
-
-            ps.setString(1, entityAttributeGroupName);
-
-            entityAttributeGroup = entityAttributeGroupFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributeGroup;
+        return getEntityAttributeGroup(EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_NAME.eq(entityAttributeGroupName),
+                entityPermission);
     }
 
     public EntityAttributeGroup getEntityAttributeGroupByName(String entityAttributeGroupName) {
@@ -473,38 +433,19 @@ public class EntityAttributeGroupControl
     }
 
     private EntityAttributeGroupDescription getEntityAttributeGroupDescription(EntityAttributeGroup entityAttributeGroup, Language language, EntityPermission entityPermission) {
-        EntityAttributeGroupDescription entityAttributeGroupDescription;
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeGroupDescriptions.fields())
+                .from(EntityAttributeGroupDescriptions)
+                .where(EntityAttributeGroupDescriptions.ENTITY_ATTRIBUTE_GROUP.eq(entityAttributeGroup.getPrimaryKey()),
+                        EntityAttributeGroupDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityAttributeGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributegroupdescriptions
-                        WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_lang_languageid = ? AND enagpd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributegroupdescriptions
-                        WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_lang_languageid = ? AND enagpd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeGroupDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributeGroupDescription;
+        return entityAttributeGroupDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityAttributeGroupDescription getEntityAttributeGroupDescription(EntityAttributeGroup entityAttributeGroup, Language language) {
@@ -524,40 +465,23 @@ public class EntityAttributeGroupControl
     }
 
     private List<EntityAttributeGroupDescription> getEntityAttributeGroupDescriptionsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, EntityPermission entityPermission) {
-        List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions;
+        var condition = EntityAttributeGroupDescriptions.ENTITY_ATTRIBUTE_GROUP.eq(entityAttributeGroup.getPrimaryKey())
+                .and(EntityAttributeGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributeGroupDescriptions.fields())
+                    .from(EntityAttributeGroupDescriptions)
+                    .join(Languages).onKey(ENTITY_ATTRIBUTE_GROUP_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(condition)
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME), EntityAttributeGroupDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributeGroupDescriptions.fields())
+                    .from(EntityAttributeGroupDescriptions)
+                    .where(condition)
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributegroupdescriptions, languages
-                        WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_thrutime = ?
-                        AND enagpd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributegroupdescriptions
-                        WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeGroupDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityAttributeGroupDescriptions = entityAttributeGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributeGroupDescriptions;
+        return entityAttributeGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityAttributeGroupDescription> getEntityAttributeGroupDescriptionsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
@@ -651,59 +575,40 @@ public class EntityAttributeGroupControl
     }
 
     public long countEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributeentityattributegroups
-                WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?
-                """,
-                entityAttribute, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeEntityAttributeGroups)
+                .where(EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributeentityattributegroups
-                WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
-                """,
-                entityAttributeGroup, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeEntityAttributeGroups)
+                .where(EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP.eq(entityAttributeGroup.getPrimaryKey()),
+                        EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private EntityAttributeEntityAttributeGroup getEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, EntityPermission entityPermission) {
-        EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup;
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeEntityAttributeGroups.fields())
+                .from(EntityAttributeEntityAttributeGroups)
+                .where(EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP.eq(entityAttributeGroup.getPrimaryKey()),
+                        EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributeentityattributegroups
-                        WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributeentityattributegroups
-                        WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityAttributeGroup.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributeEntityAttributeGroup;
+        return entityAttributeEntityAttributeGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityAttributeEntityAttributeGroup getEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute, EntityAttributeGroup entityAttributeGroup) {
@@ -724,40 +629,25 @@ public class EntityAttributeGroupControl
 
     public List<EntityAttributeEntityAttributeGroup> getEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute,
             EntityPermission entityPermission) {
-        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups;
+        var condition = EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey())
+                .and(EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME));
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributeEntityAttributeGroups.fields())
+                    .from(EntityAttributeEntityAttributeGroups)
+                    .join(EntityAttributeGroups).onKey(ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_GROUP_FK)
+                    .join(EntityAttributeGroupDetails).onKey(ENTITY_ATTRIBUTE_GROUPS_LAST_DETAIL_FK)
+                    .where(condition)
+                    .orderBy(EntityAttributeEntityAttributeGroups.SORT_ORDER, EntityAttributeGroupDetails.SORT_ORDER, EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_NAME),
+                    EntityAttributeEntityAttributeGroupFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributeEntityAttributeGroups.fields())
+                    .from(EntityAttributeEntityAttributeGroups)
+                    .where(condition)
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails
-                        WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?
-                        AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid
-                        ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributeentityattributegroups
-                        WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityAttributeEntityAttributeGroups = entityAttributeEntityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributeEntityAttributeGroups;
+        return entityAttributeEntityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityAttributeEntityAttributeGroup> getEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute) {
@@ -770,40 +660,31 @@ public class EntityAttributeGroupControl
 
     public List<EntityAttributeEntityAttributeGroup> getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup,
             EntityPermission entityPermission) {
-        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups;
+        var condition = EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP.eq(entityAttributeGroup.getPrimaryKey())
+                .and(EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME));
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributeEntityAttributeGroups.fields())
+                    .from(EntityAttributeEntityAttributeGroups)
+                    .join(EntityAttributes).onKey(ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
+                    .join(EntityTypes).onKey(ENTITY_ATTRIBUTE_DETAILS_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                    .where(condition)
+                    .orderBy(EntityAttributeEntityAttributeGroups.SORT_ORDER, ComponentVendorDetails.COMPONENT_VENDOR_NAME,
+                            EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME,
+                            EntityAttributeDetails.SORT_ORDER, EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME),
+                    EntityAttributeEntityAttributeGroupFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributeEntityAttributeGroups.fields())
+                    .from(EntityAttributeEntityAttributeGroups)
+                    .where(condition)
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails
-                        WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
-                        AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid
-                        ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributeentityattributegroups
-                        WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityAttributeEntityAttributeGroups = entityAttributeEntityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributeEntityAttributeGroups;
+        return entityAttributeEntityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityAttributeEntityAttributeGroup> getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
@@ -884,85 +765,48 @@ public class EntityAttributeGroupControl
     //   Entity Attribute Group Searches
     // --------------------------------------------------------------------------------
 
-    @Inject
-    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
-
-    @Inject
-    protected SearchResultFactory searchResultFactory;
-
-    public List<EntityAttributeGroupResultTransfer> getEntityAttributeGroupResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getEntityAttributeGroupIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
-        List<EntityAttributeGroupResultTransfer> entityAttributeGroupResultTransfers;
-        var includeEntityAttributeGroup = false;
-
-        var options = session.getOptions();
-        if(options != null) {
-            includeEntityAttributeGroup = options.contains(SearchOptions.EntityAttributeGroupResultIncludeEntityAttributeGroup);
-        }
+        Select<?> query;
 
         if(cachedSearch == null) {
-            entityAttributeGroupResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
-
-            try {
-                var ps = searchResultFactory.prepareStatement(
-                        """
-                        SELECT eni_entityuniqueid
-                        FROM searchresults, entityinstances
-                        WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                        _LIMIT_
-                        """);
-
-                ps.setLong(1, search.getPrimaryKey().getEntityId());
-
-                try (var rs = ps.executeQuery()) {
-                    while(rs.next()) {
-                        var entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
-                        var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
-
-                        entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityAttributeGroupName(),
-                                includeEntityAttributeGroup ? getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, null) : null));
-                    }
-                } catch (SQLException se) {
-                    throw new PersistenceDatabaseException(se);
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
         } else {
             var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
 
-            entityAttributeGroupResultTransfers = new ArrayList<>(toIntExact(searchControl.countCachedExecutedSearchResults(cachedExecutedSearch)));
-
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
-            try {
-                var ps = cachedExecutedSearchResultFactory.prepareStatement(
-                        """
-                        SELECT eni_entityuniqueid
-                        FROM cachedexecutedsearchresults, entityinstances
-                        WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid
-                        _LIMIT_
-                        """);
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
+        }
 
-                ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-                try (var rs = ps.executeQuery()) {
-                    while(rs.next()) {
-                        var entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAttributeGroupPK(rs.getLong(1)));
-                        var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+    public List<EntityAttributeGroupResultTransfer> getEntityAttributeGroupResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityAttributeGroupIds = getEntityAttributeGroupIdsFromUserVisitSearch(userVisitSearch);
+        var entityAttributeGroupResultTransfers = new ArrayList<EntityAttributeGroupResultTransfer>(entityAttributeGroupIds.size());
+        var options = session.getOptions();
+        var includeEntityAttributeGroup = options != null
+                && options.contains(SearchOptions.EntityAttributeGroupResultIncludeEntityAttributeGroup);
 
-                        entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityAttributeGroupName(),
-                                includeEntityAttributeGroup ? getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, null) : null));
-                    }
-                } catch (SQLException se) {
-                    throw new PersistenceDatabaseException(se);
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
+        for(var entityAttributeGroupId : entityAttributeGroupIds) {
+            var entityAttributeGroup = getEntityAttributeGroupByPK(new EntityAttributeGroupPK(entityAttributeGroupId));
+            var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+
+            entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityAttributeGroupName(),
+                    includeEntityAttributeGroup ? getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, null) : null));
         }
 
         return entityAttributeGroupResultTransfers;
@@ -971,14 +815,10 @@ public class EntityAttributeGroupControl
     public List<EntityAttributeGroupObject> getEntityAttributeGroupObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var entityAttributeGroupObjects = new ArrayList<EntityAttributeGroupObject>();
 
-        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            while(rs.next()) {
-                var entityAttributeGroup = getEntityAttributeGroupByPK(new EntityAttributeGroupPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+        for(var entityAttributeGroupId : getEntityAttributeGroupIdsFromUserVisitSearch(userVisitSearch)) {
+            var entityAttributeGroup = getEntityAttributeGroupByPK(new EntityAttributeGroupPK(entityAttributeGroupId));
 
-                entityAttributeGroupObjects.add(new EntityAttributeGroupObject(entityAttributeGroup, null));
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            entityAttributeGroupObjects.add(new EntityAttributeGroupObject(entityAttributeGroup, null));
         }
 
         return entityAttributeGroupObjects;
