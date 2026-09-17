@@ -64,7 +64,6 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
-    
     /** Creates a new instance of CreateEntityAttributeEntityAttributeGroupCommand */
     public CreateEntityAttributeEntityAttributeGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -75,7 +74,7 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var entityAttributeEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);

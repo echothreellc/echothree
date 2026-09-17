@@ -19,11 +19,11 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityAttributeGroupDescriptionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -50,12 +50,17 @@ public class GetEntityAttributeGroupDescriptionsCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
     
     @Inject
     protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
 
     /** Creates a new instance of GetEntityAttributeGroupDescriptionsCommand */
     public GetEntityAttributeGroupDescriptionsCommand() {
@@ -66,13 +71,11 @@ public class GetEntityAttributeGroupDescriptionsCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetEntityAttributeGroupDescriptionsResult();
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, form.getComponentVendorName(), form.getEntityTypeName(), entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
             result.setEntityAttributeGroup(entityAttributeGroupControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
             result.setEntityAttributeGroupDescriptions(entityAttributeGroupControl.getEntityAttributeGroupDescriptionTransfers(getUserVisit(), entityAttributeGroup, null));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);
         }
         
         return result;

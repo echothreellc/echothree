@@ -22,11 +22,11 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -55,6 +55,8 @@ public class EditEntityAttributeGroupCommand
         ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
         
@@ -68,6 +70,9 @@ public class EditEntityAttributeGroupCommand
     
     @Inject
     protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
 
     /** Creates a new instance of EditEntityAttributeGroupCommand */
     public EditEntityAttributeGroupCommand() {
@@ -86,20 +91,8 @@ public class EditEntityAttributeGroupCommand
     
     @Override
     public EntityAttributeGroup getEntity(EditEntityAttributeGroupResult result) {
-        EntityAttributeGroup entityAttributeGroup;
-        var entityAttributeGroupName = spec.getEntityAttributeGroupName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
-
-            if(entityAttributeGroup == null) {
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);
-            }
-        } else { // EditMode.UPDATE
-            entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByNameForUpdate(entityAttributeGroupName);
-        }
-
-        return entityAttributeGroup;
+        return entityAttributeGroupLogic.getEntityAttributeGroupByName(this, spec.getComponentVendorName(),
+                spec.getEntityTypeName(), spec.getEntityAttributeGroupName(), editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -130,10 +123,10 @@ public class EditEntityAttributeGroupCommand
     @Override
     public void canUpdate(EntityAttributeGroup entityAttributeGroup) {
         var entityAttributeGroupName = edit.getEntityAttributeGroupName();
-        var duplicateEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var duplicateEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroup.getLastDetail().getEntityType(), entityAttributeGroupName);
 
         if(duplicateEntityAttributeGroup != null && !entityAttributeGroup.equals(duplicateEntityAttributeGroup)) {
-            addExecutionError(ExecutionErrors.DuplicateEntityAttributeGroupName.name(), entityAttributeGroupName);
+            addExecutionError(ExecutionErrors.DuplicateEntityAttributeGroupName.name(), spec.getComponentVendorName(), spec.getEntityTypeName(), entityAttributeGroupName);
         }
     }
     

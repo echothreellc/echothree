@@ -60,10 +60,19 @@ public class EntityAttributeGroupIndexer
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityAttributeGroup entityAttributeGroup) {
         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+        var entityTypeDetail = entityAttributeGroupDetail.getEntityType().getLastDetail();
         var description = entityAttributeGroupControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, language);
 
         var document = newDocumentWithEntityInstanceFields(entityInstance, entityAttributeGroup.getPrimaryKey());
 
+        document.add(new Field(IndexFields.componentVendorName.name(),
+                entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.componentVendorName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
+                new BytesRef(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName())));
+        document.add(new Field(IndexFields.entityTypeName.name(),
+                entityTypeDetail.getEntityTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.entityTypeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
+                new BytesRef(entityTypeDetail.getEntityTypeName())));
         document.add(new Field(IndexFields.entityAttributeGroupName.name(),
                 entityAttributeGroupDetail.getEntityAttributeGroup().getLastDetail().getEntityAttributeGroupName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.entityAttributeGroupName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),

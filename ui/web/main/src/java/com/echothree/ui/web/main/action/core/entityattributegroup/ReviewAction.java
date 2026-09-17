@@ -52,6 +52,8 @@ public class ReviewAction
         String forwardKey;
         var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
 
+        commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
+        commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeGroupName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME));
 
         var commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);

@@ -53,6 +53,8 @@ public class DescriptionEditAction
             throws NamingException {
         var spec = CoreUtil.getHome().getEntityAttributeGroupDescriptionSpec();
         
+        spec.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
+        spec.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
         spec.setEntityAttributeGroupName(findParameter(request, ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getEntityAttributeGroupName()));
         spec.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
         
@@ -77,6 +79,8 @@ public class DescriptionEditAction
     
     @Override
     protected void setupActionForm(HttpServletRequest request, DescriptionEditActionForm actionForm, EditEntityAttributeGroupDescriptionResult result, EntityAttributeGroupDescriptionSpec spec, EntityAttributeGroupDescriptionEdit edit) {
+        actionForm.setComponentVendorName(spec.getComponentVendorName());
+        actionForm.setEntityTypeName(spec.getEntityTypeName());
         actionForm.setEntityAttributeGroupName(spec.getEntityAttributeGroupName());
         actionForm.setLanguageIsoName(spec.getLanguageIsoName());
         actionForm.setDescription(edit.getDescription());
@@ -90,6 +94,8 @@ public class DescriptionEditAction
     
     @Override
     public void setupForwardParameters(DescriptionEditActionForm actionForm, Map<String, String> parameters) {
+        parameters.put(ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName());
+        parameters.put(ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName());
         parameters.put(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getEntityAttributeGroupName());
     }
     

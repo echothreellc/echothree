@@ -46,19 +46,13 @@ import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTES_LAST_DETAIL_FK;
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_DETAILS_ENTITY_TYPE_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_GROUP_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_GROUPS_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_GROUP_DESCRIPTIONS_LANGUAGE_FK;
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_LAST_DETAIL_FK;
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
 import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
 import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
-import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
-import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
 import static com.echothree.model.jooq.server.tables.core.EntityAttributeDetails.EntityAttributeDetails;
 import static com.echothree.model.jooq.server.tables.core.EntityAttributeEntityAttributeGroups.EntityAttributeEntityAttributeGroups;
 import static com.echothree.model.jooq.server.tables.core.EntityAttributeGroupDescriptions.EntityAttributeGroupDescriptions;
@@ -66,8 +60,6 @@ import static com.echothree.model.jooq.server.tables.core.EntityAttributeGroupDe
 import static com.echothree.model.jooq.server.tables.core.EntityAttributeGroups.EntityAttributeGroups;
 import static com.echothree.model.jooq.server.tables.core.EntityAttributes.EntityAttributes;
 import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
-import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
-import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
 import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
 import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
@@ -82,7 +74,6 @@ import java.util.Objects;
 import javax.inject.Inject;
 import org.jooq.Condition;
 import org.jooq.Select;
-import static org.jooq.impl.DSL.exists;
 
 @CommandScope
 public class EntityAttributeGroupControl
@@ -106,12 +97,12 @@ public class EntityAttributeGroupControl
     @Inject
     protected EntityAttributeGroupFactory entityAttributeGroupFactory;
 
-    public EntityAttributeGroup createEntityAttributeGroup(String entityAttributeGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
+    public EntityAttributeGroup createEntityAttributeGroup(EntityType entityType, String entityAttributeGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup(entityType);
         var defaultFound = defaultEntityAttributeGroup != null;
 
         if(defaultFound && isDefault) {
-            var defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate();
+            var defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate(entityType);
 
             defaultEntityAttributeGroupDetailValue.setIsDefault(false);
             updateEntityAttributeGroupFromValue(defaultEntityAttributeGroupDetailValue, false, createdBy);
@@ -120,7 +111,7 @@ public class EntityAttributeGroupControl
         }
 
         var entityAttributeGroup = entityAttributeGroupFactory.create();
-        var entityAttributeGroupDetail = entityAttributeGroupDetailFactory.create(entityAttributeGroup,
+        var entityAttributeGroupDetail = entityAttributeGroupDetailFactory.create(entityAttributeGroup, entityType,
                 entityAttributeGroupName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -163,20 +154,16 @@ public class EntityAttributeGroupControl
         return session.getDslContext()
                 .selectCount()
                 .from(EntityAttributeGroups)
-                .where(EntityAttributeGroups.LAST_DETAIL.isNotNull(), entityAttributeGroupHasEntityType(entityType))
+                .where(entityAttributeGroupHasEntityType(entityType))
                 .fetchOptional(0, Long.class)
                 .orElse(0L);
     }
 
     private Condition entityAttributeGroupHasEntityType(EntityType entityType) {
-        return exists(session.getDslContext()
-                .selectOne()
-                .from(EntityAttributeEntityAttributeGroups)
-                .join(EntityAttributes).onKey(ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK)
-                .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
-                .where(EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP.eq(EntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP),
-                        EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME),
-                        EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey())));
+        return EntityAttributeGroups.ACTIVE_DETAIL.in(session.getDslContext()
+                .select(EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_DETAIL)
+                .from(EntityAttributeGroupDetails)
+                .where(EntityAttributeGroupDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey())));
     }
 
     private List<EntityAttributeGroup> getEntityAttributeGroups(Condition condition, EntityPermission entityPermission) {
@@ -211,8 +198,7 @@ public class EntityAttributeGroupControl
     }
 
     private List<EntityAttributeGroup> getEntityAttributeGroupsByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        return getEntityAttributeGroups(EntityAttributeGroups.LAST_DETAIL.isNotNull()
-                .and(entityAttributeGroupHasEntityType(entityType)), entityPermission);
+        return getEntityAttributeGroups(entityAttributeGroupHasEntityType(entityType), entityPermission);
     }
 
     public List<EntityAttributeGroup> getEntityAttributeGroupsByEntityType(EntityType entityType) {
@@ -243,46 +229,56 @@ public class EntityAttributeGroupControl
         return entityAttributeGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
-    private EntityAttributeGroup getDefaultEntityAttributeGroup(EntityPermission entityPermission) {
-        return getEntityAttributeGroup(EntityAttributeGroupDetails.IS_DEFAULT.eq(true), entityPermission);
+    private EntityAttributeGroup getDefaultEntityAttributeGroup(EntityType entityType, EntityPermission entityPermission) {
+        return getEntityAttributeGroup(EntityAttributeGroupDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey())
+                .and(EntityAttributeGroupDetails.IS_DEFAULT.eq(true)), entityPermission);
     }
 
-    public EntityAttributeGroup getDefaultEntityAttributeGroup() {
-        return getDefaultEntityAttributeGroup(EntityPermission.READ_ONLY);
+    public EntityAttributeGroup getDefaultEntityAttributeGroup(EntityType entityType) {
+        return getDefaultEntityAttributeGroup(entityType, EntityPermission.READ_ONLY);
     }
 
-    public EntityAttributeGroup getDefaultEntityAttributeGroupForUpdate() {
-        return getDefaultEntityAttributeGroup(EntityPermission.READ_WRITE);
+    public EntityAttributeGroup getDefaultEntityAttributeGroupForUpdate(EntityType entityType) {
+        return getDefaultEntityAttributeGroup(entityType, EntityPermission.READ_WRITE);
     }
 
-    public EntityAttributeGroupDetailValue getDefaultEntityAttributeGroupDetailValueForUpdate() {
-        return getDefaultEntityAttributeGroupForUpdate().getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
+    public EntityAttributeGroupDetailValue getDefaultEntityAttributeGroupDetailValueForUpdate(EntityType entityType) {
+        return getDefaultEntityAttributeGroupForUpdate(entityType).getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
     }
 
-    public EntityAttributeGroup getEntityAttributeGroupByName(String entityAttributeGroupName, EntityPermission entityPermission) {
-        return getEntityAttributeGroup(EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_NAME.eq(entityAttributeGroupName),
+    public List<EntityAttributeGroup> getEntityAttributeGroupsByName(String entityAttributeGroupName) {
+        return getEntityAttributeGroups(EntityAttributeGroups.ACTIVE_DETAIL.isNotNull()
+                .and(EntityAttributeGroups.ACTIVE_DETAIL.in(session.getDslContext()
+                        .select(EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_DETAIL)
+                        .from(EntityAttributeGroupDetails)
+                        .where(EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_NAME.eq(entityAttributeGroupName)))), EntityPermission.READ_ONLY);
+    }
+
+    public EntityAttributeGroup getEntityAttributeGroupByName(EntityType entityType, String entityAttributeGroupName, EntityPermission entityPermission) {
+        return getEntityAttributeGroup(EntityAttributeGroupDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey())
+                .and(EntityAttributeGroupDetails.ENTITY_ATTRIBUTE_GROUP_NAME.eq(entityAttributeGroupName)),
                 entityPermission);
     }
 
-    public EntityAttributeGroup getEntityAttributeGroupByName(String entityAttributeGroupName) {
-        return getEntityAttributeGroupByName(entityAttributeGroupName, EntityPermission.READ_ONLY);
+    public EntityAttributeGroup getEntityAttributeGroupByName(EntityType entityType, String entityAttributeGroupName) {
+        return getEntityAttributeGroupByName(entityType, entityAttributeGroupName, EntityPermission.READ_ONLY);
     }
 
-    public EntityAttributeGroup getEntityAttributeGroupByNameForUpdate(String entityAttributeGroupName) {
-        return getEntityAttributeGroupByName(entityAttributeGroupName, EntityPermission.READ_WRITE);
+    public EntityAttributeGroup getEntityAttributeGroupByNameForUpdate(EntityType entityType, String entityAttributeGroupName) {
+        return getEntityAttributeGroupByName(entityType, entityAttributeGroupName, EntityPermission.READ_WRITE);
     }
 
     public EntityAttributeGroupDetailValue getEntityAttributeGroupDetailValueForUpdate(EntityAttributeGroup entityAttributeGroup) {
         return entityAttributeGroup == null? null: entityAttributeGroup.getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
     }
 
-    public EntityAttributeGroupDetailValue getEntityAttributeGroupDetailValueByNameForUpdate(String entityAttributeGroupName) {
-        return getEntityAttributeGroupDetailValueForUpdate(getEntityAttributeGroupByNameForUpdate(entityAttributeGroupName));
+    public EntityAttributeGroupDetailValue getEntityAttributeGroupDetailValueByNameForUpdate(EntityType entityType, String entityAttributeGroupName) {
+        return getEntityAttributeGroupDetailValueForUpdate(getEntityAttributeGroupByNameForUpdate(entityType, entityAttributeGroupName));
     }
 
-    public EntityAttributeGroupChoicesBean getEntityAttributeGroupChoices(String defaultEntityAttributeGroupChoice, Language language,
+    public EntityAttributeGroupChoicesBean getEntityAttributeGroupChoices(EntityType entityType, String defaultEntityAttributeGroupChoice, Language language,
             boolean allowNullChoice) {
-        var entityAttributeGroups = getEntityAttributeGroups();
+        var entityAttributeGroups = getEntityAttributeGroupsByEntityType(entityType);
         var size = entityAttributeGroups.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -347,17 +343,18 @@ public class EntityAttributeGroupControl
             entityAttributeGroupDetail.store();
 
             var entityAttributeGroupPK = entityAttributeGroupDetail.getEntityAttributeGroupPK();
+            var entityType = entityAttributeGroupDetail.getEntityType();
             var entityAttributeGroupName = entityAttributeGroupDetailValue.getEntityAttributeGroupName();
             var isDefault = entityAttributeGroupDetailValue.getIsDefault();
             var sortOrder = entityAttributeGroupDetailValue.getSortOrder();
 
             if(checkDefault) {
-                var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
+                var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup(entityType);
                 var defaultFound = defaultEntityAttributeGroup != null && !defaultEntityAttributeGroup.equals(entityAttributeGroup);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    var defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate();
+                    var defaultEntityAttributeGroupDetailValue = getDefaultEntityAttributeGroupDetailValueForUpdate(entityType);
 
                     defaultEntityAttributeGroupDetailValue.setIsDefault(false);
                     updateEntityAttributeGroupFromValue(defaultEntityAttributeGroupDetailValue, false, updatedBy);
@@ -367,7 +364,7 @@ public class EntityAttributeGroupControl
                 }
             }
 
-            entityAttributeGroupDetail = entityAttributeGroupDetailFactory.create(entityAttributeGroupPK, entityAttributeGroupName,
+            entityAttributeGroupDetail = entityAttributeGroupDetailFactory.create(entityAttributeGroupPK, entityType.getPrimaryKey(), entityAttributeGroupName,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             entityAttributeGroup.setActiveDetail(entityAttributeGroupDetail);
@@ -390,14 +387,15 @@ public class EntityAttributeGroupControl
         deleteEntityAttributeGroupDescriptionsByEntityAttributeGroup(entityAttributeGroup, deletedBy);
 
         var entityAttributeGroupDetail = entityAttributeGroup.getLastDetailForUpdate();
+        var entityType = entityAttributeGroupDetail.getEntityType();
         entityAttributeGroupDetail.setThruTime(session.getStartTime());
         entityAttributeGroup.setActiveDetail(null);
         entityAttributeGroup.store();
 
         // Check for default, and pick one if necessary
-        var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
+        var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup(entityType);
         if(defaultEntityAttributeGroup == null) {
-            var entityAttributeGroups = getEntityAttributeGroupsForUpdate();
+            var entityAttributeGroups = getEntityAttributeGroupsByEntityTypeForUpdate(entityType);
 
             if(!entityAttributeGroups.isEmpty()) {
                 var iter = entityAttributeGroups.iterator();
@@ -412,6 +410,12 @@ public class EntityAttributeGroupControl
         }
 
         sendEvent(entityAttributeGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+    }
+
+    public void deleteEntityAttributeGroupsByEntityType(EntityType entityType, BasePK deletedBy) {
+        for(var entityAttributeGroup : getEntityAttributeGroupsByEntityTypeForUpdate(entityType)) {
+            deleteEntityAttributeGroup(entityAttributeGroup, deletedBy);
+        }
     }
 
     // --------------------------------------------------------------------------------
@@ -566,6 +570,10 @@ public class EntityAttributeGroupControl
 
     public EntityAttributeEntityAttributeGroup createEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, Integer sortOrder, BasePK createdBy) {
+        if(!entityAttribute.getLastDetail().getEntityType().equals(entityAttributeGroup.getLastDetail().getEntityType())) {
+            throw new IllegalArgumentException("Attribute and group must belong to the same entity type");
+        }
+
         var entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.create(
                 entityAttribute, entityAttributeGroup, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
@@ -668,13 +676,8 @@ public class EntityAttributeGroupControl
                     .from(EntityAttributeEntityAttributeGroups)
                     .join(EntityAttributes).onKey(ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK)
                     .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
-                    .join(EntityTypes).onKey(ENTITY_ATTRIBUTE_DETAILS_ENTITY_TYPE_FK)
-                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
-                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
-                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
                     .where(condition)
-                    .orderBy(EntityAttributeEntityAttributeGroups.SORT_ORDER, ComponentVendorDetails.COMPONENT_VENDOR_NAME,
-                            EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME,
+                    .orderBy(EntityAttributeEntityAttributeGroups.SORT_ORDER,
                             EntityAttributeDetails.SORT_ORDER, EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME),
                     EntityAttributeEntityAttributeGroupFactory.class);
             case READ_WRITE -> session.getDslContext()
@@ -805,7 +808,8 @@ public class EntityAttributeGroupControl
             var entityAttributeGroup = getEntityAttributeGroupByPK(new EntityAttributeGroupPK(entityAttributeGroupId));
             var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
-            entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityAttributeGroupName(),
+            entityAttributeGroupResultTransfers.add(new EntityAttributeGroupResultTransfer(entityAttributeGroupDetail.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                    entityAttributeGroupDetail.getEntityType().getLastDetail().getEntityTypeName(), entityAttributeGroupDetail.getEntityAttributeGroupName(),
                     includeEntityAttributeGroup ? getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, null) : null));
         }
 

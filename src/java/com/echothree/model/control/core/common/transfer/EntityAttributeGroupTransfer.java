@@ -22,6 +22,7 @@ import com.echothree.util.common.transfer.MapWrapper;
 public class EntityAttributeGroupTransfer
         extends BaseTransfer {
     
+    private EntityTypeTransfer entityType;
     private String entityAttributeGroupName;
     private Boolean isDefault;
     private Integer sortOrder;
@@ -30,13 +31,23 @@ public class EntityAttributeGroupTransfer
     private MapWrapper<EntityAttributeTransfer> entityAttributes;
     
     /** Creates a new instance of EntityAttributeGroupTransfer */
-    public EntityAttributeGroupTransfer(String entityAttributeGroupName, Boolean isDefault, Integer sortOrder, String description) {
+    public EntityAttributeGroupTransfer(EntityTypeTransfer entityType, String entityAttributeGroupName, Boolean isDefault,
+            Integer sortOrder, String description) {
+        this.entityType = entityType;
         this.entityAttributeGroupName = entityAttributeGroupName;
         this.isDefault = isDefault;
         this.sortOrder = sortOrder;
         this.description = description;
     }
     
+    public EntityTypeTransfer getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(EntityTypeTransfer entityType) {
+        this.entityType = entityType;
+    }
+
     public String getEntityAttributeGroupName() {
         return entityAttributeGroupName;
     }

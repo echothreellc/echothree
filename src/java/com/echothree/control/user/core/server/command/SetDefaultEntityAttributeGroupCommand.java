@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.SetDefaultEntityAttributeGroupForm;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -48,12 +49,17 @@ public class SetDefaultEntityAttributeGroupCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
     
     @Inject
     protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    protected EntityTypeLogic entityTypeLogic;
 
     /** Creates a new instance of SetDefaultEntityAttributeGroupCommand */
     public SetDefaultEntityAttributeGroupCommand() {
@@ -62,16 +68,19 @@ public class SetDefaultEntityAttributeGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var entityAttributeGroupDetailValue = entityAttributeGroupControl.getEntityAttributeGroupDetailValueByNameForUpdate(entityAttributeGroupName);
-        
-        if(entityAttributeGroupDetailValue != null) {
-            entityAttributeGroupDetailValue.setIsDefault(true);
-            entityAttributeGroupControl.updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);
+        var entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
+
+        if(!hasExecutionErrors()) {
+            var entityAttributeGroupName = form.getEntityAttributeGroupName();
+            var entityAttributeGroupDetailValue = entityAttributeGroupControl.getEntityAttributeGroupDetailValueByNameForUpdate(entityType, entityAttributeGroupName);
+
+            if(entityAttributeGroupDetailValue != null) {
+                entityAttributeGroupDetailValue.setIsDefault(true);
+                entityAttributeGroupControl.updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, getPartyPK());
+            } else {
+                addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), form.getComponentVendorName(), form.getEntityTypeName(), entityAttributeGroupName);
+            }
         }
-        
         return null;
     }
     

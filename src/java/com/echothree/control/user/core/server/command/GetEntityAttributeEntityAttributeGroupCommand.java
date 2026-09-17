@@ -64,7 +64,6 @@ public class GetEntityAttributeEntityAttributeGroupCommand
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
-
     
     /** Creates a new instance of GetEntityAttributeEntityAttributeGroupCommand */
     public GetEntityAttributeEntityAttributeGroupCommand() {
@@ -77,10 +76,9 @@ public class GetEntityAttributeEntityAttributeGroupCommand
         EntityAttributeEntityAttributeGroup result = null;
 
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), form.getEntityAttributeGroupName());
 
             if(!hasExecutionErrors()) {
-
                 result = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
 
                 if(result == null) {
@@ -102,7 +100,6 @@ public class GetEntityAttributeEntityAttributeGroupCommand
         var result = CoreResultFactory.getGetEntityAttributeEntityAttributeGroupResult();
 
         if(entity != null) {
-
             result.setEntityAttributeEntityAttributeGroup(entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupTransfer(getUserVisit(), entity, null));
         }
 

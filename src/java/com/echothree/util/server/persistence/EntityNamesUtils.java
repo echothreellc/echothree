@@ -324,6 +324,9 @@ public class EntityNamesUtils {
             var names = new MapWrapper<String>(1);
             var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
+            var entityTypeDetail = entityAttributeGroupDetail.getEntityType().getLastDetail();
+            names.put(Names.ComponentVendorName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            names.put(Names.EntityTypeName.name(), entityTypeDetail.getEntityTypeName());
             names.put(Names.EntityAttributeGroupName.name(), entityAttributeGroupDetail.getEntityAttributeGroupName());
 
             return new EntityNames(Targets.EntityAttributeGroup.name(), names);

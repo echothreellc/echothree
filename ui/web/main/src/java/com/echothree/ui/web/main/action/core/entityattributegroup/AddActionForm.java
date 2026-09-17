@@ -24,12 +24,30 @@ import org.apache.struts.action.ActionMapping;
 @SproutForm(name="EntityAttributeGroupAdd")
 public class AddActionForm
         extends BaseActionForm {
-    
+
+    private String componentVendorName;
+    private String entityTypeName;
     private String entityAttributeGroupName;
     private Boolean isDefault;
     private String sortOrder;
     private String description;
-    
+
+    public String getComponentVendorName() {
+        return componentVendorName;
+    }
+
+    public void setComponentVendorName(String componentVendorName) {
+        this.componentVendorName = componentVendorName;
+    }
+
+    public String getEntityTypeName() {
+        return entityTypeName;
+    }
+
+    public void setEntityTypeName(String entityTypeName) {
+        this.entityTypeName = entityTypeName;
+    }
+
     public void setEntityAttributeGroupName(String entityAttributeGroupName) {
         this.entityAttributeGroupName = entityAttributeGroupName;
     }

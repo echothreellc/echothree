@@ -15,14 +15,12 @@
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
 <initialData>
-    <entityAttributeGroups>
-        <entityAttributeGroup entityAttributeGroupName="DEFAULT" isDefault="true" sortOrder="1">
-            <entityAttributeGroupDescription languageIsoName="en" description="Default Entity Attribute Group" />
-        </entityAttributeGroup>
-    </entityAttributeGroups>
     <componentVendors>
         <componentVendor componentVendorName="ECHO_THREE" commandAction="none">
             <entityType entityTypeName="Item" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityAttributeGroup entityAttributeGroupName="DEFAULT" isDefault="true" sortOrder="1">
+                    <entityAttributeGroupDescription languageIsoName="en" description="Default Entity Attribute Group" />
+                </entityAttributeGroup>
                 <entityTypeDescription languageIsoName="en" description="Item" />
                 <!--
                 <entityAliasType entityAliasTypeName="TEST_ENTITY_ALIAS_TYPE" validationPattern="^[0-9][0-9][0-9][0-9]$" isDefault="true" sortOrder="1">

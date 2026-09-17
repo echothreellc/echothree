@@ -38,7 +38,7 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="EntityInstance.Review:ComponentVendor.Review:EntityAliasType.List:EntityAttribute.List:CommentType.List:RatingType.List:MessageType.List:EntityInstance.List:Event.List" />
+            <et:checkSecurityRoles securityRoles="EntityInstance.Review:ComponentVendor.Review:EntityAliasType.List:EntityAttributeGroup.List:EntityAttribute.List:CommentType.List:RatingType.List:MessageType.List:EntityInstance.List:Event.List" />
             <et:hasSecurityRole securityRole="EntityInstance.Review" var="includeEntityInstanceReviewUrl" />
             <c:choose>
                 <c:when test="${entityType.description != null}">
@@ -196,6 +196,100 @@
                                     <display:column>
                                         <c:url var="eventsUrl" value="/action/Core/Event/Main">
                                             <c:param name="EntityRef" value="${entityAliasType.entityInstance.entityRef}" />
+                                        </c:url>
+                                        <a href="${eventsUrl}">Events</a>
+                                    </display:column>
+                                </et:hasSecurityRole>
+                            </display:table>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </et:hasSecurityRole>
+                <et:hasSecurityRole securityRole="EntityAttributeGroup.List">
+                    <h2>Entity Attribute Groups</h2>
+                    <et:checkSecurityRoles securityRoles="EntityAttributeGroup.Create:EntityAttributeGroup.Edit:EntityAttributeGroup.Delete:EntityAttributeGroup.Review:EntityAttributeGroup.Description" />
+                    <et:hasSecurityRole securityRole="EntityAttributeGroup.Create">
+                        <c:url var="addUrl" value="/action/Core/EntityAttributeGroup/Add">
+                            <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                            <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                        </c:url>
+                        <p><a href="${addUrl}">Add Entity Attribute Group.</a></p>
+                    </et:hasSecurityRole>
+                    <c:choose>
+                        <c:when test='${entityType.ownedEntityAttributeGroups.size == 0}'>
+                            <br />
+                        </c:when>
+                        <c:otherwise>
+                            <et:hasSecurityRole securityRole="EntityAttributeGroup.Review" var="includeReviewUrl" />
+                            <display:table name="entityType.ownedEntityAttributeGroups.list" id="entityAttributeGroup" class="displaytag">
+                                <display:column titleKey="columnTitle.name">
+                                    <c:choose>
+                                        <c:when test="${includeReviewUrl}">
+                                            <c:url var="reviewUrl" value="/action/Core/EntityAttributeGroup/Review">
+                                                <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                                                <c:param name="EntityTypeName" value="${entityAttributeGroup.entityType.entityTypeName}" />
+                                                <c:param name="EntityAttributeGroupName" value="${entityAttributeGroup.entityAttributeGroupName}" />
+                                            </c:url>
+                                            <a href="${reviewUrl}"><c:out value="${entityAttributeGroup.entityAttributeGroupName}" /></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:out value="${entityAttributeGroup.entityAttributeGroupName}" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column titleKey="columnTitle.description">
+                                    <et:appearance appearance="${entityAttributeGroup.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttributeGroup.description}" /></et:appearance>
+                                </display:column>
+                                <display:column titleKey="columnTitle.default">
+                                    <c:choose>
+                                        <c:when test="${entityAttributeGroup.isDefault}">
+                                            Default
+                                        </c:when>
+                                        <c:otherwise>
+                                            <et:hasSecurityRole securityRole="EntityAttributeGroup.Edit">
+                                                <c:url var="setDefaultUrl" value="/action/Core/EntityAttributeGroup/SetDefault">
+                                                    <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                                                    <c:param name="EntityTypeName" value="${entityAttributeGroup.entityType.entityTypeName}" />
+                                                    <c:param name="EntityAttributeGroupName" value="${entityAttributeGroup.entityAttributeGroupName}" />
+                                                </c:url>
+                                                <a href="${setDefaultUrl}">Set Default</a>
+                                            </et:hasSecurityRole>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column titleKey="columnTitle.sortOrder">
+                                    <c:out value="${entityAttributeGroup.sortOrder}" />
+                                </display:column>
+                                <display:column>
+                                    <et:hasSecurityRole securityRole="EntityAttributeGroup.Edit">
+                                        <c:url var="editUrl" value="/action/Core/EntityAttributeGroup/Edit">
+                                            <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                                            <c:param name="EntityTypeName" value="${entityAttributeGroup.entityType.entityTypeName}" />
+                                            <c:param name="OriginalEntityAttributeGroupName" value="${entityAttributeGroup.entityAttributeGroupName}" />
+                                        </c:url>
+                                        <a href="${editUrl}">Edit</a>
+                                    </et:hasSecurityRole>
+                                    <et:hasSecurityRole securityRole="EntityAttributeGroup.Description">
+                                        <c:url var="descriptionsUrl" value="/action/Core/EntityAttributeGroup/Description">
+                                            <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                                            <c:param name="EntityTypeName" value="${entityAttributeGroup.entityType.entityTypeName}" />
+                                            <c:param name="EntityAttributeGroupName" value="${entityAttributeGroup.entityAttributeGroupName}" />
+                                        </c:url>
+                                        <a href="${descriptionsUrl}">Descriptions</a>
+                                    </et:hasSecurityRole>
+                                    <et:hasSecurityRole securityRole="EntityAttributeGroup.Delete">
+                                        <c:url var="deleteUrl" value="/action/Core/EntityAttributeGroup/Delete">
+                                            <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                                            <c:param name="EntityTypeName" value="${entityAttributeGroup.entityType.entityTypeName}" />
+                                            <c:param name="EntityAttributeGroupName" value="${entityAttributeGroup.entityAttributeGroupName}" />
+                                        </c:url>
+                                        <a href="${deleteUrl}">Delete</a>
+                                    </et:hasSecurityRole>
+                                </display:column>
+                                <et:hasSecurityRole securityRole="Event.List">
+                                    <display:column>
+                                        <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                            <c:param name="EntityRef" value="${entityAttributeGroup.entityInstance.entityRef}" />
                                         </c:url>
                                         <a href="${eventsUrl}">Events</a>
                                     </display:column>

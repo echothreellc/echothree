@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -55,8 +56,8 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, false, null, null)
         );
@@ -64,6 +65,9 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
 
     @Inject
     protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
@@ -90,7 +94,7 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
             if(entityAttributeGroupName == null) {
                 entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
             } else { // entityAttributeGroup
-                entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttributeGroupName);
+                entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, componentVendorName, entityTypeName, entityAttributeGroupName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

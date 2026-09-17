@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 
 public interface GetEntityAttributeGroupChoicesForm
-        extends BaseForm {
+        extends EntityTypeSpec {
     
     String getDefaultEntityAttributeGroupChoice();
     void setDefaultEntityAttributeGroupChoice(String defaultEntityAttributeGroupChoice);

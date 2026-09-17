@@ -34,6 +34,7 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
@@ -55,7 +56,6 @@ import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import javax.enterprise.inject.spi.CDI;
-import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 
 public abstract class BaseEntityInstanceObject
         extends BaseObject {
@@ -197,7 +197,14 @@ public abstract class BaseEntityInstanceObject
         var entityInstance = getEntityInstanceByBasePK();
         var commandForm = CoreFormFactory.getGetEntityAttributeGroupForm();
 
-        commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+        if(entityAttributeGroupName != null) {
+            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+            commandForm.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            commandForm.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+        }
+
         commandForm.setUuid(id);
 
         var entityAttributeGroup = CDI.current().select(GetEntityAttributeGroupCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);

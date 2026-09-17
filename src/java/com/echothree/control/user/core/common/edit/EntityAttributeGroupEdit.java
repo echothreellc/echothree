@@ -16,11 +16,12 @@
 
 package com.echothree.control.user.core.common.edit;
 
-import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
-
 public interface EntityAttributeGroupEdit
-        extends EntityAttributeGroupSpec, EntityAttributeGroupDescriptionEdit {
-    
+        extends EntityAttributeGroupDescriptionEdit {
+
+    String getEntityAttributeGroupName();
+    void setEntityAttributeGroupName(String entityAttributeGroupName);
+
     String getIsDefault();
     void setIsDefault(String isDefault);
     

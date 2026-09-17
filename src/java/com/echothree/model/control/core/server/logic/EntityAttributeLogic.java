@@ -57,7 +57,6 @@ import com.echothree.model.control.core.common.exception.LowerRangeExceededExcep
 import com.echothree.model.control.core.common.exception.MismatchedEntityAttributeTypeException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityListItemException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityTypeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDefaultException;
@@ -175,6 +174,9 @@ public class EntityAttributeLogic
     WorkflowControl workflowControl;
 
     @Inject
+    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
@@ -225,15 +227,8 @@ public class EntityAttributeLogic
         return getEntityAttributeTypeByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
     
-    public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName) {
-        var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
-
-        if(entityAttributeGroup == null) {
-            handleExecutionError(UnknownEntityAttributeGroupNameException.class, eea, ExecutionErrors.UnknownEntityAttributeGroupName.name(),
-                    entityAttributeGroupName);
-        }
-
-        return entityAttributeGroup;
+    public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String entityAttributeGroupName) {
+        return entityAttributeGroupLogic.getEntityAttributeGroupByName(eea, entityType, entityAttributeGroupName);
     }
 
     public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {

@@ -64,7 +64,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.core.CommandMessageType
 import com.echothree.ui.cli.dataloader.util.data.handler.core.ComponentStagesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.ComponentVendorsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EditorsHandler;
-import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributeGroupsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributeTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EventTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.FontStylesHandler;
@@ -561,8 +560,6 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new TagScopesHandler(initialDataParser, this));
         } else if(localName.equals("associatePrograms")) {
             initialDataParser.pushHandler(new AssociateProgramsHandler(initialDataParser, this));
-        } else if(localName.equals("entityAttributeGroups")) {
-            initialDataParser.pushHandler(new EntityAttributeGroupsHandler(initialDataParser, this));
         } else if(localName.equals("genders")) {
             initialDataParser.pushHandler(new GendersHandler(initialDataParser, this));
         } else if(localName.equals("birthdayFormats")) {

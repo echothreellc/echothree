@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupDescriptionForm;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -50,6 +51,8 @@ public class DeleteEntityAttributeGroupDescriptionCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
@@ -57,6 +60,9 @@ public class DeleteEntityAttributeGroupDescriptionCommand
 
     @Inject
     protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
 
     @Inject
     PartyControl partyControl;
@@ -70,7 +76,7 @@ public class DeleteEntityAttributeGroupDescriptionCommand
     @Override
     protected BaseResult execute() {
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, form.getComponentVendorName(), form.getEntityTypeName(), entityAttributeGroupName);
         
         if(entityAttributeGroup != null) {
             var languageIsoName = form.getLanguageIsoName();
@@ -82,13 +88,11 @@ public class DeleteEntityAttributeGroupDescriptionCommand
                 if(entityAttributeGroupDescription != null) {
                     entityAttributeGroupControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, getPartyPK());
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupDescription.name(), entityAttributeGroupName, languageIsoName);
+                    addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupDescription.name(), form.getComponentVendorName(), form.getEntityTypeName(), entityAttributeGroupName, languageIsoName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);
         }
         
         return null;

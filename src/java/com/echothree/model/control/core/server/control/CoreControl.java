@@ -452,16 +452,16 @@ public class CoreControl
                 entityType, entityAttributeType);
     }
 
-    public long countEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType) {
+    public long countEntityAttributesByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
         return session.queryForLong(
                 """
                 SELECT COUNT(*)
                 FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
                 WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
                 AND enaenagp_ena_entityattributeid = ena_entityattributeid
-                AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                AND ena_lastdetailid = enadt_entityattributedetailid
                 """,
-                entityAttributeGroup, Session.MAX_TIME, entityType);
+                entityAttributeGroup, Session.MAX_TIME);
     }
 
     public long countEntityAttributesByEntityTypeAndWorkflow(final EntityType entityType, final Workflow workflow) {
@@ -670,7 +670,7 @@ public class CoreControl
         return getEntityAttributesByEntityTypeAndEntityAttributeType(entityType, entityAttributeType, EntityPermission.READ_WRITE);
     }
     
-    private List<EntityAttribute> getEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType,
+    private List<EntityAttribute> getEntityAttributesByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup,
             EntityPermission entityPermission) {
         List<EntityAttribute> entityAttributes;
         
@@ -683,7 +683,7 @@ public class CoreControl
                         FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
                         WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
                         AND enaenagp_ena_entityattributeid = ena_entityattributeid
-                        AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                        AND ena_lastdetailid = enadt_entityattributedetailid
                         ORDER BY enaenagp_sortorder, enadt_sortorder, enadt_entityattributename
                         _LIMIT_
                         """;
@@ -693,7 +693,7 @@ public class CoreControl
                         FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
                         WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
                         AND enaenagp_ena_entityattributeid = ena_entityattributeid
-                        AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                        AND ena_lastdetailid = enadt_entityattributedetailid
                         FOR UPDATE
                         """;
             }
@@ -702,7 +702,6 @@ public class CoreControl
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            ps.setLong(3, entityType.getPrimaryKey().getEntityId());
             
             entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
@@ -712,12 +711,12 @@ public class CoreControl
         return entityAttributes;
     }
     
-    public List<EntityAttribute> getEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType) {
-        return getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup, entityType, EntityPermission.READ_ONLY);
+    public List<EntityAttribute> getEntityAttributesByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
+        return getEntityAttributesByEntityAttributeGroup(entityAttributeGroup, EntityPermission.READ_ONLY);
     }
     
-    public List<EntityAttribute> getEntityAttributesByEntityAttributeGroupAndEntityTypeForUpdate(EntityAttributeGroup entityAttributeGroup, EntityType entityType) {
-        return getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup, entityType, EntityPermission.READ_WRITE);
+    public List<EntityAttribute> getEntityAttributesByEntityAttributeGroupForUpdate(EntityAttributeGroup entityAttributeGroup) {
+        return getEntityAttributesByEntityAttributeGroup(entityAttributeGroup, EntityPermission.READ_WRITE);
     }
     
     public EntityAttributeTransfer getEntityAttributeTransfer(UserVisit userVisit, EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -743,9 +742,9 @@ public class CoreControl
         return getEntityAttributeTransfers(userVisit, getEntityAttributesByEntityTypeAndEntityAttributeType(entityType, entityAttributeType), entityInstance);
     }
     
-    public List<EntityAttributeTransfer> getEntityAttributeTransfersByEntityAttributeGroupAndEntityType(UserVisit userVisit,
-            EntityAttributeGroup entityAttributeGroup, EntityType entityType, EntityInstance entityInstance) {
-        return getEntityAttributeTransfers(userVisit, getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup, entityType),
+    public List<EntityAttributeTransfer> getEntityAttributeTransfersByEntityAttributeGroup(UserVisit userVisit,
+            EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
+        return getEntityAttributeTransfers(userVisit, getEntityAttributesByEntityAttributeGroup(entityAttributeGroup),
                 entityInstance);
     }
     

@@ -19,12 +19,16 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityAttributeGroupsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
+import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.factory.EntityAttributeGroupFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -49,30 +53,38 @@ public class GetEntityAttributeGroupsCommand
                 ))
         ));
         
-        FORM_FIELD_DEFINITIONS = List.of();
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
+        );
     }
 
     @Inject
     protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    protected EntityTypeLogic entityTypeLogic;
 
     /** Creates a new instance of GetEntityAttributeGroupsCommand */
     public GetEntityAttributeGroupsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    private EntityType entityType;
+
     @Override
     protected void handleForm() {
-        // No form fields.
+        entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
     }
 
     @Override
     protected Long getTotalEntities() {
-        return entityAttributeGroupControl.countEntityAttributeGroups();
+        return hasExecutionErrors() ? null : entityAttributeGroupControl.countEntityAttributeGroupsByEntityType(entityType);
     }
 
     @Override
     protected Collection<EntityAttributeGroup> getEntities() {
-        return entityAttributeGroupControl.getEntityAttributeGroups();
+        return hasExecutionErrors() ? null : entityAttributeGroupControl.getEntityAttributeGroupsByEntityType(entityType);
     }
 
     @Override
@@ -80,7 +92,15 @@ public class GetEntityAttributeGroupsCommand
         var result = CoreResultFactory.getGetEntityAttributeGroupsResult();
 
         if(entities != null) {
-            result.setEntityAttributeGroups(entityAttributeGroupControl.getEntityAttributeGroupTransfers(getUserVisit(), entities, null));
+            var userVisit = getUserVisit();
+
+            result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
+
+            if(session.hasLimit(EntityAttributeGroupFactory.class)) {
+                result.setEntityAttributeGroupCount(getTotalEntities());
+            }
+
+            result.setEntityAttributeGroups(entityAttributeGroupControl.getEntityAttributeGroupTransfers(userVisit, entities, null));
         }
 
         return result;

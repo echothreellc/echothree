@@ -74,7 +74,7 @@ public class DeleteEntityAttributeEntityAttributeGroupCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var entityAttributeEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupForUpdate(entityAttribute, entityAttributeGroup);

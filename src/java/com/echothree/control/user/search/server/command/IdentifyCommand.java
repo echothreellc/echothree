@@ -339,9 +339,7 @@ public class IdentifyCommand
     private void checkEntityAttributeGroups(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityAttributeGroup.name(), SecurityRoles.Search.name())) {
-            var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(target);
-
-            if(entityAttributeGroup != null) {
+            for(var entityAttributeGroup : entityAttributeGroupControl.getEntityAttributeGroupsByName(target)) {
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(entityAttributeGroup.getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 

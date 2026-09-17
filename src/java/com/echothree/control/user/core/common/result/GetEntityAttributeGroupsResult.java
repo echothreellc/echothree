@@ -17,12 +17,19 @@
 package com.echothree.control.user.core.common.result;
 
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetEntityAttributeGroupsResult
         extends BaseResult {
     
+    EntityTypeTransfer getEntityType();
+    void setEntityType(EntityTypeTransfer entityType);
+
+    Long getEntityAttributeGroupCount();
+    void setEntityAttributeGroupCount(Long entityAttributeGroupCount);
+
     List<EntityAttributeGroupTransfer> getEntityAttributeGroups();
     void setEntityAttributeGroups(List<EntityAttributeGroupTransfer> entityAttributeGroups);
     

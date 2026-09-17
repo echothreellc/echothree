@@ -96,10 +96,9 @@ public class EditEntityAttributeEntityAttributeGroupCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, spec.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), spec.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
-
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     entityAttributeEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
                 } else { // EditMode.UPDATE

@@ -43,6 +43,7 @@ import org.xml.sax.SAXException;
 
 public class EntityTypeHandler
         extends BaseHandler {
+
     CommentService commentService;
     CoreService coreService;
     MessageService messageService;
@@ -132,6 +133,18 @@ public class EntityTypeHandler
 
                 initialDataParser.pushHandler(new EntityAliasTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
                         commandForm.getEntityAliasTypeName()));
+            }
+            case "entityAttributeGroup" -> {
+                var commandForm = CoreFormFactory.getCreateEntityAttributeGroupForm();
+
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.setEntityTypeName(entityTypeName);
+                commandForm.set(getAttrsMap(attrs));
+
+                coreService.createEntityAttributeGroup(initialDataParser.getUserVisit(), commandForm);
+
+                initialDataParser.pushHandler(new EntityAttributeGroupHandler(initialDataParser, this, componentVendorName, entityTypeName,
+                        commandForm.getEntityAttributeGroupName()));
             }
             case "entityAttribute" -> {
                 var commandForm = CoreFormFactory.getCreateEntityAttributeForm();

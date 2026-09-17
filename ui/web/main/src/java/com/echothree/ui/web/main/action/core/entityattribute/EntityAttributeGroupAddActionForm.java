@@ -42,6 +42,8 @@ public class EntityAttributeGroupAddActionForm
         if(entityAttributeGroupChoices == null) {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupChoicesForm();
 
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
             commandForm.setDefaultEntityAttributeGroupChoice(entityAttributeGroupChoice);
             commandForm.setAllowNullChoice(String.valueOf(false));
 

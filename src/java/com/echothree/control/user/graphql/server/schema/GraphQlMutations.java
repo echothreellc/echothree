@@ -6289,7 +6289,9 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultWithIdObject createEntityAttributeGroup(final DataFetchingEnvironment env,
-            @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
+            @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
@@ -6298,6 +6300,8 @@ public interface GraphQlMutations {
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityAttributeGroupForm();
 
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
             commandForm.setIsDefault(isDefault);
             commandForm.setSortOrder(sortOrder);
@@ -6321,12 +6325,16 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject deleteEntityAttributeGroup(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
             @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityAttributeGroupForm();
 
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
 
             var commandResult = CoreUtil.getHome().deleteEntityAttributeGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -6341,6 +6349,8 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultWithIdObject editEntityAttributeGroup(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
             @GraphQLName("originalEntityAttributeGroupName") @GraphQLNonNull final String originalEntityAttributeGroupName,
             @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName,
             @GraphQLName("isDefault") final String isDefault,
@@ -6351,6 +6361,8 @@ public interface GraphQlMutations {
         try {
             var spec = CoreUtil.getHome().getEntityAttributeGroupSpec();
 
+            spec.setComponentVendorName(componentVendorName);
+            spec.setEntityTypeName(entityTypeName);
             spec.setEntityAttributeGroupName(originalEntityAttributeGroupName);
 
             var commandForm = CoreUtil.getHome().getEditEntityAttributeGroupForm();

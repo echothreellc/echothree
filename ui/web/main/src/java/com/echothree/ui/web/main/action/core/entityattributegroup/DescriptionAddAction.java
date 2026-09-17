@@ -47,6 +47,8 @@ public class DescriptionAddAction
 
     @Override
     public void setupParameters(DescriptionAddActionForm actionForm, HttpServletRequest request) {
+        actionForm.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
+        actionForm.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
         actionForm.setEntityAttributeGroupName(findParameter(request, ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getEntityAttributeGroupName()));
     }
     
@@ -55,6 +57,8 @@ public class DescriptionAddAction
             throws NamingException {
         var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
 
+        commandForm.setComponentVendorName(actionForm.getComponentVendorName());
+        commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
 
         var commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
@@ -71,6 +75,8 @@ public class DescriptionAddAction
             throws NamingException {
         var commandForm = CoreUtil.getHome().getCreateEntityAttributeGroupDescriptionForm();
 
+        commandForm.setComponentVendorName(actionForm.getComponentVendorName());
+        commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeGroupName( actionForm.getEntityAttributeGroupName());
         commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
         commandForm.setDescription(actionForm.getDescription());
@@ -80,6 +86,8 @@ public class DescriptionAddAction
     
     @Override
     public void setupForwardParameters(DescriptionAddActionForm actionForm, Map<String, String> parameters) {
+        parameters.put(ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName());
+        parameters.put(ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName());
         parameters.put(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getEntityAttributeGroupName());
     }
     

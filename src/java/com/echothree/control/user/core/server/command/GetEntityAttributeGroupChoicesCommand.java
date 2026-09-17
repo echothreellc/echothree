@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityAttributeGroupChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -48,6 +49,8 @@ public class GetEntityAttributeGroupChoicesCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("DefaultEntityAttributeGroupChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         );
@@ -56,6 +59,9 @@ public class GetEntityAttributeGroupChoicesCommand
     @Inject
     protected EntityAttributeGroupControl entityAttributeGroupControl;
 
+    @Inject
+    protected EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of GetEntityAttributeGroupChoicesCommand */
     public GetEntityAttributeGroupChoicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -63,11 +69,16 @@ public class GetEntityAttributeGroupChoicesCommand
     
     @Override
     protected BaseResult execute() {
+        var entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
+        if(hasExecutionErrors()) {
+            return null;
+        }
+
         var result = CoreResultFactory.getGetEntityAttributeGroupChoicesResult();
         var defaultEntityAttributeGroupChoice = form.getDefaultEntityAttributeGroupChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        result.setEntityAttributeGroupChoices(entityAttributeGroupControl.getEntityAttributeGroupChoices(defaultEntityAttributeGroupChoice, getPreferredLanguage(), allowNullChoice));
+        result.setEntityAttributeGroupChoices(entityAttributeGroupControl.getEntityAttributeGroupChoices(entityType, defaultEntityAttributeGroupChoice, getPreferredLanguage(), allowNullChoice));
         
         return result;
     }

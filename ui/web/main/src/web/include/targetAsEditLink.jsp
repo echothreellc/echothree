@@ -85,7 +85,9 @@
         <c:when test="${entityInstance.entityNames.target == 'EntityAttributeGroup'}">
             <et:hasSecurityRole securityRole="EntityAttributeGroup.Edit">
                 <c:url var="targetUrl" value="/action/Core/EntityAttributeGroup/Edit">
-                    <c:param name="EntityAttributeGroupName" value="${entityInstance.entityNames.names.map.EntityAttributeGroupName}" />
+                    <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+                    <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
+                    <c:param name="OriginalEntityAttributeGroupName" value="${entityInstance.entityNames.names.map.EntityAttributeGroupName}" />
                 </c:url>
             </et:hasSecurityRole>
         </c:when>

@@ -56,6 +56,8 @@
                     <c:choose>
                         <c:when test="${includeReviewUrl}">
                             <c:url var="reviewUrl" value="/action/Core/EntityAttributeGroup/Review">
+                                <c:param name="ComponentVendorName" value="${entityAttributeEntityAttributeGroup.entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                                <c:param name="EntityTypeName" value="${entityAttributeEntityAttributeGroup.entityAttributeGroup.entityType.entityTypeName}" />
                                 <c:param name="EntityAttributeGroupName" value="${entityAttributeEntityAttributeGroup.entityAttributeGroup.entityAttributeGroupName}" />
                             </c:url>
                             <a href="${reviewUrl}"><c:out value="${entityAttributeEntityAttributeGroup.entityAttributeGroup.description}" /></a>
