@@ -49,11 +49,18 @@ public class SetDefaultAction
             throws Exception {
         var commandForm = CoreUtil.getHome().getSetDefaultEntityAttributeGroupForm();
 
+        commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
+        commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeGroupName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME));
 
         CoreUtil.getHome().setDefaultEntityAttributeGroup(getUserVisitPK(request), commandForm);
 
-        return new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        var actionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
+        actionForward.setParameters(java.util.Map.of(
+                ParameterConstants.COMPONENT_VENDOR_NAME, commandForm.getComponentVendorName(),
+                ParameterConstants.ENTITY_TYPE_NAME, commandForm.getEntityTypeName()));
+
+        return actionForward;
     }
 
 }

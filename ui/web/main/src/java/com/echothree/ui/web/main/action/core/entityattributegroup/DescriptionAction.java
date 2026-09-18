@@ -52,6 +52,8 @@ public class DescriptionAction
         var entityAttributeGroupName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME);
         var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupDescriptionsForm();
 
+        commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
+        commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
 
         var commandResult = CoreUtil.getHome().getEntityAttributeGroupDescriptions(getUserVisitPK(request), commandForm);

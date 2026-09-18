@@ -25,7 +25,7 @@
         <%@ include file="../include/environment-b.jsp" %>
     </head>
     <%@ include file="../include/body-start-b.jsp" %>
-        <et:checkSecurityRoles securityRoles="ComponentVendor.List:CommandMessageType.List:EntityAttributeGroup.List:TagScope.List:MimeType.List:EventGroup.List:UserVisitGroup.List:BaseEncryptionKey.List:CacheEntry.List:QueueType.List:Application.List:Editor.List:Appearance.List:Color.List" />
+        <et:checkSecurityRoles securityRoles="ComponentVendor.List:CommandMessageType.List:TagScope.List:MimeType.List:EventGroup.List:UserVisitGroup.List:BaseEncryptionKey.List:CacheEntry.List:QueueType.List:Application.List:Editor.List:Appearance.List:Color.List" />
         <%@ include file="../include/breadcrumb/breadcrumbs-start.jsp" %>
             <jsp:include page="../include/breadcrumb/portal.jsp">
                 <jsp:param name="showAsLink" value="true"/>
@@ -39,9 +39,6 @@
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="CommandMessageType.List">
             <a href="<c:url value="/action/Core/CommandMessageType/Main" />">Command Message Types</a><br />
-        </et:hasSecurityRole>
-        <et:hasSecurityRole securityRole="EntityAttributeGroup.List">
-            <a href="<c:url value="/action/Core/EntityAttributeGroup/Main" />">Entity Attribute Groups</a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="TagScope.List">
             <a href="<c:url value="/action/Core/TagScope/Main" />">Tag Scopes</a><br />

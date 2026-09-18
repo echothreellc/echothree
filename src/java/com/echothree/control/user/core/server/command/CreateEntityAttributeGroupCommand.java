@@ -19,10 +19,10 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -50,6 +50,8 @@ public class CreateEntityAttributeGroupCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
@@ -60,7 +62,9 @@ public class CreateEntityAttributeGroupCommand
     @Inject
     EntityAttributeGroupLogic entityAttributeGroupLogic;
 
-    
+    @Inject
+    protected EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of CreateEntityAttributeGroupCommand */
     public CreateEntityAttributeGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -69,17 +73,26 @@ public class CreateEntityAttributeGroupCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateEntityAttributeGroupResult();
-        var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var isDefault = Boolean.valueOf(form.getIsDefault());
-        var sortOrder = Integer.valueOf(form.getSortOrder());
-        var description = form.getDescription();
-        var entityAttributeGroup = entityAttributeGroupLogic.createEntityAttributeGroup(this,
-                entityAttributeGroupName, isDefault, sortOrder, description, description == null ? null : getPreferredLanguage(),
-                getPartyPK());
+        var entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
 
         if(!hasExecutionErrors()) {
-            result.setEntityAttributeGroupName(entityAttributeGroup.getLastDetail().getEntityAttributeGroupName());
-            result.setEntityRef(entityAttributeGroup.getPrimaryKey().getEntityRef());
+            var entityAttributeGroupName = form.getEntityAttributeGroupName();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
+            var entityAttributeGroup = entityAttributeGroupLogic.createEntityAttributeGroup(this, entityType,
+                    entityAttributeGroupName, isDefault, sortOrder, description, description == null ? null : getPreferredLanguage(),
+                    getPartyPK());
+
+            if(!hasExecutionErrors()) {
+                var entityTypeDetail = entityType.getLastDetail();
+                var basePK = entityAttributeGroup.getPrimaryKey();
+
+                result.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+                result.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+                result.setEntityAttributeGroupName(entityAttributeGroup.getLastDetail().getEntityAttributeGroupName());
+                result.setEntityRef(basePK.getEntityRef());
+            }
         }
 
         return result;

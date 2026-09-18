@@ -17,7 +17,9 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
@@ -25,7 +27,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.common.EntityAttributeConstants;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.common.EntityAttributeEntityAttributeGroupConstants;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -37,7 +39,7 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("entity attribute group object")
 @GraphQLName("EntityAttributeGroup")
@@ -65,6 +67,13 @@ public class EntityAttributeGroupObject
     }
     
     @GraphQLField
+    @GraphQLDescription("entity type")
+    @GraphQLNonNull
+    public EntityTypeObject getEntityType() {
+        return new EntityTypeObject(getEntityAttributeGroupDetail().getEntityType());
+    }
+
+    @GraphQLField
     @GraphQLDescription("entity attribute group name")
     @GraphQLNonNull
     public String getEntityAttributeGroupName() {
@@ -89,68 +98,54 @@ public class EntityAttributeGroupObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        var entityAttributeGroupControl = Session.getModelController(EntityAttributeGroupControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return entityAttributeGroupControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-
 
     @GraphQLField
     @GraphQLDescription("entity attributes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
-//      if(CoreSecurityUtils.getHasEntityAttributesAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityAttributesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityType = entityInstance == null ? null : entityInstance.getEntityType();
-
-            long totalCount;
-            if(entityType == null) {
-                totalCount = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
-            } else {
-                totalCount = coreControl.countEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup, entityType);
-            }
+            var totalCount = coreControl.countEntityAttributesByEntityAttributeGroup(entityAttributeGroup);
 
             try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                Collection<EntityAttribute> entities;
-                if(entityType == null) {
-                    var entityAttributeGroupEntityAttributes = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
-
-                    entities = new ArrayList<>(entityAttributeGroupEntityAttributes.size());
-                    entityAttributeGroupEntityAttributes.forEach(eagea -> entities.add(eagea.getEntityAttribute()));
-                } else {
-                    entities = coreControl.getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup, entityType);
-                }
-
-                var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
-
-                entities.forEach((entity) -> entityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
+                var entities = coreControl.getEntityAttributesByEntityAttributeGroup(entityAttributeGroup);
+                var entityAttributes = entities.stream()
+                        .map(entity -> new EntityAttributeObject(entity, entityInstance))
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, entityAttributes);
             }
-//      } else {
-//          return Connections.emptyConnection();
-//      }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
     @GraphQLField
     @GraphQLDescription("entity attribute entity attribute groups")
-    public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
-        Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
-
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+            var entityAttributeGroupControl = Session.getModelController(EntityAttributeGroupControl.class);
+            var totalCount = entityAttributeGroupControl.countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
 
-            entityAttributeEntityAttributeGroupObjects = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityAttributeEntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeEntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+                var entityAttributeEntityAttributeGroups = entities.stream()
+                        .map(EntityAttributeEntityAttributeGroupObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityAttributeEntityAttributeGroup : entityAttributeEntityAttributeGroups) {
-                entityAttributeEntityAttributeGroupObjects.add(new EntityAttributeEntityAttributeGroupObject(entityAttributeEntityAttributeGroup));
+                return new CountedObjects<>(objectLimiter, entityAttributeEntityAttributeGroups);
             }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return entityAttributeEntityAttributeGroupObjects;
     }
 
 }

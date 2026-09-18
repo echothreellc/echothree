@@ -29,7 +29,16 @@
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Main" />"><fmt:message key="navigation.core" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Core/EntityAttributeGroup/Main" />"><fmt:message key="navigation.entityAttributeGroups" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
+                <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
+                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
+                </c:url>
+                <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
+                <c:url var="entityAttributeGroupsUrl" value="/action/Core/EntityAttributeGroup/Main">
+                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
+                    <c:param name="EntityTypeName" value="${entityTypeName}" />
+                </c:url>
+                <a href="${entityAttributeGroupsUrl}"><fmt:message key="navigation.entityAttributeGroups" /></a> &gt;&gt;
                 Add
             </h2>
         </div>
@@ -76,7 +85,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td>
+                            <html:hidden property="componentVendorName" />
+                            <html:hidden property="entityTypeName" />
+                        </td>
                         <td><html:submit onclick="onSubmitDisable(this);" />&nbsp;<html:cancel onclick="onSubmitDisable(this);" /><html:hidden property="submitButton" /></td>
                     </tr>
                 </table>

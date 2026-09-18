@@ -17,15 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -58,6 +58,9 @@ public class DeleteEntityAttributeEntityAttributeGroupCommand
     }
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     EntityAttributeLogic entityAttributeLogic;
 
     
@@ -71,13 +74,13 @@ public class DeleteEntityAttributeEntityAttributeGroupCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
-                var entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroupForUpdate(entityAttribute, entityAttributeGroup);
+                var entityAttributeEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupForUpdate(entityAttribute, entityAttributeGroup);
 
                 if(entityAttributeEntityAttributeGroup != null) {
-                    coreControl.deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, getPartyPK());
+                    entityAttributeGroupControl.deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, getPartyPK());
                 } else {
                     var entityAttributeDetail = entityAttribute.getLastDetail();
                     var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();

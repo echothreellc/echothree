@@ -22,8 +22,8 @@ import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
@@ -42,7 +42,6 @@ import com.echothree.model.control.tag.server.graphql.TagSecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
-import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
 import com.echothree.util.common.persistence.BasePK;
@@ -171,14 +170,14 @@ public abstract class BaseEntityInstanceObject
         var entityInstance = getEntityInstanceByBasePK();
 
         if(entityInstance != null) {
-            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeGroupControl = Session.getModelController(EntityAttributeGroupControl.class);
             var entityType = entityInstance.getEntityType();
-            var totalCount = coreControl.countEntityAttributeGroupsByEntityType(entityType);
+            var totalCount = entityAttributeGroupControl.countEntityAttributeGroupsByEntityType(entityType);
 
             // Allow user to see all EntityAttributeGroups that have Entity Attributes in them
             // for the current object, regardless of permissions for the GetEntityAttributeGroups UC.
             try(var objectLimiter = new ObjectLimiter(env, EntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEntityAttributeGroupsByEntityType(entityType);
+                var entities = entityAttributeGroupControl.getEntityAttributeGroupsByEntityType(entityType);
                 var entityAttributeGroups = new ArrayList<EntityAttributeGroupObject>(entities.size());
 
                 entities.forEach((entity) -> entityAttributeGroups.add(new EntityAttributeGroupObject(entity, entityInstance)));
@@ -198,7 +197,14 @@ public abstract class BaseEntityInstanceObject
         var entityInstance = getEntityInstanceByBasePK();
         var commandForm = CoreFormFactory.getGetEntityAttributeGroupForm();
 
-        commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+        if(entityAttributeGroupName != null) {
+            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+            commandForm.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            commandForm.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+        }
+
         commandForm.setUuid(id);
 
         var entityAttributeGroup = CDI.current().select(GetEntityAttributeGroupCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);

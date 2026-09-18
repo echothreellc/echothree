@@ -816,6 +816,7 @@
                     <columns>
                         <column name="EntityAttributeGroupDetailId" type="EID" nullAllowed="false" />
                         <column name="EntityAttributeGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAttributeGroups" destinationColumn="EntityAttributeGroupId" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
                         <column name="EntityAttributeGroupName" type="Name" nullAllowed="false" />
                         <column name="IsDefault" type="Boolean" nullAllowed="false" />
                         <column name="SortOrder" type="Integer" nullAllowed="false" />
@@ -831,11 +832,17 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
+                            <indexColumn name="EntityTypeId" />
                             <indexColumn name="EntityAttributeGroupName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityTypeId" />
                             <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityAttributeGroupName" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>

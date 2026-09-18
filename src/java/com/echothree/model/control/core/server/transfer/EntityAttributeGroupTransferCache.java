@@ -16,16 +16,16 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
-
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class EntityAttributeGroupTransferCache
@@ -33,6 +33,9 @@ public class EntityAttributeGroupTransferCache
     
     boolean includeEntityAttributes;
     
+    @Inject
+    protected EntityTypeControl entityTypeControl;
+
     /** Creates a new instance of EntityAttributeGroupTransferCache */
     protected EntityAttributeGroupTransferCache() {
         super();
@@ -53,9 +56,10 @@ public class EntityAttributeGroupTransferCache
             var entityAttributeGroupName = entityAttributeGroupDetail.getEntityAttributeGroupName();
             var isDefault = entityAttributeGroupDetail.getIsDefault();
             var sortOrder = entityAttributeGroupDetail.getSortOrder();
-            var description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage(userVisit));
+            var description = entityAttributeGroupControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage(userVisit));
             
-            entityAttributeGroupTransfer = new EntityAttributeGroupTransfer(entityAttributeGroupName, isDefault, sortOrder, description);
+            entityAttributeGroupTransfer = new EntityAttributeGroupTransfer(entityTypeControl.getEntityTypeTransfer(userVisit, entityAttributeGroupDetail.getEntityType()), entityAttributeGroupName, isDefault, sortOrder, description);
+
             if(entityInstance == null) {
                 put(userVisit, entityAttributeGroup, entityAttributeGroupTransfer);
             } else {
@@ -64,8 +68,8 @@ public class EntityAttributeGroupTransferCache
             
             if(includeEntityAttributes) {
                 if(entityInstance != null) {
-                    var entityAttributeTransfers = coreControl.getEntityAttributeTransfersByEntityAttributeGroupAndEntityType(userVisit,
-                            entityAttributeGroup, entityInstance.getEntityType(), entityInstance);
+                    var entityAttributeTransfers = coreControl.getEntityAttributeTransfersByEntityAttributeGroup(userVisit,
+                            entityAttributeGroup, entityInstance);
                     var mapWrapper = new MapWrapper<EntityAttributeTransfer>(entityAttributeTransfers.size());
 
                     entityAttributeTransfers.forEach((entityAttributeTransfer) -> {

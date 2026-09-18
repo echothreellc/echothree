@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -612,11 +613,11 @@ public class EntityAttributeObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var totalCount = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+            var entityAttributeGroupControl = Session.getModelController(EntityAttributeGroupControl.class);
+            var totalCount = entityAttributeGroupControl.countEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
 
             try(var objectLimiter = new ObjectLimiter(env, EntityAttributeEntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeEntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+                var entities = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
                 var entityAttributeEntityAttributeGroups = entities.stream().map(EntityAttributeEntityAttributeGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, entityAttributeEntityAttributeGroups);

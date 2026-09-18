@@ -18,12 +18,12 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -51,6 +51,8 @@ public class GetEntityAttributeGroupCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
@@ -58,9 +60,11 @@ public class GetEntityAttributeGroupCommand
     }
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     EntityAttributeGroupLogic entityAttributeGroupLogic;
 
-    
     /** Creates a new instance of GetEntityAttributeGroupCommand */
     public GetEntityAttributeGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -78,7 +82,7 @@ public class GetEntityAttributeGroupCommand
         var result = CoreResultFactory.getGetEntityAttributeGroupResult();
 
         if(entityAttributeGroup != null) {
-            result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
+            result.setEntityAttributeGroup(entityAttributeGroupControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
         }
 
         return result;

@@ -63,6 +63,7 @@ public class ReviewAction
 
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityTypeIncludeEntityAliasTypes);
+        options.add(CoreOptions.EntityTypeIncludeEntityAttributeGroups);
         options.add(CoreOptions.EntityTypeIncludeEntityAttributes);
         options.add(CoreOptions.EntityTypeIncludeCommentTypes);
         options.add(CoreOptions.EntityTypeIncludeRatingTypes);

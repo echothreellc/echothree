@@ -17,7 +17,6 @@
 package com.echothree.cucumber.core;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.CreateEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -39,6 +38,26 @@ public class EntityAttributeGroupSteps implements En {
                     persona.createEntityAttributeGroupForm = CoreUtil.getHome().getCreateEntityAttributeGroupForm();
                 });
 
+        When("^the user sets the entity attribute group's component vendor to ([a-zA-Z0-9-_]*)$",
+                (String value) -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = persona.createEntityAttributeGroupForm != null ? persona.createEntityAttributeGroupForm
+                            : persona.deleteEntityAttributeGroupForm != null ? persona.deleteEntityAttributeGroupForm : persona.entityAttributeGroupSpec;
+
+                    assertThat(spec).isNotNull();
+                    spec.setComponentVendorName(value);
+                });
+
+        When("^the user sets the entity attribute group's entity type to ([a-zA-Z0-9-_]*)$",
+                (String value) -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = persona.createEntityAttributeGroupForm != null ? persona.createEntityAttributeGroupForm
+                            : persona.deleteEntityAttributeGroupForm != null ? persona.deleteEntityAttributeGroupForm : persona.entityAttributeGroupSpec;
+
+                    assertThat(spec).isNotNull();
+                    spec.setEntityTypeName(value);
+                });
+
         When("^the user adds the new entity attribute group$",
                 () -> {
                     var persona = CurrentPersona.persona;
@@ -49,15 +68,43 @@ public class EntityAttributeGroupSteps implements En {
                     var commandResult = CoreUtil.getHome().createEntityAttributeGroup(persona.userVisitPK, createEntityAttributeGroupForm);
                     LastCommandResult.commandResult = commandResult;
 
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateEntityAttributeGroupResult)executionResult.getResult();
-
-                    assertThat(persona).isNotNull();
                     assertThat(commandResult).isNotNull();
+                    var executionResult = commandResult.getExecutionResult();
+
+                    var result = executionResult.getResult();
                     assertThat(result).isNotNull();
 
                     persona.lastEntityAttributeGroupName = commandResult.getHasErrors() ? null : result.getEntityAttributeGroupName();
+                    persona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
+
                     persona.createEntityAttributeGroupForm = null;
+                });
+
+        Then("^entity attribute group ([a-zA-Z0-9-_]*) is listed for ([a-zA-Z0-9-_]*) ([a-zA-Z0-9-_]*) and is (default|not default)$",
+                (String entityAttributeGroupName, String componentVendorName, String entityTypeName, String defaultStatus) -> {
+                    var form = CoreUtil.getHome().getGetEntityAttributeGroupsForm();
+
+                    form.setComponentVendorName(componentVendorName);
+                    form.setEntityTypeName(entityTypeName);
+
+                    var commandResult = CoreUtil.getHome().getEntityAttributeGroups(CurrentPersona.persona.userVisitPK, form);
+                    LastCommandResult.commandResult = commandResult;
+
+                    if(!commandResult.hasErrors()) {
+                        var result = commandResult.getExecutionResult().getResult();
+                        var entityAttributeGroups = result.getEntityAttributeGroups();
+
+                        assertThat(entityAttributeGroups).allSatisfy(entityAttributeGroup -> {
+                            assertThat(entityAttributeGroup.getEntityType().getEntityTypeName()).isEqualTo(entityTypeName);
+                            assertThat(entityAttributeGroup.getEntityType().getComponentVendor().getComponentVendorName()).isEqualTo(componentVendorName);
+                        });
+
+                        assertThat(entityAttributeGroups.stream()
+                                .filter(group -> group.getEntityAttributeGroupName().equals(entityAttributeGroupName))
+                                .toList()
+                        ).singleElement()
+                                .satisfies(group -> assertThat(group.getIsDefault()).isEqualTo(defaultStatus.equals("default")));
+                    }
                 });
 
         When("^the user begins deleting an entity attribute group$",
@@ -91,7 +138,7 @@ public class EntityAttributeGroupSteps implements En {
                     assertThat(persona.deleteEntityAttributeGroupForm).isNull();
                     assertThat(persona.entityAttributeGroupSpec).isNull();
 
-                    persona.entityAttributeGroupSpec = CoreUtil.getHome().getEntityAttributeGroupSpec();
+                    persona.entityAttributeGroupSpec = CoreUtil.getHome().getEntityAttributeGroupUniversalSpec();
                 });
 
         When("^the user begins editing the entity attribute group$",
@@ -170,6 +217,17 @@ public class EntityAttributeGroupSteps implements En {
                     } else {
                         entityAttributeGroupSpec.setEntityAttributeGroupName(lastEntityAttributeGroupName);
                     }
+                });
+
+        When("^the user identifies the last entity attribute group by entity reference$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = persona.deleteEntityAttributeGroupForm != null ? persona.deleteEntityAttributeGroupForm : persona.entityAttributeGroupSpec;
+
+                    assertThat(spec).isNotNull();
+                    assertThat(persona.lastEntityRef).isNotNull();
+
+                    spec.setEntityRef(persona.lastEntityRef);
                 });
 
         When("^the user sets the entity attribute group to (be|not be) the default$",

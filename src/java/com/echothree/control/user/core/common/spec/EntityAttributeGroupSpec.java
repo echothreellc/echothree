@@ -16,10 +16,8 @@
 
 package com.echothree.control.user.core.common.spec;
 
-import com.echothree.util.common.form.BaseSpec;
-
 public interface EntityAttributeGroupSpec
-        extends BaseSpec {
+        extends EntityTypeSpec {
     
     String getEntityAttributeGroupName();
     void setEntityAttributeGroupName(String entityAttributeGroupName);

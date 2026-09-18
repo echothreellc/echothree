@@ -28,11 +28,15 @@ import org.xml.sax.SAXException;
 public class EntityAttributeGroupHandler
         extends BaseHandler {
     CoreService coreService;
+    String componentVendorName;
+    String entityTypeName;
     String entityAttributeGroupName;
     
     /** Creates a new instance of EntityAttributeGroupHandler */
-    public EntityAttributeGroupHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityAttributeGroupName) {
+    public EntityAttributeGroupHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String entityAttributeGroupName) {
         super(initialDataParser, parentHandler);
+        this.componentVendorName = componentVendorName;
+        this.entityTypeName = entityTypeName;
         
         try {
             coreService = CoreUtil.getHome();
@@ -61,6 +65,8 @@ public class EntityAttributeGroupHandler
             try {
                 var form = CoreFormFactory.getCreateEntityAttributeGroupDescriptionForm();
                 
+                form.setComponentVendorName(componentVendorName);
+                form.setEntityTypeName(entityTypeName);
                 form.setEntityAttributeGroupName(entityAttributeGroupName);
                 form.setLanguageIsoName(languageIsoName);
                 form.setDescription(description);

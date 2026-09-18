@@ -29,12 +29,23 @@
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Main" />"><fmt:message key="navigation.core" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Core/EntityAttributeGroup/Main" />"><fmt:message key="navigation.entityAttributeGroups" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
+                <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
+                    <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                </c:url>
+                <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
+                <c:url var="entityAttributeGroupsUrl" value="/action/Core/EntityAttributeGroup/Main">
+                    <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                    <c:param name="EntityTypeName" value="${entityAttributeGroup.entityType.entityTypeName}" />
+                </c:url>
+                <a href="${entityAttributeGroupsUrl}"><fmt:message key="navigation.entityAttributeGroups" /></a> &gt;&gt;
                 <fmt:message key="navigation.entityAttributeGroupDescriptions" />
             </h2>
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Core/EntityAttributeGroup/DescriptionAdd">
+                <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                <c:param name="EntityTypeName" value="${entityAttributeGroup.entityType.entityTypeName}" />
                 <c:param name="EntityAttributeGroupName" value="${entityAttributeGroup.entityAttributeGroupName}" />
             </c:url>
             <p><a href="${addUrl}">Add Description.</a></p>
@@ -47,11 +58,15 @@
                 </display:column>
                 <display:column>
                     <c:url var="editUrl" value="/action/Core/EntityAttributeGroup/DescriptionEdit">
+                        <c:param name="ComponentVendorName" value="${entityAttributeGroupDescription.entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                        <c:param name="EntityTypeName" value="${entityAttributeGroupDescription.entityAttributeGroup.entityType.entityTypeName}" />
                         <c:param name="EntityAttributeGroupName" value="${entityAttributeGroupDescription.entityAttributeGroup.entityAttributeGroupName}" />
                         <c:param name="LanguageIsoName" value="${entityAttributeGroupDescription.language.languageIsoName}" />
                     </c:url>
                     <a href="${editUrl}">Edit</a>
                     <c:url var="deleteUrl" value="/action/Core/EntityAttributeGroup/DescriptionDelete">
+                        <c:param name="ComponentVendorName" value="${entityAttributeGroupDescription.entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                        <c:param name="EntityTypeName" value="${entityAttributeGroupDescription.entityAttributeGroup.entityType.entityTypeName}" />
                         <c:param name="EntityAttributeGroupName" value="${entityAttributeGroupDescription.entityAttributeGroup.entityAttributeGroupName}" />
                         <c:param name="LanguageIsoName" value="${entityAttributeGroupDescription.language.languageIsoName}" />
                     </c:url>

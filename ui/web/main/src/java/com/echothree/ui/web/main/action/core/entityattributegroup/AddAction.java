@@ -17,12 +17,15 @@
 package com.echothree.ui.web.main.action.core.entityattributegroup;
 
 import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,6 +45,14 @@ public class AddAction
         extends MainBaseAddAction<AddActionForm> {
 
     @Override
+    public void setupParameters(AddActionForm actionForm, HttpServletRequest request) {
+        actionForm.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
+        actionForm.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
+        request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName());
+        request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName());
+    }
+
+    @Override
     public void setupDefaults(AddActionForm actionForm)
             throws NamingException {
         actionForm.setSortOrder("1");
@@ -52,6 +63,8 @@ public class AddAction
             throws NamingException {
         var commandForm = CoreUtil.getHome().getCreateEntityAttributeGroupForm();
 
+        commandForm.setComponentVendorName(actionForm.getComponentVendorName());
+        commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
         commandForm.setIsDefault(actionForm.getIsDefault().toString());
         commandForm.setSortOrder(actionForm.getSortOrder());
@@ -60,4 +73,10 @@ public class AddAction
         return CoreUtil.getHome().createEntityAttributeGroup(getUserVisitPK(request), commandForm);
     }
     
+    @Override
+    public void setupForwardParameters(AddActionForm actionForm, Map<String, String> parameters) {
+        parameters.put(ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName());
+        parameters.put(ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName());
+    }
+
 }

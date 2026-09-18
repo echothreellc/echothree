@@ -73,6 +73,7 @@ public class EntityTypeTransferCache
     boolean includeIndexTypesCount;
     boolean includeIndexTypes;
     boolean includeEntityAliasTypes;
+    boolean includeEntityAttributeGroups;
     boolean includeEntityAttributes;
     boolean includeCommentTypes;
     boolean includeRatingTypes;
@@ -106,6 +107,7 @@ public class EntityTypeTransferCache
             includeIndexTypesCount = options.contains(CoreOptions.EntityTypeIncludeIndexTypesCount);
             includeIndexTypes = options.contains(CoreOptions.EntityTypeIncludeIndexTypes);
             includeEntityAliasTypes = options.contains(CoreOptions.EntityTypeIncludeEntityAliasTypes);
+            includeEntityAttributeGroups = options.contains(CoreOptions.EntityTypeIncludeEntityAttributeGroups);
             includeEntityAttributes = options.contains(CoreOptions.EntityTypeIncludeEntityAttributes);
             includeCommentTypes = options.contains(CoreOptions.EntityTypeIncludeCommentTypes);
             includeRatingTypes = options.contains(CoreOptions.EntityTypeIncludeRatingTypes);
@@ -178,6 +180,10 @@ public class EntityTypeTransferCache
 
             if(includeEntityAliasTypes) {
                 entityTypeTransfer.setEntityAliasTypes(new ListWrapper<>(entityAliasControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityType)));
+            }
+
+            if(includeEntityAttributeGroups) {
+                entityTypeTransfer.setOwnedEntityAttributeGroups(new ListWrapper<>(entityAttributeGroupControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityType, null)));
             }
 
             if(includeEntityAttributes) {

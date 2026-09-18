@@ -27,6 +27,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,6 +53,8 @@ public class DeleteAction
     
     @Override
     public void setupParameters(DeleteActionForm actionForm, HttpServletRequest request) {
+        actionForm.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
+        actionForm.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
         actionForm.setEntityAttributeGroupName(findParameter(request, ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getEntityAttributeGroupName()));
     }
     
@@ -60,6 +63,8 @@ public class DeleteAction
             throws NamingException {
         var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
         
+        commandForm.setComponentVendorName(actionForm.getComponentVendorName());
+        commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
 
         var commandResult = CoreUtil.getHome().getEntityAttributeGroup(getUserVisitPK(request), commandForm);
@@ -74,9 +79,17 @@ public class DeleteAction
             throws NamingException {
         var commandForm = CoreUtil.getHome().getDeleteEntityAttributeGroupForm();
 
+        commandForm.setComponentVendorName(actionForm.getComponentVendorName());
+        commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
 
         return CoreUtil.getHome().deleteEntityAttributeGroup(getUserVisitPK(request), commandForm);
     }
     
+    @Override
+    public void setupForwardParameters(DeleteActionForm actionForm, Map<String, String> parameters) {
+        parameters.put(ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName());
+        parameters.put(ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName());
+    }
+
 }

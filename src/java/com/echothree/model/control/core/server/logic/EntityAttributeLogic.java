@@ -57,7 +57,6 @@ import com.echothree.model.control.core.common.exception.LowerRangeExceededExcep
 import com.echothree.model.control.core.common.exception.MismatchedEntityAttributeTypeException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityListItemException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityTypeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDefaultException;
@@ -71,6 +70,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityMultipleLi
 import com.echothree.model.control.core.common.exception.UnknownEntityStringDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityTimeDefaultException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByBlobEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByBooleanEntityAttributeQuery;
@@ -159,6 +159,9 @@ public class EntityAttributeLogic
         extends BaseLogic {
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     IndexControl indexControl;
 
     @Inject
@@ -169,6 +172,9 @@ public class EntityAttributeLogic
 
     @Inject
     WorkflowControl workflowControl;
+
+    @Inject
+    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -221,15 +227,8 @@ public class EntityAttributeLogic
         return getEntityAttributeTypeByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
     
-    public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName) {
-        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
-
-        if(entityAttributeGroup == null) {
-            handleExecutionError(UnknownEntityAttributeGroupNameException.class, eea, ExecutionErrors.UnknownEntityAttributeGroupName.name(),
-                    entityAttributeGroupName);
-        }
-
-        return entityAttributeGroup;
+    public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String entityAttributeGroupName) {
+        return entityAttributeGroupLogic.getEntityAttributeGroupByName(eea, entityType, entityAttributeGroupName);
     }
 
     public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
@@ -239,7 +238,7 @@ public class EntityAttributeLogic
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);
+            entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);
         }
 
         return entityAttributeGroup;

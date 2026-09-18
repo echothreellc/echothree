@@ -24,6 +24,7 @@ import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.search.ComponentVendorSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityAliasTypeSearchEvaluator;
@@ -88,6 +89,9 @@ public class IdentifyCommand
 
     @Inject
     EntityAliasControl entityAliasControl;
+
+    @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
 
     @Inject
     EntityInstanceControl entityInstanceControl;
@@ -335,9 +339,7 @@ public class IdentifyCommand
     private void checkEntityAttributeGroups(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(securityRoleLogic.hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.EntityAttributeGroup.name(), SecurityRoles.Search.name())) {
-            var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(target);
-
-            if(entityAttributeGroup != null) {
+            for(var entityAttributeGroup : entityAttributeGroupControl.getEntityAttributeGroupsByName(target)) {
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(entityAttributeGroup.getPrimaryKey());
                 var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 

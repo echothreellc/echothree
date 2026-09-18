@@ -29,7 +29,16 @@
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Main" />"><fmt:message key="navigation.core" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Core/EntityAttributeGroup/Main" />"><fmt:message key="navigation.entityAttributeGroups" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
+                <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
+                    <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                </c:url>
+                <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
+                <c:url var="entityAttributeGroupsUrl" value="/action/Core/EntityAttributeGroup/Main">
+                    <c:param name="ComponentVendorName" value="${entityAttributeGroup.entityType.componentVendor.componentVendorName}" />
+                    <c:param name="EntityTypeName" value="${entityAttributeGroup.entityType.entityTypeName}" />
+                </c:url>
+                <a href="${entityAttributeGroupsUrl}"><fmt:message key="navigation.entityAttributeGroups" /></a> &gt;&gt;
                 Delete
             </h2>
         </div>
@@ -55,6 +64,8 @@
                             </tr>
                         </table>
                         <html:submit value="Delete" onclick="onSubmitDisable(this);" />&nbsp;<html:cancel onclick="onSubmitDisable(this);" /><html:hidden property="submitButton" />
+                        <html:hidden property="componentVendorName" />
+                        <html:hidden property="entityTypeName" />
                         <html:hidden property="entityAttributeGroupName" />
                     </html:form>
                 </c:otherwise>

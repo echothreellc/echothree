@@ -5119,12 +5119,16 @@ public interface GraphQlQueries {
     @GraphQLField
     @GraphQLName("entityAttributeGroup")
     static EntityAttributeGroupObject entityAttributeGroup(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName,
             @GraphQLName("id") @GraphQLID final String id) {
         EntityAttributeGroup entityAttributeGroup;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
 
             commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
             commandForm.setUuid(id);
@@ -5141,12 +5145,17 @@ public interface GraphQlQueries {
     @GraphQLName("entityAttributeGroups")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    static CountingPaginatedData<EntityAttributeGroupObject> entityAttributeGroups(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<EntityAttributeGroupObject> entityAttributeGroups(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
         CountingPaginatedData<EntityAttributeGroupObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupsForm();
             var command = CDI.current().select(GetEntityAttributeGroupsCommand.class).get();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
 
             var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
             if(totalEntities == null) {
@@ -5265,8 +5274,8 @@ public interface GraphQlQueries {
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     static CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroups(final DataFetchingEnvironment env,
-            @GraphQLName("componentVendorName") final String componentVendorName,
-            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName) {
         CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> data;

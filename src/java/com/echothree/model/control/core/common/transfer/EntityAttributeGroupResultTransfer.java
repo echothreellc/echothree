@@ -21,14 +21,34 @@ import com.echothree.util.common.transfer.BaseTransfer;
 public class EntityAttributeGroupResultTransfer
         extends BaseTransfer {
     
+    private String componentVendorName;
+    private String entityTypeName;
     private String entityAttributeGroupName;
     private EntityAttributeGroupTransfer entityAttributeGroup;
     
     /** Creates a new instance of EntityAttributeGroupResultTransfer */
-    public EntityAttributeGroupResultTransfer(String entityAttributeGroupName,
+    public EntityAttributeGroupResultTransfer(String componentVendorName, String entityTypeName, String entityAttributeGroupName,
             EntityAttributeGroupTransfer entityAttributeGroup) {
+        this.componentVendorName = componentVendorName;
+        this.entityTypeName = entityTypeName;
         this.entityAttributeGroupName = entityAttributeGroupName;
         this.entityAttributeGroup = entityAttributeGroup;
+    }
+
+    public String getComponentVendorName() {
+        return componentVendorName;
+    }
+
+    public void setComponentVendorName(String componentVendorName) {
+        this.componentVendorName = componentVendorName;
+    }
+
+    public String getEntityTypeName() {
+        return entityTypeName;
+    }
+
+    public void setEntityTypeName(String entityTypeName) {
+        this.entityTypeName = entityTypeName;
     }
 
     /**

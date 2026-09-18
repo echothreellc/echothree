@@ -21,6 +21,7 @@ import com.echothree.control.user.core.common.result.GetEntityAttributeGroupsRes
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -48,12 +49,17 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupsForm();
 
-        var commandResult = CoreUtil.getHome().getEntityAttributeGroups(getUserVisitPK(request), null);
+        commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
+        commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
+
+        var commandResult = CoreUtil.getHome().getEntityAttributeGroups(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityAttributeGroupsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
+            request.setAttribute(AttributeConstants.ENTITY_TYPE, result.getEntityType());
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_GROUPS, result.getEntityAttributeGroups());
             forwardKey = ForwardConstants.DISPLAY;
         } else {

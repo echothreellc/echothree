@@ -34,7 +34,7 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="Event.List:EntityType.Create:EntityType.Edit:EntityType.Delete:EntityType.Review:EntityType.Description" />
+            <et:checkSecurityRoles securityRoles="Event.List:EntityAttributeGroup.List:EntityType.Create:EntityType.Edit:EntityType.Delete:EntityType.Review:EntityType.Description" />
             <et:hasSecurityRole securityRoles="EntityType.Edit:EntityType.Description:EntityType.Delete">
                 <c:set var="linksInSecondRow" value="true" />
             </et:hasSecurityRole>
@@ -88,6 +88,13 @@
                 </display:column>
                 <display:column>
                     <c:if test="${entityType.isExtensible}">
+                        <et:hasSecurityRole securityRole="EntityAttributeGroup.List">
+                            <c:url var="entityAttributeGroupsUrl" value="/action/Core/EntityAttributeGroup/Main">
+                                <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                                <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                            </c:url>
+                            <a href="${entityAttributeGroupsUrl}">Entity Attribute Groups</a>
+                        </et:hasSecurityRole>
                         <c:url var="entityAttributesUrl" value="/action/Core/EntityAttribute/Main">
                             <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                             <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />

@@ -53,6 +53,8 @@ public class DescriptionDeleteAction
     
     @Override
     public void setupParameters(DescriptionDeleteActionForm actionForm, HttpServletRequest request) {
+        actionForm.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
+        actionForm.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
         actionForm.setEntityAttributeGroupName(findParameter(request, ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getEntityAttributeGroupName()));
         actionForm.setLanguageIsoName(findParameter(request, ParameterConstants.LANGUAGE_ISO_NAME, actionForm.getLanguageIsoName()));
     }
@@ -62,6 +64,8 @@ public class DescriptionDeleteAction
             throws NamingException {
         var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupDescriptionForm();
         
+        commandForm.setComponentVendorName(actionForm.getComponentVendorName());
+        commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
 
@@ -79,6 +83,8 @@ public class DescriptionDeleteAction
             throws NamingException {
         var commandForm = CoreUtil.getHome().getDeleteEntityAttributeGroupDescriptionForm();
 
+        commandForm.setComponentVendorName(actionForm.getComponentVendorName());
+        commandForm.setEntityTypeName(actionForm.getEntityTypeName());
         commandForm.setEntityAttributeGroupName(actionForm.getEntityAttributeGroupName());
         commandForm.setLanguageIsoName(actionForm.getLanguageIsoName());
 
@@ -87,6 +93,8 @@ public class DescriptionDeleteAction
     
     @Override
     public void setupForwardParameters(DescriptionDeleteActionForm actionForm, Map<String, String> parameters) {
+        parameters.put(ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName());
+        parameters.put(ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName());
         parameters.put(ParameterConstants.ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getEntityAttributeGroupName());
     }
     

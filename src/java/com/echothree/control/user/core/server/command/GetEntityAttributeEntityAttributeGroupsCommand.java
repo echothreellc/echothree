@@ -18,6 +18,8 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -54,12 +56,18 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
+
+    @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
@@ -86,7 +94,7 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
             if(entityAttributeGroupName == null) {
                 entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
             } else { // entityAttributeGroup
-                entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttributeGroupName);
+                entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, componentVendorName, entityTypeName, entityAttributeGroupName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -100,9 +108,9 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         if(!hasExecutionErrors()) {
 
             if(entityAttribute != null) {
-                totalEntities = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+                totalEntities = entityAttributeGroupControl.countEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
             } else {
-                totalEntities = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+                totalEntities = entityAttributeGroupControl.countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
             }
         }
 
@@ -116,9 +124,9 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         if(!hasExecutionErrors()) {
 
             if(entityAttribute != null) {
-                result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+                result = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
             } else { // entityAttributeGroup
-                result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+                result = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
             }
         }
 
@@ -135,10 +143,10 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
             if(entityAttributeGroup == null) {
                 result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
             } else {
-                result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, null));
+                result.setEntityAttributeGroup(entityAttributeGroupControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, null));
             }
 
-            result.setEntityAttributeEntityAttributeGroups(coreControl.getEntityAttributeEntityAttributeGroupTransfers(userVisit, entities, null));
+            result.setEntityAttributeEntityAttributeGroups(entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupTransfers(userVisit, entities, null));
         }
 
         return result;

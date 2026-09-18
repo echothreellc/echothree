@@ -22,9 +22,27 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 @SproutForm(name="EntityAttributeGroupDelete")
 public class DeleteActionForm
         extends MainBaseDeleteActionForm {
-    
+
+    private String componentVendorName;
+    private String entityTypeName;
     private String entityAttributeGroupName;
-    
+
+    public String getComponentVendorName() {
+        return componentVendorName;
+    }
+
+    public void setComponentVendorName(String componentVendorName) {
+        this.componentVendorName = componentVendorName;
+    }
+
+    public String getEntityTypeName() {
+        return entityTypeName;
+    }
+
+    public void setEntityTypeName(String entityTypeName) {
+        this.entityTypeName = entityTypeName;
+    }
+
     public void setEntityAttributeGroupName(String entityAttributeGroupName) {
         this.entityAttributeGroupName = entityAttributeGroupName;
     }

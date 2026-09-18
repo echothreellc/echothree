@@ -22,11 +22,29 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 @SproutForm(name="EntityAttributeGroupDescriptionEdit")
 public class DescriptionEditActionForm
         extends BaseActionForm {
-    
+
+    private String componentVendorName;
+    private String entityTypeName;
     private String entityAttributeGroupName;
     private String languageIsoName;
     private String description;
-    
+
+    public String getComponentVendorName() {
+        return componentVendorName;
+    }
+
+    public void setComponentVendorName(String componentVendorName) {
+        this.componentVendorName = componentVendorName;
+    }
+
+    public String getEntityTypeName() {
+        return entityTypeName;
+    }
+
+    public void setEntityTypeName(String entityTypeName) {
+        this.entityTypeName = entityTypeName;
+    }
+
     public void setEntityAttributeGroupName(String entityAttributeGroupName) {
         this.entityAttributeGroupName = entityAttributeGroupName;
     }

@@ -36,13 +36,13 @@ public class EntityAttributeEntityAttributeGroupObject
     }
 
     @GraphQLField
-    @GraphQLDescription("entity instance")
+    @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityAttributeEntityAttributeGroup.getEntityAttribute(), null) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("entity instance")
+    @GraphQLDescription("entity attribute group")
     public EntityAttributeGroupObject getEntityAttributeGroup(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasEntityAttributeGroupAccess(env) ? new EntityAttributeGroupObject(entityAttributeEntityAttributeGroup.getEntityAttributeGroup(), null) : null;
     }

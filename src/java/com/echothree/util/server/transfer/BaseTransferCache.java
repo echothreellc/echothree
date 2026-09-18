@@ -22,6 +22,7 @@ import com.echothree.model.control.core.common.transfer.EntityAliasTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
 import com.echothree.model.control.rating.server.control.RatingControl;
@@ -63,10 +64,16 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     private Log log = null;
 
     @Inject
-    protected UserControl userControl;
+    protected CommentControl commentControl;
 
     @Inject
-    protected CommentControl commentControl;
+    protected CoreControl coreControl;
+
+    @Inject
+    protected EntityAliasControl entityAliasControl;
+
+    @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
 
     @Inject
     protected EntityInstanceControl entityInstanceControl;
@@ -75,16 +82,13 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     protected RatingControl ratingControl;
 
     @Inject
-    protected WorkEffortControl workEffortControl;
-
-    @Inject
-    protected EntityAliasControl entityAliasControl;
-
-    @Inject
-    protected CoreControl coreControl;
-
-    @Inject
     protected TagControl tagControl;
+
+    @Inject
+    protected UserControl userControl;
+
+    @Inject
+    protected WorkEffortControl workEffortControl;
 
     protected Session session;
     protected Map<K, V> transferCache;
@@ -249,7 +253,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupEntityAttributeGroups(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
-        var entityAttributeGroupTransfers = coreControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
+        var entityAttributeGroupTransfers = entityAttributeGroupControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         var mapWrapper = new MapWrapper<EntityAttributeGroupTransfer>(entityAttributeGroupTransfers.size());
 
         entityAttributeGroupTransfers.forEach((entityAttributeGroupTransfer) -> {

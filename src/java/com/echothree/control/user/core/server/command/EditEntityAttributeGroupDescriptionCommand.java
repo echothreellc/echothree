@@ -18,21 +18,21 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupDescriptionEdit;
-import com.echothree.control.user.core.common.form.EditEntityAttributeGroupDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupDescriptionResult;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupDescriptionSpec;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroupDescription;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -58,6 +58,8 @@ public class EditEntityAttributeGroupDescriptionCommand
         ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
@@ -66,6 +68,12 @@ public class EditEntityAttributeGroupDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
+
+    @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
+    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
 
     @Inject
     PartyControl partyControl;
@@ -90,7 +98,7 @@ public class EditEntityAttributeGroupDescriptionCommand
     public EntityAttributeGroupDescription getEntity(EditEntityAttributeGroupDescriptionResult result) {
         EntityAttributeGroupDescription entityAttributeGroupDescription = null;
         var entityAttributeGroupName = spec.getEntityAttributeGroupName();
-        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
+        var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), entityAttributeGroupName);
 
         if(entityAttributeGroup != null) {
             var languageIsoName = spec.getLanguageIsoName();
@@ -98,19 +106,17 @@ public class EditEntityAttributeGroupDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
+                    entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
                 } else { // EditMode.UPDATE
-                    entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, language);
+                    entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, language);
                 }
 
                 if(entityAttributeGroupDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupDescription.name(), entityAttributeGroupName, languageIsoName);
+                    addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupDescription.name(), spec.getComponentVendorName(), spec.getEntityTypeName(), entityAttributeGroupName, languageIsoName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);
         }
 
         return entityAttributeGroupDescription;
@@ -124,7 +130,7 @@ public class EditEntityAttributeGroupDescriptionCommand
     @Override
     public void fillInResult(EditEntityAttributeGroupDescriptionResult result, EntityAttributeGroupDescription entityAttributeGroupDescription) {
 
-        result.setEntityAttributeGroupDescription(coreControl.getEntityAttributeGroupDescriptionTransfer(getUserVisit(), entityAttributeGroupDescription, null));
+        result.setEntityAttributeGroupDescription(entityAttributeGroupControl.getEntityAttributeGroupDescriptionTransfer(getUserVisit(), entityAttributeGroupDescription, null));
     }
 
     @Override
@@ -134,11 +140,11 @@ public class EditEntityAttributeGroupDescriptionCommand
 
     @Override
     public void doUpdate(EntityAttributeGroupDescription entityAttributeGroupDescription) {
-        var entityAttributeGroupDescriptionValue = coreControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
+        var entityAttributeGroupDescriptionValue = entityAttributeGroupControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
         
         entityAttributeGroupDescriptionValue.setDescription(edit.getDescription());
         
-        coreControl.updateEntityAttributeGroupDescriptionFromValue(entityAttributeGroupDescriptionValue, getPartyPK());
+        entityAttributeGroupControl.updateEntityAttributeGroupDescriptionFromValue(entityAttributeGroupDescriptionValue, getPartyPK());
     }
 
     

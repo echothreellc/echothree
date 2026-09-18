@@ -20,7 +20,7 @@ import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.form.EditEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
-import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeGroupUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -29,6 +29,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,13 +46,15 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class EditAction
-        extends MainBaseEditAction<EditActionForm, EntityAttributeGroupSpec, EntityAttributeGroupEdit, EditEntityAttributeGroupForm, EditEntityAttributeGroupResult> {
+        extends MainBaseEditAction<EditActionForm, EntityAttributeGroupUniversalSpec, EntityAttributeGroupEdit, EditEntityAttributeGroupForm, EditEntityAttributeGroupResult> {
     
     @Override
-    protected EntityAttributeGroupSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
+    protected EntityAttributeGroupUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        var spec = CoreUtil.getHome().getEntityAttributeGroupSpec();
+        var spec = CoreUtil.getHome().getEntityAttributeGroupUniversalSpec();
         
+        spec.setComponentVendorName(findParameter(request, ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName()));
+        spec.setEntityTypeName(findParameter(request, ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName()));
         spec.setEntityAttributeGroupName(findParameter(request, ParameterConstants.ORIGINAL_ENTITY_ATTRIBUTE_GROUP_NAME, actionForm.getOriginalEntityAttributeGroupName()));
         
         return spec;
@@ -77,7 +80,9 @@ public class EditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditEntityAttributeGroupResult result, EntityAttributeGroupSpec spec, EntityAttributeGroupEdit edit) {
+    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditEntityAttributeGroupResult result, EntityAttributeGroupUniversalSpec spec, EntityAttributeGroupEdit edit) {
+        actionForm.setComponentVendorName(spec.getComponentVendorName());
+        actionForm.setEntityTypeName(spec.getEntityTypeName());
         actionForm.setOriginalEntityAttributeGroupName(spec.getEntityAttributeGroupName());
         actionForm.setEntityAttributeGroupName(edit.getEntityAttributeGroupName());
         actionForm.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
@@ -94,6 +99,12 @@ public class EditAction
     @Override
     protected void setupTransferForForm(HttpServletRequest request, EditActionForm actionForm, EditEntityAttributeGroupResult result) {
         request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_GROUP, result.getEntityAttributeGroup());
+    }
+
+    @Override
+    public void setupForwardParameters(EditActionForm actionForm, Map<String, String> parameters) {
+        parameters.put(ParameterConstants.COMPONENT_VENDOR_NAME, actionForm.getComponentVendorName());
+        parameters.put(ParameterConstants.ENTITY_TYPE_NAME, actionForm.getEntityTypeName());
     }
 
 }

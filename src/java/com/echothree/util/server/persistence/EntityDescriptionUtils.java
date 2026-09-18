@@ -22,6 +22,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
+import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
@@ -219,10 +220,10 @@ public class EntityDescriptionUtils {
 
                     description = entityListItem == null ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.EntityAttributeGroup.name())) {
-                    var coreControl = Session.getModelController(CoreControl.class);
-                    var entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance);
+                    var entityAttributeGroupControl = Session.getModelController(EntityAttributeGroupControl.class);
+                    var entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByEntityInstance(entityInstance);
 
-                    description = entityAttributeGroup == null ? null : coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage(userVisit));
+                    description = entityAttributeGroup == null ? null : entityAttributeGroupControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage(userVisit));
                 }
             }
         }

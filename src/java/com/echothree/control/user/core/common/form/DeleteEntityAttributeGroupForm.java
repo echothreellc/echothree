@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeGroupUniversalSpec;
 
 public interface DeleteEntityAttributeGroupForm
-        extends EntityAttributeGroupSpec {
+        extends EntityAttributeGroupUniversalSpec {
     
-    // Nothing additional beyond EntityAttributeGroupSpec
+    // Nothing additional beyond EntityAttributeGroupUniversalSpec
     
 }

@@ -78,6 +78,9 @@ public class EntityTypeControl
     protected EntityAliasControl entityAliasControl;
 
     @Inject
+    protected EntityAttributeGroupControl entityAttributeGroupControl;
+
+    @Inject
     protected IndexControl indexControl;
 
     @Inject
@@ -386,6 +389,7 @@ public class EntityTypeControl
         entityInstanceControl.deleteEntityInstancesByEntityTypeWithNullDeletedTime(entityType, deletedBy);
         deleteEntityTypeDescriptionsByEntityType(entityType, deletedBy);
         entityAliasControl.deleteEntityAliasTypesByEntityType(entityType, deletedBy);
+        entityAttributeGroupControl.deleteEntityAttributeGroupsByEntityType(entityType, deletedBy);
         coreControl.deleteEntityAttributesByEntityType(entityType, deletedBy);
         coreControl.deleteEntityAttributeEntityTypesByAllowedEntityType(entityType, deletedBy);
         accountingControl.deleteTransactionEntityRoleTypesByEntityType(entityType, deletedBy);

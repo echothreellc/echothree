@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 
 public interface GetEntityAttributeGroupsForm
-        extends BaseForm {
+        extends EntityTypeSpec {
     
-    // Nothing additional beyond BaseForm
+    // Nothing additional beyond EntityTypeSpec
     
 }
