@@ -17,11 +17,11 @@
 package com.echothree.control.user.core.common.form;
 
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
-import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeGroupUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditEntityAttributeGroupForm
-        extends BaseEditForm<EntityAttributeGroupSpec, EntityAttributeGroupEdit> {
+        extends BaseEditForm<EntityAttributeGroupUniversalSpec, EntityAttributeGroupEdit> {
     
     // Nothing additional beyond BaseEditForm
     

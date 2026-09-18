@@ -65,7 +65,6 @@ public class GetEntityAttributeGroupCommand
     @Inject
     EntityAttributeGroupLogic entityAttributeGroupLogic;
 
-    
     /** Creates a new instance of GetEntityAttributeGroupCommand */
     public GetEntityAttributeGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);

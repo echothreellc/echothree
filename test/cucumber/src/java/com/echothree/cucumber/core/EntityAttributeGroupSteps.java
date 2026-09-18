@@ -17,9 +17,7 @@
 package com.echothree.cucumber.core;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.CreateEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
-import com.echothree.control.user.core.common.result.GetEntityAttributeGroupsResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -70,14 +68,15 @@ public class EntityAttributeGroupSteps implements En {
                     var commandResult = CoreUtil.getHome().createEntityAttributeGroup(persona.userVisitPK, createEntityAttributeGroupForm);
                     LastCommandResult.commandResult = commandResult;
 
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateEntityAttributeGroupResult)executionResult.getResult();
-
-                    assertThat(persona).isNotNull();
                     assertThat(commandResult).isNotNull();
+                    var executionResult = commandResult.getExecutionResult();
+
+                    var result = executionResult.getResult();
                     assertThat(result).isNotNull();
 
                     persona.lastEntityAttributeGroupName = commandResult.getHasErrors() ? null : result.getEntityAttributeGroupName();
+                    persona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
+
                     persona.createEntityAttributeGroupForm = null;
                 });
 
@@ -139,7 +138,7 @@ public class EntityAttributeGroupSteps implements En {
                     assertThat(persona.deleteEntityAttributeGroupForm).isNull();
                     assertThat(persona.entityAttributeGroupSpec).isNull();
 
-                    persona.entityAttributeGroupSpec = CoreUtil.getHome().getEntityAttributeGroupSpec();
+                    persona.entityAttributeGroupSpec = CoreUtil.getHome().getEntityAttributeGroupUniversalSpec();
                 });
 
         When("^the user begins editing the entity attribute group$",
@@ -218,6 +217,17 @@ public class EntityAttributeGroupSteps implements En {
                     } else {
                         entityAttributeGroupSpec.setEntityAttributeGroupName(lastEntityAttributeGroupName);
                     }
+                });
+
+        When("^the user identifies the last entity attribute group by entity reference$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = persona.deleteEntityAttributeGroupForm != null ? persona.deleteEntityAttributeGroupForm : persona.entityAttributeGroupSpec;
+
+                    assertThat(spec).isNotNull();
+                    assertThat(persona.lastEntityRef).isNotNull();
+
+                    spec.setEntityRef(persona.lastEntityRef);
                 });
 
         When("^the user sets the entity attribute group to (be|not be) the default$",

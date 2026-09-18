@@ -29,7 +29,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -50,9 +49,11 @@ public class DeleteEntityAttributeGroupCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
     
@@ -69,11 +70,9 @@ public class DeleteEntityAttributeGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttributeGroupName = form.getEntityAttributeGroupName();
-        var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, form.getComponentVendorName(),
-                form.getEntityTypeName(), entityAttributeGroupName, EntityPermission.READ_WRITE);
+        var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByUniversalSpecForUpdate(this, form);
         
-        if(entityAttributeGroup != null) {
+        if(!hasExecutionErrors()) {
             entityAttributeGroupControl.deleteEntityAttributeGroup(entityAttributeGroup, getPartyPK());
         }
         

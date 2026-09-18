@@ -20,7 +20,7 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
-import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeGroupUniversalSpec;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityAttributeGroupCommand
-        extends BaseAbstractEditCommand<EntityAttributeGroupSpec, EntityAttributeGroupEdit, EditEntityAttributeGroupResult, EntityAttributeGroup, EntityAttributeGroup> {
+        extends BaseAbstractEditCommand<EntityAttributeGroupUniversalSpec, EntityAttributeGroupEdit, EditEntityAttributeGroupResult, EntityAttributeGroup, EntityAttributeGroup> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -55,9 +55,11 @@ public class EditEntityAttributeGroupCommand
         ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
@@ -91,8 +93,7 @@ public class EditEntityAttributeGroupCommand
     
     @Override
     public EntityAttributeGroup getEntity(EditEntityAttributeGroupResult result) {
-        return entityAttributeGroupLogic.getEntityAttributeGroupByName(this, spec.getComponentVendorName(),
-                spec.getEntityTypeName(), spec.getEntityAttributeGroupName(), editModeToEntityPermission(editMode));
+        return entityAttributeGroupLogic.getEntityAttributeGroupByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -126,7 +127,11 @@ public class EditEntityAttributeGroupCommand
         var duplicateEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByName(entityAttributeGroup.getLastDetail().getEntityType(), entityAttributeGroupName);
 
         if(duplicateEntityAttributeGroup != null && !entityAttributeGroup.equals(duplicateEntityAttributeGroup)) {
-            addExecutionError(ExecutionErrors.DuplicateEntityAttributeGroupName.name(), spec.getComponentVendorName(), spec.getEntityTypeName(), entityAttributeGroupName);
+            var entityTypeDetail = entityAttributeGroup.getLastDetail().getEntityType().getLastDetail();
+
+            addExecutionError(ExecutionErrors.DuplicateEntityAttributeGroupName.name(),
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                    entityTypeDetail.getEntityTypeName(), entityAttributeGroupName);
         }
     }
     

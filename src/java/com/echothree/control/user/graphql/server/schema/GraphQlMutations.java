@@ -6325,14 +6325,18 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject deleteEntityAttributeGroup(final DataFetchingEnvironment env,
-            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
-            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
-            @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName) {
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("entityRef") final String entityRef,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityAttributeGroupForm();
 
+            commandForm.setUuid(id);
+            commandForm.setEntityRef(entityRef);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
@@ -6349,9 +6353,11 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultWithIdObject editEntityAttributeGroup(final DataFetchingEnvironment env,
-            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
-            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
-            @GraphQLName("originalEntityAttributeGroupName") @GraphQLNonNull final String originalEntityAttributeGroupName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("entityRef") final String entityRef,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("originalEntityAttributeGroupName") final String originalEntityAttributeGroupName,
             @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -6359,8 +6365,10 @@ public interface GraphQlMutations {
         var mutationResultObject = new MutationResultWithIdObject();
 
         try {
-            var spec = CoreUtil.getHome().getEntityAttributeGroupSpec();
+            var spec = CoreUtil.getHome().getEntityAttributeGroupUniversalSpec();
 
+            spec.setUuid(id);
+            spec.setEntityRef(entityRef);
             spec.setComponentVendorName(componentVendorName);
             spec.setEntityTypeName(entityTypeName);
             spec.setEntityAttributeGroupName(originalEntityAttributeGroupName);
