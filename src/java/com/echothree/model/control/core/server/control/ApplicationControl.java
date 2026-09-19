@@ -25,6 +25,11 @@ import com.echothree.model.control.core.common.transfer.ApplicationEditorTransfe
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseTransfer;
 import com.echothree.model.control.core.common.transfer.ApplicationTransfer;
+import com.echothree.model.control.core.server.transfer.ApplicationDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.ApplicationEditorTransferCache;
+import com.echothree.model.control.core.server.transfer.ApplicationEditorUseDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.ApplicationEditorUseTransferCache;
+import com.echothree.model.control.core.server.transfer.ApplicationTransferCache;
 import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.data.core.common.pk.ApplicationEditorPK;
 import com.echothree.model.data.core.common.pk.ApplicationEditorUsePK;
@@ -51,22 +56,41 @@ import com.echothree.model.data.core.server.value.ApplicationEditorUseDescriptio
 import com.echothree.model.data.core.server.value.ApplicationEditorUseDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATION_EDITORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATION_EDITOR_DETAILS_APPLICATION_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATION_EDITOR_DETAILS_EDITOR_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATION_EDITOR_USE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATION_EDITOR_USE_DETAILS_APPLICATION_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.EDITORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.ApplicationDescriptions.ApplicationDescriptions;
+import static com.echothree.model.jooq.server.tables.core.ApplicationDetails.ApplicationDetails;
+import static com.echothree.model.jooq.server.tables.core.ApplicationEditorDetails.ApplicationEditorDetails;
+import static com.echothree.model.jooq.server.tables.core.ApplicationEditorUseDescriptions.ApplicationEditorUseDescriptions;
+import static com.echothree.model.jooq.server.tables.core.ApplicationEditorUseDetails.ApplicationEditorUseDetails;
+import static com.echothree.model.jooq.server.tables.core.ApplicationEditorUses.ApplicationEditorUses;
+import static com.echothree.model.jooq.server.tables.core.ApplicationEditors.ApplicationEditors;
+import static com.echothree.model.jooq.server.tables.core.Applications.Applications;
+import static com.echothree.model.jooq.server.tables.core.EditorDetails.EditorDetails;
+import static com.echothree.model.jooq.server.tables.core.Editors.Editors;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class ApplicationControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected EditorControl editorControl;
@@ -84,10 +108,13 @@ public class ApplicationControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ApplicationDetailFactory applicationDetailFactory;
+
+    @Inject
     protected ApplicationFactory applicationFactory;
 
     @Inject
-    protected ApplicationDetailFactory applicationDetailFactory;
+    ApplicationTransferCache applicationTransferCache;
 
     public Application createApplication(String applicationName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultApplication = getDefaultApplication();
@@ -133,36 +160,27 @@ public class ApplicationControl
     }
 
     public long countApplications() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM applications
-                        JOIN applicationdetails ON appldt_applicationdetailid = appl_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getApplicationByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applications, applicationdetails
-                WHERE appl_activedetailid = appldt_applicationdetailid
-                AND appldt_applicationname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applications, applicationdetails
-                WHERE appl_activedetailid = appldt_applicationdetailid
-                AND appldt_applicationname = ?
-                FOR UPDATE
-                """);
-        getApplicationByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Applications)
+                .join(ApplicationDetails).onKey(APPLICATIONS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Application getApplicationByName(String applicationName, EntityPermission entityPermission) {
-        return applicationFactory.getEntityFromQuery(entityPermission, getApplicationByNameQueries, applicationName);
+        var baseQuery = session.getDslContext()
+                .select(Applications.fields())
+                .from(Applications)
+                .join(ApplicationDetails).onKey(APPLICATIONS_ACTIVE_DETAIL_FK)
+                .where(ApplicationDetails.APPLICATION_NAME.eq(applicationName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return applicationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Application getApplicationByName(String applicationName) {
@@ -181,29 +199,19 @@ public class ApplicationControl
         return getApplicationDetailValueForUpdate(getApplicationByNameForUpdate(applicationName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultApplicationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applications, applicationdetails
-                WHERE appl_activedetailid = appldt_applicationdetailid
-                AND appldt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applications, applicationdetails
-                WHERE appl_activedetailid = appldt_applicationdetailid
-                AND appldt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultApplicationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Application getDefaultApplication(EntityPermission entityPermission) {
-        return applicationFactory.getEntityFromQuery(entityPermission, getDefaultApplicationQueries);
+        var baseQuery = session.getDslContext()
+                .select(Applications.fields())
+                .from(Applications)
+                .join(ApplicationDetails).onKey(APPLICATIONS_ACTIVE_DETAIL_FK)
+                .where(ApplicationDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return applicationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Application getDefaultApplication() {
@@ -218,29 +226,22 @@ public class ApplicationControl
         return getDefaultApplicationForUpdate().getLastDetailForUpdate().getApplicationDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getApplicationsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applications, applicationdetails
-                WHERE appl_activedetailid = appldt_applicationdetailid
-                ORDER BY appldt_sortorder, appldt_applicationname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applications, applicationdetails
-                WHERE appl_activedetailid = appldt_applicationdetailid
-                FOR UPDATE
-                """);
-        getApplicationsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Application> getApplications(EntityPermission entityPermission) {
-        return applicationFactory.getEntitiesFromQuery(entityPermission, getApplicationsQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Applications.fields())
+                    .from(Applications)
+                    .join(ApplicationDetails).onKey(APPLICATIONS_ACTIVE_DETAIL_FK)
+                    .orderBy(ApplicationDetails.SORT_ORDER, ApplicationDetails.APPLICATION_NAME),
+                    ApplicationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Applications.fields())
+                    .from(Applications)
+                    .where(Applications.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return applicationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Application> getApplications() {
@@ -400,6 +401,9 @@ public class ApplicationControl
     @Inject
     protected ApplicationDescriptionFactory applicationDescriptionFactory;
 
+    @Inject
+    ApplicationDescriptionTransferCache applicationDescriptionTransferCache;
+
     public ApplicationDescription createApplicationDescription(Application application, Language language, String description, BasePK createdBy) {
         var applicationDescription = applicationDescriptionFactory.create(application, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -409,28 +413,20 @@ public class ApplicationControl
         return applicationDescription;
     }
 
-    private static final Map<EntityPermission, String> getApplicationDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationdescriptions
-                WHERE appld_appl_applicationid = ? AND appld_lang_languageid = ? AND appld_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationdescriptions
-                WHERE appld_appl_applicationid = ? AND appld_lang_languageid = ? AND appld_thrutime = ?
-                FOR UPDATE
-                """);
-        getApplicationDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ApplicationDescription getApplicationDescription(Application application, Language language, EntityPermission entityPermission) {
-        return applicationDescriptionFactory.getEntityFromQuery(entityPermission, getApplicationDescriptionQueries,
-                application, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ApplicationDescriptions.fields())
+                .from(ApplicationDescriptions)
+                .where(ApplicationDescriptions.APPLICATION.eq(application.getPrimaryKey()),
+                        ApplicationDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ApplicationDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return applicationDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ApplicationDescription getApplicationDescription(Application application, Language language) {
@@ -449,30 +445,25 @@ public class ApplicationControl
         return getApplicationDescriptionValue(getApplicationDescriptionForUpdate(application, language));
     }
 
-    private static final Map<EntityPermission, String> getApplicationDescriptionsByApplicationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationdescriptions, languages
-                WHERE appld_appl_applicationid = ? AND appld_thrutime = ? AND appld_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationdescriptions
-                WHERE appld_appl_applicationid = ? AND appld_thrutime = ?
-                FOR UPDATE
-                """);
-        getApplicationDescriptionsByApplicationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ApplicationDescription> getApplicationDescriptionsByApplication(Application application, EntityPermission entityPermission) {
-        return applicationDescriptionFactory.getEntitiesFromQuery(entityPermission, getApplicationDescriptionsByApplicationQueries,
-                application, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ApplicationDescriptions.fields())
+                    .from(ApplicationDescriptions)
+                    .join(Languages).onKey(APPLICATION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ApplicationDescriptions.APPLICATION.eq(application.getPrimaryKey()),
+                            ApplicationDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ApplicationDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ApplicationDescriptions.fields())
+                    .from(ApplicationDescriptions)
+                    .where(ApplicationDescriptions.APPLICATION.eq(application.getPrimaryKey()),
+                            ApplicationDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return applicationDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ApplicationDescription> getApplicationDescriptionsByApplication(Application application) {
@@ -554,10 +545,13 @@ public class ApplicationControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ApplicationEditorDetailFactory applicationEditorDetailFactory;
+
+    @Inject
     protected ApplicationEditorFactory applicationEditorFactory;
 
     @Inject
-    protected ApplicationEditorDetailFactory applicationEditorDetailFactory;
+    ApplicationEditorTransferCache applicationEditorTransferCache;
 
     public ApplicationEditor createApplicationEditor(Application application, Editor editor, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultApplicationEditor = getDefaultApplicationEditor(application);
@@ -603,47 +597,39 @@ public class ApplicationControl
     }
 
     public long countApplicationEditorsByApplication(final Application application) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM applicationeditors
-                        JOIN applicationeditordetails ON appledtrdt_applicationeditordetailid = appledtr_activedetailid
-                        WHERE appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?
-                        """, application);
+        return session.getDslContext()
+                .selectCount()
+                .from(ApplicationEditors)
+                .join(ApplicationEditorDetails).onKey(APPLICATION_EDITORS_ACTIVE_DETAIL_FK)
+                .where(ApplicationEditorDetails.APPLICATION.eq(application.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countApplicationEditorsByEditor(final Editor editor) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM applicationeditors
-                        JOIN applicationeditordetails ON appledtrdt_applicationeditordetailid = appledtr_activedetailid
-                        WHERE appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?
-                        """, editor);
-    }
-
-    private static final Map<EntityPermission, String> getApplicationEditorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditors, applicationeditordetails
-                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid
-                AND appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditors, applicationeditordetails
-                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid
-                AND appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?
-                FOR UPDATE
-                """);
-        getApplicationEditorQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ApplicationEditors)
+                .join(ApplicationEditorDetails).onKey(APPLICATION_EDITORS_ACTIVE_DETAIL_FK)
+                .where(ApplicationEditorDetails.EDITOR.eq(editor.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ApplicationEditor getApplicationEditor(Application application, Editor editor, EntityPermission entityPermission) {
-        return applicationEditorFactory.getEntityFromQuery(entityPermission, getApplicationEditorQueries,
-                application, editor);
+        var baseQuery = session.getDslContext()
+                .select(ApplicationEditors.fields())
+                .from(ApplicationEditors)
+                .join(ApplicationEditorDetails).onKey(APPLICATION_EDITORS_ACTIVE_DETAIL_FK)
+                .where(ApplicationEditorDetails.APPLICATION.eq(application.getPrimaryKey()),
+                        ApplicationEditorDetails.EDITOR.eq(editor.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return applicationEditorFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ApplicationEditor getApplicationEditor(Application application, Editor editor) {
@@ -662,30 +648,20 @@ public class ApplicationControl
         return getApplicationEditorDetailValueForUpdate(getApplicationEditorForUpdate(application, editor));
     }
 
-    private static final Map<EntityPermission, String> getDefaultApplicationEditorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditors, applicationeditordetails
-                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid
-                AND appledtrdt_appl_applicationid = ? AND appledtrdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditors, applicationeditordetails
-                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid
-                AND appledtrdt_appl_applicationid = ? AND appledtrdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultApplicationEditorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ApplicationEditor getDefaultApplicationEditor(Application application, EntityPermission entityPermission) {
-        return applicationEditorFactory.getEntityFromQuery(entityPermission, getDefaultApplicationEditorQueries,
-                application);
+        var baseQuery = session.getDslContext()
+                .select(ApplicationEditors.fields())
+                .from(ApplicationEditors)
+                .join(ApplicationEditorDetails).onKey(APPLICATION_EDITORS_ACTIVE_DETAIL_FK)
+                .where(ApplicationEditorDetails.APPLICATION.eq(application.getPrimaryKey()),
+                        ApplicationEditorDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return applicationEditorFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ApplicationEditor getDefaultApplicationEditor(Application application) {
@@ -700,31 +676,26 @@ public class ApplicationControl
         return getDefaultApplicationEditorForUpdate(application).getLastDetailForUpdate().getApplicationEditorDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getApplicationEditorsByApplicationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditors, applicationeditordetails, editors, editordetails
-                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_appl_applicationid = ?
-                AND appledtrdt_edtr_editorid = edtr_editorid AND edtr_lastdetailid = edtrdt_editordetailid
-                ORDER BY edtrdt_sortorder, edtrdt_editorname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditors, applicationeditordetails
-                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_appl_applicationid = ?
-                FOR UPDATE
-                """);
-        getApplicationEditorsByApplicationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ApplicationEditor> getApplicationEditorsByApplication(Application application, EntityPermission entityPermission) {
-        return applicationEditorFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorsByApplicationQueries,
-                application);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ApplicationEditors.fields())
+                    .from(ApplicationEditors)
+                    .join(ApplicationEditorDetails).onKey(APPLICATION_EDITORS_ACTIVE_DETAIL_FK)
+                    .join(Editors).onKey(APPLICATION_EDITOR_DETAILS_EDITOR_FK)
+                    .join(EditorDetails).onKey(EDITORS_LAST_DETAIL_FK)
+                    .where(ApplicationEditorDetails.APPLICATION.eq(application.getPrimaryKey()))
+                    .orderBy(EditorDetails.SORT_ORDER, EditorDetails.EDITOR_NAME),
+                    ApplicationEditorFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ApplicationEditors.fields())
+                    .from(ApplicationEditors)
+                    .join(ApplicationEditorDetails).onKey(APPLICATION_EDITORS_ACTIVE_DETAIL_FK)
+                    .where(ApplicationEditorDetails.APPLICATION.eq(application.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return applicationEditorFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ApplicationEditor> getApplicationEditorsByApplication(Application application) {
@@ -735,31 +706,26 @@ public class ApplicationControl
         return getApplicationEditorsByApplication(application, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getApplicationEditorsByEditorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditors, applicationeditordetails, applications, applicationdetails
-                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_edtr_editorid = ?
-                AND appledtrdt_appl_applicationid = appl_applicationid AND appl_lastdetailid = appldt_applicationdetailid
-                ORDER BY appldt_sortorder, appldt_applicationname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditors, applicationeditordetails
-                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_edtr_editorid = ?
-                FOR UPDATE
-                """);
-        getApplicationEditorsByEditorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ApplicationEditor> getApplicationEditorsByEditor(Editor editor, EntityPermission entityPermission) {
-        return applicationEditorFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorsByEditorQueries,
-                editor);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ApplicationEditors.fields())
+                    .from(ApplicationEditors)
+                    .join(ApplicationEditorDetails).onKey(APPLICATION_EDITORS_ACTIVE_DETAIL_FK)
+                    .join(Applications).onKey(APPLICATION_EDITOR_DETAILS_APPLICATION_FK)
+                    .join(ApplicationDetails).onKey(APPLICATIONS_LAST_DETAIL_FK)
+                    .where(ApplicationEditorDetails.EDITOR.eq(editor.getPrimaryKey()))
+                    .orderBy(ApplicationDetails.SORT_ORDER, ApplicationDetails.APPLICATION_NAME),
+                    ApplicationEditorFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ApplicationEditors.fields())
+                    .from(ApplicationEditors)
+                    .join(ApplicationEditorDetails).onKey(APPLICATION_EDITORS_ACTIVE_DETAIL_FK)
+                    .where(ApplicationEditorDetails.EDITOR.eq(editor.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return applicationEditorFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ApplicationEditor> getApplicationEditorsByEditor(Editor editor) {
@@ -933,10 +899,13 @@ public class ApplicationControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ApplicationEditorUseDetailFactory applicationEditorUseDetailFactory;
+
+    @Inject
     protected ApplicationEditorUseFactory applicationEditorUseFactory;
 
     @Inject
-    protected ApplicationEditorUseDetailFactory applicationEditorUseDetailFactory;
+    ApplicationEditorUseTransferCache applicationEditorUseTransferCache;
 
     public ApplicationEditorUse createApplicationEditorUse(Application application, String applicationEditorUseName, ApplicationEditor defaultApplicationEditor,
             Integer defaultHeight, Integer defaultWidth, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -984,47 +953,39 @@ public class ApplicationControl
     }
 
     public long countApplicationEditorUsesByApplication(final Application application) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM applicationeditoruses
-                        JOIN applicationeditorusedetails ON appledtrusedt_applicationeditorusedetailid = appledtruse_activedetailid
-                        WHERE appledtrusedt_appl_applicationid = ?
-                        """, application);
+        return session.getDslContext()
+                .selectCount()
+                .from(ApplicationEditorUses)
+                .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                .where(ApplicationEditorUseDetails.APPLICATION.eq(application.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countApplicationEditorUsesByDefaultApplicationEditor(final ApplicationEditor defaultApplicationEditor) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM applicationeditoruses
-                        JOIN applicationeditorusedetails ON appledtrusedt_applicationeditorusedetailid = appledtruse_activedetailid
-                        WHERE appledtrusedt_defaultapplicationeditorid = ?
-                        """, defaultApplicationEditor);
-    }
-
-    private static final Map<EntityPermission, String> getApplicationEditorUseByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditoruses, applicationeditorusedetails
-                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid
-                AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_applicationeditorusename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditoruses, applicationeditorusedetails
-                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid
-                AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_applicationeditorusename = ?
-                FOR UPDATE
-                """);
-        getApplicationEditorUseByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ApplicationEditorUses)
+                .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                .where(ApplicationEditorUseDetails.DEFAULT_APPLICATION_EDITOR.eq(defaultApplicationEditor.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ApplicationEditorUse getApplicationEditorUseByName(Application application, String applicationEditorUseName, EntityPermission entityPermission) {
-        return applicationEditorUseFactory.getEntityFromQuery(entityPermission, getApplicationEditorUseByNameQueries,
-                application, applicationEditorUseName);
+        var baseQuery = session.getDslContext()
+                .select(ApplicationEditorUses.fields())
+                .from(ApplicationEditorUses)
+                .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                .where(ApplicationEditorUseDetails.APPLICATION.eq(application.getPrimaryKey()),
+                        ApplicationEditorUseDetails.APPLICATION_EDITOR_USE_NAME.eq(applicationEditorUseName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return applicationEditorUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ApplicationEditorUse getApplicationEditorUseByName(Application application, String applicationEditorUseName) {
@@ -1043,30 +1004,20 @@ public class ApplicationControl
         return getApplicationEditorUseDetailValueForUpdate(getApplicationEditorUseByNameForUpdate(application, applicationEditorUseName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultApplicationEditorUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditoruses, applicationeditorusedetails
-                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid
-                AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditoruses, applicationeditorusedetails
-                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid
-                AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultApplicationEditorUseQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ApplicationEditorUse getDefaultApplicationEditorUse(Application application, EntityPermission entityPermission) {
-        return applicationEditorUseFactory.getEntityFromQuery(entityPermission, getDefaultApplicationEditorUseQueries,
-                application);
+        var baseQuery = session.getDslContext()
+                .select(ApplicationEditorUses.fields())
+                .from(ApplicationEditorUses)
+                .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                .where(ApplicationEditorUseDetails.APPLICATION.eq(application.getPrimaryKey()),
+                        ApplicationEditorUseDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return applicationEditorUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ApplicationEditorUse getDefaultApplicationEditorUse(Application application) {
@@ -1081,30 +1032,24 @@ public class ApplicationControl
         return getDefaultApplicationEditorUseForUpdate(application).getLastDetailForUpdate().getApplicationEditorUseDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getApplicationEditorUsesByApplicationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditoruses, applicationeditorusedetails
-                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_appl_applicationid = ?
-                ORDER BY appledtrusedt_sortorder, appledtrusedt_applicationeditorusename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditoruses, applicationeditorusedetails
-                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_appl_applicationid = ?
-                FOR UPDATE
-                """);
-        getApplicationEditorUsesByApplicationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ApplicationEditorUse> getApplicationEditorUsesByApplication(Application application, EntityPermission entityPermission) {
-        return applicationEditorUseFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorUsesByApplicationQueries,
-                application);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ApplicationEditorUses.fields())
+                    .from(ApplicationEditorUses)
+                    .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .where(ApplicationEditorUseDetails.APPLICATION.eq(application.getPrimaryKey()))
+                    .orderBy(ApplicationEditorUseDetails.SORT_ORDER, ApplicationEditorUseDetails.APPLICATION_EDITOR_USE_NAME),
+                    ApplicationEditorUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ApplicationEditorUses.fields())
+                    .from(ApplicationEditorUses)
+                    .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .where(ApplicationEditorUseDetails.APPLICATION.eq(application.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return applicationEditorUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ApplicationEditorUse> getApplicationEditorUsesByApplication(Application application) {
@@ -1115,32 +1060,27 @@ public class ApplicationControl
         return getApplicationEditorUsesByApplication(application, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getApplicationEditorUsesByDefaultApplicationEditorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditoruses, applicationeditorusedetails, applications, applicationdetails
-                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_defaultapplicationeditorid = ?
-                AND appledtrusedt_appl_applicationid = appl_applicationid AND appl_lastdetailid = appldt_applicationdetailid
-                ORDER BY appledtrusedt_sortorder, appledtrusedt_applicationeditorusename, appldt_sortorder, appldt_applicationname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditoruses, applicationeditorusedetails
-                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_defaultapplicationeditorid = ?
-                FOR UPDATE
-                """);
-        getApplicationEditorUsesByDefaultApplicationEditorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ApplicationEditorUse> getApplicationEditorUsesByDefaultApplicationEditor(ApplicationEditor defaultApplicationEditor,
             EntityPermission entityPermission) {
-        return applicationEditorUseFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorUsesByDefaultApplicationEditorQueries,
-                defaultApplicationEditor);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ApplicationEditorUses.fields())
+                    .from(ApplicationEditorUses)
+                    .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .join(Applications).onKey(APPLICATION_EDITOR_USE_DETAILS_APPLICATION_FK)
+                    .join(ApplicationDetails).onKey(APPLICATIONS_LAST_DETAIL_FK)
+                    .where(ApplicationEditorUseDetails.DEFAULT_APPLICATION_EDITOR.eq(defaultApplicationEditor.getPrimaryKey()))
+                    .orderBy(ApplicationEditorUseDetails.SORT_ORDER, ApplicationEditorUseDetails.APPLICATION_EDITOR_USE_NAME, ApplicationDetails.SORT_ORDER, ApplicationDetails.APPLICATION_NAME),
+                    ApplicationEditorUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ApplicationEditorUses.fields())
+                    .from(ApplicationEditorUses)
+                    .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .where(ApplicationEditorUseDetails.DEFAULT_APPLICATION_EDITOR.eq(defaultApplicationEditor.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return applicationEditorUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ApplicationEditorUse> getApplicationEditorUsesByDefaultApplicationEditor(ApplicationEditor defaultApplicationEditor) {
@@ -1318,6 +1258,9 @@ public class ApplicationControl
     @Inject
     protected ApplicationEditorUseDescriptionFactory applicationEditorUseDescriptionFactory;
 
+    @Inject
+    ApplicationEditorUseDescriptionTransferCache applicationEditorUseDescriptionTransferCache;
+
     public ApplicationEditorUseDescription createApplicationEditorUseDescription(ApplicationEditorUse applicationEditorUse, Language language,
             String description, BasePK createdBy) {
         var applicationEditorUseDescription = applicationEditorUseDescriptionFactory.create(applicationEditorUse,
@@ -1328,28 +1271,20 @@ public class ApplicationControl
         return applicationEditorUseDescription;
     }
 
-    private static final Map<EntityPermission, String> getApplicationEditorUseDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditorusedescriptions
-                WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_lang_languageid = ? AND appledtrused_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditorusedescriptions
-                WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_lang_languageid = ? AND appledtrused_thrutime = ?
-                FOR UPDATE
-                """);
-        getApplicationEditorUseDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ApplicationEditorUseDescription getApplicationEditorUseDescription(ApplicationEditorUse applicationEditorUse, Language language, EntityPermission entityPermission) {
-        return applicationEditorUseDescriptionFactory.getEntityFromQuery(entityPermission, getApplicationEditorUseDescriptionQueries,
-                applicationEditorUse, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ApplicationEditorUseDescriptions.fields())
+                .from(ApplicationEditorUseDescriptions)
+                .where(ApplicationEditorUseDescriptions.APPLICATION_EDITOR_USE.eq(applicationEditorUse.getPrimaryKey()),
+                        ApplicationEditorUseDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ApplicationEditorUseDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return applicationEditorUseDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ApplicationEditorUseDescription getApplicationEditorUseDescription(ApplicationEditorUse applicationEditorUse, Language language) {
@@ -1368,30 +1303,25 @@ public class ApplicationControl
         return getApplicationEditorUseDescriptionValue(getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, language));
     }
 
-    private static final Map<EntityPermission, String> getApplicationEditorUseDescriptionsByApplicationEditorUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM applicationeditorusedescriptions, languages
-                WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_thrutime = ? AND appledtrused_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM applicationeditorusedescriptions
-                WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_thrutime = ?
-                FOR UPDATE
-                """);
-        getApplicationEditorUseDescriptionsByApplicationEditorUseQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ApplicationEditorUseDescription> getApplicationEditorUseDescriptionsByApplicationEditorUse(ApplicationEditorUse applicationEditorUse, EntityPermission entityPermission) {
-        return applicationEditorUseDescriptionFactory.getEntitiesFromQuery(entityPermission, getApplicationEditorUseDescriptionsByApplicationEditorUseQueries,
-                applicationEditorUse, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ApplicationEditorUseDescriptions.fields())
+                    .from(ApplicationEditorUseDescriptions)
+                    .join(Languages).onKey(APPLICATION_EDITOR_USE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ApplicationEditorUseDescriptions.APPLICATION_EDITOR_USE.eq(applicationEditorUse.getPrimaryKey()),
+                            ApplicationEditorUseDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ApplicationEditorUseDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ApplicationEditorUseDescriptions.fields())
+                    .from(ApplicationEditorUseDescriptions)
+                    .where(ApplicationEditorUseDescriptions.APPLICATION_EDITOR_USE.eq(applicationEditorUse.getPrimaryKey()),
+                            ApplicationEditorUseDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return applicationEditorUseDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ApplicationEditorUseDescription> getApplicationEditorUseDescriptionsByApplicationEditorUse(ApplicationEditorUse applicationEditorUse) {

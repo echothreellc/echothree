@@ -24,6 +24,11 @@ import com.echothree.model.control.core.common.transfer.MimeTypeFileExtensionTra
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
+import com.echothree.model.control.core.server.transfer.MimeTypeDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.MimeTypeFileExtensionTransferCache;
+import com.echothree.model.control.core.server.transfer.MimeTypeTransferCache;
+import com.echothree.model.control.core.server.transfer.MimeTypeUsageTransferCache;
+import com.echothree.model.control.core.server.transfer.MimeTypeUsageTypeTransferCache;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.common.pk.MimeTypeUsageTypePK;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
@@ -45,24 +50,32 @@ import com.echothree.model.data.core.server.value.MimeTypeDescriptionValue;
 import com.echothree.model.data.core.server.value.MimeTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.MIME_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.MIME_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.MIME_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.MIME_TYPE_USAGES_MIME_TYPE_FK;
+import static com.echothree.model.jooq.server.tables.core.MimeTypeDescriptions.MimeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.MimeTypeDetails.MimeTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.MimeTypeFileExtensions.MimeTypeFileExtensions;
+import static com.echothree.model.jooq.server.tables.core.MimeTypeUsageTypeDescriptions.MimeTypeUsageTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.MimeTypeUsageTypes.MimeTypeUsageTypes;
+import static com.echothree.model.jooq.server.tables.core.MimeTypeUsages.MimeTypeUsages;
+import static com.echothree.model.jooq.server.tables.core.MimeTypes.MimeTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class MimeTypeControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of MimeTypeControl */
     protected MimeTypeControl() {
@@ -75,6 +88,9 @@ public class MimeTypeControl
 
     @Inject
     protected MimeTypeUsageTypeFactory mimeTypeUsageTypeFactory;
+
+    @Inject
+    MimeTypeUsageTypeTransferCache mimeTypeUsageTypeTransferCache;
 
     public MimeTypeUsageType createMimeTypeUsageType(String mimeTypeUsageTypeName, Boolean isDefault, Integer sortOrder) {
         return mimeTypeUsageTypeFactory.create(mimeTypeUsageTypeName, isDefault, sortOrder);
@@ -96,44 +112,30 @@ public class MimeTypeControl
     }
 
     public long countMimeTypeUsageTypes() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM mimetypeusagetypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(MimeTypeUsageTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<MimeTypeUsageType> getMimeTypeUsageTypes() {
-        var ps = mimeTypeUsageTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM mimetypeusagetypes
-                ORDER BY mtyput_sortorder, mtyput_mimetypeusagetypename
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(MimeTypeUsageTypes.fields())
+                .from(MimeTypeUsageTypes)
+                .orderBy(MimeTypeUsageTypes.SORT_ORDER, MimeTypeUsageTypes.MIME_TYPE_USAGE_TYPE_NAME),
+                MimeTypeUsageTypeFactory.class);
 
-        return mimeTypeUsageTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return mimeTypeUsageTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public MimeTypeUsageType getMimeTypeUsageTypeByName(String mimeTypeUsageTypeName) {
-        MimeTypeUsageType mimeTypeUsageType;
+        var query = session.getDslContext()
+                .select(MimeTypeUsageTypes.fields())
+                .from(MimeTypeUsageTypes)
+                .where(MimeTypeUsageTypes.MIME_TYPE_USAGE_TYPE_NAME.eq(mimeTypeUsageTypeName));
 
-        try {
-            var ps = mimeTypeUsageTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM mimetypeusagetypes
-                    WHERE mtyput_mimetypeusagetypename = ?
-                    """);
-
-            ps.setString(1, mimeTypeUsageTypeName);
-
-            mimeTypeUsageType = mimeTypeUsageTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return mimeTypeUsageType;
+        return mimeTypeUsageTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public MimeTypeUsageTypeChoicesBean getMimeTypeUsageTypeChoices(String defaultMimeTypeUsageTypeChoice, Language language,
@@ -199,25 +201,13 @@ public class MimeTypeControl
     }
 
     public MimeTypeUsageTypeDescription getMimeTypeUsageTypeDescription(MimeTypeUsageType mimeTypeUsageType, Language language) {
-        MimeTypeUsageTypeDescription mimeTypeUsageTypeDescription;
+        var query = session.getDslContext()
+                .select(MimeTypeUsageTypeDescriptions.fields())
+                .from(MimeTypeUsageTypeDescriptions)
+                .where(MimeTypeUsageTypeDescriptions.MIME_TYPE_USAGE_TYPE.eq(mimeTypeUsageType.getPrimaryKey()),
+                        MimeTypeUsageTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
 
-        try {
-            var ps = mimeTypeUsageTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM mimetypeusagetypedescriptions
-                    WHERE mtyputd_mtyput_mimetypeusagetypeid = ? AND mtyputd_lang_languageid = ?
-                    """);
-
-            ps.setLong(1, mimeTypeUsageType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-
-            mimeTypeUsageTypeDescription = mimeTypeUsageTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return mimeTypeUsageTypeDescription;
+        return mimeTypeUsageTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public String getBestMimeTypeUsageTypeDescription(MimeTypeUsageType mimeTypeUsageType, Language language) {
@@ -242,10 +232,13 @@ public class MimeTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected MimeTypeDetailFactory mimeTypeDetailFactory;
+
+    @Inject
     protected MimeTypeFactory mimeTypeFactory;
 
     @Inject
-    protected MimeTypeDetailFactory mimeTypeDetailFactory;
+    MimeTypeTransferCache mimeTypeTransferCache;
 
     public MimeType createMimeType(String mimeTypeName, EntityAttributeType entityAttributeType, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultMimeType = getDefaultMimeType();
@@ -292,48 +285,38 @@ public class MimeTypeControl
     }
 
     public long countMimeTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM mimetypes
-                JOIN mimetypedetails ON mtyp_activedetailid = mtypdt_mimetypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(MimeTypes)
+                .join(MimeTypeDetails).onKey(MIME_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countMimeTypesByMimeTypeUsageType(MimeTypeUsageType mimeTypeUsageType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM mimetypes
-                JOIN mimetypedetails ON mtyp_activedetailid = mtypdt_mimetypedetailid
-                JOIN mimetypeusages ON mtyp_mimetypeid = mtypu_mtyp_mimetypeid
-                WHERE mtypu_mtyput_mimetypeusagetypeid = ?
-                """, mimeTypeUsageType);
-    }
-
-    private static final Map<EntityPermission, String> getMimeTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                AND mtypdt_mimetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                AND mtypdt_mimetypename = ?
-                FOR UPDATE
-                """);
-        getMimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(MimeTypes)
+                .join(MimeTypeDetails).onKey(MIME_TYPES_ACTIVE_DETAIL_FK)
+                .join(MimeTypeUsages).onKey(MIME_TYPE_USAGES_MIME_TYPE_FK)
+                .where(MimeTypeUsages.MIME_TYPE_USAGE_TYPE.eq(mimeTypeUsageType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private MimeType getMimeTypeByName(String mimeTypeName, EntityPermission entityPermission) {
-        return mimeTypeFactory.getEntityFromQuery(entityPermission, getMimeTypeByNameQueries, mimeTypeName);
+        var baseQuery = session.getDslContext()
+                .select(MimeTypes.fields())
+                .from(MimeTypes)
+                .join(MimeTypeDetails).onKey(MIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(MimeTypeDetails.MIME_TYPE_NAME.eq(mimeTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return mimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public MimeType getMimeTypeByName(String mimeTypeName) {
@@ -352,31 +335,19 @@ public class MimeTypeControl
         return getMimeTypeDetailValueForUpdate(getMimeTypeByNameForUpdate(mimeTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultMimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                AND mtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                AND mtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultMimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private MimeType getDefaultMimeType(EntityPermission entityPermission) {
-        return mimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultMimeTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(MimeTypes.fields())
+                .from(MimeTypes)
+                .join(MimeTypeDetails).onKey(MIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(MimeTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return mimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public MimeType getDefaultMimeType() {
@@ -391,31 +362,22 @@ public class MimeTypeControl
         return getDefaultMimeTypeForUpdate().getLastDetailForUpdate().getMimeTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getMimeTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                ORDER BY mtypdt_sortorder, mtypdt_mimetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                FOR UPDATE
-                """);
-        getMimeTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<MimeType> getMimeTypes(EntityPermission entityPermission) {
-        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, getMimeTypesQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MimeTypes.fields())
+                    .from(MimeTypes)
+                    .join(MimeTypeDetails).onKey(MIME_TYPES_ACTIVE_DETAIL_FK)
+                    .orderBy(MimeTypeDetails.SORT_ORDER, MimeTypeDetails.MIME_TYPE_NAME),
+                    MimeTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MimeTypes.fields())
+                    .from(MimeTypes)
+                    .where(MimeTypes.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<MimeType> getMimeTypes() {
@@ -426,34 +388,24 @@ public class MimeTypeControl
         return getMimeTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getMimeTypesByEntityAttributeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                AND mtypdt_enat_entityattributetypeid = ?
-                ORDER BY mtypdt_sortorder, mtypdt_mimetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                AND mtypdt_enat_entityattributetypeid = ?
-                FOR UPDATE
-                """);
-        getMimeTypesByEntityAttributeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<MimeType> getMimeTypesByEntityAttributeType(EntityAttributeType entityAttributeType, EntityPermission entityPermission) {
-        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, getMimeTypesByEntityAttributeTypeQueries,
-                entityAttributeType);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MimeTypes.fields())
+                    .from(MimeTypes)
+                    .join(MimeTypeDetails).onKey(MIME_TYPES_ACTIVE_DETAIL_FK)
+                    .where(MimeTypeDetails.ENTITY_ATTRIBUTE_TYPE.eq(entityAttributeType.getPrimaryKey()))
+                    .orderBy(MimeTypeDetails.SORT_ORDER, MimeTypeDetails.MIME_TYPE_NAME),
+                    MimeTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MimeTypes.fields())
+                    .from(MimeTypes)
+                    .join(MimeTypeDetails).onKey(MIME_TYPES_ACTIVE_DETAIL_FK)
+                    .where(MimeTypeDetails.ENTITY_ATTRIBUTE_TYPE.eq(entityAttributeType.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<MimeType> getMimeTypesByEntityAttributeType(EntityAttributeType entityAttributeType) {
@@ -464,34 +416,26 @@ public class MimeTypeControl
         return getMimeTypesByEntityAttributeType(entityAttributeType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getMimeTypesByMimeTypeUsageTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails, mimetypeusages
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                AND mtyp_mimetypeid = mtypu_mtyp_mimetypeid AND mtypu_mtyput_mimetypeusagetypeid = ?
-                ORDER BY mtypdt_sortorder, mtypdt_mimetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM mimetypes, mimetypedetails, mimetypeusages
-                WHERE mtyp_activedetailid = mtypdt_mimetypedetailid
-                AND mtyp_mimetypeid = mtypu_mtyp_mimetypeid AND mtypu_mtyput_mimetypeusagetypeid = ?
-                FOR UPDATE
-                """);
-        getMimeTypesByMimeTypeUsageTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<MimeType> getMimeTypesByMimeTypeUsageType(MimeTypeUsageType mimeTypeUsageType, EntityPermission entityPermission) {
-        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, getMimeTypesByMimeTypeUsageTypeQueries,
-                mimeTypeUsageType);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MimeTypes.fields())
+                    .from(MimeTypes)
+                    .join(MimeTypeDetails).onKey(MIME_TYPES_ACTIVE_DETAIL_FK)
+                    .join(MimeTypeUsages).onKey(MIME_TYPE_USAGES_MIME_TYPE_FK)
+                    .where(MimeTypeUsages.MIME_TYPE_USAGE_TYPE.eq(mimeTypeUsageType.getPrimaryKey()))
+                    .orderBy(MimeTypeDetails.SORT_ORDER, MimeTypeDetails.MIME_TYPE_NAME),
+                    MimeTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MimeTypes.fields())
+                    .from(MimeTypes)
+                    .join(MimeTypeUsages).onKey(MIME_TYPE_USAGES_MIME_TYPE_FK)
+                    .where(MimeTypes.ACTIVE_DETAIL.isNotNull(),
+                            MimeTypeUsages.MIME_TYPE_USAGE_TYPE.eq(mimeTypeUsageType.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return mimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<MimeType> getMimeTypesByMimeTypeUsageType(MimeTypeUsageType mimeTypeUsageType) {
@@ -680,6 +624,9 @@ public class MimeTypeControl
     @Inject
     protected MimeTypeDescriptionFactory mimeTypeDescriptionFactory;
 
+    @Inject
+    MimeTypeDescriptionTransferCache mimeTypeDescriptionTransferCache;
+
     public MimeTypeDescription createMimeTypeDescription(MimeType mimeType,
             Language language, String description, BasePK createdBy) {
         var mimeTypeDescription = mimeTypeDescriptionFactory.create(mimeType,
@@ -690,31 +637,21 @@ public class MimeTypeControl
         return mimeTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getMimeTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM mimetypedescriptions
-                WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_lang_languageid = ? AND mtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM mimetypedescriptions
-                WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_lang_languageid = ? AND mtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getMimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private MimeTypeDescription getMimeTypeDescription(MimeType mimeType,
             Language language, EntityPermission entityPermission) {
-        return mimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getMimeTypeDescriptionQueries,
-                mimeType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(MimeTypeDescriptions.fields())
+                .from(MimeTypeDescriptions)
+                .where(MimeTypeDescriptions.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                        MimeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        MimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return mimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public MimeTypeDescription getMimeTypeDescription(MimeType mimeType, Language language) {
@@ -733,33 +670,26 @@ public class MimeTypeControl
         return getMimeTypeDescriptionValue(getMimeTypeDescriptionForUpdate(mimeType, language));
     }
 
-    private static final Map<EntityPermission, String> getMimeTypeDescriptionsByMimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM mimetypedescriptions, languages
-                WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_thrutime = ? AND mtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM mimetypedescriptions
-                WHERE mtypd_mtyp_mimetypeid = ? AND mtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getMimeTypeDescriptionsByMimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<MimeTypeDescription> getMimeTypeDescriptionsByMimeType(MimeType mimeType,
             EntityPermission entityPermission) {
-        return mimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getMimeTypeDescriptionsByMimeTypeQueries,
-                mimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MimeTypeDescriptions.fields())
+                    .from(MimeTypeDescriptions)
+                    .join(Languages).onKey(MIME_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(MimeTypeDescriptions.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                            MimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    MimeTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MimeTypeDescriptions.fields())
+                    .from(MimeTypeDescriptions)
+                    .where(MimeTypeDescriptions.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                            MimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return mimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<MimeTypeDescription> getMimeTypeDescriptionsByMimeType(MimeType mimeType) {
@@ -843,62 +773,43 @@ public class MimeTypeControl
     @Inject
     protected MimeTypeUsageFactory mimeTypeUsageFactory;
 
+    @Inject
+    MimeTypeUsageTransferCache mimeTypeUsageTransferCache;
+
     public MimeTypeUsage createMimeTypeUsage(MimeType mimeType, MimeTypeUsageType mimeTypeUsageType) {
         return mimeTypeUsageFactory.create(mimeType, mimeTypeUsageType);
     }
 
     public long countMimeTypeUsagesByMimeType(MimeType mimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM mimetypeusages
-                        WHERE mtypu_mtyp_mimetypeid = ?
-                        """, mimeType);
+        return session.getDslContext()
+                .selectCount()
+                .from(MimeTypeUsages)
+                .where(MimeTypeUsages.MIME_TYPE.eq(mimeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public MimeTypeUsage getMimeTypeUsage(MimeType mimeType, MimeTypeUsageType mimeTypeUsageType) {
-        MimeTypeUsage mimeTypeUsage;
+        var query = session.getDslContext()
+                .select(MimeTypeUsages.fields())
+                .from(MimeTypeUsages)
+                .where(MimeTypeUsages.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                        MimeTypeUsages.MIME_TYPE_USAGE_TYPE.eq(mimeTypeUsageType.getPrimaryKey()));
 
-        try {
-            var ps = mimeTypeUsageFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM mimetypeusages
-                    WHERE mtypu_mtyp_mimetypeid = ? AND mtypu_mtyput_mimetypeusagetypeid = ?
-                    """);
-
-            ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, mimeTypeUsageType.getPrimaryKey().getEntityId());
-
-            mimeTypeUsage = mimeTypeUsageFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return mimeTypeUsage;
+        return mimeTypeUsageFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<MimeTypeUsage> getMimeTypeUsagesByMimeType(MimeType mimeType) {
-        List<MimeTypeUsage> mimeTypeUsages;
+        var query = session.applyLimit(session.getDslContext()
+                .select(MimeTypeUsages.fields())
+                .from(MimeTypeUsages)
+                .join(MimeTypes).onKey(MIME_TYPE_USAGES_MIME_TYPE_FK)
+                .join(MimeTypeDetails).onKey(MIME_TYPES_LAST_DETAIL_FK)
+                .where(MimeTypeUsages.MIME_TYPE.eq(mimeType.getPrimaryKey()))
+                .orderBy(MimeTypeDetails.SORT_ORDER, MimeTypeDetails.MIME_TYPE_NAME),
+                MimeTypeUsageFactory.class);
 
-        try {
-            var ps = mimeTypeUsageFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM mimetypeusages, mimetypes, mimetypedetails
-                    WHERE mtypu_mtyp_mimetypeid = ?
-                    AND mtypu_mtyp_mimetypeid = mtyp_mimetypeid AND mtyp_lastdetailid = mtypdt_mimetypedetailid
-                    ORDER BY mtypdt_sortorder, mtypdt_mimetypename
-                    _LIMIT_
-                    """);
-
-            ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
-
-            mimeTypeUsages = mimeTypeUsageFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return mimeTypeUsages;
+        return mimeTypeUsageFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public MimeTypeUsageTransfer getMimeTypeUsageTransfer(UserVisit userVisit, MimeTypeUsage mimeTypeUsage) {
@@ -926,91 +837,68 @@ public class MimeTypeControl
     @Inject
     protected MimeTypeFileExtensionFactory mimeTypeFileExtensionFactory;
 
+    @Inject
+    MimeTypeFileExtensionTransferCache mimeTypeFileExtensionTransferCache;
+
     public MimeTypeFileExtension createMimeTypeFileExtension(MimeType mimeType, String fileExtension, Boolean isDefault) {
         return mimeTypeFileExtensionFactory.create(mimeType, fileExtension, isDefault);
     }
 
     public long countMimeTypeFileExtensions() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM mimetypefileextensions
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(MimeTypeFileExtensions)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countMimeTypeFileExtensionsByMimeType(MimeType mimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM mimetypefileextensions
-                        WHERE mtypfe_mtyp_mimetypeid = ?
-                        """, mimeType);
+        return session.getDslContext()
+                .selectCount()
+                .from(MimeTypeFileExtensions)
+                .where(MimeTypeFileExtensions.MIME_TYPE.eq(mimeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public MimeTypeFileExtension getDefaultMimeTypeFileExtension(MimeType mimeType) {
-        MimeTypeFileExtension mimeTypeFileExtension;
+        var query = session.getDslContext()
+                .select(MimeTypeFileExtensions.fields())
+                .from(MimeTypeFileExtensions)
+                .where(MimeTypeFileExtensions.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                        MimeTypeFileExtensions.IS_DEFAULT.eq(true));
 
-        try {
-            var ps = mimeTypeFileExtensionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM mimetypefileextensions
-                    WHERE mtypfe_mtyp_mimetypeid = ? AND mtypfe_isdefault = 1
-                    """);
-
-            ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
-
-            mimeTypeFileExtension = mimeTypeFileExtensionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return mimeTypeFileExtension;
+        return mimeTypeFileExtensionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public MimeTypeFileExtension getMimeTypeFileExtension(String fileExtension) {
-        MimeTypeFileExtension mimeTypeFileExtension;
+        var query = session.getDslContext()
+                .select(MimeTypeFileExtensions.fields())
+                .from(MimeTypeFileExtensions)
+                .where(MimeTypeFileExtensions.FILE_EXTENSION.eq(fileExtension));
 
-        try {
-            var ps = mimeTypeFileExtensionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM mimetypefileextensions
-                    WHERE mtypfe_fileextension = ?
-                    """);
-
-            ps.setString(1, fileExtension);
-
-            mimeTypeFileExtension = mimeTypeFileExtensionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return mimeTypeFileExtension;
+        return mimeTypeFileExtensionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<MimeTypeFileExtension> getMimeTypeFileExtensions() {
-        var ps = mimeTypeFileExtensionFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM mimetypefileextensions
-                ORDER BY mtypfe_fileextension
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(MimeTypeFileExtensions.fields())
+                .from(MimeTypeFileExtensions)
+                .orderBy(MimeTypeFileExtensions.FILE_EXTENSION),
+                MimeTypeFileExtensionFactory.class);
 
-        return mimeTypeFileExtensionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return mimeTypeFileExtensionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<MimeTypeFileExtension> getMimeTypeFileExtensionsByMimeType(MimeType mimeType) {
-        var ps = mimeTypeFileExtensionFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM mimetypefileextensions
-                WHERE mtypfe_mtyp_mimetypeid = ?
-                ORDER BY mtypfe_fileextension
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(MimeTypeFileExtensions.fields())
+                .from(MimeTypeFileExtensions)
+                .where(MimeTypeFileExtensions.MIME_TYPE.eq(mimeType.getPrimaryKey()))
+                .orderBy(MimeTypeFileExtensions.FILE_EXTENSION),
+                MimeTypeFileExtensionFactory.class);
 
-        return mimeTypeFileExtensionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
-                mimeType);
+        return mimeTypeFileExtensionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public MimeTypeFileExtensionTransfer getMimeTypeFileExtensionTransfer(UserVisit userVisit, MimeTypeFileExtension mimeTypeFileExtension) {

@@ -24,12 +24,13 @@ import com.echothree.model.control.core.common.transfer.EntityTypeDescriptionTra
 import com.echothree.model.control.core.common.transfer.EntityTypeResultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.graphql.EntityTypeObject;
+import com.echothree.model.control.core.server.transfer.EntityTypeDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityTypeTransferCache;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
-import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -42,25 +43,39 @@ import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.core.server.value.EntityTypeDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDescriptions.EntityTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class EntityTypeControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected AccountingControl accountingControl;
@@ -102,10 +117,13 @@ public class EntityTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected EntityTypeDetailFactory entityTypeDetailFactory;
+
+    @Inject
     protected EntityTypeFactory entityTypeFactory;
 
     @Inject
-    protected EntityTypeDetailFactory entityTypeDetailFactory;
+    EntityTypeTransferCache entityTypeTransferCache;
 
     public EntityType createEntityType(ComponentVendor componentVendor, String entityTypeName, Boolean keepAllHistory,
             Long lockTimeout, Boolean isExtensible, Integer sortOrder, BasePK createdBy) {
@@ -141,58 +159,38 @@ public class EntityTypeControl
     }
 
     public long countEntityTypes() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entitytypes, entitytypedetails
-                WHERE ent_activedetailid = entdt_entitytypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityTypes)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityTypesByComponentVendor(ComponentVendor componentVendor) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entitytypes, entitytypedetails
-                WHERE ent_activedetailid = entdt_entitytypedetailid AND entdt_cvnd_componentvendorid = ?
-                """,
-                componentVendor);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityTypes)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .where(EntityTypeDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public EntityType getEntityTypeByName(ComponentVendor componentVendor, String entityTypeName, EntityPermission entityPermission) {
-        EntityType entityType;
+        var baseQuery = session.getDslContext()
+                .select(EntityTypes.fields())
+                .from(EntityTypes)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .where(EntityTypeDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()),
+                        EntityTypeDetails.ENTITY_TYPE_NAME.eq(entityTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypes, entitytypedetails
-                        WHERE ent_activedetailid = entdt_entitytypedetailid
-                        AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypes, entitytypedetails
-                        WHERE ent_activedetailid = entdt_entitytypedetailid
-                        AND entdt_cvnd_componentvendorid = ? AND entdt_entitytypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-            ps.setString(2, entityTypeName);
-
-            entityType = entityTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityType;
+        return entityTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityType getEntityTypeByName(ComponentVendor componentVendor, String entityTypeName) {
@@ -230,40 +228,23 @@ public class EntityTypeControl
     }
 
     private List<EntityType> getEntityTypesByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
-        List<EntityType> entityTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityTypes.fields())
+                    .from(EntityTypes)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                    .where(EntityTypeDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()))
+                    .orderBy(EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME),
+                    EntityTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityTypes.fields())
+                    .from(EntityTypes)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                    .where(EntityTypeDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypes, entitytypedetails
-                        WHERE ent_activedetailid = entdt_entitytypedetailid
-                        AND entdt_cvnd_componentvendorid = ?
-                        ORDER BY entdt_sortorder, entdt_entitytypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypes, entitytypedetails
-                        WHERE ent_activedetailid = entdt_entitytypedetailid
-                        AND entdt_cvnd_componentvendorid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-
-            entityTypes = entityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTypes;
+        return entityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityType> getEntityTypesByComponentVendor(ComponentVendor componentVendor) {
@@ -275,40 +256,23 @@ public class EntityTypeControl
     }
 
     private List<EntityType> getEntityTypesByName(String entityTypeName, EntityPermission entityPermission) {
-        List<EntityType> entityTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityTypes.fields())
+                    .from(EntityTypes)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                    .where(EntityTypeDetails.ENTITY_TYPE_NAME.eq(entityTypeName))
+                    .orderBy(EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME),
+                    EntityTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityTypes.fields())
+                    .from(EntityTypes)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                    .where(EntityTypeDetails.ENTITY_TYPE_NAME.eq(entityTypeName))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypes, entitytypedetails
-                        WHERE ent_activedetailid = entdt_entitytypedetailid
-                        AND entdt_entitytypename = ?
-                        ORDER BY entdt_sortorder, entdt_entitytypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypes, entitytypedetails
-                        WHERE ent_activedetailid = entdt_entitytypedetailid
-                        AND entdt_entitytypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityTypeFactory.prepareStatement(query);
-
-            ps.setString(1, entityTypeName);
-
-            entityTypes = entityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTypes;
+        return entityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityType> getEntityTypesByName(String entityTypeName) {
@@ -320,16 +284,14 @@ public class EntityTypeControl
     }
 
     public List<EntityType> getEntityTypes() {
-        var ps = entityTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM entitytypes, entitytypedetails
-                WHERE ent_activedetailid = entdt_entitytypedetailid
-                ORDER BY entdt_sortorder, entdt_entitytypename
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityTypes.fields())
+                .from(EntityTypes)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .orderBy(EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME),
+                EntityTypeFactory.class);
 
-        return entityTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return entityTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit, EntityType entityType) {
@@ -424,6 +386,9 @@ public class EntityTypeControl
     @Inject
     protected EntityTypeDescriptionFactory entityTypeDescriptionFactory;
 
+    @Inject
+    EntityTypeDescriptionTransferCache entityTypeDescriptionTransferCache;
+
     public EntityTypeDescription createEntityTypeDescription(EntityType entityType, Language language, String description,
             BasePK createdBy) {
         var entityTypeDescription = entityTypeDescriptionFactory.create(entityType,
@@ -436,38 +401,19 @@ public class EntityTypeControl
 
     private EntityTypeDescription getEntityTypeDescription(EntityType entityType, Language language,
             EntityPermission entityPermission) {
-        EntityTypeDescription entityTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(EntityTypeDescriptions.fields())
+                .from(EntityTypeDescriptions)
+                .where(EntityTypeDescriptions.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypedescriptions
-                        WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypedescriptions
-                        WHERE entd_ent_entitytypeid = ? AND entd_lang_languageid = ? AND entd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityTypeDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            entityTypeDescription = entityTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTypeDescription;
+        return entityTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityTypeDescription getEntityTypeDescription(EntityType entityType, Language language) {
@@ -488,38 +434,24 @@ public class EntityTypeControl
 
     private List<EntityTypeDescription> getEntityTypeDescriptionsByEntityType(EntityType entityType,
             EntityPermission entityPermission) {
-        List<EntityTypeDescription> entityTypeDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityTypeDescriptions.fields())
+                    .from(EntityTypeDescriptions)
+                    .join(Languages).onKey(ENTITY_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(EntityTypeDescriptions.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                            EntityTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    EntityTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityTypeDescriptions.fields())
+                    .from(EntityTypeDescriptions)
+                    .where(EntityTypeDescriptions.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                            EntityTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypedescriptions, languages
-                        WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ? AND entd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytypedescriptions
-                        WHERE entd_ent_entitytypeid = ? AND entd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityTypeDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityTypeDescriptions = entityTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTypeDescriptions;
+        return entityTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityTypeDescription> getEntityTypeDescriptionsByEntityType(EntityType entityType) {
@@ -601,47 +533,49 @@ public class EntityTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected SearchResultFactory searchResultFactory;
-
-    @Inject
     protected SearchControl searchControl;
 
-    public List<EntityTypeResultTransfer> getEntityTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getEntityTypeIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
-        var entityTypeResultTransfers = new ArrayList<EntityTypeResultTransfer>();
-        var includeEntityType = false;
+        var cachedSearch = search.getCachedSearch();
+        Select<?> query;
 
-        var options = session.getOptions();
-        if(options != null) {
-            includeEntityType = options.contains(SearchOptions.EntityTypeResultIncludeEntityType);
+        if(cachedSearch == null) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
+        } else {
+            var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
+
+            session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
+
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
         }
 
-        try {
-            try(var ps = searchResultFactory.prepareStatement(
-                    """
-                    SELECT eni_entityuniqueid
-                    FROM searchresults, entityinstances
-                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                    _LIMIT_
-                    """)) {
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-                ps.setLong(1, search.getPrimaryKey().getEntityId());
+    public List<EntityTypeResultTransfer> getEntityTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityIds = getEntityTypeIdsFromUserVisitSearch(userVisitSearch);
+        var entityTypeResultTransfers = new ArrayList<EntityTypeResultTransfer>(entityIds.size());
+        var options = session.getOptions();
+        var includeEntityType = options != null && options.contains(SearchOptions.EntityTypeResultIncludeEntityType);
 
-                try(var rs = ps.executeQuery()) {
-                    while(rs.next()) {
-                        var entityType = entityTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityTypePK(rs.getLong(1)));
-                        var entityTypeDetail = entityType.getLastDetail();
+        for(var entityUniqueId : entityIds) {
+            var entityType = entityTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityTypePK(entityUniqueId));
+            var entityTypeDetail = entityType.getLastDetail();
 
-                        entityTypeResultTransfers.add(new EntityTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                entityTypeDetail.getEntityTypeName(), includeEntityType ? getEntityTypeTransfer(userVisit, entityType) : null));
-                    }
-                } catch(SQLException se) {
-                    throw new PersistenceDatabaseException(se);
-                }
-            }
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            entityTypeResultTransfers.add(new EntityTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                    entityTypeDetail.getEntityTypeName(), includeEntityType ? getEntityTypeTransfer(userVisit, entityType) : null));
         }
 
         return entityTypeResultTransfers;
@@ -650,14 +584,10 @@ public class EntityTypeControl
     public List<EntityTypeObject> getEntityTypeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var entityTypeObjects = new ArrayList<EntityTypeObject>();
 
-        try(var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            while(rs.next()) {
-                var entityType = getEntityTypeByPK(new EntityTypePK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+        for(var entityUniqueId : getEntityTypeIdsFromUserVisitSearch(userVisitSearch)) {
+            var entityType = getEntityTypeByPK(new EntityTypePK(entityUniqueId));
 
-                entityTypeObjects.add(new EntityTypeObject(entityType));
-            }
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            entityTypeObjects.add(new EntityTypeObject(entityType));
         }
 
         return entityTypeObjects;

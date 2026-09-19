@@ -23,6 +23,9 @@ import com.echothree.model.control.core.common.transfer.EntityAttributeGroupDesc
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupResultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
+import com.echothree.model.control.core.server.transfer.EntityAttributeEntityAttributeGroupTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityAttributeGroupDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityAttributeGroupTransferCache;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.core.common.pk.EntityAttributeGroupPK;
@@ -49,6 +52,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_GROUP_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_GROUPS_ACTIVE_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_GROUPS_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_GROUP_DESCRIPTIONS_LANGUAGE_FK;
 import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
@@ -65,6 +69,7 @@ import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearch
 import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -77,7 +82,7 @@ import org.jooq.Select;
 
 @CommandScope
 public class EntityAttributeGroupControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected SearchControl searchControl;
@@ -96,6 +101,9 @@ public class EntityAttributeGroupControl
 
     @Inject
     protected EntityAttributeGroupFactory entityAttributeGroupFactory;
+
+    @Inject
+    EntityAttributeGroupTransferCache entityAttributeGroupTransferCache;
 
     public EntityAttributeGroup createEntityAttributeGroup(EntityType entityType, String entityAttributeGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup(entityType);
@@ -214,8 +222,8 @@ public class EntityAttributeGroupControl
             case READ_ONLY -> session.getDslContext()
                     .select(EntityAttributeGroups.fields())
                     .from(EntityAttributeGroups)
-                    .join(EntityAttributeGroupDetails).onKey(ENTITY_ATTRIBUTE_GROUPS_LAST_DETAIL_FK)
-                    .where(EntityAttributeGroups.ACTIVE_DETAIL.isNotNull(), condition);
+                    .join(EntityAttributeGroupDetails).onKey(ENTITY_ATTRIBUTE_GROUPS_ACTIVE_DETAIL_FK)
+                    .where(condition);
             case READ_WRITE -> session.getDslContext()
                     .select(EntityAttributeGroups.fields())
                     .from(EntityAttributeGroups)
@@ -425,6 +433,9 @@ public class EntityAttributeGroupControl
     @Inject
     protected EntityAttributeGroupDescriptionFactory entityAttributeGroupDescriptionFactory;
 
+    @Inject
+    EntityAttributeGroupDescriptionTransferCache entityAttributeGroupDescriptionTransferCache;
+
     public EntityAttributeGroupDescription createEntityAttributeGroupDescription(EntityAttributeGroup entityAttributeGroup, Language language, String description,
             BasePK createdBy) {
         var entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.create(entityAttributeGroup,
@@ -567,6 +578,9 @@ public class EntityAttributeGroupControl
 
     @Inject
     protected EntityAttributeEntityAttributeGroupFactory entityAttributeEntityAttributeGroupFactory;
+
+    @Inject
+    EntityAttributeEntityAttributeGroupTransferCache entityAttributeEntityAttributeGroupTransferCache;
 
     public EntityAttributeEntityAttributeGroup createEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, Integer sortOrder, BasePK createdBy) {

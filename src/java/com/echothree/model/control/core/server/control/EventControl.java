@@ -31,6 +31,12 @@ import static com.echothree.model.control.core.common.workflow.EventGroupStatusC
 import com.echothree.model.control.core.server.CoreDebugFlags;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventEventBus;
+import com.echothree.model.control.core.server.kafka.EventTopic;
+import com.echothree.model.control.core.server.transfer.EntityTimeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityVisitTransferCache;
+import com.echothree.model.control.core.server.transfer.EventGroupTransferCache;
+import com.echothree.model.control.core.server.transfer.EventTransferCache;
+import com.echothree.model.control.core.server.transfer.EventTypeTransferCache;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.common.exception.UnknownQueueTypeNameException;
@@ -72,19 +78,49 @@ import com.echothree.model.data.core.server.value.EventGroupDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.EVENT_GROUPS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.EVENT_SUBSCRIBERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.EVENT_SUBSCRIBERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.EVENT_SUBSCRIBER_ENTITY_INSTANCES_EVENT_SUBSCRIBER_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.EVENT_SUBSCRIBER_ENTITY_TYPES_EVENT_SUBSCRIBER_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.EVENT_SUBSCRIBER_EVENT_TYPES_EVENT_SUBSCRIBER_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.QUEUED_SUBSCRIBER_EVENTS_EVENT_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.core.EntityVisits.EntityVisits;
+import static com.echothree.model.jooq.server.tables.core.EventGroupDetails.EventGroupDetails;
+import static com.echothree.model.jooq.server.tables.core.EventGroups.EventGroups;
+import static com.echothree.model.jooq.server.tables.core.EventSubscriberDetails.EventSubscriberDetails;
+import static com.echothree.model.jooq.server.tables.core.EventSubscriberEntityInstances.EventSubscriberEntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EventSubscriberEntityTypes.EventSubscriberEntityTypes;
+import static com.echothree.model.jooq.server.tables.core.EventSubscriberEventTypes.EventSubscriberEventTypes;
+import static com.echothree.model.jooq.server.tables.core.EventSubscribers.EventSubscribers;
+import static com.echothree.model.jooq.server.tables.core.EventTypeDescriptions.EventTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.EventTypes.EventTypes;
+import static com.echothree.model.jooq.server.tables.core.Events.Events;
+import static com.echothree.model.jooq.server.tables.core.QueuedEvents.QueuedEvents;
+import static com.echothree.model.jooq.server.tables.core.QueuedSubscriberEvents.QueuedSubscriberEvents;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
-import com.echothree.model.control.core.server.kafka.EventTopic;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.EntityInstanceUtils;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +128,7 @@ import javax.inject.Inject;
 
 @CommandScope
 public class EventControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected CacheEntryControl cacheEntryControl;
@@ -121,220 +157,108 @@ public class EventControl
     @Inject
     protected EntityTimeFactory entityTimeFactory;
 
+    @Inject
+    EntityTimeTransferCache entityTimeTransferCache;
+
     public EntityTime createEntityTime(EntityInstance entityInstance, Long createdTime, Long modifiedTime, Long deletedTime) {
         return entityTimeFactory.create(entityInstance, createdTime, modifiedTime, deletedTime);
 
     }
 
     public EntityTime getEntityTime(EntityInstance entityInstance) {
-        EntityTime entityTime;
+        var query = session.getDslContext()
+                .select(EntityTimes.fields())
+                .from(EntityTimes)
+                .where(EntityTimes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()));
 
-        try {
-            var ps = entityTimeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitytimes
-                    WHERE etim_eni_entityinstanceid = ?
-                    """);
-
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-
-            entityTime = entityTimeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTime;
+        return entityTimeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public EntityTime getEntityTimeForUpdate(EntityInstance entityInstance) {
-        EntityTime entityTime;
+        var query = session.getDslContext()
+                .select(EntityTimes.fields())
+                .from(EntityTimes)
+                .where(EntityTimes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .forUpdate();
 
-        try {
-            var ps = entityTimeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitytimes
-                    WHERE etim_eni_entityinstanceid = ?
-                    FOR UPDATE
-                    """);
-
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-
-            entityTime = entityTimeFactory.getEntityFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTime;
+        return entityTimeFactory.getEntityFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public static final Integer negativeOne = -1;
-
-    public static final String selectEntityTimesByEntityType = """
-                                                               SELECT _ALL_
-                                                               FROM entitytimes, entityinstances, entitytypes
-                                                               WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                                               ORDER BY etim_createdtime
-                                                               """;
-
-    public static final String selectEntityTimesByEntityTypeWithLimit = """
-                                                                        SELECT _ALL_
-                                                                        FROM entitytimes, entityinstances, entitytypes
-                                                                        WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                                                        ORDER BY etim_createdtime
-                                                                        LIMIT ?
-                                                                        """;
 
     public List<EntityTime> getEntityTimesByEntityType(EntityType entityType) {
         return getEntityTimesByEntityTypeWithLimit(entityType, negativeOne);
     }
 
     public List<EntityTime> getEntityTimesByEntityTypeWithLimit(EntityType entityType, Integer limit) {
-        List<EntityTime> entityTimes;
+        var baseQuery = session.getDslContext()
+                .select(EntityTimes.fields())
+                .from(EntityTimes)
+                .join(EntityInstances).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                .orderBy(EntityTimes.CREATED_TIME);
 
-        try {
-            int intLimit = limit;
-            var ps = entityTimeFactory.prepareStatement(
-                    intLimit == -1? selectEntityTimesByEntityType: selectEntityTimesByEntityTypeWithLimit);
+        var query = limit == -1 ? baseQuery : baseQuery.limit(limit);
 
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            if(intLimit != -1) {
-                ps.setInt(2, intLimit);
-            }
-
-            entityTimes = entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTimes;
+        return entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY,
+                session.applyLimit(query, EntityTimeFactory.class));
     }
-
-    public static final String selectEntityTimesByEntityTypeCreatedAfter = """
-                                                                           SELECT _ALL_
-                                                                           FROM entitytimes, entityinstances, entitytypes
-                                                                           WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                                                           AND etim_createdtime IS NOT NULL AND etim_createdtime > ?
-                                                                           ORDER BY etim_createdtime
-                                                                           """;
-    public static final String selectEntityTimesByEntityTypeCreatedAfterWithLimit = """
-                                                                                    SELECT _ALL_
-                                                                                    FROM entitytimes, entityinstances, entitytypes
-                                                                                    WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                                                                    AND etim_createdtime IS NOT NULL AND etim_createdtime > ?
-                                                                                    ORDER BY etim_createdtime
-                                                                                    LIMIT ?
-                                                                                    """;
 
     public List<EntityTime> getEntityTimesByEntityTypeCreatedAfter(EntityType entityType, Long createdTime) {
         return getEntityTimesByEntityTypeCreatedAfterWithLimit(entityType, createdTime, negativeOne);
     }
 
     public List<EntityTime> getEntityTimesByEntityTypeCreatedAfterWithLimit(EntityType entityType, Long createdTime, Integer limit) {
-        List<EntityTime> entityTimes;
+        var baseQuery = session.getDslContext()
+                .select(EntityTimes.fields())
+                .from(EntityTimes)
+                .join(EntityInstances).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTimes.CREATED_TIME.gt(createdTime))
+                .orderBy(EntityTimes.CREATED_TIME);
 
-        try {
-            int intLimit = limit;
-            var ps = entityTimeFactory.prepareStatement(
-                    intLimit == -1? selectEntityTimesByEntityTypeCreatedAfter: selectEntityTimesByEntityTypeCreatedAfterWithLimit);
+        var query = limit == -1 ? baseQuery : baseQuery.limit(limit);
 
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, createdTime);
-            if(intLimit != -1) {
-                ps.setInt(3, intLimit);
-            }
-
-            entityTimes = entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTimes;
+        return entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY,
+                session.applyLimit(query, EntityTimeFactory.class));
     }
-
-    public static final String selectEntityTimesByEntityTypeModifiedAfter = """
-                                                                            SELECT _ALL_
-                                                                            FROM entitytimes, entityinstances, entitytypes
-                                                                            WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                                                            AND etim_modifiedtime IS NOT NULL AND etim_modifiedtime > ?
-                                                                            ORDER BY etim_modifiedtime
-                                                                            """;
-    public static final String selectEntityTimesByEntityTypeModifiedAfterWithLimit = """
-                                                                                     SELECT _ALL_
-                                                                                     FROM entitytimes, entityinstances, entitytypes
-                                                                                     WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                                                                     AND etim_modifiedtime IS NOT NULL AND etim_modifiedtime > ?
-                                                                                     ORDER BY etim_modifiedtime
-                                                                                     LIMIT ?
-                                                                                     """;
 
     public List<EntityTime> getEntityTimesByEntityTypeModifiedAfter(EntityType entityType, Long modifiedTime) {
         return getEntityTimesByEntityTypeModifiedAfterWithLimit(entityType, modifiedTime, negativeOne);
     }
 
     public List<EntityTime> getEntityTimesByEntityTypeModifiedAfterWithLimit(EntityType entityType, Long modifiedTime, Integer limit) {
-        List<EntityTime> entityTimes;
+        var baseQuery = session.getDslContext()
+                .select(EntityTimes.fields())
+                .from(EntityTimes)
+                .join(EntityInstances).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTimes.MODIFIED_TIME.gt(modifiedTime))
+                .orderBy(EntityTimes.MODIFIED_TIME);
 
-        try {
-            int intLimit = limit;
-            var ps = entityTimeFactory.prepareStatement(
-                    intLimit == -1? selectEntityTimesByEntityTypeModifiedAfter: selectEntityTimesByEntityTypeModifiedAfterWithLimit);
+        var query = limit == -1 ? baseQuery : baseQuery.limit(limit);
 
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, modifiedTime);
-            if(intLimit != -1) {
-                ps.setInt(3, intLimit);
-            }
-
-            entityTimes = entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTimes;
+        return entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY,
+                session.applyLimit(query, EntityTimeFactory.class));
     }
-
-    public static final String selectEntityTimesByEntityTypeDeletedAfter = """
-                                                                           SELECT _ALL_
-                                                                           FROM entitytimes, entityinstances, entitytypes
-                                                                           WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                                                           AND etim_deletedtime IS NOT NULL AND etim_deletedtime > ?
-                                                                           ORDER BY etim_deletedtime
-                                                                           """;
-    public static final String selectEntityTimesByEntityTypeDeletedAfterWithLimit = """
-                                                                                    SELECT _ALL_
-                                                                                    FROM entitytimes, entityinstances, entitytypes
-                                                                                    WHERE ent_entitytypeid = ? AND ent_entitytypeid = eni_ent_entitytypeid AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                                                                    AND etim_deletedtime IS NOT NULL AND etim_deletedtime > ?
-                                                                                    ORDER BY etim_deletedtime
-                                                                                    LIMIT ?
-                                                                                    """;
 
     public List<EntityTime> getEntityTimesByEntityTypeDeletedAfter(EntityType entityType, Long deletedTime) {
         return getEntityTimesByEntityTypeDeletedAfterWithLimit(entityType, deletedTime, negativeOne);
     }
 
     public List<EntityTime> getEntityTimesByEntityTypeDeletedAfterWithLimit(EntityType entityType, Long deletedTime, Integer limit) {
-        List<EntityTime> entityTimes;
+        var baseQuery = session.getDslContext()
+                .select(EntityTimes.fields())
+                .from(EntityTimes)
+                .join(EntityInstances).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTimes.DELETED_TIME.gt(deletedTime))
+                .orderBy(EntityTimes.DELETED_TIME);
 
-        try {
-            int intLimit = limit;
-            var ps = entityTimeFactory.prepareStatement(
-                    intLimit == -1? selectEntityTimesByEntityTypeDeletedAfter: selectEntityTimesByEntityTypeDeletedAfterWithLimit);
+        var query = limit == -1 ? baseQuery : baseQuery.limit(limit);
 
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, deletedTime);
-            if(intLimit != -1) {
-                ps.setInt(3, intLimit);
-            }
-
-            entityTimes = entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTimes;
+        return entityTimeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY,
+                session.applyLimit(query, EntityTimeFactory.class));
     }
 
     public EntityTimeTransfer getEntityTimeTransfer(UserVisit userVisit, EntityTime entityTime) {
@@ -346,10 +270,13 @@ public class EventControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected EventGroupDetailFactory eventGroupDetailFactory;
+
+    @Inject
     protected EventGroupFactory eventGroupFactory;
 
     @Inject
-    protected EventGroupDetailFactory eventGroupDetailFactory;
+    EventGroupTransferCache eventGroupTransferCache;
 
     boolean alreadyCreatingEventGroup = false;
 
@@ -361,34 +288,24 @@ public class EventControl
                     WorkflowStep_EVENT_GROUP_STATUS_ACTIVE);
 
             if(workflowStep != null) {
-                List<EventGroup> eventGroups;
+                var query = session.getDslContext()
+                        .select(EventGroups.fields())
+                        .from(EventGroups)
+                        .join(EntityInstances).on(EventGroups.EVENT_GROUP.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                        .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                        .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                        .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                        .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                        .join(EventGroupDetails).onKey(EVENT_GROUPS_ACTIVE_DETAIL_FK)
+                        .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                        .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                        .where(ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                                EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.EventGroup.name()),
+                                WorkflowEntityStatuses.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()),
+                                WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME))
+                        .orderBy(EntityTimes.CREATED_TIME.desc());
 
-                try {
-                    var ps = eventGroupFactory.prepareStatement(
-                            """
-                            SELECT _ALL_
-                            FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances,
-                            eventgroups, eventgroupdetails, workflowentitystatuses, entitytimes
-                            WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid
-                            AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                            AND ent_activedetailid = entdt_entitytypedetailid
-                            AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
-                            AND entdt_entitytypename = ?
-                            AND ent_entitytypeid = eni_ent_entitytypeid AND evgrp_eventgroupid = eni_entityuniqueid
-                            AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
-                            AND eni_entityinstanceid = etim_eni_entityinstanceid
-                            ORDER BY etim_createdtime DESC
-                            """);
-
-                    ps.setString(1, ComponentVendors.ECHO_THREE.name());
-                    ps.setString(2, EntityTypes.EventGroup.name());
-                    ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
-                    ps.setLong(4, Session.MAX_TIME);
-
-                    eventGroups = eventGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-                } catch (SQLException se) {
-                    throw new PersistenceDatabaseException(se);
-                }
+                var eventGroups = eventGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
 
                 if(eventGroups != null && !eventGroups.isEmpty()) {
                     eventGroup = eventGroups.iterator().next();
@@ -436,7 +353,7 @@ public class EventControl
         eventGroup.setLastDetail(eventGroupDetail);
         eventGroup.store();
 
-        sendEvent(eventGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(eventGroup.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.CREATE, null, null, createdBy);
 
         return eventGroup;
     }
@@ -457,11 +374,12 @@ public class EventControl
     }
 
     public long countEventGroups() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM eventgroups
-                        JOIN eventgroupdetails ON evgrpdt_eventgroupdetailid = evgrp_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EventGroups)
+                .join(EventGroupDetails).onKey(EVENT_GROUPS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public EventGroupDetailValue getEventGroupDetailValueForUpdate(EventGroup eventGroup) {
@@ -469,36 +387,18 @@ public class EventControl
     }
 
     private EventGroup getEventGroupByName(String eventGroupName, EntityPermission entityPermission) {
-        EventGroup eventGroup;
+        var baseQuery = session.getDslContext()
+                .select(EventGroups.fields())
+                .from(EventGroups)
+                .join(EventGroupDetails).onKey(EVENT_GROUPS_ACTIVE_DETAIL_FK)
+                .where(EventGroupDetails.EVENT_GROUP_NAME.eq(eventGroupName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventgroups, eventgroupdetails
-                        WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid AND evgrpdt_eventgroupname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventgroups, eventgroupdetails
-                        WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid AND evgrpdt_eventgroupname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = eventGroupFactory.prepareStatement(query);
-
-            ps.setString(1, eventGroupName);
-
-            eventGroup = eventGroupFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return eventGroup;
+        return eventGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EventGroup getEventGroupByName(String eventGroupName) {
@@ -514,28 +414,21 @@ public class EventControl
     }
 
     private List<EventGroup> getEventGroups(EntityPermission entityPermission) {
-        String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EventGroups.fields())
+                    .from(EventGroups)
+                    .join(EventGroupDetails).onKey(EVENT_GROUPS_ACTIVE_DETAIL_FK)
+                    .orderBy(EventGroupDetails.EVENT_GROUP_NAME),
+                    EventGroupFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EventGroups.fields())
+                    .from(EventGroups)
+                    .where(EventGroups.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM eventgroups, eventgroupdetails
-                    WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid
-                    ORDER BY evgrpdt_eventgroupname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM eventgroups, eventgroupdetails
-                    WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid
-                    FOR UPDATE
-                    """;
-        }
-
-        var ps = eventGroupFactory.prepareStatement(query);
-
-        return eventGroupFactory.getEntitiesFromQuery(entityPermission, ps);
+        return eventGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EventGroup> getEventGroups() {
@@ -604,6 +497,9 @@ public class EventControl
     @Inject
     protected EventTypeFactory eventTypeFactory;
 
+    @Inject
+    EventTypeTransferCache eventTypeTransferCache;
+
     public EventType createEventType(String eventTypeName) {
         return eventTypeFactory.create(eventTypeName);
     }
@@ -624,31 +520,20 @@ public class EventControl
     }
 
     public long countEventTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM eventtypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EventTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public EventType getEventTypeByName(String eventTypeName) {
-        EventType eventType;
+        var query = session.getDslContext()
+                .select(EventTypes.fields())
+                .from(EventTypes)
+                .where(EventTypes.EVENT_TYPE_NAME.eq(eventTypeName));
 
-        try {
-            var ps = eventTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM eventtypes
-                    WHERE evty_eventtypename = ?
-                    """);
-
-            ps.setString(1, eventTypeName);
-
-            eventType = eventTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return eventType;
+        return eventTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private final Map<EventTypes, EventType> eventTypeCache = new HashMap<>();
@@ -668,14 +553,13 @@ public class EventControl
     }
 
     public List<EventType> getEventTypes() {
-        var ps = eventTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM eventtypes
-                ORDER BY evty_eventtypename
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EventTypes.fields())
+                .from(EventTypes)
+                .orderBy(EventTypes.EVENT_TYPE_NAME),
+                EventTypeFactory.class);
 
-        return eventTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return eventTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public EventTypeChoicesBean getEventTypeChoices(String defaultEventTypeChoice, Language language,
@@ -743,25 +627,13 @@ public class EventControl
     }
 
     public EventTypeDescription getEventTypeDescription(EventType eventType, Language language) {
-        EventTypeDescription eventTypeDescription;
+        var query = session.getDslContext()
+                .select(EventTypeDescriptions.fields())
+                .from(EventTypeDescriptions)
+                .where(EventTypeDescriptions.EVENT_TYPE.eq(eventType.getPrimaryKey()),
+                        EventTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
 
-        try {
-            var ps = eventTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM eventtypedescriptions
-                    WHERE evtyd_evty_eventtypeid = ? AND evtyd_lang_languageid = ?
-                    """);
-
-            ps.setLong(1, eventType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-
-            eventTypeDescription = eventTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return eventTypeDescription;
+        return eventTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public String getBestEventTypeDescription(EventType eventType, Language language) {
@@ -788,6 +660,9 @@ public class EventControl
     @Inject
     protected EventFactory eventFactory;
 
+    @Inject
+    EventTransferCache eventTransferCache;
+
     public Event createEvent(EventGroup eventGroup, Long eventTime, EntityInstance entityInstance, EventType eventType,
             EntityInstance relatedEntityInstance, EventType relatedEventType, EntityInstance createdBy) {
         var eventTimeSequence = session.getNextEventTimeSequence(entityInstance.getPrimaryKey());
@@ -797,148 +672,96 @@ public class EventControl
     }
 
     public long countEventsByEventGroup(EventGroup eventGroup) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM events
-                WHERE ev_evgrp_eventgroupid = ?
-                """,
-                eventGroup);
+        return session.getDslContext()
+                .selectCount()
+                .from(Events)
+                .where(Events.EVENT_GROUP.eq(eventGroup.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEventsByEntityInstance(EntityInstance entityInstance) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM events
-                WHERE ev_eni_entityinstanceid = ?
-                """,
-                entityInstance);
+        return session.getDslContext()
+                .selectCount()
+                .from(Events)
+                .where(Events.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEventsByEventType(EventType eventType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM events
-                WHERE ev_evty_eventtypeid = ?
-                """,
-                eventType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Events)
+                .where(Events.EVENT_TYPE.eq(eventType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEventsByCreatedBy(EntityInstance createdBy) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM events
-                WHERE ev_createdbyid = ?
-                """,
-                createdBy);
-    }
-
-    private static final Map<EntityPermission, String> getEventsByEventGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM events
-                WHERE ev_evgrp_eventgroupid = ?
-                ORDER BY ev_eventtime, ev_eventtimesequence
-                _LIMIT_
-                """);
-        getEventsByEventGroupQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Events)
+                .where(Events.CREATED_BY.eq(createdBy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<Event> getEventsByEventGroup(EventGroup eventGroup) {
-        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEventGroupQueries,
-                eventGroup);
-    }
+        var query = session.applyLimit(session.getDslContext()
+                .select(Events.fields())
+                .from(Events)
+                .where(Events.EVENT_GROUP.eq(eventGroup.getPrimaryKey()))
+                .orderBy(Events.EVENT_TIME, Events.EVENT_TIME_SEQUENCE),
+                EventFactory.class);
 
-    private static final Map<EntityPermission, String> getEventsByEntityInstanceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM events
-                WHERE ev_eni_entityinstanceid = ?
-                ORDER BY ev_eventtime, ev_eventtimesequence
-                _LIMIT_
-                """);
-        getEventsByEntityInstanceQueries = Collections.unmodifiableMap(queryMap);
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<Event> getEventsByEntityInstance(EntityInstance entityInstance) {
-        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEntityInstanceQueries,
-                entityInstance);
-    }
+        var query = session.applyLimit(session.getDslContext()
+                .select(Events.fields())
+                .from(Events)
+                .where(Events.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(Events.EVENT_TIME, Events.EVENT_TIME_SEQUENCE),
+                EventFactory.class);
 
-    private static final Map<EntityPermission, String> getEventsByEventTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM events
-                WHERE ev_eni_entityinstanceid = ?
-                ORDER BY ev_eventtime, ev_eventtimesequence
-                _LIMIT_
-                """);
-        getEventsByEventTypeQueries = Collections.unmodifiableMap(queryMap);
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<Event> getEventsByEventType(EventType eventType) {
-        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByEventTypeQueries,
-                eventType);
-    }
+        var query = session.applyLimit(session.getDslContext()
+                .select(Events.fields())
+                .from(Events)
+                .where(Events.EVENT_TYPE.eq(eventType.getPrimaryKey()))
+                .orderBy(Events.EVENT_TIME, Events.EVENT_TIME_SEQUENCE),
+                EventFactory.class);
 
-    private static final Map<EntityPermission, String> getEventsByCreatedByQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM events
-                WHERE ev_createdbyid = ?
-                ORDER BY ev_eventtime, ev_eventtimesequence
-                _LIMIT_
-                """);
-        getEventsByCreatedByQueries = Collections.unmodifiableMap(queryMap);
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<Event> getEventsByCreatedBy(EntityInstance createdBy) {
-        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEventsByCreatedByQueries,
-                createdBy);
-    }
+        var query = session.applyLimit(session.getDslContext()
+                .select(Events.fields())
+                .from(Events)
+                .where(Events.CREATED_BY.eq(createdBy.getPrimaryKey()))
+                .orderBy(Events.EVENT_TIME, Events.EVENT_TIME_SEQUENCE),
+                EventFactory.class);
 
-    private static final Map<EntityPermission, String> getEventsByEntityInstanceAndEventTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM events
-                WHERE ev_eni_entityinstanceid = ? AND ev_evty_eventtypeid = ?
-                ORDER BY ev_eventtime
-                FOR UPDATE
-                """);
-        getEventsByEntityInstanceAndEventTypeQueries = Collections.unmodifiableMap(queryMap);
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<Event> getEventsByEntityInstanceAndEventTypeForUpdate(EntityInstance entityInstance, EventType eventType) {
-        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, getEventsByEntityInstanceAndEventTypeQueries,
-                entityInstance, eventType);
+        // History trimming removes the oldest events from the beginning of this list.
+        var query = session.getDslContext()
+                .select(Events.fields())
+                .from(Events)
+                .where(Events.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        Events.EVENT_TYPE.eq(eventType.getPrimaryKey()))
+                .orderBy(Events.EVENT_TIME)
+                .forUpdate();
+
+        return eventFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public List<EventTransfer> getEventTransfers(UserVisit userVisit, Collection<Event> events) {
@@ -983,14 +806,12 @@ public class EventControl
     }
 
     public List<QueuedEvent> getQueuedEventsForUpdate() {
-        var ps = queuedEventFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM queuedevents
-                FOR UPDATE
-                """);
+        var query = session.getDslContext()
+                .select(QueuedEvents.fields())
+                .from(QueuedEvents)
+                .forUpdate();
 
-        return queuedEventFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+        return queuedEventFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public void removeQueuedEvent(QueuedEvent queuedEvent) {
@@ -1004,30 +825,27 @@ public class EventControl
     @Inject
     protected EntityVisitFactory entityVisitFactory;
 
+    @Inject
+    EntityVisitTransferCache entityVisitTransferCache;
+
     public EntityVisit createEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
         return entityVisitFactory.create(entityInstance, visitedEntityInstance, session.getStartTime());
     }
 
-    private static final Map<EntityPermission, String> getEntityVisitQueries;
-
-    static {
-        getEntityVisitQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM entityvisits
-                        WHERE evis_eni_entityinstanceid = ? AND evis_visitedentityinstanceid = ?
-                        """,
-                EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM entityvisits
-                        WHERE evis_eni_entityinstanceid = ? AND evis_visitedentityinstanceid = ?
-                        FOR UPDATE
-                        """);
-    }
-
     private EntityVisit getEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance,
             final EntityPermission entityPermission) {
-        return entityVisitFactory.getEntityFromQuery(entityPermission, getEntityVisitQueries, entityInstance, visitedEntityInstance);
+        var baseQuery = session.getDslContext()
+                .select(EntityVisits.fields())
+                .from(EntityVisits)
+                .where(EntityVisits.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityVisits.VISITED_ENTITY_INSTANCE.eq(visitedEntityInstance.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityVisitFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityVisit getEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
@@ -1047,10 +865,10 @@ public class EventControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected EventSubscriberFactory eventSubscriberFactory;
+    protected EventSubscriberDetailFactory eventSubscriberDetailFactory;
 
     @Inject
-    protected EventSubscriberDetailFactory eventSubscriberDetailFactory;
+    protected EventSubscriberFactory eventSubscriberFactory;
 
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
@@ -1075,42 +893,24 @@ public class EventControl
         eventSubscriber.setLastDetail(eventSubscriberDetail);
         eventSubscriber.store();
 
-        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.CREATE, null, null, createdBy);
 
         return eventSubscriber;
     }
 
     private EventSubscriber getEventSubscriberByName(String eventSubscriberName, EntityPermission entityPermission) {
-        EventSubscriber eventSubscriber;
+        var baseQuery = session.getDslContext()
+                .select(EventSubscribers.fields())
+                .from(EventSubscribers)
+                .join(EventSubscriberDetails).onKey(EVENT_SUBSCRIBERS_ACTIVE_DETAIL_FK)
+                .where(EventSubscriberDetails.EVENT_SUBSCRIBER_NAME.eq(eventSubscriberName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscribers, eventsubscriberdetails
-                        WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eventsubscribername = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscribers, eventsubscriberdetails
-                        WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eventsubscribername = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = eventSubscriberFactory.prepareStatement(query);
-
-            ps.setString(1, eventSubscriberName);
-
-            eventSubscriber = eventSubscriberFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return eventSubscriber;
+        return eventSubscriberFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EventSubscriber getEventSubscriberByName(String eventSubscriberName) {
@@ -1122,38 +922,23 @@ public class EventControl
     }
 
     private List<EventSubscriber> getEventSubscribersByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<EventSubscriber> eventSubscribers;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EventSubscribers.fields())
+                    .from(EventSubscribers)
+                    .join(EventSubscriberDetails).onKey(EVENT_SUBSCRIBERS_ACTIVE_DETAIL_FK)
+                    .where(EventSubscriberDetails.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                    .orderBy(EventSubscriberDetails.SORT_ORDER, EventSubscriberDetails.EVENT_SUBSCRIBER_NAME),
+                    EventSubscriberFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EventSubscribers.fields())
+                    .from(EventSubscribers)
+                    .join(EventSubscriberDetails).onKey(EVENT_SUBSCRIBERS_ACTIVE_DETAIL_FK)
+                    .where(EventSubscriberDetails.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscribers, eventsubscriberdetails
-                        WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eni_entityinstanceid = ?
-                        ORDER BY evsdt_sortorder, evsdt_eventsubscribername
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscribers, eventsubscriberdetails
-                        WHERE evs_activedetailid = evsdt_eventsubscriberdetailid AND evsdt_eni_entityinstanceid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = eventSubscriberFactory.prepareStatement(query);
-
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-
-            eventSubscribers = eventSubscriberFactory.getEntitiesFromQuery(entityPermission,
-                    ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return eventSubscribers;
+        return eventSubscriberFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EventSubscriber> getEventSubscribersByEntityInstance(EntityInstance entityInstance) {
@@ -1188,7 +973,7 @@ public class EventControl
         eventSubscriber.setActiveDetail(null);
         eventSubscriber.store();
 
-        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteEventSubscribers(List<EventSubscriber> eventSubscribers, BasePK deletedBy) {
@@ -1214,38 +999,22 @@ public class EventControl
 
     private List<QueuedSubscriberEvent> getQueuedSubscriberEventsByEventSubscriber(EventSubscriber eventSubscriber,
             EntityPermission entityPermission) {
-        List<QueuedSubscriberEvent> queuedSubscriberEvents;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(QueuedSubscriberEvents.fields())
+                    .from(QueuedSubscriberEvents)
+                    .join(Events).onKey(QUEUED_SUBSCRIBER_EVENTS_EVENT_FK)
+                    .where(QueuedSubscriberEvents.EVENT_SUBSCRIBER.eq(eventSubscriber.getPrimaryKey()))
+                    .orderBy(Events.EVENT_TIME),
+                    QueuedSubscriberEventFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(QueuedSubscriberEvents.fields())
+                    .from(QueuedSubscriberEvents)
+                    .where(QueuedSubscriberEvents.EVENT_SUBSCRIBER.eq(eventSubscriber.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM queuedsubscriberevents, events
-                        WHERE qsev_evs_eventsubscriberid = ? AND qsev_ev_eventid = ev_eventid
-                        ORDER BY ev_eventtime
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM queuedsubscriberevents
-                        WHERE qsev_evs_eventsubscriberid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = queuedSubscriberEventFactory.prepareStatement(query);
-
-            ps.setLong(1, eventSubscriber.getPrimaryKey().getEntityId());
-
-            queuedSubscriberEvents = queuedSubscriberEventFactory.getEntitiesFromQuery(entityPermission,
-                    ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return queuedSubscriberEvents;
+        return queuedSubscriberEventFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<QueuedSubscriberEvent> getQueuedSubscriberEventsByEventSubscriber(EventSubscriber eventSubscriber) {
@@ -1280,45 +1049,31 @@ public class EventControl
         var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(
                 eventSubscriber, eventType, session.getStartTime(), Session.MAX_TIME);
 
-        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.CREATE, createdBy);
 
         return eventSubscriberEventType;
     }
 
     private List<EventSubscriberEventType> getEventSubscriberEventTypes(EventType eventType, EntityPermission entityPermission) {
-        List<EventSubscriberEventType> eventSubscriberEventTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EventSubscriberEventTypes.fields())
+                    .from(EventSubscriberEventTypes)
+                    .join(EventSubscribers).onKey(EVENT_SUBSCRIBER_EVENT_TYPES_EVENT_SUBSCRIBER_FK)
+                    .join(EventSubscriberDetails).onKey(EVENT_SUBSCRIBERS_LAST_DETAIL_FK)
+                    .where(EventSubscriberEventTypes.EVENT_TYPE.eq(eventType.getPrimaryKey()),
+                            EventSubscriberEventTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EventSubscriberDetails.EVENT_SUBSCRIBER_NAME),
+                    EventSubscriberEventTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EventSubscriberEventTypes.fields())
+                    .from(EventSubscriberEventTypes)
+                    .where(EventSubscriberEventTypes.EVENT_TYPE.eq(eventType.getPrimaryKey()),
+                            EventSubscriberEventTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscribereventtypes, eventsubscribers, eventsubscriberdetails
-                        WHERE evsevt_evty_eventtypeid = ? AND evsevt_thrutime = ?
-                        AND evsevt_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid
-                        ORDER BY evsdt_eventsubscribername
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscribereventtypes
-                        WHERE evsevt_evty_eventtypeid = ? AND evsevt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = eventSubscriberEventTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, eventType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            eventSubscriberEventTypes = eventSubscriberEventTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return eventSubscriberEventTypes;
+        return eventSubscriberEventTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EventSubscriberEventType> getEventSubscriberEventTypes(EventType eventType) {
@@ -1341,47 +1096,34 @@ public class EventControl
         var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(
                 eventSubscriber, entityType, eventType, session.getStartTime(), Session.MAX_TIME);
 
-        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.CREATE, createdBy);
 
         return eventSubscriberEntityType;
     }
 
     private List<EventSubscriberEntityType> getEventSubscriberEntityTypes(EntityType entityType, EventType eventType,
             EntityPermission entityPermission) {
-        List<EventSubscriberEntityType> eventSubscriberEntityTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EventSubscriberEntityTypes.fields())
+                    .from(EventSubscriberEntityTypes)
+                    .join(EventSubscribers).onKey(EVENT_SUBSCRIBER_ENTITY_TYPES_EVENT_SUBSCRIBER_FK)
+                    .join(EventSubscriberDetails).onKey(EVENT_SUBSCRIBERS_LAST_DETAIL_FK)
+                    .where(EventSubscriberEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                            EventSubscriberEntityTypes.EVENT_TYPE.eq(eventType.getPrimaryKey()),
+                            EventSubscriberEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EventSubscriberDetails.EVENT_SUBSCRIBER_NAME),
+                    EventSubscriberEntityTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EventSubscriberEntityTypes.fields())
+                    .from(EventSubscriberEntityTypes)
+                    .where(EventSubscriberEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                            EventSubscriberEntityTypes.EVENT_TYPE.eq(eventType.getPrimaryKey()),
+                            EventSubscriberEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscriberentitytypes, eventsubscribers, eventsubscriberdetails
-                        WHERE evset_ent_entitytypeid = ? AND evset_evty_eventtypeid = ? AND evset_thrutime = ?
-                        AND evset_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid
-                        ORDER BY evsdt_eventsubscribername
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscriberentitytypes
-                        WHERE evset_ent_entitytypeid = ? AND evset_evty_eventtypeid = ? AND evset_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = eventSubscriberEntityTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, eventType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            eventSubscriberEntityTypes = eventSubscriberEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return eventSubscriberEntityTypes;
+        return eventSubscriberEntityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EventSubscriberEntityType> getEventSubscriberEntityTypes(EntityType entityType, EventType eventType) {
@@ -1404,47 +1146,34 @@ public class EventControl
         var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(
                 eventSubscriber, entityInstance, eventType, session.getStartTime(), Session.MAX_TIME);
 
-        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), com.echothree.model.control.core.common.EventTypes.CREATE, createdBy);
 
         return eventSubscriberEntityInstance;
     }
 
     private List<EventSubscriberEntityInstance> getEventSubscriberEntityInstances(EntityInstance entityInstance,
             EventType eventType, EntityPermission entityPermission) {
-        List<EventSubscriberEntityInstance> eventSubscriberEntityInstances;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EventSubscriberEntityInstances.fields())
+                    .from(EventSubscriberEntityInstances)
+                    .join(EventSubscribers).onKey(EVENT_SUBSCRIBER_ENTITY_INSTANCES_EVENT_SUBSCRIBER_FK)
+                    .join(EventSubscriberDetails).onKey(EVENT_SUBSCRIBERS_LAST_DETAIL_FK)
+                    .where(EventSubscriberEntityInstances.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                            EventSubscriberEntityInstances.EVENT_TYPE.eq(eventType.getPrimaryKey()),
+                            EventSubscriberEntityInstances.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EventSubscriberDetails.EVENT_SUBSCRIBER_NAME),
+                    EventSubscriberEntityInstanceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EventSubscriberEntityInstances.fields())
+                    .from(EventSubscriberEntityInstances)
+                    .where(EventSubscriberEntityInstances.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                            EventSubscriberEntityInstances.EVENT_TYPE.eq(eventType.getPrimaryKey()),
+                            EventSubscriberEntityInstances.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscriberentityinstances, eventsubscribers, eventsubscriberdetails
-                        WHERE evsei_eni_entityinstanceid = ? AND evsei_evty_eventtypeid = ? AND evsei_thrutime = ?
-                        AND evsei_evs_eventsubscriberid = evs_eventsubscriberid AND evs_lastdetailid = evsdt_eventsubscriberdetailid
-                        ORDER BY evsdt_eventsubscribername
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM eventsubscriberentityinstances
-                        WHERE evsei_eni_entityinstanceid = ? AND evsei_evty_eventtypeid = ? AND evsei_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = eventSubscriberEntityInstanceFactory.prepareStatement(query);
-
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, eventType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            eventSubscriberEntityInstances = eventSubscriberEntityInstanceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return eventSubscriberEntityInstances;
+        return eventSubscriberEntityInstanceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EventSubscriberEntityInstance> getEventSubscriberEntityInstances(EntityInstance entityInstance, EventType eventType) {

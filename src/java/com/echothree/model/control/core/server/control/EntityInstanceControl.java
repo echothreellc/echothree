@@ -26,6 +26,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.CoreDebugFlags;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery;
+import com.echothree.model.control.core.server.transfer.EntityInstanceTransferCache;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -38,25 +39,26 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.UuidUtils;
 import com.google.common.base.Splitter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 
 @CommandScope
 public class EntityInstanceControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected AccountingControl accountingControl;
@@ -117,6 +119,9 @@ public class EntityInstanceControl
 
     @Inject
     protected EntityInstanceFactory entityInstanceFactory;
+
+    @Inject
+    EntityInstanceTransferCache entityInstanceTransferCache;
 
     public EntityInstance createEntityInstance(EntityType entityType, Long entityUniqueId) {
         return entityInstanceFactory.create(entityType, entityUniqueId, null);
@@ -214,78 +219,46 @@ public class EntityInstanceControl
     }
 
     public long countEntityInstances() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityinstances
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityInstances)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityInstancesByEntityType(EntityType entityType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityinstances
-                WHERE eni_ent_entitytypeid = ?
-                """,
-                entityType);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityInstances)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityInstance> getEntityInstancesByEntityType(EntityType entityType) {
-        List<EntityInstance> entityInstances;
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityInstances.fields())
+                .from(EntityInstances)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                .orderBy(EntityInstances.ENTITY_UNIQUE),
+                EntityInstanceFactory.class);
 
-        try {
-            var ps = entityInstanceFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityinstances
-                    WHERE eni_ent_entitytypeid = ?
-                    ORDER BY eni_entityuniqueid
-                    _LIMIT_
-                    """);
-
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-
-            entityInstances = entityInstanceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityInstances;
+        return entityInstanceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityInstance getEntityInstance(EntityType entityType, Long entityUniqueId, EntityPermission entityPermission) {
-        EntityInstance entityInstance;
+        var baseQuery = session.getDslContext()
+                .select(EntityInstances.fields())
+                .from(EntityInstances)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityInstances.ENTITY_UNIQUE.eq(entityUniqueId));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityinstances
-                        WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityinstances
-                        WHERE eni_ent_entitytypeid = ? AND eni_entityuniqueid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityInstanceFactory.prepareStatement(query);
-
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityUniqueId);
-
-            entityInstance = entityInstanceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityInstance;
+        return entityInstanceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityInstance getEntityInstance(EntityType entityType, Long entityUniqueId) {
@@ -297,36 +270,17 @@ public class EntityInstanceControl
     }
 
     private EntityInstance getEntityInstanceByUuid(String uuid, EntityPermission entityPermission) {
-        EntityInstance entityInstance;
+        var baseQuery = session.getDslContext()
+                .select(EntityInstances.fields())
+                .from(EntityInstances)
+                .where(EntityInstances.UUID.eq(DSL.function("UUID_TO_BIN", SQLDataType.BINARY, DSL.val(uuid))));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityinstances
-                        WHERE eni_uuid = UUID_TO_BIN(?)
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityinstances
-                        WHERE eni_uuid = UUID_TO_BIN(?)
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityInstanceFactory.prepareStatement(query);
-
-            ps.setString(1, uuid);
-
-            entityInstance = entityInstanceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityInstance;
+        return entityInstanceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityInstance getEntityInstanceByUuid(String uuid) {

@@ -27,6 +27,13 @@ import com.echothree.model.control.core.common.transfer.ServerServiceTransfer;
 import com.echothree.model.control.core.common.transfer.ServerTransfer;
 import com.echothree.model.control.core.common.transfer.ServiceDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.ServiceTransfer;
+import com.echothree.model.control.core.server.transfer.ProtocolDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.ProtocolTransferCache;
+import com.echothree.model.control.core.server.transfer.ServerDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.ServerServiceTransferCache;
+import com.echothree.model.control.core.server.transfer.ServerTransferCache;
+import com.echothree.model.control.core.server.transfer.ServiceDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.ServiceTransferCache;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.core.common.pk.ProtocolPK;
 import com.echothree.model.data.core.common.pk.ServerPK;
@@ -58,22 +65,41 @@ import com.echothree.model.data.core.server.value.ServiceDescriptionValue;
 import com.echothree.model.data.core.server.value.ServiceDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.PROTOCOLS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.PROTOCOL_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVER_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVER_SERVICES_SERVER_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVER_SERVICES_SERVICE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVICES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVICES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVICE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.core.ProtocolDescriptions.ProtocolDescriptions;
+import static com.echothree.model.jooq.server.tables.core.ProtocolDetails.ProtocolDetails;
+import static com.echothree.model.jooq.server.tables.core.Protocols.Protocols;
+import static com.echothree.model.jooq.server.tables.core.ServerDescriptions.ServerDescriptions;
+import static com.echothree.model.jooq.server.tables.core.ServerDetails.ServerDetails;
+import static com.echothree.model.jooq.server.tables.core.ServerServices.ServerServices;
+import static com.echothree.model.jooq.server.tables.core.Servers.Servers;
+import static com.echothree.model.jooq.server.tables.core.ServiceDescriptions.ServiceDescriptions;
+import static com.echothree.model.jooq.server.tables.core.ServiceDetails.ServiceDetails;
+import static com.echothree.model.jooq.server.tables.core.Services.Services;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class ServerControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected ScaleControl scaleControl;
@@ -88,10 +114,13 @@ public class ServerControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ProtocolDetailFactory protocolDetailFactory;
+
+    @Inject
     protected ProtocolFactory protocolFactory;
 
     @Inject
-    protected ProtocolDetailFactory protocolDetailFactory;
+    ProtocolTransferCache protocolTransferCache;
 
     public Protocol createProtocol(String protocolName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultProtocol = getDefaultProtocol();
@@ -138,38 +167,27 @@ public class ServerControl
     }
 
     public long countProtocols() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM protocols
-                        JOIN protocoldetails ON protdt_protocoldetailid = prot_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getProtocolByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM protocols, protocoldetails
-                WHERE prot_activedetailid = protdt_protocoldetailid
-                AND protdt_protocolname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM protocols, protocoldetails
-                WHERE prot_activedetailid = protdt_protocoldetailid
-                AND protdt_protocolname = ?
-                FOR UPDATE
-                """);
-        getProtocolByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Protocols)
+                .join(ProtocolDetails).onKey(PROTOCOLS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Protocol getProtocolByName(String protocolName, EntityPermission entityPermission) {
-        return protocolFactory.getEntityFromQuery(entityPermission, getProtocolByNameQueries, protocolName);
+        var baseQuery = session.getDslContext()
+                .select(Protocols.fields())
+                .from(Protocols)
+                .join(ProtocolDetails).onKey(PROTOCOLS_ACTIVE_DETAIL_FK)
+                .where(ProtocolDetails.PROTOCOL_NAME.eq(protocolName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return protocolFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Protocol getProtocolByName(String protocolName) {
@@ -188,31 +206,19 @@ public class ServerControl
         return getProtocolDetailValueForUpdate(getProtocolByNameForUpdate(protocolName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultProtocolQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM protocols, protocoldetails
-                WHERE prot_activedetailid = protdt_protocoldetailid
-                AND protdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM protocols, protocoldetails
-                WHERE prot_activedetailid = protdt_protocoldetailid
-                AND protdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultProtocolQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Protocol getDefaultProtocol(EntityPermission entityPermission) {
-        return protocolFactory.getEntityFromQuery(entityPermission, getDefaultProtocolQueries);
+        var baseQuery = session.getDslContext()
+                .select(Protocols.fields())
+                .from(Protocols)
+                .join(ProtocolDetails).onKey(PROTOCOLS_ACTIVE_DETAIL_FK)
+                .where(ProtocolDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return protocolFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Protocol getDefaultProtocol() {
@@ -227,31 +233,22 @@ public class ServerControl
         return getDefaultProtocolForUpdate().getLastDetailForUpdate().getProtocolDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getProtocolsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM protocols, protocoldetails
-                WHERE prot_activedetailid = protdt_protocoldetailid
-                ORDER BY protdt_sortorder, protdt_protocolname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM protocols, protocoldetails
-                WHERE prot_activedetailid = protdt_protocoldetailid
-                FOR UPDATE
-                """);
-        getProtocolsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Protocol> getProtocols(EntityPermission entityPermission) {
-        return protocolFactory.getEntitiesFromQuery(entityPermission, getProtocolsQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Protocols.fields())
+                    .from(Protocols)
+                    .join(ProtocolDetails).onKey(PROTOCOLS_ACTIVE_DETAIL_FK)
+                    .orderBy(ProtocolDetails.SORT_ORDER, ProtocolDetails.PROTOCOL_NAME),
+                    ProtocolFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Protocols.fields())
+                    .from(Protocols)
+                    .where(Protocols.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return protocolFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Protocol> getProtocols() {
@@ -410,6 +407,9 @@ public class ServerControl
     @Inject
     protected ProtocolDescriptionFactory protocolDescriptionFactory;
 
+    @Inject
+    ProtocolDescriptionTransferCache protocolDescriptionTransferCache;
+
     public ProtocolDescription createProtocolDescription(Protocol protocol, Language language, String description, BasePK createdBy) {
         var protocolDescription = protocolDescriptionFactory.create(protocol, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -419,30 +419,20 @@ public class ServerControl
         return protocolDescription;
     }
 
-    private static final Map<EntityPermission, String> getProtocolDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM protocoldescriptions
-                WHERE protd_prot_protocolid = ? AND protd_lang_languageid = ? AND protd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM protocoldescriptions
-                WHERE protd_prot_protocolid = ? AND protd_lang_languageid = ? AND protd_thrutime = ?
-                FOR UPDATE
-                """);
-        getProtocolDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ProtocolDescription getProtocolDescription(Protocol protocol, Language language, EntityPermission entityPermission) {
-        return protocolDescriptionFactory.getEntityFromQuery(entityPermission, getProtocolDescriptionQueries,
-                protocol, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ProtocolDescriptions.fields())
+                .from(ProtocolDescriptions)
+                .where(ProtocolDescriptions.PROTOCOL.eq(protocol.getPrimaryKey()),
+                        ProtocolDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ProtocolDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return protocolDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ProtocolDescription getProtocolDescription(Protocol protocol, Language language) {
@@ -461,32 +451,25 @@ public class ServerControl
         return getProtocolDescriptionValue(getProtocolDescriptionForUpdate(protocol, language));
     }
 
-    private static final Map<EntityPermission, String> getProtocolDescriptionsByProtocolQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM protocoldescriptions, languages
-                WHERE protd_prot_protocolid = ? AND protd_thrutime = ? AND protd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM protocoldescriptions
-                WHERE protd_prot_protocolid = ? AND protd_thrutime = ?
-                FOR UPDATE
-                """);
-        getProtocolDescriptionsByProtocolQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ProtocolDescription> getProtocolDescriptionsByProtocol(Protocol protocol, EntityPermission entityPermission) {
-        return protocolDescriptionFactory.getEntitiesFromQuery(entityPermission, getProtocolDescriptionsByProtocolQueries,
-                protocol, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ProtocolDescriptions.fields())
+                    .from(ProtocolDescriptions)
+                    .join(Languages).onKey(PROTOCOL_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ProtocolDescriptions.PROTOCOL.eq(protocol.getPrimaryKey()),
+                            ProtocolDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ProtocolDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ProtocolDescriptions.fields())
+                    .from(ProtocolDescriptions)
+                    .where(ProtocolDescriptions.PROTOCOL.eq(protocol.getPrimaryKey()),
+                            ProtocolDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return protocolDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ProtocolDescription> getProtocolDescriptionsByProtocol(Protocol protocol) {
@@ -568,10 +551,13 @@ public class ServerControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ServiceDetailFactory serviceDetailFactory;
+
+    @Inject
     protected ServiceFactory serviceFactory;
 
     @Inject
-    protected ServiceDetailFactory serviceDetailFactory;
+    ServiceTransferCache serviceTransferCache;
 
     public Service createService(String serviceName, Integer port, Protocol protocol, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultService = getDefaultService();
@@ -618,38 +604,27 @@ public class ServerControl
     }
 
     public long countServices() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM services
-                        JOIN servicedetails ON srvdt_servicedetailid = srv_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getServiceByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM services, servicedetails
-                WHERE srv_activedetailid = srvdt_servicedetailid
-                AND srvdt_servicename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM services, servicedetails
-                WHERE srv_activedetailid = srvdt_servicedetailid
-                AND srvdt_servicename = ?
-                FOR UPDATE
-                """);
-        getServiceByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Services)
+                .join(ServiceDetails).onKey(SERVICES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Service getServiceByName(String serviceName, EntityPermission entityPermission) {
-        return serviceFactory.getEntityFromQuery(entityPermission, getServiceByNameQueries, serviceName);
+        var baseQuery = session.getDslContext()
+                .select(Services.fields())
+                .from(Services)
+                .join(ServiceDetails).onKey(SERVICES_ACTIVE_DETAIL_FK)
+                .where(ServiceDetails.SERVICE_NAME.eq(serviceName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return serviceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Service getServiceByName(String serviceName) {
@@ -668,31 +643,19 @@ public class ServerControl
         return getServiceDetailValueForUpdate(getServiceByNameForUpdate(serviceName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultServiceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM services, servicedetails
-                WHERE srv_activedetailid = srvdt_servicedetailid
-                AND srvdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM services, servicedetails
-                WHERE srv_activedetailid = srvdt_servicedetailid
-                AND srvdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultServiceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Service getDefaultService(EntityPermission entityPermission) {
-        return serviceFactory.getEntityFromQuery(entityPermission, getDefaultServiceQueries);
+        var baseQuery = session.getDslContext()
+                .select(Services.fields())
+                .from(Services)
+                .join(ServiceDetails).onKey(SERVICES_ACTIVE_DETAIL_FK)
+                .where(ServiceDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return serviceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Service getDefaultService() {
@@ -707,31 +670,22 @@ public class ServerControl
         return getDefaultServiceForUpdate().getLastDetailForUpdate().getServiceDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getServicesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM services, servicedetails
-                WHERE srv_activedetailid = srvdt_servicedetailid
-                ORDER BY srvdt_sortorder, srvdt_servicename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM services, servicedetails
-                WHERE srv_activedetailid = srvdt_servicedetailid
-                FOR UPDATE
-                """);
-        getServicesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Service> getServices(EntityPermission entityPermission) {
-        return serviceFactory.getEntitiesFromQuery(entityPermission, getServicesQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Services.fields())
+                    .from(Services)
+                    .join(ServiceDetails).onKey(SERVICES_ACTIVE_DETAIL_FK)
+                    .orderBy(ServiceDetails.SORT_ORDER, ServiceDetails.SERVICE_NAME),
+                    ServiceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Services.fields())
+                    .from(Services)
+                    .where(Services.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return serviceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Service> getServices() {
@@ -742,34 +696,24 @@ public class ServerControl
         return getServices(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getServicesByProtocolQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM services, servicedetails
-                WHERE srv_activedetailid = srvdt_servicedetailid
-                AND srvdt_prot_protocolid = ?
-                ORDER BY srvdt_sortorder, srvdt_servicename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM services, servicedetails
-                WHERE srv_activedetailid = srvdt_servicedetailid
-                AND srvdt_prot_protocolid = ?
-                FOR UPDATE
-                """);
-        getServicesByProtocolQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Service> getServicesByProtocol(Protocol protocol, EntityPermission entityPermission) {
-        return serviceFactory.getEntitiesFromQuery(entityPermission, getServicesByProtocolQueries,
-                protocol);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Services.fields())
+                    .from(Services)
+                    .join(ServiceDetails).onKey(SERVICES_ACTIVE_DETAIL_FK)
+                    .where(ServiceDetails.PROTOCOL.eq(protocol.getPrimaryKey()))
+                    .orderBy(ServiceDetails.SORT_ORDER, ServiceDetails.SERVICE_NAME),
+                    ServiceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Services.fields())
+                    .from(Services)
+                    .join(ServiceDetails).onKey(SERVICES_ACTIVE_DETAIL_FK)
+                    .where(ServiceDetails.PROTOCOL.eq(protocol.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return serviceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Service> getServicesByProtocol(Protocol protocol) {
@@ -934,6 +878,9 @@ public class ServerControl
     @Inject
     protected ServiceDescriptionFactory serviceDescriptionFactory;
 
+    @Inject
+    ServiceDescriptionTransferCache serviceDescriptionTransferCache;
+
     public ServiceDescription createServiceDescription(Service service, Language language, String description, BasePK createdBy) {
         var serviceDescription = serviceDescriptionFactory.create(service, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -943,30 +890,20 @@ public class ServerControl
         return serviceDescription;
     }
 
-    private static final Map<EntityPermission, String> getServiceDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM servicedescriptions
-                WHERE srvd_srv_serviceid = ? AND srvd_lang_languageid = ? AND srvd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM servicedescriptions
-                WHERE srvd_srv_serviceid = ? AND srvd_lang_languageid = ? AND srvd_thrutime = ?
-                FOR UPDATE
-                """);
-        getServiceDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ServiceDescription getServiceDescription(Service service, Language language, EntityPermission entityPermission) {
-        return serviceDescriptionFactory.getEntityFromQuery(entityPermission, getServiceDescriptionQueries,
-                service, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ServiceDescriptions.fields())
+                .from(ServiceDescriptions)
+                .where(ServiceDescriptions.SERVICE.eq(service.getPrimaryKey()),
+                        ServiceDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ServiceDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return serviceDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ServiceDescription getServiceDescription(Service service, Language language) {
@@ -985,32 +922,25 @@ public class ServerControl
         return getServiceDescriptionValue(getServiceDescriptionForUpdate(service, language));
     }
 
-    private static final Map<EntityPermission, String> getServiceDescriptionsByServiceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM servicedescriptions, languages
-                WHERE srvd_srv_serviceid = ? AND srvd_thrutime = ? AND srvd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM servicedescriptions
-                WHERE srvd_srv_serviceid = ? AND srvd_thrutime = ?
-                FOR UPDATE
-                """);
-        getServiceDescriptionsByServiceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ServiceDescription> getServiceDescriptionsByService(Service service, EntityPermission entityPermission) {
-        return serviceDescriptionFactory.getEntitiesFromQuery(entityPermission, getServiceDescriptionsByServiceQueries,
-                service, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ServiceDescriptions.fields())
+                    .from(ServiceDescriptions)
+                    .join(Languages).onKey(SERVICE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ServiceDescriptions.SERVICE.eq(service.getPrimaryKey()),
+                            ServiceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ServiceDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ServiceDescriptions.fields())
+                    .from(ServiceDescriptions)
+                    .where(ServiceDescriptions.SERVICE.eq(service.getPrimaryKey()),
+                            ServiceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return serviceDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ServiceDescription> getServiceDescriptionsByService(Service service) {
@@ -1092,10 +1022,13 @@ public class ServerControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ServerDetailFactory serverDetailFactory;
+
+    @Inject
     protected ServerFactory serverFactory;
 
     @Inject
-    protected ServerDetailFactory serverDetailFactory;
+    ServerTransferCache serverTransferCache;
 
     public Server createServer(String serverName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultServer = getDefaultServer();
@@ -1141,38 +1074,27 @@ public class ServerControl
     }
 
     public long countServers() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM servers
-                        JOIN serverdetails ON servdt_serverdetailid = serv_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getServerByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM servers, serverdetails
-                WHERE serv_activedetailid = servdt_serverdetailid
-                AND servdt_servername = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM servers, serverdetails
-                WHERE serv_activedetailid = servdt_serverdetailid
-                AND servdt_servername = ?
-                FOR UPDATE
-                """);
-        getServerByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Servers)
+                .join(ServerDetails).onKey(SERVERS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Server getServerByName(String serverName, EntityPermission entityPermission) {
-        return serverFactory.getEntityFromQuery(entityPermission, getServerByNameQueries, serverName);
+        var baseQuery = session.getDslContext()
+                .select(Servers.fields())
+                .from(Servers)
+                .join(ServerDetails).onKey(SERVERS_ACTIVE_DETAIL_FK)
+                .where(ServerDetails.SERVER_NAME.eq(serverName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return serverFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Server getServerByName(String serverName) {
@@ -1191,31 +1113,19 @@ public class ServerControl
         return getServerDetailValueForUpdate(getServerByNameForUpdate(serverName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultServerQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM servers, serverdetails
-                WHERE serv_activedetailid = servdt_serverdetailid
-                AND servdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM servers, serverdetails
-                WHERE serv_activedetailid = servdt_serverdetailid
-                AND servdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultServerQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Server getDefaultServer(EntityPermission entityPermission) {
-        return serverFactory.getEntityFromQuery(entityPermission, getDefaultServerQueries);
+        var baseQuery = session.getDslContext()
+                .select(Servers.fields())
+                .from(Servers)
+                .join(ServerDetails).onKey(SERVERS_ACTIVE_DETAIL_FK)
+                .where(ServerDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return serverFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Server getDefaultServer() {
@@ -1230,31 +1140,22 @@ public class ServerControl
         return getDefaultServerForUpdate().getLastDetailForUpdate().getServerDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getServersQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM servers, serverdetails
-                WHERE serv_activedetailid = servdt_serverdetailid
-                ORDER BY servdt_sortorder, servdt_servername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM servers, serverdetails
-                WHERE serv_activedetailid = servdt_serverdetailid
-                FOR UPDATE
-                """);
-        getServersQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Server> getServers(EntityPermission entityPermission) {
-        return serverFactory.getEntitiesFromQuery(entityPermission, getServersQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Servers.fields())
+                    .from(Servers)
+                    .join(ServerDetails).onKey(SERVERS_ACTIVE_DETAIL_FK)
+                    .orderBy(ServerDetails.SORT_ORDER, ServerDetails.SERVER_NAME),
+                    ServerFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Servers.fields())
+                    .from(Servers)
+                    .where(Servers.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return serverFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Server> getServers() {
@@ -1413,6 +1314,9 @@ public class ServerControl
     @Inject
     protected ServerDescriptionFactory serverDescriptionFactory;
 
+    @Inject
+    ServerDescriptionTransferCache serverDescriptionTransferCache;
+
     public ServerDescription createServerDescription(Server server, Language language, String description, BasePK createdBy) {
         var serverDescription = serverDescriptionFactory.create(server, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1422,30 +1326,20 @@ public class ServerControl
         return serverDescription;
     }
 
-    private static final Map<EntityPermission, String> getServerDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM serverdescriptions
-                WHERE servd_serv_serverid = ? AND servd_lang_languageid = ? AND servd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM serverdescriptions
-                WHERE servd_serv_serverid = ? AND servd_lang_languageid = ? AND servd_thrutime = ?
-                FOR UPDATE
-                """);
-        getServerDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ServerDescription getServerDescription(Server server, Language language, EntityPermission entityPermission) {
-        return serverDescriptionFactory.getEntityFromQuery(entityPermission, getServerDescriptionQueries,
-                server, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ServerDescriptions.fields())
+                .from(ServerDescriptions)
+                .where(ServerDescriptions.SERVER.eq(server.getPrimaryKey()),
+                        ServerDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ServerDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return serverDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ServerDescription getServerDescription(Server server, Language language) {
@@ -1464,32 +1358,25 @@ public class ServerControl
         return getServerDescriptionValue(getServerDescriptionForUpdate(server, language));
     }
 
-    private static final Map<EntityPermission, String> getServerDescriptionsByServerQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM serverdescriptions, languages
-                WHERE servd_serv_serverid = ? AND servd_thrutime = ? AND servd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM serverdescriptions
-                WHERE servd_serv_serverid = ? AND servd_thrutime = ?
-                FOR UPDATE
-                """);
-        getServerDescriptionsByServerQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ServerDescription> getServerDescriptionsByServer(Server server, EntityPermission entityPermission) {
-        return serverDescriptionFactory.getEntitiesFromQuery(entityPermission, getServerDescriptionsByServerQueries,
-                server, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ServerDescriptions.fields())
+                    .from(ServerDescriptions)
+                    .join(Languages).onKey(SERVER_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ServerDescriptions.SERVER.eq(server.getPrimaryKey()),
+                            ServerDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ServerDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ServerDescriptions.fields())
+                    .from(ServerDescriptions)
+                    .where(ServerDescriptions.SERVER.eq(server.getPrimaryKey()),
+                            ServerDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return serverDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ServerDescription> getServerDescriptionsByServer(Server server) {
@@ -1573,6 +1460,9 @@ public class ServerControl
     @Inject
     protected ServerServiceFactory serverServiceFactory;
 
+    @Inject
+    ServerServiceTransferCache serverServiceTransferCache;
+
     public ServerService createServerService(Server server, Service service, BasePK createdBy) {
         var serverService = serverServiceFactory.create(server, service, session.getStartTime(), Session.MAX_TIME);
 
@@ -1582,45 +1472,39 @@ public class ServerControl
     }
 
     public long countServerServicesByServer(final Server server) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM serverservices
-                        WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
-                        """, server, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ServerServices)
+                .where(ServerServices.SERVER.eq(server.getPrimaryKey()),
+                        ServerServices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countServerServicesByService(final Service service) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM serverservices
-                        WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
-                        """, service, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getServerServiceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM serverservices
-                WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM serverservices
-                WHERE servsrv_serv_serverid = ? AND servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
-                FOR UPDATE
-                """);
-        getServerServiceQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ServerServices)
+                .where(ServerServices.SERVICE.eq(service.getPrimaryKey()),
+                        ServerServices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ServerService getServerService(Server server, Service service, EntityPermission entityPermission) {
-        return serverServiceFactory.getEntityFromQuery(entityPermission, getServerServiceQueries,
-                server, service, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ServerServices.fields())
+                .from(ServerServices)
+                .where(ServerServices.SERVER.eq(server.getPrimaryKey()),
+                        ServerServices.SERVICE.eq(service.getPrimaryKey()),
+                        ServerServices.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return serverServiceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ServerService getServerService(Server server, Service service) {
@@ -1639,33 +1523,26 @@ public class ServerControl
         return getServerServiceValue(getServerServiceForUpdate(server, service));
     }
 
-    private static final Map<EntityPermission, String> getServerServicesByServerQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM serverservices, services, servicedetails
-                WHERE servsrv_serv_serverid = ? AND servsrv_thrutime = ?
-                AND servsrv_srv_serviceid = srv_serviceid AND srv_lastdetailid = srvdt_servicedetailid
-                ORDER BY srvdt_sortorder, srvdt_servicename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM serverservices
-                WHERE servsrv_serv_serverid = ? AND servsrv_thrutime = ?
-                FOR UPDATE
-                """);
-        getServerServicesByServerQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ServerService> getServerServicesByServer(Server server, EntityPermission entityPermission) {
-        return serverServiceFactory.getEntitiesFromQuery(entityPermission, getServerServicesByServerQueries,
-                server, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ServerServices.fields())
+                    .from(ServerServices)
+                    .join(Services).onKey(SERVER_SERVICES_SERVICE_FK)
+                    .join(ServiceDetails).onKey(SERVICES_LAST_DETAIL_FK)
+                    .where(ServerServices.SERVER.eq(server.getPrimaryKey()),
+                            ServerServices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ServiceDetails.SORT_ORDER, ServiceDetails.SERVICE_NAME),
+                    ServerServiceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ServerServices.fields())
+                    .from(ServerServices)
+                    .where(ServerServices.SERVER.eq(server.getPrimaryKey()),
+                            ServerServices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return serverServiceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ServerService> getServerServicesByServer(Server server) {
@@ -1676,33 +1553,26 @@ public class ServerControl
         return getServerServicesByServer(server, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getServerServicesByServiceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM serverservices, services, servicedetails
-                WHERE servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
-                AND servsrv_serv_serverid = serv_serverid AND serv_lastdetailid = servdt_serverdetailid
-                ORDER BY servdt_sortorder, servdt_servername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM serverservices
-                WHERE servsrv_srv_serviceid = ? AND servsrv_thrutime = ?
-                FOR UPDATE
-                """);
-        getServerServicesByServiceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ServerService> getServerServicesByService(Service service, EntityPermission entityPermission) {
-        return serverServiceFactory.getEntitiesFromQuery(entityPermission, getServerServicesByServiceQueries,
-                service, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ServerServices.fields())
+                    .from(ServerServices)
+                    .join(Servers).onKey(SERVER_SERVICES_SERVER_FK)
+                    .join(ServerDetails).onKey(SERVERS_LAST_DETAIL_FK)
+                    .where(ServerServices.SERVICE.eq(service.getPrimaryKey()),
+                            ServerServices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ServerDetails.SORT_ORDER, ServerDetails.SERVER_NAME),
+                    ServerServiceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ServerServices.fields())
+                    .from(ServerServices)
+                    .where(ServerServices.SERVICE.eq(service.getPrimaryKey()),
+                            ServerServices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return serverServiceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ServerService> getServerServicesByService(Service service) {
@@ -1729,7 +1599,6 @@ public class ServerControl
     }
 
     public void deleteServerService(ServerService serverService, BasePK deletedBy) {
-
         scaleControl.deleteScalesByServerService(serverService, deletedBy);
 
         serverService.setThruTime(session.getStartTime());

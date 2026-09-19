@@ -20,9 +20,9 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.transfer.ComponentVendorResultTransfer;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
+import com.echothree.model.control.core.server.transfer.ComponentVendorTransferCache;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
-import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.data.core.common.pk.ComponentVendorPK;
 import com.echothree.model.data.core.server.entity.Component;
 import com.echothree.model.data.core.server.entity.ComponentStage;
@@ -42,23 +42,35 @@ import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_DETAILS_COMPONENT_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentDetails.ComponentDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentStages.ComponentStages;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.ComponentVersions.ComponentVersions;
+import static com.echothree.model.jooq.server.tables.core.Components.Components;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import static java.lang.Math.toIntExact;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class ComponentControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected EntityTypeControl entityTypeControl;
@@ -73,10 +85,13 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ComponentVendorDetailFactory componentVendorDetailFactory;
+
+    @Inject
     protected ComponentVendorFactory componentVendorFactory;
 
     @Inject
-    protected ComponentVendorDetailFactory componentVendorDetailFactory;
+    ComponentVendorTransferCache componentVendorTransferCache;
 
     public ComponentVendor createComponentVendor(String componentVendorName, String description, BasePK createdBy) {
         var componentVendor = componentVendorFactory.create();
@@ -111,45 +126,27 @@ public class ComponentControl
     }
 
     public long countComponentVendors() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM componentvendors, componentvendordetails
-                WHERE cvnd_activedetailid = cvndd_componentvendordetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ComponentVendors)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ComponentVendor getComponentVendorByName(String componentVendorName, EntityPermission entityPermission) {
-        ComponentVendor componentVendor;
+        var baseQuery = session.getDslContext()
+                .select(ComponentVendors.fields())
+                .from(ComponentVendors)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                .where(ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(componentVendorName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM componentvendors, componentvendordetails
-                        WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM componentvendors, componentvendordetails
-                        WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = componentVendorFactory.prepareStatement(query);
-
-            ps.setString(1, componentVendorName);
-
-            componentVendor = componentVendorFactory.getEntityFromQuery(entityPermission, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return componentVendor;
+        return componentVendorFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ComponentVendor getComponentVendorByName(String componentVendorName) {
@@ -185,16 +182,14 @@ public class ComponentControl
     }
 
     public List<ComponentVendor> getComponentVendors() {
-        var ps = componentVendorFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM componentvendors, componentvendordetails
-                WHERE cvnd_activedetailid = cvndd_componentvendordetailid
-                ORDER BY cvndd_componentvendorname
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ComponentVendors.fields())
+                .from(ComponentVendors)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                .orderBy(ComponentVendorDetails.COMPONENT_VENDOR_NAME),
+                ComponentVendorFactory.class);
 
-        return componentVendorFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return componentVendorFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public ComponentVendorTransfer getComponentVendorTransfer(UserVisit userVisit, ComponentVendor componentVendor) {
@@ -258,89 +253,49 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
-
-    @Inject
-    protected SearchResultFactory searchResultFactory;
-
-    @Inject
     protected SearchControl searchControl;
 
-    public List<ComponentVendorResultTransfer> getComponentVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getComponentVendorIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
-        List<ComponentVendorResultTransfer> componentVendorResultTransfers;
-        var includeComponentVendor = false;
-
-        var options = session.getOptions();
-        if(options != null) {
-            includeComponentVendor = options.contains(SearchOptions.ComponentVendorResultIncludeComponentVendor);
-        }
+        Select<?> query;
 
         if(cachedSearch == null) {
-            componentVendorResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
-
-            try {
-                try(var ps = searchResultFactory.prepareStatement(
-                        """
-                        SELECT eni_entityuniqueid
-                        FROM searchresults, entityinstances
-                        WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                        _LIMIT_
-                        """)) {
-
-                    ps.setLong(1, search.getPrimaryKey().getEntityId());
-
-                    try(var rs = ps.executeQuery()) {
-                        while(rs.next()) {
-                            var componentVendor = componentVendorFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ComponentVendorPK(rs.getLong(1)));
-                            var componentVendorDetail = componentVendor.getLastDetail();
-
-                            componentVendorResultTransfers.add(new ComponentVendorResultTransfer(componentVendorDetail.getComponentVendorName(),
-                                    includeComponentVendor ? getComponentVendorTransfer(userVisit, componentVendor) : null));
-                        }
-                    } catch(SQLException se) {
-                        throw new PersistenceDatabaseException(se);
-                    }
-                }
-            } catch(SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
         } else {
             var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
 
-            componentVendorResultTransfers = new ArrayList<>(toIntExact(searchControl.countCachedExecutedSearchResults(cachedExecutedSearch)));
-
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
-            try {
-                try(var ps = cachedExecutedSearchResultFactory.prepareStatement(
-                        """
-                        SELECT eni_entityuniqueid
-                        FROM cachedexecutedsearchresults, entityinstances
-                        WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid
-                        _LIMIT_
-                        """)) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
+        }
 
-                    ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-                    try(var rs = ps.executeQuery()) {
-                        while(rs.next()) {
-                            var componentVendor = componentVendorFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ComponentVendorPK(rs.getLong(1)));
-                            var componentVendorDetail = componentVendor.getLastDetail();
+    public List<ComponentVendorResultTransfer> getComponentVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityIds = getComponentVendorIdsFromUserVisitSearch(userVisitSearch);
+        var componentVendorResultTransfers = new ArrayList<ComponentVendorResultTransfer>(entityIds.size());
+        var options = session.getOptions();
+        var includeComponentVendor = options != null && options.contains(SearchOptions.ComponentVendorResultIncludeComponentVendor);
 
-                            componentVendorResultTransfers.add(new ComponentVendorResultTransfer(componentVendorDetail.getComponentVendorName(),
-                                    includeComponentVendor ? getComponentVendorTransfer(userVisit, componentVendor) : null));
-                        }
-                    } catch(SQLException se) {
-                        throw new PersistenceDatabaseException(se);
-                    }
-                }
-            } catch(SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
+        for(var entityUniqueId : entityIds) {
+            var componentVendor = componentVendorFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ComponentVendorPK(entityUniqueId));
+            var componentVendorDetail = componentVendor.getLastDetail();
+
+            componentVendorResultTransfers.add(new ComponentVendorResultTransfer(componentVendorDetail.getComponentVendorName(),
+                    includeComponentVendor ? getComponentVendorTransfer(userVisit, componentVendor) : null));
         }
 
         return componentVendorResultTransfers;
@@ -349,14 +304,10 @@ public class ComponentControl
     public List<ComponentVendorObject> getComponentVendorObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var componentVendorObjects = new ArrayList<ComponentVendorObject>();
 
-        try(var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            while(rs.next()) {
-                var componentVendor = getComponentVendorByPK(new ComponentVendorPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+        for(var entityUniqueId : getComponentVendorIdsFromUserVisitSearch(userVisitSearch)) {
+            var componentVendor = getComponentVendorByPK(new ComponentVendorPK(entityUniqueId));
 
-                componentVendorObjects.add(new ComponentVendorObject(componentVendor));
-            }
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            componentVendorObjects.add(new ComponentVendorObject(componentVendor));
         }
 
         return componentVendorObjects;
@@ -367,10 +318,10 @@ public class ComponentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ComponentFactory componentFactory;
+    protected ComponentDetailFactory componentDetailFactory;
 
     @Inject
-    protected ComponentDetailFactory componentDetailFactory;
+    protected ComponentFactory componentFactory;
 
     public Component createComponent(ComponentVendor componentVendor, String componentName, String description, BasePK createdBy) {
         var component = componentFactory.create();
@@ -387,27 +338,15 @@ public class ComponentControl
     }
 
     public Component getComponentByName(ComponentVendor componentVendor, String componentName) {
-        Component component;
+        var query = session.getDslContext()
+                .select(Components.fields())
+                .from(Components)
+                .join(ComponentDetails).onKey(COMPONENT_DETAILS_COMPONENT_FK)
+                .where(ComponentDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()),
+                        ComponentDetails.COMPONENT_NAME.eq(componentName),
+                        ComponentDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            var ps = componentFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM components, componentdetails
-                    WHERE cpnt_componentid = cpntd_cpnt_componentid AND cpntd_cvnd_componentvendorid = ?
-                    AND cpntd_componentname = ? AND cpntd_thrutime = ?
-                    """);
-
-            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-            ps.setString(2, componentName);
-            ps.setLong(3, Session.MAX_TIME);
-
-            component = componentFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return component;
+        return componentFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     // --------------------------------------------------------------------------------
@@ -424,24 +363,12 @@ public class ComponentControl
     }
 
     public ComponentStage getComponentStageByName(String componentStageName) {
-        ComponentStage componentStage;
+        var query = session.getDslContext()
+                .select(ComponentStages.fields())
+                .from(ComponentStages)
+                .where(ComponentStages.COMPONENT_STAGE_NAME.eq(componentStageName));
 
-        try {
-            var ps = componentStageFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM componentstages
-                    WHERE cstg_componentstagename = ?
-                    """);
-
-            ps.setString(1, componentStageName);
-
-            componentStage = componentStageFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return componentStage;
+        return componentStageFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     // --------------------------------------------------------------------------------
@@ -460,25 +387,13 @@ public class ComponentControl
     }
 
     public ComponentVersion getComponentVersion(Component component) {
-        ComponentVersion componentVersion;
+        var query = session.getDslContext()
+                .select(ComponentVersions.fields())
+                .from(ComponentVersions)
+                .where(ComponentVersions.COMPONENT.eq(component.getPrimaryKey()),
+                        ComponentVersions.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            var ps = componentVersionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM componentversions
-                    WHERE cvrs_cpnt_componentid = ? AND cvrs_thrutime = ?
-                    """);
-
-            ps.setLong(1, component.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            componentVersion = componentVersionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return componentVersion;
+        return componentVersionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
 }

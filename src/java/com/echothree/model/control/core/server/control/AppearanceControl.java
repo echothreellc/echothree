@@ -23,6 +23,11 @@ import com.echothree.model.control.core.common.transfer.AppearanceTextDecoration
 import com.echothree.model.control.core.common.transfer.AppearanceTextTransformationTransfer;
 import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAppearanceTransfer;
+import com.echothree.model.control.core.server.transfer.AppearanceDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.AppearanceTextDecorationTransferCache;
+import com.echothree.model.control.core.server.transfer.AppearanceTextTransformationTransferCache;
+import com.echothree.model.control.core.server.transfer.AppearanceTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityAppearanceTransferCache;
 import com.echothree.model.data.core.common.pk.AppearancePK;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.AppearanceDescription;
@@ -48,24 +53,50 @@ import com.echothree.model.data.core.server.value.AppearanceTextTransformationVa
 import com.echothree.model.data.core.server.value.EntityAppearanceValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPEARANCES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPEARANCES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPEARANCE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPEARANCE_TEXT_DECORATIONS_APPEARANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPEARANCE_TEXT_DECORATIONS_TEXT_DECORATION_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPEARANCE_TEXT_TRANSFORMATIONS_APPEARANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPEARANCE_TEXT_TRANSFORMATIONS_TEXT_TRANSFORMATION_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_APPEARANCES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.TEXT_DECORATIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.TEXT_TRANSFORMATIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.AppearanceDescriptions.AppearanceDescriptions;
+import static com.echothree.model.jooq.server.tables.core.AppearanceDetails.AppearanceDetails;
+import static com.echothree.model.jooq.server.tables.core.AppearanceTextDecorations.AppearanceTextDecorations;
+import static com.echothree.model.jooq.server.tables.core.AppearanceTextTransformations.AppearanceTextTransformations;
+import static com.echothree.model.jooq.server.tables.core.Appearances.Appearances;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityAppearances.EntityAppearances;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.core.TextDecorationDetails.TextDecorationDetails;
+import static com.echothree.model.jooq.server.tables.core.TextDecorations.TextDecorations;
+import static com.echothree.model.jooq.server.tables.core.TextTransformationDetails.TextTransformationDetails;
+import static com.echothree.model.jooq.server.tables.core.TextTransformations.TextTransformations;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class AppearanceControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of AppearanceControl */
     protected AppearanceControl() {
@@ -77,10 +108,13 @@ public class AppearanceControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected AppearanceDetailFactory appearanceDetailFactory;
+
+    @Inject
     protected AppearanceFactory appearanceFactory;
 
     @Inject
-    protected AppearanceDetailFactory appearanceDetailFactory;
+    AppearanceTransferCache appearanceTransferCache;
 
     public Appearance createAppearance(String appearanceName, Color textColor, Color backgroundColor, FontStyle fontStyle, FontWeight fontWeight,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -128,38 +162,27 @@ public class AppearanceControl
     }
 
     public long countAppearances() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getAppearanceByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
-                AND apprncdt_appearancename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
-                AND apprncdt_appearancename = ?
-                FOR UPDATE
-                """);
-        getAppearanceByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Appearances)
+                .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public Appearance getAppearanceByName(String appearanceName, EntityPermission entityPermission) {
-        return appearanceFactory.getEntityFromQuery(entityPermission, getAppearanceByNameQueries, appearanceName);
+        var baseQuery = session.getDslContext()
+                .select(Appearances.fields())
+                .from(Appearances)
+                .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                .where(AppearanceDetails.APPEARANCE_NAME.eq(appearanceName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return appearanceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Appearance getAppearanceByName(String appearanceName) {
@@ -178,31 +201,19 @@ public class AppearanceControl
         return getAppearanceDetailValueForUpdate(getAppearanceByNameForUpdate(appearanceName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultAppearanceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
-                AND apprncdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
-                AND apprncdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultAppearanceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Appearance getDefaultAppearance(EntityPermission entityPermission) {
-        return appearanceFactory.getEntityFromQuery(entityPermission, getDefaultAppearanceQueries);
+        var baseQuery = session.getDslContext()
+                .select(Appearances.fields())
+                .from(Appearances)
+                .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                .where(AppearanceDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return appearanceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Appearance getDefaultAppearance() {
@@ -217,31 +228,22 @@ public class AppearanceControl
         return getDefaultAppearanceForUpdate().getLastDetailForUpdate().getAppearanceDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getAppearancesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
-                ORDER BY apprncdt_sortorder, apprncdt_appearancename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
-                FOR UPDATE
-                """);
-        getAppearancesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Appearance> getAppearances(EntityPermission entityPermission) {
-        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .orderBy(AppearanceDetails.SORT_ORDER, AppearanceDetails.APPEARANCE_NAME),
+                    AppearanceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .where(Appearances.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Appearance> getAppearances() {
@@ -252,32 +254,24 @@ public class AppearanceControl
         return getAppearances(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getAppearancesByTextColorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_textcolorid = ?
-                ORDER BY apprncdt_sortorder, apprncdt_appearancename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_textcolorid = ?
-                FOR UPDATE
-                """);
-        getAppearancesByTextColorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Appearance> getAppearancesByTextColor(Color textColor, EntityPermission entityPermission) {
-        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesByTextColorQueries,
-                textColor);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .where(AppearanceDetails.TEXT_COLOR.eq(textColor.getPrimaryKey()))
+                    .orderBy(AppearanceDetails.SORT_ORDER, AppearanceDetails.APPEARANCE_NAME),
+                    AppearanceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .where(AppearanceDetails.TEXT_COLOR.eq(textColor.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Appearance> getAppearancesByTextColor(Color textColor) {
@@ -288,32 +282,24 @@ public class AppearanceControl
         return getAppearancesByTextColor(textColor, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getAppearancesByBackgroundColorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_backgroundcolorid = ?
-                ORDER BY apprncdt_sortorder, apprncdt_appearancename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_backgroundcolorid = ?
-                FOR UPDATE
-                """);
-        getAppearancesByBackgroundColorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Appearance> getAppearancesByBackgroundColor(Color backgroundColor, EntityPermission entityPermission) {
-        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesByBackgroundColorQueries,
-                backgroundColor);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .where(AppearanceDetails.BACKGROUND_COLOR.eq(backgroundColor.getPrimaryKey()))
+                    .orderBy(AppearanceDetails.SORT_ORDER, AppearanceDetails.APPEARANCE_NAME),
+                    AppearanceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .where(AppearanceDetails.BACKGROUND_COLOR.eq(backgroundColor.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Appearance> getAppearancesByBackgroundColor(Color backgroundColor) {
@@ -324,32 +310,24 @@ public class AppearanceControl
         return getAppearancesByBackgroundColor(backgroundColor, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getAppearancesByFontStyleQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntstyl_fontstyleid = ?
-                ORDER BY apprncdt_sortorder, apprncdt_appearancename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntstyl_fontstyleid = ?
-                FOR UPDATE
-                """);
-        getAppearancesByFontStyleQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Appearance> getAppearancesByFontStyle(FontStyle fontStyle, EntityPermission entityPermission) {
-        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesByFontStyleQueries,
-                fontStyle);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .where(AppearanceDetails.FONT_STYLE.eq(fontStyle.getPrimaryKey()))
+                    .orderBy(AppearanceDetails.SORT_ORDER, AppearanceDetails.APPEARANCE_NAME),
+                    AppearanceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .where(AppearanceDetails.FONT_STYLE.eq(fontStyle.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Appearance> getAppearancesByFontStyle(FontStyle fontStyle) {
@@ -360,32 +338,24 @@ public class AppearanceControl
         return getAppearancesByFontStyle(fontStyle, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getAppearancesByFontWeightQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntwght_fontweightid = ?
-                ORDER BY apprncdt_sortorder, apprncdt_appearancename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearances, appearancedetails
-                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntwght_fontweightid = ?
-                FOR UPDATE
-                """);
-        getAppearancesByFontWeightQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Appearance> getAppearancesByFontWeight(FontWeight fontWeight, EntityPermission entityPermission) {
-        return appearanceFactory.getEntitiesFromQuery(entityPermission, getAppearancesByFontWeightQueries,
-                fontWeight);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .where(AppearanceDetails.FONT_WEIGHT.eq(fontWeight.getPrimaryKey()))
+                    .orderBy(AppearanceDetails.SORT_ORDER, AppearanceDetails.APPEARANCE_NAME),
+                    AppearanceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Appearances.fields())
+                    .from(Appearances)
+                    .join(AppearanceDetails).onKey(APPEARANCES_ACTIVE_DETAIL_FK)
+                    .where(AppearanceDetails.FONT_WEIGHT.eq(fontWeight.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return appearanceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Appearance> getAppearancesByFontWeight(FontWeight fontWeight) {
@@ -571,6 +541,9 @@ public class AppearanceControl
     @Inject
     protected AppearanceDescriptionFactory appearanceDescriptionFactory;
 
+    @Inject
+    AppearanceDescriptionTransferCache appearanceDescriptionTransferCache;
+
     public AppearanceDescription createAppearanceDescription(Appearance appearance, Language language, String description, BasePK createdBy) {
         var appearanceDescription = appearanceDescriptionFactory.create(appearance, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -580,30 +553,20 @@ public class AppearanceControl
         return appearanceDescription;
     }
 
-    private static final Map<EntityPermission, String> getAppearanceDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearancedescriptions
-                WHERE apprncd_apprnc_appearanceid = ? AND apprncd_lang_languageid = ? AND apprncd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearancedescriptions
-                WHERE apprncd_apprnc_appearanceid = ? AND apprncd_lang_languageid = ? AND apprncd_thrutime = ?
-                FOR UPDATE
-                """);
-        getAppearanceDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private AppearanceDescription getAppearanceDescription(Appearance appearance, Language language, EntityPermission entityPermission) {
-        return appearanceDescriptionFactory.getEntityFromQuery(entityPermission, getAppearanceDescriptionQueries,
-                appearance, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(AppearanceDescriptions.fields())
+                .from(AppearanceDescriptions)
+                .where(AppearanceDescriptions.APPEARANCE.eq(appearance.getPrimaryKey()),
+                        AppearanceDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        AppearanceDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return appearanceDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public AppearanceDescription getAppearanceDescription(Appearance appearance, Language language) {
@@ -622,32 +585,25 @@ public class AppearanceControl
         return getAppearanceDescriptionValue(getAppearanceDescriptionForUpdate(appearance, language));
     }
 
-    private static final Map<EntityPermission, String> getAppearanceDescriptionsByAppearanceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearancedescriptions, languages
-                WHERE apprncd_apprnc_appearanceid = ? AND apprncd_thrutime = ? AND apprncd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearancedescriptions
-                WHERE apprncd_apprnc_appearanceid = ? AND apprncd_thrutime = ?
-                FOR UPDATE
-                """);
-        getAppearanceDescriptionsByAppearanceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<AppearanceDescription> getAppearanceDescriptionsByAppearance(Appearance appearance, EntityPermission entityPermission) {
-        return appearanceDescriptionFactory.getEntitiesFromQuery(entityPermission, getAppearanceDescriptionsByAppearanceQueries,
-                appearance, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(AppearanceDescriptions.fields())
+                    .from(AppearanceDescriptions)
+                    .join(Languages).onKey(APPEARANCE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(AppearanceDescriptions.APPEARANCE.eq(appearance.getPrimaryKey()),
+                            AppearanceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    AppearanceDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(AppearanceDescriptions.fields())
+                    .from(AppearanceDescriptions)
+                    .where(AppearanceDescriptions.APPEARANCE.eq(appearance.getPrimaryKey()),
+                            AppearanceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return appearanceDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<AppearanceDescription> getAppearanceDescriptionsByAppearance(Appearance appearance) {
@@ -731,6 +687,9 @@ public class AppearanceControl
     @Inject
     protected AppearanceTextDecorationFactory appearanceTextDecorationFactory;
 
+    @Inject
+    AppearanceTextDecorationTransferCache appearanceTextDecorationTransferCache;
+
     public AppearanceTextDecoration createAppearanceTextDecoration(Appearance appearance, TextDecoration textDecoration, BasePK createdBy) {
         var appearanceTextDecoration = appearanceTextDecorationFactory.create(appearance, textDecoration,
                 session.getStartTime(), Session.MAX_TIME);
@@ -741,45 +700,39 @@ public class AppearanceControl
     }
 
     public long countAppearanceTextDecorationsByAppearance(final Appearance appearance) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM appearancetextdecorations
-                        WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ?
-                        """, appearance, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(AppearanceTextDecorations)
+                .where(AppearanceTextDecorations.APPEARANCE.eq(appearance.getPrimaryKey()),
+                        AppearanceTextDecorations.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countAppearanceTextDecorationsByTextDecoration(final TextDecoration textDecoration) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM appearancetextdecorations
-                        WHERE apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?
-                        """, textDecoration, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getAppearanceTextDecorationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearancetextdecorations
-                WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearancetextdecorations
-                WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?
-                FOR UPDATE
-                """);
-        getAppearanceTextDecorationQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(AppearanceTextDecorations)
+                .where(AppearanceTextDecorations.TEXT_DECORATION.eq(textDecoration.getPrimaryKey()),
+                        AppearanceTextDecorations.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private AppearanceTextDecoration getAppearanceTextDecoration(Appearance appearance, TextDecoration textDecoration, EntityPermission entityPermission) {
-        return appearanceTextDecorationFactory.getEntityFromQuery(entityPermission, getAppearanceTextDecorationQueries,
-                appearance, textDecoration, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(AppearanceTextDecorations.fields())
+                .from(AppearanceTextDecorations)
+                .where(AppearanceTextDecorations.APPEARANCE.eq(appearance.getPrimaryKey()),
+                        AppearanceTextDecorations.TEXT_DECORATION.eq(textDecoration.getPrimaryKey()),
+                        AppearanceTextDecorations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return appearanceTextDecorationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public AppearanceTextDecoration getAppearanceTextDecoration(Appearance appearance, TextDecoration textDecoration) {
@@ -798,33 +751,26 @@ public class AppearanceControl
         return getAppearanceTextDecorationValue(getAppearanceTextDecorationForUpdate(appearance, textDecoration));
     }
 
-    private static final Map<EntityPermission, String> getAppearanceTextDecorationsByAppearanceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearancetextdecorations, textdecorations, textdecorationdetails
-                WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ?
-                AND apprntxtdcrtn_txtdcrtn_textdecorationid = txtdcrtn_textdecorationid AND txtdcrtn_lastdetailid = txtdcrtndt_textdecorationdetailid
-                ORDER BY txtdcrtndt_sortorder, txtdcrtndt_textdecorationname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearancetextdecorations
-                WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ?
-                FOR UPDATE
-                """);
-        getAppearanceTextDecorationsByAppearanceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<AppearanceTextDecoration> getAppearanceTextDecorationsByAppearance(Appearance appearance, EntityPermission entityPermission) {
-        return appearanceTextDecorationFactory.getEntitiesFromQuery(entityPermission, getAppearanceTextDecorationsByAppearanceQueries,
-                appearance, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(AppearanceTextDecorations.fields())
+                    .from(AppearanceTextDecorations)
+                    .join(TextDecorations).onKey(APPEARANCE_TEXT_DECORATIONS_TEXT_DECORATION_FK)
+                    .join(TextDecorationDetails).onKey(TEXT_DECORATIONS_LAST_DETAIL_FK)
+                    .where(AppearanceTextDecorations.APPEARANCE.eq(appearance.getPrimaryKey()),
+                            AppearanceTextDecorations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TextDecorationDetails.SORT_ORDER, TextDecorationDetails.TEXT_DECORATION_NAME),
+                    AppearanceTextDecorationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(AppearanceTextDecorations.fields())
+                    .from(AppearanceTextDecorations)
+                    .where(AppearanceTextDecorations.APPEARANCE.eq(appearance.getPrimaryKey()),
+                            AppearanceTextDecorations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return appearanceTextDecorationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<AppearanceTextDecoration> getAppearanceTextDecorationsByAppearance(Appearance appearance) {
@@ -835,33 +781,26 @@ public class AppearanceControl
         return getAppearanceTextDecorationsByAppearance(appearance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getAppearanceTextDecorationsByTextDecorationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearancetextdecorations, appearances, appearancedetails
-                WHERE apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?
-                AND apprntxttrns_apprnc_appearanceid = apprnc_appearanceid AND apprnc_lastdetailid = apprncdt_appearancedetailid
-                ORDER BY apprncdt_sortorder, apprncdt_appearancename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearancetextdecorations
-                WHERE apprncd_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ?
-                FOR UPDATE
-                """);
-        getAppearanceTextDecorationsByTextDecorationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<AppearanceTextDecoration> getAppearanceTextDecorationsByTextDecoration(TextDecoration textDecoration, EntityPermission entityPermission) {
-        return appearanceTextDecorationFactory.getEntitiesFromQuery(entityPermission, getAppearanceTextDecorationsByTextDecorationQueries,
-                textDecoration, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(AppearanceTextDecorations.fields())
+                    .from(AppearanceTextDecorations)
+                    .join(Appearances).onKey(APPEARANCE_TEXT_DECORATIONS_APPEARANCE_FK)
+                    .join(AppearanceDetails).onKey(APPEARANCES_LAST_DETAIL_FK)
+                    .where(AppearanceTextDecorations.TEXT_DECORATION.eq(textDecoration.getPrimaryKey()),
+                            AppearanceTextDecorations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(AppearanceDetails.SORT_ORDER, AppearanceDetails.APPEARANCE_NAME),
+                    AppearanceTextDecorationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(AppearanceTextDecorations.fields())
+                    .from(AppearanceTextDecorations)
+                    .where(AppearanceTextDecorations.TEXT_DECORATION.eq(textDecoration.getPrimaryKey()),
+                            AppearanceTextDecorations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return appearanceTextDecorationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<AppearanceTextDecoration> getAppearanceTextDecorationsByTextDecoration(TextDecoration textDecoration) {
@@ -921,6 +860,9 @@ public class AppearanceControl
     @Inject
     protected AppearanceTextTransformationFactory appearanceTextTransformationFactory;
 
+    @Inject
+    AppearanceTextTransformationTransferCache appearanceTextTransformationTransferCache;
+
     public AppearanceTextTransformation createAppearanceTextTransformation(Appearance appearance, TextTransformation textTransformation, BasePK createdBy) {
         var appearanceTextTransformation = appearanceTextTransformationFactory.create(appearance, textTransformation,
                 session.getStartTime(), Session.MAX_TIME);
@@ -931,45 +873,39 @@ public class AppearanceControl
     }
 
     public long countAppearanceTextTransformationsByAppearance(final Appearance appearance) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM appearancetexttransformations
-                        WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ?
-                        """, appearance, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(AppearanceTextTransformations)
+                .where(AppearanceTextTransformations.APPEARANCE.eq(appearance.getPrimaryKey()),
+                        AppearanceTextTransformations.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countAppearanceTextTransformationsByTextTransformation(final TextTransformation textTransformation) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM appearancetexttransformations
-                        WHERE apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?
-                        """, textTransformation, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getAppearanceTextTransformationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearancetexttransformations
-                WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearancetexttransformations
-                WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?
-                FOR UPDATE
-                """);
-        getAppearanceTextTransformationQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(AppearanceTextTransformations)
+                .where(AppearanceTextTransformations.TEXT_TRANSFORMATION.eq(textTransformation.getPrimaryKey()),
+                        AppearanceTextTransformations.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private AppearanceTextTransformation getAppearanceTextTransformation(Appearance appearance, TextTransformation textTransformation, EntityPermission entityPermission) {
-        return appearanceTextTransformationFactory.getEntityFromQuery(entityPermission, getAppearanceTextTransformationQueries,
-                appearance, textTransformation, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(AppearanceTextTransformations.fields())
+                .from(AppearanceTextTransformations)
+                .where(AppearanceTextTransformations.APPEARANCE.eq(appearance.getPrimaryKey()),
+                        AppearanceTextTransformations.TEXT_TRANSFORMATION.eq(textTransformation.getPrimaryKey()),
+                        AppearanceTextTransformations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return appearanceTextTransformationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public AppearanceTextTransformation getAppearanceTextTransformation(Appearance appearance, TextTransformation textTransformation) {
@@ -988,33 +924,26 @@ public class AppearanceControl
         return getAppearanceTextTransformationValue(getAppearanceTextTransformationForUpdate(appearance, textTransformation));
     }
 
-    private static final Map<EntityPermission, String> getAppearanceTextTransformationsByAppearanceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearancetexttransformations, texttransformations, texttransformationdetails
-                WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ?
-                AND apprntxttrns_txttrns_texttransformationid = txttrns_texttransformationid AND txttrns_lastdetailid = txttrnsdt_texttransformationdetailid
-                ORDER BY txttrnsdt_sortorder, txttrnsdt_texttransformationname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearancetexttransformations
-                WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ?
-                FOR UPDATE
-                """);
-        getAppearanceTextTransformationsByAppearanceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<AppearanceTextTransformation> getAppearanceTextTransformationsByAppearance(Appearance appearance, EntityPermission entityPermission) {
-        return appearanceTextTransformationFactory.getEntitiesFromQuery(entityPermission, getAppearanceTextTransformationsByAppearanceQueries,
-                appearance, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(AppearanceTextTransformations.fields())
+                    .from(AppearanceTextTransformations)
+                    .join(TextTransformations).onKey(APPEARANCE_TEXT_TRANSFORMATIONS_TEXT_TRANSFORMATION_FK)
+                    .join(TextTransformationDetails).onKey(TEXT_TRANSFORMATIONS_LAST_DETAIL_FK)
+                    .where(AppearanceTextTransformations.APPEARANCE.eq(appearance.getPrimaryKey()),
+                            AppearanceTextTransformations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TextTransformationDetails.SORT_ORDER, TextTransformationDetails.TEXT_TRANSFORMATION_NAME),
+                    AppearanceTextTransformationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(AppearanceTextTransformations.fields())
+                    .from(AppearanceTextTransformations)
+                    .where(AppearanceTextTransformations.APPEARANCE.eq(appearance.getPrimaryKey()),
+                            AppearanceTextTransformations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return appearanceTextTransformationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<AppearanceTextTransformation> getAppearanceTextTransformationsByAppearance(Appearance appearance) {
@@ -1025,33 +954,26 @@ public class AppearanceControl
         return getAppearanceTextTransformationsByAppearance(appearance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getAppearanceTextTransformationsByTextTransformationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM appearancetexttransformations, appearances, appearancedetails
-                WHERE apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?
-                AND apprntxttrns_apprnc_appearanceid = apprnc_appearanceid AND apprnc_lastdetailid = apprncdt_appearancedetailid
-                ORDER BY apprncdt_sortorder, apprncdt_appearancename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM appearancetexttransformations
-                WHERE apprncd_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ?
-                FOR UPDATE
-                """);
-        getAppearanceTextTransformationsByTextTransformationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<AppearanceTextTransformation> getAppearanceTextTransformationsByTextTransformation(TextTransformation textTransformation, EntityPermission entityPermission) {
-        return appearanceTextTransformationFactory.getEntitiesFromQuery(entityPermission, getAppearanceTextTransformationsByTextTransformationQueries,
-                textTransformation, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(AppearanceTextTransformations.fields())
+                    .from(AppearanceTextTransformations)
+                    .join(Appearances).onKey(APPEARANCE_TEXT_TRANSFORMATIONS_APPEARANCE_FK)
+                    .join(AppearanceDetails).onKey(APPEARANCES_LAST_DETAIL_FK)
+                    .where(AppearanceTextTransformations.TEXT_TRANSFORMATION.eq(textTransformation.getPrimaryKey()),
+                            AppearanceTextTransformations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(AppearanceDetails.SORT_ORDER, AppearanceDetails.APPEARANCE_NAME),
+                    AppearanceTextTransformationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(AppearanceTextTransformations.fields())
+                    .from(AppearanceTextTransformations)
+                    .where(AppearanceTextTransformations.TEXT_TRANSFORMATION.eq(textTransformation.getPrimaryKey()),
+                            AppearanceTextTransformations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return appearanceTextTransformationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<AppearanceTextTransformation> getAppearanceTextTransformationsByTextTransformation(TextTransformation textTransformation) {
@@ -1111,6 +1033,9 @@ public class AppearanceControl
     @Inject
     protected EntityAppearanceFactory entityAppearanceFactory;
 
+    @Inject
+    EntityAppearanceTransferCache entityAppearanceTransferCache;
+
     public EntityAppearance createEntityAppearance(EntityInstance entityInstance, Appearance appearance, BasePK createdBy) {
         var entityAppearance = entityAppearanceFactory.create(entityInstance, appearance, session.getStartTime(),
                 Session.MAX_TIME);
@@ -1121,45 +1046,38 @@ public class AppearanceControl
     }
 
     public long countEntityAppearancesByEntityInstance(final EntityInstance entityInstance) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM entityappearances
-                        WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?
-                        """, entityInstance, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAppearances)
+                .where(EntityAppearances.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityAppearances.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityAppearancesByAppearance(final Appearance appearance) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM entityappearances
-                        WHERE eniapprnc_apprnc_appearanceid = ? AND eniapprnc_thrutime = ?
-                        """, appearance, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getEntityAppearanceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM entityappearances
-                WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM entityappearances
-                WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAppearanceQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAppearances)
+                .where(EntityAppearances.APPEARANCE.eq(appearance.getPrimaryKey()),
+                        EntityAppearances.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private EntityAppearance getEntityAppearance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        return entityAppearanceFactory.getEntityFromQuery(entityPermission, getEntityAppearanceQueries,
-                entityInstance, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAppearances.fields())
+                .from(EntityAppearances)
+                .where(EntityAppearances.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityAppearances.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAppearanceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityAppearance getEntityAppearance(EntityInstance entityInstance) {
@@ -1178,58 +1096,40 @@ public class AppearanceControl
         return getEntityAppearanceValue(getEntityAppearanceForUpdate(entityInstance));
     }
 
-    private static final Map<EntityPermission, String> getEntityAppearancesByAppearanceQueries;
-
     public List<EntityAppearance> getEntityAppearancesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityAppearance> entityAppearances;
+        var query = session.getDslContext()
+                .select(EntityAppearances.fields())
+                .from(EntityAppearances)
+                .where(EntityAppearances.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityAppearances.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
 
-        try {
-            var ps = entityAppearanceFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityappearances
-                    WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?
-                    FOR UPDATE
-                    """);
-
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityAppearances = entityAppearanceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAppearances;
-    }
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM entityappearances, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails
-                WHERE eniapprnc_apprnc_appearanceid = ? AND eniapprnc_thrutime = ?
-                AND eniapprnc_eni_entityinstanceid = eni_entityinstanceid
-                AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
-                AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
-                ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM entityappearances
-                WHERE eniapprnc_apprnc_appearanceid = ? AND eniapprnc_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAppearancesByAppearanceQueries = Collections.unmodifiableMap(queryMap);
+        return entityAppearanceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     private List<EntityAppearance> getEntityAppearancesByAppearance(Appearance appearance, EntityPermission entityPermission) {
-        return entityAppearanceFactory.getEntitiesFromQuery(entityPermission, getEntityAppearancesByAppearanceQueries,
-                appearance, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAppearances.fields())
+                    .from(EntityAppearances)
+                    .join(EntityInstances).onKey(ENTITY_APPEARANCES_ENTITY_INSTANCE_FK)
+                    .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                    .where(EntityAppearances.APPEARANCE.eq(appearance.getPrimaryKey()),
+                            EntityAppearances.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ComponentVendorDetails.COMPONENT_VENDOR_NAME, EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME, EntityInstances.ENTITY_UNIQUE),
+                    EntityAppearanceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAppearances.fields())
+                    .from(EntityAppearances)
+                    .where(EntityAppearances.APPEARANCE.eq(appearance.getPrimaryKey()),
+                            EntityAppearances.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return entityAppearanceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityAppearance> getEntityAppearancesByAppearance(Appearance appearance) {
