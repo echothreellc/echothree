@@ -20,7 +20,6 @@ import com.echothree.model.control.core.common.transfer.EntityAliasTypeResultTra
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
-import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.data.core.common.pk.EntityAliasTypePK;
 import com.echothree.model.data.core.server.factory.EntityAliasTypeFactory;
 import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
@@ -29,19 +28,22 @@ import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
-import static java.lang.Math.toIntExact;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class EntityAliasTypeControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of EntityAliasTypeControl */
     protected EntityAliasTypeControl() {
@@ -53,13 +55,7 @@ public class EntityAliasTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected CachedExecutedSearchResultFactory cachedExecutedSearchResultFactory;
-
-    @Inject
     protected EntityAliasTypeFactory entityAliasTypeFactory;
-
-    @Inject
-    protected SearchResultFactory searchResultFactory;
 
     @Inject
     SearchControl searchControl;
@@ -67,83 +63,49 @@ public class EntityAliasTypeControl
     @Inject
     EntityAliasControl entityAliasControl;
 
-    public List<EntityAliasTypeResultTransfer> getEntityAliasTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getEntityAliasTypeIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
-        List<EntityAliasTypeResultTransfer> entityAliasTypeResultTransfers;
-        var includeEntityAliasType = false;
-
-        var options = session.getOptions();
-        if(options != null) {
-            includeEntityAliasType = options.contains(SearchOptions.EntityAliasTypeResultIncludeEntityAliasType);
-        }
+        Select<?> query;
 
         if(cachedSearch == null) {
-            entityAliasTypeResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
-
-            try {
-                var ps = searchResultFactory.prepareStatement(
-                        """
-                        SELECT eni_entityuniqueid
-                        FROM searchresults, entityinstances
-                        WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                        _LIMIT_
-                        """);
-
-                ps.setLong(1, search.getPrimaryKey().getEntityId());
-
-                try (var rs = ps.executeQuery()) {
-                    while(rs.next()) {
-                        var entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
-                        var entityAliasTypeDetail = entityAliasType.getLastDetail();
-                        var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
-
-                        entityAliasTypeResultTransfers.add(new EntityAliasTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                entityTypeDetail.getEntityTypeName(), entityAliasTypeDetail.getEntityAliasTypeName(),
-                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType) : null));
-                    }
-                } catch (SQLException se) {
-                    throw new PersistenceDatabaseException(se);
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
         } else {
             var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
 
-            entityAliasTypeResultTransfers = new ArrayList<>(toIntExact(searchControl.countCachedExecutedSearchResults(cachedExecutedSearch)));
-
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
-            try {
-                var ps = cachedExecutedSearchResultFactory.prepareStatement(
-                        """
-                        SELECT eni_entityuniqueid
-                        FROM cachedexecutedsearchresults, entityinstances
-                        WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid
-                        _LIMIT_
-                        """);
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
+        }
 
-                ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-                try (var rs = ps.executeQuery()) {
-                    while(rs.next()) {
-                        var entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(rs.getLong(1)));
-                        var entityAliasTypeDetail = entityAliasType.getLastDetail();
-                        var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
+    public List<EntityAliasTypeResultTransfer> getEntityAliasTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityIds = getEntityAliasTypeIdsFromUserVisitSearch(userVisitSearch);
+        var entityAliasTypeResultTransfers = new ArrayList<EntityAliasTypeResultTransfer>(entityIds.size());
+        var options = session.getOptions();
+        var includeEntityAliasType = options != null && options.contains(SearchOptions.EntityAliasTypeResultIncludeEntityAliasType);
 
-                        entityAliasTypeResultTransfers.add(new EntityAliasTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                entityTypeDetail.getEntityTypeName(), entityAliasTypeDetail.getEntityAliasTypeName(),
-                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType) : null));
-                    }
-                } catch (SQLException se) {
-                    throw new PersistenceDatabaseException(se);
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
+        for(var entityUniqueId : entityIds) {
+            var entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new EntityAliasTypePK(entityUniqueId));
+            var entityAliasTypeDetail = entityAliasType.getLastDetail();
+            var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
+
+            entityAliasTypeResultTransfers.add(new EntityAliasTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                    entityTypeDetail.getEntityTypeName(), entityAliasTypeDetail.getEntityAliasTypeName(),
+                    includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType) : null));
         }
 
         return entityAliasTypeResultTransfers;
@@ -152,14 +114,10 @@ public class EntityAliasTypeControl
     public List<EntityAliasTypeObject> getEntityAliasTypeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var entityAliasTypeObjects = new ArrayList<EntityAliasTypeObject>();
 
-        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            while(rs.next()) {
-                var entityAliasType = entityAliasControl.getEntityAliasTypeByPK(new EntityAliasTypePK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+        for(var entityUniqueId : getEntityAliasTypeIdsFromUserVisitSearch(userVisitSearch)) {
+            var entityAliasType = entityAliasControl.getEntityAliasTypeByPK(new EntityAliasTypePK(entityUniqueId));
 
-                entityAliasTypeObjects.add(new EntityAliasTypeObject(entityAliasType, null));
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            entityAliasTypeObjects.add(new EntityAliasTypeObject(entityAliasType, null));
         }
 
         return entityAliasTypeObjects;

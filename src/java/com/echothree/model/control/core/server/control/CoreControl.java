@@ -55,6 +55,39 @@ import com.echothree.model.control.core.common.transfer.EntityStringAttributeTra
 import com.echothree.model.control.core.common.transfer.EntityStringDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeDefaultTransfer;
+import com.echothree.model.control.core.server.transfer.EntityAttributeDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityAttributeEntityTypeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityAttributeTypeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityBlobAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityBooleanAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityBooleanDefaultTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityClobAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityCollectionAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityDateAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityDateDefaultTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityEntityAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityGeoPointAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityGeoPointDefaultTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityIntegerAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityIntegerDefaultTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityIntegerRangeDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityIntegerRangeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityListItemAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityListItemDefaultTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityListItemDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityListItemTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityLongAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityLongDefaultTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityLongRangeDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityLongRangeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityMultipleListItemAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityMultipleListItemDefaultTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityNameAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityStringAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityStringDefaultTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityTimeAttributeTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityTimeDefaultTransferCache;
 import com.echothree.model.data.core.common.pk.EntityAttributePK;
 import com.echothree.model.data.core.common.pk.EntityAttributeTypePK;
 import com.echothree.model.data.core.common.pk.EntityIntegerRangePK;
@@ -190,25 +223,101 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_DETAILS_ENTITY_ATTRIBUTE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_DETAILS_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_TYPES_ALLOWED_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_ENTITY_TYPES_ENTITY_ATTRIBUTE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTE_WORKFLOWS_ENTITY_ATTRIBUTE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_COLLECTION_ATTRIBUTES_ENTITY_INSTANCE_ATTRIBUTE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INTEGER_RANGES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INTEGER_RANGE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LIST_ITEMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LIST_ITEM_ATTRIBUTES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LIST_ITEM_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LONG_RANGES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LONG_RANGE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_MULTIPLE_LIST_ITEM_ATTRIBUTES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_MULTIPLE_LIST_ITEM_ATTRIBUTES_ENTITY_LIST_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_MULTIPLE_LIST_ITEM_DEFAULTS_ENTITY_ATTRIBUTE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_MULTIPLE_LIST_ITEM_DEFAULTS_ENTITY_LIST_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_NAME_ATTRIBUTES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_STRING_DEFAULTS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeBlobs.EntityAttributeBlobs;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeDescriptions.EntityAttributeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeDetails.EntityAttributeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeEntityAttributeGroups.EntityAttributeEntityAttributeGroups;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeEntityTypes.EntityAttributeEntityTypes;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeIntegers.EntityAttributeIntegers;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeListItems.EntityAttributeListItems;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeLongs.EntityAttributeLongs;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeNumerics.EntityAttributeNumerics;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeStrings.EntityAttributeStrings;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeTypeDescriptions.EntityAttributeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeTypes.EntityAttributeTypes;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeWorkflows.EntityAttributeWorkflows;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributes.EntityAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityBlobAttributes.EntityBlobAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityBooleanAttributes.EntityBooleanAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityBooleanDefaults.EntityBooleanDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityClobAttributes.EntityClobAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityCollectionAttributes.EntityCollectionAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityDateAttributes.EntityDateAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityDateDefaults.EntityDateDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityEntityAttributes.EntityEntityAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityGeoPointAttributes.EntityGeoPointAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityGeoPointDefaults.EntityGeoPointDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityIntegerAttributes.EntityIntegerAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityIntegerDefaults.EntityIntegerDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityIntegerRangeDescriptions.EntityIntegerRangeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.EntityIntegerRangeDetails.EntityIntegerRangeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityIntegerRanges.EntityIntegerRanges;
+import static com.echothree.model.jooq.server.tables.core.EntityListItemAttributes.EntityListItemAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityListItemDefaults.EntityListItemDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityListItemDescriptions.EntityListItemDescriptions;
+import static com.echothree.model.jooq.server.tables.core.EntityListItemDetails.EntityListItemDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityListItems.EntityListItems;
+import static com.echothree.model.jooq.server.tables.core.EntityLongAttributes.EntityLongAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityLongDefaults.EntityLongDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityLongRangeDescriptions.EntityLongRangeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.EntityLongRangeDetails.EntityLongRangeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityLongRanges.EntityLongRanges;
+import static com.echothree.model.jooq.server.tables.core.EntityMultipleListItemAttributes.EntityMultipleListItemAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityMultipleListItemDefaults.EntityMultipleListItemDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityNameAttributes.EntityNameAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityStringAttributes.EntityStringAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityStringDefaults.EntityStringDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityTimeAttributes.EntityTimeAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityTimeDefaults.EntityTimeDefaults;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class CoreControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
     
     @Inject
     protected EntityAttributeGroupControl entityAttributeGroupControl;
@@ -224,6 +333,9 @@ public class CoreControl
 
     @Inject
     protected EntityAttributeTypeFactory entityAttributeTypeFactory;
+
+    @Inject
+    EntityAttributeTypeTransferCache entityAttributeTypeTransferCache;
 
     public EntityAttributeType createEntityAttributeType(String entityAttributeTypeName) {
         var entityAttributeType = entityAttributeTypeFactory.create(entityAttributeTypeName);
@@ -247,44 +359,30 @@ public class CoreControl
     }
 
     public long countEntityAttributeTypes() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributetypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public EntityAttributeType getEntityAttributeTypeByName(String entityAttributeTypeName) {
-        EntityAttributeType entityAttributeType;
+        var query = session.getDslContext()
+                .select(EntityAttributeTypes.fields())
+                .from(EntityAttributeTypes)
+                .where(EntityAttributeTypes.ENTITY_ATTRIBUTE_TYPE_NAME.eq(entityAttributeTypeName));
         
-        try {
-            var ps = entityAttributeTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityattributetypes
-                    WHERE enat_entityattributetypename = ?
-                    """);
-            
-            ps.setString(1, entityAttributeTypeName);
-            
-            entityAttributeType = entityAttributeTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityAttributeType;
+        return entityAttributeTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<EntityAttributeType> getEntityAttributeTypes() {
-        var ps = entityAttributeTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM entityattributetypes
-                ORDER BY enat_entityattributetypename
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityAttributeTypes.fields())
+                .from(EntityAttributeTypes)
+                .orderBy(EntityAttributeTypes.ENTITY_ATTRIBUTE_TYPE_NAME),
+                EntityAttributeTypeFactory.class);
         
-        return entityAttributeTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return entityAttributeTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(UserVisit userVisit, EntityAttributeType entityAttributeType) {
@@ -346,25 +444,13 @@ public class CoreControl
     }
     
     public EntityAttributeTypeDescription getEntityAttributeTypeDescription(EntityAttributeType entityAttributeType, Language language) {
-        EntityAttributeTypeDescription entityAttributeTypeDescription;
+        var query = session.getDslContext()
+                .select(EntityAttributeTypeDescriptions.fields())
+                .from(EntityAttributeTypeDescriptions)
+                .where(EntityAttributeTypeDescriptions.ENTITY_ATTRIBUTE_TYPE.eq(entityAttributeType.getPrimaryKey()),
+                        EntityAttributeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
         
-        try {
-            var ps = entityAttributeTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityattributetypedescriptions
-                    WHERE enatd_enat_entityattributetypeid = ? AND enatd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, entityAttributeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            entityAttributeTypeDescription = entityAttributeTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityAttributeTypeDescription;
+        return entityAttributeTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestEntityAttributeTypeDescription(EntityAttributeType entityAttributeType, Language language) {
@@ -389,10 +475,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected EntityAttributeDetailFactory entityAttributeDetailFactory;
+
+    @Inject
     protected EntityAttributeFactory entityAttributeFactory;
 
     @Inject
-    protected EntityAttributeDetailFactory entityAttributeDetailFactory;
+    EntityAttributeTransferCache entityAttributeTransferCache;
 
     public EntityAttribute createEntityAttribute(EntityType entityType, String entityAttributeName,
             EntityAttributeType entityAttributeType, Boolean trackRevisions, Integer sortOrder, BasePK createdBy) {
@@ -432,83 +521,67 @@ public class CoreControl
     }
 
     public long countEntityAttributesByEntityType(EntityType entityType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributes, entityattributedetails
-                WHERE ena_activedetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
-                """,
-                entityType);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributes)
+                .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                .where(EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType, EntityAttributeType entityAttributeType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributes, entityattributedetails
-                WHERE ena_activedetailid = enadt_entityattributedetailid
-                AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?
-                """,
-                entityType, entityAttributeType);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributes)
+                .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                .where(EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityAttributeDetails.ENTITY_ATTRIBUTE_TYPE.eq(entityAttributeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityAttributesByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
-                WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
-                AND enaenagp_ena_entityattributeid = ena_entityattributeid
-                AND ena_lastdetailid = enadt_entityattributedetailid
-                """,
-                entityAttributeGroup, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeEntityAttributeGroups)
+                .join(EntityAttributes).onKey(ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK)
+                .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
+                .where(EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP.eq(entityAttributeGroup.getPrimaryKey()),
+                        EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityAttributesByEntityTypeAndWorkflow(final EntityType entityType, final Workflow workflow) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM entityattributes
-                        JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid
-                        JOIN entityattributetypes ON enadt_enat_entityattributetypeid = enat_entityattributetypeid
-                        JOIN entityattributeworkflows ON ena_entityattributeid = enawkfl_ena_entityattributeid AND enawkfl_thrutime = ?
-                        WHERE enadt_ent_entitytypeid = ? AND enat_entityattributetypename = ? AND enawkfl_wkfl_workflowid = ?
-                        """, Session.MAX_TIME, entityType, EntityAttributeTypes.WORKFLOW.name(), workflow);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributes)
+                .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                .join(EntityAttributeTypes).onKey(ENTITY_ATTRIBUTE_DETAILS_ENTITY_ATTRIBUTE_TYPE_FK)
+                .join(EntityAttributeWorkflows).onKey(ENTITY_ATTRIBUTE_WORKFLOWS_ENTITY_ATTRIBUTE_FK)
+                .where(EntityAttributeWorkflows.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityAttributeTypes.ENTITY_ATTRIBUTE_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityAttributeTypes.WORKFLOW.name()),
+                        EntityAttributeWorkflows.WORKFLOW.eq(workflow.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName, EntityPermission entityPermission) {
-        EntityAttribute entityAttribute;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributes, entityattributedetails
-                        WHERE ena_activedetailid = enadt_entityattributedetailid
-                        AND enadt_ent_entitytypeid = ? AND enadt_entityattributename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributes, entityattributedetails
-                        WHERE ena_activedetailid = enadt_entityattributedetailid
-                        AND enadt_ent_entitytypeid = ? AND enadt_entityattributename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributes.fields())
+                .from(EntityAttributes)
+                .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                .where(EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME.eq(entityAttributeName));
 
-            var ps = entityAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setString(2, entityAttributeName);
-            
-            entityAttribute = entityAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityAttribute;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName) {
@@ -528,40 +601,23 @@ public class CoreControl
     }
 
     private List<EntityAttribute> getEntityAttributesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributes.fields())
+                    .from(EntityAttributes)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                    .where(EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                    .orderBy(EntityAttributeDetails.SORT_ORDER, EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME),
+                    EntityAttributeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributes.fields())
+                    .from(EntityAttributes)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                    .where(EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributes, entityattributedetails
-                        WHERE ena_activedetailid = enadt_entityattributedetailid
-                        AND enadt_ent_entitytypeid = ?
-                        ORDER BY enadt_sortorder, enadt_entityattributename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributes, entityattributedetails
-                        WHERE ena_activedetailid = enadt_entityattributedetailid
-                        AND enadt_ent_entitytypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeFactory.prepareStatement(query);
-
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-
-            entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributes;
+        return entityAttributeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityAttribute> getEntityAttributesByEntityType(EntityType entityType) {
@@ -573,44 +629,27 @@ public class CoreControl
     }
 
     private List<EntityAttribute> getEntityAttributesByName(String entityAttributeName, EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributes.fields())
+                    .from(EntityAttributes)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                    .join(EntityTypes).onKey(ENTITY_ATTRIBUTE_DETAILS_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                    .where(EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME.eq(entityAttributeName))
+                    .orderBy(ComponentVendorDetails.COMPONENT_VENDOR_NAME, EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME, EntityAttributeDetails.SORT_ORDER, EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME),
+                    EntityAttributeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributes.fields())
+                    .from(EntityAttributes)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                    .where(EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME.eq(entityAttributeName))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributes
-                        JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid
-                        JOIN entitytypes ON enadt_ent_entitytypeid = ent_entitytypeid
-                        JOIN entitytypedetails ON ent_lastdetailid = entdt_entitytypedetailid
-                        JOIN componentvendors ON entdt_cvnd_componentvendorid = cvnd_componentvendorid
-                        JOIN componentvendordetails ON cvnd_lastdetailid = cvndd_componentvendordetailid
-                        WHERE enadt_entityattributename = ?
-                        ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, enadt_sortorder, enadt_entityattributename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributes
-                        JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid
-                        WHERE enadt_entityattributename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeFactory.prepareStatement(query);
-
-            ps.setString(1, entityAttributeName);
-
-            entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityAttributes;
+        return entityAttributeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityAttribute> getEntityAttributesByName(String entityAttributeName) {
@@ -623,41 +662,25 @@ public class CoreControl
 
     private List<EntityAttribute> getEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType,
             EntityAttributeType entityAttributeType, EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributes, entityattributedetails
-                        WHERE ena_activedetailid = enadt_entityattributedetailid
-                        AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?
-                        ORDER BY enadt_sortorder, enadt_entityattributename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributes, entityattributedetails
-                        WHERE ena_activedetailid = enadt_entityattributedetailid
-                        AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributes.fields())
+                    .from(EntityAttributes)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                    .where(EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                            EntityAttributeDetails.ENTITY_ATTRIBUTE_TYPE.eq(entityAttributeType.getPrimaryKey()))
+                    .orderBy(EntityAttributeDetails.SORT_ORDER, EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME),
+                    EntityAttributeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributes.fields())
+                    .from(EntityAttributes)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                    .where(EntityAttributeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                            EntityAttributeDetails.ENTITY_ATTRIBUTE_TYPE.eq(entityAttributeType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = entityAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityAttributeType.getPrimaryKey().getEntityId());
-            
-            entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityAttributes;
+        return entityAttributeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityAttribute> getEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType,
@@ -672,43 +695,27 @@ public class CoreControl
     
     private List<EntityAttribute> getEntityAttributesByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup,
             EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
-                        WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
-                        AND enaenagp_ena_entityattributeid = ena_entityattributeid
-                        AND ena_lastdetailid = enadt_entityattributedetailid
-                        ORDER BY enaenagp_sortorder, enadt_sortorder, enadt_entityattributename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
-                        WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
-                        AND enaenagp_ena_entityattributeid = ena_entityattributeid
-                        AND ena_lastdetailid = enadt_entityattributedetailid
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributes.fields())
+                    .from(EntityAttributes)
+                    .join(EntityAttributeEntityAttributeGroups).onKey(ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
+                    .where(EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP.eq(entityAttributeGroup.getPrimaryKey()),
+                            EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityAttributeEntityAttributeGroups.SORT_ORDER, EntityAttributeDetails.SORT_ORDER, EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME),
+                    EntityAttributeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributes.fields())
+                    .from(EntityAttributes)
+                    .join(EntityAttributeEntityAttributeGroups).onKey(ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUPS_ENTITY_ATTRIBUTE_FK)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
+                    .where(EntityAttributeEntityAttributeGroups.ENTITY_ATTRIBUTE_GROUP.eq(entityAttributeGroup.getPrimaryKey()),
+                            EntityAttributeEntityAttributeGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityAttributes;
+        return entityAttributeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityAttribute> getEntityAttributesByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
@@ -778,7 +785,7 @@ public class CoreControl
     public void deleteEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         var entityAttributeDetail = entityAttribute.getLastDetailForUpdate();
         var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
-        var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
+        var entityAttributeType = com.echothree.model.control.core.common.EntityAttributeTypes.valueOf(entityAttributeTypeName);
 
         switch(entityAttributeType) {
             case BOOLEAN -> {
@@ -874,33 +881,33 @@ public class CoreControl
         var entityAttributes = getEntityAttributesByEntityType(entityInstance.getEntityType());
         
         entityAttributes.stream().map((entityAttribute) -> entityAttribute.getLastDetailForUpdate().getEntityAttributeType().getEntityAttributeTypeName()).forEach((entityAttributeTypeName) -> {
-            if(entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
+            if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.BOOLEAN.name())) {
                 deleteEntityBooleanAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.NAME.name())) {
                 deleteEntityNameAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.INTEGER.name())) {
                 deleteEntityIntegerAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.LONG.name())) {
                 deleteEntityLongAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.STRING.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.STRING.name())) {
                 deleteEntityStringAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.GEOPOINT.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.GEOPOINT.name())) {
                 deleteEntityGeoPointAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.BLOB.name())) {
                 deleteEntityBlobAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.CLOB.name())) {
                 deleteEntityClobAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.ENTITY.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.ENTITY.name())) {
                 deleteEntityEntityAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.COLLECTION.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.COLLECTION.name())) {
                 deleteEntityCollectionAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.DATE.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.DATE.name())) {
                 deleteEntityDateAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.TIME.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.TIME.name())) {
                 deleteEntityTimeAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.LISTITEM.name())) {
                 deleteEntityListItemAttributesByEntityInstance(entityInstance, deletedBy);
-            } else if(entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
+            } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.MULTIPLELISTITEM.name())) {
                 deleteEntityMultipleListItemAttributesByEntityInstance(entityInstance, deletedBy);
             }
         });
@@ -923,6 +930,9 @@ public class CoreControl
     @Inject
     protected EntityAttributeDescriptionFactory entityAttributeDescriptionFactory;
 
+    @Inject
+    EntityAttributeDescriptionTransferCache entityAttributeDescriptionTransferCache;
+
     public EntityAttributeDescription createEntityAttributeDescription(EntityAttribute entityAttribute, Language language,
             String description, BasePK createdBy) {
         var entityAttributeDescription = entityAttributeDescriptionFactory.create(
@@ -935,38 +945,19 @@ public class CoreControl
     
     private EntityAttributeDescription getEntityAttributeDescription(EntityAttribute entityAttribute, Language language,
             EntityPermission entityPermission) {
-        EntityAttributeDescription entityAttributeDescription;
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeDescriptions.fields())
+                .from(EntityAttributeDescriptions)
+                .where(EntityAttributeDescriptions.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityAttributeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributedescriptions
-                        WHERE enad_ena_entityattributeid = ? AND enad_lang_languageid = ? AND enad_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributedescriptions
-                        WHERE enad_ena_entityattributeid = ? AND enad_lang_languageid = ? AND enad_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityAttributeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityAttributeDescription = entityAttributeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityAttributeDescription;
+        return entityAttributeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityAttributeDescription getEntityAttributeDescription(EntityAttribute entityAttribute, Language language) {
@@ -987,39 +978,24 @@ public class CoreControl
     
     private List<EntityAttributeDescription> getEntityAttributeDescriptionsByEntityAttribute(EntityAttribute entityAttribute,
             EntityPermission entityPermission) {
-        List<EntityAttributeDescription> entityAttributeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributedescriptions, languages
-                        WHERE enad_ena_entityattributeid = ? AND enad_thrutime = ? AND enad_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityattributedescriptions
-                        WHERE enad_ena_entityattributeid = ? AND enad_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributeDescriptions.fields())
+                    .from(EntityAttributeDescriptions)
+                    .join(Languages).onKey(ENTITY_ATTRIBUTE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(EntityAttributeDescriptions.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityAttributeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    EntityAttributeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributeDescriptions.fields())
+                    .from(EntityAttributeDescriptions)
+                    .where(EntityAttributeDescriptions.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityAttributeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityAttributeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityAttributeDescriptions = entityAttributeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityAttributeDescriptions;
+        return entityAttributeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityAttributeDescription> getEntityAttributeDescriptionsByEntityAttribute(EntityAttribute entityAttribute) {
@@ -1113,28 +1089,19 @@ public class CoreControl
         return entityAttributeBlob;
     }
     
-    private static final Map<EntityPermission, String> getEntityAttributeBlobQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityattributeblobs
-                WHERE enab_ena_entityattributeid = ? AND enab_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM entityattributeblobs
-                WHERE enab_ena_entityattributeid = ? AND enab_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeBlobQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private EntityAttributeBlob getEntityAttributeBlob(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return entityAttributeBlobFactory.getEntityFromQuery(entityPermission, getEntityAttributeBlobQueries,
-                entityAttribute, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeBlobs.fields())
+                .from(EntityAttributeBlobs)
+                .where(EntityAttributeBlobs.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeBlobs.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeBlobFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityAttributeBlob getEntityAttributeBlob(EntityAttribute entityAttribute) {
@@ -1202,28 +1169,19 @@ public class CoreControl
         return entityAttributeString;
     }
     
-    private static final Map<EntityPermission, String> getEntityAttributeStringQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityattributestrings
-                WHERE enas_ena_entityattributeid = ? AND enas_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM entityattributestrings
-                WHERE enas_ena_entityattributeid = ? AND enas_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeStringQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private EntityAttributeString getEntityAttributeString(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return entityAttributeStringFactory.getEntityFromQuery(entityPermission, getEntityAttributeStringQueries,
-                entityAttribute, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeStrings.fields())
+                .from(EntityAttributeStrings)
+                .where(EntityAttributeStrings.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeStrings.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeStringFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityAttributeString getEntityAttributeString(EntityAttribute entityAttribute) {
@@ -1292,28 +1250,19 @@ public class CoreControl
         return entityAttributeInteger;
     }
     
-    private static final Map<EntityPermission, String> getEntityAttributeIntegerQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityattributeintegers
-                WHERE enai_ena_entityattributeid = ? AND enai_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM entityattributeintegers
-                WHERE enai_ena_entityattributeid = ? AND enai_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeIntegerQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private EntityAttributeInteger getEntityAttributeInteger(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return entityAttributeIntegerFactory.getEntityFromQuery(entityPermission, getEntityAttributeIntegerQueries,
-                entityAttribute, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeIntegers.fields())
+                .from(EntityAttributeIntegers)
+                .where(EntityAttributeIntegers.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeIntegers.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeIntegerFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityAttributeInteger getEntityAttributeInteger(EntityAttribute entityAttribute) {
@@ -1386,28 +1335,19 @@ public class CoreControl
         return entityAttributeLong;
     }
     
-    private static final Map<EntityPermission, String> getEntityAttributeLongQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityattributelongs
-                WHERE enal_ena_entityattributeid = ? AND enal_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM entityattributelongs
-                WHERE enal_ena_entityattributeid = ? AND enal_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeLongQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private EntityAttributeLong getEntityAttributeLong(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return entityAttributeLongFactory.getEntityFromQuery(entityPermission, getEntityAttributeLongQueries,
-                entityAttribute, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeLongs.fields())
+                .from(EntityAttributeLongs)
+                .where(EntityAttributeLongs.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeLongs.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeLongFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityAttributeLong getEntityAttributeLong(EntityAttribute entityAttribute) {
@@ -1479,39 +1419,28 @@ public class CoreControl
     }
     
     public long countEntityAttributeNumericsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributenumerics
-                WHERE enan_uomt_unitofmeasuretypeid = ? AND enan_thrutime = ?
-                """,
-                unitOfMeasureType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getEntityAttributeNumericQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM entityattributenumerics
-                WHERE enan_ena_entityattributeid = ? AND enan_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM entityattributenumerics
-                WHERE enan_ena_entityattributeid = ? AND enan_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeNumericQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeNumerics)
+                .where(EntityAttributeNumerics.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        EntityAttributeNumerics.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private EntityAttributeNumeric getEntityAttributeNumeric(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return entityAttributeNumericFactory.getEntityFromQuery(entityPermission, getEntityAttributeNumericQueries,
-                entityAttribute, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeNumerics.fields())
+                .from(EntityAttributeNumerics)
+                .where(EntityAttributeNumerics.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeNumerics.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeNumericFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityAttributeNumeric getEntityAttributeNumeric(EntityAttribute entityAttribute) {
@@ -1580,37 +1509,28 @@ public class CoreControl
     }
     
     public long countEntityAttributeListItemsByEntityListItemSequence(Sequence entityListItemSequence) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributelistitems
-                WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?
-                """,
-                entityListItemSequence, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getEntityAttributeListItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityattributelistitems
-                WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM entityattributelistitems
-                WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeListItemQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeListItems)
+                .where(EntityAttributeListItems.ENTITY_LIST_ITEM_SEQUENCE.eq(entityListItemSequence.getPrimaryKey()),
+                        EntityAttributeListItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private EntityAttributeListItem getEntityAttributeListItem(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return entityAttributeListItemFactory.getEntityFromQuery(entityPermission, getEntityAttributeListItemQueries,
-                entityAttribute, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeListItems.fields())
+                .from(EntityAttributeListItems)
+                .where(EntityAttributeListItems.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeListItems.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeListItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityAttributeListItem getEntityAttributeListItem(EntityAttribute entityAttribute) {
@@ -1679,39 +1599,28 @@ public class CoreControl
     }
 
     public long countEntityAttributeWorkflowsByWorkflow(Workflow workflow) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityattributeworkflows
-                WHERE enawkfl_wkfl_workflowid = ? AND enawkfl_thrutime = ?
-                """,
-                workflow, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getEntityAttributeWorkflowQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM entityattributeworkflows
-                WHERE enawkfl_ena_entityattributeid = ? AND enawkfl_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM entityattributeworkflows
-                WHERE enawkfl_ena_entityattributeid = ? AND enawkfl_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeWorkflowQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeWorkflows)
+                .where(EntityAttributeWorkflows.WORKFLOW.eq(workflow.getPrimaryKey()),
+                        EntityAttributeWorkflows.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private EntityAttributeWorkflow getEntityAttributeWorkflow(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return entityAttributeWorkflowFactory.getEntityFromQuery(entityPermission, getEntityAttributeWorkflowQueries,
-                entityAttribute, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeWorkflows.fields())
+                .from(EntityAttributeWorkflows)
+                .where(EntityAttributeWorkflows.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeWorkflows.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeWorkflowFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityAttributeWorkflow getEntityAttributeWorkflow(EntityAttribute entityAttribute) {
@@ -1767,10 +1676,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected EntityListItemDetailFactory entityListItemDetailFactory;
+
+    @Inject
     protected EntityListItemFactory entityListItemFactory;
 
     @Inject
-    protected EntityListItemDetailFactory entityListItemDetailFactory;
+    EntityListItemTransferCache entityListItemTransferCache;
 
     public EntityListItem createEntityListItem(EntityAttribute entityAttribute, String entityListItemName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -1821,47 +1733,28 @@ public class CoreControl
     }
     
     public long countEntityListItems() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entitylistitems, entitylistitemdetails
-                WHERE eli_activedetailid = elidt_entitylistitemdetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityListItems)
+                .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private EntityListItem getDefaultEntityListItem(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityListItem entityListItem;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitems, entitylistitemdetails
-                        WHERE eli_activedetailid = elidt_entitylistitemdetailid
-                        AND elidt_ena_entityattributeid = ? AND elidt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitems, entitylistitemdetails
-                        WHERE eli_activedetailid = elidt_entitylistitemdetailid
-                        AND elidt_ena_entityattributeid = ? AND elidt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityListItems.fields())
+                .from(EntityListItems)
+                .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                .where(EntityListItemDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityListItemDetails.IS_DEFAULT.eq(true));
 
-            var ps = entityListItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            
-            entityListItem = entityListItemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityListItem;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityListItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityListItem getDefaultEntityListItem(EntityAttribute entityAttribute) {
@@ -1877,39 +1770,19 @@ public class CoreControl
     }
     
     public EntityListItem getEntityListItemByName(EntityAttribute entityAttribute, String entityListItemName, EntityPermission entityPermission) {
-        EntityListItem entityListItem;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitems, entitylistitemdetails
-                        WHERE eli_activedetailid = elidt_entitylistitemdetailid
-                        AND elidt_ena_entityattributeid = ? AND elidt_entitylistitemname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitems, entitylistitemdetails
-                        WHERE eli_activedetailid = elidt_entitylistitemdetailid
-                        AND elidt_ena_entityattributeid = ? AND elidt_entitylistitemname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityListItems.fields())
+                .from(EntityListItems)
+                .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                .where(EntityListItemDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityListItemDetails.ENTITY_LIST_ITEM_NAME.eq(entityListItemName));
 
-            var ps = entityListItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setString(2, entityListItemName);
-            
-            entityListItem = entityListItemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityListItem;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityListItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityListItem getEntityListItemByName(EntityAttribute entityAttribute, String entityListItemName) {
@@ -1929,38 +1802,23 @@ public class CoreControl
     }
 
     private List<EntityListItem> getEntityListItems(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityListItem> entityListItems;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityListItems.fields())
+                    .from(EntityListItems)
+                    .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(EntityListItemDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                    .orderBy(EntityListItemDetails.SORT_ORDER, EntityListItemDetails.ENTITY_LIST_ITEM_NAME),
+                    EntityListItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityListItems.fields())
+                    .from(EntityListItems)
+                    .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(EntityListItemDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitems, entitylistitemdetails
-                        WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ?
-                        ORDER BY elidt_sortorder, elidt_entitylistitemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitems, entitylistitemdetails
-                        WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityListItemFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-
-            entityListItems = entityListItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityListItems;
+        return entityListItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityListItem> getEntityListItems(EntityAttribute entityAttribute) {
@@ -1972,38 +1830,23 @@ public class CoreControl
     }
 
     private List<EntityListItem> getEntityListItemsByName(String entityListItemName, EntityPermission entityPermission) {
-        List<EntityListItem> entityListItems;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityListItems.fields())
+                    .from(EntityListItems)
+                    .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(EntityListItemDetails.ENTITY_LIST_ITEM_NAME.eq(entityListItemName))
+                    .orderBy(EntityListItemDetails.SORT_ORDER, EntityListItemDetails.ENTITY_LIST_ITEM_NAME),
+                    EntityListItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityListItems.fields())
+                    .from(EntityListItems)
+                    .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(EntityListItemDetails.ENTITY_LIST_ITEM_NAME.eq(entityListItemName))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitems, entitylistitemdetails
-                        WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_entitylistitemname = ?
-                        ORDER BY elidt_sortorder, elidt_entitylistitemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitems, entitylistitemdetails
-                        WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_entitylistitemname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityListItemFactory.prepareStatement(query);
-
-            ps.setString(1, entityListItemName);
-
-            entityListItems = entityListItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityListItems;
+        return entityListItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityListItem> getEntityListItemsByName(String entityListItemName) {
@@ -2015,13 +1858,13 @@ public class CoreControl
     }
 
     public long countEntityListItems(EntityAttribute entityAttribute) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entitylistitems, entitylistitemdetails
-                WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ?
-                """,
-                entityAttribute);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityListItems)
+                .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                .where(EntityListItemDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public EntityListItemTransfer getEntityListItemTransfer(UserVisit userVisit, EntityListItem entityListItem, EntityInstance entityInstance) {
@@ -2127,10 +1970,10 @@ public class CoreControl
         var entityListItemDetail = entityListItem.getLastDetailForUpdate();
         var entityAttributeTypeName = entityListItemDetail.getEntityAttribute().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         
-        if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
+        if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.LISTITEM.name())) {
             deleteEntityListItemDefaultByEntityListItem(entityListItem, deletedBy);
             deleteEntityListItemAttributesByEntityListItem(entityListItem, deletedBy);
-        } else if(entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
+        } else if(entityAttributeTypeName.equals(com.echothree.model.control.core.common.EntityAttributeTypes.MULTIPLELISTITEM.name())) {
             deleteEntityMultipleListItemDefaultsByEntityListItem(entityListItem, deletedBy);
             deleteEntityMultipleListItemAttributesByEntityListItem(entityListItem, deletedBy);
         }
@@ -2183,6 +2026,9 @@ public class CoreControl
     @Inject
     protected EntityListItemDescriptionFactory entityListItemDescriptionFactory;
 
+    @Inject
+    EntityListItemDescriptionTransferCache entityListItemDescriptionTransferCache;
+
     public EntityListItemDescription createEntityListItemDescription(EntityListItem entityListItem, Language language, String description, BasePK createdBy) {
         var entityListItemDescription = entityListItemDescriptionFactory.create(entityListItem, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2193,38 +2039,19 @@ public class CoreControl
     }
     
     private EntityListItemDescription getEntityListItemDescription(EntityListItem entityListItem, Language language, EntityPermission entityPermission) {
-        EntityListItemDescription entityListItemDescription;
+        var baseQuery = session.getDslContext()
+                .select(EntityListItemDescriptions.fields())
+                .from(EntityListItemDescriptions)
+                .where(EntityListItemDescriptions.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                        EntityListItemDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityListItemDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemdescriptions
-                        WHERE elid_eli_entitylistitemid = ? AND elid_lang_languageid = ? AND elid_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemdescriptions
-                        WHERE elid_eli_entitylistitemid = ? AND elid_lang_languageid = ? AND elid_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityListItemDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityListItemDescription = entityListItemDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityListItemDescription;
+        return entityListItemDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityListItemDescription getEntityListItemDescription(EntityListItem entityListItem, Language language) {
@@ -2244,39 +2071,24 @@ public class CoreControl
     }
     
     private List<EntityListItemDescription> getEntityListItemDescriptionsByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityListItemDescription> entityListItemDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemdescriptions, languages
-                        WHERE elid_eli_entitylistitemid = ? AND elid_thrutime = ? AND elid_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemdescriptions
-                        WHERE elid_eli_entitylistitemid = ? AND elid_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityListItemDescriptions.fields())
+                    .from(EntityListItemDescriptions)
+                    .join(Languages).onKey(ENTITY_LIST_ITEM_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(EntityListItemDescriptions.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                            EntityListItemDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    EntityListItemDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityListItemDescriptions.fields())
+                    .from(EntityListItemDescriptions)
+                    .where(EntityListItemDescriptions.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                            EntityListItemDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityListItemDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityListItemDescriptions = entityListItemDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityListItemDescriptions;
+        return entityListItemDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityListItemDescription> getEntityListItemDescriptionsByEntityListItem(EntityListItem entityListItem) {
@@ -2356,10 +2168,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected EntityIntegerRangeDetailFactory entityIntegerRangeDetailFactory;
+
+    @Inject
     protected EntityIntegerRangeFactory entityIntegerRangeFactory;
 
     @Inject
-    protected EntityIntegerRangeDetailFactory entityIntegerRangeDetailFactory;
+    EntityIntegerRangeTransferCache entityIntegerRangeTransferCache;
 
     public EntityIntegerRange createEntityIntegerRange(EntityAttribute entityAttribute, String entityIntegerRangeName, Integer minimumIntegerValue,
             Integer maximumIntegerValue, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -2399,38 +2214,19 @@ public class CoreControl
     }
     
     private EntityIntegerRange getDefaultEntityIntegerRange(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityIntegerRange entityIntegerRange;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerranges, entityintegerrangedetails
-                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid
-                        AND enirdt_ena_entityattributeid = ? AND enirdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerranges, entityintegerrangedetails
-                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid
-                        AND enirdt_ena_entityattributeid = ? AND enirdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityIntegerRanges.fields())
+                .from(EntityIntegerRanges)
+                .join(EntityIntegerRangeDetails).onKey(ENTITY_INTEGER_RANGES_ACTIVE_DETAIL_FK)
+                .where(EntityIntegerRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityIntegerRangeDetails.IS_DEFAULT.eq(true));
 
-            var ps = entityIntegerRangeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            
-            entityIntegerRange = entityIntegerRangeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityIntegerRange;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityIntegerRangeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityIntegerRange getDefaultEntityIntegerRange(EntityAttribute entityAttribute) {
@@ -2446,39 +2242,19 @@ public class CoreControl
     }
     
     private EntityIntegerRange getEntityIntegerRangeByName(EntityAttribute entityAttribute, String entityIntegerRangeName, EntityPermission entityPermission) {
-        EntityIntegerRange entityIntegerRange;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerranges, entityintegerrangedetails
-                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid
-                        AND enirdt_ena_entityattributeid = ? AND enirdt_entityintegerrangename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerranges, entityintegerrangedetails
-                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid
-                        AND enirdt_ena_entityattributeid = ? AND enirdt_entityintegerrangename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityIntegerRanges.fields())
+                .from(EntityIntegerRanges)
+                .join(EntityIntegerRangeDetails).onKey(ENTITY_INTEGER_RANGES_ACTIVE_DETAIL_FK)
+                .where(EntityIntegerRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityIntegerRangeDetails.ENTITY_INTEGER_RANGE_NAME.eq(entityIntegerRangeName));
 
-            var ps = entityIntegerRangeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setString(2, entityIntegerRangeName);
-            
-            entityIntegerRange = entityIntegerRangeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityIntegerRange;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityIntegerRangeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityIntegerRange getEntityIntegerRangeByName(EntityAttribute entityAttribute, String entityIntegerRangeName) {
@@ -2498,38 +2274,23 @@ public class CoreControl
     }
     
     private List<EntityIntegerRange> getEntityIntegerRanges(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityIntegerRange> entityIntegerRanges;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerranges, entityintegerrangedetails
-                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ?
-                        ORDER BY enirdt_sortorder, enirdt_entityintegerrangename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerranges, entityintegerrangedetails
-                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityIntegerRanges.fields())
+                    .from(EntityIntegerRanges)
+                    .join(EntityIntegerRangeDetails).onKey(ENTITY_INTEGER_RANGES_ACTIVE_DETAIL_FK)
+                    .where(EntityIntegerRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                    .orderBy(EntityIntegerRangeDetails.SORT_ORDER, EntityIntegerRangeDetails.ENTITY_INTEGER_RANGE_NAME),
+                    EntityIntegerRangeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityIntegerRanges.fields())
+                    .from(EntityIntegerRanges)
+                    .join(EntityIntegerRangeDetails).onKey(ENTITY_INTEGER_RANGES_ACTIVE_DETAIL_FK)
+                    .where(EntityIntegerRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = entityIntegerRangeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            
-            entityIntegerRanges = entityIntegerRangeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityIntegerRanges;
+        return entityIntegerRangeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityIntegerRange> getEntityIntegerRanges(EntityAttribute entityAttribute) {
@@ -2541,13 +2302,13 @@ public class CoreControl
     }
 
     public long countEntityIntegerRanges(EntityAttribute entityAttribute) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityintegerranges, entityintegerrangedetails
-                WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ?
-                """,
-                entityAttribute);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityIntegerRanges)
+                .join(EntityIntegerRangeDetails).onKey(ENTITY_INTEGER_RANGES_ACTIVE_DETAIL_FK)
+                .where(EntityIntegerRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public EntityIntegerRangeTransfer getEntityIntegerRangeTransfer(UserVisit userVisit, EntityIntegerRange entityIntegerRange, EntityInstance entityInstance) {
@@ -2701,6 +2462,9 @@ public class CoreControl
     @Inject
     protected EntityIntegerRangeDescriptionFactory entityIntegerRangeDescriptionFactory;
 
+    @Inject
+    EntityIntegerRangeDescriptionTransferCache entityIntegerRangeDescriptionTransferCache;
+
     public EntityIntegerRangeDescription createEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language, String description, BasePK createdBy) {
         var entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.create(entityIntegerRange, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2711,38 +2475,19 @@ public class CoreControl
     }
     
     private EntityIntegerRangeDescription getEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language, EntityPermission entityPermission) {
-        EntityIntegerRangeDescription entityIntegerRangeDescription;
+        var baseQuery = session.getDslContext()
+                .select(EntityIntegerRangeDescriptions.fields())
+                .from(EntityIntegerRangeDescriptions)
+                .where(EntityIntegerRangeDescriptions.ENTITY_INTEGER_RANGE.eq(entityIntegerRange.getPrimaryKey()),
+                        EntityIntegerRangeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityIntegerRangeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerrangedescriptions
-                        WHERE enird_enir_entityintegerrangeid = ? AND enird_lang_languageid = ? AND enird_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerrangedescriptions
-                        WHERE enird_enir_entityintegerrangeid = ? AND enird_lang_languageid = ? AND enird_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityIntegerRangeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityIntegerRange.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityIntegerRangeDescription;
+        return entityIntegerRangeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityIntegerRangeDescription getEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language) {
@@ -2762,39 +2507,24 @@ public class CoreControl
     }
     
     private List<EntityIntegerRangeDescription> getEntityIntegerRangeDescriptionsByEntityIntegerRange(EntityIntegerRange entityIntegerRange, EntityPermission entityPermission) {
-        List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerrangedescriptions, languages
-                        WHERE enird_enir_entityintegerrangeid = ? AND enird_thrutime = ? AND enird_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerrangedescriptions
-                        WHERE enird_enir_entityintegerrangeid = ? AND enird_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityIntegerRangeDescriptions.fields())
+                    .from(EntityIntegerRangeDescriptions)
+                    .join(Languages).onKey(ENTITY_INTEGER_RANGE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(EntityIntegerRangeDescriptions.ENTITY_INTEGER_RANGE.eq(entityIntegerRange.getPrimaryKey()),
+                            EntityIntegerRangeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    EntityIntegerRangeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityIntegerRangeDescriptions.fields())
+                    .from(EntityIntegerRangeDescriptions)
+                    .where(EntityIntegerRangeDescriptions.ENTITY_INTEGER_RANGE.eq(entityIntegerRange.getPrimaryKey()),
+                            EntityIntegerRangeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityIntegerRangeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityIntegerRange.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityIntegerRangeDescriptions = entityIntegerRangeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityIntegerRangeDescriptions;
+        return entityIntegerRangeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityIntegerRangeDescription> getEntityIntegerRangeDescriptionsByEntityIntegerRange(EntityIntegerRange entityIntegerRange) {
@@ -2874,10 +2604,13 @@ public class CoreControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected EntityLongRangeDetailFactory entityLongRangeDetailFactory;
+
+    @Inject
     protected EntityLongRangeFactory entityLongRangeFactory;
 
     @Inject
-    protected EntityLongRangeDetailFactory entityLongRangeDetailFactory;
+    EntityLongRangeTransferCache entityLongRangeTransferCache;
 
     public EntityLongRange createEntityLongRange(EntityAttribute entityAttribute, String entityLongRangeName, Long minimumLongValue, Long maximumLongValue,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -2917,38 +2650,19 @@ public class CoreControl
     }
     
     private EntityLongRange getDefaultEntityLongRange(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityLongRange entityLongRange;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongranges, entitylongrangedetails
-                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid
-                        AND enlrdt_ena_entityattributeid = ? AND enlrdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongranges, entitylongrangedetails
-                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid
-                        AND enlrdt_ena_entityattributeid = ? AND enlrdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityLongRanges.fields())
+                .from(EntityLongRanges)
+                .join(EntityLongRangeDetails).onKey(ENTITY_LONG_RANGES_ACTIVE_DETAIL_FK)
+                .where(EntityLongRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityLongRangeDetails.IS_DEFAULT.eq(true));
 
-            var ps = entityLongRangeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            
-            entityLongRange = entityLongRangeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityLongRange;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityLongRangeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityLongRange getDefaultEntityLongRange(EntityAttribute entityAttribute) {
@@ -2964,39 +2678,19 @@ public class CoreControl
     }
     
     private EntityLongRange getEntityLongRangeByName(EntityAttribute entityAttribute, String entityLongRangeName, EntityPermission entityPermission) {
-        EntityLongRange entityLongRange;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongranges, entitylongrangedetails
-                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid
-                        AND enlrdt_ena_entityattributeid = ? AND enlrdt_entitylongrangename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongranges, entitylongrangedetails
-                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid
-                        AND enlrdt_ena_entityattributeid = ? AND enlrdt_entitylongrangename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityLongRanges.fields())
+                .from(EntityLongRanges)
+                .join(EntityLongRangeDetails).onKey(ENTITY_LONG_RANGES_ACTIVE_DETAIL_FK)
+                .where(EntityLongRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityLongRangeDetails.ENTITY_LONG_RANGE_NAME.eq(entityLongRangeName));
 
-            var ps = entityLongRangeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setString(2, entityLongRangeName);
-            
-            entityLongRange = entityLongRangeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityLongRange;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityLongRangeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityLongRange getEntityLongRangeByName(EntityAttribute entityAttribute, String entityLongRangeName) {
@@ -3016,38 +2710,23 @@ public class CoreControl
     }
     
     private List<EntityLongRange> getEntityLongRanges(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityLongRange> entityLongRanges;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongranges, entitylongrangedetails
-                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ?
-                        ORDER BY enlrdt_sortorder, enlrdt_entitylongrangename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongranges, entitylongrangedetails
-                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityLongRanges.fields())
+                    .from(EntityLongRanges)
+                    .join(EntityLongRangeDetails).onKey(ENTITY_LONG_RANGES_ACTIVE_DETAIL_FK)
+                    .where(EntityLongRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                    .orderBy(EntityLongRangeDetails.SORT_ORDER, EntityLongRangeDetails.ENTITY_LONG_RANGE_NAME),
+                    EntityLongRangeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityLongRanges.fields())
+                    .from(EntityLongRanges)
+                    .join(EntityLongRangeDetails).onKey(ENTITY_LONG_RANGES_ACTIVE_DETAIL_FK)
+                    .where(EntityLongRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = entityLongRangeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            
-            entityLongRanges = entityLongRangeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityLongRanges;
+        return entityLongRangeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityLongRange> getEntityLongRanges(EntityAttribute entityAttribute) {
@@ -3059,13 +2738,13 @@ public class CoreControl
     }
 
     public long countEntityLongRanges(EntityAttribute entityAttribute) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entitylongranges, entitylongrangedetails
-                WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ?
-                """,
-                entityAttribute);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityLongRanges)
+                .join(EntityLongRangeDetails).onKey(ENTITY_LONG_RANGES_ACTIVE_DETAIL_FK)
+                .where(EntityLongRangeDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public EntityLongRangeTransfer getEntityLongRangeTransfer(UserVisit userVisit, EntityLongRange entityLongRange, EntityInstance entityInstance) {
@@ -3219,6 +2898,9 @@ public class CoreControl
     @Inject
     protected EntityLongRangeDescriptionFactory entityLongRangeDescriptionFactory;
 
+    @Inject
+    EntityLongRangeDescriptionTransferCache entityLongRangeDescriptionTransferCache;
+
     public EntityLongRangeDescription createEntityLongRangeDescription(EntityLongRange entityLongRange, Language language, String description, BasePK createdBy) {
         var entityLongRangeDescription = entityLongRangeDescriptionFactory.create(entityLongRange, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -3229,38 +2911,19 @@ public class CoreControl
     }
     
     private EntityLongRangeDescription getEntityLongRangeDescription(EntityLongRange entityLongRange, Language language, EntityPermission entityPermission) {
-        EntityLongRangeDescription entityLongRangeDescription;
+        var baseQuery = session.getDslContext()
+                .select(EntityLongRangeDescriptions.fields())
+                .from(EntityLongRangeDescriptions)
+                .where(EntityLongRangeDescriptions.ENTITY_LONG_RANGE.eq(entityLongRange.getPrimaryKey()),
+                        EntityLongRangeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityLongRangeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongrangedescriptions
-                        WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_lang_languageid = ? AND enlrd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongrangedescriptions
-                        WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_lang_languageid = ? AND enlrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityLongRangeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityLongRange.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityLongRangeDescription = entityLongRangeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityLongRangeDescription;
+        return entityLongRangeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityLongRangeDescription getEntityLongRangeDescription(EntityLongRange entityLongRange, Language language) {
@@ -3280,39 +2943,24 @@ public class CoreControl
     }
     
     private List<EntityLongRangeDescription> getEntityLongRangeDescriptionsByEntityLongRange(EntityLongRange entityLongRange, EntityPermission entityPermission) {
-        List<EntityLongRangeDescription> entityLongRangeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongrangedescriptions, languages
-                        WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_thrutime = ? AND enlrd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongrangedescriptions
-                        WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityLongRangeDescriptions.fields())
+                    .from(EntityLongRangeDescriptions)
+                    .join(Languages).onKey(ENTITY_LONG_RANGE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(EntityLongRangeDescriptions.ENTITY_LONG_RANGE.eq(entityLongRange.getPrimaryKey()),
+                            EntityLongRangeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    EntityLongRangeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityLongRangeDescriptions.fields())
+                    .from(EntityLongRangeDescriptions)
+                    .where(EntityLongRangeDescriptions.ENTITY_LONG_RANGE.eq(entityLongRange.getPrimaryKey()),
+                            EntityLongRangeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityLongRangeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityLongRange.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityLongRangeDescriptions = entityLongRangeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityLongRangeDescriptions;
+        return entityLongRangeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityLongRangeDescription> getEntityLongRangeDescriptionsByEntityLongRange(EntityLongRange entityLongRange) {
@@ -3394,6 +3042,9 @@ public class CoreControl
     @Inject
     protected EntityBooleanDefaultFactory entityBooleanDefaultFactory;
 
+    @Inject
+    EntityBooleanDefaultTransferCache entityBooleanDefaultTransferCache;
+
     public EntityBooleanDefault createEntityBooleanDefault(EntityAttribute entityAttribute, Boolean booleanAttribute,
             BasePK createdBy) {
         var entityBooleanDefault = entityBooleanDefaultFactory.create(entityAttribute,
@@ -3405,63 +3056,38 @@ public class CoreControl
     }
 
     public long countEntityBooleanDefaultHistory(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitybooleandefaults
-                    WHERE enbldef_ena_entityattributeid = ?
-                    """, entityAttribute);
-    }
-
-    private static final Map<EntityPermission, String> getEntityBooleanDefaultHistoryQueries;
-
-    static {
-        getEntityBooleanDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitybooleandefaults
-                WHERE enbldef_ena_entityattributeid = ?
-                ORDER BY enbldef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityBooleanDefaults)
+                .where(EntityBooleanDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityBooleanDefault> getEntityBooleanDefaultHistory(EntityAttribute entityAttribute) {
-        return entityBooleanDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityBooleanDefaultHistoryQueries,
-                entityAttribute);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityBooleanDefaults.fields())
+                .from(EntityBooleanDefaults)
+                .where(EntityBooleanDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .orderBy(EntityBooleanDefaults.THRU_TIME),
+                EntityBooleanDefaultFactory.class);
+
+        return entityBooleanDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityBooleanDefault getEntityBooleanDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityBooleanDefault entityBooleanDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityBooleanDefaults.fields())
+                .from(EntityBooleanDefaults)
+                .where(EntityBooleanDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityBooleanDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitybooleandefaults
-                        WHERE enbldef_ena_entityattributeid = ? AND enbldef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitybooleandefaults
-                        WHERE enbldef_ena_entityattributeid = ? AND enbldef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityBooleanDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityBooleanDefault = entityBooleanDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityBooleanDefault;
+        return entityBooleanDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityBooleanDefault getEntityBooleanDefault(EntityAttribute entityAttribute) {
@@ -3531,6 +3157,9 @@ public class CoreControl
     @Inject
     protected EntityBooleanAttributeFactory entityBooleanAttributeFactory;
 
+    @Inject
+    EntityBooleanAttributeTransferCache entityBooleanAttributeTransferCache;
+
     public EntityBooleanAttribute createEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Boolean booleanAttribute, BasePK createdBy) {
         return createEntityBooleanAttribute(entityAttribute.getPrimaryKey(), entityInstance, booleanAttribute,
@@ -3548,65 +3177,42 @@ public class CoreControl
     }
 
     public long countEntityBooleanAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitybooleanattributes
-                    WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityBooleanAttributeHistoryQueries;
-
-    static {
-        getEntityBooleanAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitybooleanattributes
-                WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ?
-                ORDER BY enbla_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityBooleanAttributes)
+                .where(EntityBooleanAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityBooleanAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityBooleanAttribute> getEntityBooleanAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityBooleanAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityBooleanAttributes.fields())
+                .from(EntityBooleanAttributes)
+                .where(EntityBooleanAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityBooleanAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityBooleanAttributes.THRU_TIME),
+                EntityBooleanAttributeFactory.class);
+
+        return entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     private EntityBooleanAttribute getEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityBooleanAttribute entityBooleanAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityBooleanAttributes.fields())
+                .from(EntityBooleanAttributes)
+                .where(EntityBooleanAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityBooleanAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityBooleanAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitybooleanattributes
-                        WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ? AND enbla_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitybooleanattributes
-                        WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ? AND enbla_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityBooleanAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityBooleanAttribute = entityBooleanAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityBooleanAttribute;
+        return entityBooleanAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityBooleanAttribute getEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -3626,49 +3232,25 @@ public class CoreControl
     }
     
     public List<EntityBooleanAttribute> getEntityBooleanAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityBooleanAttribute> entityBooleanAttributes;
+        var query = session.getDslContext()
+                .select(EntityBooleanAttributes.fields())
+                .from(EntityBooleanAttributes)
+                .where(EntityBooleanAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityBooleanAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityBooleanAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitybooleanattributes
-                    WHERE enbla_ena_entityattributeid = ? AND enbla_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityBooleanAttributes = entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityBooleanAttributes;
+        return entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityBooleanAttribute> getEntityBooleanAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityBooleanAttribute> entityBooleanAttributes;
+        var query = session.getDslContext()
+                .select(EntityBooleanAttributes.fields())
+                .from(EntityBooleanAttributes)
+                .where(EntityBooleanAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityBooleanAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityBooleanAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitybooleanattributes
-                    WHERE enbla_eni_entityinstanceid = ? AND enbla_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityBooleanAttributes = entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityBooleanAttributes;
+        return entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(UserVisit userVisit, EntityBooleanAttribute entityBooleanAttribute, EntityInstance entityInstance) {
@@ -3729,6 +3311,9 @@ public class CoreControl
     @Inject
     protected EntityDateDefaultFactory entityDateDefaultFactory;
 
+    @Inject
+    EntityDateDefaultTransferCache entityDateDefaultTransferCache;
+
     public EntityDateDefault createEntityDateDefault(EntityAttribute entityAttribute, Integer dateAttribute,
             BasePK createdBy) {
         var entityDateDefault = entityDateDefaultFactory.create(entityAttribute,
@@ -3740,63 +3325,38 @@ public class CoreControl
     }
 
     public long countEntityDateDefaultHistory(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitydatedefaults
-                    WHERE enddef_thrutime = ?
-                    """, entityAttribute);
-    }
-
-    private static final Map<EntityPermission, String> getEntityDateDefaultHistoryQueries;
-
-    static {
-        getEntityDateDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitydatedefaults
-                WHERE enddef_ena_entityattributeid = ?
-                ORDER BY enddef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityDateDefaults)
+                .where(EntityDateDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityDateDefault> getEntityDateDefaultHistory(EntityAttribute entityAttribute) {
-        return entityDateDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityDateDefaultHistoryQueries,
-                entityAttribute);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityDateDefaults.fields())
+                .from(EntityDateDefaults)
+                .where(EntityDateDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .orderBy(EntityDateDefaults.THRU_TIME),
+                EntityDateDefaultFactory.class);
+
+        return entityDateDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityDateDefault getEntityDateDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityDateDefault entityDateDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityDateDefaults.fields())
+                .from(EntityDateDefaults)
+                .where(EntityDateDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityDateDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitydatedefaults
-                        WHERE enddef_ena_entityattributeid = ? AND enddef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitydatedefaults
-                        WHERE enddef_ena_entityattributeid = ? AND enddef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityDateDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityDateDefault = entityDateDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityDateDefault;
+        return entityDateDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityDateDefault getEntityDateDefault(EntityAttribute entityAttribute) {
@@ -3866,6 +3426,9 @@ public class CoreControl
     @Inject
     protected EntityDateAttributeFactory entityDateAttributeFactory;
 
+    @Inject
+    EntityDateAttributeTransferCache entityDateAttributeTransferCache;
+
     public EntityDateAttribute createEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer dateAttribute, BasePK createdBy) {
         return createEntityDateAttribute(entityAttribute.getPrimaryKey(), entityInstance, dateAttribute,
@@ -3883,64 +3446,41 @@ public class CoreControl
     }
 
     public long countEntityDateAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitydateattributes
-                    WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityDateAttributeHistoryQueries;
-
-    static {
-        getEntityDateAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitydateattributes
-                WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ?
-                ORDER BY enda_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityDateAttributes)
+                .where(EntityDateAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityDateAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityDateAttribute> getEntityDateAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityDateAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityDateAttributes.fields())
+                .from(EntityDateAttributes)
+                .where(EntityDateAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityDateAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityDateAttributes.THRU_TIME),
+                EntityDateAttributeFactory.class);
+
+        return entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityDateAttribute getEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityDateAttribute entityDateAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityDateAttributes.fields())
+                .from(EntityDateAttributes)
+                .where(EntityDateAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityDateAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityDateAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitydateattributes
-                        WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ? AND enda_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitydateattributes
-                        WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ? AND enda_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityDateAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityDateAttribute = entityDateAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityDateAttribute;
+        return entityDateAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityDateAttribute getEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -3960,49 +3500,25 @@ public class CoreControl
     }
     
     public List<EntityDateAttribute> getEntityDateAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityDateAttribute> entityDateAttributes;
+        var query = session.getDslContext()
+                .select(EntityDateAttributes.fields())
+                .from(EntityDateAttributes)
+                .where(EntityDateAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityDateAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityDateAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitydateattributes
-                    WHERE enda_ena_entityattributeid = ? AND enda_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityDateAttributes = entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityDateAttributes;
+        return entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityDateAttribute> getEntityDateAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityDateAttribute> entityDateAttributes;
+        var query = session.getDslContext()
+                .select(EntityDateAttributes.fields())
+                .from(EntityDateAttributes)
+                .where(EntityDateAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityDateAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityDateAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitydateattributes
-                    WHERE enda_eni_entityinstanceid = ? AND enda_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityDateAttributes = entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityDateAttributes;
+        return entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityDateAttributeTransfer getEntityDateAttributeTransfer(UserVisit userVisit, EntityDateAttribute entityDateAttribute, EntityInstance entityInstance) {
@@ -4063,6 +3579,9 @@ public class CoreControl
     @Inject
     protected EntityIntegerDefaultFactory entityIntegerDefaultFactory;
 
+    @Inject
+    EntityIntegerDefaultTransferCache entityIntegerDefaultTransferCache;
+
     public EntityIntegerDefault createEntityIntegerDefault(EntityAttribute entityAttribute, Integer integerAttribute,
             BasePK createdBy) {
         var entityIntegerDefault = entityIntegerDefaultFactory.create(entityAttribute,
@@ -4074,63 +3593,38 @@ public class CoreControl
     }
 
     public long countEntityIntegerDefaultHistory(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entityintegerdefaults
-                    WHERE enidef_thrutime = ?
-                    """, entityAttribute);
-    }
-
-    private static final Map<EntityPermission, String> getEntityIntegerDefaultHistoryQueries;
-
-    static {
-        getEntityIntegerDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityintegerdefaults
-                WHERE enidef_ena_entityattributeid = ?
-                ORDER BY enidef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityIntegerDefaults)
+                .where(EntityIntegerDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityIntegerDefault> getEntityIntegerDefaultHistory(EntityAttribute entityAttribute) {
-        return entityIntegerDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityIntegerDefaultHistoryQueries,
-                entityAttribute);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityIntegerDefaults.fields())
+                .from(EntityIntegerDefaults)
+                .where(EntityIntegerDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .orderBy(EntityIntegerDefaults.THRU_TIME),
+                EntityIntegerDefaultFactory.class);
+
+        return entityIntegerDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityIntegerDefault getEntityIntegerDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityIntegerDefault entityIntegerDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityIntegerDefaults.fields())
+                .from(EntityIntegerDefaults)
+                .where(EntityIntegerDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityIntegerDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerdefaults
-                        WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerdefaults
-                        WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityIntegerDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityIntegerDefault = entityIntegerDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityIntegerDefault;
+        return entityIntegerDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityIntegerDefault getEntityIntegerDefault(EntityAttribute entityAttribute) {
@@ -4200,6 +3694,9 @@ public class CoreControl
     @Inject
     protected EntityIntegerAttributeFactory entityIntegerAttributeFactory;
 
+    @Inject
+    EntityIntegerAttributeTransferCache entityIntegerAttributeTransferCache;
+
     public EntityIntegerAttribute createEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer integerAttribute, BasePK createdBy) {
         return createEntityIntegerAttribute(entityAttribute.getPrimaryKey(), entityInstance, integerAttribute,
@@ -4217,65 +3714,42 @@ public class CoreControl
     }
     
     public long countEntityIntegerAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entityintegerattributes
-                    WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityIntegerAttributeHistoryQueries;
-
-    static {
-        getEntityIntegerAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityintegerattributes
-                WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ?
-                ORDER BY enia_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityIntegerAttributes)
+                .where(EntityIntegerAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityIntegerAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityIntegerAttribute> getEntityIntegerAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityIntegerAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityIntegerAttributes.fields())
+                .from(EntityIntegerAttributes)
+                .where(EntityIntegerAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityIntegerAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityIntegerAttributes.THRU_TIME),
+                EntityIntegerAttributeFactory.class);
+
+        return entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityIntegerAttribute getEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityIntegerAttribute entityIntegerAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityIntegerAttributes.fields())
+                .from(EntityIntegerAttributes)
+                .where(EntityIntegerAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityIntegerAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityIntegerAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerattributes
-                        WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ? AND enia_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityintegerattributes
-                        WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ? AND enia_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityIntegerAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityIntegerAttribute = entityIntegerAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityIntegerAttribute;
+        return entityIntegerAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityIntegerAttribute getEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -4295,49 +3769,25 @@ public class CoreControl
     }
     
     public List<EntityIntegerAttribute> getEntityIntegerAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityIntegerAttribute> entityIntegerAttributes;
+        var query = session.getDslContext()
+                .select(EntityIntegerAttributes.fields())
+                .from(EntityIntegerAttributes)
+                .where(EntityIntegerAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityIntegerAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityIntegerAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityintegerattributes
-                    WHERE enia_ena_entityattributeid = ? AND enia_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityIntegerAttributes = entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityIntegerAttributes;
+        return entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityIntegerAttribute> getEntityIntegerAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityIntegerAttribute> entityIntegerAttributes;
+        var query = session.getDslContext()
+                .select(EntityIntegerAttributes.fields())
+                .from(EntityIntegerAttributes)
+                .where(EntityIntegerAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityIntegerAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityIntegerAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityintegerattributes
-                    WHERE enia_eni_entityinstanceid = ? AND enia_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityIntegerAttributes = entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityIntegerAttributes;
+        return entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityIntegerAttributeTransfer getEntityIntegerAttributeTransfer(UserVisit userVisit, EntityIntegerAttribute entityIntegerAttribute, EntityInstance entityInstance) {
@@ -4397,6 +3847,9 @@ public class CoreControl
     @Inject
     protected EntityListItemDefaultFactory entityListItemDefaultFactory;
 
+    @Inject
+    EntityListItemDefaultTransferCache entityListItemDefaultTransferCache;
+
     public EntityListItemDefault createEntityListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
         var entityListItemDefault = entityListItemDefaultFactory.create(
@@ -4408,64 +3861,39 @@ public class CoreControl
     }
 
     public long countEntityListItemDefaultHistory(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitylistitemdefaults
-                    WHERE eladef_ena_entityattributeid = ?
-                    """, entityAttribute);
-    }
-
-    private static final Map<EntityPermission, String> getEntityListItemDefaultHistoryQueries;
-
-    static {
-        getEntityListItemDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitylistitemdefaults
-                WHERE eladef_ena_entityattributeid = ?
-                ORDER BY eladef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityListItemDefaults)
+                .where(EntityListItemDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityListItemDefault> getEntityListItemDefaultHistory(EntityAttribute entityAttribute) {
-        return entityListItemDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityListItemDefaultHistoryQueries,
-                entityAttribute);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityListItemDefaults.fields())
+                .from(EntityListItemDefaults)
+                .where(EntityListItemDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .orderBy(EntityListItemDefaults.THRU_TIME),
+                EntityListItemDefaultFactory.class);
+
+        return entityListItemDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityListItemDefault getEntityListItemDefault(EntityAttribute entityAttribute,
             EntityPermission entityPermission) {
-        EntityListItemDefault entityListItemDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityListItemDefaults.fields())
+                .from(EntityListItemDefaults)
+                .where(EntityListItemDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityListItemDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemdefaults
-                        WHERE eladef_ena_entityattributeid = ? AND eladef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemdefaults
-                        WHERE eladef_ena_entityattributeid = ? AND eladef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityListItemDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityListItemDefault = entityListItemDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityListItemDefault;
+        return entityListItemDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityListItemDefault getEntityListItemDefault(EntityAttribute entityAttribute) {
@@ -4485,37 +3913,18 @@ public class CoreControl
     }
 
     private EntityListItemDefault getEntityListItemDefaultByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        EntityListItemDefault entityListItemDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityListItemDefaults.fields())
+                .from(EntityListItemDefaults)
+                .where(EntityListItemDefaults.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                        EntityListItemDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemdefaults
-                        WHERE eladef_eli_entitylistitemid = ? AND eladef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemdefaults
-                        WHERE eladef_eli_entitylistitemid = ? AND eladef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityListItemDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityListItemDefault = entityListItemDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityListItemDefault;
+        return entityListItemDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityListItemDefault getEntityListItemDefaultByEntityListItem(EntityListItem entityListItem) {
@@ -4576,6 +3985,9 @@ public class CoreControl
     @Inject
     protected EntityListItemAttributeFactory entityListItemAttributeFactory;
 
+    @Inject
+    EntityListItemAttributeTransferCache entityListItemAttributeTransferCache;
+
     public EntityListItemAttribute createEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
         return createEntityListItemAttribute(entityAttribute.getPrimaryKey(), entityInstance, entityListItem, createdBy);
@@ -4593,65 +4005,42 @@ public class CoreControl
     }
 
     public long countEntityListItemAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitylistitemattributes
-                    WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityListItemAttributeHistoryQueries;
-
-    static {
-        getEntityListItemAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitylistitemattributes
-                WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ?
-                ORDER BY ela_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityListItemAttributes)
+                .where(EntityListItemAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityListItemAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityListItemAttribute> getEntityListItemAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityListItemAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityListItemAttributes.fields())
+                .from(EntityListItemAttributes)
+                .where(EntityListItemAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityListItemAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityListItemAttributes.THRU_TIME),
+                EntityListItemAttributeFactory.class);
+
+        return entityListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityListItemAttribute getEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityListItemAttribute entityListItemAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityListItemAttributes.fields())
+                .from(EntityListItemAttributes)
+                .where(EntityListItemAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityListItemAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityListItemAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemattributes
-                        WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ? AND ela_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemattributes
-                        WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ? AND ela_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityListItemAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityListItemAttribute = entityListItemAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityListItemAttribute;
+        return entityListItemAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityListItemAttribute getEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -4671,40 +4060,24 @@ public class CoreControl
     }
     
     private List<EntityListItemAttribute> getEntityListItemAttributesByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityListItemAttribute> entityListItemAttributes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemattributes, entityinstances
-                        WHERE ela_eli_entitylistitemid = ? AND ela_thrutime = ?
-                        AND ela_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY eni_entityuniqueid
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylistitemattributes
-                        WHERE ela_eli_entitylistitemid = ? AND ela_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityListItemAttributes.fields())
+                    .from(EntityListItemAttributes)
+                    .join(EntityInstances).onKey(ENTITY_LIST_ITEM_ATTRIBUTES_ENTITY_INSTANCE_FK)
+                    .where(EntityListItemAttributes.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                            EntityListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityInstances.ENTITY_UNIQUE),
+                    EntityListItemAttributeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityListItemAttributes.fields())
+                    .from(EntityListItemAttributes)
+                    .where(EntityListItemAttributes.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                            EntityListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityListItemAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityListItemAttributes = entityListItemAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityListItemAttributes;
+        return entityListItemAttributeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityListItemAttribute> getEntityListItemAttributesByEntityListItem(EntityListItem entityListItem) {
@@ -4716,26 +4089,14 @@ public class CoreControl
     }
     
     public List<EntityListItemAttribute> getEntityListItemAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityListItemAttribute> entityListItemAttributes;
+        var query = session.getDslContext()
+                .select(EntityListItemAttributes.fields())
+                .from(EntityListItemAttributes)
+                .where(EntityListItemAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityListItemAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitylistitemattributes
-                    WHERE ela_eni_entityinstanceid = ? AND ela_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityListItemAttributes = entityListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityListItemAttributes;
+        return entityListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityListItemAttributeTransfer getEntityListItemAttributeTransfer(UserVisit userVisit, EntityListItemAttribute entityListItemAttribute, EntityInstance entityInstance) {
@@ -4796,6 +4157,9 @@ public class CoreControl
     @Inject
     protected EntityLongDefaultFactory entityLongDefaultFactory;
 
+    @Inject
+    EntityLongDefaultTransferCache entityLongDefaultTransferCache;
+
     public EntityLongDefault createEntityLongDefault(EntityAttribute entityAttribute, Long longAttribute,
             BasePK createdBy) {
         var entityLongDefault = entityLongDefaultFactory.create(entityAttribute,
@@ -4807,63 +4171,38 @@ public class CoreControl
     }
 
     public long countEntityLongDefaultHistory(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitylongdefaults
-                    WHERE enldef_thrutime = ?
-                    """, entityAttribute);
-    }
-
-    private static final Map<EntityPermission, String> getEntityLongDefaultHistoryQueries;
-
-    static {
-        getEntityLongDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitylongdefaults
-                WHERE enldef_ena_entityattributeid = ?
-                ORDER BY enldef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityLongDefaults)
+                .where(EntityLongDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityLongDefault> getEntityLongDefaultHistory(EntityAttribute entityAttribute) {
-        return entityLongDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityLongDefaultHistoryQueries,
-                entityAttribute);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityLongDefaults.fields())
+                .from(EntityLongDefaults)
+                .where(EntityLongDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .orderBy(EntityLongDefaults.THRU_TIME),
+                EntityLongDefaultFactory.class);
+
+        return entityLongDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityLongDefault getEntityLongDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityLongDefault entityLongDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityLongDefaults.fields())
+                .from(EntityLongDefaults)
+                .where(EntityLongDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityLongDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongdefaults
-                        WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongdefaults
-                        WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityLongDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityLongDefault = entityLongDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityLongDefault;
+        return entityLongDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityLongDefault getEntityLongDefault(EntityAttribute entityAttribute) {
@@ -4933,6 +4272,9 @@ public class CoreControl
     @Inject
     protected EntityLongAttributeFactory entityLongAttributeFactory;
 
+    @Inject
+    EntityLongAttributeTransferCache entityLongAttributeTransferCache;
+
     public EntityLongAttribute createEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
         return createEntityLongAttribute(entityAttribute.getPrimaryKey(), entityInstance, longAttribute,
@@ -4950,65 +4292,42 @@ public class CoreControl
     }
 
     public long countEntityLongAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitylongattributes
-                    WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityLongAttributeHistoryQueries;
-
-    static {
-        getEntityLongAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitylongattributes
-                WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ?
-                ORDER BY enla_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityLongAttributes)
+                .where(EntityLongAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityLongAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityLongAttribute> getEntityLongAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityLongAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityLongAttributes.fields())
+                .from(EntityLongAttributes)
+                .where(EntityLongAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityLongAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityLongAttributes.THRU_TIME),
+                EntityLongAttributeFactory.class);
+
+        return entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityLongAttribute getEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityLongAttribute entityLongAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityLongAttributes.fields())
+                .from(EntityLongAttributes)
+                .where(EntityLongAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityLongAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityLongAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongattributes
-                        WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ? AND enla_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitylongattributes
-                        WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ? AND enla_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityLongAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityLongAttribute = entityLongAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityLongAttribute;
+        return entityLongAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityLongAttribute getEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -5028,49 +4347,25 @@ public class CoreControl
     }
     
     public List<EntityLongAttribute> getEntityLongAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityLongAttribute> entityLongAttributes;
+        var query = session.getDslContext()
+                .select(EntityLongAttributes.fields())
+                .from(EntityLongAttributes)
+                .where(EntityLongAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityLongAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityLongAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitylongattributes
-                    WHERE enla_ena_entityattributeid = ? AND enla_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityLongAttributes = entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityLongAttributes;
+        return entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityLongAttribute> getEntityLongAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityLongAttribute> entityLongAttributes;
+        var query = session.getDslContext()
+                .select(EntityLongAttributes.fields())
+                .from(EntityLongAttributes)
+                .where(EntityLongAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityLongAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityLongAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitylongattributes
-                    WHERE enla_eni_entityinstanceid = ? AND enla_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityLongAttributes = entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityLongAttributes;
+        return entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityLongAttributeTransfer getEntityLongAttributeTransfer(UserVisit userVisit, EntityLongAttribute entityLongAttribute, EntityInstance entityInstance) {
@@ -5131,6 +4426,9 @@ public class CoreControl
     @Inject
     protected EntityMultipleListItemDefaultFactory entityMultipleListItemDefaultFactory;
 
+    @Inject
+    EntityMultipleListItemDefaultTransferCache entityMultipleListItemDefaultTransferCache;
+
     public EntityMultipleListItemDefault createEntityMultipleListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
         var entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.create(
@@ -5142,101 +4440,64 @@ public class CoreControl
     }
 
     public long countEntityMultipleListItemDefaults(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitymultiplelistitemdefaults
-                    WHERE emlidef_ena_entityattributeid = ? AND emlidef_thrutime = ?
-                    """, entityAttribute, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityMultipleListItemDefaults)
+                .where(EntityMultipleListItemDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityMultipleListItemDefaults.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityMultipleListItemDefaultHistory(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitymultiplelistitemdefaults
-                    WHERE emlidef_ena_entityattributeid = ?
-                    """, entityAttribute);
-    }
-
-    private static final Map<EntityPermission, String> getEntityMultipleListItemDefaultHistoryQueries;
-
-    static {
-        getEntityMultipleListItemDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitymultiplelistitemdefaults
-                WHERE emlidef_ena_entityattributeid = ?
-                ORDER BY emlidef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityMultipleListItemDefaults)
+                .where(EntityMultipleListItemDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityMultipleListItemDefault> getEntityMultipleListItemDefaultHistory(EntityAttribute entityAttribute) {
-        return entityMultipleListItemDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityMultipleListItemDefaultHistoryQueries,
-                entityAttribute);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityMultipleListItemDefaults.fields())
+                .from(EntityMultipleListItemDefaults)
+                .where(EntityMultipleListItemDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .orderBy(EntityMultipleListItemDefaults.THRU_TIME),
+                EntityMultipleListItemDefaultFactory.class);
+
+        return entityMultipleListItemDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<EntityMultipleListItemDefault> getEntityMultipleListItemDefaults(EntityAttribute entityAttribute) {
-        List<EntityMultipleListItemDefault> entityMultipleListItemDefaults;
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityMultipleListItemDefaults.fields())
+                .from(EntityMultipleListItemDefaults)
+                .join(EntityListItems).onKey(ENTITY_MULTIPLE_LIST_ITEM_DEFAULTS_ENTITY_LIST_ITEM_FK)
+                .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_LAST_DETAIL_FK)
+                .where(EntityMultipleListItemDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityMultipleListItemDefaults.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(EntityListItemDetails.SORT_ORDER, EntityListItemDetails.ENTITY_LIST_ITEM_NAME),
+                EntityMultipleListItemDefaultFactory.class);
 
-        try {
-            var ps = entityMultipleListItemDefaultFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM entitymultiplelistitemdefaults, entitylistitems, entitylistitemdetails
-                    WHERE emlidef_ena_entityattributeid = ? AND emlidef_thrutime = ?
-                    AND emlidef_eli_entitylistitemid = eli_entitylistitemid AND eli_lastdetailid = elidt_entitylistitemdetailid
-                    ORDER BY elidt_sortorder, elidt_entitylistitemname
-                    _LIMIT_
-                    """);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityMultipleListItemDefaults = entityMultipleListItemDefaultFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityMultipleListItemDefaults;
+        return entityMultipleListItemDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityMultipleListItemDefault getEntityMultipleListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, EntityPermission entityPermission) {
-        EntityMultipleListItemDefault entityMultipleListItemDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityMultipleListItemDefaults.fields())
+                .from(EntityMultipleListItemDefaults)
+                .where(EntityMultipleListItemDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityMultipleListItemDefaults.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                        EntityMultipleListItemDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymultiplelistitemdefaults
-                        WHERE emlidef_ena_entityattributeid = ? AND emlidef_eli_entitylistitemid = ?
-                        AND emlidef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymultiplelistitemdefaults
-                        WHERE emlidef_ena_entityattributeid = ? AND emlidef_eli_entitylistitemid = ?
-                        AND emlidef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityMultipleListItemDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityListItem.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityMultipleListItemDefault;
+        return entityMultipleListItemDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityMultipleListItemDefault getEntityMultipleListItemDefault(EntityAttribute entityAttribute,
@@ -5250,37 +4511,25 @@ public class CoreControl
     }
 
     private List<EntityMultipleListItemDefault> getEntityMultipleListItemDefaultsByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityMultipleListItemDefault> entityMultipleListItemDefaults;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityMultipleListItemDefaults.fields())
+                    .from(EntityMultipleListItemDefaults)
+                    .join(EntityAttributes).onKey(ENTITY_MULTIPLE_LIST_ITEM_DEFAULTS_ENTITY_ATTRIBUTE_FK)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
+                    .where(EntityMultipleListItemDefaults.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                            EntityMultipleListItemDefaults.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityAttributeDetails.SORT_ORDER, EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME),
+                    EntityMultipleListItemDefaultFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityMultipleListItemDefaults.fields())
+                    .from(EntityMultipleListItemDefaults)
+                    .where(EntityMultipleListItemDefaults.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                            EntityMultipleListItemDefaults.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymultiplelistitemdefaults
-                        WHERE emlidef_eli_entitylistitemid = ? AND emlidef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymultiplelistitemdefaults
-                        WHERE emlidef_eli_entitylistitemid = ? AND emlidef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityMultipleListItemDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityMultipleListItemDefaults = entityMultipleListItemDefaultFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityMultipleListItemDefaults;
+        return entityMultipleListItemDefaultFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityMultipleListItemDefault> getEntityMultipleListItemDefaultsByEntityListItem(EntityListItem entityListItem) {
@@ -5338,6 +4587,9 @@ public class CoreControl
     @Inject
     protected EntityMultipleListItemAttributeFactory entityMultipleListItemAttributeFactory;
 
+    @Inject
+    EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache;
+
     public EntityMultipleListItemAttribute createEntityMultipleListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
         return createEntityMultipleListItemAttribute(entityAttribute.getPrimaryKey(), entityInstance, entityListItem, createdBy);
@@ -5355,78 +4607,47 @@ public class CoreControl
     }
 
     public long countEntityMultipleListItemAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitymultiplelistitemattributes
-                    WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_thrutime = ?
-                    """, entityAttribute, entityInstance, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityMultipleListItemAttributes)
+                .where(EntityMultipleListItemAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityMultipleListItemAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityMultipleListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityMultipleListItemAttributes.fields())
+                .from(EntityMultipleListItemAttributes)
+                .join(EntityListItems).onKey(ENTITY_MULTIPLE_LIST_ITEM_ATTRIBUTES_ENTITY_LIST_ITEM_FK)
+                .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_LAST_DETAIL_FK)
+                .where(EntityMultipleListItemAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityMultipleListItemAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityMultipleListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(EntityListItemDetails.SORT_ORDER, EntityListItemDetails.ENTITY_LIST_ITEM_NAME),
+                EntityMultipleListItemAttributeFactory.class);
         
-        try {
-            var ps = entityMultipleListItemAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitymultiplelistitemattributes, entitylistitems, entitylistitemdetails
-                    WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_thrutime = ?
-                    AND emlia_eli_entitylistitemid = eli_entitylistitemid AND eli_lastdetailid = elidt_entitylistitemdetailid
-                    ORDER BY elidt_sortorder, elidt_entitylistitemname
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityMultipleListItemAttributes;
+        return entityMultipleListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     private EntityMultipleListItemAttribute getEntityMultipleListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, EntityPermission entityPermission) {
-        EntityMultipleListItemAttribute entityMultipleListItemAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityMultipleListItemAttributes.fields())
+                .from(EntityMultipleListItemAttributes)
+                .where(EntityMultipleListItemAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityMultipleListItemAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityMultipleListItemAttributes.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                        EntityMultipleListItemAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymultiplelistitemattributes
-                        WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_eli_entitylistitemid = ?
-                        AND emlia_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymultiplelistitemattributes
-                        WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_eli_entitylistitemid = ?
-                        AND emlia_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityMultipleListItemAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, entityListItem.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            entityMultipleListItemAttribute = entityMultipleListItemAttributeFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityMultipleListItemAttribute;
+        return entityMultipleListItemAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityMultipleListItemAttribute getEntityMultipleListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
@@ -5440,40 +4661,24 @@ public class CoreControl
     }
     
     private List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributesByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymultiplelistitemattributes, entityinstances
-                        WHERE emlia_eli_entitylistitemid = ? AND emlia_thrutime = ?
-                        AND emlia_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY eni_entityuniqueid
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymultiplelistitemattributes
-                        WHERE emlia_eli_entitylistitemid = ? AND emlia_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityMultipleListItemAttributes.fields())
+                    .from(EntityMultipleListItemAttributes)
+                    .join(EntityInstances).onKey(ENTITY_MULTIPLE_LIST_ITEM_ATTRIBUTES_ENTITY_INSTANCE_FK)
+                    .where(EntityMultipleListItemAttributes.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                            EntityMultipleListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityInstances.ENTITY_UNIQUE),
+                    EntityMultipleListItemAttributeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityMultipleListItemAttributes.fields())
+                    .from(EntityMultipleListItemAttributes)
+                    .where(EntityMultipleListItemAttributes.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                            EntityMultipleListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityMultipleListItemAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityMultipleListItemAttributes;
+        return entityMultipleListItemAttributeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributesByEntityListItem(EntityListItem entityListItem) {
@@ -5485,27 +4690,14 @@ public class CoreControl
     }
     
     public List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
+        var query = session.getDslContext()
+                .select(EntityMultipleListItemAttributes.fields())
+                .from(EntityMultipleListItemAttributes)
+                .where(EntityMultipleListItemAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityMultipleListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityMultipleListItemAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitymultiplelistitemattributes
-                    WHERE emlia_eni_entityinstanceid = ? AND emlia_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityMultipleListItemAttributes;
+        return entityMultipleListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityMultipleListItemAttributeTransfer getEntityMultipleListItemAttributeTransfer(UserVisit userVisit, EntityMultipleListItemAttribute entityMultipleListItemAttribute, EntityInstance entityInstance) {
@@ -5561,6 +4753,9 @@ public class CoreControl
     @Inject
     protected EntityNameAttributeFactory entityNameAttributeFactory;
 
+    @Inject
+    EntityNameAttributeTransferCache entityNameAttributeTransferCache;
+
     public EntityNameAttribute createEntityNameAttribute(EntityAttribute entityAttribute, String nameAttribute,
             EntityInstance entityInstance, BasePK createdBy) {
         var entityNameAttribute = entityNameAttributeFactory.create(entityAttribute,
@@ -5572,65 +4767,42 @@ public class CoreControl
     }
 
     public long countEntityNameAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitynameattributes
-                    WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityNameAttributeHistoryQueries;
-
-    static {
-        getEntityNameAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitynameattributes
-                WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ?
-                ORDER BY enna_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityNameAttributes)
+                .where(EntityNameAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityNameAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityNameAttribute> getEntityNameAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityNameAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityNameAttributes.fields())
+                .from(EntityNameAttributes)
+                .where(EntityNameAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityNameAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityNameAttributes.THRU_TIME),
+                EntityNameAttributeFactory.class);
+
+        return entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityNameAttribute getEntityNameAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityNameAttribute entityNameAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityNameAttributes.fields())
+                .from(EntityNameAttributes)
+                .where(EntityNameAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityNameAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityNameAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitynameattributes
-                        WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ? AND enna_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitynameattributes
-                        WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ? AND enna_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityNameAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityNameAttribute = entityNameAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityNameAttribute;
+        return entityNameAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityNameAttribute getEntityNameAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -5650,49 +4822,25 @@ public class CoreControl
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityNameAttribute> entityNameAttributes;
+        var query = session.getDslContext()
+                .select(EntityNameAttributes.fields())
+                .from(EntityNameAttributes)
+                .where(EntityNameAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityNameAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityNameAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitynameattributes
-                    WHERE enna_ena_entityattributeid = ? AND enna_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityNameAttributes = entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityNameAttributes;
+        return entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityNameAttribute> entityNameAttributes;
+        var query = session.getDslContext()
+                .select(EntityNameAttributes.fields())
+                .from(EntityNameAttributes)
+                .where(EntityNameAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityNameAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityNameAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitynameattributes
-                    WHERE enna_eni_entityinstanceid = ? AND enna_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityNameAttributes = entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityNameAttributes;
+        return entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityNameAttributeTransfer getEntityNameAttributeTransfer(UserVisit userVisit, EntityNameAttribute entityNameAttribute, EntityInstance entityInstance) {
@@ -5747,26 +4895,22 @@ public class CoreControl
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByName(EntityAttribute entityAttribute, String nameAttribute) {
-        List<EntityNameAttribute> entityNameAttributes;
-        
-        try {
-            var ps = entityNameAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitynameattributes
-                    WHERE enna_ena_entityattributeid = ? AND enna_nameattribute = ? AND enna_thrutime = ?
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setString(2, nameAttribute);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityNameAttributes = entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityNameAttributes;
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityNameAttributes.fields())
+                .from(EntityNameAttributes)
+                .join(EntityInstances).onKey(ENTITY_NAME_ATTRIBUTES_ENTITY_INSTANCE_FK)
+                .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                .where(EntityNameAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityNameAttributes.NAME_ATTRIBUTE.eq(nameAttribute),
+                        EntityNameAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(ComponentVendorDetails.COMPONENT_VENDOR_NAME, EntityTypeDetails.SORT_ORDER,
+                        EntityTypeDetails.ENTITY_TYPE_NAME, EntityInstances.ENTITY_UNIQUE),
+                EntityNameAttributeFactory.class);
+
+        return entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     // --------------------------------------------------------------------------------
@@ -5775,6 +4919,9 @@ public class CoreControl
 
     @Inject
     protected EntityStringDefaultFactory entityStringDefaultFactory;
+
+    @Inject
+    EntityStringDefaultTransferCache entityStringDefaultTransferCache;
 
     public EntityStringDefault createEntityStringDefault(EntityAttribute entityAttribute, Language language,
             String stringAttribute, BasePK createdBy) {
@@ -5787,64 +4934,41 @@ public class CoreControl
     }
 
     public long countEntityStringDefaultHistory(EntityAttribute entityAttribute, Language language) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitystringdefaults
-                    WHERE ensdef_ena_entityattributeid = ? AND ensdef_lang_languageid = ?
-                    """, entityAttribute, language);
-    }
-
-    private static final Map<EntityPermission, String> getEntityStringDefaultHistoryQueries;
-
-    static {
-        getEntityStringDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitystringdefaults
-                WHERE ensdef_ena_entityattributeid = ? AND ensdef_lang_languageid = ?
-                ORDER BY ensdef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityStringDefaults)
+                .where(EntityStringDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityStringDefaults.LANGUAGE.eq(language.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityStringDefault> getEntityStringDefaultHistory(EntityAttribute entityAttribute, Language language) {
-        return entityStringDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityStringDefaultHistoryQueries,
-                entityAttribute, language);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityStringDefaults.fields())
+                .from(EntityStringDefaults)
+                .where(EntityStringDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityStringDefaults.LANGUAGE.eq(language.getPrimaryKey()))
+                .orderBy(EntityStringDefaults.THRU_TIME),
+                EntityStringDefaultFactory.class);
+
+        return entityStringDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityStringDefault getEntityStringDefault(EntityAttribute entityAttribute, Language language, EntityPermission entityPermission) {
-        EntityStringDefault entityStringDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityStringDefaults.fields())
+                .from(EntityStringDefaults)
+                .where(EntityStringDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityStringDefaults.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityStringDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitystringdefaults
-                        WHERE ensdef_ena_entityattributeid = ? AND ensdef_lang_languageid = ? AND ensdef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitystringdefaults
-                        WHERE ensdef_ena_entityattributeid = ? AND ensdef_lang_languageid = ? AND ensdef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityStringDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            entityStringDefault = entityStringDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityStringDefault;
+        return entityStringDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityStringDefault getEntityStringDefault(EntityAttribute entityAttribute, Language language) {
@@ -5864,40 +4988,24 @@ public class CoreControl
     }
 
     public List<EntityStringDefault> getEntityStringDefaultsByEntityAttribute(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityStringDefault> entityStringDefaults;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityStringDefaults.fields())
+                    .from(EntityStringDefaults)
+                    .join(Languages).onKey(ENTITY_STRING_DEFAULTS_LANGUAGE_FK)
+                    .where(EntityStringDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityStringDefaults.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    EntityStringDefaultFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityStringDefaults.fields())
+                    .from(EntityStringDefaults)
+                    .where(EntityStringDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityStringDefaults.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitystringdefaults
-                        JOIN languages ON ensdef_lang_languageid = lang_languageid
-                        WHERE ensdef_ena_entityattributeid = ? AND ensdef_thrutime = ?
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitystringdefaults
-                        WHERE ensdef_ena_entityattributeid = ? AND ensdef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityStringDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityStringDefaults = entityStringDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityStringDefaults;
+        return entityStringDefaultFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityStringDefault> getEntityStringDefaultsByEntityAttribute(EntityAttribute entityAttribute) {
@@ -5905,9 +5013,8 @@ public class CoreControl
     }
 
     public List<EntityStringDefault> getEntityStringDefaultsByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        return getEntityStringDefaultsByEntityAttribute(entityAttribute, EntityPermission.READ_ONLY);
+        return getEntityStringDefaultsByEntityAttribute(entityAttribute, EntityPermission.READ_WRITE);
     }
-
 
     public EntityStringDefaultTransfer getEntityStringDefaultTransfer(UserVisit userVisit, EntityStringDefault entityStringDefault) {
         return entityStringDefaultTransferCache.getEntityStringDefaultTransfer(userVisit, entityStringDefault);
@@ -5962,6 +5069,9 @@ public class CoreControl
     @Inject
     protected EntityStringAttributeFactory entityStringAttributeFactory;
 
+    @Inject
+    EntityStringAttributeTransferCache entityStringAttributeTransferCache;
+
     public EntityStringAttribute createEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String stringAttribute, BasePK createdBy) {
         return createEntityStringAttribute(entityAttribute.getPrimaryKey(), entityInstance, language, stringAttribute,
@@ -5980,67 +5090,46 @@ public class CoreControl
     
     public long countEntityStringAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitystringattributes
-                    WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ?
-                    """, entityAttribute, entityInstance, language);
-    }
-
-    private static final Map<EntityPermission, String> getEntityStringAttributeHistoryQueries;
-
-    static {
-        getEntityStringAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitystringattributes
-                WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ?
-                ORDER BY ensa_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityStringAttributes)
+                .where(EntityStringAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityStringAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityStringAttributes.LANGUAGE.eq(language.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityStringAttribute> getEntityStringAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language) {
-        return entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityStringAttributeHistoryQueries,
-                entityAttribute, entityInstance, language);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityStringAttributes.fields())
+                .from(EntityStringAttributes)
+                .where(EntityStringAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityStringAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityStringAttributes.LANGUAGE.eq(language.getPrimaryKey()))
+                .orderBy(EntityStringAttributes.THRU_TIME),
+                EntityStringAttributeFactory.class);
+
+        return entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityStringAttribute getEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
-        EntityStringAttribute entityStringAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityStringAttributes.fields())
+                .from(EntityStringAttributes)
+                .where(EntityStringAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityStringAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityStringAttributes.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityStringAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitystringattributes
-                        WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ? AND ensa_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitystringattributes
-                        WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ? AND ensa_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityStringAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, language.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            entityStringAttribute = entityStringAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityStringAttribute;
+        return entityStringAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityStringAttribute getEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Language language) {
@@ -6070,49 +5159,25 @@ public class CoreControl
     }
     
     public List<EntityStringAttribute> getEntityStringAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityStringAttribute> entityStringAttributes;
+        var query = session.getDslContext()
+                .select(EntityStringAttributes.fields())
+                .from(EntityStringAttributes)
+                .where(EntityStringAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityStringAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityStringAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitystringattributes
-                    WHERE ensa_ena_entityattributeid = ? AND ensa_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityStringAttributes = entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityStringAttributes;
+        return entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityStringAttribute> getEntityStringAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityStringAttribute> entityStringAttributes;
+        var query = session.getDslContext()
+                .select(EntityStringAttributes.fields())
+                .from(EntityStringAttributes)
+                .where(EntityStringAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityStringAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityStringAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitystringattributes
-                    WHERE ensa_eni_entityinstanceid = ? AND ensa_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityStringAttributes = entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityStringAttributes;
+        return entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityStringAttributeTransfer getEntityStringAttributeTransfer(UserVisit userVisit, EntityStringAttribute entityStringAttribute, EntityInstance entityInstance) {
@@ -6174,6 +5239,9 @@ public class CoreControl
     @Inject
     protected EntityGeoPointDefaultFactory entityGeoPointDefaultFactory;
 
+    @Inject
+    EntityGeoPointDefaultTransferCache entityGeoPointDefaultTransferCache;
+
     public EntityGeoPointDefault createEntityGeoPointDefault(EntityAttribute entityAttribute, Integer latitude,
             Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
         var entityGeoPointDefault = entityGeoPointDefaultFactory.create(entityAttribute,
@@ -6185,63 +5253,38 @@ public class CoreControl
     }
 
     public long countEntityGeoPointDefaultHistory(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitygeopointdefaults
-                    WHERE engeopntdef_thrutime = ?
-                    """, entityAttribute);
-    }
-
-    private static final Map<EntityPermission, String> getEntityGeoPointDefaultHistoryQueries;
-
-    static {
-        getEntityGeoPointDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitygeopointdefaults
-                WHERE engeopntdef_ena_entityattributeid = ?
-                ORDER BY engeopntdef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityGeoPointDefaults)
+                .where(EntityGeoPointDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityGeoPointDefault> getEntityGeoPointDefaultHistory(EntityAttribute entityAttribute) {
-        return entityGeoPointDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointDefaultHistoryQueries,
-                entityAttribute);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityGeoPointDefaults.fields())
+                .from(EntityGeoPointDefaults)
+                .where(EntityGeoPointDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .orderBy(EntityGeoPointDefaults.THRU_TIME),
+                EntityGeoPointDefaultFactory.class);
+
+        return entityGeoPointDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityGeoPointDefault getEntityGeoPointDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityGeoPointDefault entityGeoPointDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityGeoPointDefaults.fields())
+                .from(EntityGeoPointDefaults)
+                .where(EntityGeoPointDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityGeoPointDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitygeopointdefaults
-                        WHERE engeopntdef_ena_entityattributeid = ? AND engeopntdef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitygeopointdefaults
-                        WHERE engeopntdef_ena_entityattributeid = ? AND engeopntdef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityGeoPointDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityGeoPointDefault = entityGeoPointDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityGeoPointDefault;
+        return entityGeoPointDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityGeoPointDefault getEntityGeoPointDefault(EntityAttribute entityAttribute) {
@@ -6312,6 +5355,9 @@ public class CoreControl
     @Inject
     protected EntityGeoPointAttributeFactory entityGeoPointAttributeFactory;
 
+    @Inject
+    EntityGeoPointAttributeTransferCache entityGeoPointAttributeTransferCache;
+
     public EntityGeoPointAttribute createEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer latitude, Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
         return createEntityGeoPointAttribute(entityAttribute.getPrimaryKey(), entityInstance, latitude, longitude,
@@ -6330,65 +5376,42 @@ public class CoreControl
     }
 
     public long countEntityGeoPointAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitygeopointattributes
-                    WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityGeoPointAttributeHistoryQueries;
-
-    static {
-        getEntityGeoPointAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitygeopointattributes
-                WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ?
-                ORDER BY engeopnta_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityGeoPointAttributes)
+                .where(EntityGeoPointAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityGeoPointAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityGeoPointAttribute> getEntityGeoPointAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityGeoPointAttributes.fields())
+                .from(EntityGeoPointAttributes)
+                .where(EntityGeoPointAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityGeoPointAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityGeoPointAttributes.THRU_TIME),
+                EntityGeoPointAttributeFactory.class);
+
+        return entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityGeoPointAttribute getEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityGeoPointAttribute entityGeoPointAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityGeoPointAttributes.fields())
+                .from(EntityGeoPointAttributes)
+                .where(EntityGeoPointAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityGeoPointAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityGeoPointAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitygeopointattributes
-                        WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitygeopointattributes
-                        WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityGeoPointAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityGeoPointAttribute = entityGeoPointAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityGeoPointAttribute;
+        return entityGeoPointAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityGeoPointAttribute getEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -6408,49 +5431,25 @@ public class CoreControl
     }
     
     public List<EntityGeoPointAttribute> getEntityGeoPointAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityGeoPointAttribute> entityGeoPointAttributes;
+        var query = session.getDslContext()
+                .select(EntityGeoPointAttributes.fields())
+                .from(EntityGeoPointAttributes)
+                .where(EntityGeoPointAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityGeoPointAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityGeoPointAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitygeopointattributes
-                    WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityGeoPointAttributes = entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityGeoPointAttributes;
+        return entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityGeoPointAttribute> getEntityGeoPointAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityGeoPointAttribute> entityGeoPointAttributes;
+        var query = session.getDslContext()
+                .select(EntityGeoPointAttributes.fields())
+                .from(EntityGeoPointAttributes)
+                .where(EntityGeoPointAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityGeoPointAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityGeoPointAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitygeopointattributes
-                    WHERE engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityGeoPointAttributes = entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityGeoPointAttributes;
+        return entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(UserVisit userVisit, EntityGeoPointAttribute entityGeoPointAttribute, EntityInstance entityInstance) {
@@ -6512,6 +5511,9 @@ public class CoreControl
     @Inject
     protected EntityTimeDefaultFactory entityTimeDefaultFactory;
 
+    @Inject
+    EntityTimeDefaultTransferCache entityTimeDefaultTransferCache;
+
     public EntityTimeDefault createEntityTimeDefault(EntityAttribute entityAttribute, Long timeAttribute,
             BasePK createdBy) {
         var entityTimeDefault = entityTimeDefaultFactory.create(entityAttribute,
@@ -6523,63 +5525,38 @@ public class CoreControl
     }
 
     public long countEntityTimeDefaultHistory(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitytimedefaults
-                    WHERE entdef_thrutime = ?
-                    """, entityAttribute);
-    }
-
-    private static final Map<EntityPermission, String> getEntityTimeDefaultHistoryQueries;
-
-    static {
-        getEntityTimeDefaultHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitytimedefaults
-                WHERE entdef_ena_entityattributeid = ?
-                ORDER BY entdef_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityTimeDefaults)
+                .where(EntityTimeDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityTimeDefault> getEntityTimeDefaultHistory(EntityAttribute entityAttribute) {
-        return entityTimeDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityTimeDefaultHistoryQueries,
-                entityAttribute);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityTimeDefaults.fields())
+                .from(EntityTimeDefaults)
+                .where(EntityTimeDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()))
+                .orderBy(EntityTimeDefaults.THRU_TIME),
+                EntityTimeDefaultFactory.class);
+
+        return entityTimeDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityTimeDefault getEntityTimeDefault(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityTimeDefault entityTimeDefault;
+        var baseQuery = session.getDslContext()
+                .select(EntityTimeDefaults.fields())
+                .from(EntityTimeDefaults)
+                .where(EntityTimeDefaults.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityTimeDefaults.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytimedefaults
-                        WHERE entdef_ena_entityattributeid = ? AND entdef_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytimedefaults
-                        WHERE entdef_ena_entityattributeid = ? AND entdef_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityTimeDefaultFactory.prepareStatement(query);
-
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            entityTimeDefault = entityTimeDefaultFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityTimeDefault;
+        return entityTimeDefaultFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityTimeDefault getEntityTimeDefault(EntityAttribute entityAttribute) {
@@ -6649,6 +5626,9 @@ public class CoreControl
     @Inject
     protected EntityTimeAttributeFactory entityTimeAttributeFactory;
 
+    @Inject
+    EntityTimeAttributeTransferCache entityTimeAttributeTransferCache;
+
     public EntityTimeAttribute createEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long timeAttribute, BasePK createdBy) {
         return createEntityTimeAttribute(entityAttribute.getPrimaryKey(), entityInstance, timeAttribute,
@@ -6666,64 +5646,41 @@ public class CoreControl
     }
 
     public long countEntityTimeAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entitytimeattributes
-                    WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityTimeAttributeHistoryQueries;
-
-    static {
-        getEntityTimeAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entitytimeattributes
-                WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ?
-                ORDER BY enta_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityTimeAttributes)
+                .where(EntityTimeAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityTimeAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityTimeAttribute> getEntityTimeAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityTimeAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityTimeAttributes.fields())
+                .from(EntityTimeAttributes)
+                .where(EntityTimeAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityTimeAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityTimeAttributes.THRU_TIME),
+                EntityTimeAttributeFactory.class);
+
+        return entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityTimeAttribute getEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityTimeAttribute entityTimeAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityTimeAttributes.fields())
+                .from(EntityTimeAttributes)
+                .where(EntityTimeAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityTimeAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityTimeAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytimeattributes
-                        WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ? AND enta_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytimeattributes
-                        WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ? AND enta_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityTimeAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityTimeAttribute = entityTimeAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityTimeAttribute;
+        return entityTimeAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityTimeAttribute getEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -6743,49 +5700,25 @@ public class CoreControl
     }
     
     public List<EntityTimeAttribute> getEntityTimeAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityTimeAttribute> entityTimeAttributes;
+        var query = session.getDslContext()
+                .select(EntityTimeAttributes.fields())
+                .from(EntityTimeAttributes)
+                .where(EntityTimeAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityTimeAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityTimeAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitytimeattributes
-                    WHERE enta_ena_entityattributeid = ? AND enta_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityTimeAttributes = entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityTimeAttributes;
+        return entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityTimeAttribute> getEntityTimeAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityTimeAttribute> entityTimeAttributes;
+        var query = session.getDslContext()
+                .select(EntityTimeAttributes.fields())
+                .from(EntityTimeAttributes)
+                .where(EntityTimeAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityTimeAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityTimeAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitytimeattributes
-                    WHERE enta_eni_entityinstanceid = ? AND enta_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityTimeAttributes = entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityTimeAttributes;
+        return entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityTimeAttributeTransfer getEntityTimeAttributeTransfer(UserVisit userVisit, EntityTimeAttribute entityTimeAttribute, EntityInstance entityInstance) {
@@ -6846,6 +5779,9 @@ public class CoreControl
     @Inject
     protected EntityBlobAttributeFactory entityBlobAttributeFactory;
 
+    @Inject
+    EntityBlobAttributeTransferCache entityBlobAttributeTransferCache;
+
     public EntityBlobAttribute createEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, ByteArray blobAttribute, MimeType mimeType, BasePK createdBy) {
         var entityBlobAttribute = entityBlobAttributeFactory.create(entityAttribute,
@@ -6858,41 +5794,20 @@ public class CoreControl
     
     private EntityBlobAttribute getEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
-        EntityBlobAttribute entityBlobAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityBlobAttributes.fields())
+                .from(EntityBlobAttributes)
+                .where(EntityBlobAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityBlobAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityBlobAttributes.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityBlobAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityblobattributes
-                        WHERE enba_ena_entityattributeid = ? AND enba_eni_entityinstanceid = ? AND enba_lang_languageid = ?
-                        AND enba_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityblobattributes
-                        WHERE enba_ena_entityattributeid = ? AND enba_eni_entityinstanceid = ? AND enba_lang_languageid = ?
-                        AND enba_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityBlobAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, language.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            entityBlobAttribute = entityBlobAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityBlobAttribute;
+        return entityBlobAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityBlobAttribute getEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Language language) {
@@ -6922,49 +5837,25 @@ public class CoreControl
     }
     
     public List<EntityBlobAttribute> getEntityBlobAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityBlobAttribute> entityBlobAttributes;
+        var query = session.getDslContext()
+                .select(EntityBlobAttributes.fields())
+                .from(EntityBlobAttributes)
+                .where(EntityBlobAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityBlobAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityBlobAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityblobattributes
-                    WHERE enba_ena_entityattributeid = ? AND enba_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityBlobAttributes = entityBlobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityBlobAttributes;
+        return entityBlobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityBlobAttribute> getEntityBlobAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityBlobAttribute> entityBlobAttributes;
+        var query = session.getDslContext()
+                .select(EntityBlobAttributes.fields())
+                .from(EntityBlobAttributes)
+                .where(EntityBlobAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityBlobAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityBlobAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityblobattributes
-                    WHERE enba_eni_entityinstanceid = ? AND enba_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityBlobAttributes = entityBlobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityBlobAttributes;
+        return entityBlobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityBlobAttributeTransfer getEntityBlobAttributeTransfer(UserVisit userVisit, EntityBlobAttribute entityBlobAttribute, EntityInstance entityInstance) {
@@ -7026,6 +5917,9 @@ public class CoreControl
     @Inject
     protected EntityClobAttributeFactory entityClobAttributeFactory;
 
+    @Inject
+    EntityClobAttributeTransferCache entityClobAttributeTransferCache;
+
     public EntityClobAttribute createEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String clobAttribute, MimeType mimeType, BasePK createdBy) {
         var entityClobAttribute = entityClobAttributeFactory.create(entityAttribute,
@@ -7037,68 +5931,43 @@ public class CoreControl
     }
 
     public long countEntityClobAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entityclobattributes
-                    WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityClobAttributeHistoryQueries;
-
-    static {
-        getEntityClobAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityclobattributes
-                WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ?
-                ORDER BY enca_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityClobAttributes)
+                .where(EntityClobAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityClobAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityClobAttribute> getEntityClobAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityClobAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityClobAttributes.fields())
+                .from(EntityClobAttributes)
+                .where(EntityClobAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityClobAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityClobAttributes.THRU_TIME),
+                EntityClobAttributeFactory.class);
+
+        return entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityClobAttribute getEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
-        EntityClobAttribute entityClobAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityClobAttributes.fields())
+                .from(EntityClobAttributes)
+                .where(EntityClobAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityClobAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityClobAttributes.LANGUAGE.eq(language.getPrimaryKey()),
+                        EntityClobAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityclobattributes
-                        WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ? AND enca_lang_languageid = ?
-                        AND enca_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityclobattributes
-                        WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ? AND enca_lang_languageid = ?
-                        AND enca_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityClobAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, language.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            entityClobAttribute = entityClobAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityClobAttribute;
+        return entityClobAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityClobAttribute getEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, Language language) {
@@ -7128,49 +5997,25 @@ public class CoreControl
     }
     
     public List<EntityClobAttribute> getEntityClobAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityClobAttribute> entityClobAttributes;
+        var query = session.getDslContext()
+                .select(EntityClobAttributes.fields())
+                .from(EntityClobAttributes)
+                .where(EntityClobAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityClobAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityClobAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityclobattributes
-                    WHERE enca_ena_entityattributeid = ? AND enca_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityClobAttributes = entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityClobAttributes;
+        return entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityClobAttribute> getEntityClobAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityClobAttribute> entityClobAttributes;
+        var query = session.getDslContext()
+                .select(EntityClobAttributes.fields())
+                .from(EntityClobAttributes)
+                .where(EntityClobAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityClobAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityClobAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityclobattributes
-                    WHERE enca_eni_entityinstanceid = ? AND enca_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityClobAttributes = entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityClobAttributes;
+        return entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityClobAttributeTransfer getEntityClobAttributeTransfer(UserVisit userVisit, EntityClobAttribute entityClobAttribute, EntityInstance entityInstance) {
@@ -7232,6 +6077,9 @@ public class CoreControl
     @Inject
     protected EntityAttributeEntityTypeFactory entityAttributeEntityTypeFactory;
 
+    @Inject
+    EntityAttributeEntityTypeTransferCache entityAttributeEntityTypeTransferCache;
+
     public EntityAttributeEntityType createEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType, BasePK createdBy) {
         var entityAttributeEntityType = entityAttributeEntityTypeFactory.create(entityAttribute, allowedEntityType,
                 session.getStartTime(), Session.MAX_TIME);
@@ -7242,54 +6090,50 @@ public class CoreControl
     }
     
     public long countEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM entityattributeentitytypes
-                WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?
-                """,
-                entityAttribute, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeEntityTypes)
+                .where(EntityAttributeEntityTypes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityAttributeEntityTypesByAllowedEntityType(EntityType allowedEntityType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM entityattributeentitytypes
-                WHERE enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
-                """,
-                allowedEntityType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeEntityTypes)
+                .where(EntityAttributeEntityTypes.ALLOWED_ENTITY_TYPE.eq(allowedEntityType.getPrimaryKey()),
+                        EntityAttributeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public boolean entityAttributeEntityTypeExists(EntityAttribute entityAttribute, EntityType allowedEntityType) {
-        return 1 == session.queryForLong("""
-                SELECT COUNT(*)
-                FROM entityattributeentitytypes
-                WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
-                """,
-                entityAttribute, allowedEntityType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getEntityAttributeEntityTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityattributeentitytypes
-                WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM entityattributeentitytypes
-                WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeEntityTypeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityAttributeEntityTypes)
+                .where(EntityAttributeEntityTypes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeEntityTypes.ALLOWED_ENTITY_TYPE.eq(allowedEntityType.getPrimaryKey()),
+                        EntityAttributeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
 
     private EntityAttributeEntityType getEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType, EntityPermission entityPermission) {
-        return entityAttributeEntityTypeFactory.getEntityFromQuery(entityPermission, getEntityAttributeEntityTypeQueries,
-                entityAttribute, allowedEntityType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(EntityAttributeEntityTypes.fields())
+                .from(EntityAttributeEntityTypes)
+                .where(EntityAttributeEntityTypes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityAttributeEntityTypes.ALLOWED_ENTITY_TYPE.eq(allowedEntityType.getPrimaryKey()),
+                        EntityAttributeEntityTypes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityAttributeEntityTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityAttributeEntityType getEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType) {
@@ -7300,32 +6144,28 @@ public class CoreControl
         return getEntityAttributeEntityType(entityAttribute, allowedEntityType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getEntityAttributeEntityTypesByEntityAttributeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityattributeentitytypes, entitytypes, entitytypedetails, componentvendors, componentvendordetails
-                WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?
-                AND enaent_allowedentitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
-                AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
-                ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM entityattributeentitytypes
-                WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeEntityTypesByEntityAttributeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<EntityAttributeEntityType> getEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return entityAttributeEntityTypeFactory.getEntitiesFromQuery(entityPermission, getEntityAttributeEntityTypesByEntityAttributeQueries,
-                entityAttribute, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributeEntityTypes.fields())
+                    .from(EntityAttributeEntityTypes)
+                    .join(EntityTypes).onKey(ENTITY_ATTRIBUTE_ENTITY_TYPES_ALLOWED_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                    .where(EntityAttributeEntityTypes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityAttributeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME, ComponentVendorDetails.COMPONENT_VENDOR_NAME),
+                    EntityAttributeEntityTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributeEntityTypes.fields())
+                    .from(EntityAttributeEntityTypes)
+                    .where(EntityAttributeEntityTypes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityAttributeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return entityAttributeEntityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityAttributeEntityType> getEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute) {
@@ -7336,31 +6176,26 @@ public class CoreControl
         return getEntityAttributeEntityTypesByEntityAttribute(entityAttribute, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getEntityAttributeEntityTypesByAllowedEntityTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityattributeentitytypes, entityattributes, entityattributedetails
-                WHERE enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
-                AND enaent_ena_entityattributeid = ena_entityattributeid AND ena_lastdetailid = enadt_entityAttributedetailid
-                ORDER BY enadt_sortorder, enadt_entityAttributename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM entityattributeentitytypes
-                WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?
-                FOR UPDATE
-                """);
-        getEntityAttributeEntityTypesByAllowedEntityTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<EntityAttributeEntityType> getEntityAttributeEntityTypesByAllowedEntityType(EntityType allowedEntityType, EntityPermission entityPermission) {
-        return entityAttributeEntityTypeFactory.getEntitiesFromQuery(entityPermission, getEntityAttributeEntityTypesByAllowedEntityTypeQueries,
-                allowedEntityType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityAttributeEntityTypes.fields())
+                    .from(EntityAttributeEntityTypes)
+                    .join(EntityAttributes).onKey(ENTITY_ATTRIBUTE_ENTITY_TYPES_ENTITY_ATTRIBUTE_FK)
+                    .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_LAST_DETAIL_FK)
+                    .where(EntityAttributeEntityTypes.ALLOWED_ENTITY_TYPE.eq(allowedEntityType.getPrimaryKey()),
+                            EntityAttributeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityAttributeDetails.SORT_ORDER, EntityAttributeDetails.ENTITY_ATTRIBUTE_NAME),
+                    EntityAttributeEntityTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityAttributeEntityTypes.fields())
+                    .from(EntityAttributeEntityTypes)
+                    .where(EntityAttributeEntityTypes.ALLOWED_ENTITY_TYPE.eq(allowedEntityType.getPrimaryKey()),
+                            EntityAttributeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return entityAttributeEntityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<EntityAttributeEntityType> getEntityAttributeEntityTypesByAllowedEntityType(EntityType allowedEntityType) {
@@ -7420,6 +6255,9 @@ public class CoreControl
     @Inject
     protected EntityEntityAttributeFactory entityEntityAttributeFactory;
 
+    @Inject
+    EntityEntityAttributeTransferCache entityEntityAttributeTransferCache;
+
     public EntityEntityAttribute createEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
         var entityEntityAttribute = entityEntityAttributeFactory.create(entityAttribute, entityInstance,
@@ -7431,66 +6269,41 @@ public class CoreControl
     }
 
     public long countEntityEntityAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM entityentityattributes
-                    WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ?
-                    """, entityAttribute, entityInstance);
-    }
-
-    private static final Map<EntityPermission, String> getEntityEntityAttributeHistoryQueries;
-
-    static {
-        getEntityEntityAttributeHistoryQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM entityentityattributes
-                WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ?
-                ORDER BY eea_thrutime
-                _LIMIT_
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityEntityAttributes)
+                .where(EntityEntityAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityEntityAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<EntityEntityAttribute> getEntityEntityAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityEntityAttributeHistoryQueries,
-                entityAttribute, entityInstance);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityEntityAttributes.fields())
+                .from(EntityEntityAttributes)
+                .where(EntityEntityAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityEntityAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .orderBy(EntityEntityAttributes.THRU_TIME),
+                EntityEntityAttributeFactory.class);
+
+        return entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private EntityEntityAttribute getEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityEntityAttribute entityEntityAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityEntityAttributes.fields())
+                .from(EntityEntityAttributes)
+                .where(EntityEntityAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityEntityAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityEntityAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityentityattributes
-                        WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ?
-                        AND eea_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityentityattributes
-                        WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ?
-                        AND eea_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityEntityAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityEntityAttribute = entityEntityAttributeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityEntityAttribute;
+        return entityEntityAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityEntityAttribute getEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance) {
@@ -7510,72 +6323,36 @@ public class CoreControl
     }
     
     public List<EntityEntityAttribute> getEntityEntityAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityEntityAttribute> entityEntityAttributes;
+        var query = session.getDslContext()
+                .select(EntityEntityAttributes.fields())
+                .from(EntityEntityAttributes)
+                .where(EntityEntityAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityEntityAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityEntityAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityentityattributes
-                    WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityEntityAttributes = entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityEntityAttributes;
+        return entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityEntityAttribute> getEntityEntityAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityEntityAttribute> entityEntityAttributes;
+        var query = session.getDslContext()
+                .select(EntityEntityAttributes.fields())
+                .from(EntityEntityAttributes)
+                .where(EntityEntityAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityEntityAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityEntityAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityentityattributes
-                    WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityEntityAttributes = entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityEntityAttributes;
+        return entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityEntityAttribute> getEntityEntityAttributesByEntityInstanceAttributeForUpdate(EntityInstance entityInstanceAttribute) {
-        List<EntityEntityAttribute> entityEntityAttributes;
+        var query = session.getDslContext()
+                .select(EntityEntityAttributes.fields())
+                .from(EntityEntityAttributes)
+                .where(EntityEntityAttributes.ENTITY_INSTANCE_ATTRIBUTE.eq(entityInstanceAttribute.getPrimaryKey()),
+                        EntityEntityAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityEntityAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entityentityattributes
-                    WHERE eea_entityinstanceattributeid = ? AND eea_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstanceAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityEntityAttributes = entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityEntityAttributes;
+        return entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityEntityAttributeTransfer getEntityEntityAttributeTransfer(UserVisit userVisit, EntityEntityAttribute entityEntityAttribute, EntityInstance entityInstance) {
@@ -7637,6 +6414,9 @@ public class CoreControl
     @Inject
     protected EntityCollectionAttributeFactory entityCollectionAttributeFactory;
 
+    @Inject
+    EntityCollectionAttributeTransferCache entityCollectionAttributeTransferCache;
+
     public EntityCollectionAttribute createEntityCollectionAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
         var entityCollectionAttribute = entityCollectionAttributeFactory.create(entityAttribute, entityInstance,
@@ -7648,72 +6428,39 @@ public class CoreControl
     }
     
     public List<EntityCollectionAttribute> getEntityCollectionAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        List<EntityCollectionAttribute> entityCollectionAttributes;
-        
-        try {
-            var ps = entityCollectionAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitycollectionattributes, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails
-                    WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_thrutime = ?
-                    AND eca_entityinstanceattributeid = eni_entityinstanceid
-                    AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
-                    AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
-                    ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid
-                    _LIMIT_
-                    """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(EntityCollectionAttributes.fields())
+                .from(EntityCollectionAttributes)
+                .join(EntityInstances).onKey(ENTITY_COLLECTION_ATTRIBUTES_ENTITY_INSTANCE_ATTRIBUTE_FK)
+                .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                .where(EntityCollectionAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityCollectionAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityCollectionAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(ComponentVendorDetails.COMPONENT_VENDOR_NAME, EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME, EntityInstances.ENTITY_UNIQUE),
+                EntityCollectionAttributeFactory.class);
 
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityCollectionAttributes;
+        return entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     private EntityCollectionAttribute getEntityCollectionAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, EntityPermission entityPermission) {
-        EntityCollectionAttribute entityCollectionAttribute;
+        var baseQuery = session.getDslContext()
+                .select(EntityCollectionAttributes.fields())
+                .from(EntityCollectionAttributes)
+                .where(EntityCollectionAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityCollectionAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityCollectionAttributes.ENTITY_INSTANCE_ATTRIBUTE.eq(entityInstanceAttribute.getPrimaryKey()),
+                        EntityCollectionAttributes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitycollectionattributes
-                        WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_entityinstanceattributeid = ?
-                        AND eca_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitycollectionattributes
-                        WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_entityinstanceattributeid = ?
-                        AND eca_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityCollectionAttributeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, entityInstanceAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            entityCollectionAttribute = entityCollectionAttributeFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityCollectionAttribute;
+        return entityCollectionAttributeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityCollectionAttribute getEntityCollectionAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
@@ -7727,72 +6474,36 @@ public class CoreControl
     }
     
     public List<EntityCollectionAttribute> getEntityCollectionAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityCollectionAttribute> entityCollectionAttributes;
+        var query = session.getDslContext()
+                .select(EntityCollectionAttributes.fields())
+                .from(EntityCollectionAttributes)
+                .where(EntityCollectionAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityCollectionAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityCollectionAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitycollectionattributes
-                    WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityCollectionAttributes;
+        return entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityCollectionAttribute> getEntityCollectionAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityCollectionAttribute> entityCollectionAttributes;
+        var query = session.getDslContext()
+                .select(EntityCollectionAttributes.fields())
+                .from(EntityCollectionAttributes)
+                .where(EntityCollectionAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityCollectionAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = entityCollectionAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitycollectionattributes
-                    WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityCollectionAttributes;
+        return entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<EntityCollectionAttribute> getEntityCollectionAttributesByEntityInstanceAttributeForUpdate(EntityInstance entityInstanceAttribute) {
-        List<EntityCollectionAttribute> entityCollectionAttributes;
-        
-        try {
-            var ps = entityCollectionAttributeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM entitycollectionattributes
-                    WHERE eca_entityinstanceattributeid = ? AND eca_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, entityInstanceAttribute.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityCollectionAttributes;
+        var query = session.getDslContext()
+                .select(EntityCollectionAttributes.fields())
+                .from(EntityCollectionAttributes)
+                .where(EntityCollectionAttributes.ENTITY_INSTANCE_ATTRIBUTE.eq(entityInstanceAttribute.getPrimaryKey()),
+                        EntityCollectionAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+
+        return entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(UserVisit userVisit, EntityCollectionAttribute entityCollectionAttribute, EntityInstance entityInstance) {

@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.ColorChoicesBean;
 import com.echothree.model.control.core.common.transfer.ColorDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.ColorTransfer;
+import com.echothree.model.control.core.server.transfer.ColorDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.ColorTransferCache;
 import com.echothree.model.data.core.common.pk.ColorPK;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ColorDescription;
@@ -31,22 +33,26 @@ import com.echothree.model.data.core.server.value.ColorDescriptionValue;
 import com.echothree.model.data.core.server.value.ColorDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COLORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COLOR_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.core.ColorDescriptions.ColorDescriptions;
+import static com.echothree.model.jooq.server.tables.core.ColorDetails.ColorDetails;
+import static com.echothree.model.jooq.server.tables.core.Colors.Colors;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class ColorControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected AppearanceControl appearanceControl;
@@ -61,10 +67,13 @@ public class ColorControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ColorDetailFactory colorDetailFactory;
+
+    @Inject
     protected ColorFactory colorFactory;
 
     @Inject
-    protected ColorDetailFactory colorDetailFactory;
+    ColorTransferCache colorTransferCache;
 
     public Color createColor(String colorName, Integer red, Integer green, Integer blue, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultColor = getDefaultColor();
@@ -110,38 +119,27 @@ public class ColorControl
     }
 
     public long countColors() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM colors, colordetails
-                WHERE clr_activedetailid = clrdt_colordetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getColorByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM colors, colordetails
-                WHERE clr_activedetailid = clrdt_colordetailid
-                AND clrdt_colorname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM colors, colordetails
-                WHERE clr_activedetailid = clrdt_colordetailid
-                AND clrdt_colorname = ?
-                FOR UPDATE
-                """);
-        getColorByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Colors)
+                .join(ColorDetails).onKey(COLORS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Color getColorByName(String colorName, EntityPermission entityPermission) {
-        return colorFactory.getEntityFromQuery(entityPermission, getColorByNameQueries, colorName);
+        var baseQuery = session.getDslContext()
+                .select(Colors.fields())
+                .from(Colors)
+                .join(ColorDetails).onKey(COLORS_ACTIVE_DETAIL_FK)
+                .where(ColorDetails.COLOR_NAME.eq(colorName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return colorFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Color getColorByName(String colorName) {
@@ -160,31 +158,19 @@ public class ColorControl
         return getColorDetailValueForUpdate(getColorByNameForUpdate(colorName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultColorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM colors, colordetails
-                WHERE clr_activedetailid = clrdt_colordetailid
-                AND clrdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM colors, colordetails
-                WHERE clr_activedetailid = clrdt_colordetailid
-                AND clrdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultColorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Color getDefaultColor(EntityPermission entityPermission) {
-        return colorFactory.getEntityFromQuery(entityPermission, getDefaultColorQueries);
+        var baseQuery = session.getDslContext()
+                .select(Colors.fields())
+                .from(Colors)
+                .join(ColorDetails).onKey(COLORS_ACTIVE_DETAIL_FK)
+                .where(ColorDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return colorFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Color getDefaultColor() {
@@ -199,31 +185,22 @@ public class ColorControl
         return getDefaultColorForUpdate().getLastDetailForUpdate().getColorDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getColorsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM colors, colordetails
-                WHERE clr_activedetailid = clrdt_colordetailid
-                ORDER BY clrdt_sortorder, clrdt_colorname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM colors, colordetails
-                WHERE clr_activedetailid = clrdt_colordetailid
-                FOR UPDATE
-                """);
-        getColorsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Color> getColors(EntityPermission entityPermission) {
-        return colorFactory.getEntitiesFromQuery(entityPermission, getColorsQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Colors.fields())
+                    .from(Colors)
+                    .join(ColorDetails).onKey(COLORS_ACTIVE_DETAIL_FK)
+                    .orderBy(ColorDetails.SORT_ORDER, ColorDetails.COLOR_NAME),
+                    ColorFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Colors.fields())
+                    .from(Colors)
+                    .where(Colors.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return colorFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Color> getColors() {
@@ -385,6 +362,9 @@ public class ColorControl
     @Inject
     protected ColorDescriptionFactory colorDescriptionFactory;
 
+    @Inject
+    ColorDescriptionTransferCache colorDescriptionTransferCache;
+
     public ColorDescription createColorDescription(Color color, Language language, String description, BasePK createdBy) {
         var colorDescription = colorDescriptionFactory.create(color, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -394,30 +374,20 @@ public class ColorControl
         return colorDescription;
     }
 
-    private static final Map<EntityPermission, String> getColorDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM colordescriptions
-                WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM colordescriptions
-                WHERE clrd_clr_colorid = ? AND clrd_lang_languageid = ? AND clrd_thrutime = ?
-                FOR UPDATE
-                """);
-        getColorDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ColorDescription getColorDescription(Color color, Language language, EntityPermission entityPermission) {
-        return colorDescriptionFactory.getEntityFromQuery(entityPermission, getColorDescriptionQueries,
-                color, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ColorDescriptions.fields())
+                .from(ColorDescriptions)
+                .where(ColorDescriptions.COLOR.eq(color.getPrimaryKey()),
+                        ColorDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ColorDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return colorDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ColorDescription getColorDescription(Color color, Language language) {
@@ -436,31 +406,25 @@ public class ColorControl
         return getColorDescriptionValue(getColorDescriptionForUpdate(color, language));
     }
 
-    private static final Map<EntityPermission, String> getColorDescriptionsByColorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM colordescriptions, languages
-                WHERE clrd_clr_colorid = ? AND clrd_thrutime = ? AND clrd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM colordescriptions
-                WHERE clrd_clr_colorid = ? AND clrd_thrutime = ?
-                FOR UPDATE
-                """);
-        getColorDescriptionsByColorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ColorDescription> getColorDescriptionsByColor(Color color, EntityPermission entityPermission) {
-        return colorDescriptionFactory.getEntitiesFromQuery(entityPermission, getColorDescriptionsByColorQueries,
-                color, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ColorDescriptions.fields())
+                    .from(ColorDescriptions)
+                    .join(Languages).onKey(COLOR_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ColorDescriptions.COLOR.eq(color.getPrimaryKey()),
+                            ColorDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ColorDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ColorDescriptions.fields())
+                    .from(ColorDescriptions)
+                    .where(ColorDescriptions.COLOR.eq(color.getPrimaryKey()),
+                            ColorDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return colorDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ColorDescription> getColorDescriptionsByColor(Color color) {

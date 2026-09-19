@@ -23,6 +23,10 @@ import com.echothree.model.control.core.common.transfer.TextDecorationDescriptio
 import com.echothree.model.control.core.common.transfer.TextDecorationTransfer;
 import com.echothree.model.control.core.common.transfer.TextTransformationDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.TextTransformationTransfer;
+import com.echothree.model.control.core.server.transfer.TextDecorationDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.TextDecorationTransferCache;
+import com.echothree.model.control.core.server.transfer.TextTransformationDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.TextTransformationTransferCache;
 import com.echothree.model.data.core.common.pk.TextDecorationPK;
 import com.echothree.model.data.core.common.pk.TextTransformationPK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -42,22 +46,31 @@ import com.echothree.model.data.core.server.value.TextTransformationDescriptionV
 import com.echothree.model.data.core.server.value.TextTransformationDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.TEXT_DECORATIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.TEXT_DECORATION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.TEXT_TRANSFORMATIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.TEXT_TRANSFORMATION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.core.TextDecorationDescriptions.TextDecorationDescriptions;
+import static com.echothree.model.jooq.server.tables.core.TextDecorationDetails.TextDecorationDetails;
+import static com.echothree.model.jooq.server.tables.core.TextDecorations.TextDecorations;
+import static com.echothree.model.jooq.server.tables.core.TextTransformationDescriptions.TextTransformationDescriptions;
+import static com.echothree.model.jooq.server.tables.core.TextTransformationDetails.TextTransformationDetails;
+import static com.echothree.model.jooq.server.tables.core.TextTransformations.TextTransformations;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class TextControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected AppearanceControl appearanceControl;
@@ -72,10 +85,13 @@ public class TextControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TextDecorationDetailFactory textDecorationDetailFactory;
+
+    @Inject
     protected TextDecorationFactory textDecorationFactory;
 
     @Inject
-    protected TextDecorationDetailFactory textDecorationDetailFactory;
+    TextDecorationTransferCache textDecorationTransferCache;
 
     public TextDecoration createTextDecoration(String textDecorationName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultTextDecoration = getDefaultTextDecoration();
@@ -121,38 +137,27 @@ public class TextControl
     }
 
     public long countTextDecorations() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM textdecorations, textdecorationdetails
-                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getTextDecorationByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM textdecorations, textdecorationdetails
-                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
-                AND txtdcrtndt_textdecorationname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM textdecorations, textdecorationdetails
-                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
-                AND txtdcrtndt_textdecorationname = ?
-                FOR UPDATE
-                """);
-        getTextDecorationByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(TextDecorations)
+                .join(TextDecorationDetails).onKey(TEXT_DECORATIONS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private TextDecoration getTextDecorationByName(String textDecorationName, EntityPermission entityPermission) {
-        return textDecorationFactory.getEntityFromQuery(entityPermission, getTextDecorationByNameQueries, textDecorationName);
+        var baseQuery = session.getDslContext()
+                .select(TextDecorations.fields())
+                .from(TextDecorations)
+                .join(TextDecorationDetails).onKey(TEXT_DECORATIONS_ACTIVE_DETAIL_FK)
+                .where(TextDecorationDetails.TEXT_DECORATION_NAME.eq(textDecorationName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return textDecorationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TextDecoration getTextDecorationByName(String textDecorationName) {
@@ -171,31 +176,19 @@ public class TextControl
         return getTextDecorationDetailValueForUpdate(getTextDecorationByNameForUpdate(textDecorationName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultTextDecorationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM textdecorations, textdecorationdetails
-                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
-                AND txtdcrtndt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM textdecorations, textdecorationdetails
-                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
-                AND txtdcrtndt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultTextDecorationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TextDecoration getDefaultTextDecoration(EntityPermission entityPermission) {
-        return textDecorationFactory.getEntityFromQuery(entityPermission, getDefaultTextDecorationQueries);
+        var baseQuery = session.getDslContext()
+                .select(TextDecorations.fields())
+                .from(TextDecorations)
+                .join(TextDecorationDetails).onKey(TEXT_DECORATIONS_ACTIVE_DETAIL_FK)
+                .where(TextDecorationDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return textDecorationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TextDecoration getDefaultTextDecoration() {
@@ -210,31 +203,22 @@ public class TextControl
         return getDefaultTextDecorationForUpdate().getLastDetailForUpdate().getTextDecorationDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getTextDecorationsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM textdecorations, textdecorationdetails
-                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
-                ORDER BY txtdcrtndt_sortorder, txtdcrtndt_textdecorationname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM textdecorations, textdecorationdetails
-                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
-                FOR UPDATE
-                """);
-        getTextDecorationsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TextDecoration> getTextDecorations(EntityPermission entityPermission) {
-        return textDecorationFactory.getEntitiesFromQuery(entityPermission, getTextDecorationsQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TextDecorations.fields())
+                    .from(TextDecorations)
+                    .join(TextDecorationDetails).onKey(TEXT_DECORATIONS_ACTIVE_DETAIL_FK)
+                    .orderBy(TextDecorationDetails.SORT_ORDER, TextDecorationDetails.TEXT_DECORATION_NAME),
+                    TextDecorationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TextDecorations.fields())
+                    .from(TextDecorations)
+                    .where(TextDecorations.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return textDecorationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TextDecoration> getTextDecorations() {
@@ -393,6 +377,9 @@ public class TextControl
     @Inject
     protected TextDecorationDescriptionFactory textDecorationDescriptionFactory;
 
+    @Inject
+    TextDecorationDescriptionTransferCache textDecorationDescriptionTransferCache;
+
     public TextDecorationDescription createTextDecorationDescription(TextDecoration textDecoration, Language language, String description, BasePK createdBy) {
         var textDecorationDescription = textDecorationDescriptionFactory.create(textDecoration, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -402,30 +389,20 @@ public class TextControl
         return textDecorationDescription;
     }
 
-    private static final Map<EntityPermission, String> getTextDecorationDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM textdecorationdescriptions
-                WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_lang_languageid = ? AND txtdcrtnd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM textdecorationdescriptions
-                WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_lang_languageid = ? AND txtdcrtnd_thrutime = ?
-                FOR UPDATE
-                """);
-        getTextDecorationDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TextDecorationDescription getTextDecorationDescription(TextDecoration textDecoration, Language language, EntityPermission entityPermission) {
-        return textDecorationDescriptionFactory.getEntityFromQuery(entityPermission, getTextDecorationDescriptionQueries,
-                textDecoration, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TextDecorationDescriptions.fields())
+                .from(TextDecorationDescriptions)
+                .where(TextDecorationDescriptions.TEXT_DECORATION.eq(textDecoration.getPrimaryKey()),
+                        TextDecorationDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TextDecorationDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return textDecorationDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TextDecorationDescription getTextDecorationDescription(TextDecoration textDecoration, Language language) {
@@ -444,31 +421,25 @@ public class TextControl
         return getTextDecorationDescriptionValue(getTextDecorationDescriptionForUpdate(textDecoration, language));
     }
 
-    private static final Map<EntityPermission, String> getTextDecorationDescriptionsByTextDecorationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM textdecorationdescriptions, languages
-                WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_thrutime = ? AND txtdcrtnd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM textdecorationdescriptions
-                WHERE txtdcrtnd_txtdcrtn_textdecorationid = ? AND txtdcrtnd_thrutime = ?
-                FOR UPDATE
-                """);
-        getTextDecorationDescriptionsByTextDecorationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TextDecorationDescription> getTextDecorationDescriptionsByTextDecoration(TextDecoration textDecoration, EntityPermission entityPermission) {
-        return textDecorationDescriptionFactory.getEntitiesFromQuery(entityPermission, getTextDecorationDescriptionsByTextDecorationQueries,
-                textDecoration, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TextDecorationDescriptions.fields())
+                    .from(TextDecorationDescriptions)
+                    .join(Languages).onKey(TEXT_DECORATION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TextDecorationDescriptions.TEXT_DECORATION.eq(textDecoration.getPrimaryKey()),
+                            TextDecorationDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TextDecorationDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TextDecorationDescriptions.fields())
+                    .from(TextDecorationDescriptions)
+                    .where(TextDecorationDescriptions.TEXT_DECORATION.eq(textDecoration.getPrimaryKey()),
+                            TextDecorationDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return textDecorationDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TextDecorationDescription> getTextDecorationDescriptionsByTextDecoration(TextDecoration textDecoration) {
@@ -550,10 +521,13 @@ public class TextControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TextTransformationDetailFactory textTransformationDetailFactory;
+
+    @Inject
     protected TextTransformationFactory textTransformationFactory;
 
     @Inject
-    protected TextTransformationDetailFactory textTransformationDetailFactory;
+    TextTransformationTransferCache textTransformationTransferCache;
 
     public TextTransformation createTextTransformation(String textTransformationName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultTextTransformation = getDefaultTextTransformation();
@@ -599,38 +573,27 @@ public class TextControl
     }
 
     public long countTextTransformations() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM texttransformations, texttransformationdetails
-                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getTextTransformationByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM texttransformations, texttransformationdetails
-                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
-                AND txttrnsdt_texttransformationname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM texttransformations, texttransformationdetails
-                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
-                AND txttrnsdt_texttransformationname = ?
-                FOR UPDATE
-                """);
-        getTextTransformationByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(TextTransformations)
+                .join(TextTransformationDetails).onKey(TEXT_TRANSFORMATIONS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private TextTransformation getTextTransformationByName(String textTransformationName, EntityPermission entityPermission) {
-        return textTransformationFactory.getEntityFromQuery(entityPermission, getTextTransformationByNameQueries, textTransformationName);
+        var baseQuery = session.getDslContext()
+                .select(TextTransformations.fields())
+                .from(TextTransformations)
+                .join(TextTransformationDetails).onKey(TEXT_TRANSFORMATIONS_ACTIVE_DETAIL_FK)
+                .where(TextTransformationDetails.TEXT_TRANSFORMATION_NAME.eq(textTransformationName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return textTransformationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TextTransformation getTextTransformationByName(String textTransformationName) {
@@ -649,31 +612,19 @@ public class TextControl
         return getTextTransformationDetailValueForUpdate(getTextTransformationByNameForUpdate(textTransformationName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultTextTransformationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM texttransformations, texttransformationdetails
-                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
-                AND txttrnsdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM texttransformations, texttransformationdetails
-                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
-                AND txttrnsdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultTextTransformationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TextTransformation getDefaultTextTransformation(EntityPermission entityPermission) {
-        return textTransformationFactory.getEntityFromQuery(entityPermission, getDefaultTextTransformationQueries);
+        var baseQuery = session.getDslContext()
+                .select(TextTransformations.fields())
+                .from(TextTransformations)
+                .join(TextTransformationDetails).onKey(TEXT_TRANSFORMATIONS_ACTIVE_DETAIL_FK)
+                .where(TextTransformationDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return textTransformationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TextTransformation getDefaultTextTransformation() {
@@ -688,31 +639,22 @@ public class TextControl
         return getDefaultTextTransformationForUpdate().getLastDetailForUpdate().getTextTransformationDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getTextTransformationsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM texttransformations, texttransformationdetails
-                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
-                ORDER BY txttrnsdt_sortorder, txttrnsdt_texttransformationname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM texttransformations, texttransformationdetails
-                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
-                FOR UPDATE
-                """);
-        getTextTransformationsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TextTransformation> getTextTransformations(EntityPermission entityPermission) {
-        return textTransformationFactory.getEntitiesFromQuery(entityPermission, getTextTransformationsQueries);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TextTransformations.fields())
+                    .from(TextTransformations)
+                    .join(TextTransformationDetails).onKey(TEXT_TRANSFORMATIONS_ACTIVE_DETAIL_FK)
+                    .orderBy(TextTransformationDetails.SORT_ORDER, TextTransformationDetails.TEXT_TRANSFORMATION_NAME),
+                    TextTransformationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TextTransformations.fields())
+                    .from(TextTransformations)
+                    .where(TextTransformations.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
+
+        return textTransformationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TextTransformation> getTextTransformations() {
@@ -871,6 +813,9 @@ public class TextControl
     @Inject
     protected TextTransformationDescriptionFactory textTransformationDescriptionFactory;
 
+    @Inject
+    TextTransformationDescriptionTransferCache textTransformationDescriptionTransferCache;
+
     public TextTransformationDescription createTextTransformationDescription(TextTransformation textTransformation, Language language, String description, BasePK createdBy) {
         var textTransformationDescription = textTransformationDescriptionFactory.create(textTransformation, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -880,30 +825,20 @@ public class TextControl
         return textTransformationDescription;
     }
 
-    private static final Map<EntityPermission, String> getTextTransformationDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM texttransformationdescriptions
-                WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_lang_languageid = ? AND txttrnsd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM texttransformationdescriptions
-                WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_lang_languageid = ? AND txttrnsd_thrutime = ?
-                FOR UPDATE
-                """);
-        getTextTransformationDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TextTransformationDescription getTextTransformationDescription(TextTransformation textTransformation, Language language, EntityPermission entityPermission) {
-        return textTransformationDescriptionFactory.getEntityFromQuery(entityPermission, getTextTransformationDescriptionQueries,
-                textTransformation, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TextTransformationDescriptions.fields())
+                .from(TextTransformationDescriptions)
+                .where(TextTransformationDescriptions.TEXT_TRANSFORMATION.eq(textTransformation.getPrimaryKey()),
+                        TextTransformationDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TextTransformationDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return textTransformationDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TextTransformationDescription getTextTransformationDescription(TextTransformation textTransformation, Language language) {
@@ -922,31 +857,25 @@ public class TextControl
         return getTextTransformationDescriptionValue(getTextTransformationDescriptionForUpdate(textTransformation, language));
     }
 
-    private static final Map<EntityPermission, String> getTextTransformationDescriptionsByTextTransformationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM texttransformationdescriptions, languages
-                WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_thrutime = ? AND txttrnsd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM texttransformationdescriptions
-                WHERE txttrnsd_txttrns_texttransformationid = ? AND txttrnsd_thrutime = ?
-                FOR UPDATE
-                """);
-        getTextTransformationDescriptionsByTextTransformationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TextTransformationDescription> getTextTransformationDescriptionsByTextTransformation(TextTransformation textTransformation, EntityPermission entityPermission) {
-        return textTransformationDescriptionFactory.getEntitiesFromQuery(entityPermission, getTextTransformationDescriptionsByTextTransformationQueries,
-                textTransformation, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TextTransformationDescriptions.fields())
+                    .from(TextTransformationDescriptions)
+                    .join(Languages).onKey(TEXT_TRANSFORMATION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TextTransformationDescriptions.TEXT_TRANSFORMATION.eq(textTransformation.getPrimaryKey()),
+                            TextTransformationDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TextTransformationDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TextTransformationDescriptions.fields())
+                    .from(TextTransformationDescriptions)
+                    .where(TextTransformationDescriptions.TEXT_TRANSFORMATION.eq(textTransformation.getPrimaryKey()),
+                            TextTransformationDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return textTransformationDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TextTransformationDescription> getTextTransformationDescriptionsByTextTransformation(TextTransformation textTransformation) {

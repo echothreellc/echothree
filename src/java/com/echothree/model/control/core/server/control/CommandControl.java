@@ -24,8 +24,12 @@ import com.echothree.model.control.core.common.transfer.CommandMessageTranslatio
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransfer;
 import com.echothree.model.control.core.common.transfer.CommandTransfer;
-import com.echothree.model.data.campaign.common.pk.CampaignPK;
-import com.echothree.model.data.campaign.server.entity.Campaign;
+import com.echothree.model.control.core.server.transfer.CommandDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.CommandMessageTransferCache;
+import com.echothree.model.control.core.server.transfer.CommandMessageTranslationTransferCache;
+import com.echothree.model.control.core.server.transfer.CommandMessageTypeDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.CommandMessageTypeTransferCache;
+import com.echothree.model.control.core.server.transfer.CommandTransferCache;
 import com.echothree.model.data.core.common.pk.CommandMessagePK;
 import com.echothree.model.data.core.common.pk.CommandMessageTypePK;
 import com.echothree.model.data.core.common.pk.CommandPK;
@@ -54,12 +58,27 @@ import com.echothree.model.data.core.server.value.CommandMessageTypeDescriptionV
 import com.echothree.model.data.core.server.value.CommandMessageTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMMANDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMMAND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMMAND_MESSAGES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMMAND_MESSAGE_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMMAND_MESSAGE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMMAND_MESSAGE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.core.CommandDescriptions.CommandDescriptions;
+import static com.echothree.model.jooq.server.tables.core.CommandDetails.CommandDetails;
+import static com.echothree.model.jooq.server.tables.core.CommandMessageDetails.CommandMessageDetails;
+import static com.echothree.model.jooq.server.tables.core.CommandMessageTranslations.CommandMessageTranslations;
+import static com.echothree.model.jooq.server.tables.core.CommandMessageTypeDescriptions.CommandMessageTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.core.CommandMessageTypeDetails.CommandMessageTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.CommandMessageTypes.CommandMessageTypes;
+import static com.echothree.model.jooq.server.tables.core.CommandMessages.CommandMessages;
+import static com.echothree.model.jooq.server.tables.core.Commands.Commands;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -68,7 +87,7 @@ import javax.inject.Inject;
 
 @CommandScope
 public class CommandControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of CommandControl */
     protected CommandControl() {
@@ -80,10 +99,13 @@ public class CommandControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CommandDetailFactory commandDetailFactory;
+
+    @Inject
     protected CommandFactory commandFactory;
 
     @Inject
-    protected CommandDetailFactory commandDetailFactory;
+    CommandTransferCache commandTransferCache;
 
     public Command createCommand(ComponentVendor componentVendor, String commandName, Integer sortOrder, BasePK createdBy) {
         var command = commandFactory.create();
@@ -117,56 +139,38 @@ public class CommandControl
     }
 
     public long countCommands() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM commands
-                        JOIN commanddetails ON cmddt_commanddetailid = cmd_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Commands)
+                .join(CommandDetails).onKey(COMMANDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCommandsByComponentVendor(final ComponentVendor componentVendor) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM commands
-                        JOIN commanddetails ON cmddt_commanddetailid = cmd_activedetailid
-                        WHERE cmddt_cvnd_componentvendorid = ?
-                        """, componentVendor);
+        return session.getDslContext()
+                .selectCount()
+                .from(Commands)
+                .join(CommandDetails).onKey(COMMANDS_ACTIVE_DETAIL_FK)
+                .where(CommandDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Command getCommandByName(ComponentVendor componentVendor, String commandName, EntityPermission entityPermission) {
-        Command command;
+        var baseQuery = session.getDslContext()
+                .select(Commands.fields())
+                .from(Commands)
+                .join(CommandDetails).onKey(COMMANDS_ACTIVE_DETAIL_FK)
+                .where(CommandDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()),
+                        CommandDetails.COMMAND_NAME.eq(commandName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commands, commanddetails
-                        WHERE cmd_activedetailid = cmddt_commanddetailid
-                        AND cmddt_cvnd_componentvendorid = ? AND cmddt_commandname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commands, commanddetails
-                        WHERE cmd_activedetailid = cmddt_commanddetailid
-                        AND cmddt_cvnd_componentvendorid = ? AND cmddt_commandname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandFactory.prepareStatement(query);
-
-            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-            ps.setString(2, commandName);
-
-            command = commandFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return command;
+        return commandFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Command getCommandByName(ComponentVendor componentVendor, String commandName) {
@@ -186,40 +190,23 @@ public class CommandControl
     }
 
     private List<Command> getCommandsByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
-        List<Command> commands;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Commands.fields())
+                    .from(Commands)
+                    .join(CommandDetails).onKey(COMMANDS_ACTIVE_DETAIL_FK)
+                    .where(CommandDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()))
+                    .orderBy(CommandDetails.SORT_ORDER, CommandDetails.COMMAND_NAME),
+                    CommandFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Commands.fields())
+                    .from(Commands)
+                    .join(CommandDetails).onKey(COMMANDS_ACTIVE_DETAIL_FK)
+                    .where(CommandDetails.COMPONENT_VENDOR.eq(componentVendor.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commands, commanddetails
-                        WHERE cmd_activedetailid = cmddt_commanddetailid
-                        AND cmddt_cvnd_componentvendorid = ?
-                        ORDER BY cmddt_sortorder, cmddt_commandname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commands, commanddetails
-                        WHERE cmd_activedetailid = cmddt_commanddetailid
-                        AND cmddt_cvnd_componentvendorid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandFactory.prepareStatement(query);
-
-            ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-
-            commands = commandFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commands;
+        return commandFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Command> getCommandsByComponentVendor(ComponentVendor componentVendor) {
@@ -231,16 +218,14 @@ public class CommandControl
     }
 
     public List<Command> getCommands() {
-        var ps = commandFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM commands, commanddetails
-                WHERE cmd_activedetailid = cmddt_commanddetailid
-                ORDER BY cmddt_sortorder, cmddt_commandname
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(Commands.fields())
+                .from(Commands)
+                .join(CommandDetails).onKey(COMMANDS_ACTIVE_DETAIL_FK)
+                .orderBy(CommandDetails.SORT_ORDER, CommandDetails.COMMAND_NAME),
+                CommandFactory.class);
 
-        return commandFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return commandFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public CommandTransfer getCommandTransfer(UserVisit userVisit, Command command) {
@@ -315,6 +300,9 @@ public class CommandControl
     @Inject
     protected CommandDescriptionFactory commandDescriptionFactory;
 
+    @Inject
+    CommandDescriptionTransferCache commandDescriptionTransferCache;
+
     public CommandDescription createCommandDescription(Command command, Language language, String description,
             BasePK createdBy) {
         var commandDescription = commandDescriptionFactory.create(command,
@@ -327,38 +315,19 @@ public class CommandControl
 
     private CommandDescription getCommandDescription(Command command, Language language,
             EntityPermission entityPermission) {
-        CommandDescription commandDescription;
+        var baseQuery = session.getDslContext()
+                .select(CommandDescriptions.fields())
+                .from(CommandDescriptions)
+                .where(CommandDescriptions.COMMAND.eq(command.getPrimaryKey()),
+                        CommandDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CommandDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commanddescriptions
-                        WHERE cmdd_cmd_commandid = ? AND cmdd_lang_languageid = ? AND cmdd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commanddescriptions
-                        WHERE cmdd_cmd_commandid = ? AND cmdd_lang_languageid = ? AND cmdd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, command.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            commandDescription = commandDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandDescription;
+        return commandDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CommandDescription getCommandDescription(Command command, Language language) {
@@ -379,39 +348,24 @@ public class CommandControl
 
     private List<CommandDescription> getCommandDescriptionsByCommand(Command command,
             EntityPermission entityPermission) {
-        List<CommandDescription> commandDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommandDescriptions.fields())
+                    .from(CommandDescriptions)
+                    .join(Languages).onKey(COMMAND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CommandDescriptions.COMMAND.eq(command.getPrimaryKey()),
+                            CommandDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CommandDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommandDescriptions.fields())
+                    .from(CommandDescriptions)
+                    .where(CommandDescriptions.COMMAND.eq(command.getPrimaryKey()),
+                            CommandDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commanddescriptions, languages
-                        WHERE cmdd_cmd_commandid = ? AND cmdd_thrutime = ? AND cmdd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commanddescriptions
-                        WHERE cmdd_cmd_commandid = ? AND cmdd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, command.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            commandDescriptions = commandDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandDescriptions;
+        return commandDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CommandDescription> getCommandDescriptionsByCommand(Command command) {
@@ -493,10 +447,13 @@ public class CommandControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CommandMessageTypeDetailFactory commandMessageTypeDetailFactory;
+
+    @Inject
     protected CommandMessageTypeFactory commandMessageTypeFactory;
 
     @Inject
-    protected CommandMessageTypeDetailFactory commandMessageTypeDetailFactory;
+    CommandMessageTypeTransferCache commandMessageTypeTransferCache;
 
     public CommandMessageType createCommandMessageType(String commandMessageTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCommandMessageType = getDefaultCommandMessageType();
@@ -543,36 +500,30 @@ public class CommandControl
     }
 
     public long countCommandMessageTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM commandmessagetypes
-                        JOIN commandmessagetypedetails ON cmdmssgtydt_commandmessagetypedetailid = cmdmssgty_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommandMessageTypes)
+                .join(CommandMessageTypeDetails).onKey(COMMAND_MESSAGE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<CommandMessageType> getCommandMessageTypes(EntityPermission entityPermission) {
-        String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommandMessageTypes.fields())
+                    .from(CommandMessageTypes)
+                    .join(CommandMessageTypeDetails).onKey(COMMAND_MESSAGE_TYPES_ACTIVE_DETAIL_FK)
+                    .orderBy(CommandMessageTypeDetails.SORT_ORDER, CommandMessageTypeDetails.COMMAND_MESSAGE_TYPE_NAME),
+                    CommandMessageTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommandMessageTypes.fields())
+                    .from(CommandMessageTypes)
+                    .where(CommandMessageTypes.ACTIVE_DETAIL.isNotNull())
+                    .forUpdate();
+        };
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM commandmessagetypes, commandmessagetypedetails
-                    WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid
-                    ORDER BY cmdmssgtydt_sortorder, cmdmssgtydt_commandmessagetypename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM commandmessagetypes, commandmessagetypedetails
-                    WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid
-                    FOR UPDATE
-                    """;
-        }
-
-        var ps = commandMessageTypeFactory.prepareStatement(query);
-
-        return commandMessageTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        return commandMessageTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CommandMessageType> getCommandMessageTypes() {
@@ -584,26 +535,18 @@ public class CommandControl
     }
 
     private CommandMessageType getDefaultCommandMessageType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(CommandMessageTypes.fields())
+                .from(CommandMessageTypes)
+                .join(CommandMessageTypeDetails).onKey(COMMAND_MESSAGE_TYPES_ACTIVE_DETAIL_FK)
+                .where(CommandMessageTypeDetails.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM commandmessagetypes, commandmessagetypedetails
-                    WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM commandmessagetypes, commandmessagetypedetails
-                    WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = commandMessageTypeFactory.prepareStatement(query);
-
-        return commandMessageTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return commandMessageTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CommandMessageType getDefaultCommandMessageType() {
@@ -619,36 +562,18 @@ public class CommandControl
     }
 
     private CommandMessageType getCommandMessageTypeByName(String commandMessageTypeName, EntityPermission entityPermission) {
-        CommandMessageType commandMessageType;
+        var baseQuery = session.getDslContext()
+                .select(CommandMessageTypes.fields())
+                .from(CommandMessageTypes)
+                .join(CommandMessageTypeDetails).onKey(COMMAND_MESSAGE_TYPES_ACTIVE_DETAIL_FK)
+                .where(CommandMessageTypeDetails.COMMAND_MESSAGE_TYPE_NAME.eq(commandMessageTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetypes, commandmessagetypedetails
-                        WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_commandmessagetypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetypes, commandmessagetypedetails
-                        WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid AND cmdmssgtydt_commandmessagetypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandMessageTypeFactory.prepareStatement(query);
-
-            ps.setString(1, commandMessageTypeName);
-
-            commandMessageType = commandMessageTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandMessageType;
+        return commandMessageTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CommandMessageType getCommandMessageTypeByName(String commandMessageTypeName) {
@@ -800,6 +725,9 @@ public class CommandControl
     @Inject
     protected CommandMessageTypeDescriptionFactory commandMessageTypeDescriptionFactory;
 
+    @Inject
+    CommandMessageTypeDescriptionTransferCache commandMessageTypeDescriptionTransferCache;
+
     public CommandMessageTypeDescription createCommandMessageTypeDescription(CommandMessageType commandMessageType,
             Language language, String description, BasePK createdBy) {
         var commandMessageTypeDescription = commandMessageTypeDescriptionFactory.create(commandMessageType,
@@ -814,38 +742,19 @@ public class CommandControl
 
     private CommandMessageTypeDescription getCommandMessageTypeDescription(CommandMessageType commandMessageType, Language language,
             EntityPermission entityPermission) {
-        CommandMessageTypeDescription commandMessageTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(CommandMessageTypeDescriptions.fields())
+                .from(CommandMessageTypeDescriptions)
+                .where(CommandMessageTypeDescriptions.COMMAND_MESSAGE_TYPE.eq(commandMessageType.getPrimaryKey()),
+                        CommandMessageTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CommandMessageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetypedescriptions
-                        WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_lang_languageid = ? AND cmdmssgtyd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetypedescriptions
-                        WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_lang_languageid = ? AND cmdmssgtyd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandMessageTypeDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            commandMessageTypeDescription = commandMessageTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandMessageTypeDescription;
+        return commandMessageTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CommandMessageTypeDescription getCommandMessageTypeDescription(CommandMessageType commandMessageType, Language language) {
@@ -866,39 +775,24 @@ public class CommandControl
 
     private List<CommandMessageTypeDescription> getCommandMessageTypeDescriptionsByCommandMessageType(CommandMessageType commandMessageType,
             EntityPermission entityPermission) {
-        List<CommandMessageTypeDescription> commandMessageTypeDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommandMessageTypeDescriptions.fields())
+                    .from(CommandMessageTypeDescriptions)
+                    .join(Languages).onKey(COMMAND_MESSAGE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CommandMessageTypeDescriptions.COMMAND_MESSAGE_TYPE.eq(commandMessageType.getPrimaryKey()),
+                            CommandMessageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CommandMessageTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommandMessageTypeDescriptions.fields())
+                    .from(CommandMessageTypeDescriptions)
+                    .where(CommandMessageTypeDescriptions.COMMAND_MESSAGE_TYPE.eq(commandMessageType.getPrimaryKey()),
+                            CommandMessageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetypedescriptions, languages
-                        WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_thrutime = ? AND cmdmssgtyd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetypedescriptions
-                        WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandMessageTypeDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            commandMessageTypeDescriptions = commandMessageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandMessageTypeDescriptions;
+        return commandMessageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CommandMessageTypeDescription> getCommandMessageTypeDescriptionsByCommandMessageType(CommandMessageType commandMessageType) {
@@ -981,10 +875,13 @@ public class CommandControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CommandMessageDetailFactory commandMessageDetailFactory;
+
+    @Inject
     protected CommandMessageFactory commandMessageFactory;
 
     @Inject
-    protected CommandMessageDetailFactory commandMessageDetailFactory;
+    CommandMessageTransferCache commandMessageTransferCache;
 
     public CommandMessage createCommandMessage(CommandMessageType commandMessageType, String commandMessageKey, BasePK createdBy) {
         var commandMessage = commandMessageFactory.create();
@@ -1019,48 +916,29 @@ public class CommandControl
     }
 
     public long countCommandMessagesByCommandMessageType(final CommandMessageType commandMessageType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM commandmessages
-                        JOIN commandmessagedetails ON cmdmssgdt_commandmessagedetailid = cmdmssg_activedetailid
-                        WHERE cmdmssgdt_cmdmssgty_commandmessagetypeid = ?
-                        """, commandMessageType);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommandMessages)
+                .join(CommandMessageDetails).onKey(COMMAND_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(CommandMessageDetails.COMMAND_MESSAGE_TYPE.eq(commandMessageType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private CommandMessage getCommandMessageByKey(CommandMessageType commandMessageType, String commandMessageKey, EntityPermission entityPermission) {
-        CommandMessage commandMessage;
+        var baseQuery = session.getDslContext()
+                .select(CommandMessages.fields())
+                .from(CommandMessages)
+                .join(CommandMessageDetails).onKey(COMMAND_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(CommandMessageDetails.COMMAND_MESSAGE_TYPE.eq(commandMessageType.getPrimaryKey()),
+                        CommandMessageDetails.COMMAND_MESSAGE_KEY.eq(commandMessageKey));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessages, commandmessagedetails
-                        WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid
-                        AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? AND cmdmssgdt_commandmessagekey = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessages, commandmessagedetails
-                        WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid
-                        AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? AND cmdmssgdt_commandmessagekey = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandMessageFactory.prepareStatement(query);
-
-            ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
-            ps.setString(2, commandMessageKey);
-
-            commandMessage = commandMessageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandMessage;
+        return commandMessageFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CommandMessage getCommandMessageByKey(CommandMessageType commandMessageType, String commandMessageKey) {
@@ -1080,40 +958,23 @@ public class CommandControl
     }
 
     private List<CommandMessage> getCommandMessagesByCommandMessageType(CommandMessageType commandMessageType, EntityPermission entityPermission) {
-        List<CommandMessage> commandMessages;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommandMessages.fields())
+                    .from(CommandMessages)
+                    .join(CommandMessageDetails).onKey(COMMAND_MESSAGES_ACTIVE_DETAIL_FK)
+                    .where(CommandMessageDetails.COMMAND_MESSAGE_TYPE.eq(commandMessageType.getPrimaryKey()))
+                    .orderBy(CommandMessageDetails.COMMAND_MESSAGE_KEY),
+                    CommandMessageFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommandMessages.fields())
+                    .from(CommandMessages)
+                    .join(CommandMessageDetails).onKey(COMMAND_MESSAGES_ACTIVE_DETAIL_FK)
+                    .where(CommandMessageDetails.COMMAND_MESSAGE_TYPE.eq(commandMessageType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessages, commandmessagedetails
-                        WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid
-                        AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ?
-                        ORDER BY cmdmssgdt_commandmessagekey
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessages, commandmessagedetails
-                        WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid
-                        AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandMessageFactory.prepareStatement(query);
-
-            ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
-
-            commandMessages = commandMessageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandMessages;
+        return commandMessageFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CommandMessage> getCommandMessagesByCommandMessageType(CommandMessageType commandMessageType) {
@@ -1193,6 +1054,9 @@ public class CommandControl
     @Inject
     protected CommandMessageTranslationFactory commandMessageTranslationFactory;
 
+    @Inject
+    CommandMessageTranslationTransferCache commandMessageTranslationTransferCache;
+
     public CommandMessageTranslation createCommandMessageTranslation(CommandMessage commandMessage, Language language, String translation, BasePK createdBy) {
         var commandMessageTranslation = commandMessageTranslationFactory.create(commandMessage, language, translation,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1203,40 +1067,24 @@ public class CommandControl
     }
 
     private List<CommandMessageTranslation> getCommandMessageTranslationsByCommandMessage(CommandMessage commandMessage, EntityPermission entityPermission) {
-        List<CommandMessageTranslation> commandMessageTranslations;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommandMessageTranslations.fields())
+                    .from(CommandMessageTranslations)
+                    .join(Languages).onKey(COMMAND_MESSAGE_TRANSLATIONS_LANGUAGE_FK)
+                    .where(CommandMessageTranslations.COMMAND_MESSAGE.eq(commandMessage.getPrimaryKey()),
+                            CommandMessageTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CommandMessageTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommandMessageTranslations.fields())
+                    .from(CommandMessageTranslations)
+                    .where(CommandMessageTranslations.COMMAND_MESSAGE.eq(commandMessage.getPrimaryKey()),
+                            CommandMessageTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetranslations, languages
-                        WHERE cmdmssgtr_cmdmssg_commandMessageid = ? AND cmdmssgtr_thrutime = ?
-                        AND cmdmssgtr_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetranslations
-                        WHERE cmdmssgtr_cmdmssg_commandMessageid = ? AND cmdmssgtr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandMessageTranslationFactory.prepareStatement(query);
-
-            ps.setLong(1, commandMessage.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            commandMessageTranslations = commandMessageTranslationFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandMessageTranslations;
+        return commandMessageTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CommandMessageTranslation> getCommandMessageTranslationsByCommandMessage(CommandMessage commandMessage) {
@@ -1258,38 +1106,19 @@ public class CommandControl
     }
 
     private CommandMessageTranslation getCommandMessageTranslation(CommandMessage commandMessage, Language language, EntityPermission entityPermission) {
-        CommandMessageTranslation commandMessageTranslation;
+        var baseQuery = session.getDslContext()
+                .select(CommandMessageTranslations.fields())
+                .from(CommandMessageTranslations)
+                .where(CommandMessageTranslations.COMMAND_MESSAGE.eq(commandMessage.getPrimaryKey()),
+                        CommandMessageTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        CommandMessageTranslations.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetranslations
-                        WHERE cmdmssgtr_cmdmssg_commandmessageid = ? AND cmdmssgtr_lang_languageid = ? AND cmdmssgtr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM commandmessagetranslations
-                        WHERE cmdmssgtr_cmdmssg_commandmessageid = ? AND cmdmssgtr_lang_languageid = ? AND cmdmssgtr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = commandMessageTranslationFactory.prepareStatement(query);
-
-            ps.setLong(1, commandMessage.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            commandMessageTranslation = commandMessageTranslationFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return commandMessageTranslation;
+        return commandMessageTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CommandMessageTranslation getCommandMessageTranslation(CommandMessage commandMessage, Language language) {

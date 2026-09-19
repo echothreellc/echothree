@@ -24,6 +24,7 @@ import com.echothree.model.control.core.common.transfer.BaseEncryptionKeyTransfe
 import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.WorkflowDestination_BASE_ENCRYPTION_KEY_STATUS_ACTIVE_TO_INACTIVE;
 import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE;
 import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS;
+import com.echothree.model.control.core.server.transfer.BaseEncryptionKeyTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -36,16 +37,30 @@ import com.echothree.model.data.core.server.factory.EntityEncryptionKeyFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.BaseEncryptionKeys.BaseEncryptionKeys;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityEncryptionKeys.EntityEncryptionKeys;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +68,7 @@ import javax.inject.Inject;
 
 @CommandScope
 public class EncryptionKeyControl
-        extends BaseCoreControl {
+        extends BaseModelControl {
 
     @Inject
     protected SequenceControl sequenceControl;
@@ -72,6 +87,9 @@ public class EncryptionKeyControl
 
     @Inject
     protected BaseEncryptionKeyFactory baseEncryptionKeyFactory;
+
+    @Inject
+    BaseEncryptionKeyTransferCache baseEncryptionKeyTransferCache;
 
     public BaseEncryptionKey createBaseEncryptionKey(ExecutionErrorAccumulator eea, BaseKey baseKey1, BaseKey baseKey2, PartyPK createdBy) {
         var activeBaseEncryptionKey = getActiveBaseEncryptionKey();
@@ -119,33 +137,26 @@ public class EncryptionKeyControl
     }
 
     public long countBaseEncryptionKeys() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM baseencryptionkeys
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(BaseEncryptionKeys)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<BaseEncryptionKey> getBaseEncryptionKeys(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(BaseEncryptionKeys.fields())
+                .from(BaseEncryptionKeys);
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM baseencryptionkeys
-                    ORDER BY bek_baseencryptionkeyname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM baseencryptionkeys
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(BaseEncryptionKeys.BASE_ENCRYPTION_KEY_NAME),
+                    BaseEncryptionKeyFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = baseEncryptionKeyFactory.prepareStatement(query);
-
-        return baseEncryptionKeyFactory.getEntitiesFromQuery(entityPermission, ps);
+        return baseEncryptionKeyFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<BaseEncryptionKey> getBaseEncryptionKeys() {
@@ -162,43 +173,40 @@ public class EncryptionKeyControl
         BaseEncryptionKey baseEncryptionKey = null;
 
         if(workflowStep != null) {
-            List<BaseEncryptionKey> baseEncryptionKeys;
+            var query = switch(entityPermission) {
+                case READ_ONLY -> session.getDslContext()
+                        .select(BaseEncryptionKeys.fields())
+                        .from(BaseEncryptionKeys)
+                        .join(EntityInstances).on(BaseEncryptionKeys.BASE_ENCRYPTION_KEY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                        .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                        .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                        .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                        .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                        .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                        .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                        .where(ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                                EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.BaseEncryptionKey.name()),
+                                WorkflowEntityStatuses.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()),
+                                WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME))
+                        .orderBy(EntityTimes.CREATED_TIME.desc());
+                case READ_WRITE -> session.getDslContext()
+                        .select(BaseEncryptionKeys.fields())
+                        .from(BaseEncryptionKeys)
+                        .join(EntityInstances).on(BaseEncryptionKeys.BASE_ENCRYPTION_KEY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                        .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                        .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                        .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                        .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                        .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                        .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                        .where(ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                                EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.BaseEncryptionKey.name()),
+                                WorkflowEntityStatuses.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()),
+                                WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME))
+                        .forUpdate();
+            };
 
-            try {
-                var query = new StringBuilder("""
-                                              SELECT _ALL_
-                                              FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances,
-                                              baseencryptionkeys, workflowentitystatuses, entitytimes
-                                              WHERE cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                                              AND ent_activedetailid = entdt_entitytypedetailid
-                                              AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
-                                              AND entdt_entitytypename = ?
-                                              AND ent_entitytypeid = eni_ent_entitytypeid AND bek_baseencryptionkeyid = eni_entityuniqueid
-                                              AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
-                                              AND eni_entityinstanceid = etim_eni_entityinstanceid
-                                              """);
-
-                if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                    query.append("""
-                            ORDER BY etim_createdtime DESC
-                            """);
-                } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                    query.append("""
-                            FOR UPDATE
-                            """);
-                }
-
-                var ps = baseEncryptionKeyFactory.prepareStatement(query.toString());
-
-                ps.setString(1, ComponentVendors.ECHO_THREE.name());
-                ps.setString(2, EntityTypes.BaseEncryptionKey.name());
-                ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
-                ps.setLong(4, Session.MAX_TIME);
-
-                baseEncryptionKeys = baseEncryptionKeyFactory.getEntitiesFromQuery(entityPermission, ps);
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
+            var baseEncryptionKeys = baseEncryptionKeyFactory.getEntitiesFromQuery(entityPermission, query);
 
             if(!baseEncryptionKeys.isEmpty()) {
                 baseEncryptionKey = baseEncryptionKeys.iterator().next();
@@ -217,36 +225,17 @@ public class EncryptionKeyControl
     }
 
     private BaseEncryptionKey getBaseEncryptionKeyByName(String baseEncryptionKeyName, EntityPermission entityPermission) {
-        BaseEncryptionKey baseEncryptionKey;
+        var baseQuery = session.getDslContext()
+                .select(BaseEncryptionKeys.fields())
+                .from(BaseEncryptionKeys)
+                .where(BaseEncryptionKeys.BASE_ENCRYPTION_KEY_NAME.eq(baseEncryptionKeyName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM baseencryptionkeys
-                        WHERE bek_baseencryptionkeyname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM baseencryptionkeys
-                        WHERE bek_baseencryptionkeyname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = baseEncryptionKeyFactory.prepareStatement(query);
-
-            ps.setString(1, baseEncryptionKeyName);
-
-            baseEncryptionKey = baseEncryptionKeyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return baseEncryptionKey;
+        return baseEncryptionKeyFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public BaseEncryptionKey getBaseEncryptionKeyByName(String baseEncryptionKeyName) {
@@ -258,36 +247,17 @@ public class EncryptionKeyControl
     }
 
     private BaseEncryptionKey getBaseEncryptionKeyBySha1Hash(String sha1Hash, EntityPermission entityPermission) {
-        BaseEncryptionKey baseEncryptionKey;
+        var baseQuery = session.getDslContext()
+                .select(BaseEncryptionKeys.fields())
+                .from(BaseEncryptionKeys)
+                .where(BaseEncryptionKeys.SHA1_HASH.eq(sha1Hash));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM baseencryptionkeys
-                        WHERE bek_sha1hash = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM baseencryptionkeys
-                        WHERE bek_sha1hash = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = baseEncryptionKeyFactory.prepareStatement(query);
-
-            ps.setString(1, sha1Hash);
-
-            baseEncryptionKey = baseEncryptionKeyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return baseEncryptionKey;
+        return baseEncryptionKeyFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public BaseEncryptionKey getBaseEncryptionKeyBySha1Hash(String sha1Hash) {
@@ -365,36 +335,17 @@ public class EncryptionKeyControl
     }
 
     private EntityEncryptionKey getEntityEncryptionKeyByName(String entityEncryptionKeyName, EntityPermission entityPermission) {
-        EntityEncryptionKey entityEncryptionKey;
+        var baseQuery = session.getDslContext()
+                .select(EntityEncryptionKeys.fields())
+                .from(EntityEncryptionKeys)
+                .where(EntityEncryptionKeys.ENTITY_ENCRYPTION_KEY_NAME.eq(entityEncryptionKeyName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityencryptionkeys
-                        WHERE eek_entityencryptionkeyname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entityencryptionkeys
-                        WHERE eek_entityencryptionkeyname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = entityEncryptionKeyFactory.prepareStatement(query);
-
-            ps.setString(1, entityEncryptionKeyName);
-
-            entityEncryptionKey = entityEncryptionKeyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityEncryptionKey;
+        return entityEncryptionKeyFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public EntityEncryptionKey getEntityEncryptionKeyByName(String entityEncryptionKeyName) {
@@ -406,22 +357,20 @@ public class EncryptionKeyControl
     }
 
     public List<EntityEncryptionKey> getEntityEncryptionKeysForUpdate() {
-        var ps = entityEncryptionKeyFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM entityencryptionkeys
-                FOR UPDATE
-                """);
+        var query = session.getDslContext()
+                .select(EntityEncryptionKeys.fields())
+                .from(EntityEncryptionKeys)
+                .forUpdate();
 
-        return entityEncryptionKeyFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+        return entityEncryptionKeyFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public long countEntityEncryptionKeys() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entityencryptionkeys
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityEncryptionKeys)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
 }
