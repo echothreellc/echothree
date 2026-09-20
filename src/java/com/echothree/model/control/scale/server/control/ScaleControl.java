@@ -66,6 +66,29 @@ import com.echothree.model.data.scale.server.value.ScaleTypeDetailValue;
 import com.echothree.model.data.scale.server.value.ScaleUseTypeDescriptionValue;
 import com.echothree.model.data.scale.server.value.ScaleUseTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.PARTY_SCALE_USES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.PARTY_SCALE_USES_SCALE_USE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.SCALES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.SCALE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.SCALE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.SCALE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.SCALE_USE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.SCALE_USE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.scale.ScaleForeignKeys.SCALE_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.scale.PartyScaleUses.PartyScaleUses;
+import static com.echothree.model.jooq.server.tables.scale.ScaleDescriptions.ScaleDescriptions;
+import static com.echothree.model.jooq.server.tables.scale.ScaleDetails.ScaleDetails;
+import static com.echothree.model.jooq.server.tables.scale.ScaleTypeDescriptions.ScaleTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.scale.ScaleTypeDetails.ScaleTypeDetails;
+import static com.echothree.model.jooq.server.tables.scale.ScaleTypes.ScaleTypes;
+import static com.echothree.model.jooq.server.tables.scale.ScaleUseTypeDescriptions.ScaleUseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.scale.ScaleUseTypeDetails.ScaleUseTypeDetails;
+import static com.echothree.model.jooq.server.tables.scale.ScaleUseTypes.ScaleUseTypes;
+import static com.echothree.model.jooq.server.tables.scale.Scales.Scales;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
@@ -73,10 +96,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -90,39 +110,17 @@ public class ScaleControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Scale Transfer Caches
+    //   Scale Types
     // --------------------------------------------------------------------------------
 
     @Inject
-    ScaleTypeTransferCache scaleTypeTransferCache;
-
-    @Inject
-    ScaleTypeDescriptionTransferCache scaleTypeDescriptionTransferCache;
-
-    @Inject
-    ScaleTransferCache scaleTransferCache;
-
-    @Inject
-    ScaleDescriptionTransferCache scaleDescriptionTransferCache;
-
-    @Inject
-    ScaleUseTypeTransferCache scaleUseTypeTransferCache;
-
-    @Inject
-    ScaleUseTypeDescriptionTransferCache scaleUseTypeDescriptionTransferCache;
-
-    @Inject
-    PartyScaleUseTransferCache partyScaleUseTransferCache;
-
-    // --------------------------------------------------------------------------------
-    //   Scale Group Types
-    // --------------------------------------------------------------------------------
+    protected ScaleTypeDetailFactory scaleTypeDetailFactory;
 
     @Inject
     protected ScaleTypeFactory scaleTypeFactory;
 
     @Inject
-    protected ScaleTypeDetailFactory scaleTypeDetailFactory;
+    private ScaleTypeTransferCache scaleTypeTransferCache;
 
     public ScaleType createScaleType(String scaleTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultScaleType = getDefaultScaleType();
@@ -169,36 +167,27 @@ public class ScaleControl
     }
 
     public long countScaleTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM scaletypes
-                        JOIN scaletypedetails ON scltypdt_scaletypedetailid = scltyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getScaleTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaletypes, scaletypedetails
-                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
-                        AND scltypdt_scaletypename = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaletypes, scaletypedetails
-                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
-                        AND scltypdt_scaletypename = ?
-                        FOR UPDATE
-                        """);
-        getScaleTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ScaleTypes)
+                .join(ScaleTypeDetails).onKey(SCALE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ScaleType getScaleTypeByName(String scaleTypeName, EntityPermission entityPermission) {
-        return scaleTypeFactory.getEntityFromQuery(entityPermission, getScaleTypeByNameQueries, scaleTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ScaleTypes.fields())
+                .from(ScaleTypes)
+                .join(ScaleTypeDetails).onKey(SCALE_TYPES_ACTIVE_DETAIL_FK)
+                .where(ScaleTypeDetails.SCALE_TYPE_NAME.eq(scaleTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ScaleType getScaleTypeByName(String scaleTypeName) {
@@ -217,29 +206,19 @@ public class ScaleControl
         return getScaleTypeDetailValueForUpdate(getScaleTypeByNameForUpdate(scaleTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultScaleTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaletypes, scaletypedetails
-                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
-                        AND scltypdt_isdefault = 1
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaletypes, scaletypedetails
-                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
-                        AND scltypdt_isdefault = 1
-                        FOR UPDATE
-                        """);
-        getDefaultScaleTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ScaleType getDefaultScaleType(EntityPermission entityPermission) {
-        return scaleTypeFactory.getEntityFromQuery(entityPermission, getDefaultScaleTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ScaleTypes.fields())
+                .from(ScaleTypes)
+                .join(ScaleTypeDetails).onKey(SCALE_TYPES_ACTIVE_DETAIL_FK)
+                .where(ScaleTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ScaleType getDefaultScaleType() {
@@ -254,29 +233,20 @@ public class ScaleControl
         return getDefaultScaleTypeForUpdate().getLastDetailForUpdate().getScaleTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getScaleTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaletypes, scaletypedetails
-                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
-                        ORDER BY scltypdt_sortorder, scltypdt_scaletypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaletypes, scaletypedetails
-                        WHERE scltyp_activedetailid = scltypdt_scaletypedetailid
-                        FOR UPDATE
-                        """);
-        getScaleTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ScaleType> getScaleTypes(EntityPermission entityPermission) {
-        return scaleTypeFactory.getEntitiesFromQuery(entityPermission, getScaleTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ScaleTypes.fields())
+                .from(ScaleTypes)
+                .join(ScaleTypeDetails).onKey(SCALE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ScaleTypeDetails.SORT_ORDER, ScaleTypeDetails.SCALE_TYPE_NAME),
+                    ScaleTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ScaleType> getScaleTypes() {
@@ -414,11 +384,14 @@ public class ScaleControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Scale Group Type Descriptions
+    //   Scale Type Descriptions
     // --------------------------------------------------------------------------------
 
     @Inject
     protected ScaleTypeDescriptionFactory scaleTypeDescriptionFactory;
+
+    @Inject
+    private ScaleTypeDescriptionTransferCache scaleTypeDescriptionTransferCache;
 
     public ScaleTypeDescription createScaleTypeDescription(ScaleType scaleType,
             Language language, String description, BasePK createdBy) {
@@ -430,29 +403,21 @@ public class ScaleControl
         return scaleTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getScaleTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaletypedescriptions
-                        WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_lang_languageid = ? AND scltypd_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaletypedescriptions
-                        WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_lang_languageid = ? AND scltypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getScaleTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ScaleTypeDescription getScaleTypeDescription(ScaleType scaleType,
             Language language, EntityPermission entityPermission) {
-        return scaleTypeDescriptionFactory.getEntityFromQuery(entityPermission, getScaleTypeDescriptionQueries,
-                scaleType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ScaleTypeDescriptions.fields())
+                .from(ScaleTypeDescriptions)
+                .where(ScaleTypeDescriptions.SCALE_TYPE.eq(scaleType.getPrimaryKey()),
+                        ScaleTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ScaleTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ScaleTypeDescription getScaleTypeDescription(ScaleType scaleType, Language language) {
@@ -471,31 +436,26 @@ public class ScaleControl
         return getScaleTypeDescriptionValue(getScaleTypeDescriptionForUpdate(scaleType, language));
     }
 
-    private static final Map<EntityPermission, String> getScaleTypeDescriptionsByScaleTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaletypedescriptions, languages
-                        WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_thrutime = ? AND scltypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaletypedescriptions
-                        WHERE scltypd_scltyp_scaletypeid = ? AND scltypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getScaleTypeDescriptionsByScaleTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ScaleTypeDescription> getScaleTypeDescriptionsByScaleType(ScaleType scaleType,
             EntityPermission entityPermission) {
-        return scaleTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaleTypeDescriptionsByScaleTypeQueries,
-                scaleType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ScaleTypeDescriptions.fields())
+                    .from(ScaleTypeDescriptions)
+                    .join(Languages).onKey(SCALE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ScaleTypeDescriptions.SCALE_TYPE.eq(scaleType.getPrimaryKey()),
+                            ScaleTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ScaleTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ScaleTypeDescriptions.fields())
+                    .from(ScaleTypeDescriptions)
+                    .where(ScaleTypeDescriptions.SCALE_TYPE.eq(scaleType.getPrimaryKey()),
+                            ScaleTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return scaleTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ScaleTypeDescription> getScaleTypeDescriptionsByScaleType(ScaleType scaleType) {
@@ -577,10 +537,13 @@ public class ScaleControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ScaleDetailFactory scaleDetailFactory;
+
+    @Inject
     protected ScaleFactory scaleFactory;
 
     @Inject
-    protected ScaleDetailFactory scaleDetailFactory;
+    private ScaleTransferCache scaleTransferCache;
 
     public Scale createScale(String scaleName, ScaleType scaleType, ServerService serverService, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -627,54 +590,47 @@ public class ScaleControl
     }
 
     public long countScales() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM scales
-                        JOIN scaledetails ON scldt_scaledetailid = scl_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Scales)
+                .join(ScaleDetails).onKey(SCALES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countScalesByScaleType(final ScaleType scaleType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM scales
-                        JOIN scaledetails ON scldt_scaledetailid = scl_activedetailid
-                        WHERE scldt_scltyp_scaletypeid = ?
-                        """, scaleType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Scales)
+                .join(ScaleDetails).onKey(SCALES_ACTIVE_DETAIL_FK)
+                .where(ScaleDetails.SCALE_TYPE.eq(scaleType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countScalesByServerService(final ServerService serverService) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM scales
-                        JOIN scaledetails ON scldt_scaledetailid = scl_activedetailid
-                        WHERE scldt_servsrv_serverserviceid = ?
-                        """, serverService);
-    }
-
-    private static final Map<EntityPermission, String> getScaleByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        AND scldt_scalename = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        AND scldt_scalename = ?
-                        FOR UPDATE
-                        """);
-        getScaleByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Scales)
+                .join(ScaleDetails).onKey(SCALES_ACTIVE_DETAIL_FK)
+                .where(ScaleDetails.SERVER_SERVICE.eq(serverService.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Scale getScaleByName(String scaleName, EntityPermission entityPermission) {
-        return scaleFactory.getEntityFromQuery(entityPermission, getScaleByNameQueries, scaleName);
+        var baseQuery = session.getDslContext()
+                .select(Scales.fields())
+                .from(Scales)
+                .join(ScaleDetails).onKey(SCALES_ACTIVE_DETAIL_FK)
+                .where(ScaleDetails.SCALE_NAME.eq(scaleName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Scale getScaleByName(String scaleName) {
@@ -693,29 +649,19 @@ public class ScaleControl
         return getScaleDetailValueForUpdate(getScaleByNameForUpdate(scaleName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultScaleQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        AND scldt_isdefault = 1
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        AND scldt_isdefault = 1
-                        FOR UPDATE
-                        """);
-        getDefaultScaleQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Scale getDefaultScale(EntityPermission entityPermission) {
-        return scaleFactory.getEntityFromQuery(entityPermission, getDefaultScaleQueries);
+        var baseQuery = session.getDslContext()
+                .select(Scales.fields())
+                .from(Scales)
+                .join(ScaleDetails).onKey(SCALES_ACTIVE_DETAIL_FK)
+                .where(ScaleDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Scale getDefaultScale() {
@@ -730,29 +676,20 @@ public class ScaleControl
         return getDefaultScaleForUpdate().getLastDetailForUpdate().getScaleDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getScalesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        ORDER BY scldt_sortorder, scldt_scalename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        FOR UPDATE
-                        """);
-        getScalesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Scale> getScales(EntityPermission entityPermission) {
-        return scaleFactory.getEntitiesFromQuery(entityPermission, getScalesQueries);
+        var baseQuery = session.getDslContext()
+                .select(Scales.fields())
+                .from(Scales)
+                .join(ScaleDetails).onKey(SCALES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ScaleDetails.SORT_ORDER, ScaleDetails.SCALE_NAME),
+                    ScaleFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Scale> getScales() {
@@ -763,32 +700,21 @@ public class ScaleControl
         return getScales(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getScalesByScaleTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        AND scldt_scltyp_scaletypeid = ?
-                        ORDER BY scldt_sortorder, scldt_scalename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        AND scldt_scltyp_scaletypeid = ?
-                        FOR UPDATE
-                        """);
-        getScalesByScaleTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Scale> getScalesByScaleType(ScaleType scaleType, EntityPermission entityPermission) {
-        return scaleFactory.getEntitiesFromQuery(entityPermission, getScalesByScaleTypeQueries,
-                scaleType);
+        var baseQuery = session.getDslContext()
+                .select(Scales.fields())
+                .from(Scales)
+                .join(ScaleDetails).onKey(SCALES_ACTIVE_DETAIL_FK)
+                .where(ScaleDetails.SCALE_TYPE.eq(scaleType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ScaleDetails.SORT_ORDER, ScaleDetails.SCALE_NAME),
+                    ScaleFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Scale> getScalesByScaleType(ScaleType scaleType) {
@@ -799,32 +725,21 @@ public class ScaleControl
         return getScalesByScaleType(scaleType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getScalesByServerServiceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        AND scldt_servsrv_serverserviceid = ?
-                        ORDER BY scldt_sortorder, scldt_scalename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scales, scaledetails
-                        WHERE scl_activedetailid = scldt_scaledetailid
-                        AND scldt_servsrv_serverserviceid = ?
-                        FOR UPDATE
-                        """);
-        getScalesByServerServiceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Scale> getScalesByServerService(ServerService serverService, EntityPermission entityPermission) {
-        return scaleFactory.getEntitiesFromQuery(entityPermission, getScalesByServerServiceQueries,
-                serverService);
+        var baseQuery = session.getDslContext()
+                .select(Scales.fields())
+                .from(Scales)
+                .join(ScaleDetails).onKey(SCALES_ACTIVE_DETAIL_FK)
+                .where(ScaleDetails.SERVER_SERVICE.eq(serverService.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ScaleDetails.SORT_ORDER, ScaleDetails.SCALE_NAME),
+                    ScaleFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Scale> getScalesByServerService(ServerService serverService) {
@@ -994,6 +909,9 @@ public class ScaleControl
     @Inject
     protected ScaleDescriptionFactory scaleDescriptionFactory;
 
+    @Inject
+    private ScaleDescriptionTransferCache scaleDescriptionTransferCache;
+
     public ScaleDescription createScaleDescription(Scale scale,
             Language language, String description, BasePK createdBy) {
         var scaleDescription = scaleDescriptionFactory.create(scale,
@@ -1004,29 +922,21 @@ public class ScaleControl
         return scaleDescription;
     }
 
-    private static final Map<EntityPermission, String> getScaleDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaledescriptions
-                        WHERE scld_scl_scaleid = ? AND scld_lang_languageid = ? AND scld_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaledescriptions
-                        WHERE scld_scl_scaleid = ? AND scld_lang_languageid = ? AND scld_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getScaleDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ScaleDescription getScaleDescription(Scale scale,
             Language language, EntityPermission entityPermission) {
-        return scaleDescriptionFactory.getEntityFromQuery(entityPermission, getScaleDescriptionQueries,
-                scale, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ScaleDescriptions.fields())
+                .from(ScaleDescriptions)
+                .where(ScaleDescriptions.SCALE.eq(scale.getPrimaryKey()),
+                        ScaleDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ScaleDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ScaleDescription getScaleDescription(Scale scale, Language language) {
@@ -1045,31 +955,26 @@ public class ScaleControl
         return getScaleDescriptionValue(getScaleDescriptionForUpdate(scale, language));
     }
 
-    private static final Map<EntityPermission, String> getScaleDescriptionsByScaleQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaledescriptions, languages
-                        WHERE scld_scl_scaleid = ? AND scld_thrutime = ? AND scld_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaledescriptions
-                        WHERE scld_scl_scaleid = ? AND scld_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getScaleDescriptionsByScaleQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ScaleDescription> getScaleDescriptionsByScale(Scale scale,
             EntityPermission entityPermission) {
-        return scaleDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaleDescriptionsByScaleQueries,
-                scale, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ScaleDescriptions.fields())
+                    .from(ScaleDescriptions)
+                    .join(Languages).onKey(SCALE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ScaleDescriptions.SCALE.eq(scale.getPrimaryKey()),
+                            ScaleDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ScaleDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ScaleDescriptions.fields())
+                    .from(ScaleDescriptions)
+                    .where(ScaleDescriptions.SCALE.eq(scale.getPrimaryKey()),
+                            ScaleDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return scaleDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ScaleDescription> getScaleDescriptionsByScale(Scale scale) {
@@ -1151,10 +1056,13 @@ public class ScaleControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ScaleUseTypeDetailFactory scaleUseTypeDetailFactory;
+
+    @Inject
     protected ScaleUseTypeFactory scaleUseTypeFactory;
 
     @Inject
-    protected ScaleUseTypeDetailFactory scaleUseTypeDetailFactory;
+    private ScaleUseTypeTransferCache scaleUseTypeTransferCache;
 
     public ScaleUseType createScaleUseType(String scaleUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultScaleUseType = getDefaultScaleUseType();
@@ -1201,36 +1109,27 @@ public class ScaleControl
     }
 
     public long countScaleUseTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM scaleusetypes
-                        JOIN scaleusetypedetails ON sclusetypdt_scaleusetypedetailid = sclusetyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getScaleUseTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaleusetypes, scaleusetypedetails
-                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
-                        AND sclusetypdt_scaleusetypename = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaleusetypes, scaleusetypedetails
-                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
-                        AND sclusetypdt_scaleusetypename = ?
-                        FOR UPDATE
-                        """);
-        getScaleUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ScaleUseTypes)
+                .join(ScaleUseTypeDetails).onKey(SCALE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ScaleUseType getScaleUseTypeByName(String scaleUseTypeName, EntityPermission entityPermission) {
-        return scaleUseTypeFactory.getEntityFromQuery(entityPermission, getScaleUseTypeByNameQueries, scaleUseTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ScaleUseTypes.fields())
+                .from(ScaleUseTypes)
+                .join(ScaleUseTypeDetails).onKey(SCALE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(ScaleUseTypeDetails.SCALE_USE_TYPE_NAME.eq(scaleUseTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ScaleUseType getScaleUseTypeByName(String scaleUseTypeName) {
@@ -1249,29 +1148,19 @@ public class ScaleControl
         return getScaleUseTypeDetailValueForUpdate(getScaleUseTypeByNameForUpdate(scaleUseTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultScaleUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaleusetypes, scaleusetypedetails
-                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
-                        AND sclusetypdt_isdefault = 1
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaleusetypes, scaleusetypedetails
-                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
-                        AND sclusetypdt_isdefault = 1
-                        FOR UPDATE
-                        """);
-        getDefaultScaleUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ScaleUseType getDefaultScaleUseType(EntityPermission entityPermission) {
-        return scaleUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultScaleUseTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ScaleUseTypes.fields())
+                .from(ScaleUseTypes)
+                .join(ScaleUseTypeDetails).onKey(SCALE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(ScaleUseTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ScaleUseType getDefaultScaleUseType() {
@@ -1286,29 +1175,20 @@ public class ScaleControl
         return getDefaultScaleUseTypeForUpdate().getLastDetailForUpdate().getScaleUseTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getScaleUseTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaleusetypes, scaleusetypedetails
-                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
-                        ORDER BY sclusetypdt_sortorder, sclusetypdt_scaleusetypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaleusetypes, scaleusetypedetails
-                        WHERE sclusetyp_activedetailid = sclusetypdt_scaleusetypedetailid
-                        FOR UPDATE
-                        """);
-        getScaleUseTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ScaleUseType> getScaleUseTypes(EntityPermission entityPermission) {
-        return scaleUseTypeFactory.getEntitiesFromQuery(entityPermission, getScaleUseTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ScaleUseTypes.fields())
+                .from(ScaleUseTypes)
+                .join(ScaleUseTypeDetails).onKey(SCALE_USE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ScaleUseTypeDetails.SORT_ORDER, ScaleUseTypeDetails.SCALE_USE_TYPE_NAME),
+                    ScaleUseTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleUseTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ScaleUseType> getScaleUseTypes() {
@@ -1452,6 +1332,9 @@ public class ScaleControl
     @Inject
     protected ScaleUseTypeDescriptionFactory scaleUseTypeDescriptionFactory;
 
+    @Inject
+    private ScaleUseTypeDescriptionTransferCache scaleUseTypeDescriptionTransferCache;
+
     public ScaleUseTypeDescription createScaleUseTypeDescription(ScaleUseType scaleUseType,
             Language language, String description, BasePK createdBy) {
         var scaleUseTypeDescription = scaleUseTypeDescriptionFactory.create(scaleUseType,
@@ -1462,29 +1345,21 @@ public class ScaleControl
         return scaleUseTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getScaleUseTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaleusetypedescriptions
-                        WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_lang_languageid = ? AND sclusetypd_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaleusetypedescriptions
-                        WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_lang_languageid = ? AND sclusetypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getScaleUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ScaleUseTypeDescription getScaleUseTypeDescription(ScaleUseType scaleUseType,
             Language language, EntityPermission entityPermission) {
-        return scaleUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getScaleUseTypeDescriptionQueries,
-                scaleUseType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ScaleUseTypeDescriptions.fields())
+                .from(ScaleUseTypeDescriptions)
+                .where(ScaleUseTypeDescriptions.SCALE_USE_TYPE.eq(scaleUseType.getPrimaryKey()),
+                        ScaleUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ScaleUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return scaleUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ScaleUseTypeDescription getScaleUseTypeDescription(ScaleUseType scaleUseType, Language language) {
@@ -1503,31 +1378,26 @@ public class ScaleControl
         return getScaleUseTypeDescriptionValue(getScaleUseTypeDescriptionForUpdate(scaleUseType, language));
     }
 
-    private static final Map<EntityPermission, String> getScaleUseTypeDescriptionsByScaleUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM scaleusetypedescriptions, languages
-                        WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_thrutime = ? AND sclusetypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM scaleusetypedescriptions
-                        WHERE sclusetypd_sclusetyp_scaleusetypeid = ? AND sclusetypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getScaleUseTypeDescriptionsByScaleUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ScaleUseTypeDescription> getScaleUseTypeDescriptionsByScaleUseType(ScaleUseType scaleUseType,
             EntityPermission entityPermission) {
-        return scaleUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaleUseTypeDescriptionsByScaleUseTypeQueries,
-                scaleUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ScaleUseTypeDescriptions.fields())
+                    .from(ScaleUseTypeDescriptions)
+                    .join(Languages).onKey(SCALE_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ScaleUseTypeDescriptions.SCALE_USE_TYPE.eq(scaleUseType.getPrimaryKey()),
+                            ScaleUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ScaleUseTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ScaleUseTypeDescriptions.fields())
+                    .from(ScaleUseTypeDescriptions)
+                    .where(ScaleUseTypeDescriptions.SCALE_USE_TYPE.eq(scaleUseType.getPrimaryKey()),
+                            ScaleUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return scaleUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ScaleUseTypeDescription> getScaleUseTypeDescriptionsByScaleUseType(ScaleUseType scaleUseType) {
@@ -1611,6 +1481,9 @@ public class ScaleControl
     @Inject
     protected PartyScaleUseFactory partyScaleUseFactory;
 
+    @Inject
+    private PartyScaleUseTransferCache partyScaleUseTransferCache;
+
     public PartyScaleUse createPartyScaleUse(Party party, ScaleUseType scaleUseType, Scale scale, BasePK createdBy) {
         var partyScaleUse = partyScaleUseFactory.create(party, scaleUseType, scale,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1621,52 +1494,49 @@ public class ScaleControl
     }
 
     public long countPartyScaleUsesByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyscaleuses
-                        WHERE parscluse_par_partyid = ? AND parscluse_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyScaleUses)
+                .where(PartyScaleUses.PARTY.eq(party.getPrimaryKey()),
+                        PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyScaleUsesByScaleUseType(final ScaleUseType scaleUseType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyscaleuses
-                        WHERE parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
-                        """, scaleUseType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyScaleUses)
+                .where(PartyScaleUses.SCALE_USE_TYPE.eq(scaleUseType.getPrimaryKey()),
+                        PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyScaleUsesByScale(final Scale scale) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyscaleuses
-                        WHERE parscluse_scl_scaleid = ? AND parscluse_thrutime = ?
-                        """, scale, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPartyScaleUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM partyscaleuses
-                        WHERE parscluse_par_partyid = ? AND parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM partyscaleuses
-                        WHERE parscluse_par_partyid = ? AND parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getPartyScaleUseQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyScaleUses)
+                .where(PartyScaleUses.SCALE.eq(scale.getPrimaryKey()),
+                        PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyScaleUse getPartyScaleUse(Party party, ScaleUseType scaleUseType, EntityPermission entityPermission) {
-        return partyScaleUseFactory.getEntityFromQuery(entityPermission, getPartyScaleUseQueries,
-                party, scaleUseType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyScaleUses.fields())
+                .from(PartyScaleUses)
+                .where(PartyScaleUses.PARTY.eq(party.getPrimaryKey()),
+                        PartyScaleUses.SCALE_USE_TYPE.eq(scaleUseType.getPrimaryKey()),
+                        PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyScaleUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyScaleUse getPartyScaleUse(Party party, ScaleUseType scaleUseType) {
@@ -1688,31 +1558,26 @@ public class ScaleControl
         return getPartyScaleUse(party, scaleUseType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyScaleUsesByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM partyscaleuses, scaleusetypes, scaleusetypedetails
-                        WHERE parscluse_par_partyid = ? AND parscluse_thrutime = ?
-                        AND parscluse_sclusetyp_scaleusetypeid = sclusetyp_scaleusetypeid AND sclusetyp_lastdetailid = sclusetypdt_scaleusetypedetailid
-                        ORDER BY sclusetypdt_sortorder, sclusetypdt_scaleusetypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM partyscaleuses
-                        WHERE parscluse_par_partyid = ? AND parscluse_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getPartyScaleUsesByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyScaleUse> getPartyScaleUsesByParty(Party party, EntityPermission entityPermission) {
-        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, getPartyScaleUsesByPartyQueries,
-                party, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyScaleUses.fields())
+                    .from(PartyScaleUses)
+                    .join(ScaleUseTypes).onKey(PARTY_SCALE_USES_SCALE_USE_TYPE_FK)
+                    .join(ScaleUseTypeDetails).onKey(SCALE_USE_TYPES_LAST_DETAIL_FK)
+                    .where(PartyScaleUses.PARTY.eq(party.getPrimaryKey()),
+                            PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ScaleUseTypeDetails.SORT_ORDER, ScaleUseTypeDetails.SCALE_USE_TYPE_NAME),
+                    PartyScaleUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyScaleUses.fields())
+                    .from(PartyScaleUses)
+                    .where(PartyScaleUses.PARTY.eq(party.getPrimaryKey()),
+                            PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyScaleUse> getPartyScaleUsesByParty(Party party) {
@@ -1723,31 +1588,28 @@ public class ScaleControl
         return getPartyScaleUsesByParty(party, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyScaleUsesByScaleQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM partyscaleuses, parties, partydetails
-                        WHERE parscluse_scl_scaleid = ? AND parscluse_thrutime = ?
-                        AND parscluse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        ORDER BY pardt_partyname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM partyscaleuses
-                        WHERE parscluse_scl_scaleid = ? AND parscluse_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getPartyScaleUsesByScaleQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyScaleUse> getPartyScaleUsesByScale(Scale scale, EntityPermission entityPermission) {
-        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, getPartyScaleUsesByScaleQueries,
-                scale, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyScaleUses.fields())
+                    .from(PartyScaleUses)
+                    .join(Parties).onKey(PARTY_SCALE_USES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .join(ScaleUseTypes).onKey(PARTY_SCALE_USES_SCALE_USE_TYPE_FK)
+                    .join(ScaleUseTypeDetails).onKey(SCALE_USE_TYPES_LAST_DETAIL_FK)
+                    .where(PartyScaleUses.SCALE.eq(scale.getPrimaryKey()),
+                            PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME, ScaleUseTypeDetails.SORT_ORDER, ScaleUseTypeDetails.SCALE_USE_TYPE_NAME),
+                    PartyScaleUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyScaleUses.fields())
+                    .from(PartyScaleUses)
+                    .where(PartyScaleUses.SCALE.eq(scale.getPrimaryKey()),
+                            PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyScaleUse> getPartyScaleUsesByScale(Scale scale) {
@@ -1758,31 +1620,26 @@ public class ScaleControl
         return getPartyScaleUsesByScale(scale, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyScaleUsesByScaleUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM partyscaleuses, parties, partydetails
-                        WHERE parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
-                        AND parscluse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        ORDER BY pardt_partyname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM partyscaleuses
-                        WHERE parscluse_sclusetyp_scaleusetypeid = ? AND parscluse_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getPartyScaleUsesByScaleUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyScaleUse> getPartyScaleUsesByScaleUseType(ScaleUseType scaleUseType, EntityPermission entityPermission) {
-        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, getPartyScaleUsesByScaleUseTypeQueries,
-                scaleUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyScaleUses.fields())
+                    .from(PartyScaleUses)
+                    .join(Parties).onKey(PARTY_SCALE_USES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyScaleUses.SCALE_USE_TYPE.eq(scaleUseType.getPrimaryKey()),
+                            PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyScaleUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyScaleUses.fields())
+                    .from(PartyScaleUses)
+                    .where(PartyScaleUses.SCALE_USE_TYPE.eq(scaleUseType.getPrimaryKey()),
+                            PartyScaleUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyScaleUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyScaleUse> getPartyScaleUsesByScaleUseType(ScaleUseType scaleUseType) {
