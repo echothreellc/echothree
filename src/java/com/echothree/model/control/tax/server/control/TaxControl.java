@@ -60,19 +60,40 @@ import com.echothree.model.data.tax.server.value.TaxClassificationTranslationVal
 import com.echothree.model.data.tax.server.value.TaxDescriptionValue;
 import com.echothree.model.data.tax.server.value.TaxDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.GEO_CODE_TAXES_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.GEO_CODE_TAXES_TAX_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.ITEM_TAX_CLASSIFICATION_DETAILS_COUNTRY_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.ITEM_TAX_CLASSIFICATION_DETAILS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.TAXES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.TAXES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.TAX_CLASSIFICATION_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.tax.TaxForeignKeys.TAX_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeDetails.GeoCodeDetails;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodes.GeoCodes;
+import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
+import static com.echothree.model.jooq.server.tables.item.Items.Items;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.tax.GeoCodeTaxes.GeoCodeTaxes;
+import static com.echothree.model.jooq.server.tables.tax.ItemTaxClassificationDetails.ItemTaxClassificationDetails;
+import static com.echothree.model.jooq.server.tables.tax.ItemTaxClassifications.ItemTaxClassifications;
+import static com.echothree.model.jooq.server.tables.tax.TaxClassificationDetails.TaxClassificationDetails;
+import static com.echothree.model.jooq.server.tables.tax.TaxClassificationTranslations.TaxClassificationTranslations;
+import static com.echothree.model.jooq.server.tables.tax.TaxClassifications.TaxClassifications;
+import static com.echothree.model.jooq.server.tables.tax.TaxDescriptions.TaxDescriptions;
+import static com.echothree.model.jooq.server.tables.tax.TaxDetails.TaxDetails;
+import static com.echothree.model.jooq.server.tables.tax.Taxes.Taxes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -86,36 +107,17 @@ public class TaxControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Tax Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    TaxClassificationTransferCache taxClassificationTransferCache;
-
-    @Inject
-    TaxClassificationTranslationTransferCache taxClassificationTranslationTransferCache;
-
-    @Inject
-    ItemTaxClassificationTransferCache itemTaxClassificationTransferCache;
-
-    @Inject
-    TaxTransferCache taxTransferCache;
-
-    @Inject
-    TaxDescriptionTransferCache taxDescriptionTransferCache;
-
-    @Inject
-    GeoCodeTaxTransferCache geoCodeTaxTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Tax Classifications
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected TaxClassificationDetailFactory taxClassificationDetailFactory;
 
     @Inject
     protected TaxClassificationFactory taxClassificationFactory;
 
     @Inject
-    protected TaxClassificationDetailFactory taxClassificationDetailFactory;
+    private TaxClassificationTransferCache taxClassificationTransferCache;
 
     public TaxClassification createTaxClassification(GeoCode countryGeoCode, String taxClassificationName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -163,40 +165,30 @@ public class TaxControl
     }
 
     public long countTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM taxclassifications, taxclassificationdetails
-                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ?
-                """, countryGeoCode);
-    }
-
-    private static final Map<EntityPermission, String> getTaxClassificationsByCountryGeoCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM taxclassifications, taxclassificationdetails
-                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ?
-                ORDER BY txclsfndt_sortorder, txclsfndt_taxclassificationname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM taxclassifications, taxclassificationdetails
-                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid AND txclsfndt_countrygeocodeid = ?
-                FOR UPDATE
-                """);
-        getTaxClassificationsByCountryGeoCodeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(TaxClassifications)
+                .join(TaxClassificationDetails).onKey(TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                .where(TaxClassificationDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<TaxClassification> getTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return taxClassificationFactory.getEntitiesFromQuery(entityPermission, getTaxClassificationsByCountryGeoCodeQueries,
-                countryGeoCode);
+        var baseQuery = session.getDslContext()
+                .select(TaxClassifications.fields())
+                .from(TaxClassifications)
+                .join(TaxClassificationDetails).onKey(TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                .where(TaxClassificationDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TaxClassificationDetails.SORT_ORDER, TaxClassificationDetails.TAX_CLASSIFICATION_NAME),
+                    TaxClassificationFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return taxClassificationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TaxClassification> getTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode) {
@@ -207,32 +199,20 @@ public class TaxControl
         return getTaxClassificationsByCountryGeoCode(countryGeoCode, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getDefaultTaxClassificationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM taxclassifications, taxclassificationdetails
-                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid
-                AND txclsfndt_countrygeocodeid = ? AND txclsfndt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM taxclassifications, taxclassificationdetails
-                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid
-                AND txclsfndt_countrygeocodeid = ? AND txclsfndt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultTaxClassificationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TaxClassification getDefaultTaxClassification(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return taxClassificationFactory.getEntityFromQuery(entityPermission, getDefaultTaxClassificationQueries,
-                countryGeoCode);
+        var baseQuery = session.getDslContext()
+                .select(TaxClassifications.fields())
+                .from(TaxClassifications)
+                .join(TaxClassificationDetails).onKey(TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                .where(TaxClassificationDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        TaxClassificationDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return taxClassificationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TaxClassification getDefaultTaxClassification(GeoCode countryGeoCode) {
@@ -247,32 +227,20 @@ public class TaxControl
         return getDefaultTaxClassificationForUpdate(countryGeoCode).getLastDetailForUpdate().getTaxClassificationDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getTaxClassificationByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM taxclassifications, taxclassificationdetails
-                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid
-                AND txclsfndt_countrygeocodeid = ? AND txclsfndt_taxclassificationname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM taxclassifications, taxclassificationdetails
-                WHERE txclsfn_activedetailid = txclsfndt_taxclassificationdetailid
-                AND txclsfndt_countrygeocodeid = ? AND txclsfndt_taxclassificationname = ?
-                FOR UPDATE
-                """);
-        getTaxClassificationByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TaxClassification getTaxClassificationByName(GeoCode countryGeoCode, String taxClassificationName, EntityPermission entityPermission) {
-        return taxClassificationFactory.getEntityFromQuery(entityPermission, getTaxClassificationByNameQueries,
-                countryGeoCode, taxClassificationName);
+        var baseQuery = session.getDslContext()
+                .select(TaxClassifications.fields())
+                .from(TaxClassifications)
+                .join(TaxClassificationDetails).onKey(TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                .where(TaxClassificationDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        TaxClassificationDetails.TAX_CLASSIFICATION_NAME.eq(taxClassificationName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return taxClassificationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TaxClassification getTaxClassificationByName(GeoCode countryGeoCode, String taxClassificationName) {
@@ -439,6 +407,9 @@ public class TaxControl
     @Inject
     protected TaxClassificationTranslationFactory taxClassificationTranslationFactory;
 
+    @Inject
+    private TaxClassificationTranslationTransferCache taxClassificationTranslationTransferCache;
+
     public TaxClassificationTranslation createTaxClassificationTranslation(TaxClassification taxClassification,
             Language language, String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
         var taxClassificationTranslation = taxClassificationTranslationFactory.create(taxClassification,
@@ -449,30 +420,20 @@ public class TaxControl
         return taxClassificationTranslation;
     }
 
-    private static final Map<EntityPermission, String> getTaxClassificationTranslationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM taxclassificationtranslations
-                WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_lang_languageid = ? AND txclsfntr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM taxclassificationtranslations
-                WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_lang_languageid = ? AND txclsfntr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTaxClassificationTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TaxClassificationTranslation getTaxClassificationTranslation(TaxClassification taxClassification, Language language, EntityPermission entityPermission) {
-        return taxClassificationTranslationFactory.getEntityFromQuery(entityPermission, getTaxClassificationTranslationQueries,
-                taxClassification, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TaxClassificationTranslations.fields())
+                .from(TaxClassificationTranslations)
+                .where(TaxClassificationTranslations.TAX_CLASSIFICATION.eq(taxClassification.getPrimaryKey()),
+                        TaxClassificationTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        TaxClassificationTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return taxClassificationTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TaxClassificationTranslation getTaxClassificationTranslation(TaxClassification taxClassification, Language language) {
@@ -491,32 +452,25 @@ public class TaxControl
         return getTaxClassificationTranslationValue(getTaxClassificationTranslationForUpdate(taxClassification, language));
     }
 
-    private static final Map<EntityPermission, String> getTaxClassificationTranslationsByTaxClassificationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM taxclassificationtranslations, languages
-                WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_thrutime = ? AND txclsfntr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM taxclassificationtranslations
-                WHERE txclsfntr_txclsfn_taxclassificationid = ? AND txclsfntr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTaxClassificationTranslationsByTaxClassificationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TaxClassificationTranslation> getTaxClassificationTranslationsByTaxClassification(TaxClassification taxClassification, EntityPermission entityPermission) {
-        return taxClassificationTranslationFactory.getEntitiesFromQuery(entityPermission, getTaxClassificationTranslationsByTaxClassificationQueries,
-                taxClassification, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TaxClassificationTranslations.fields())
+                    .from(TaxClassificationTranslations)
+                    .join(Languages).onKey(TAX_CLASSIFICATION_TRANSLATIONS_LANGUAGE_FK)
+                    .where(TaxClassificationTranslations.TAX_CLASSIFICATION.eq(taxClassification.getPrimaryKey()),
+                            TaxClassificationTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TaxClassificationTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TaxClassificationTranslations.fields())
+                    .from(TaxClassificationTranslations)
+                    .where(TaxClassificationTranslations.TAX_CLASSIFICATION.eq(taxClassification.getPrimaryKey()),
+                            TaxClassificationTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return taxClassificationTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TaxClassificationTranslation> getTaxClassificationTranslationsByTaxClassification(TaxClassification taxClassification) {
@@ -593,10 +547,13 @@ public class TaxControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemTaxClassificationDetailFactory itemTaxClassificationDetailFactory;
+
+    @Inject
     protected ItemTaxClassificationFactory itemTaxClassificationFactory;
 
     @Inject
-    protected ItemTaxClassificationDetailFactory itemTaxClassificationDetailFactory;
+    private ItemTaxClassificationTransferCache itemTaxClassificationTransferCache;
 
     public ItemTaxClassification createItemTaxClassification(Item item, GeoCode countryGeoCode, TaxClassification taxClassification, BasePK createdBy) {
         var itemTaxClassification = itemTaxClassificationFactory.create();
@@ -617,59 +574,55 @@ public class TaxControl
     }
 
     public long countItemTaxClassificationByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemtaxclassifications
-                        JOIN itemtaxclassificationdetails ON itmtxclsfndt_itemtaxclassificationdetailid = itmtxclsfn_activedetailid
-                        WHERE itmtxclsfndt_itm_itemid = ?
-                        """, item);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemTaxClassifications)
+                .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                .where(ItemTaxClassificationDetails.ITEM.eq(item.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemTaxClassificationByCountryGeoCode(final GeoCode countryGeoCode) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemtaxclassifications
-                        JOIN itemtaxclassificationdetails ON itmtxclsfndt_itemtaxclassificationdetailid = itmtxclsfn_activedetailid
-                        WHERE itmtxclsfndt_countrygeocodeid = ?
-                        """, countryGeoCode);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemTaxClassifications)
+                .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                .where(ItemTaxClassificationDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemTaxClassificationByTaxClassification(final TaxClassification taxClassification) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemtaxclassifications
-                        JOIN itemtaxclassificationdetails ON itmtxclsfndt_itemtaxclassificationdetailid = itmtxclsfn_activedetailid
-                        WHERE itmtxclsfndt_txclsfn_taxclassificationid = ?
-                        """, taxClassification);
-    }
-
-    private static final Map<EntityPermission, String> getItemTaxClassificationsByItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemtaxclassifications, itemtaxclassificationdetails, geocodes, geocodedetails
-                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_itm_itemid = ?
-                AND itmtxclsfndt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                ORDER BY geodt_sortorder, geodt_geocodename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemtaxclassifications, itemtaxclassificationdetails
-                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_itm_itemid = ?
-                FOR UPDATE
-                """);
-        getItemTaxClassificationsByItemQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemTaxClassifications)
+                .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                .where(ItemTaxClassificationDetails.TAX_CLASSIFICATION.eq(taxClassification.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ItemTaxClassification> getItemTaxClassificationsByItem(Item item, EntityPermission entityPermission) {
-        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByItemQueries,
-                item);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemTaxClassifications.fields())
+                    .from(ItemTaxClassifications)
+                    .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                    .join(GeoCodes).onKey(ITEM_TAX_CLASSIFICATION_DETAILS_COUNTRY_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(ItemTaxClassificationDetails.ITEM.eq(item.getPrimaryKey()))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    ItemTaxClassificationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemTaxClassifications.fields())
+                    .from(ItemTaxClassifications)
+                    .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                    .where(ItemTaxClassificationDetails.ITEM.eq(item.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemTaxClassification> getItemTaxClassificationsByItem(Item item) {
@@ -680,33 +633,26 @@ public class TaxControl
         return getItemTaxClassificationsByItem(item, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemTaxClassificationsByCountryGeoCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemtaxclassifications, itemtaxclassificationdetails, items, itemdetails
-                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_countrygeocodeid = ?
-                AND itmtxclsfndt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                ORDER BY itmdt_itemname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemtaxclassifications, itemtaxclassificationdetails
-                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_countrygeocodeid = ?
-                FOR UPDATE
-                """);
-        getItemTaxClassificationsByCountryGeoCodeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemTaxClassification> getItemTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByCountryGeoCodeQueries,
-                countryGeoCode);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemTaxClassifications.fields())
+                    .from(ItemTaxClassifications)
+                    .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(ITEM_TAX_CLASSIFICATION_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(ItemTaxClassificationDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()))
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemTaxClassificationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemTaxClassifications.fields())
+                    .from(ItemTaxClassifications)
+                    .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                    .where(ItemTaxClassificationDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemTaxClassification> getItemTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode) {
@@ -717,34 +663,28 @@ public class TaxControl
         return getItemTaxClassificationsByCountryGeoCode(countryGeoCode, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemTaxClassificationsByTaxClassificationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemtaxclassifications, itemtaxclassificationdetails, items, itemdetails, geocodes, geocodedetails
-                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_hztsc_taxclassificationid = ?
-                AND itmtxclsfndt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND itmtxclsfndt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemtaxclassifications, itemtaxclassificationdetails
-                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid AND itmtxclsfndt_hztsc_taxclassificationid = ?
-                FOR UPDATE
-                """);
-        getItemTaxClassificationsByTaxClassificationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemTaxClassification> getItemTaxClassificationsByTaxClassification(TaxClassification taxClassification, EntityPermission entityPermission) {
-        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, getItemTaxClassificationsByTaxClassificationQueries,
-                taxClassification);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemTaxClassifications.fields())
+                    .from(ItemTaxClassifications)
+                    .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(ITEM_TAX_CLASSIFICATION_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(GeoCodes).onKey(ITEM_TAX_CLASSIFICATION_DETAILS_COUNTRY_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(ItemTaxClassificationDetails.TAX_CLASSIFICATION.eq(taxClassification.getPrimaryKey()))
+                    .orderBy(ItemDetails.ITEM_NAME, GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    ItemTaxClassificationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemTaxClassifications.fields())
+                    .from(ItemTaxClassifications)
+                    .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                    .where(ItemTaxClassificationDetails.TAX_CLASSIFICATION.eq(taxClassification.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return itemTaxClassificationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemTaxClassification> getItemTaxClassificationsByTaxClassification(TaxClassification taxClassification) {
@@ -755,32 +695,20 @@ public class TaxControl
         return getItemTaxClassificationsByTaxClassification(taxClassification, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemTaxClassificationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemtaxclassifications, itemtaxclassificationdetails
-                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid
-                AND itmtxclsfndt_itm_itemid = ? AND itmtxclsfndt_countrygeocodeid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemtaxclassifications, itemtaxclassificationdetails
-                WHERE itmtxclsfn_activedetailid = itmtxclsfndt_itemtaxclassificationdetailid
-                AND itmtxclsfndt_itm_itemid = ? AND itmtxclsfndt_countrygeocodeid = ?
-                FOR UPDATE
-                """);
-        getItemTaxClassificationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ItemTaxClassification getItemTaxClassification(Item item, GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return itemTaxClassificationFactory.getEntityFromQuery(entityPermission, getItemTaxClassificationQueries,
-                item, countryGeoCode);
+        var baseQuery = session.getDslContext()
+                .select(ItemTaxClassifications.fields())
+                .from(ItemTaxClassifications)
+                .join(ItemTaxClassificationDetails).onKey(ITEM_TAX_CLASSIFICATIONS_ACTIVE_DETAIL_FK)
+                .where(ItemTaxClassificationDetails.ITEM.eq(item.getPrimaryKey()),
+                        ItemTaxClassificationDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemTaxClassificationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemTaxClassification getItemTaxClassification(Item item, GeoCode countryGeoCode) {
@@ -882,10 +810,13 @@ public class TaxControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TaxDetailFactory taxDetailFactory;
+
+    @Inject
     protected TaxFactory taxFactory;
 
     @Inject
-    protected TaxDetailFactory taxDetailFactory;
+    private TaxTransferCache taxTransferCache;
 
     public Tax createTax(String taxName, ContactMechanismPurpose contactMechanismPurpose, GlAccount glAccount,
             Boolean includeShippingCharge, Boolean includeProcessingCharge, Boolean includeInsuranceCharge, Integer percent,
@@ -934,36 +865,28 @@ public class TaxControl
     }
 
     public long countTaxes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM taxes
-                        JOIN taxdetails ON txdt_taxdetailid = tx_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Taxes)
+                .join(TaxDetails).onKey(TAXES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<Tax> getTaxes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM taxes, taxdetails
-                    WHERE tx_activedetailid = txdt_taxdetailid
-                    ORDER BY txdt_sortorder, txdt_taxname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM taxes, taxdetails
-                    WHERE tx_activedetailid = txdt_taxdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(Taxes.fields())
+                .from(Taxes)
+                .join(TaxDetails).onKey(TAXES_ACTIVE_DETAIL_FK);
 
-        var ps = taxFactory.prepareStatement(query);
-        
-        return taxFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TaxDetails.SORT_ORDER, TaxDetails.TAX_NAME),
+                    TaxFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return taxFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Tax> getTaxes() {
@@ -975,36 +898,18 @@ public class TaxControl
     }
     
     public Tax getTaxByName(String taxName, EntityPermission entityPermission) {
-        Tax tax;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM taxes, taxdetails
-                        WHERE tx_activedetailid = txdt_taxdetailid AND txdt_taxname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM taxes, taxdetails
-                        WHERE tx_activedetailid = txdt_taxdetailid AND txdt_taxname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Taxes.fields())
+                .from(Taxes)
+                .join(TaxDetails).onKey(TAXES_ACTIVE_DETAIL_FK)
+                .where(TaxDetails.TAX_NAME.eq(taxName));
 
-            var ps = taxFactory.prepareStatement(query);
-            
-            ps.setString(1, taxName);
-            
-            tax = taxFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tax;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return taxFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Tax getTaxByName(String taxName) {
@@ -1024,26 +929,18 @@ public class TaxControl
     }
     
     public Tax getDefaultTax(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM taxes, taxdetails
-                    WHERE tx_activedetailid = txdt_taxdetailid AND txdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM taxes, taxdetails
-                    WHERE tx_activedetailid = txdt_taxdetailid AND txdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(Taxes.fields())
+                .from(Taxes)
+                .join(TaxDetails).onKey(TAXES_ACTIVE_DETAIL_FK)
+                .where(TaxDetails.IS_DEFAULT.eq(true));
 
-        var ps = taxFactory.prepareStatement(query);
-        
-        return taxFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return taxFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Tax getDefaultTax() {
@@ -1164,6 +1061,9 @@ public class TaxControl
     @Inject
     protected TaxDescriptionFactory taxDescriptionFactory;
 
+    @Inject
+    private TaxDescriptionTransferCache taxDescriptionTransferCache;
+
     public TaxDescription createTaxDescription(Tax tax, Language language, String description, BasePK createdBy) {
         var taxDescription = taxDescriptionFactory.create(tax, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1174,38 +1074,19 @@ public class TaxControl
     }
     
     private TaxDescription getTaxDescription(Tax tax, Language language, EntityPermission entityPermission) {
-        TaxDescription taxDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM taxdescriptions
-                        WHERE txd_tx_taxid = ? AND txd_lang_languageid = ? AND txd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM taxdescriptions
-                        WHERE txd_tx_taxid = ? AND txd_lang_languageid = ? AND txd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(TaxDescriptions.fields())
+                .from(TaxDescriptions)
+                .where(TaxDescriptions.TAX.eq(tax.getPrimaryKey()),
+                        TaxDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TaxDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = taxDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, tax.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            taxDescription = taxDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return taxDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return taxDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TaxDescription getTaxDescription(Tax tax, Language language) {
@@ -1225,39 +1106,24 @@ public class TaxControl
     }
     
     private List<TaxDescription> getTaxDescriptionsByTax(Tax tax, EntityPermission entityPermission) {
-        List<TaxDescription> taxDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM taxdescriptions, languages
-                        WHERE txd_tx_taxid = ? AND txd_thrutime = ? AND txd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM taxdescriptions
-                        WHERE txd_tx_taxid = ? AND txd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TaxDescriptions.fields())
+                    .from(TaxDescriptions)
+                    .join(Languages).onKey(TAX_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TaxDescriptions.TAX.eq(tax.getPrimaryKey()),
+                            TaxDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TaxDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TaxDescriptions.fields())
+                    .from(TaxDescriptions)
+                    .where(TaxDescriptions.TAX.eq(tax.getPrimaryKey()),
+                            TaxDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = taxDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, tax.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            taxDescriptions = taxDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return taxDescriptions;
+        return taxDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TaxDescription> getTaxDescriptionsByTax(Tax tax) {
@@ -1345,6 +1211,9 @@ public class TaxControl
     @Inject
     protected GeoCodeTaxFactory geoCodeTaxFactory;
 
+    @Inject
+    private GeoCodeTaxTransferCache geoCodeTaxTransferCache;
+
     public GeoCodeTax createGeoCodeTax(GeoCode geoCode, Tax tax, BasePK createdBy) {
         var geoCodeTax = geoCodeTaxFactory.create(geoCode, tax, session.getStartTime(),
                 Session.MAX_TIME);
@@ -1356,58 +1225,39 @@ public class TaxControl
     }
     
     public long countGeoCodeTaxesByGeoCode(GeoCode geoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodetaxes
-                WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ?
-                """,
-                geoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeTaxes)
+                .where(GeoCodeTaxes.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeTaxes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodeTaxesByTax(Tax tax) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodetaxes
-                WHERE geotx_tx_taxid = ? AND geotx_thrutime = ?
-                """,
-                tax, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeTaxes)
+                .where(GeoCodeTaxes.TAX.eq(tax.getPrimaryKey()),
+                        GeoCodeTaxes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private GeoCodeTax getGeoCodeTax(GeoCode geoCode, Tax tax, EntityPermission entityPermission) {
-        GeoCodeTax geoCodeTax;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetaxes
-                        WHERE geotx_geo_geocodeid = ? AND geotx_tx_taxid = ? AND geotx_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetaxes
-                        WHERE geotx_geo_geocodeid = ? AND geotx_tx_taxid = ? AND geotx_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTaxes.fields())
+                .from(GeoCodeTaxes)
+                .where(GeoCodeTaxes.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeTaxes.TAX.eq(tax.getPrimaryKey()),
+                        GeoCodeTaxes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeTaxFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, tax.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeTax = geoCodeTaxFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTax;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTaxFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeTax getGeoCodeTax(GeoCode geoCode, Tax tax) {
@@ -1419,41 +1269,22 @@ public class TaxControl
     }
     
     private List<GeoCodeTax> getGeoCodeTaxesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeTax> geoCodeTaxes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetaxes, taxes, taxdetails
-                        WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ?
-                        AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid
-                        ORDER BY txdt_sortorder, txdt_taxname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetaxes, taxes, taxdetails
-                        WHERE geotx_geo_geocodeid = ? AND geotx_thrutime = ?
-                        AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTaxes.fields())
+                .from(GeoCodeTaxes)
+                .join(Taxes).onKey(GEO_CODE_TAXES_TAX_FK)
+                .join(TaxDetails).onKey(TAXES_LAST_DETAIL_FK)
+                .where(GeoCodeTaxes.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeTaxes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeTaxFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeTaxes = geoCodeTaxFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTaxes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TaxDetails.SORT_ORDER, TaxDetails.TAX_NAME),
+                    GeoCodeTaxFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTaxFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeTax> getGeoCodeTaxesByGeoCode(GeoCode geoCode) {
@@ -1465,41 +1296,25 @@ public class TaxControl
     }
     
     private List<GeoCodeTax> getGeoCodeTaxesByTax(Tax tax, EntityPermission entityPermission) {
-        List<GeoCodeTax> geoCodeTaxes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetaxes, taxes, taxdetails
-                        WHERE geotx_tx_taxid = ? AND geotx_thrutime = ?
-                        AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid
-                        ORDER BY txdt_sortorder, txdt_taxname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetaxes, taxes, taxdetails
-                        WHERE geotx_tx_taxid = ? AND geotx_thrutime = ?
-                        AND geotx_tx_taxid = tx_taxid AND tx_activedetailid = txdt_taxdetailid
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeTaxes.fields())
+                    .from(GeoCodeTaxes)
+                    .join(GeoCodes).onKey(GEO_CODE_TAXES_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(GeoCodeTaxes.TAX.eq(tax.getPrimaryKey()),
+                            GeoCodeTaxes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    GeoCodeTaxFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeTaxes.fields())
+                    .from(GeoCodeTaxes)
+                    .where(GeoCodeTaxes.TAX.eq(tax.getPrimaryKey()),
+                            GeoCodeTaxes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeTaxFactory.prepareStatement(query);
-            
-            ps.setLong(1, tax.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeTaxes = geoCodeTaxFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTaxes;
+        return geoCodeTaxFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeTax> getGeoCodeTaxesByTax(Tax tax) {
