@@ -156,7 +156,69 @@ import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_DETAILS_SELECTOR_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_KINDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_KIND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_BOOLEANS_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_ENTITY_LIST_ITEMS_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_GEO_CODES_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_ITEM_ACCOUNTING_CATEGORIES_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_ITEM_CATEGORIES_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_ITEM_PURCHASING_CATEGORIES_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_PAYMENT_METHODS_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_PAYMENT_PROCESSORS_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_RESPONSIBILITY_TYPES_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_SKILL_TYPES_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_TRAINING_CLASSES_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_TYPE_USES_SELECTOR_NODE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_NODE_WORKFLOW_STEPS_SELECTOR_NODE_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_PARTIES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.selector.SelectorForeignKeys.SELECTOR_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.selector.SelectorBooleanTypeDescriptions.SelectorBooleanTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.selector.SelectorBooleanTypes.SelectorBooleanTypes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorComparisonTypeDescriptions.SelectorComparisonTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.selector.SelectorComparisonTypes.SelectorComparisonTypes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorDescriptions.SelectorDescriptions;
+import static com.echothree.model.jooq.server.tables.selector.SelectorDetails.SelectorDetails;
+import static com.echothree.model.jooq.server.tables.selector.SelectorKindDescriptions.SelectorKindDescriptions;
+import static com.echothree.model.jooq.server.tables.selector.SelectorKindDetails.SelectorKindDetails;
+import static com.echothree.model.jooq.server.tables.selector.SelectorKinds.SelectorKinds;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeBooleans.SelectorNodeBooleans;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeDescriptions.SelectorNodeDescriptions;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeDetails.SelectorNodeDetails;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeEntityListItems.SelectorNodeEntityListItems;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeGeoCodes.SelectorNodeGeoCodes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeItemAccountingCategories.SelectorNodeItemAccountingCategories;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeItemCategories.SelectorNodeItemCategories;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeItemPurchasingCategories.SelectorNodeItemPurchasingCategories;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodePaymentMethods.SelectorNodePaymentMethods;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodePaymentProcessors.SelectorNodePaymentProcessors;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeResponsibilityTypes.SelectorNodeResponsibilityTypes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeSkillTypes.SelectorNodeSkillTypes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeTrainingClasses.SelectorNodeTrainingClasses;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeTypeDescriptions.SelectorNodeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeTypeUses.SelectorNodeTypeUses;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeTypes.SelectorNodeTypes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodeWorkflowSteps.SelectorNodeWorkflowSteps;
+import static com.echothree.model.jooq.server.tables.selector.SelectorNodes.SelectorNodes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorParties.SelectorParties;
+import static com.echothree.model.jooq.server.tables.selector.SelectorTextSearchTypeDescriptions.SelectorTextSearchTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.selector.SelectorTextSearchTypes.SelectorTextSearchTypes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorTimes.SelectorTimes;
+import static com.echothree.model.jooq.server.tables.selector.SelectorTypeDescriptions.SelectorTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.selector.SelectorTypeDetails.SelectorTypeDetails;
+import static com.echothree.model.jooq.server.tables.selector.SelectorTypes.SelectorTypes;
+import static com.echothree.model.jooq.server.tables.selector.Selectors.Selectors;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -164,13 +226,9 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -187,48 +245,17 @@ public class SelectorControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Selector Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    SelectorKindTransferCache selectorKindTransferCache;
-
-    @Inject
-    SelectorKindDescriptionTransferCache selectorKindDescriptionTransferCache;
-
-    @Inject
-    SelectorTypeTransferCache selectorTypeTransferCache;
-
-    @Inject
-    SelectorTypeDescriptionTransferCache selectorTypeDescriptionTransferCache;
-
-    @Inject
-    SelectorTransferCache selectorTransferCache;
-
-    @Inject
-    SelectorDescriptionTransferCache selectorDescriptionTransferCache;
-
-    @Inject
-    SelectorNodeDescriptionTransferCache selectorNodeDescriptionTransferCache;
-
-    @Inject
-    SelectorNodeTransferCache selectorNodeTransferCache;
-
-    @Inject
-    SelectorNodeTypeTransferCache selectorNodeTypeTransferCache;
-
-    @Inject
-    SelectorPartyTransferCache selectorPartyTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Selector Kinds
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected SelectorKindDetailFactory selectorKindDetailFactory;
 
     @Inject
     protected SelectorKindFactory selectorKindFactory;
 
     @Inject
-    protected SelectorKindDetailFactory selectorKindDetailFactory;
+    private SelectorKindTransferCache selectorKindTransferCache;
 
     public SelectorKind createSelectorKind(String selectorKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSelectorKind = getDefaultSelectorKind();
@@ -260,12 +287,12 @@ public class SelectorControl
     }
 
     public long countSelectorKinds() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM selectorkinds, selectorkinddetails
-                WHERE slk_activedetailid = slkdt_selectorkinddetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorKinds)
+                .join(SelectorKindDetails).onKey(SELECTOR_KINDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorKind */
@@ -283,30 +310,19 @@ public class SelectorControl
         return getSelectorKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getSelectorKindByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectorkinds, selectorkinddetails
-                WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_selectorkindname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectorkinds, selectorkinddetails
-                WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_selectorkindname = ?
-                FOR UPDATE
-                """);
-        getSelectorKindByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SelectorKind getSelectorKindByName(String selectorKindName, EntityPermission entityPermission) {
-        return selectorKindFactory.getEntityFromQuery(entityPermission, getSelectorKindByNameQueries,
-                selectorKindName);
+        var baseQuery = session.getDslContext()
+                .select(SelectorKinds.fields())
+                .from(SelectorKinds)
+                .join(SelectorKindDetails).onKey(SELECTOR_KINDS_ACTIVE_DETAIL_FK)
+                .where(SelectorKindDetails.SELECTOR_KIND_NAME.eq(selectorKindName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorKindFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SelectorKind getSelectorKindByName(String selectorKindName) {
@@ -325,29 +341,19 @@ public class SelectorControl
         return getSelectorKindDetailValueForUpdate(getSelectorKindByNameForUpdate(selectorKindName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultSelectorKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectorkinds, selectorkinddetails
-                WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectorkinds, selectorkinddetails
-                WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSelectorKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SelectorKind getDefaultSelectorKind(EntityPermission entityPermission) {
-        return selectorKindFactory.getEntityFromQuery(entityPermission, getDefaultSelectorKindQueries);
+        var baseQuery = session.getDslContext()
+                .select(SelectorKinds.fields())
+                .from(SelectorKinds)
+                .join(SelectorKindDetails).onKey(SELECTOR_KINDS_ACTIVE_DETAIL_FK)
+                .where(SelectorKindDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorKindFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SelectorKind getDefaultSelectorKind() {
@@ -362,31 +368,20 @@ public class SelectorControl
         return getDefaultSelectorKind(EntityPermission.READ_WRITE).getLastDetailForUpdate().getSelectorKindDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getSelectorKindsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectorkinds, selectorkinddetails
-                WHERE slk_activedetailid = slkdt_selectorkinddetailid
-                ORDER BY slkdt_sortorder, slkdt_selectorkindname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectorkinds, selectorkinddetails
-                WHERE slk_activedetailid = slkdt_selectorkinddetailid
-                FOR UPDATE
-                """);
-        getSelectorKindsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SelectorKind> getSelectorKinds(EntityPermission entityPermission) {
-        return selectorKindFactory.getEntitiesFromQuery(entityPermission, getSelectorKindsQueries);
+        var baseQuery = session.getDslContext()
+                .select(SelectorKinds.fields())
+                .from(SelectorKinds)
+                .join(SelectorKindDetails).onKey(SELECTOR_KINDS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorKindDetails.SORT_ORDER, SelectorKindDetails.SELECTOR_KIND_NAME),
+                    SelectorKindFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorKindFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SelectorKind> getSelectorKinds() {
@@ -527,6 +522,9 @@ public class SelectorControl
     @Inject
     protected SelectorKindDescriptionFactory selectorKindDescriptionFactory;
 
+    @Inject
+    private SelectorKindDescriptionTransferCache selectorKindDescriptionTransferCache;
+
     public SelectorKindDescription createSelectorKindDescription(SelectorKind selectorKind, Language language, String description,
             BasePK createdBy) {
         var selectorKindDescription = selectorKindDescriptionFactory.create(selectorKind,
@@ -537,30 +535,20 @@ public class SelectorControl
         return selectorKindDescription;
     }
 
-    private static final Map<EntityPermission, String> getSelectorKindDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectorkinddescriptions
-                WHERE slkd_slk_selectorkindid = ? AND slkd_lang_languageid = ? AND slkd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectorkinddescriptions
-                WHERE slkd_slk_selectorkindid = ? AND slkd_lang_languageid = ? AND slkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSelectorKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SelectorKindDescription getSelectorKindDescription(SelectorKind selectorKind, Language language, EntityPermission entityPermission) {
-        return selectorKindDescriptionFactory.getEntityFromQuery(entityPermission, getSelectorKindDescriptionQueries,
-                selectorKind, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SelectorKindDescriptions.fields())
+                .from(SelectorKindDescriptions)
+                .where(SelectorKindDescriptions.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()),
+                        SelectorKindDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SelectorKindDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorKindDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SelectorKindDescription getSelectorKindDescription(SelectorKind selectorKind, Language language) {
@@ -579,32 +567,25 @@ public class SelectorControl
         return getSelectorKindDescriptionValue(getSelectorKindDescriptionForUpdate(selectorKind, language));
     }
 
-    private static final Map<EntityPermission, String> getSelectorKindDescriptionsBySelectorKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectorkinddescriptions, languages
-                WHERE slkd_slk_selectorkindid = ? AND slkd_thrutime = ? AND slkd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectorkinddescriptions
-                WHERE slkd_slk_selectorkindid = ? AND slkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSelectorKindDescriptionsBySelectorKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SelectorKindDescription> getSelectorKindDescriptionsBySelectorKind(SelectorKind selectorKind, EntityPermission entityPermission) {
-        return selectorKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getSelectorKindDescriptionsBySelectorKindQueries,
-                selectorKind, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SelectorKindDescriptions.fields())
+                    .from(SelectorKindDescriptions)
+                    .join(Languages).onKey(SELECTOR_KIND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SelectorKindDescriptions.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()),
+                            SelectorKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SelectorKindDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SelectorKindDescriptions.fields())
+                    .from(SelectorKindDescriptions)
+                    .where(SelectorKindDescriptions.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()),
+                            SelectorKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return selectorKindDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SelectorKindDescription> getSelectorKindDescriptionsBySelectorKind(SelectorKind selectorKind) {
@@ -686,10 +667,13 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SelectorTypeDetailFactory selectorTypeDetailFactory;
+
+    @Inject
     protected SelectorTypeFactory selectorTypeFactory;
 
     @Inject
-    protected SelectorTypeDetailFactory selectorTypeDetailFactory;
+    private SelectorTypeTransferCache selectorTypeTransferCache;
 
     public SelectorType createSelectorType(SelectorKind selectorKind, String selectorTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSelectorType = getDefaultSelectorType(selectorKind);
@@ -721,13 +705,13 @@ public class SelectorControl
     }
 
     public long countSelectorTypesBySelectorKind(SelectorKind selectorKind) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM selectortypes, selectortypedetails
-                WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?
-                """,
-                selectorKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorTypes)
+                .join(SelectorTypeDetails).onKey(SELECTOR_TYPES_ACTIVE_DETAIL_FK)
+                .where(SelectorTypeDetails.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorType */
@@ -745,32 +729,21 @@ public class SelectorControl
         return getSelectorTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getSelectorTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectortypes, selectortypedetails
-                WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?
-                ORDER BY sltdt_sortorder, sltdt_selectortypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectortypes, selectortypedetails
-                WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?
-                FOR UPDATE
-                """);
-        getSelectorTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SelectorType> getSelectorTypes(SelectorKind selectorKind, EntityPermission entityPermission) {
-        return selectorTypeFactory.getEntitiesFromQuery(entityPermission, getSelectorTypesQueries,
-                selectorKind);
+        var baseQuery = session.getDslContext()
+                .select(SelectorTypes.fields())
+                .from(SelectorTypes)
+                .join(SelectorTypeDetails).onKey(SELECTOR_TYPES_ACTIVE_DETAIL_FK)
+                .where(SelectorTypeDetails.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorTypeDetails.SORT_ORDER, SelectorTypeDetails.SELECTOR_TYPE_NAME),
+                    SelectorTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SelectorType> getSelectorTypes(SelectorKind selectorKind) {
@@ -781,32 +754,20 @@ public class SelectorControl
         return getSelectorTypes(selectorKind, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getDefaultSelectorTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectortypes, selectortypedetails
-                WHERE slt_activedetailid = sltdt_selectortypedetailid
-                AND sltdt_slk_selectorkindid = ? AND sltdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectortypes, selectortypedetails
-                WHERE slt_activedetailid = sltdt_selectortypedetailid
-                AND sltdt_slk_selectorkindid = ? AND sltdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSelectorTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SelectorType getDefaultSelectorType(SelectorKind selectorKind, EntityPermission entityPermission) {
-        return selectorTypeFactory.getEntityFromQuery(entityPermission, getDefaultSelectorTypeQueries,
-                selectorKind);
+        var baseQuery = session.getDslContext()
+                .select(SelectorTypes.fields())
+                .from(SelectorTypes)
+                .join(SelectorTypeDetails).onKey(SELECTOR_TYPES_ACTIVE_DETAIL_FK)
+                .where(SelectorTypeDetails.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()),
+                        SelectorTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SelectorType getDefaultSelectorType(SelectorKind selectorKind) {
@@ -821,32 +782,20 @@ public class SelectorControl
         return getDefaultSelectorTypeForUpdate(selectorKind).getLastDetailForUpdate().getSelectorTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getSelectorTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectortypes, selectortypedetails
-                WHERE slt_activedetailid = sltdt_selectortypedetailid
-                AND sltdt_slk_selectorkindid = ? AND sltdt_selectortypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectortypes, selectortypedetails
-                WHERE slt_activedetailid = sltdt_selectortypedetailid
-                AND sltdt_slk_selectorkindid = ? AND sltdt_selectortypename = ?
-                FOR UPDATE
-                """);
-        getSelectorTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SelectorType getSelectorTypeByName(SelectorKind selectorKind, String selectorTypeName, EntityPermission entityPermission) {
-        return selectorTypeFactory.getEntityFromQuery(entityPermission, getSelectorTypeByNameQueries,
-                selectorKind, selectorTypeName);
+        var baseQuery = session.getDslContext()
+                .select(SelectorTypes.fields())
+                .from(SelectorTypes)
+                .join(SelectorTypeDetails).onKey(SELECTOR_TYPES_ACTIVE_DETAIL_FK)
+                .where(SelectorTypeDetails.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()),
+                        SelectorTypeDetails.SELECTOR_TYPE_NAME.eq(selectorTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SelectorType getSelectorTypeByName(SelectorKind selectorKind, String selectorTypeName) {
@@ -1009,6 +958,9 @@ public class SelectorControl
     @Inject
     protected SelectorTypeDescriptionFactory selectorTypeDescriptionFactory;
 
+    @Inject
+    private SelectorTypeDescriptionTransferCache selectorTypeDescriptionTransferCache;
+
     public SelectorTypeDescription createSelectorTypeDescription(SelectorType selectorType, Language language, String description,
             BasePK createdBy) {
         var selectorTypeDescription = selectorTypeDescriptionFactory.create(selectorType,
@@ -1019,30 +971,20 @@ public class SelectorControl
         return selectorTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getSelectorTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectortypedescriptions
-                WHERE sltd_slt_selectortypeid = ? AND sltd_lang_languageid = ? AND sltd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectortypedescriptions
-                WHERE sltd_slt_selectortypeid = ? AND sltd_lang_languageid = ? AND sltd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSelectorTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SelectorTypeDescription getSelectorTypeDescription(SelectorType selectorType, Language language, EntityPermission entityPermission) {
-        return selectorTypeDescriptionFactory.getEntityFromQuery(entityPermission, getSelectorTypeDescriptionQueries,
-                selectorType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SelectorTypeDescriptions.fields())
+                .from(SelectorTypeDescriptions)
+                .where(SelectorTypeDescriptions.SELECTOR_TYPE.eq(selectorType.getPrimaryKey()),
+                        SelectorTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SelectorTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SelectorTypeDescription getSelectorTypeDescription(SelectorType selectorType, Language language) {
@@ -1061,32 +1003,25 @@ public class SelectorControl
         return getSelectorTypeDescriptionValue(getSelectorTypeDescriptionForUpdate(selectorType, language));
     }
 
-    private static final Map<EntityPermission, String> getSelectorTypeDescriptionsBySelectorTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM selectortypedescriptions, languages
-                WHERE sltd_slt_selectortypeid = ? AND sltd_thrutime = ? AND sltd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM selectortypedescriptions
-                WHERE sltd_slt_selectortypeid = ? AND sltd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSelectorTypeDescriptionsBySelectorTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SelectorTypeDescription> getSelectorTypeDescriptionsBySelectorType(SelectorType selectorType, EntityPermission entityPermission) {
-        return selectorTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getSelectorTypeDescriptionsBySelectorTypeQueries,
-                selectorType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SelectorTypeDescriptions.fields())
+                    .from(SelectorTypeDescriptions)
+                    .join(Languages).onKey(SELECTOR_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SelectorTypeDescriptions.SELECTOR_TYPE.eq(selectorType.getPrimaryKey()),
+                            SelectorTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SelectorTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SelectorTypeDescriptions.fields())
+                    .from(SelectorTypeDescriptions)
+                    .where(SelectorTypeDescriptions.SELECTOR_TYPE.eq(selectorType.getPrimaryKey()),
+                            SelectorTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return selectorTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SelectorTypeDescription> getSelectorTypeDescriptionsBySelectorType(SelectorType selectorType) {
@@ -1196,46 +1131,30 @@ public class SelectorControl
     }
 
     public long countSelectorBooleanTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectorbooleantypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorBooleanTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<SelectorBooleanType> getSelectorBooleanTypes() {
-        List<SelectorBooleanType> selectorBooleanTypes;
-        var ps = selectorBooleanTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM selectorbooleantypes
-                ORDER BY slbt_sortorder, slbt_selectorbooleantypename
-                _LIMIT_
-                """);
-        
-        selectorBooleanTypes = selectorBooleanTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return selectorBooleanTypes;
+        var query = session.applyLimit(session.getDslContext()
+                .select(SelectorBooleanTypes.fields())
+                .from(SelectorBooleanTypes)
+                .orderBy(SelectorBooleanTypes.SORT_ORDER, SelectorBooleanTypes.SELECTOR_BOOLEAN_TYPE_NAME),
+                SelectorBooleanTypeFactory.class);
+
+        return selectorBooleanTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SelectorBooleanType getSelectorBooleanTypeByName(String selectorBooleanTypeName) {
-        SelectorBooleanType selectorBooleanType;
-        
-        try {
-            var ps = selectorBooleanTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectorbooleantypes
-                    WHERE slbt_selectorbooleantypename = ?
-                    """);
-            
-            ps.setString(1, selectorBooleanTypeName);
-            
-            selectorBooleanType = selectorBooleanTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorBooleanType;
+        var query = session.getDslContext()
+                .select(SelectorBooleanTypes.fields())
+                .from(SelectorBooleanTypes)
+                .where(SelectorBooleanTypes.SELECTOR_BOOLEAN_TYPE_NAME.eq(selectorBooleanTypeName));
+
+        return selectorBooleanTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SelectorBooleanTypeChoicesBean getSelectorBooleanTypeChoices(String defaultSelectorBooleanTypeChoice, Language language,
@@ -1289,25 +1208,13 @@ public class SelectorControl
     }
     
     public SelectorBooleanTypeDescription getSelectorBooleanTypeDescription(SelectorBooleanType selectorBooleanType, Language language) {
-        SelectorBooleanTypeDescription selectorBooleanTypeDescription;
-        
-        try {
-            var ps = selectorBooleanTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectorbooleantypedescriptions
-                    WHERE slbtd_slbt_selectorbooleantypeid = ? AND slbtd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, selectorBooleanType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            selectorBooleanTypeDescription = selectorBooleanTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorBooleanTypeDescription;
+        var query = session.getDslContext()
+                .select(SelectorBooleanTypeDescriptions.fields())
+                .from(SelectorBooleanTypeDescriptions)
+                .where(SelectorBooleanTypeDescriptions.SELECTOR_BOOLEAN_TYPE.eq(selectorBooleanType.getPrimaryKey()),
+                        SelectorBooleanTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return selectorBooleanTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestSelectorBooleanTypeDescription(SelectorBooleanType selectorBooleanType, Language language) {
@@ -1360,43 +1267,30 @@ public class SelectorControl
     }
 
     public long countSelectorComparisonTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectorcomparisontypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorComparisonTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<SelectorComparisonType> getSelectorComparisonTypes() {
-        var ps = selectorComparisonTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM selectorcomparisontypes
-                ORDER BY slct_sortorder, slct_selectorcomparisontypename
-                _LIMIT_
-                """);
-        
-        return selectorComparisonTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(SelectorComparisonTypes.fields())
+                .from(SelectorComparisonTypes)
+                .orderBy(SelectorComparisonTypes.SORT_ORDER, SelectorComparisonTypes.SELECTOR_COMPARISON_TYPE_NAME),
+                SelectorComparisonTypeFactory.class);
+
+        return selectorComparisonTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SelectorComparisonType getSelectorComparisonTypeByName(String selectorComparisonTypeName) {
-        SelectorComparisonType selectorComparisonType;
-        
-        try {
-            var ps = selectorComparisonTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectorcomparisontypes
-                    WHERE slct_selectorcomparisontypename = ?
-                    """);
-            
-            ps.setString(1, selectorComparisonTypeName);
-            
-            selectorComparisonType = selectorComparisonTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorComparisonType;
+        var query = session.getDslContext()
+                .select(SelectorComparisonTypes.fields())
+                .from(SelectorComparisonTypes)
+                .where(SelectorComparisonTypes.SELECTOR_COMPARISON_TYPE_NAME.eq(selectorComparisonTypeName));
+
+        return selectorComparisonTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SelectorComparisonTypeChoicesBean getSelectorComparisonTypeChoices(String defaultSelectorComparisonTypeChoice,
@@ -1449,25 +1343,13 @@ public class SelectorControl
     }
     
     public SelectorComparisonTypeDescription getSelectorComparisonTypeDescription(SelectorComparisonType selectorComparisonType, Language language) {
-        SelectorComparisonTypeDescription selectorComparisonTypeDescription;
-        
-        try {
-            var ps = selectorComparisonTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectorcomparisontypedescriptions
-                    WHERE slctd_slct_selectorcomparisontypeid = ? AND slctd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, selectorComparisonType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            selectorComparisonTypeDescription = selectorComparisonTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorComparisonTypeDescription;
+        var query = session.getDslContext()
+                .select(SelectorComparisonTypeDescriptions.fields())
+                .from(SelectorComparisonTypeDescriptions)
+                .where(SelectorComparisonTypeDescriptions.SELECTOR_COMPARISON_TYPE.eq(selectorComparisonType.getPrimaryKey()),
+                        SelectorComparisonTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return selectorComparisonTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestSelectorComparisonTypeDescription(SelectorComparisonType selectorComparisonType, Language language) {
@@ -1494,6 +1376,9 @@ public class SelectorControl
     @Inject
     protected SelectorNodeTypeFactory selectorNodeTypeFactory;
 
+    @Inject
+    private SelectorNodeTypeTransferCache selectorNodeTypeTransferCache;
+
     public SelectorNodeType createSelectorNodeType(String selectorNodeTypeName, Integer sortOrder, BasePK createdBy) {
         var selectorNodeType = selectorNodeTypeFactory.create(selectorNodeTypeName, sortOrder);
 
@@ -1518,75 +1403,52 @@ public class SelectorControl
     }
 
     public long countSelectorNodeTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodetypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSelectorNodeTypesBySelectorKind(final SelectorKind selectorKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodetypes
-                        JOIN selectornodetypeuses ON slntu_slnt_selectornodetypeid = slnt_selectornodetypeid
-                        WHERE slntu_slk_selectorkindid = ?
-                        """, selectorKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeTypes)
+                .join(SelectorNodeTypeUses).onKey(SELECTOR_NODE_TYPE_USES_SELECTOR_NODE_TYPE_FK)
+                .where(SelectorNodeTypeUses.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public SelectorNodeType getSelectorNodeTypeByName(String selectorNodeTypeName) {
-        SelectorNodeType selectorNodeType;
-        
-        try {
-            var ps = selectorNodeTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectornodetypes
-                    WHERE slnt_selectornodetypename = ?
-                    """);
-            
-            ps.setString(1, selectorNodeTypeName);
-            
-            selectorNodeType = selectorNodeTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeType;
+        var query = session.getDslContext()
+                .select(SelectorNodeTypes.fields())
+                .from(SelectorNodeTypes)
+                .where(SelectorNodeTypes.SELECTOR_NODE_TYPE_NAME.eq(selectorNodeTypeName));
+
+        return selectorNodeTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<SelectorNodeType> getSelectorNodeTypes() {
-        var ps = selectorNodeTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM selectornodetypes
-                ORDER BY slnt_sortorder, slnt_selectornodetypename
-                _LIMIT_
-                """);
-        
-        return selectorNodeTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(SelectorNodeTypes.fields())
+                .from(SelectorNodeTypes)
+                .orderBy(SelectorNodeTypes.SORT_ORDER, SelectorNodeTypes.SELECTOR_NODE_TYPE_NAME),
+                SelectorNodeTypeFactory.class);
+
+        return selectorNodeTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<SelectorNodeType> getSelectorNodeTypesBySelectorKind(SelectorKind selectorKind) {
-        List<SelectorNodeType> selectorNodeTypes;
-        
-        try {
-            var ps = selectorNodeTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectornodetypes, selectornodetypeuses
-                    WHERE slnt_selectornodetypeid = slntu_slnt_selectornodetypeid AND slntu_slk_selectorkindid = ?
-                    ORDER BY slnt_sortorder, slnt_selectornodetypename
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
-            
-            selectorNodeTypes = selectorNodeTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeTypes;
+        var query = session.applyLimit(session.getDslContext()
+                .select(SelectorNodeTypes.fields())
+                .from(SelectorNodeTypes)
+                .join(SelectorNodeTypeUses).onKey(SELECTOR_NODE_TYPE_USES_SELECTOR_NODE_TYPE_FK)
+                .where(SelectorNodeTypeUses.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()))
+                .orderBy(SelectorNodeTypes.SORT_ORDER, SelectorNodeTypes.SELECTOR_NODE_TYPE_NAME),
+                SelectorNodeTypeFactory.class);
+
+        return selectorNodeTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(UserVisit userVisit, SelectorNodeType selectorNodeType) {
@@ -1628,25 +1490,13 @@ public class SelectorControl
     }
     
     public SelectorNodeTypeDescription getSelectorNodeTypeDescription(SelectorNodeType selectorNodeType, Language language) {
-        SelectorNodeTypeDescription selectorNodeTypeDescription;
-        
-        try {
-            var ps = selectorNodeTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectornodetypedescriptions
-                    WHERE slntd_slnt_selectornodetypeid = ? AND slntd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, selectorNodeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            selectorNodeTypeDescription = selectorNodeTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeTypeDescription;
+        var query = session.getDslContext()
+                .select(SelectorNodeTypeDescriptions.fields())
+                .from(SelectorNodeTypeDescriptions)
+                .where(SelectorNodeTypeDescriptions.SELECTOR_NODE_TYPE.eq(selectorNodeType.getPrimaryKey()),
+                        SelectorNodeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return selectorNodeTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestSelectorNodeTypeDescription(SelectorNodeType selectorNodeType, Language language) {
@@ -1683,25 +1533,13 @@ public class SelectorControl
     }
 
     public SelectorNodeTypeUse getSelectorNodeTypeUse(SelectorKind selectorKind, SelectorNodeType selectorNodeType) {
-        SelectorNodeTypeUse selectorNodeTypeUse;
+        var query = session.getDslContext()
+                .select(SelectorNodeTypeUses.fields())
+                .from(SelectorNodeTypeUses)
+                .where(SelectorNodeTypeUses.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()),
+                        SelectorNodeTypeUses.SELECTOR_NODE_TYPE.eq(selectorNodeType.getPrimaryKey()));
 
-        try {
-            var ps = selectorNodeTypeUseFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectornodetypeuses
-                    WHERE slntu_slk_selectorkindid = ? AND slntu_slnt_selectornodetypeid = ?
-                    """);
-
-            ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, selectorNodeType.getPrimaryKey().getEntityId());
-
-            selectorNodeTypeUse = selectorNodeTypeUseFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return selectorNodeTypeUse;
+        return selectorNodeTypeUseFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     // --------------------------------------------------------------------------------
@@ -1737,43 +1575,30 @@ public class SelectorControl
     }
 
     public long countSelectorTextSearchTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectortextsearchtypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorTextSearchTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<SelectorTextSearchType> getSelectorTextSearchTypes() {
-        var ps = selectorTextSearchTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM selectortextsearchtypes
-                ORDER BY sltst_sortorder, sltst_selectortextsearchtypename
-                _LIMIT_
-                """);
-        
-        return selectorTextSearchTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(SelectorTextSearchTypes.fields())
+                .from(SelectorTextSearchTypes)
+                .orderBy(SelectorTextSearchTypes.SORT_ORDER, SelectorTextSearchTypes.SELECTOR_TEXT_SEARCH_TYPE_NAME),
+                SelectorTextSearchTypeFactory.class);
+
+        return selectorTextSearchTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SelectorTextSearchType getSelectorTextSearchTypeByName(String selectorTextSearchTypeName) {
-        SelectorTextSearchType selectorTextSearchType;
-        
-        try {
-            var ps = selectorTextSearchTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectortextsearchtypes
-                    WHERE sltst_selectortextsearchtypename = ?
-                    """);
-            
-            ps.setString(1, selectorTextSearchTypeName);
-            
-            selectorTextSearchType = selectorTextSearchTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorTextSearchType;
+        var query = session.getDslContext()
+                .select(SelectorTextSearchTypes.fields())
+                .from(SelectorTextSearchTypes)
+                .where(SelectorTextSearchTypes.SELECTOR_TEXT_SEARCH_TYPE_NAME.eq(selectorTextSearchTypeName));
+
+        return selectorTextSearchTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SelectorTextSearchTypeChoicesBean getSelectorTextSearchTypeChoices(String defaultSelectorTextSearchTypeChoice,
@@ -1826,25 +1651,13 @@ public class SelectorControl
     }
     
     public SelectorTextSearchTypeDescription getSelectorTextSearchTypeDescription(SelectorTextSearchType selectorTextSearchType, Language language) {
-        SelectorTextSearchTypeDescription selectorTextSearchTypeDescription;
-        
-        try {
-            var ps = selectorTextSearchTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectortextsearchtypedescriptions
-                    WHERE sltstd_sltst_selectortextsearchtypeid = ? AND sltstd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, selectorTextSearchType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            selectorTextSearchTypeDescription = selectorTextSearchTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorTextSearchTypeDescription;
+        var query = session.getDslContext()
+                .select(SelectorTextSearchTypeDescriptions.fields())
+                .from(SelectorTextSearchTypeDescriptions)
+                .where(SelectorTextSearchTypeDescriptions.SELECTOR_TEXT_SEARCH_TYPE.eq(selectorTextSearchType.getPrimaryKey()),
+                        SelectorTextSearchTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return selectorTextSearchTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestSelectorTextSearchTypeDescription(SelectorTextSearchType selectorTextSearchType, Language language) {
@@ -1869,10 +1682,13 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SelectorDetailFactory selectorDetailFactory;
+
+    @Inject
     protected SelectorFactory selectorFactory;
 
     @Inject
-    protected SelectorDetailFactory selectorDetailFactory;
+    private SelectorTransferCache selectorTransferCache;
 
     public Selector createSelector(SelectorType selectorType, String selectorName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -1904,13 +1720,13 @@ public class SelectorControl
     }
 
     public long countSelectorsBySelectorType(SelectorType selectorType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM selectors, selectordetails
-                WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?
-                """,
-                selectorType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Selectors)
+                .join(SelectorDetails).onKey(SELECTORS_ACTIVE_DETAIL_FK)
+                .where(SelectorDetails.SELECTOR_TYPE.eq(selectorType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Selector */
@@ -1929,37 +1745,19 @@ public class SelectorControl
     }
 
     public Selector getSelectorByName(SelectorType selectorType, String selectorName, EntityPermission entityPermission) {
-        Selector selector;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectors, selectordetails
-                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_selectorname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectors, selectordetails
-                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_selectorname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Selectors.fields())
+                .from(Selectors)
+                .join(SelectorDetails).onKey(SELECTORS_ACTIVE_DETAIL_FK)
+                .where(SelectorDetails.SELECTOR_TYPE.eq(selectorType.getPrimaryKey()),
+                        SelectorDetails.SELECTOR_NAME.eq(selectorName));
 
-            var ps = selectorFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorType.getPrimaryKey().getEntityId());
-            ps.setString(2, selectorName);
-            
-            selector = selectorFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selector;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Selector getSelectorByName(SelectorType selectorType, String selectorName) {
@@ -2003,36 +1801,19 @@ public class SelectorControl
     }
     
     public Selector getDefaultSelector(SelectorType selectorType, EntityPermission entityPermission) {
-        Selector selector;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectors, selectordetails
-                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectors, selectordetails
-                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Selectors.fields())
+                .from(Selectors)
+                .join(SelectorDetails).onKey(SELECTORS_ACTIVE_DETAIL_FK)
+                .where(SelectorDetails.SELECTOR_TYPE.eq(selectorType.getPrimaryKey()),
+                        SelectorDetails.IS_DEFAULT.eq(true));
 
-            var ps = selectorFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorType.getPrimaryKey().getEntityId());
-            
-            selector = selectorFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selector;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Selector getDefaultSelector(SelectorType selectorType) {
@@ -2048,38 +1829,20 @@ public class SelectorControl
     }
     
     private List<Selector> getSelectorsBySelectorType(SelectorType selectorType, EntityPermission entityPermission) {
-        List<Selector> selectors;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectors, selectordetails
-                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?
-                        ORDER BY sldt_sortorder, sldt_selectorname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectors, selectordetails
-                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Selectors.fields())
+                .from(Selectors)
+                .join(SelectorDetails).onKey(SELECTORS_ACTIVE_DETAIL_FK)
+                .where(SelectorDetails.SELECTOR_TYPE.eq(selectorType.getPrimaryKey()));
 
-            var ps = selectorFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorType.getPrimaryKey().getEntityId());
-            
-            selectors = selectorFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectors;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorDetails.SORT_ORDER, SelectorDetails.SELECTOR_NAME),
+                    SelectorFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Selector> getSelectorsBySelectorType(SelectorType selectorType) {
@@ -2091,28 +1854,17 @@ public class SelectorControl
     }
     
     public List<Selector> getSelectorsBySelectorKind(SelectorKind selectorKind) {
-        List<Selector> selectors;
-        
-        try {
-            var ps = selectorFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectors, selectordetails, selectortypes, selectortypedetails
-                    WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = slt_selectortypeid
-                    AND slt_activedetailid = sltdt_selectortypedetailid
-                    AND sltdt_slk_selectorkindid = ?
-                    ORDER BY sltdt_sortorder, sltdt_selectortypename, sldt_sortorder, sldt_selectorname
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
-            
-            selectors = selectorFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectors;
+        var query = session.applyLimit(session.getDslContext()
+                .select(Selectors.fields())
+                .from(Selectors)
+                .join(SelectorDetails).onKey(SELECTORS_ACTIVE_DETAIL_FK)
+                .join(SelectorTypes).onKey(SELECTOR_DETAILS_SELECTOR_TYPE_FK)
+                .join(SelectorTypeDetails).onKey(SELECTOR_TYPES_LAST_DETAIL_FK)
+                .where(SelectorTypeDetails.SELECTOR_KIND.eq(selectorKind.getPrimaryKey()))
+                .orderBy(SelectorTypeDetails.SORT_ORDER, SelectorTypeDetails.SELECTOR_TYPE_NAME, SelectorDetails.SORT_ORDER, SelectorDetails.SELECTOR_NAME),
+                SelectorFactory.class);
+
+        return selectorFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SelectorChoicesBean getSelectorChoices(SelectorType selectorType, String defaultSelectorChoice, Language language,
@@ -2263,6 +2015,9 @@ public class SelectorControl
     @Inject
     protected SelectorDescriptionFactory selectorDescriptionFactory;
 
+    @Inject
+    private SelectorDescriptionTransferCache selectorDescriptionTransferCache;
+
     public SelectorDescription createSelectorDescription(Selector selector, Language language, String description, BasePK createdBy) {
         var selectorDescription = selectorDescriptionFactory.create(selector, language, description, session.getStartTime(), Session.MAX_TIME);
         
@@ -2272,38 +2027,19 @@ public class SelectorControl
     }
     
     private SelectorDescription getSelectorDescription(Selector selector, Language language, EntityPermission entityPermission) {
-        SelectorDescription selectorDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectordescriptions
-                        WHERE sld_sl_selectorid = ? AND sld_lang_languageid = ? AND sld_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectordescriptions
-                        WHERE sld_sl_selectorid = ? AND sld_lang_languageid = ? AND sld_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorDescriptions.fields())
+                .from(SelectorDescriptions)
+                .where(SelectorDescriptions.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SelectorDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            selectorDescription = selectorDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorDescription getSelectorDescription(Selector selector, Language language) {
@@ -2325,39 +2061,24 @@ public class SelectorControl
     }
     
     private List<SelectorDescription> getSelectorDescriptionsBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorDescription> selectorDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectordescriptions, languages
-                        WHERE sld_sl_selectorid = ? AND sld_thrutime = ? AND sld_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectordescriptions
-                        WHERE sld_sl_selectorid = ? AND sld_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SelectorDescriptions.fields())
+                    .from(SelectorDescriptions)
+                    .join(Languages).onKey(SELECTOR_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SelectorDescriptions.SELECTOR.eq(selector.getPrimaryKey()),
+                            SelectorDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SelectorDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SelectorDescriptions.fields())
+                    .from(SelectorDescriptions)
+                    .where(SelectorDescriptions.SELECTOR.eq(selector.getPrimaryKey()),
+                            SelectorDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = selectorDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorDescriptions = selectorDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorDescriptions;
+        return selectorDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorDescription> getSelectorDescriptionsBySelector(Selector selector) {
@@ -2443,24 +2164,19 @@ public class SelectorControl
         return selectorTimeFactory.create(selector, null, null, null, null);
     }
 
-    private static final Map<EntityPermission, String> getSelectorTimeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM selectortimes
-            WHERE sltm_sl_selectorid = ?
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM selectortimes
-            WHERE sltm_sl_selectorid = ?
-            FOR UPDATE
-            """
-    );
 
     private SelectorTime getSelectorTime(Selector selector, EntityPermission entityPermission) {
-        return selectorTimeFactory.getEntityFromQuery(entityPermission, getSelectorTimeQueries, selector);
+        var baseQuery = session.getDslContext()
+                .select(SelectorTimes.fields())
+                .from(SelectorTimes)
+                .where(SelectorTimes.SELECTOR.eq(selector.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorTimeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SelectorTime getSelectorTime(Selector selector) {
@@ -2484,10 +2200,13 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SelectorNodeDetailFactory selectorNodeDetailFactory;
+
+    @Inject
     protected SelectorNodeFactory selectorNodeFactory;
 
     @Inject
-    protected SelectorNodeDetailFactory selectorNodeDetailFactory;
+    private SelectorNodeTransferCache selectorNodeTransferCache;
 
     public SelectorNode createSelectorNode(Selector selector, String selectorNodeName, Boolean isRootSelectorNode,
             SelectorNodeType selectorNodeType, Boolean negate, BasePK createdBy) {
@@ -2534,56 +2253,39 @@ public class SelectorControl
     }
 
     public long countSelectorNodesBySelector(final Selector selector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodes
-                        JOIN selectornodedetails ON slnddt_selectornodedetailid = slnd_activedetailid
-                        WHERE slnddt_sl_selectorid = ?
-                        """, selector);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodes)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSelectorNodesBySelectorNodeType(final SelectorNodeType selectorNodeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodes
-                        JOIN selectornodedetails ON slnddt_selectornodedetailid = slnd_activedetailid
-                        WHERE slnddt_slnt_selectornodetypeid = ?
-                        """, selectorNodeType);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodes)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR_NODE_TYPE.eq(selectorNodeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNode getRootSelectorNode(Selector selector, EntityPermission entityPermission) {
-        SelectorNode selectorNode;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnddt_isrootselectornode = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnddt_isrootselectornode = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodes.fields())
+                .from(SelectorNodes)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeDetails.IS_ROOT_SELECTOR_NODE.eq(true));
 
-            var ps = selectorNodeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            
-            selectorNode = selectorNodeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNode;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNode getRootSelectorNode(Selector selector) {
@@ -2599,39 +2301,19 @@ public class SelectorControl
     }
     
     private SelectorNode getSelectorNodeByName(Selector selector, String selectorNodeName, EntityPermission entityPermission) {
-        SelectorNode selectorNode;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid
-                        AND slnddt_sl_selectorid = ? AND slnddt_selectornodename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid
-                        AND slnddt_sl_selectorid = ? AND slnddt_selectornodename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodes.fields())
+                .from(SelectorNodes)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeDetails.SELECTOR_NODE_NAME.eq(selectorNodeName));
 
-            var ps = selectorNodeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setString(2, selectorNodeName);
-            
-            selectorNode = selectorNodeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNode;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNode getSelectorNodeByName(Selector selector, String selectorNodeName) {
@@ -2651,38 +2333,20 @@ public class SelectorControl
     }
     
     private List<SelectorNode> getSelectorNodesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNode> selectorNodes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        ORDER BY slnddt_selectornodename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodes.fields())
+                .from(SelectorNodes)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()));
 
-            var ps = selectorNodeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            
-            selectorNodes = selectorNodeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNode> getSelectorNodesBySelector(Selector selector) {
@@ -2794,29 +2458,29 @@ public class SelectorControl
         
         deleteSelectorNodeDescriptionsBySelectorNode(selectorNode, deletedBy);
         
-        if(selectorNodeTypeName.equals(SelectorNodeTypes.BOOLEAN.name())) {
+        if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.BOOLEAN.name())) {
             deleteSelectorNodeBoolean(getSelectorNodeBooleanForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.WORKFLOW_STEP.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.WORKFLOW_STEP.name())) {
             deleteSelectorNodeWorkflowStep(getSelectorNodeWorkflowStepForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.ENTITY_LIST_ITEM.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.ENTITY_LIST_ITEM.name())) {
             deleteSelectorNodeEntityListItem(getSelectorNodeEntityListItemForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.RESPONSIBILITY_TYPE.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.RESPONSIBILITY_TYPE.name())) {
             deleteSelectorNodeResponsibilityType(getSelectorNodeResponsibilityTypeForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.TRAINING_CLASS.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.TRAINING_CLASS.name())) {
             deleteSelectorNodeTrainingClass(getSelectorNodeTrainingClassForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.SKILL_TYPE.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.SKILL_TYPE.name())) {
             deleteSelectorNodeSkillType(getSelectorNodeSkillTypeForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.ITEM_CATEGORY.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.ITEM_CATEGORY.name())) {
             deleteSelectorNodeItemCategory(getSelectorNodeItemCategoryForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.ITEM_ACCOUNTING_CATEGORY.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.ITEM_ACCOUNTING_CATEGORY.name())) {
             deleteSelectorNodeItemAccountingCategory(getSelectorNodeItemAccountingCategoryForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.ITEM_PURCHASING_CATEGORY.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.ITEM_PURCHASING_CATEGORY.name())) {
             deleteSelectorNodeItemPurchasingCategory(getSelectorNodeItemPurchasingCategoryForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.GEO_CODE.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.GEO_CODE.name())) {
             deleteSelectorNodeGeoCode(getSelectorNodeGeoCodeForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.PAYMENT_METHOD.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.PAYMENT_METHOD.name())) {
             deleteSelectorNodePaymentMethod(getSelectorNodePaymentMethodForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.PAYMENT_PROCESSOR.name())) {
+        } else if(selectorNodeTypeName.equals(com.echothree.model.control.selector.common.SelectorNodeTypes.PAYMENT_PROCESSOR.name())) {
             deleteSelectorNodePaymentProcessor(getSelectorNodePaymentProcessorForUpdate(selectorNode), deletedBy);
         }
         
@@ -2863,6 +2527,9 @@ public class SelectorControl
     @Inject
     protected SelectorNodeDescriptionFactory selectorNodeDescriptionFactory;
 
+    @Inject
+    private SelectorNodeDescriptionTransferCache selectorNodeDescriptionTransferCache;
+
     public SelectorNodeDescription createSelectorNodeDescription(SelectorNode selectorNode, Language language, String description,
             BasePK createdBy) {
         var selectorNodeDescription = selectorNodeDescriptionFactory.create(selectorNode,
@@ -2876,38 +2543,19 @@ public class SelectorControl
     
     private SelectorNodeDescription getSelectorNodeDescription(SelectorNode selectorNode, Language language,
             EntityPermission entityPermission) {
-        SelectorNodeDescription selectorNodeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodedescriptions
-                        WHERE slndd_slnd_selectornodeid = ? AND slndd_lang_languageid = ? AND slndd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodedescriptions
-                        WHERE slndd_slnd_selectornodeid = ? AND slndd_lang_languageid = ? AND slndd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeDescriptions.fields())
+                .from(SelectorNodeDescriptions)
+                .where(SelectorNodeDescriptions.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SelectorNodeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            selectorNodeDescription = selectorNodeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeDescription getSelectorNodeDescription(SelectorNode selectorNode, Language language) {
@@ -2929,39 +2577,24 @@ public class SelectorControl
     }
     
     private List<SelectorNodeDescription> getSelectorNodeDescriptionsBySelectorNode(SelectorNode selectorNode, EntityPermission entityPermission) {
-        List<SelectorNodeDescription> selectorNodeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodedescriptions, languages
-                        WHERE slndd_slnd_selectornodeid = ? AND slndd_thrutime = ? AND slndd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodedescriptions
-                        WHERE slndd_slnd_selectornodeid = ? AND slndd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SelectorNodeDescriptions.fields())
+                    .from(SelectorNodeDescriptions)
+                    .join(Languages).onKey(SELECTOR_NODE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SelectorNodeDescriptions.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                            SelectorNodeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SelectorNodeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SelectorNodeDescriptions.fields())
+                    .from(SelectorNodeDescriptions)
+                    .where(SelectorNodeDescriptions.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                            SelectorNodeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = selectorNodeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeDescriptions = selectorNodeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeDescriptions;
+        return selectorNodeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeDescription> getSelectorNodeDescriptionsBySelectorNode(SelectorNode selectorNode) {
@@ -3058,61 +2691,48 @@ public class SelectorControl
     }
 
     public long countSelectorNodeBooleansBySelectorBooleanType(final SelectorBooleanType selectorBooleanType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodebooleans
-                        WHERE slndbln_slbt_selectorbooleantypeid = ? AND slndbln_thrutime = ?
-                        """, selectorBooleanType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeBooleans)
+                .where(SelectorNodeBooleans.SELECTOR_BOOLEAN_TYPE.eq(selectorBooleanType.getPrimaryKey()),
+                        SelectorNodeBooleans.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSelectorNodeBooleansByLeftSelectorNode(final SelectorNode leftSelectorNode) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodebooleans
-                        WHERE slndbln_leftselectornodeid = ? AND slndbln_thrutime = ?
-                        """, leftSelectorNode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeBooleans)
+                .where(SelectorNodeBooleans.LEFT_SELECTOR_NODE.eq(leftSelectorNode.getPrimaryKey()),
+                        SelectorNodeBooleans.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSelectorNodeBooleansByRightSelectorNode(final SelectorNode rightSelectorNode) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodebooleans
-                        WHERE slndbln_rightselectornodeid = ? AND slndbln_thrutime = ?
-                        """, rightSelectorNode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeBooleans)
+                .where(SelectorNodeBooleans.RIGHT_SELECTOR_NODE.eq(rightSelectorNode.getPrimaryKey()),
+                        SelectorNodeBooleans.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeBoolean getSelectorNodeBoolean(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeBoolean selectorNodeBoolean;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodebooleans
-                        WHERE slndbln_slnd_selectornodeid = ? AND slndbln_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodebooleans
-                        WHERE slndbln_slnd_selectornodeid = ? AND slndbln_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeBooleans.fields())
+                .from(SelectorNodeBooleans)
+                .where(SelectorNodeBooleans.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeBooleans.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeBooleanFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeBoolean = selectorNodeBooleanFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeBoolean;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeBooleanFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeBoolean getSelectorNodeBoolean(SelectorNode selectorNode) {
@@ -3134,39 +2754,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeBoolean> getSelectorNodeBooleansBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeBoolean> selectorNodeBooleans;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodebooleans
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndbln_slnd_selectornodeid AND slndbln_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodebooleans
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndbln_slnd_selectornodeid AND slndbln_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeBooleans.fields())
+                .from(SelectorNodeBooleans)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_BOOLEANS_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeBooleans.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeBooleanFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeBooleans = selectorNodeBooleanFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeBooleans;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeBooleanFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeBooleanFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeBoolean> getSelectorNodeBooleansBySelector(Selector selector) {
@@ -3224,45 +2827,28 @@ public class SelectorControl
     }
 
     public long countCampaignsByWorkflowStep(final WorkflowStep workflowStep) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodeworkflowsteps
-                        WHERE slndws_wkfls_workflowstepid = ? AND slndws_thrutime = ?
-                        """, workflowStep, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeWorkflowSteps)
+                .where(SelectorNodeWorkflowSteps.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()),
+                        SelectorNodeWorkflowSteps.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeWorkflowStep getSelectorNodeWorkflowStep(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeWorkflowStep selectorNodeWorkflowStep;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeworkflowsteps
-                        WHERE slndws_slnd_selectornodeid = ? AND slndws_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeworkflowsteps
-                        WHERE slndws_slnd_selectornodeid = ? AND slndws_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeWorkflowSteps.fields())
+                .from(SelectorNodeWorkflowSteps)
+                .where(SelectorNodeWorkflowSteps.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeWorkflowSteps.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeWorkflowStepFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeWorkflowStep = selectorNodeWorkflowStepFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeWorkflowStep;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeWorkflowStepFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeWorkflowStep getSelectorNodeWorkflowStep(SelectorNode selectorNode) {
@@ -3284,39 +2870,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeWorkflowStep> getSelectorNodeWorkflowStepsBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeWorkflowStep> selectorNodeWorkflowSteps;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeworkflowsteps
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndws_slnd_selectornodeid AND slndws_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeworkflowsteps
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndws_slnd_selectornodeid AND slndws_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeWorkflowSteps.fields())
+                .from(SelectorNodeWorkflowSteps)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_WORKFLOW_STEPS_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeWorkflowSteps.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeWorkflowStepFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeWorkflowSteps = selectorNodeWorkflowStepFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeWorkflowSteps;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeWorkflowStepFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeWorkflowStepFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeWorkflowStep> getSelectorNodeWorkflowStepsBySelector(Selector selector) {
@@ -3372,45 +2941,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodeEntityListItemsBy(final EntityListItem entityListItem) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodeentitylistitems
-                        WHERE slndeli_eli_entitylistitemid = ? AND slndeli_thrutime = ?
-                        """, entityListItem, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeEntityListItems)
+                .where(SelectorNodeEntityListItems.ENTITY_LIST_ITEM.eq(entityListItem.getPrimaryKey()),
+                        SelectorNodeEntityListItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeEntityListItem getSelectorNodeEntityListItem(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeEntityListItem selectorNodeEntityListItem;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeentitylistitems
-                        WHERE slndeli_slnd_selectornodeid = ? AND slndeli_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeentitylistitems
-                        WHERE slndeli_slnd_selectornodeid = ? AND slndeli_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeEntityListItems.fields())
+                .from(SelectorNodeEntityListItems)
+                .where(SelectorNodeEntityListItems.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeEntityListItems.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeEntityListItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeEntityListItem = selectorNodeEntityListItemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeEntityListItem;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeEntityListItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeEntityListItem getSelectorNodeEntityListItem(SelectorNode selectorNode) {
@@ -3432,39 +2984,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeEntityListItem> getSelectorNodeEntityListItemsBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeEntityListItem> selectorNodeEntityListItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeentitylistitems
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndeli_slnd_selectornodeid AND slndeli_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeentitylistitems
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndeli_slnd_selectornodeid AND slndeli_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeEntityListItems.fields())
+                .from(SelectorNodeEntityListItems)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_ENTITY_LIST_ITEMS_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeEntityListItems.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeEntityListItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeEntityListItems = selectorNodeEntityListItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeEntityListItems;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeEntityListItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeEntityListItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeEntityListItem> getSelectorNodeEntityListItemsBySelector(Selector selector) {
@@ -3520,45 +3055,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodeResponsibilityTypesByResponsibilityType(final ResponsibilityType responsibilityType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornoderesponsibilitytypes
-                        WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ?
-                        """, responsibilityType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeResponsibilityTypes)
+                .where(SelectorNodeResponsibilityTypes.RESPONSIBILITY_TYPE.eq(responsibilityType.getPrimaryKey()),
+                        SelectorNodeResponsibilityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeResponsibilityType getSelectorNodeResponsibilityType(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeResponsibilityType selectorNodeResponsibilityType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornoderesponsibilitytypes
-                        WHERE slndrsptyp_slnd_selectornodeid = ? AND slndrsptyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornoderesponsibilitytypes
-                        WHERE slndrsptyp_slnd_selectornodeid = ? AND slndrsptyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeResponsibilityTypes.fields())
+                .from(SelectorNodeResponsibilityTypes)
+                .where(SelectorNodeResponsibilityTypes.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeResponsibilityTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeResponsibilityTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeResponsibilityType = selectorNodeResponsibilityTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeResponsibilityType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeResponsibilityTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeResponsibilityType getSelectorNodeResponsibilityType(SelectorNode selectorNode) {
@@ -3580,39 +3098,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeResponsibilityType> getSelectorNodeResponsibilityTypesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeResponsibilityType> selectorNodeResponsibilityTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornoderesponsibilitytypes
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndrsptyp_rsptyp_responsibilitytypeid AND slndrsptyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornoderesponsibilitytypes
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndrsptyp_rsptyp_responsibilitytypeid AND slndrsptyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeResponsibilityTypes.fields())
+                .from(SelectorNodeResponsibilityTypes)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_RESPONSIBILITY_TYPES_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeResponsibilityTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeResponsibilityTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeResponsibilityTypes = selectorNodeResponsibilityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeResponsibilityTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeResponsibilityTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeResponsibilityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeResponsibilityType> getSelectorNodeResponsibilityTypesBySelector(Selector selector) {
@@ -3668,45 +3169,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodeTrainingClassesByTrainingClass(final TrainingClass trainingClass) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodetrainingclasses
-                        WHERE slndtrncls_trncls_trainingclassid = ? AND slndtrncls_thrutime = ?
-                        """, trainingClass, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeTrainingClasses)
+                .where(SelectorNodeTrainingClasses.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()),
+                        SelectorNodeTrainingClasses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeTrainingClass getSelectorNodeTrainingClass(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeTrainingClass selectorNodeTrainingClass;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodetrainingclasses
-                        WHERE slndtrncls_slnd_selectornodeid = ? AND slndtrncls_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodetrainingclasses
-                        WHERE slndtrncls_slnd_selectornodeid = ? AND slndtrncls_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeTrainingClasses.fields())
+                .from(SelectorNodeTrainingClasses)
+                .where(SelectorNodeTrainingClasses.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeTrainingClasses.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeTrainingClassFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeTrainingClass = selectorNodeTrainingClassFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeTrainingClass;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeTrainingClassFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeTrainingClass getSelectorNodeTrainingClass(SelectorNode selectorNode) {
@@ -3728,39 +3212,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeTrainingClass> getSelectorNodeTrainingClassesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeTrainingClass> selectorNodeTrainingClasses;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodetrainingclasses
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndtrncls_slnd_selectornodeid AND slndtrncls_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodetrainingclasses
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndtrncls_slnd_selectornodeid AND slndtrncls_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeTrainingClasses.fields())
+                .from(SelectorNodeTrainingClasses)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_TRAINING_CLASSES_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeTrainingClasses.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeTrainingClassFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeTrainingClasses = selectorNodeTrainingClassFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeTrainingClasses;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeTrainingClassFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeTrainingClassFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeTrainingClass> getSelectorNodeTrainingClassesBySelector(Selector selector) {
@@ -3816,45 +3283,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodeSkillTypesBySkillType(final SkillType skillType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodeskilltypes
-                        WHERE slndskltyp_skltyp_skilltypeid = ? AND slndskltyp_thrutime = ?
-                        """, skillType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeSkillTypes)
+                .where(SelectorNodeSkillTypes.SKILL_TYPE.eq(skillType.getPrimaryKey()),
+                        SelectorNodeSkillTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeSkillType getSelectorNodeSkillType(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeSkillType selectorNodeSkillType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeskilltypes
-                        WHERE slndskltyp_slnd_selectornodeid = ? AND slndskltyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeskilltypes
-                        WHERE slndskltyp_slnd_selectornodeid = ? AND slndskltyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeSkillTypes.fields())
+                .from(SelectorNodeSkillTypes)
+                .where(SelectorNodeSkillTypes.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeSkillTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeSkillTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeSkillType = selectorNodeSkillTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeSkillType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeSkillTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeSkillType getSelectorNodeSkillType(SelectorNode selectorNode) {
@@ -3876,39 +3326,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeSkillType> getSelectorNodeSkillTypesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeSkillType> selectorNodeSkillTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeskilltypes
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndskltyp_slnd_selectornodeid AND slndskltyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeskilltypes
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndskltyp_slnd_selectornodeid AND slndskltyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeSkillTypes.fields())
+                .from(SelectorNodeSkillTypes)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_SKILL_TYPES_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeSkillTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeSkillTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeSkillTypes = selectorNodeSkillTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeSkillTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeSkillTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeSkillTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeSkillType> getSelectorNodeSkillTypesBySelector(Selector selector) {
@@ -3964,45 +3397,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodeItemCategoriesByItemCategory(final ItemCategory itemCategory) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodeitemcategories
-                        WHERE slndic_ic_itemcategoryid = ? AND slndic_thrutime = ?
-                        """, itemCategory, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeItemCategories)
+                .where(SelectorNodeItemCategories.ITEM_CATEGORY.eq(itemCategory.getPrimaryKey()),
+                        SelectorNodeItemCategories.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeItemCategory getSelectorNodeItemCategory(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeItemCategory selectorNodeItemCategory;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeitemcategories
-                        WHERE slndic_slnd_selectornodeid = ? AND slndic_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeitemcategories
-                        WHERE slndic_slnd_selectornodeid = ? AND slndic_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeItemCategories.fields())
+                .from(SelectorNodeItemCategories)
+                .where(SelectorNodeItemCategories.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeItemCategories.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeItemCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeItemCategory = selectorNodeItemCategoryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeItemCategory;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeItemCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeItemCategory getSelectorNodeItemCategory(SelectorNode selectorNode) {
@@ -4024,39 +3440,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeItemCategory> getSelectorNodeItemCategoriesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeItemCategory> selectorNodeItemCategories;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeitemcategories
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndic_slnd_selectornodeid AND slndic_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeitemcategories
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndic_slnd_selectornodeid AND slndic_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeItemCategories.fields())
+                .from(SelectorNodeItemCategories)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_ITEM_CATEGORIES_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeItemCategories.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeItemCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeItemCategories = selectorNodeItemCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeItemCategories;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeItemCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeItemCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeItemCategory> getSelectorNodeItemCategoriesBySelector(Selector selector) {
@@ -4113,45 +3512,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodeItemAccountingCategoriesByItemAccountingCategory(final ItemAccountingCategory itemAccountingCategory) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodeitemaccountingcategories
-                        WHERE slndiactgc_iactgc_itemaccountingcategoryid = ? AND slndiactgc_thrutime = ?
-                        """, itemAccountingCategory, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeItemAccountingCategories)
+                .where(SelectorNodeItemAccountingCategories.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
+                        SelectorNodeItemAccountingCategories.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeItemAccountingCategory getSelectorNodeItemAccountingCategory(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeItemAccountingCategory selectorNodeItemAccountingCategory;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeitemaccountingcategories
-                        WHERE slndiactgc_slnd_selectornodeid = ? AND slndiactgc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeitemaccountingcategories
-                        WHERE slndiactgc_slnd_selectornodeid = ? AND slndiactgc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeItemAccountingCategories.fields())
+                .from(SelectorNodeItemAccountingCategories)
+                .where(SelectorNodeItemAccountingCategories.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeItemAccountingCategories.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeItemAccountingCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeItemAccountingCategory = selectorNodeItemAccountingCategoryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeItemAccountingCategory;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeItemAccountingCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeItemAccountingCategory getSelectorNodeItemAccountingCategory(SelectorNode selectorNode) {
@@ -4173,39 +3555,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeItemAccountingCategory> getSelectorNodeItemAccountingCategoriesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeItemAccountingCategory> selectorNodeItemAccountingCategories;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeitemaccountingcategories
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndiactgc_slnd_selectornodeid AND slndiactgc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeitemaccountingcategories
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndiactgc_slnd_selectornodeid AND slndiactgc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeItemAccountingCategories.fields())
+                .from(SelectorNodeItemAccountingCategories)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_ITEM_ACCOUNTING_CATEGORIES_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeItemAccountingCategories.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeItemAccountingCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeItemAccountingCategories = selectorNodeItemAccountingCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeItemAccountingCategories;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeItemAccountingCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeItemAccountingCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeItemAccountingCategory> getSelectorNodeItemAccountingCategoriesBySelector(Selector selector) {
@@ -4264,45 +3629,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodeItemPurchasingCategoriesByItemPurchasingCategory(final ItemPurchasingCategory itemPurchasingCategory) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodeitempurchasingcategories
-                        WHERE slndiprchc_iprchc_itempurchasingcategoryid = ? AND slndiprchc_thrutime = ?
-                        """, itemPurchasingCategory, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeItemPurchasingCategories)
+                .where(SelectorNodeItemPurchasingCategories.ITEM_PURCHASING_CATEGORY.eq(itemPurchasingCategory.getPrimaryKey()),
+                        SelectorNodeItemPurchasingCategories.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeItemPurchasingCategory getSelectorNodeItemPurchasingCategory(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeItemPurchasingCategory selectorNodeItemPurchasingCategory;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeitempurchasingcategories
-                        WHERE slndiprchc_slnd_selectornodeid = ? AND slndiprchc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodeitempurchasingcategories
-                        WHERE slndiprchc_slnd_selectornodeid = ? AND slndiprchc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeItemPurchasingCategories.fields())
+                .from(SelectorNodeItemPurchasingCategories)
+                .where(SelectorNodeItemPurchasingCategories.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeItemPurchasingCategories.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeItemPurchasingCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeItemPurchasingCategory = selectorNodeItemPurchasingCategoryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeItemPurchasingCategory;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeItemPurchasingCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeItemPurchasingCategory getSelectorNodeItemPurchasingCategory(SelectorNode selectorNode) {
@@ -4324,39 +3672,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeItemPurchasingCategory> getSelectorNodeItemPurchasingCategoriesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeItemPurchasingCategory> selectorNodeItemPurchasingCategories;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeitempurchasingcategories
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndiprchc_slnd_selectornodeid AND slndiprchc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodeitempurchasingcategories
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndiprchc_slnd_selectornodeid AND slndiprchc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeItemPurchasingCategories.fields())
+                .from(SelectorNodeItemPurchasingCategories)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_ITEM_PURCHASING_CATEGORIES_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeItemPurchasingCategories.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeItemPurchasingCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeItemPurchasingCategories = selectorNodeItemPurchasingCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeItemPurchasingCategories;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeItemPurchasingCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeItemPurchasingCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeItemPurchasingCategory> getSelectorNodeItemPurchasingCategoriesBySelector(Selector selector) {
@@ -4415,47 +3746,28 @@ public class SelectorControl
     }
     
     public long countSelectorNodeGeoCodesByGeoCode(GeoCode geoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM selectornodegeocodes
-                WHERE slndgeo_geo_geocodeid = ? AND slndgeo_thrutime = ?
-                """,
-                geoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodeGeoCodes)
+                .where(SelectorNodeGeoCodes.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        SelectorNodeGeoCodes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodeGeoCode getSelectorNodeGeoCode(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodeGeoCode selectorNodeGeoCode;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodegeocodes
-                        WHERE slndgeo_slnd_selectornodeid = ? AND slndgeo_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodegeocodes
-                        WHERE slndgeo_slnd_selectornodeid = ? AND slndgeo_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeGeoCodes.fields())
+                .from(SelectorNodeGeoCodes)
+                .where(SelectorNodeGeoCodes.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodeGeoCodes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeGeoCodeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeGeoCode = selectorNodeGeoCodeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeGeoCode;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeGeoCodeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodeGeoCode getSelectorNodeGeoCode(SelectorNode selectorNode) {
@@ -4477,39 +3789,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodeGeoCode> getSelectorNodeGeoCodesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodeGeoCode> selectorNodeGeoCodes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodegeocodes
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndgeo_slnd_selectornodeid AND slndgeo_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodegeocodes
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndgeo_slnd_selectornodeid AND slndgeo_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodeGeoCodes.fields())
+                .from(SelectorNodeGeoCodes)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_GEO_CODES_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodeGeoCodes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodeGeoCodeFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodeGeoCodes = selectorNodeGeoCodeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeGeoCodes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodeGeoCodeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodeGeoCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodeGeoCode> getSelectorNodeGeoCodesBySelector(Selector selector) {
@@ -4565,45 +3860,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodePaymentMethodByPaymentMethod(final PaymentMethod paymentMethod) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodepaymentmethods
-                        WHERE slndpm_pm_paymentmethodid = ? AND slndpm_thrutime = ?
-                        """, paymentMethod, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodePaymentMethods)
+                .where(SelectorNodePaymentMethods.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()),
+                        SelectorNodePaymentMethods.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodePaymentMethod getSelectorNodePaymentMethod(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodePaymentMethod selectorNodePaymentMethod;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodepaymentmethods
-                        WHERE slndpm_slnd_selectornodeid = ? AND slndpm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodepaymentmethods
-                        WHERE slndpm_slnd_selectornodeid = ? AND slndpm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodePaymentMethods.fields())
+                .from(SelectorNodePaymentMethods)
+                .where(SelectorNodePaymentMethods.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodePaymentMethods.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodePaymentMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodePaymentMethod = selectorNodePaymentMethodFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodePaymentMethod;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodePaymentMethodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodePaymentMethod getSelectorNodePaymentMethod(SelectorNode selectorNode) {
@@ -4625,39 +3903,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodePaymentMethod> getSelectorNodePaymentMethodsBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodePaymentMethod> selectorNodePaymentMethods;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodepaymentmethods
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndpm_slnd_selectornodeid AND slndpm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodepaymentmethods
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndpm_slnd_selectornodeid AND slndpm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodePaymentMethods.fields())
+                .from(SelectorNodePaymentMethods)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_PAYMENT_METHODS_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodePaymentMethods.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodePaymentMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodePaymentMethods = selectorNodePaymentMethodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodePaymentMethods;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodePaymentMethodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodePaymentMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodePaymentMethod> getSelectorNodePaymentMethodsBySelector(Selector selector) {
@@ -4713,45 +3974,28 @@ public class SelectorControl
     }
 
     public long countSelectorNodePaymentProcessorByPaymentProcessor(PaymentProcessor paymentProcessor) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectornodepaymentprocessors
-                        WHERE slndpprc_pprc_paymentprocessorid = ? AND slndpprc_thrutime = ?
-                        """, paymentProcessor, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorNodePaymentProcessors)
+                .where(SelectorNodePaymentProcessors.PAYMENT_PROCESSOR.eq(paymentProcessor.getPrimaryKey()),
+                        SelectorNodePaymentProcessors.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorNodePaymentProcessor getSelectorNodePaymentProcessor(SelectorNode selectorNode, EntityPermission entityPermission) {
-        SelectorNodePaymentProcessor selectorNodePaymentProcessor;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodepaymentprocessors
-                        WHERE slndpprc_slnd_selectornodeid = ? AND slndpprc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodepaymentprocessors
-                        WHERE slndpprc_slnd_selectornodeid = ? AND slndpprc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodePaymentProcessors.fields())
+                .from(SelectorNodePaymentProcessors)
+                .where(SelectorNodePaymentProcessors.SELECTOR_NODE.eq(selectorNode.getPrimaryKey()),
+                        SelectorNodePaymentProcessors.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodePaymentProcessorFactory.prepareStatement(query);
-            
-            ps.setLong(1, selectorNode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodePaymentProcessor = selectorNodePaymentProcessorFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodePaymentProcessor;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodePaymentProcessorFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorNodePaymentProcessor getSelectorNodePaymentProcessor(SelectorNode selectorNode) {
@@ -4773,39 +4017,22 @@ public class SelectorControl
     }
     
     private List<SelectorNodePaymentProcessor> getSelectorNodePaymentProcessorsBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorNodePaymentProcessor> selectorNodePaymentProcessors;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodepaymentprocessors
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndpprc_slnd_selectornodeid AND slndpprc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectornodes, selectornodedetails, selectornodepaymentprocessors
-                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
-                        AND slnd_selectornodeid = slndpprc_slnd_selectornodeid AND slndpprc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorNodePaymentProcessors.fields())
+                .from(SelectorNodePaymentProcessors)
+                .join(SelectorNodes).onKey(SELECTOR_NODE_PAYMENT_PROCESSORS_SELECTOR_NODE_FK)
+                .join(SelectorNodeDetails).onKey(SELECTOR_NODES_ACTIVE_DETAIL_FK)
+                .where(SelectorNodeDetails.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorNodePaymentProcessors.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorNodePaymentProcessorFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorNodePaymentProcessors = selectorNodePaymentProcessorFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodePaymentProcessors;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SelectorNodeDetails.SELECTOR_NODE_NAME),
+                    SelectorNodePaymentProcessorFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorNodePaymentProcessorFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorNodePaymentProcessor> getSelectorNodePaymentProcessorsBySelector(Selector selector) {
@@ -4849,6 +4076,9 @@ public class SelectorControl
     @Inject
     protected SelectorPartyFactory selectorPartyFactory;
 
+    @Inject
+    private SelectorPartyTransferCache selectorPartyTransferCache;
+
     public SelectorParty createSelectorParty(Selector selector, Party party, BasePK createdBy) {
         var selectorParty = selectorPartyFactory.create(selector, party, session.getStartTime(),
                 Session.MAX_TIME);
@@ -4857,54 +4087,39 @@ public class SelectorControl
     }
 
     public long countSelectorPartiesBySelector(final Selector selector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectorparties
-                        WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ?
-                        """, selector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorParties)
+                .where(SelectorParties.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorParties.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSelectorPartiesByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM selectorparties
-                        WHERE slpar_par_partyid = ? AND slpar_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SelectorParties)
+                .where(SelectorParties.PARTY.eq(party.getPrimaryKey()),
+                        SelectorParties.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SelectorParty getSelectorParty(Selector selector, Party party, EntityPermission entityPermission) {
-        SelectorParty selectorParty;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectorparties
-                        WHERE slpar_sl_selectorid = ? AND slpar_par_partyid = ? AND slpar_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectorparties
-                        WHERE slpar_sl_selectorid = ? AND slpar_par_partyid = ? AND slpar_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SelectorParties.fields())
+                .from(SelectorParties)
+                .where(SelectorParties.SELECTOR.eq(selector.getPrimaryKey()),
+                        SelectorParties.PARTY.eq(party.getPrimaryKey()),
+                        SelectorParties.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = selectorPartyFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, party.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            selectorParty = selectorPartyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorParty;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return selectorPartyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SelectorParty getSelectorParty(Selector selector, Party party) {
@@ -4922,40 +4137,25 @@ public class SelectorControl
     }
     
     private List<SelectorParty> getSelectorPartiesBySelector(Selector selector, EntityPermission entityPermission) {
-        List<SelectorParty> selectorParties;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectorparties, parties, partydetails
-                        WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ?
-                        AND slpar_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
-                        ORDER BY pardt_partyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM selectorparties
-                        WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SelectorParties.fields())
+                    .from(SelectorParties)
+                    .join(Parties).onKey(SELECTOR_PARTIES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(SelectorParties.SELECTOR.eq(selector.getPrimaryKey()),
+                            SelectorParties.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    SelectorPartyFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SelectorParties.fields())
+                    .from(SelectorParties)
+                    .where(SelectorParties.SELECTOR.eq(selector.getPrimaryKey()),
+                            SelectorParties.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = selectorPartyFactory.prepareStatement(query);
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            selectorParties = selectorPartyFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorParties;
+        return selectorPartyFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SelectorParty> getSelectorPartiesBySelector(Selector selector) {
