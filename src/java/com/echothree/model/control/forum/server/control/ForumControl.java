@@ -174,20 +174,97 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.MIME_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_FORUM_THREADS_FORUM_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_FORUM_THREADS_FORUM_THREAD_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_GROUPS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_GROUPS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_GROUP_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_GROUP_FORUMS_FORUM_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_GROUP_FORUMS_FORUM_GROUP_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MESSAGES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MESSAGE_ATTACHMENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MESSAGE_ATTACHMENT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MESSAGE_PARTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MESSAGE_ROLES_FORUM_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MESSAGE_ROLES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MIME_TYPES_FORUM_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MIME_TYPES_MIME_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_PARTY_ROLES_FORUM_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_PARTY_ROLES_FORUM_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_PARTY_ROLES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_PARTY_TYPE_ROLES_FORUM_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_PARTY_TYPE_ROLES_PARTY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_THREADS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_THREADS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_TYPE_MESSAGE_TYPES_FORUM_MESSAGE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.core.MimeTypeDetails.MimeTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.MimeTypes.MimeTypes;
+import static com.echothree.model.jooq.server.tables.forum.ForumBlobMessageParts.ForumBlobMessageParts;
+import static com.echothree.model.jooq.server.tables.forum.ForumClobMessageParts.ForumClobMessageParts;
+import static com.echothree.model.jooq.server.tables.forum.ForumDescriptions.ForumDescriptions;
+import static com.echothree.model.jooq.server.tables.forum.ForumDetails.ForumDetails;
+import static com.echothree.model.jooq.server.tables.forum.ForumForumThreads.ForumForumThreads;
+import static com.echothree.model.jooq.server.tables.forum.ForumGroupDescriptions.ForumGroupDescriptions;
+import static com.echothree.model.jooq.server.tables.forum.ForumGroupDetails.ForumGroupDetails;
+import static com.echothree.model.jooq.server.tables.forum.ForumGroupForums.ForumGroupForums;
+import static com.echothree.model.jooq.server.tables.forum.ForumGroups.ForumGroups;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageAttachmentDescriptions.ForumMessageAttachmentDescriptions;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageAttachmentDetails.ForumMessageAttachmentDetails;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageAttachments.ForumMessageAttachments;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageBlobAttachments.ForumMessageBlobAttachments;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageClobAttachments.ForumMessageClobAttachments;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageDetails.ForumMessageDetails;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessagePartDetails.ForumMessagePartDetails;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessagePartTypeDescriptions.ForumMessagePartTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessagePartTypes.ForumMessagePartTypes;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageParts.ForumMessageParts;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageRoles.ForumMessageRoles;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageStatuses.ForumMessageStatuses;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageTypeDescriptions.ForumMessageTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageTypePartTypes.ForumMessageTypePartTypes;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageTypes.ForumMessageTypes;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessages.ForumMessages;
+import static com.echothree.model.jooq.server.tables.forum.ForumMimeTypes.ForumMimeTypes;
+import static com.echothree.model.jooq.server.tables.forum.ForumPartyRoles.ForumPartyRoles;
+import static com.echothree.model.jooq.server.tables.forum.ForumPartyTypeRoles.ForumPartyTypeRoles;
+import static com.echothree.model.jooq.server.tables.forum.ForumRoleTypeDescriptions.ForumRoleTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.forum.ForumRoleTypes.ForumRoleTypes;
+import static com.echothree.model.jooq.server.tables.forum.ForumStringMessageParts.ForumStringMessageParts;
+import static com.echothree.model.jooq.server.tables.forum.ForumThreadDetails.ForumThreadDetails;
+import static com.echothree.model.jooq.server.tables.forum.ForumThreads.ForumThreads;
+import static com.echothree.model.jooq.server.tables.forum.ForumTypeDescriptions.ForumTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.forum.ForumTypeMessageTypes.ForumTypeMessageTypes;
+import static com.echothree.model.jooq.server.tables.forum.ForumTypes.ForumTypes;
+import static com.echothree.model.jooq.server.tables.forum.Forums.Forums;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.party.PartyTypes.PartyTypes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 
 @CommandScope
@@ -209,78 +286,17 @@ public class ForumControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Forum Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    ForumTypeTransferCache forumTypeTransferCache;
-
-    @Inject
-    ForumMessageTypeTransferCache forumMessageTypeTransferCache;
-
-    @Inject
-    ForumRoleTypeTransferCache forumRoleTypeTransferCache;
-
-    @Inject
-    ForumGroupDescriptionTransferCache forumGroupDescriptionTransferCache;
-
-    @Inject
-    ForumDescriptionTransferCache forumDescriptionTransferCache;
-
-    @Inject
-    ForumGroupTransferCache forumGroupTransferCache;
-
-    @Inject
-    ForumGroupForumTransferCache forumGroupForumTransferCache;
-
-    @Inject
-    ForumTransferCache forumTransferCache;
-
-    @Inject
-    ForumMessagePartTypeTransferCache forumMessagePartTypeTransferCache;
-
-    @Inject
-    ForumMessageTypePartTypeTransferCache forumMessageTypePartTypeTransferCache;
-
-    @Inject
-    ForumMimeTypeTransferCache forumMimeTypeTransferCache;
-
-    @Inject
-    ForumPartyRoleTransferCache forumPartyRoleTransferCache;
-
-    @Inject
-    ForumPartyTypeRoleTransferCache forumPartyTypeRoleTransferCache;
-
-    @Inject
-    ForumForumThreadTransferCache forumForumThreadTransferCache;
-
-    @Inject
-    ForumMessagePartTransferCache forumMessagePartTransferCache;
-
-    @Inject
-    ForumMessageRoleTransferCache forumMessageRoleTransferCache;
-
-    @Inject
-    ForumMessageTransferCache forumMessageTransferCache;
-
-    @Inject
-    ForumMessageAttachmentTransferCache forumMessageAttachmentTransferCache;
-
-    @Inject
-    ForumMessageAttachmentDescriptionTransferCache forumMessageAttachmentDescriptionTransferCache;
-
-    @Inject
-    ForumThreadTransferCache forumThreadTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Forum Groups
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ForumGroupDetailFactory forumGroupDetailFactory;
 
     @Inject
     protected ForumGroupFactory forumGroupFactory;
 
     @Inject
-    protected ForumGroupDetailFactory forumGroupDetailFactory;
+    ForumGroupTransferCache forumGroupTransferCache;
 
     public ForumGroup createForumGroup(String forumGroupName, Icon icon, Integer sortOrder, BasePK createdBy) {
         var forumGroup = forumGroupFactory.create();
@@ -315,56 +331,38 @@ public class ForumControl
     }
 
     public long countForumGroups() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumgroups
-                        JOIN forumgroupdetails ON frmgrpdt_forumgroupdetailid = frmgrp_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumGroups)
+                .join(ForumGroupDetails).onKey(FORUM_GROUPS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<ForumGroup> getForumGroups() {
-        var ps = forumGroupFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM forumgroups, forumgroupdetails
-                WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid
-                ORDER BY frmgrpdt_sortorder, frmgrpdt_forumgroupname
-                _LIMIT_
-                """);
-        
-        return forumGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ForumGroups.fields())
+                .from(ForumGroups)
+                .join(ForumGroupDetails).onKey(FORUM_GROUPS_ACTIVE_DETAIL_FK)
+                .orderBy(ForumGroupDetails.SORT_ORDER, ForumGroupDetails.FORUM_GROUP_NAME),
+                ForumGroupFactory.class);
+
+        return forumGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ForumGroup getForumGroupByName(String forumGroupName, EntityPermission entityPermission) {
-        ForumGroup forumGroup;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroups, forumgroupdetails
-                        WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid AND frmgrpdt_forumgroupname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroups, forumgroupdetails
-                        WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid AND frmgrpdt_forumgroupname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumGroups.fields())
+                .from(ForumGroups)
+                .join(ForumGroupDetails).onKey(FORUM_GROUPS_ACTIVE_DETAIL_FK)
+                .where(ForumGroupDetails.FORUM_GROUP_NAME.eq(forumGroupName));
 
-            var ps = forumGroupFactory.prepareStatement(query);
-            
-            ps.setString(1, forumGroupName);
-            
-            forumGroup = forumGroupFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumGroup;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumGroupFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumGroup getForumGroupByName(String forumGroupName) {
@@ -477,6 +475,9 @@ public class ForumControl
     @Inject
     protected ForumGroupDescriptionFactory forumGroupDescriptionFactory;
 
+    @Inject
+    ForumGroupDescriptionTransferCache forumGroupDescriptionTransferCache;
+
     public ForumGroupDescription createForumGroupDescription(ForumGroup forumGroup, Language language, String description, BasePK createdBy) {
         var forumGroupDescription = forumGroupDescriptionFactory.create(forumGroup,
                 language, description, session.getStartTime(), Session.MAX_TIME);
@@ -488,38 +489,19 @@ public class ForumControl
     
     private ForumGroupDescription getForumGroupDescription(ForumGroup forumGroup, Language language,
             EntityPermission entityPermission) {
-        ForumGroupDescription forumGroupDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupdescriptions
-                        WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_lang_languageid = ? AND frmgrpd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupdescriptions
-                        WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_lang_languageid = ? AND frmgrpd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumGroupDescriptions.fields())
+                .from(ForumGroupDescriptions)
+                .where(ForumGroupDescriptions.FORUM_GROUP.eq(forumGroup.getPrimaryKey()),
+                        ForumGroupDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ForumGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumGroupDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            forumGroupDescription = forumGroupDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumGroupDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumGroupDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumGroupDescription getForumGroupDescription(ForumGroup forumGroup, Language language) {
@@ -540,40 +522,24 @@ public class ForumControl
     
     private List<ForumGroupDescription> getForumGroupDescriptionsByForumGroup(ForumGroup forumGroup,
             EntityPermission entityPermission) {
-        List<ForumGroupDescription> forumGroupDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupdescriptions, languages
-                        WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_thrutime = ?
-                        AND frmgrpd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupdescriptions
-                        WHERE frmgrpd_frmgrp_forumgroupid = ? AND frmgrpd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumGroupDescriptions.fields())
+                    .from(ForumGroupDescriptions)
+                    .join(Languages).onKey(FORUM_GROUP_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ForumGroupDescriptions.FORUM_GROUP.eq(forumGroup.getPrimaryKey()),
+                            ForumGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ForumGroupDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumGroupDescriptions.fields())
+                    .from(ForumGroupDescriptions)
+                    .where(ForumGroupDescriptions.FORUM_GROUP.eq(forumGroup.getPrimaryKey()),
+                            ForumGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumGroupDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumGroupDescriptions = forumGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumGroupDescriptions;
+        return forumGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumGroupDescription> getForumGroupDescriptionsByForumGroup(ForumGroup forumGroup) {
@@ -661,10 +627,13 @@ public class ForumControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ForumDetailFactory forumDetailFactory;
+
+    @Inject
     protected ForumFactory forumFactory;
 
     @Inject
-    protected ForumDetailFactory forumDetailFactory;
+    ForumTransferCache forumTransferCache;
 
     public Forum createForum(String forumName, ForumType forumType, Icon icon, Sequence forumThreadSequence,
             Sequence forumMessageSequence, Integer sortOrder, BasePK createdBy) {
@@ -700,56 +669,38 @@ public class ForumControl
     }
 
     public long countForums() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forums
-                        JOIN forumdetails ON frmdt_forumdetailid = frm_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Forums)
+                .join(ForumDetails).onKey(FORUMS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<Forum> getForums() {
-        var ps = forumFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM forums, forumdetails
-                WHERE frm_activedetailid = frmdt_forumdetailid
-                ORDER BY frmdt_sortorder, frmdt_forumname
-                _LIMIT_
-                """);
-        
-        return forumFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(Forums.fields())
+                .from(Forums)
+                .join(ForumDetails).onKey(FORUMS_ACTIVE_DETAIL_FK)
+                .orderBy(ForumDetails.SORT_ORDER, ForumDetails.FORUM_NAME),
+                ForumFactory.class);
+
+        return forumFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public Forum getForumByName(String forumName, EntityPermission entityPermission) {
-        Forum forum;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forums, forumdetails
-                        WHERE frm_activedetailid = frmdt_forumdetailid AND frmdt_forumname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forums, forumdetails
-                        WHERE frm_activedetailid = frmdt_forumdetailid AND frmdt_forumname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Forums.fields())
+                .from(Forums)
+                .join(ForumDetails).onKey(FORUMS_ACTIVE_DETAIL_FK)
+                .where(ForumDetails.FORUM_NAME.eq(forumName));
 
-            var ps = forumFactory.prepareStatement(query);
-            
-            ps.setString(1, forumName);
-            
-            forum = forumFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forum;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Forum getForumByName(String forumName) {
@@ -881,6 +832,9 @@ public class ForumControl
     @Inject
     protected ForumDescriptionFactory forumDescriptionFactory;
 
+    @Inject
+    ForumDescriptionTransferCache forumDescriptionTransferCache;
+
     public ForumDescription createForumDescription(Forum forum, Language language, String description, BasePK createdBy) {
         var forumDescription = forumDescriptionFactory.create(forum, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -891,38 +845,19 @@ public class ForumControl
     }
     
     private ForumDescription getForumDescription(Forum forum, Language language, EntityPermission entityPermission) {
-        ForumDescription forumDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumdescriptions
-                        WHERE frmd_frm_forumid = ? AND frmd_lang_languageid = ? AND frmd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumdescriptions
-                        WHERE frmd_frm_forumid = ? AND frmd_lang_languageid = ? AND frmd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumDescriptions.fields())
+                .from(ForumDescriptions)
+                .where(ForumDescriptions.FORUM.eq(forum.getPrimaryKey()),
+                        ForumDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ForumDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            forumDescription = forumDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumDescription getForumDescription(Forum forum, Language language) {
@@ -942,39 +877,24 @@ public class ForumControl
     }
     
     private List<ForumDescription> getForumDescriptionsByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumDescription> forumDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumdescriptions, languages
-                        WHERE frmd_frm_forumid = ? AND frmd_thrutime = ? AND frmd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumdescriptions
-                        WHERE frmd_frm_forumid = ? AND frmd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumDescriptions.fields())
+                    .from(ForumDescriptions)
+                    .join(Languages).onKey(FORUM_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ForumDescriptions.FORUM.eq(forum.getPrimaryKey()),
+                            ForumDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ForumDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumDescriptions.fields())
+                    .from(ForumDescriptions)
+                    .where(ForumDescriptions.FORUM.eq(forum.getPrimaryKey()),
+                            ForumDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumDescriptions = forumDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumDescriptions;
+        return forumDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumDescription> getForumDescriptionsByForum(Forum forum) {
@@ -1062,6 +982,9 @@ public class ForumControl
     @Inject
     protected ForumGroupForumFactory forumGroupForumFactory;
 
+    @Inject
+    ForumGroupForumTransferCache forumGroupForumTransferCache;
+
     public ForumGroupForum createForumGroupForum(ForumGroup forumGroup, Forum forum, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultForumGroupForum = getDefaultForumGroupForum(forum);
@@ -1085,54 +1008,39 @@ public class ForumControl
     }
 
     public long countForumGroupForumsByForumGroup(ForumGroup forumGroup) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM forumgroupforums
-                WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ?
-                """, forumGroup, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumGroupForums)
+                .where(ForumGroupForums.FORUM_GROUP.eq(forumGroup.getPrimaryKey()),
+                        ForumGroupForums.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumGroupForumsByForum(Forum forum) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM forumgroupforums
-                WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
-                """, forum, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumGroupForums)
+                .where(ForumGroupForums.FORUM.eq(forum.getPrimaryKey()),
+                        ForumGroupForums.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ForumGroupForum getForumGroupForum(ForumGroup forumGroup, Forum forum, EntityPermission entityPermission) {
-        ForumGroupForum forumGroupForum;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupforums
-                        WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupforums
-                        WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumGroupForums.fields())
+                .from(ForumGroupForums)
+                .where(ForumGroupForums.FORUM_GROUP.eq(forumGroup.getPrimaryKey()),
+                        ForumGroupForums.FORUM.eq(forum.getPrimaryKey()),
+                        ForumGroupForums.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumGroupForumFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, forum.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            forumGroupForum = forumGroupForumFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumGroupForum;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumGroupForumFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumGroupForum getForumGroupForum(ForumGroup forumGroup, Forum forum) {
@@ -1152,37 +1060,19 @@ public class ForumControl
     }
     
     private ForumGroupForum getDefaultForumGroupForum(Forum forum, EntityPermission entityPermission) {
-        ForumGroupForum forumGroupForum;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupforums
-                        WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_isdefault = 1 AND frmgrpfrm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupforums
-                        WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_isdefault = 1 AND frmgrpfrm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumGroupForums.fields())
+                .from(ForumGroupForums)
+                .where(ForumGroupForums.FORUM.eq(forum.getPrimaryKey()),
+                        ForumGroupForums.IS_DEFAULT.eq(true),
+                        ForumGroupForums.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumGroupForumFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumGroupForum = forumGroupForumFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumGroupForum;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumGroupForumFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumGroupForum getDefaultForumGroupForum(Forum forum) {
@@ -1200,40 +1090,25 @@ public class ForumControl
     }
     
     private List<ForumGroupForum> getForumGroupForumsByForumGroup(ForumGroup forumGroup, EntityPermission entityPermission) {
-        List<ForumGroupForum> forumGroupForums;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupforums, forums, forumdetails
-                        WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ?
-                        AND frmgrpfrm_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
-                        ORDER BY frmdt_sortorder, frmdt_forumname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupforums
-                        WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumGroupForums.fields())
+                    .from(ForumGroupForums)
+                    .join(Forums).onKey(FORUM_GROUP_FORUMS_FORUM_FK)
+                    .join(ForumDetails).onKey(FORUMS_LAST_DETAIL_FK)
+                    .where(ForumGroupForums.FORUM_GROUP.eq(forumGroup.getPrimaryKey()),
+                            ForumGroupForums.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ForumDetails.SORT_ORDER, ForumDetails.FORUM_NAME),
+                    ForumGroupForumFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumGroupForums.fields())
+                    .from(ForumGroupForums)
+                    .where(ForumGroupForums.FORUM_GROUP.eq(forumGroup.getPrimaryKey()),
+                            ForumGroupForums.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumGroupForumFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumGroupForums = forumGroupForumFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumGroupForums;
+        return forumGroupForumFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumGroupForum> getForumGroupForumsByForumGroup(ForumGroup forumGroup) {
@@ -1245,40 +1120,25 @@ public class ForumControl
     }
     
     private List<ForumGroupForum> getForumGroupForumsByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumGroupForum> forumGroupForums;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupforums, forumgroups, forumgroupdetails
-                        WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
-                        AND frmgrpfrm_frmgrp_forumgroupid = frmgrp_forumgroupid AND frmgrp_lastdetailid = frmgrpdt_forumgroupdetailid
-                        ORDER BY frmgrpdt_sortorder, frmgrpdt_forumgroupname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumgroupforums
-                        WHERE frmgrpfrm_frm_forumid = ? AND frmgrpfrm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumGroupForums.fields())
+                    .from(ForumGroupForums)
+                    .join(ForumGroups).onKey(FORUM_GROUP_FORUMS_FORUM_GROUP_FK)
+                    .join(ForumGroupDetails).onKey(FORUM_GROUPS_LAST_DETAIL_FK)
+                    .where(ForumGroupForums.FORUM.eq(forum.getPrimaryKey()),
+                            ForumGroupForums.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ForumGroupDetails.SORT_ORDER, ForumGroupDetails.FORUM_GROUP_NAME),
+                    ForumGroupForumFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumGroupForums.fields())
+                    .from(ForumGroupForums)
+                    .where(ForumGroupForums.FORUM.eq(forum.getPrimaryKey()),
+                            ForumGroupForums.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumGroupForumFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumGroupForums = forumGroupForumFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumGroupForums;
+        return forumGroupForumFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumGroupForum> getForumGroupForumsByForum(Forum forum) {
@@ -1397,6 +1257,9 @@ public class ForumControl
     @Inject
     protected ForumRoleTypeFactory forumRoleTypeFactory;
 
+    @Inject
+    ForumRoleTypeTransferCache forumRoleTypeTransferCache;
+
     public ForumRoleType createForumRoleType(String forumRoleTypeName, Boolean isDefault, Integer sortOrder) {
         return forumRoleTypeFactory.create(forumRoleTypeName, isDefault, sortOrder);
     }
@@ -1417,41 +1280,30 @@ public class ForumControl
     }
 
     public long countForumRoleTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumroletypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumRoleTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ForumRoleType getForumRoleTypeByName(String forumRoleTypeName) {
-        ForumRoleType forumRoleType;
-        
-        try {
-            var ps = forumRoleTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forumroletypes
-                    WHERE frmrtyp_forumroletypename = ?
-                    """);
-            
-            ps.setString(1, forumRoleTypeName);
-            
-            forumRoleType = forumRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumRoleType;
+        var query = session.getDslContext()
+                .select(ForumRoleTypes.fields())
+                .from(ForumRoleTypes)
+                .where(ForumRoleTypes.FORUM_ROLE_TYPE_NAME.eq(forumRoleTypeName));
+
+        return forumRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ForumRoleType> getForumRoleTypes() {
-        var ps = forumRoleTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM forumroletypes
-                ORDER BY frmrtyp_sortorder, frmrtyp_forumroletypename
-                _LIMIT_
-                """);
-        
-        return forumRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ForumRoleTypes.fields())
+                .from(ForumRoleTypes)
+                .orderBy(ForumRoleTypes.SORT_ORDER, ForumRoleTypes.FORUM_ROLE_TYPE_NAME),
+                ForumRoleTypeFactory.class);
+
+        return forumRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ForumRoleTypeChoicesBean getForumRoleTypeChoices(String defaultForumRoleTypeChoice, Language language,
@@ -1503,25 +1355,13 @@ public class ForumControl
     }
     
     public ForumRoleTypeDescription getForumRoleTypeDescription(ForumRoleType forumRoleType, Language language) {
-        ForumRoleTypeDescription forumRoleTypeDescription;
-        
-        try {
-            var ps = forumRoleTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forumroletypedescriptions
-                    WHERE frmrtypd_frmrtyp_forumroletypeid = ? AND frmrtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, forumRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            forumRoleTypeDescription = forumRoleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY,
-                    ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumRoleTypeDescription;
+        var query = session.getDslContext()
+                .select(ForumRoleTypeDescriptions.fields())
+                .from(ForumRoleTypeDescriptions)
+                .where(ForumRoleTypeDescriptions.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumRoleTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return forumRoleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestForumRoleTypeDescription(ForumRoleType forumRoleType, Language language) {
@@ -1548,6 +1388,9 @@ public class ForumControl
     @Inject
     protected ForumTypeFactory forumTypeFactory;
 
+    @Inject
+    ForumTypeTransferCache forumTypeTransferCache;
+
     public ForumType createForumType(String forumTypeName, Boolean isDefault, Integer sortOrder) {
         return forumTypeFactory.create(forumTypeName, isDefault, sortOrder);
     }
@@ -1568,41 +1411,30 @@ public class ForumControl
     }
 
     public long countForumTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumtypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ForumType getForumTypeByName(String forumTypeName) {
-        ForumType forumType;
-        
-        try {
-            var ps = forumTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forumtypes
-                    WHERE frmtyp_forumtypename = ?
-                    """);
-            
-            ps.setString(1, forumTypeName);
-            
-            forumType = forumTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumType;
+        var query = session.getDslContext()
+                .select(ForumTypes.fields())
+                .from(ForumTypes)
+                .where(ForumTypes.FORUM_TYPE_NAME.eq(forumTypeName));
+
+        return forumTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ForumType> getForumTypes() {
-        var ps = forumTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM forumtypes
-                ORDER BY frmtyp_sortorder, frmtyp_forumtypename
-                _LIMIT_
-                """);
-        
-        return forumTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ForumTypes.fields())
+                .from(ForumTypes)
+                .orderBy(ForumTypes.SORT_ORDER, ForumTypes.FORUM_TYPE_NAME),
+                ForumTypeFactory.class);
+
+        return forumTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ForumTypeChoicesBean getForumTypeChoices(String defaultForumTypeChoice, Language language, boolean allowNullChoice) {
@@ -1652,25 +1484,13 @@ public class ForumControl
     }
     
     public ForumTypeDescription getForumTypeDescription(ForumType forumType, Language language) {
-        ForumTypeDescription forumTypeDescription;
-        
-        try {
-            var ps = forumTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forumtypedescriptions
-                    WHERE frmtypd_frmtyp_forumtypeid = ? AND frmtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, forumType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            forumTypeDescription = forumTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY,
-                    ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumTypeDescription;
+        var query = session.getDslContext()
+                .select(ForumTypeDescriptions.fields())
+                .from(ForumTypeDescriptions)
+                .where(ForumTypeDescriptions.FORUM_TYPE.eq(forumType.getPrimaryKey()),
+                        ForumTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return forumTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestForumTypeDescription(ForumType forumType, Language language) {
@@ -1697,6 +1517,9 @@ public class ForumControl
     @Inject
     protected ForumMimeTypeFactory forumMimeTypeFactory;
 
+    @Inject
+    ForumMimeTypeTransferCache forumMimeTypeTransferCache;
+
     public ForumMimeType createForumMimeType(Forum forum, MimeType mimeType, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultForumMimeType = getDefaultForumMimeType(forum);
@@ -1720,54 +1543,39 @@ public class ForumControl
     }
 
     public long countForumMimeTypeByForum(final Forum forum) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummimetypes
-                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ?
-                        """, forum, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMimeTypes)
+                .where(ForumMimeTypes.FORUM.eq(forum.getPrimaryKey()),
+                        ForumMimeTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMimeTypeByMimeType(final MimeType mimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummimetypes
-                        WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
-                        """, mimeType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMimeTypes)
+                .where(ForumMimeTypes.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                        ForumMimeTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ForumMimeType getForumMimeType(Forum forum, MimeType mimeType, EntityPermission entityPermission) {
-        ForumMimeType forumMimeType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummimetypes
-                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummimetypes
-                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumMimeTypes.fields())
+                .from(ForumMimeTypes)
+                .where(ForumMimeTypes.FORUM.eq(forum.getPrimaryKey()),
+                        ForumMimeTypes.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                        ForumMimeTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumMimeTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, mimeType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            forumMimeType = forumMimeTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMimeType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumMimeType getForumMimeType(Forum forum, MimeType mimeType) {
@@ -1787,37 +1595,19 @@ public class ForumControl
     }
     
     private ForumMimeType getDefaultForumMimeType(Forum forum, EntityPermission entityPermission) {
-        ForumMimeType forumMimeType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummimetypes
-                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_isdefault = 1 AND frmmtyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummimetypes
-                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_isdefault = 1 AND frmmtyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumMimeTypes.fields())
+                .from(ForumMimeTypes)
+                .where(ForumMimeTypes.FORUM.eq(forum.getPrimaryKey()),
+                        ForumMimeTypes.IS_DEFAULT.eq(true),
+                        ForumMimeTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumMimeTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumMimeType = forumMimeTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMimeType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumMimeType getDefaultForumMimeType(Forum forum) {
@@ -1835,40 +1625,25 @@ public class ForumControl
     }
     
     private List<ForumMimeType> getForumMimeTypesByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumMimeType> forumMimeTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummimetypes, mimetypes, mimetypedetails
-                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ?
-                        AND frmmtyp_mtyp_mimetypeid = mtyp_mimetypeid AND mtyp_lastdetailid = mtypdt_mimetypedetailid
-                        ORDER BY frmmtyp_sortorder, mtypdt_sortorder, mtypdt_mimetypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummimetypes
-                        WHERE frmmtyp_frm_forumid = ? AND frmmtyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumMimeTypes.fields())
+                    .from(ForumMimeTypes)
+                    .join(MimeTypes).onKey(FORUM_MIME_TYPES_MIME_TYPE_FK)
+                    .join(MimeTypeDetails).onKey(MIME_TYPES_LAST_DETAIL_FK)
+                    .where(ForumMimeTypes.FORUM.eq(forum.getPrimaryKey()),
+                            ForumMimeTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ForumMimeTypes.SORT_ORDER, MimeTypeDetails.SORT_ORDER, MimeTypeDetails.MIME_TYPE_NAME),
+                    ForumMimeTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumMimeTypes.fields())
+                    .from(ForumMimeTypes)
+                    .where(ForumMimeTypes.FORUM.eq(forum.getPrimaryKey()),
+                            ForumMimeTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumMimeTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumMimeTypes = forumMimeTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMimeTypes;
+        return forumMimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumMimeType> getForumMimeTypesByForum(Forum forum) {
@@ -1880,40 +1655,25 @@ public class ForumControl
     }
     
     private List<ForumMimeType> getForumMimeTypesByMimeType(MimeType mimeType, EntityPermission entityPermission) {
-        List<ForumMimeType> forumMimeTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummimetypes, forums, forumdetails
-                        WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
-                        AND frmmtyp_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
-                        ORDER BY frmmtyp_sortorder, frmdt_sortorder, frmdt_forumname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummimetypes
-                        WHERE frmmtyp_mtyp_mimetypeid = ? AND frmmtyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumMimeTypes.fields())
+                    .from(ForumMimeTypes)
+                    .join(Forums).onKey(FORUM_MIME_TYPES_FORUM_FK)
+                    .join(ForumDetails).onKey(FORUMS_LAST_DETAIL_FK)
+                    .where(ForumMimeTypes.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                            ForumMimeTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ForumMimeTypes.SORT_ORDER, ForumDetails.SORT_ORDER, ForumDetails.FORUM_NAME),
+                    ForumMimeTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumMimeTypes.fields())
+                    .from(ForumMimeTypes)
+                    .where(ForumMimeTypes.MIME_TYPE.eq(mimeType.getPrimaryKey()),
+                            ForumMimeTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumMimeTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumMimeTypes = forumMimeTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMimeTypes;
+        return forumMimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumMimeType> getForumMimeTypesByMimeType(MimeType mimeType) {
@@ -2067,6 +1827,9 @@ public class ForumControl
     @Inject
     protected ForumPartyRoleFactory forumPartyRoleFactory;
 
+    @Inject
+    ForumPartyRoleTransferCache forumPartyRoleTransferCache;
+
     public ForumPartyRole createForumPartyRole(Forum forum, Party party, ForumRoleType forumRoleType, BasePK createdBy) {
         var forumPartyRole = forumPartyRoleFactory.create(forum, party, forumRoleType,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2077,81 +1840,79 @@ public class ForumControl
     }
 
     public long countForumPartyRoleByForum(Forum forum) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumpartyroles
-                        WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ?
-                        """, forum, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyRoles)
+                .where(ForumPartyRoles.FORUM.eq(forum.getPrimaryKey()),
+                        ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumPartyRoleByParty(Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumpartyroles
-                        WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyRoles)
+                .where(ForumPartyRoles.PARTY.eq(party.getPrimaryKey()),
+                        ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumPartyRoleByForumRoleType(ForumRoleType forumRoleType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumpartyroles
-                        WHERE frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
-                        """, forumRoleType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyRoles)
+                .where(ForumPartyRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public boolean hasForumPartyRoles(Forum forum, ForumRoleType forumRoleType) {
-        return !(session.queryForInteger("""
-                        SELECT COUNT(*)
-                        FROM forumpartyroles
-                        WHERE frmparr_frm_forumid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
-                        """, forum, forumRoleType, Session.MAX_TIME) == 0);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyRoles)
+                .where(ForumPartyRoles.FORUM.eq(forum.getPrimaryKey()),
+                        ForumPartyRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) != 0L;
     }
 
     public boolean hasForumPartyRole(Forum forum, Party party, ForumRoleType forumRoleType) {
-        return !(session.queryForInteger("""
-                        SELECT COUNT(*)
-                        FROM forumpartyroles
-                        WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
-                        """, forum, party, forumRoleType, Session.MAX_TIME) == 0);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyRoles)
+                .where(ForumPartyRoles.FORUM.eq(forum.getPrimaryKey()),
+                        ForumPartyRoles.PARTY.eq(party.getPrimaryKey()),
+                        ForumPartyRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) != 0L;
     }
 
     private List<ForumPartyRole> getForumPartyRolesByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumPartyRole> forumPartyRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartyroles, parties, partydetails, forumroletypes
-                        WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ?
-                        AND frmparr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        AND frmparr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid
-                        ORDER BY pardt_partyname, frmrtyp_sortorder, frmrtyp_forumroletypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartyroles
-                        WHERE frmparr_frm_forumid = ? AND frmparr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumPartyRoles.fields())
+                    .from(ForumPartyRoles)
+                    .join(Parties).onKey(FORUM_PARTY_ROLES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .join(ForumRoleTypes).onKey(FORUM_PARTY_ROLES_FORUM_ROLE_TYPE_FK)
+                    .where(ForumPartyRoles.FORUM.eq(forum.getPrimaryKey()),
+                            ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME, ForumRoleTypes.SORT_ORDER, ForumRoleTypes.FORUM_ROLE_TYPE_NAME),
+                    ForumPartyRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumPartyRoles.fields())
+                    .from(ForumPartyRoles)
+                    .where(ForumPartyRoles.FORUM.eq(forum.getPrimaryKey()),
+                            ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumPartyRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumPartyRoles = forumPartyRoleFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumPartyRoles;
+        return forumPartyRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumPartyRole> getForumPartyRolesByForum(Forum forum) {
@@ -2163,41 +1924,26 @@ public class ForumControl
     }
     
     private List<ForumPartyRole> getForumPartyRolesByParty(Party party, EntityPermission entityPermission) {
-        List<ForumPartyRole> forumPartyRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartyroles, forums, forumdetails, forumroletypes
-                        WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ?
-                        AND frmparr_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
-                        AND frmparr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid
-                        ORDER BY frmdt_sortorder, frmdt_forumname, frmrtyp_sortorder, frmrtyp_forumroletypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartyroles
-                        WHERE frmparr_par_partyid = ? AND frmparr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumPartyRoles.fields())
+                    .from(ForumPartyRoles)
+                    .join(Forums).onKey(FORUM_PARTY_ROLES_FORUM_FK)
+                    .join(ForumDetails).onKey(FORUMS_LAST_DETAIL_FK)
+                    .join(ForumRoleTypes).onKey(FORUM_PARTY_ROLES_FORUM_ROLE_TYPE_FK)
+                    .where(ForumPartyRoles.PARTY.eq(party.getPrimaryKey()),
+                            ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ForumDetails.SORT_ORDER, ForumDetails.FORUM_NAME, ForumRoleTypes.SORT_ORDER, ForumRoleTypes.FORUM_ROLE_TYPE_NAME),
+                    ForumPartyRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumPartyRoles.fields())
+                    .from(ForumPartyRoles)
+                    .where(ForumPartyRoles.PARTY.eq(party.getPrimaryKey()),
+                            ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumPartyRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumPartyRoles = forumPartyRoleFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumPartyRoles;
+        return forumPartyRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumPartyRole> getForumPartyRolesByParty(Party party) {
@@ -2209,39 +1955,20 @@ public class ForumControl
     }
     
     private ForumPartyRole getForumPartyRole(Forum forum, Party party, ForumRoleType forumRoleType, EntityPermission entityPermission) {
-        ForumPartyRole forumPartyRole;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartyroles
-                        WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartyroles
-                        WHERE frmparr_frm_forumid = ? AND frmparr_par_partyid = ? AND frmparr_frmrtyp_forumroletypeid = ? AND frmparr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumPartyRoles.fields())
+                .from(ForumPartyRoles)
+                .where(ForumPartyRoles.FORUM.eq(forum.getPrimaryKey()),
+                        ForumPartyRoles.PARTY.eq(party.getPrimaryKey()),
+                        ForumPartyRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumPartyRoles.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumPartyRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, party.getPrimaryKey().getEntityId());
-            ps.setLong(3, forumRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            forumPartyRole = forumPartyRoleFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumPartyRole;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumPartyRoleFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumPartyRole getForumPartyRole(Forum forum, Party party, ForumRoleType forumRoleType) {
@@ -2295,6 +2022,9 @@ public class ForumControl
     @Inject
     protected ForumPartyTypeRoleFactory forumPartyTypeRoleFactory;
 
+    @Inject
+    ForumPartyTypeRoleTransferCache forumPartyTypeRoleTransferCache;
+
     public ForumPartyTypeRole createForumPartyTypeRole(Forum forum, PartyType partyType, ForumRoleType forumRoleType,
             BasePK createdBy) {
         var forumPartyTypeRole = forumPartyTypeRoleFactory.create(forum, partyType,
@@ -2306,81 +2036,78 @@ public class ForumControl
     }
 
     public long countForumPartyTypeRolesByForum(Forum forum) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumpartytyperoles
-                        WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ?
-                        """, forum, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyTypeRoles)
+                .where(ForumPartyTypeRoles.FORUM.eq(forum.getPrimaryKey()),
+                        ForumPartyTypeRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumPartyTypeRolesByPartyType(PartyType partyType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumpartytyperoles
-                        WHERE frmptypr_ptyp_partytypeid = ? AND frmptypr_thrutime = ?
-                        """, partyType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyTypeRoles)
+                .where(ForumPartyTypeRoles.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        ForumPartyTypeRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumPartyTypeRolesByForumRoleType(ForumRoleType forumRoleType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumpartytyperoles
-                        WHERE frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
-                        """, forumRoleType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyTypeRoles)
+                .where(ForumPartyTypeRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumPartyTypeRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public boolean hasForumPartyTypeRoles(Forum forum, ForumRoleType forumRoleType) {
-        return !(session.queryForInteger("""
-                        SELECT COUNT(*)
-                        FROM forumpartytyperoles
-                        WHERE frmptypr_frm_forumid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
-                        """, forum, forumRoleType, Session.MAX_TIME) == 0);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyTypeRoles)
+                .where(ForumPartyTypeRoles.FORUM.eq(forum.getPrimaryKey()),
+                        ForumPartyTypeRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumPartyTypeRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) != 0L;
     }
 
     public boolean hasForumPartyTypeRole(Forum forum, PartyType partyType, ForumRoleType forumRoleType) {
-        return !(session.queryForInteger("""
-                        SELECT COUNT(*)
-                        FROM forumpartytyperoles
-                        WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
-                        """, forum, partyType, forumRoleType, Session.MAX_TIME) == 0);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumPartyTypeRoles)
+                .where(ForumPartyTypeRoles.FORUM.eq(forum.getPrimaryKey()),
+                        ForumPartyTypeRoles.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        ForumPartyTypeRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumPartyTypeRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) != 0L;
     }
 
     private List<ForumPartyTypeRole> getForumPartyTypeRolesByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumPartyTypeRole> forumPartyTypeRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartytyperoles, partytypes, forumroletypes
-                        WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ?
-                        AND frmptypr_ptyp_partytypeid = ptyp_partytypeid
-                        AND frmptypr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid
-                        ORDER BY ptyp_sortorder, ptyp_partytypename, frmrtyp_sortorder, frmrtyp_forumroletypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartytyperoles
-                        WHERE frmptypr_frm_forumid = ? AND frmptypr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumPartyTypeRoles.fields())
+                    .from(ForumPartyTypeRoles)
+                    .join(PartyTypes).onKey(FORUM_PARTY_TYPE_ROLES_PARTY_TYPE_FK)
+                    .join(ForumRoleTypes).onKey(FORUM_PARTY_TYPE_ROLES_FORUM_ROLE_TYPE_FK)
+                    .where(ForumPartyTypeRoles.FORUM.eq(forum.getPrimaryKey()),
+                            ForumPartyTypeRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME, ForumRoleTypes.SORT_ORDER, ForumRoleTypes.FORUM_ROLE_TYPE_NAME),
+                    ForumPartyTypeRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumPartyTypeRoles.fields())
+                    .from(ForumPartyTypeRoles)
+                    .where(ForumPartyTypeRoles.FORUM.eq(forum.getPrimaryKey()),
+                            ForumPartyTypeRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumPartyTypeRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumPartyTypeRoles = forumPartyTypeRoleFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumPartyTypeRoles;
+        return forumPartyTypeRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumPartyTypeRole> getForumPartyTypeRolesByForum(Forum forum) {
@@ -2392,39 +2119,20 @@ public class ForumControl
     }
     
     private ForumPartyTypeRole getForumPartyTypeRole(Forum forum, PartyType partyType, ForumRoleType forumRoleType, EntityPermission entityPermission) {
-        ForumPartyTypeRole forumPartyTypeRole;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartytyperoles
-                        WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumpartytyperoles
-                        WHERE frmptypr_frm_forumid = ? AND frmptypr_ptyp_partytypeid = ? AND frmptypr_frmrtyp_forumroletypeid = ? AND frmptypr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumPartyTypeRoles.fields())
+                .from(ForumPartyTypeRoles)
+                .where(ForumPartyTypeRoles.FORUM.eq(forum.getPrimaryKey()),
+                        ForumPartyTypeRoles.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        ForumPartyTypeRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumPartyTypeRoles.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumPartyTypeRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, partyType.getPrimaryKey().getEntityId());
-            ps.setLong(3, forumRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            forumPartyTypeRole = forumPartyTypeRoleFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumPartyTypeRole;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumPartyTypeRoleFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumPartyTypeRole getForumPartyTypeRole(Forum forum, PartyType partyType, ForumRoleType forumRoleType) {
@@ -2484,55 +2192,40 @@ public class ForumControl
     }
 
     public long countForumTypeMessageTypeBy(final ForumType forumType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumtypemessagetypes
-                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ?
-                        """, forumType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumTypeMessageTypes)
+                .where(ForumTypeMessageTypes.FORUM_TYPE.eq(forumType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumTypeMessageTypeBy(final ForumMessageType forumMessageType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumtypemessagetypes
-                        WHERE frmtypmsgtyp_frmmsgtyp_forummessagetypeid = ?
-                        """, forumMessageType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumTypeMessageTypes)
+                .where(ForumTypeMessageTypes.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ForumTypeMessageType> getForumTypeMessageTypesByForumType(ForumType forumType, EntityPermission entityPermission) {
-        List<ForumTypeMessageType> forumTypeMessageTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumtypemessagetypes, forummessagetypes
-                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ?
-                        AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = frmmsgtyp_forummessagetypeid
-                        ORDER BY frmtypmsgtyp_sortorder, frmmsgtyp_sortorder, frmmsgtyp_forummessagetypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumtypemessagetypes
-                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumTypeMessageTypes.fields())
+                    .from(ForumTypeMessageTypes)
+                    .join(ForumMessageTypes).onKey(FORUM_TYPE_MESSAGE_TYPES_FORUM_MESSAGE_TYPE_FK)
+                    .where(ForumTypeMessageTypes.FORUM_TYPE.eq(forumType.getPrimaryKey()))
+                    .orderBy(ForumTypeMessageTypes.SORT_ORDER, ForumMessageTypes.SORT_ORDER, ForumMessageTypes.FORUM_MESSAGE_TYPE_NAME),
+                    ForumTypeMessageTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumTypeMessageTypes.fields())
+                    .from(ForumTypeMessageTypes)
+                    .where(ForumTypeMessageTypes.FORUM_TYPE.eq(forumType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = forumTypeMessageTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumType.getPrimaryKey().getEntityId());
-            
-            forumTypeMessageTypes = forumTypeMessageTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumTypeMessageTypes;
+        return forumTypeMessageTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumTypeMessageType> getForumTypeMessageTypesByForumType(ForumType forumType) {
@@ -2544,37 +2237,18 @@ public class ForumControl
     }
     
     private ForumTypeMessageType getForumTypeMessageType(ForumType forumType, ForumMessageType forumMessageType, EntityPermission entityPermission) {
-        ForumTypeMessageType forumTypeMessageType;
+        var baseQuery = session.getDslContext()
+                .select(ForumTypeMessageTypes.fields())
+                .from(ForumTypeMessageTypes)
+                .where(ForumTypeMessageTypes.FORUM_TYPE.eq(forumType.getPrimaryKey()),
+                        ForumTypeMessageTypes.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumtypemessagetypes
-                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumtypemessagetypes
-                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_frmmsgtyp_forummessagetypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = forumTypeMessageTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, forumType.getPrimaryKey().getEntityId());
-            ps.setLong(2, forumMessageType.getPrimaryKey().getEntityId());
-
-            forumTypeMessageType = forumTypeMessageTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return forumTypeMessageType;
+        return forumTypeMessageTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ForumTypeMessageType getForumTypeMessageType(ForumType forumType, ForumMessageType forumMessageType) {
@@ -2586,36 +2260,18 @@ public class ForumControl
     }
 
     private ForumTypeMessageType getDefaultForumTypeMessageType(ForumType forumType, EntityPermission entityPermission) {
-        ForumTypeMessageType forumTypeMessageType;
+        var baseQuery = session.getDslContext()
+                .select(ForumTypeMessageTypes.fields())
+                .from(ForumTypeMessageTypes)
+                .where(ForumTypeMessageTypes.FORUM_TYPE.eq(forumType.getPrimaryKey()),
+                        ForumTypeMessageTypes.IS_DEFAULT.eq(true));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumtypemessagetypes
-                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumtypemessagetypes
-                        WHERE frmtypmsgtyp_frmtyp_forumtypeid = ? AND frmtypmsgtyp_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = forumTypeMessageTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, forumType.getPrimaryKey().getEntityId());
-
-            forumTypeMessageType = forumTypeMessageTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return forumTypeMessageType;
+        return forumTypeMessageTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ForumTypeMessageType getDefaultForumTypeMessageType(ForumType forumType) {
@@ -2632,6 +2288,9 @@ public class ForumControl
 
     @Inject
     protected ForumForumThreadFactory forumForumThreadFactory;
+
+    @Inject
+    ForumForumThreadTransferCache forumForumThreadTransferCache;
 
     public ForumForumThread createForumForumThread(Forum forum, ForumThread forumThread, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -2656,54 +2315,39 @@ public class ForumControl
     }
 
     public long countForumForumThreadsByForum(final Forum forum) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM forumforumthreads
-                WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
-                """, forum, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumForumThreads)
+                .where(ForumForumThreads.FORUM.eq(forum.getPrimaryKey()),
+                        ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumForumThreadsByForumThread(final ForumThread forumThread) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM forumforumthreads
-                WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
-                """, forumThread, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumForumThreads)
+                .where(ForumForumThreads.FORUM_THREAD.eq(forumThread.getPrimaryKey()),
+                        ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ForumForumThread getForumForumThread(Forum forum, ForumThread forumThread, EntityPermission entityPermission) {
-        ForumForumThread forumForumThread;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads
-                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads
-                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumForumThreads.fields())
+                .from(ForumForumThreads)
+                .where(ForumForumThreads.FORUM.eq(forum.getPrimaryKey()),
+                        ForumForumThreads.FORUM_THREAD.eq(forumThread.getPrimaryKey()),
+                        ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumForumThreadFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, forumThread.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            forumForumThread = forumForumThreadFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumForumThread;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumForumThreadFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumForumThread getForumForumThread(Forum forum, ForumThread forumThread) {
@@ -2723,37 +2367,19 @@ public class ForumControl
     }
     
     private ForumForumThread getDefaultForumForumThread(ForumThread forumThread, EntityPermission entityPermission) {
-        ForumForumThread forumForumThread;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads
-                        WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_isdefault = 1 AND frmfrmthrd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads
-                        WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_isdefault = 1 AND frmfrmthrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumForumThreads.fields())
+                .from(ForumForumThreads)
+                .where(ForumForumThreads.FORUM_THREAD.eq(forumThread.getPrimaryKey()),
+                        ForumForumThreads.IS_DEFAULT.eq(true),
+                        ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumForumThreadFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumThread.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumForumThread = forumForumThreadFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumForumThread;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumForumThreadFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumForumThread getDefaultForumForumThread(ForumThread forumThread) {
@@ -2771,40 +2397,25 @@ public class ForumControl
     }
     
     private List<ForumForumThread> getForumForumThreadsByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumForumThread> forumForumThreads;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads, forumthreads, forumthreaddetails
-                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
-                        AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid AND frmthrd_lastdetailid = frmthrddt_forumthreaddetailid
-                        ORDER BY frmthrddt_sortorder, frmthrddt_postedtime
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads
-                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumForumThreads.fields())
+                    .from(ForumForumThreads)
+                    .join(ForumThreads).onKey(FORUM_FORUM_THREADS_FORUM_THREAD_FK)
+                    .join(ForumThreadDetails).onKey(FORUM_THREADS_LAST_DETAIL_FK)
+                    .where(ForumForumThreads.FORUM.eq(forum.getPrimaryKey()),
+                            ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ForumThreadDetails.SORT_ORDER, ForumThreadDetails.POSTED_TIME),
+                    ForumForumThreadFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumForumThreads.fields())
+                    .from(ForumForumThreads)
+                    .where(ForumForumThreads.FORUM.eq(forum.getPrimaryKey()),
+                            ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumForumThreadFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumForumThreads = forumForumThreadFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumForumThreads;
+        return forumForumThreadFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumForumThread> getForumForumThreadsByForum(Forum forum) {
@@ -2816,40 +2427,25 @@ public class ForumControl
     }
     
     private List<ForumForumThread> getForumForumThreadsByForumThread(ForumThread forumThread, EntityPermission entityPermission) {
-        List<ForumForumThread> forumForumThreads;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads, forums, forumdetails
-                        WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
-                        AND frmfrmthrd_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
-                        ORDER BY frmdt_sortorder, frmdt_forumname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads
-                        WHERE frmfrmthrd_frmthrd_forumthreadid = ? AND frmfrmthrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumForumThreads.fields())
+                    .from(ForumForumThreads)
+                    .join(Forums).onKey(FORUM_FORUM_THREADS_FORUM_FK)
+                    .join(ForumDetails).onKey(FORUMS_LAST_DETAIL_FK)
+                    .where(ForumForumThreads.FORUM_THREAD.eq(forumThread.getPrimaryKey()),
+                            ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ForumDetails.SORT_ORDER, ForumDetails.FORUM_NAME),
+                    ForumForumThreadFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumForumThreads.fields())
+                    .from(ForumForumThreads)
+                    .where(ForumForumThreads.FORUM_THREAD.eq(forumThread.getPrimaryKey()),
+                            ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumForumThreadFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumThread.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumForumThreads = forumForumThreadFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumForumThreads;
+        return forumForumThreadFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumForumThread> getForumForumThreadsByForumThread(ForumThread forumThread) {
@@ -2978,10 +2574,13 @@ public class ForumControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ForumThreadDetailFactory forumThreadDetailFactory;
+
+    @Inject
     protected ForumThreadFactory forumThreadFactory;
 
     @Inject
-    protected ForumThreadDetailFactory forumThreadDetailFactory;
+    ForumThreadTransferCache forumThreadTransferCache;
 
     public ForumThread createForumThread(Forum forum, Icon icon, Long postedTime, Integer sortOrder, BasePK createdBy) {
         var sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
@@ -3026,53 +2625,37 @@ public class ForumControl
     }
 
     public long countForumThreads() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumthreads
-                        JOIN forumthreaddetails ON frmthrddt_forumthreaddetailid = frmthrd_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumThreads)
+                .join(ForumThreadDetails).onKey(FORUM_THREADS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumThreadsByIcon(final Icon icon) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forumthreads
-                        JOIN forumthreaddetails ON frmthrddt_forumthreaddetailid = frmthrd_activedetailid
-                        WHERE frmthrddt_icn_iconid = ?
-                        """, icon);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumThreads)
+                .join(ForumThreadDetails).onKey(FORUM_THREADS_ACTIVE_DETAIL_FK)
+                .where(ForumThreadDetails.ICON.eq(icon.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ForumThread getForumThreadByName(String forumThreadName, EntityPermission entityPermission) {
-        ForumThread forumThread;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumthreads, forumthreaddetails
-                        WHERE frmthrd_activedetailid = frmthrddt_forumthreaddetailid AND frmthrddt_forumthreadname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumthreads, forumthreaddetails
-                        WHERE frmthrd_activedetailid = frmthrddt_forumthreaddetailid AND frmthrddt_forumthreadname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumThreads.fields())
+                .from(ForumThreads)
+                .join(ForumThreadDetails).onKey(FORUM_THREADS_ACTIVE_DETAIL_FK)
+                .where(ForumThreadDetails.FORUM_THREAD_NAME.eq(forumThreadName));
 
-            var ps = forumThreadFactory.prepareStatement(query);
-            
-            ps.setString(1, forumThreadName);
-            
-            forumThread = forumThreadFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumThread;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumThreadFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumThread getForumThreadByName(String forumThreadName) {
@@ -3092,81 +2675,58 @@ public class ForumControl
     }
     
     public long countForumThreadsByForum(Forum forum, boolean includeFutureForumThreads) {
-        long count;
-        
-        if (includeFutureForumThreads) {
-            count = session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM forumforumthreads
-                    WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
-                    """,
-                    forum, Session.MAX_TIME);
-        } else {
-            count = session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM forumforumthreads, forumthreads, forumthreaddetails
-                    WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
-                    AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid
-                    AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid
-                    AND frmthrddt_postedtime <= ?
-                    """,
-                    forum, Session.MAX_TIME, session.getStartTime());
+        var condition = ForumForumThreads.FORUM.eq(forum.getPrimaryKey())
+                .and(ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME));
+
+        if(!includeFutureForumThreads) {
+            condition = condition.and(ForumThreadDetails.POSTED_TIME.le(session.getStartTime()));
         }
 
-        return count;
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumForumThreads)
+                .join(ForumThreads).onKey(FORUM_FORUM_THREADS_FORUM_THREAD_FK)
+                .join(ForumThreadDetails).onKey(FORUM_THREADS_ACTIVE_DETAIL_FK)
+                .where(condition)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
     private List<ForumThread> getForumThreadsByForum(Forum forum, boolean includeFutureForumThreads, EntityPermission entityPermission) {
-        List<ForumThread> forumThreads;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads, forumthreads, forumthreaddetails, componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, entitytimes
-                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
-                        AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid
-                        AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid
-                        AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                        AND ent_activedetailid = entdt_entitytypedetailid AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND entdt_entitytypename = ?
-                        AND ent_entitytypeid = eni_ent_entitytypeid AND frmthrd_forumthreadid = eni_entityuniqueid
-                        AND eni_entityinstanceid = etim_eni_entityinstanceid
-                        """ + (includeFutureForumThreads ? """
-                                """ : """
-                                AND frmthrddt_postedtime <= ?
-                                """) + """
-                        ORDER BY frmthrddt_sortorder, frmthrddt_postedtime DESC, etim_createdtime DESC
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumforumthreads, forumthreads, forumthreaddetails
-                        WHERE frmfrmthrd_frm_forumid = ? AND frmfrmthrd_thrutime = ?
-                        AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid
-                        AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid
-                        FOR UPDATE
-                        """;
-            }
+        var condition = ForumForumThreads.FORUM.eq(forum.getPrimaryKey())
+                .and(ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumThreadFactory.prepareStatement(query);
-            
-            ps.setLong(1, forum.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setString(3, ComponentVendors.ECHO_THREE.name());
-            ps.setString(4, EntityTypes.ForumThread.name());
-            if(!includeFutureForumThreads) {
-                ps.setLong(5, session.getStartTime());
-            }
-            
-            forumThreads = forumThreadFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+        if(!includeFutureForumThreads) {
+            condition = condition.and(ForumThreadDetails.POSTED_TIME.le(session.getStartTime()));
         }
-        
-        return forumThreads;
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumThreads.fields())
+                    .from(ForumThreads)
+                    .join(ForumForumThreads).onKey(FORUM_FORUM_THREADS_FORUM_THREAD_FK)
+                    .join(ForumThreadDetails).onKey(FORUM_THREADS_ACTIVE_DETAIL_FK)
+                    .join(EntityInstances).on(ForumThreads.FORUM_THREAD.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                    .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                    .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                    .where(condition,
+                            ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                            EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.ForumThread.name()))
+                    .orderBy(ForumThreadDetails.SORT_ORDER, ForumThreadDetails.POSTED_TIME.desc(), EntityTimes.CREATED_TIME.desc()),
+                    ForumThreadFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumThreads.fields())
+                    .from(ForumThreads)
+                    .join(ForumForumThreads).onKey(FORUM_FORUM_THREADS_FORUM_THREAD_FK)
+                    .join(ForumThreadDetails).onKey(FORUM_THREADS_ACTIVE_DETAIL_FK)
+                    .where(condition)
+                    .forUpdate();
+        };
+
+        return forumThreadFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumThread> getForumThreadsByForum(Forum forum, boolean includeFutureForumThreads) {
@@ -3243,10 +2803,13 @@ public class ForumControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ForumMessageDetailFactory forumMessageDetailFactory;
+
+    @Inject
     protected ForumMessageFactory forumMessageFactory;
 
     @Inject
-    protected ForumMessageDetailFactory forumMessageDetailFactory;
+    ForumMessageTransferCache forumMessageTransferCache;
 
     public ForumMessage createForumMessage(ForumThread forumThread, ForumMessageType forumMessageType,
             ForumMessage parentForumMessage, Icon icon, Long postedTime, BasePK createdBy) {
@@ -3302,80 +2865,67 @@ public class ForumControl
     }
 
     public long countForumMessages() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessages
-                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessages)
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessagesByForumThread(ForumThread forumThread) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessages
-                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
-                        WHERE frmmsgdt_frmthrd_forumthreadid = ?
-                        """, forumThread);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessages)
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(ForumMessageDetails.FORUM_THREAD.eq(forumThread.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessagesByForumMessageType(ForumMessageType forumMessageType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessages
-                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
-                        WHERE frmmsgdt_frmmsgtyp_forummessagetypeid = ?
-                        """, forumMessageType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessages)
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(ForumMessageDetails.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessagesByParentForumMessage(ForumMessage parentForumMessage) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessages
-                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
-                        WHERE frmmsgdt_parentforummessageid = ?
-                        """, parentForumMessage);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessages)
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(ForumMessageDetails.PARENT_FORUM_MESSAGE.eq(parentForumMessage.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessagesByIcon(Icon icon) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessages
-                        JOIN forummessagedetails ON frmmsgdt_forummessagedetailid = frmmsg_activedetailid
-                        WHERE frmmsgdt_icn_iconid = ?
-                        """, icon);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessages)
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(ForumMessageDetails.ICON.eq(icon.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ForumMessage getForumMessageByName(String forumMessageName, EntityPermission entityPermission) {
-        ForumMessage forumMessage;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessages, forummessagedetails
-                        WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_forummessagename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessages, forummessagedetails
-                        WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_forummessagename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumMessages.fields())
+                .from(ForumMessages)
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(ForumMessageDetails.FORUM_MESSAGE_NAME.eq(forumMessageName));
 
-            var ps = forumMessageFactory.prepareStatement(query);
-            
-            ps.setString(1, forumMessageName);
-            
-            forumMessage = forumMessageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessage;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumMessage getForumMessageByName(String forumMessageName) {
@@ -3395,38 +2945,20 @@ public class ForumControl
     }
     
     private List<ForumMessage> getForumMessagesByForumThread(ForumThread forumThread, EntityPermission entityPermission) {
-        List<ForumMessage> forumMessages;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessages, forummessagedetails
-                        WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_frmthrd_forumthreadid = ?
-                        ORDER BY frmmsgdt_postedtime, frmmsgdt_forummessagename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessages, forummessagedetails
-                        WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_frmthrd_forumthreadid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumMessages.fields())
+                .from(ForumMessages)
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(ForumMessageDetails.FORUM_THREAD.eq(forumThread.getPrimaryKey()));
 
-            var ps = forumMessageFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumThread.getPrimaryKey().getEntityId());
-            
-            forumMessages = forumMessageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessages;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ForumMessageDetails.POSTED_TIME, ForumMessageDetails.FORUM_MESSAGE_NAME),
+                    ForumMessageFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumMessage> getForumMessagesByForumThread(ForumThread forumThread) {
@@ -3437,31 +2969,22 @@ public class ForumControl
         return getForumMessagesByForumThread(forumThread, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getForumMessagesByParentForumMessageQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM forummessages, forummessagedetails
-                WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_parentforummessageid = ?
-                ORDER BY frmmsgdt_sortorder, frmmsgdt_forummessagename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM forummessages, forummessagedetails
-                WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid AND frmmsgdt_parentforummessageid = ?
-                FOR UPDATE
-                """);
-        getForumMessagesByParentForumMessageQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ForumMessage> getForumMessagesByParentForumMessage(ForumMessage parentForumMessage,
             EntityPermission entityPermission) {
-        return forumMessageFactory.getEntitiesFromQuery(entityPermission, getForumMessagesByParentForumMessageQueries,
-                parentForumMessage);
+        var baseQuery = session.getDslContext()
+                .select(ForumMessages.fields())
+                .from(ForumMessages)
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(ForumMessageDetails.PARENT_FORUM_MESSAGE.eq(parentForumMessage.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ForumMessageDetails.POSTED_TIME, ForumMessageDetails.FORUM_MESSAGE_NAME),
+                    ForumMessageFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ForumMessage> getForumMessagesByParentForumMessage(ForumMessage parentForumMessage) {
@@ -3558,28 +3081,18 @@ public class ForumControl
         return forumMessageStatusFactory.create(forumMessage, 0);
     }
 
-    private static final Map<EntityPermission, String> getForumMessageStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM forummessagestatuses
-                WHERE frmmsgst_frmmsg_forummessageid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM forummessagestatuses
-                WHERE frmmsgst_frmmsg_forummessageid = ?
-                FOR UPDATE
-                """);
-        getForumMessageStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ForumMessageStatus getForumMessageStatus(ForumMessage forumMessage, EntityPermission entityPermission) {
-        return forumMessageStatusFactory.getEntityFromQuery(entityPermission, getForumMessageStatusQueries,
-                forumMessage);
+        var baseQuery = session.getDslContext()
+                .select(ForumMessageStatuses.fields())
+                .from(ForumMessageStatuses)
+                .where(ForumMessageStatuses.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageStatusFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ForumMessageStatus getForumMessageStatus(ForumMessage forumMessage) {
@@ -3614,10 +3127,13 @@ public class ForumControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ForumMessageAttachmentDetailFactory forumMessageAttachmentDetailFactory;
+
+    @Inject
     protected ForumMessageAttachmentFactory forumMessageAttachmentFactory;
 
     @Inject
-    protected ForumMessageAttachmentDetailFactory forumMessageAttachmentDetailFactory;
+    ForumMessageAttachmentTransferCache forumMessageAttachmentTransferCache;
 
     public ForumMessageAttachment createForumMessageAttachment(ForumMessage forumMessage, Integer forumMessageAttachmentSequence, MimeType mimeType,
             BasePK createdBy) {
@@ -3652,47 +3168,39 @@ public class ForumControl
     }
 
     public long countForumMessageAttachmentsByForumMessage(ForumMessage forumMessage) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageattachments
-                        JOIN frmmsgattdt_forummessageattachmentdetailid ON frmmsgattdt_forummessageattachmentdetailid = frmmsgatt_activedetailid
-                        WHERE frmmsgattdt_frmmsg_forummessageid = ?
-                        """, forumMessage);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageAttachments)
+                .join(ForumMessageAttachmentDetails).onKey(FORUM_MESSAGE_ATTACHMENTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessageAttachmentDetails.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessageAttachmentsByMimeType(MimeType mimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageattachments
-                        JOIN frmmsgattdt_forummessageattachmentdetailid ON frmmsgattdt_forummessageattachmentdetailid = frmmsgatt_activedetailid
-                        WHERE frmmsgattdt_mtyp_mimetypeid = ?
-                        """, mimeType);
-    }
-
-    private static final Map<EntityPermission, String> getForumMessageAttachmentBySequenceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM forummessageattachments, forummessageattachmentdetails
-                WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ?
-                AND frmmsgattdt_forummessageattachmentsequence = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM forummessageattachments, forummessageattachmentdetails
-                WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ?
-                AND frmmsgattdt_forummessageattachmentsequence = ?
-                FOR UPDATE
-                """);
-        getForumMessageAttachmentBySequenceQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageAttachments)
+                .join(ForumMessageAttachmentDetails).onKey(FORUM_MESSAGE_ATTACHMENTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessageAttachmentDetails.MIME_TYPE.eq(mimeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ForumMessageAttachment getForumMessageAttachmentBySequence(ForumMessage forumMessage, Integer forumMessageAttachmentSequence, EntityPermission entityPermission) {
-        return forumMessageAttachmentFactory.getEntityFromQuery(entityPermission, getForumMessageAttachmentBySequenceQueries,
-                forumMessage, forumMessageAttachmentSequence);
+        var baseQuery = session.getDslContext()
+                .select(ForumMessageAttachments.fields())
+                .from(ForumMessageAttachments)
+                .join(ForumMessageAttachmentDetails).onKey(FORUM_MESSAGE_ATTACHMENTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessageAttachmentDetails.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()),
+                        ForumMessageAttachmentDetails.FORUM_MESSAGE_ATTACHMENT_SEQUENCE.eq(forumMessageAttachmentSequence));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageAttachmentFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ForumMessageAttachment getForumMessageAttachmentBySequence(ForumMessage forumMessage, Integer forumMessageAttachmentSequence) {
@@ -3711,30 +3219,21 @@ public class ForumControl
         return getForumMessageAttachmentDetailValueForUpdate(getForumMessageAttachmentBySequenceForUpdate(forumMessage, forumMessageAttachmentSequence));
     }
 
-    private static final Map<EntityPermission, String> getForumMessageAttachmentByForumMessageQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM forummessageattachments, forummessageattachmentdetails
-                WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ?
-                ORDER BY frmmsgattdt_forummessageattachmentsequence
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM forummessageattachments, forummessageattachmentdetails
-                WHERE frmmsgatt_activedetailid = frmmsgattdt_forummessageattachmentdetailid AND frmmsgattdt_frmmsg_forummessageid = ?
-                FOR UPDATE
-                """);
-        getForumMessageAttachmentByForumMessageQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ForumMessageAttachment> getForumMessageAttachmentsByForumMessage(ForumMessage forumMessage, EntityPermission entityPermission) {
-        return forumMessageAttachmentFactory.getEntitiesFromQuery(entityPermission, getForumMessageAttachmentByForumMessageQueries,
-                forumMessage);
+        var baseQuery = session.getDslContext()
+                .select(ForumMessageAttachments.fields())
+                .from(ForumMessageAttachments)
+                .join(ForumMessageAttachmentDetails).onKey(FORUM_MESSAGE_ATTACHMENTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessageAttachmentDetails.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ForumMessageAttachmentDetails.FORUM_MESSAGE_ATTACHMENT_SEQUENCE),
+                    ForumMessageAttachmentFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageAttachmentFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ForumMessageAttachment> getForumMessageAttachmentsByForumMessage(ForumMessage forumMessage) {
@@ -3844,28 +3343,19 @@ public class ForumControl
         return forumMessageAttachmentBlob;
     }
 
-    private static final Map<EntityPermission, String> getForumMessageBlobAttachmentQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM forummessageblobattachments
-                WHERE frmmsgbatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgbatt_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM forummessageblobattachments
-                WHERE frmmsgbatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgbatt_thrutime = ?
-                FOR UPDATE
-                """);
-        getForumMessageBlobAttachmentQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ForumMessageBlobAttachment getForumMessageBlobAttachment(ForumMessageAttachment forumMessageAttachment, EntityPermission entityPermission) {
-        return forumMessageBlobAttachmentFactory.getEntityFromQuery(entityPermission, getForumMessageBlobAttachmentQueries,
-                forumMessageAttachment, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ForumMessageBlobAttachments.fields())
+                .from(ForumMessageBlobAttachments)
+                .where(ForumMessageBlobAttachments.FORUM_MESSAGE_ATTACHMENT.eq(forumMessageAttachment.getPrimaryKey()),
+                        ForumMessageBlobAttachments.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageBlobAttachmentFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ForumMessageBlobAttachment getForumMessageBlobAttachment(ForumMessageAttachment forumMessageAttachment) {
@@ -3933,28 +3423,19 @@ public class ForumControl
         return forumMessageAttachmentClob;
     }
 
-    private static final Map<EntityPermission, String> getForumMessageClobAttachmentQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM forummessageclobattachments
-                WHERE frmmsgcatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgcatt_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM forummessageclobattachments
-                WHERE frmmsgcatt_frmmsgatt_forummessageattachmentid = ? AND frmmsgcatt_thrutime = ?
-                FOR UPDATE
-                """);
-        getForumMessageClobAttachmentQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ForumMessageClobAttachment getForumMessageClobAttachment(ForumMessageAttachment forumMessageAttachment, EntityPermission entityPermission) {
-        return forumMessageClobAttachmentFactory.getEntityFromQuery(entityPermission, getForumMessageClobAttachmentQueries,
-                forumMessageAttachment, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ForumMessageClobAttachments.fields())
+                .from(ForumMessageClobAttachments)
+                .where(ForumMessageClobAttachments.FORUM_MESSAGE_ATTACHMENT.eq(forumMessageAttachment.getPrimaryKey()),
+                        ForumMessageClobAttachments.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageClobAttachmentFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ForumMessageClobAttachment getForumMessageClobAttachment(ForumMessageAttachment forumMessageAttachment) {
@@ -4012,6 +3493,9 @@ public class ForumControl
     @Inject
     protected ForumMessageAttachmentDescriptionFactory forumMessageAttachmentDescriptionFactory;
 
+    @Inject
+    ForumMessageAttachmentDescriptionTransferCache forumMessageAttachmentDescriptionTransferCache;
+
     public ForumMessageAttachmentDescription createForumMessageAttachmentDescription(ForumMessageAttachment forumMessageAttachment, Language language, String description, BasePK createdBy) {
         var forumMessageAttachmentDescription = forumMessageAttachmentDescriptionFactory.create(forumMessageAttachment, language,
                 description, session.getStartTime(), Session.MAX_TIME);
@@ -4021,28 +3505,20 @@ public class ForumControl
         return forumMessageAttachmentDescription;
     }
 
-    private static final Map<EntityPermission, String> getForumMessageAttachmentDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM forummessageattachmentdescriptions
-                WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_lang_languageid = ? AND frmmsgattd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM forummessageattachmentdescriptions
-                WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_lang_languageid = ? AND frmmsgattd_thrutime = ?
-                FOR UPDATE
-                """);
-        getForumMessageAttachmentDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ForumMessageAttachmentDescription getForumMessageAttachmentDescription(ForumMessageAttachment forumMessageAttachment, Language language, EntityPermission entityPermission) {
-        return forumMessageAttachmentDescriptionFactory.getEntityFromQuery(entityPermission, getForumMessageAttachmentDescriptionQueries,
-                forumMessageAttachment, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ForumMessageAttachmentDescriptions.fields())
+                .from(ForumMessageAttachmentDescriptions)
+                .where(ForumMessageAttachmentDescriptions.FORUM_MESSAGE_ATTACHMENT.eq(forumMessageAttachment.getPrimaryKey()),
+                        ForumMessageAttachmentDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ForumMessageAttachmentDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageAttachmentDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ForumMessageAttachmentDescription getForumMessageAttachmentDescription(ForumMessageAttachment forumMessageAttachment, Language language) {
@@ -4061,30 +3537,25 @@ public class ForumControl
         return getForumMessageAttachmentDescriptionValue(getForumMessageAttachmentDescriptionForUpdate(forumMessageAttachment, language));
     }
 
-    private static final Map<EntityPermission, String> getForumMessageAttachmentDescriptionsByForumMessageAttachmentQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM forummessageattachmentdescriptions, languages
-                WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_thrutime = ? AND frmmsgattd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM forummessageattachmentdescriptions
-                WHERE frmmsgattd_frmmsgatt_forummessageattachmentid = ? AND frmmsgattd_thrutime = ?
-                FOR UPDATE
-                """);
-        getForumMessageAttachmentDescriptionsByForumMessageAttachmentQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ForumMessageAttachmentDescription> getForumMessageAttachmentDescriptionsByForumMessageAttachment(ForumMessageAttachment forumMessageAttachment, EntityPermission entityPermission) {
-        return forumMessageAttachmentDescriptionFactory.getEntitiesFromQuery(entityPermission, getForumMessageAttachmentDescriptionsByForumMessageAttachmentQueries,
-                forumMessageAttachment, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumMessageAttachmentDescriptions.fields())
+                    .from(ForumMessageAttachmentDescriptions)
+                    .join(Languages).onKey(FORUM_MESSAGE_ATTACHMENT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ForumMessageAttachmentDescriptions.FORUM_MESSAGE_ATTACHMENT.eq(forumMessageAttachment.getPrimaryKey()),
+                            ForumMessageAttachmentDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ForumMessageAttachmentDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumMessageAttachmentDescriptions.fields())
+                    .from(ForumMessageAttachmentDescriptions)
+                    .where(ForumMessageAttachmentDescriptions.FORUM_MESSAGE_ATTACHMENT.eq(forumMessageAttachment.getPrimaryKey()),
+                            ForumMessageAttachmentDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return forumMessageAttachmentDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ForumMessageAttachmentDescription> getForumMessageAttachmentDescriptionsByForumMessageAttachment(ForumMessageAttachment forumMessageAttachment) {
@@ -4174,6 +3645,9 @@ public class ForumControl
     @Inject
     protected ForumMessageRoleFactory forumMessageRoleFactory;
 
+    @Inject
+    ForumMessageRoleTransferCache forumMessageRoleTransferCache;
+
     public ForumMessageRole createForumMessageRole(ForumMessage forumMessage, ForumRoleType forumRoleType, Party party,
             BasePK createdBy) {
         var forumMessageRole = forumMessageRoleFactory.create(forumMessage, forumRoleType,
@@ -4185,63 +3659,50 @@ public class ForumControl
     }
 
     public long countForumMessageRolesByForumMessage(final ForumMessage forumMessage) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageroles
-                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ?
-                        """, forumMessage, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageRoles)
+                .where(ForumMessageRoles.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()),
+                        ForumMessageRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessageRolesByForumRoleType(final ForumRoleType forumRoleType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageroles
-                        WHERE frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_thrutime = ?
-                        """, forumRoleType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageRoles)
+                .where(ForumMessageRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumMessageRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessageRolesByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageroles
-                        WHERE frmmsgr_par_partyid = ? AND frmmsgr_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageRoles)
+                .where(ForumMessageRoles.PARTY.eq(party.getPrimaryKey()),
+                        ForumMessageRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ForumMessageRole getForumMessageRole(ForumMessage forumMessage, ForumRoleType forumRoleType, Party party, EntityPermission entityPermission) {
-        ForumMessageRole forumMessageRole;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessageroles
-                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_par_partyid = ? AND frmmsgr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessageroles
-                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_frmrtyp_forumroletypeid = ? AND frmmsgr_par_partyid = ? AND frmmsgr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumMessageRoles.fields())
+                .from(ForumMessageRoles)
+                .where(ForumMessageRoles.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()),
+                        ForumMessageRoles.FORUM_ROLE_TYPE.eq(forumRoleType.getPrimaryKey()),
+                        ForumMessageRoles.PARTY.eq(party.getPrimaryKey()),
+                        ForumMessageRoles.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumMessageRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumMessage.getPrimaryKey().getEntityId());
-            ps.setLong(2, forumRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(3, party.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            forumMessageRole = forumMessageRoleFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageRole;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessageRoleFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumMessageRole getForumMessageRole(ForumMessage forumMessage, ForumRoleType forumRoleType, Party party) {
@@ -4253,41 +3714,26 @@ public class ForumControl
     }
     
     private List<ForumMessageRole> getForumMessageRolesByForumMessage(ForumMessage forumMessage, EntityPermission entityPermission) {
-        List<ForumMessageRole> forumMessageRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessageroles, forumroletypes, parties, partydetails
-                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ?
-                        AND frmmsgr_frmrtyp_forumroletypeid = frmrtyp_forumroletypeid
-                        AND frmmsgr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        ORDER BY frmrtyp_sortorder, frmrtyp_forumroletypename, pardt_partyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessageroles
-                        WHERE frmmsgr_frmmsg_forummessageid = ? AND frmmsgr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ForumMessageRoles.fields())
+                    .from(ForumMessageRoles)
+                    .join(ForumRoleTypes).onKey(FORUM_MESSAGE_ROLES_FORUM_ROLE_TYPE_FK)
+                    .join(Parties).onKey(FORUM_MESSAGE_ROLES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(ForumMessageRoles.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()),
+                            ForumMessageRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ForumRoleTypes.SORT_ORDER, ForumRoleTypes.FORUM_ROLE_TYPE_NAME, PartyDetails.PARTY_NAME),
+                    ForumMessageRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ForumMessageRoles.fields())
+                    .from(ForumMessageRoles)
+                    .where(ForumMessageRoles.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()),
+                            ForumMessageRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = forumMessageRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumMessage.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumMessageRoles = forumMessageRoleFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageRoles;
+        return forumMessageRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ForumMessageRole> getForumMessageRolesByForumMessage(ForumMessage forumMessage) {
@@ -4337,10 +3783,13 @@ public class ForumControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ForumMessagePartDetailFactory forumMessagePartDetailFactory;
+
+    @Inject
     protected ForumMessagePartFactory forumMessagePartFactory;
 
     @Inject
-    protected ForumMessagePartDetailFactory forumMessagePartDetailFactory;
+    ForumMessagePartTransferCache forumMessagePartTransferCache;
 
     public ForumMessagePart createForumMessagePart(ForumMessage forumMessage, ForumMessagePartType forumMessagePartType,
             Language language, MimeType mimeType, BasePK createdBy) {
@@ -4378,77 +3827,61 @@ public class ForumControl
     }
 
     public long countForumMessagePartsByForumMessage(final ForumMessage forumMessage) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageparts
-                        JOIN forummessagepartdetails ON frmmsgprtdt_forummessagepartdetailid = frmmsgprt_activedetailid
-                        WHERE frmmsgprtdt_frmmsg_forummessageid = ?
-                        """, forumMessage);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageParts)
+                .join(ForumMessagePartDetails).onKey(FORUM_MESSAGE_PARTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessagePartDetails.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessagePartsByForumMessagePartType(final ForumMessagePartType forumMessagePartType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageparts
-                        JOIN forummessagepartdetails ON frmmsgprtdt_forummessagepartdetailid = frmmsgprt_activedetailid
-                        WHERE frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ?
-                        """, forumMessagePartType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageParts)
+                .join(ForumMessagePartDetails).onKey(FORUM_MESSAGE_PARTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessagePartDetails.FORUM_MESSAGE_PART_TYPE.eq(forumMessagePartType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessagePartsByLanguage(final Language language) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageparts
-                        JOIN forummessagepartdetails ON frmmsgprtdt_forummessagepartdetailid = frmmsgprt_activedetailid
-                        WHERE frmmsgprtdt_lang_languageid = ?
-                        """, language);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageParts)
+                .join(ForumMessagePartDetails).onKey(FORUM_MESSAGE_PARTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessagePartDetails.LANGUAGE.eq(language.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countForumMessagePartsByMimeType(final MimeType mimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageparts
-                        JOIN forummessagepartdetails ON frmmsgprtdt_forummessagepartdetailid = frmmsgprt_activedetailid
-                        WHERE frmmsgprtdt_mtyp_mimetypeid = ?
-                        """, mimeType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageParts)
+                .join(ForumMessagePartDetails).onKey(FORUM_MESSAGE_PARTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessagePartDetails.MIME_TYPE.eq(mimeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ForumMessagePart getForumMessagePart(ForumMessage forumMessage, ForumMessagePartType forumMessagePartType,
             Language language, EntityPermission entityPermission) {
-        ForumMessagePart forumMessagePart;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessageparts, forummessagepartdetails
-                        WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid
-                        AND frmmsgprtdt_frmmsg_forummessageid = ? AND frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprtdt_lang_languageid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forummessageparts, forummessagepartdetails
-                        WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid
-                        AND frmmsgprtdt_frmmsg_forummessageid = ? AND frmmsgprtdt_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprtdt_lang_languageid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumMessageParts.fields())
+                .from(ForumMessageParts)
+                .join(ForumMessagePartDetails).onKey(FORUM_MESSAGE_PARTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessagePartDetails.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()),
+                        ForumMessagePartDetails.FORUM_MESSAGE_PART_TYPE.eq(forumMessagePartType.getPrimaryKey()),
+                        ForumMessagePartDetails.LANGUAGE.eq(language.getPrimaryKey()));
 
-            var ps = forumMessagePartFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumMessage.getPrimaryKey().getEntityId());
-            ps.setLong(2, forumMessagePartType.getPrimaryKey().getEntityId());
-            ps.setLong(3, language.getPrimaryKey().getEntityId());
-            
-            forumMessagePart = forumMessagePartFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessagePart;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumMessagePartFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumMessagePart getForumMessagePart(ForumMessage forumMessage, ForumMessagePartType forumMessagePartType,
@@ -4471,25 +3904,14 @@ public class ForumControl
     }
     
     public List<ForumMessagePart> getForumMessagePartsByForumMessageForUpdate(ForumMessage forumMessage) {
-        List<ForumMessagePart> forumMessageParts;
-        
-        try {
-            var ps = forumMessagePartFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessageparts, forummessagepartdetails
-                    WHERE frmmsgprt_activedetailid = frmmsgprtdt_forummessagepartdetailid
-                    AND frmmsgprtdt_frmmsg_forummessageid = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, forumMessage.getPrimaryKey().getEntityId());
-            
-            forumMessageParts = forumMessagePartFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageParts;
+        var query = session.getDslContext()
+                .select(ForumMessageParts.fields())
+                .from(ForumMessageParts)
+                .join(ForumMessagePartDetails).onKey(FORUM_MESSAGE_PARTS_ACTIVE_DETAIL_FK)
+                .where(ForumMessagePartDetails.FORUM_MESSAGE.eq(forumMessage.getPrimaryKey()))
+                .forUpdate();
+
+        return forumMessagePartFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public ForumMessagePart getBestForumMessagePart(ForumMessage forumMessage, ForumMessagePartType forumMessagePartType,
@@ -4604,37 +4026,18 @@ public class ForumControl
     }
     
     private ForumStringMessagePart getForumStringMessagePart(ForumMessagePart forumMessagePart, EntityPermission entityPermission) {
-        ForumStringMessagePart forumStringMessagePart;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumstringmessageparts
-                        WHERE frmsmsgprt_frmmsgprt_forummessagepartid = ? AND frmsmsgprt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumstringmessageparts
-                        WHERE frmsmsgprt_frmmsgprt_forummessagepartid = ? AND frmsmsgprt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumStringMessageParts.fields())
+                .from(ForumStringMessageParts)
+                .where(ForumStringMessageParts.FORUM_MESSAGE_PART.eq(forumMessagePart.getPrimaryKey()),
+                        ForumStringMessageParts.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumStringMessagePartFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumMessagePart.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumStringMessagePart = forumStringMessagePartFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumStringMessagePart;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumStringMessagePartFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumStringMessagePart getForumStringMessagePart(ForumMessagePart forumMessagePart) {
@@ -4704,37 +4107,18 @@ public class ForumControl
     }
     
     private ForumClobMessagePart getForumClobMessagePart(ForumMessagePart forumMessagePart, EntityPermission entityPermission) {
-        ForumClobMessagePart forumClobMessagePart;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumclobmessageparts
-                        WHERE frmcmsgprt_frmmsgprt_forummessagepartid = ? AND frmcmsgprt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumclobmessageparts
-                        WHERE frmcmsgprt_frmmsgprt_forummessagepartid = ? AND frmcmsgprt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumClobMessageParts.fields())
+                .from(ForumClobMessageParts)
+                .where(ForumClobMessageParts.FORUM_MESSAGE_PART.eq(forumMessagePart.getPrimaryKey()),
+                        ForumClobMessageParts.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumClobMessagePartFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumMessagePart.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumClobMessagePart = forumClobMessagePartFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumClobMessagePart;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumClobMessagePartFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumClobMessagePart getForumClobMessagePart(ForumMessagePart forumMessagePart) {
@@ -4802,37 +4186,18 @@ public class ForumControl
     }
     
     private ForumBlobMessagePart getForumBlobMessagePart(ForumMessagePart forumMessagePart, EntityPermission entityPermission) {
-        ForumBlobMessagePart forumBlobMessagePart;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumblobmessageparts
-                        WHERE frmbmsgprt_frmmsgprt_forummessagepartid = ? AND frmbmsgprt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM forumblobmessageparts
-                        WHERE frmbmsgprt_frmmsgprt_forummessagepartid = ? AND frmbmsgprt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ForumBlobMessageParts.fields())
+                .from(ForumBlobMessageParts)
+                .where(ForumBlobMessageParts.FORUM_MESSAGE_PART.eq(forumMessagePart.getPrimaryKey()),
+                        ForumBlobMessageParts.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = forumBlobMessagePartFactory.prepareStatement(query);
-            
-            ps.setLong(1, forumMessagePart.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            forumBlobMessagePart = forumBlobMessagePartFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumBlobMessagePart;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return forumBlobMessagePartFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ForumBlobMessagePart getForumBlobMessagePart(ForumMessagePart forumMessagePart) {
@@ -4890,6 +4255,9 @@ public class ForumControl
     @Inject
     protected ForumMessagePartTypeFactory forumMessagePartTypeFactory;
 
+    @Inject
+    ForumMessagePartTypeTransferCache forumMessagePartTypeTransferCache;
+
     public ForumMessagePartType createForumMessagePartType(String forumMessagePartTypeName, MimeTypeUsageType mimeTypeUsageType,
             Integer sortOrder) {
         return forumMessagePartTypeFactory.create(forumMessagePartTypeName, mimeTypeUsageType, sortOrder);
@@ -4911,42 +4279,30 @@ public class ForumControl
     }
 
     public long countForumMessagePartTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessageparttypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessagePartTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ForumMessagePartType getForumMessagePartTypeByName(String forumMessagePartTypeName) {
-        ForumMessagePartType forumMessagePartType;
-        
-        try {
-            var ps = forumMessagePartTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessageparttypes
-                    WHERE frmmsgprttyp_forummessageparttypename = ?
-                    """);
-            
-            ps.setString(1, forumMessagePartTypeName);
-            
-            forumMessagePartType = forumMessagePartTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY,
-                    ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessagePartType;
+        var query = session.getDslContext()
+                .select(ForumMessagePartTypes.fields())
+                .from(ForumMessagePartTypes)
+                .where(ForumMessagePartTypes.FORUM_MESSAGE_PART_TYPE_NAME.eq(forumMessagePartTypeName));
+
+        return forumMessagePartTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ForumMessagePartType> getForumMessagePartTypes() {
-        var ps = forumMessagePartTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM forummessageparttypes
-                ORDER BY frmmsgprttyp_sortorder, frmmsgprttyp_forummessageparttypename
-                _LIMIT_
-                """);
-        
-        return forumMessagePartTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ForumMessagePartTypes.fields())
+                .from(ForumMessagePartTypes)
+                .orderBy(ForumMessagePartTypes.SORT_ORDER, ForumMessagePartTypes.FORUM_MESSAGE_PART_TYPE_NAME),
+                ForumMessagePartTypeFactory.class);
+
+        return forumMessagePartTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(UserVisit userVisit, ForumMessagePartType forumMessagePartType) {
@@ -4967,25 +4323,13 @@ public class ForumControl
     
     public ForumMessagePartTypeDescription getForumMessagePartTypeDescription(ForumMessagePartType forumMessagePartType,
             Language language) {
-        ForumMessagePartTypeDescription forumMessagePartTypeDescription;
-        
-        try {
-            var ps = forumMessagePartTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessageparttypedescriptions
-                    WHERE frmmsgprttypd_frmmsgprttyp_forummessageparttypeid = ? AND frmmsgprttypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, forumMessagePartType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            forumMessagePartTypeDescription = forumMessagePartTypeDescriptionFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessagePartTypeDescription;
+        var query = session.getDslContext()
+                .select(ForumMessagePartTypeDescriptions.fields())
+                .from(ForumMessagePartTypeDescriptions)
+                .where(ForumMessagePartTypeDescriptions.FORUM_MESSAGE_PART_TYPE.eq(forumMessagePartType.getPrimaryKey()),
+                        ForumMessagePartTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return forumMessagePartTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestForumMessagePartTypeDescription(ForumMessagePartType forumMessagePartType, Language language) {
@@ -5014,6 +4358,9 @@ public class ForumControl
     @Inject
     protected ForumMessageTypeFactory forumMessageTypeFactory;
 
+    @Inject
+    ForumMessageTypeTransferCache forumMessageTypeTransferCache;
+
     public ForumMessageType createForumMessageType(String forumMessageTypeName, Boolean isDefault, Integer sortOrder) {
         return forumMessageTypeFactory.create(forumMessageTypeName, isDefault, sortOrder);
     }
@@ -5034,41 +4381,30 @@ public class ForumControl
     }
 
     public long countForumMessageTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM forummessagetypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ForumMessageTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ForumMessageType getForumMessageTypeByName(String forumMessageTypeName) {
-        ForumMessageType forumMessageType;
-        
-        try {
-            var ps = forumMessageTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessagetypes
-                    WHERE frmmsgtyp_forummessagetypename = ?
-                    """);
-            
-            ps.setString(1, forumMessageTypeName);
-            
-            forumMessageType = forumMessageTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageType;
+        var query = session.getDslContext()
+                .select(ForumMessageTypes.fields())
+                .from(ForumMessageTypes)
+                .where(ForumMessageTypes.FORUM_MESSAGE_TYPE_NAME.eq(forumMessageTypeName));
+
+        return forumMessageTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ForumMessageType> getForumMessageTypes() {
-        var ps = forumMessageTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM forummessagetypes
-                ORDER BY frmmsgtyp_sortorder, frmmsgtyp_forummessagetypename
-                _LIMIT_
-                """);
-        
-        return forumMessageTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ForumMessageTypes.fields())
+                .from(ForumMessageTypes)
+                .orderBy(ForumMessageTypes.SORT_ORDER, ForumMessageTypes.FORUM_MESSAGE_TYPE_NAME),
+                ForumMessageTypeFactory.class);
+
+        return forumMessageTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ForumMessageTypeChoicesBean getForumMessageTypeChoices(String defaultForumMessageTypeChoice, Language language,
@@ -5120,25 +4456,13 @@ public class ForumControl
     }
     
     public ForumMessageTypeDescription getForumMessageTypeDescription(ForumMessageType forumMessageType, Language language) {
-        ForumMessageTypeDescription forumMessageTypeDescription;
-        
-        try {
-            var ps = forumMessageTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessagetypedescriptions
-                    WHERE frmmsgtypd_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            forumMessageTypeDescription = forumMessageTypeDescriptionFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageTypeDescription;
+        var query = session.getDslContext()
+                .select(ForumMessageTypeDescriptions.fields())
+                .from(ForumMessageTypeDescriptions)
+                .where(ForumMessageTypeDescriptions.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()),
+                        ForumMessageTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return forumMessageTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestForumMessageTypeDescription(ForumMessageType forumMessageType, Language language) {
@@ -5165,95 +4489,55 @@ public class ForumControl
     @Inject
     protected ForumMessageTypePartTypeFactory forumMessageTypePartTypeFactory;
 
+    @Inject
+    ForumMessageTypePartTypeTransferCache forumMessageTypePartTypeTransferCache;
+
     public ForumMessageTypePartType createForumMessageTypePartType(ForumMessageType forumMessageType, Boolean includeInIndex, Boolean indexDefault,
             Integer sortOrder, ForumMessagePartType forumMessagePartType) {
         return forumMessageTypePartTypeFactory.create(forumMessageType, includeInIndex, indexDefault, sortOrder, forumMessagePartType);
     }
     
     public ForumMessageTypePartType getForumMessageTypePartType(ForumMessageType forumMessageType, Integer sortOrder) {
-        ForumMessageTypePartType forumMessageTypePartType;
-        
-        try {
-            var ps = forumMessageTypePartTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessagetypeparttypes
-                    WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_sortorder = ?
-                    """);
-            
-            ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
-            ps.setInt(2, sortOrder);
-            
-            forumMessageTypePartType = forumMessageTypePartTypeFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageTypePartType;
+        var query = session.getDslContext()
+                .select(ForumMessageTypePartTypes.fields())
+                .from(ForumMessageTypePartTypes)
+                .where(ForumMessageTypePartTypes.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()),
+                        ForumMessageTypePartTypes.SORT_ORDER.eq(sortOrder));
+
+        return forumMessageTypePartTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ForumMessageTypePartType getIndexDefaultForumMessageTypePartType(ForumMessageType forumMessageType) {
-        ForumMessageTypePartType forumMessageTypePartType;
-        
-        try {
-            var ps = forumMessageTypePartTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessagetypeparttypes
-                    WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_indexdefault = 1
-                    """);
-            
-            ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
-            
-            forumMessageTypePartType = forumMessageTypePartTypeFactory.getEntityFromQuery( EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageTypePartType;
+        var query = session.getDslContext()
+                .select(ForumMessageTypePartTypes.fields())
+                .from(ForumMessageTypePartTypes)
+                .where(ForumMessageTypePartTypes.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()),
+                        ForumMessageTypePartTypes.INDEX_DEFAULT.eq(true));
+
+        return forumMessageTypePartTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ForumMessageTypePartType> getForumMessageTypePartTypesByForumMessageType(ForumMessageType forumMessageType) {
-        List<ForumMessageTypePartType> forumMessageTypePartTypes;
-        
-        try {
-            var ps = forumMessageTypePartTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessagetypeparttypes
-                    WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ?
-                    ORDER BY frmmsgtypprttyp_sortorder
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
-            
-            forumMessageTypePartTypes = forumMessageTypePartTypeFactory.getEntitiesFromQuery( EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageTypePartTypes;
+        var query = session.applyLimit(session.getDslContext()
+                .select(ForumMessageTypePartTypes.fields())
+                .from(ForumMessageTypePartTypes)
+                .where(ForumMessageTypePartTypes.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()))
+                .orderBy(ForumMessageTypePartTypes.SORT_ORDER),
+                ForumMessageTypePartTypeFactory.class);
+
+        return forumMessageTypePartTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ForumMessageTypePartType> getForumMessageTypePartTypesByForumMessageTypeAndIncludeInIndex(ForumMessageType forumMessageType) {
-        List<ForumMessageTypePartType> forumMessageTypePartTypes;
-        
-        try {
-            var ps = forumMessageTypePartTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM forummessagetypeparttypes
-                    WHERE frmmsgtypprttyp_frmmsgtyp_forummessagetypeid = ? AND frmmsgtypprttyp_includeinindex = 1
-                    ORDER BY frmmsgtypprttyp_sortorder
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
-            
-            forumMessageTypePartTypes = forumMessageTypePartTypeFactory.getEntitiesFromQuery( EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return forumMessageTypePartTypes;
+        var query = session.applyLimit(session.getDslContext()
+                .select(ForumMessageTypePartTypes.fields())
+                .from(ForumMessageTypePartTypes)
+                .where(ForumMessageTypePartTypes.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()),
+                        ForumMessageTypePartTypes.INCLUDE_IN_INDEX.eq(true))
+                .orderBy(ForumMessageTypePartTypes.SORT_ORDER),
+                ForumMessageTypePartTypeFactory.class);
+
+        return forumMessageTypePartTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ForumMessageTypePartTypeTransfer> getForumMessageTypePartTypeTransfersByForumMessageType(UserVisit userVisit,
