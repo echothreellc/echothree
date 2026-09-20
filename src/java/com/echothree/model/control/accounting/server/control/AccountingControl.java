@@ -54,10 +54,35 @@ import com.echothree.model.control.accounting.common.transfer.TransactionTypeDes
 import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
 import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS;
+import com.echothree.model.control.accounting.server.transfer.CurrencyDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.CurrencyTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlAccountCategoryDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlAccountCategoryTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlAccountClassDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlAccountClassTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlAccountDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlAccountTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlAccountTypeTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlResourceTypeDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.GlResourceTypeTransferCache;
+import com.echothree.model.control.accounting.server.transfer.ItemAccountingCategoryDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.ItemAccountingCategoryTransferCache;
+import com.echothree.model.control.accounting.server.transfer.SymbolPositionDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.SymbolPositionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTypeDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTypeTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionGlAccountCategoryDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionGlAccountCategoryTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionGlAccountTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionGlEntryTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionGroupTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionTypeDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionTypeTransferCache;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.control.inventory.server.control.InventoryConditionControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
@@ -173,28 +198,113 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.CURRENCY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_ACCOUNTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_ACCOUNT_CATEGORY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_ACCOUNT_CLASSES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_ACCOUNT_CLASS_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_ACCOUNT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_RESOURCE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_RESOURCE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.GL_RESOURCE_TYPE_DETAILS_GL_RESOURCE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.ITEM_ACCOUNTING_CATEGORIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.ITEM_ACCOUNTING_CATEGORY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.SYMBOL_POSITIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.SYMBOL_POSITION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.SYMBOL_POSITION_DETAILS_SYMBOL_POSITION_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_ENTITY_ROLES_TRANSACTION_ENTITY_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_ENTITY_ROLE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_ENTITY_ROLE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_ENTITY_ROLE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_ENTITY_ROLE_TYPE_DETAILS_TRANSACTION_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_GL_ACCOUNTS_TRANSACTION_GL_ACCOUNT_CATEGORY_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_GL_ACCOUNT_CATEGORIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_GL_ACCOUNT_CATEGORY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_GL_ACCOUNT_CATEGORY_DETAILS_TRANSACTION_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_GROUPS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TIMES_TRANSACTION_TIME_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TIME_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.accounting.Currencies.Currencies;
+import static com.echothree.model.jooq.server.tables.accounting.CurrencyDescriptions.CurrencyDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountCategories.GlAccountCategories;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountCategoryDescriptions.GlAccountCategoryDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountCategoryDetails.GlAccountCategoryDetails;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountClassDescriptions.GlAccountClassDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountClassDetails.GlAccountClassDetails;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountClasses.GlAccountClasses;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountDescriptions.GlAccountDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountDetails.GlAccountDetails;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountSummaries.GlAccountSummaries;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountTypeDescriptions.GlAccountTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccountTypes.GlAccountTypes;
+import static com.echothree.model.jooq.server.tables.accounting.GlAccounts.GlAccounts;
+import static com.echothree.model.jooq.server.tables.accounting.GlResourceTypeDescriptions.GlResourceTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.GlResourceTypeDetails.GlResourceTypeDetails;
+import static com.echothree.model.jooq.server.tables.accounting.GlResourceTypes.GlResourceTypes;
+import static com.echothree.model.jooq.server.tables.accounting.ItemAccountingCategories.ItemAccountingCategories;
+import static com.echothree.model.jooq.server.tables.accounting.ItemAccountingCategoryDescriptions.ItemAccountingCategoryDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.ItemAccountingCategoryDetails.ItemAccountingCategoryDetails;
+import static com.echothree.model.jooq.server.tables.accounting.SymbolPositionDescriptions.SymbolPositionDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.SymbolPositionDetails.SymbolPositionDetails;
+import static com.echothree.model.jooq.server.tables.accounting.SymbolPositions.SymbolPositions;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionDetails.TransactionDetails;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionEntityRoleTypeDescriptions.TransactionEntityRoleTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionEntityRoleTypeDetails.TransactionEntityRoleTypeDetails;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionEntityRoleTypes.TransactionEntityRoleTypes;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionEntityRoles.TransactionEntityRoles;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionGlAccountCategories.TransactionGlAccountCategories;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionGlAccountCategoryDescriptions.TransactionGlAccountCategoryDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionGlAccountCategoryDetails.TransactionGlAccountCategoryDetails;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionGlAccounts.TransactionGlAccounts;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionGlEntries.TransactionGlEntries;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionGroupDetails.TransactionGroupDetails;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionGroups.TransactionGroups;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionStatuses.TransactionStatuses;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTimeTypeDetails.TransactionTimeTypeDetails;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTimeTypes.TransactionTimeTypes;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTimes.TransactionTimes;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTypeDescriptions.TransactionTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTypeDetails.TransactionTypeDetails;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTypes.TransactionTypes;
+import static com.echothree.model.jooq.server.tables.accounting.Transactions.Transactions;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class AccountingControl
-        extends BaseAccountingControl {
+        extends BaseModelControl {
     
     @Inject
     protected FinancialControl financialControl;
@@ -219,6 +329,9 @@ public class AccountingControl
 
     @Inject
     protected CurrencyFactory currencyFactory;
+
+    @Inject
+    CurrencyTransferCache currencyTransferCache;
 
     public Currency createCurrency(String currencyIsoName, String symbol, SymbolPosition symbolPosition, Boolean symbolOnListStart,
             Boolean symbolOnListMember, Boolean symbolOnSubtotal, Boolean symbolOnTotal, String groupingSeparator, Integer groupingSize,
@@ -259,46 +372,35 @@ public class AccountingControl
     }
 
     public long countCurrencies() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM currencies
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Currencies)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<Currency> getCurrencies() {
-        var ps = currencyFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM currencies
-                ORDER BY cur_sortorder, cur_currencyisoname
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(Currencies.fields())
+                .from(Currencies)
+                .orderBy(Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                CurrencyFactory.class);
         
-        return currencyFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return currencyFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     private Currency getDefaultCurrency(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(Currencies.fields())
+                .from(Currencies)
+                .where(Currencies.IS_DEFAULT.eq(true));
         
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM currencies
-                    WHERE cur_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM currencies
-                    WHERE cur_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = currencyFactory.prepareStatement(query);
-        
-        return currencyFactory.getEntityFromQuery(entityPermission, ps);
+        return currencyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Currency getDefaultCurrency() {
@@ -310,36 +412,17 @@ public class AccountingControl
     }
     
     private Currency getCurrencyByIsoName(String currencyIsoName, EntityPermission entityPermission) {
-        Currency currency;
+        var baseQuery = session.getDslContext()
+                .select(Currencies.fields())
+                .from(Currencies)
+                .where(Currencies.CURRENCY_ISO_NAME.eq(currencyIsoName));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM currencies
-                        WHERE cur_currencyisoname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM currencies
-                        WHERE cur_currencyisoname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = currencyFactory.prepareStatement(query);
-            
-            ps.setString(1, currencyIsoName);
-            
-            currency = currencyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return currency;
+        return currencyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Currency getCurrencyByIsoName(String currencyIsoName) {
@@ -410,6 +493,9 @@ public class AccountingControl
     @Inject
     protected CurrencyDescriptionFactory currencyDescriptionFactory;
 
+    @Inject
+    CurrencyDescriptionTransferCache currencyDescriptionTransferCache;
+
     public CurrencyDescription createCurrencyDescription(Currency currency, Language language, String description, BasePK createdBy) {
         var currencyDescription = currencyDescriptionFactory.create(currency, language, description);
         
@@ -419,60 +505,32 @@ public class AccountingControl
     }
     
     public CurrencyDescription getCurrencyDescription(Currency currency, Language language) {
-        CurrencyDescription currencyDescription;
+        var query = session.getDslContext()
+                .select(CurrencyDescriptions.fields())
+                .from(CurrencyDescriptions)
+                .where(CurrencyDescriptions.CURRENCY.eq(currency.getPrimaryKey()),
+                        CurrencyDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
         
-        try {
-            var ps = currencyDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM currencydescriptions
-                    WHERE curd_cur_currencyid = ? AND curd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, currency.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            currencyDescription = currencyDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return currencyDescription;
+        return currencyDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     private List<CurrencyDescription> getCurrencyDescriptionsByCurrency(Currency currency, EntityPermission entityPermission) {
-        List<CurrencyDescription> currencyDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM currencydescriptions, languages
-                        WHERE curd_cur_currencyid = ? AND curd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM currencydescriptions
-                        WHERE curd_cur_currencyid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CurrencyDescriptions.fields())
+                    .from(CurrencyDescriptions)
+                    .join(Languages).onKey(CURRENCY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CurrencyDescriptions.CURRENCY.eq(currency.getPrimaryKey()))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CurrencyDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CurrencyDescriptions.fields())
+                    .from(CurrencyDescriptions)
+                    .where(CurrencyDescriptions.CURRENCY.eq(currency.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = currencyDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, currency.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            currencyDescriptions = currencyDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return currencyDescriptions;
+        return currencyDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CurrencyDescription> getCurrencyDescriptionsByCurrency(Currency currency) {
@@ -516,10 +574,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemAccountingCategoryDetailFactory itemAccountingCategoryDetailFactory;
+
+    @Inject
     protected ItemAccountingCategoryFactory itemAccountingCategoryFactory;
 
     @Inject
-    protected ItemAccountingCategoryDetailFactory itemAccountingCategoryDetailFactory;
+    ItemAccountingCategoryTransferCache itemAccountingCategoryTransferCache;
 
     public ItemAccountingCategory createItemAccountingCategory(String itemAccountingCategoryName,
             ItemAccountingCategory parentItemAccountingCategory, GlAccount inventoryGlAccount, GlAccount salesGlAccount,
@@ -571,38 +632,27 @@ public class AccountingControl
     }
 
     public long countItemAccountingCategories() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getItemAccountingCategoryByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
-                AND iactgcdt_itemaccountingcategoryname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
-                AND iactgcdt_itemaccountingcategoryname = ?
-                FOR UPDATE
-                """);
-        getItemAccountingCategoryByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemAccountingCategories)
+                .join(ItemAccountingCategoryDetails).onKey(ITEM_ACCOUNTING_CATEGORIES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ItemAccountingCategory getItemAccountingCategoryByName(String itemAccountingCategoryName, EntityPermission entityPermission) {
-        return itemAccountingCategoryFactory.getEntityFromQuery(entityPermission, getItemAccountingCategoryByNameQueries, itemAccountingCategoryName);
+        var baseQuery = session.getDslContext()
+                .select(ItemAccountingCategories.fields())
+                .from(ItemAccountingCategories)
+                .join(ItemAccountingCategoryDetails).onKey(ITEM_ACCOUNTING_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemAccountingCategoryDetails.ITEM_ACCOUNTING_CATEGORY_NAME.eq(itemAccountingCategoryName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAccountingCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemAccountingCategory getItemAccountingCategoryByName(String itemAccountingCategoryName) {
@@ -621,31 +671,19 @@ public class AccountingControl
         return getItemAccountingCategoryDetailValueForUpdate(getItemAccountingCategoryByNameForUpdate(itemAccountingCategoryName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultItemAccountingCategoryQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
-                AND iactgcdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
-                AND iactgcdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultItemAccountingCategoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ItemAccountingCategory getDefaultItemAccountingCategory(EntityPermission entityPermission) {
-        return itemAccountingCategoryFactory.getEntityFromQuery(entityPermission, getDefaultItemAccountingCategoryQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemAccountingCategories.fields())
+                .from(ItemAccountingCategories)
+                .join(ItemAccountingCategoryDetails).onKey(ITEM_ACCOUNTING_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemAccountingCategoryDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAccountingCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemAccountingCategory getDefaultItemAccountingCategory() {
@@ -660,31 +698,20 @@ public class AccountingControl
         return getDefaultItemAccountingCategoryForUpdate().getLastDetailForUpdate().getItemAccountingCategoryDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getItemAccountingCategoriesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
-                ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
-                FOR UPDATE
-                """);
-        getItemAccountingCategoriesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemAccountingCategory> getItemAccountingCategories(EntityPermission entityPermission) {
-        return itemAccountingCategoryFactory.getEntitiesFromQuery(entityPermission, getItemAccountingCategoriesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemAccountingCategories.fields())
+                .from(ItemAccountingCategories)
+                .join(ItemAccountingCategoryDetails).onKey(ITEM_ACCOUNTING_CATEGORIES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemAccountingCategoryDetails.SORT_ORDER, ItemAccountingCategoryDetails.ITEM_ACCOUNTING_CATEGORY_NAME),
+                    ItemAccountingCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAccountingCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemAccountingCategory> getItemAccountingCategories() {
@@ -695,33 +722,22 @@ public class AccountingControl
         return getItemAccountingCategories(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemAccountingCategoriesByParentItemAccountingCategoryQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid AND iactgcdt_parentitemaccountingcategoryid = ?
-                ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemaccountingcategories, itemaccountingcategorydetails
-                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid AND iactgcdt_parentitemaccountingcategoryid = ?
-                FOR UPDATE
-                """);
-        getItemAccountingCategoriesByParentItemAccountingCategoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemAccountingCategory> getItemAccountingCategoriesByParentItemAccountingCategory(ItemAccountingCategory parentItemAccountingCategory,
             EntityPermission entityPermission) {
-        return itemAccountingCategoryFactory.getEntitiesFromQuery(entityPermission, getItemAccountingCategoriesByParentItemAccountingCategoryQueries,
-                parentItemAccountingCategory);
+        var baseQuery = session.getDslContext()
+                .select(ItemAccountingCategories.fields())
+                .from(ItemAccountingCategories)
+                .join(ItemAccountingCategoryDetails).onKey(ITEM_ACCOUNTING_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemAccountingCategoryDetails.PARENT_ITEM_ACCOUNTING_CATEGORY.eq(parentItemAccountingCategory.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemAccountingCategoryDetails.SORT_ORDER, ItemAccountingCategoryDetails.ITEM_ACCOUNTING_CATEGORY_NAME),
+                    ItemAccountingCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAccountingCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemAccountingCategory> getItemAccountingCategoriesByParentItemAccountingCategory(ItemAccountingCategory parentItemAccountingCategory) {
@@ -917,6 +933,9 @@ public class AccountingControl
     @Inject
     protected ItemAccountingCategoryDescriptionFactory itemAccountingCategoryDescriptionFactory;
 
+    @Inject
+    ItemAccountingCategoryDescriptionTransferCache itemAccountingCategoryDescriptionTransferCache;
+
     public ItemAccountingCategoryDescription createItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
             Language language, String description, BasePK createdBy) {
         var itemAccountingCategoryDescription = itemAccountingCategoryDescriptionFactory.create(itemAccountingCategory, language, description, session.getStartTime(),
@@ -929,38 +948,19 @@ public class AccountingControl
     
     private ItemAccountingCategoryDescription getItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
             Language language, EntityPermission entityPermission) {
-        ItemAccountingCategoryDescription itemAccountingCategoryDescription;
+        var baseQuery = session.getDslContext()
+                .select(ItemAccountingCategoryDescriptions.fields())
+                .from(ItemAccountingCategoryDescriptions)
+                .where(ItemAccountingCategoryDescriptions.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
+                        ItemAccountingCategoryDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemAccountingCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaccountingcategorydescriptions
-                        WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_lang_languageid = ? AND iactgcd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaccountingcategorydescriptions
-                        WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_lang_languageid = ? AND iactgcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = itemAccountingCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemAccountingCategoryDescription = itemAccountingCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAccountingCategoryDescription;
+        return itemAccountingCategoryDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemAccountingCategoryDescription getItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
@@ -983,38 +983,24 @@ public class AccountingControl
     
     private List<ItemAccountingCategoryDescription> getItemAccountingCategoryDescriptionsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory,
             EntityPermission entityPermission) {
-        List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaccountingcategorydescriptions, languages
-                        WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_thrutime = ? AND iactgcd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaccountingcategorydescriptions
-                        WHERE iactgcd_iactgc_itemaccountingcategoryid = ? AND iactgcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemAccountingCategoryDescriptions.fields())
+                    .from(ItemAccountingCategoryDescriptions)
+                    .join(Languages).onKey(ITEM_ACCOUNTING_CATEGORY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemAccountingCategoryDescriptions.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
+                            ItemAccountingCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemAccountingCategoryDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemAccountingCategoryDescriptions.fields())
+                    .from(ItemAccountingCategoryDescriptions)
+                    .where(ItemAccountingCategoryDescriptions.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()),
+                            ItemAccountingCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemAccountingCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemAccountingCategoryDescriptions = itemAccountingCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAccountingCategoryDescriptions;
+        return itemAccountingCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemAccountingCategoryDescription> getItemAccountingCategoryDescriptionsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory) {
@@ -1102,6 +1088,9 @@ public class AccountingControl
     @Inject
     protected GlAccountTypeFactory glAccountTypeFactory;
 
+    @Inject
+    GlAccountTypeTransferCache glAccountTypeTransferCache;
+
     public GlAccountType createGlAccountType(String glAccountTypeName, Boolean isDefault, Integer sortOrder) {
         return glAccountTypeFactory.create(glAccountTypeName, isDefault, sortOrder);
     }
@@ -1122,54 +1111,39 @@ public class AccountingControl
     }
 
     public long countGlAccountTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM glaccounttypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlAccountTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public GlAccountType getGlAccountTypeByName(String glAccountTypeName) {
-        GlAccountType glAccountType;
+        var query = session.getDslContext()
+                .select(GlAccountTypes.fields())
+                .from(GlAccountTypes)
+                .where(GlAccountTypes.GL_ACCOUNT_TYPE_NAME.eq(glAccountTypeName));
 
-        try {
-            var ps = glAccountTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM glaccounttypes
-                    WHERE glatyp_glaccounttypename = ?
-                    """);
-
-            ps.setString(1, glAccountTypeName);
-
-            glAccountType = glAccountTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return glAccountType;
+        return glAccountTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public GlAccountType getDefaultGlAccountType() {
-        var ps = glAccountTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM glaccounttypes
-                WHERE glatyp_isdefault = 1
-                """);
+        var query = session.getDslContext()
+                .select(GlAccountTypes.fields())
+                .from(GlAccountTypes)
+                .where(GlAccountTypes.IS_DEFAULT.eq(true));
 
-        return glAccountTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        return glAccountTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<GlAccountType> getGlAccountTypes() {
-        var ps = glAccountTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM glaccounttypes
-                ORDER BY glatyp_sortorder, glatyp_glaccounttypename
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(GlAccountTypes.fields())
+                .from(GlAccountTypes)
+                .orderBy(GlAccountTypes.SORT_ORDER, GlAccountTypes.GL_ACCOUNT_TYPE_NAME),
+                GlAccountTypeFactory.class);
         
-        return glAccountTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return glAccountTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public GlAccountTypeChoicesBean getGlAccountTypeChoices(String defaultGlAccountTypeChoice, Language language, boolean allowNullChoice) {
@@ -1233,25 +1207,13 @@ public class AccountingControl
     }
     
     public GlAccountTypeDescription getGlAccountTypeDescription(GlAccountType glAccountType, Language language) {
-        GlAccountTypeDescription glAccountTypeDescription;
+        var query = session.getDslContext()
+                .select(GlAccountTypeDescriptions.fields())
+                .from(GlAccountTypeDescriptions)
+                .where(GlAccountTypeDescriptions.GL_ACCOUNT_TYPE.eq(glAccountType.getPrimaryKey()),
+                        GlAccountTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
         
-        try {
-            var ps = glAccountTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM glaccounttypedescriptions
-                    WHERE glatypd_glatyp_glaccounttypeid = ? AND glatypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, glAccountType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            glAccountTypeDescription = glAccountTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccountTypeDescription;
+        return glAccountTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestGlAccountTypeDescription(GlAccountType glAccountType, Language language) {
@@ -1276,10 +1238,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected GlAccountClassDetailFactory glAccountClassDetailFactory;
+
+    @Inject
     protected GlAccountClassFactory glAccountClassFactory;
 
     @Inject
-    protected GlAccountClassDetailFactory glAccountClassDetailFactory;
+    GlAccountClassTransferCache glAccountClassTransferCache;
 
     public GlAccountClass createGlAccountClass(String glAccountClassName, GlAccountClass parentGlAccountClass, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -1327,38 +1292,27 @@ public class AccountingControl
     }
 
     public long countGlAccountClasses() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getGlAccountClassByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
-                AND glaclsdt_glaccountclassname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
-                AND glaclsdt_glaccountclassname = ?
-                FOR UPDATE
-                """);
-        getGlAccountClassByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlAccountClasses)
+                .join(GlAccountClassDetails).onKey(GL_ACCOUNT_CLASSES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public GlAccountClass getGlAccountClassByName(String glAccountClassName, EntityPermission entityPermission) {
-        return glAccountClassFactory.getEntityFromQuery(entityPermission, getGlAccountClassByNameQueries, glAccountClassName);
+        var baseQuery = session.getDslContext()
+                .select(GlAccountClasses.fields())
+                .from(GlAccountClasses)
+                .join(GlAccountClassDetails).onKey(GL_ACCOUNT_CLASSES_ACTIVE_DETAIL_FK)
+                .where(GlAccountClassDetails.GL_ACCOUNT_CLASS_NAME.eq(glAccountClassName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountClassFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public GlAccountClass getGlAccountClassByName(String glAccountClassName) {
@@ -1377,31 +1331,19 @@ public class AccountingControl
         return getGlAccountClassDetailValueForUpdate(getGlAccountClassByNameForUpdate(glAccountClassName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultGlAccountClassQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
-                AND glaclsdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
-                AND glaclsdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultGlAccountClassQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public GlAccountClass getDefaultGlAccountClass(EntityPermission entityPermission) {
-        return glAccountClassFactory.getEntityFromQuery(entityPermission, getDefaultGlAccountClassQueries);
+        var baseQuery = session.getDslContext()
+                .select(GlAccountClasses.fields())
+                .from(GlAccountClasses)
+                .join(GlAccountClassDetails).onKey(GL_ACCOUNT_CLASSES_ACTIVE_DETAIL_FK)
+                .where(GlAccountClassDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountClassFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public GlAccountClass getDefaultGlAccountClass() {
@@ -1416,31 +1358,20 @@ public class AccountingControl
         return getDefaultGlAccountClassForUpdate().getLastDetailForUpdate().getGlAccountClassDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getGlAccountClassesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
-                ORDER BY glaclsdt_sortorder, glaclsdt_glaccountclassname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
-                FOR UPDATE
-                """);
-        getGlAccountClassesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GlAccountClass> getGlAccountClasses(EntityPermission entityPermission) {
-        return glAccountClassFactory.getEntitiesFromQuery(entityPermission, getGlAccountClassesQueries);
+        var baseQuery = session.getDslContext()
+                .select(GlAccountClasses.fields())
+                .from(GlAccountClasses)
+                .join(GlAccountClassDetails).onKey(GL_ACCOUNT_CLASSES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountClassDetails.SORT_ORDER, GlAccountClassDetails.GL_ACCOUNT_CLASS_NAME),
+                    GlAccountClassFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountClassFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GlAccountClass> getGlAccountClasses() {
@@ -1451,33 +1382,22 @@ public class AccountingControl
         return getGlAccountClasses(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getGlAccountClassesByParentGlAccountClassQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid AND glaclsdt_parentglaccountclassid = ?
-                ORDER BY glaclsdt_sortorder, glaclsdt_glaccountclassname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccountclasses, glaccountclassdetails
-                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid AND glaclsdt_parentglaccountclassid = ?
-                FOR UPDATE
-                """);
-        getGlAccountClassesByParentGlAccountClassQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GlAccountClass> getGlAccountClassesByParentGlAccountClass(GlAccountClass parentGlAccountClass,
             EntityPermission entityPermission) {
-        return glAccountClassFactory.getEntitiesFromQuery(entityPermission, getGlAccountClassesByParentGlAccountClassQueries,
-                parentGlAccountClass);
+        var baseQuery = session.getDslContext()
+                .select(GlAccountClasses.fields())
+                .from(GlAccountClasses)
+                .join(GlAccountClassDetails).onKey(GL_ACCOUNT_CLASSES_ACTIVE_DETAIL_FK)
+                .where(GlAccountClassDetails.PARENT_GL_ACCOUNT_CLASS.eq(parentGlAccountClass.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountClassDetails.SORT_ORDER, GlAccountClassDetails.GL_ACCOUNT_CLASS_NAME),
+                    GlAccountClassFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountClassFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GlAccountClass> getGlAccountClassesByParentGlAccountClass(GlAccountClass parentGlAccountClass) {
@@ -1665,6 +1585,9 @@ public class AccountingControl
     @Inject
     protected GlAccountClassDescriptionFactory glAccountClassDescriptionFactory;
 
+    @Inject
+    GlAccountClassDescriptionTransferCache glAccountClassDescriptionTransferCache;
+
     public GlAccountClassDescription createGlAccountClassDescription(GlAccountClass glAccountClass, Language language, String description, BasePK createdBy) {
         var glAccountClassDescription = glAccountClassDescriptionFactory.create(glAccountClass, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -1675,38 +1598,19 @@ public class AccountingControl
     }
     
     private GlAccountClassDescription getGlAccountClassDescription(GlAccountClass glAccountClass, Language language, EntityPermission entityPermission) {
-        GlAccountClassDescription glAccountClassDescription;
+        var baseQuery = session.getDslContext()
+                .select(GlAccountClassDescriptions.fields())
+                .from(GlAccountClassDescriptions)
+                .where(GlAccountClassDescriptions.GL_ACCOUNT_CLASS.eq(glAccountClass.getPrimaryKey()),
+                        GlAccountClassDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        GlAccountClassDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountclassdescriptions
-                        WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_lang_languageid = ? AND glaclsd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountclassdescriptions
-                        WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_lang_languageid = ? AND glaclsd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glAccountClassDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            glAccountClassDescription = glAccountClassDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccountClassDescription;
+        return glAccountClassDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlAccountClassDescription getGlAccountClassDescription(GlAccountClass glAccountClass, Language language) {
@@ -1726,38 +1630,24 @@ public class AccountingControl
     }
     
     private List<GlAccountClassDescription> getGlAccountClassDescriptionsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
-        List<GlAccountClassDescription> glAccountClassDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountclassdescriptions, languages
-                        WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_thrutime = ? AND glaclsd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountclassdescriptions
-                        WHERE glaclsd_glacls_glaccountclassid = ? AND glaclsd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GlAccountClassDescriptions.fields())
+                    .from(GlAccountClassDescriptions)
+                    .join(Languages).onKey(GL_ACCOUNT_CLASS_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(GlAccountClassDescriptions.GL_ACCOUNT_CLASS.eq(glAccountClass.getPrimaryKey()),
+                            GlAccountClassDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GlAccountClassDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GlAccountClassDescriptions.fields())
+                    .from(GlAccountClassDescriptions)
+                    .where(GlAccountClassDescriptions.GL_ACCOUNT_CLASS.eq(glAccountClass.getPrimaryKey()),
+                            GlAccountClassDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = glAccountClassDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            glAccountClassDescriptions = glAccountClassDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccountClassDescriptions;
+        return glAccountClassDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GlAccountClassDescription> getGlAccountClassDescriptionsByGlAccountClass(GlAccountClass glAccountClass) {
@@ -1838,10 +1728,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected GlAccountCategoryDetailFactory glAccountCategoryDetailFactory;
+
+    @Inject
     protected GlAccountCategoryFactory glAccountCategoryFactory;
 
     @Inject
-    protected GlAccountCategoryDetailFactory glAccountCategoryDetailFactory;
+    GlAccountCategoryTransferCache glAccountCategoryTransferCache;
 
     public GlAccountCategory createGlAccountCategory(String glAccountCategoryName, GlAccountCategory parentGlAccountCategory, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -1890,38 +1783,27 @@ public class AccountingControl
     }
 
     public long countGlAccountCategories() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getGlAccountCategoryByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
-                AND glacdt_glaccountcategoryname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
-                AND glacdt_glaccountcategoryname = ?
-                FOR UPDATE
-                """);
-        getGlAccountCategoryByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlAccountCategories)
+                .join(GlAccountCategoryDetails).onKey(GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public GlAccountCategory getGlAccountCategoryByName(String glAccountCategoryName, EntityPermission entityPermission) {
-        return glAccountCategoryFactory.getEntityFromQuery(entityPermission, getGlAccountCategoryByNameQueries, glAccountCategoryName);
+        var baseQuery = session.getDslContext()
+                .select(GlAccountCategories.fields())
+                .from(GlAccountCategories)
+                .join(GlAccountCategoryDetails).onKey(GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(GlAccountCategoryDetails.GL_ACCOUNT_CATEGORY_NAME.eq(glAccountCategoryName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public GlAccountCategory getGlAccountCategoryByName(String glAccountCategoryName) {
@@ -1940,31 +1822,19 @@ public class AccountingControl
         return getGlAccountCategoryDetailValueForUpdate(getGlAccountCategoryByNameForUpdate(glAccountCategoryName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultGlAccountCategoryQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
-                AND glacdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
-                AND glacdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultGlAccountCategoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public GlAccountCategory getDefaultGlAccountCategory(EntityPermission entityPermission) {
-        return glAccountCategoryFactory.getEntityFromQuery(entityPermission, getDefaultGlAccountCategoryQueries);
+        var baseQuery = session.getDslContext()
+                .select(GlAccountCategories.fields())
+                .from(GlAccountCategories)
+                .join(GlAccountCategoryDetails).onKey(GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(GlAccountCategoryDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public GlAccountCategory getDefaultGlAccountCategory() {
@@ -1979,31 +1849,20 @@ public class AccountingControl
         return getDefaultGlAccountCategoryForUpdate().getLastDetailForUpdate().getGlAccountCategoryDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getGlAccountCategoriesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
-                ORDER BY glacdt_sortorder, glacdt_glaccountcategoryname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
-                FOR UPDATE
-                """);
-        getGlAccountCategoriesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GlAccountCategory> getGlAccountCategories(EntityPermission entityPermission) {
-        return glAccountCategoryFactory.getEntitiesFromQuery(entityPermission, getGlAccountCategoriesQueries);
+        var baseQuery = session.getDslContext()
+                .select(GlAccountCategories.fields())
+                .from(GlAccountCategories)
+                .join(GlAccountCategoryDetails).onKey(GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountCategoryDetails.SORT_ORDER, GlAccountCategoryDetails.GL_ACCOUNT_CATEGORY_NAME),
+                    GlAccountCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GlAccountCategory> getGlAccountCategories() {
@@ -2014,33 +1873,22 @@ public class AccountingControl
         return getGlAccountCategories(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getGlAccountCategoriesByParentGlAccountCategoryQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid AND glacdt_parentglaccountcategoryid = ?
-                ORDER BY glacdt_sortorder, glacdt_glaccountcategoryname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccountcategories, glaccountcategorydetails
-                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid AND glacdt_parentglaccountcategoryid = ?
-                FOR UPDATE
-                """);
-        getGlAccountCategoriesByParentGlAccountCategoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GlAccountCategory> getGlAccountCategoriesByParentGlAccountCategory(GlAccountCategory parentGlAccountCategory,
             EntityPermission entityPermission) {
-        return glAccountCategoryFactory.getEntitiesFromQuery(entityPermission, getGlAccountCategoriesByParentGlAccountCategoryQueries,
-                parentGlAccountCategory);
+        var baseQuery = session.getDslContext()
+                .select(GlAccountCategories.fields())
+                .from(GlAccountCategories)
+                .join(GlAccountCategoryDetails).onKey(GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(GlAccountCategoryDetails.PARENT_GL_ACCOUNT_CATEGORY.eq(parentGlAccountCategory.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountCategoryDetails.SORT_ORDER, GlAccountCategoryDetails.GL_ACCOUNT_CATEGORY_NAME),
+                    GlAccountCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GlAccountCategory> getGlAccountCategoriesByParentGlAccountCategory(GlAccountCategory parentGlAccountCategory) {
@@ -2229,6 +2077,9 @@ public class AccountingControl
     @Inject
     protected GlAccountCategoryDescriptionFactory glAccountCategoryDescriptionFactory;
 
+    @Inject
+    GlAccountCategoryDescriptionTransferCache glAccountCategoryDescriptionTransferCache;
+
     public GlAccountCategoryDescription createGlAccountCategoryDescription(GlAccountCategory glAccountCategory, Language language, String description, BasePK createdBy) {
         var glAccountCategoryDescription = glAccountCategoryDescriptionFactory.create(glAccountCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2239,38 +2090,19 @@ public class AccountingControl
     }
     
     private GlAccountCategoryDescription getGlAccountCategoryDescription(GlAccountCategory glAccountCategory, Language language, EntityPermission entityPermission) {
-        GlAccountCategoryDescription glAccountCategoryDescription;
+        var baseQuery = session.getDslContext()
+                .select(GlAccountCategoryDescriptions.fields())
+                .from(GlAccountCategoryDescriptions)
+                .where(GlAccountCategoryDescriptions.GL_ACCOUNT_CATEGORY.eq(glAccountCategory.getPrimaryKey()),
+                        GlAccountCategoryDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        GlAccountCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountcategorydescriptions
-                        WHERE glacd_glac_glaccountcategoryid = ? AND glacd_lang_languageid = ? AND glacd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountcategorydescriptions
-                        WHERE glacd_glac_glaccountcategoryid = ? AND glacd_lang_languageid = ? AND glacd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glAccountCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccountCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            glAccountCategoryDescription = glAccountCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccountCategoryDescription;
+        return glAccountCategoryDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlAccountCategoryDescription getGlAccountCategoryDescription(GlAccountCategory glAccountCategory, Language language) {
@@ -2290,38 +2122,24 @@ public class AccountingControl
     }
     
     private List<GlAccountCategoryDescription> getGlAccountCategoryDescriptionsByGlAccountCategory(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
-        List<GlAccountCategoryDescription> glAccountCategoryDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountcategorydescriptions, languages
-                        WHERE glacd_glac_glaccountcategoryid = ? AND glacd_thrutime = ? AND glacd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountcategorydescriptions
-                        WHERE glacd_glac_glaccountcategoryid = ? AND glacd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GlAccountCategoryDescriptions.fields())
+                    .from(GlAccountCategoryDescriptions)
+                    .join(Languages).onKey(GL_ACCOUNT_CATEGORY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(GlAccountCategoryDescriptions.GL_ACCOUNT_CATEGORY.eq(glAccountCategory.getPrimaryKey()),
+                            GlAccountCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GlAccountCategoryDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GlAccountCategoryDescriptions.fields())
+                    .from(GlAccountCategoryDescriptions)
+                    .where(GlAccountCategoryDescriptions.GL_ACCOUNT_CATEGORY.eq(glAccountCategory.getPrimaryKey()),
+                            GlAccountCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = glAccountCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccountCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            glAccountCategoryDescriptions = glAccountCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccountCategoryDescriptions;
+        return glAccountCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GlAccountCategoryDescription> getGlAccountCategoryDescriptionsByGlAccountCategory(GlAccountCategory glAccountCategory) {
@@ -2402,10 +2220,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected GlResourceTypeDetailFactory glResourceTypeDetailFactory;
+
+    @Inject
     protected GlResourceTypeFactory glResourceTypeFactory;
 
     @Inject
-    protected GlResourceTypeDetailFactory glResourceTypeDetailFactory;
+    GlResourceTypeTransferCache glResourceTypeTransferCache;
 
     public GlResourceType createGlResourceType(String glResourceTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultGlResourceType = getDefaultGlResourceType();
@@ -2451,45 +2272,28 @@ public class AccountingControl
     }
 
     public long countGlResourceTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM glresourcetypes, glresourcetypedetails
-                        WHERE glrtyp_activedetailid = glrtypdt_glresourcetypedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlResourceTypes)
+                .join(GlResourceTypeDetails).onKey(GL_RESOURCE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public GlResourceType getGlResourceTypeByName(String glResourceTypeName, EntityPermission entityPermission) {
-        GlResourceType glResourceType;
+        var baseQuery = session.getDslContext()
+                .select(GlResourceTypes.fields())
+                .from(GlResourceTypes)
+                .join(GlResourceTypeDetails).onKey(GL_RESOURCE_TYPE_DETAILS_GL_RESOURCE_TYPE_FK)
+                .where(GlResourceTypeDetails.GL_RESOURCE_TYPE_NAME.eq(glResourceTypeName),
+                        GlResourceTypeDetails.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypes, glresourcetypedetails
-                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_glresourcetypename = ? AND glrtypdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypes, glresourcetypedetails
-                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_glresourcetypename = ? AND glrtypdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glResourceTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, glResourceTypeName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            glResourceType = glResourceTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glResourceType;
+        return glResourceTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlResourceType getGlResourceTypeByName(String glResourceTypeName) {
@@ -2509,36 +2313,19 @@ public class AccountingControl
     }
     
     public GlResourceType getDefaultGlResourceType(EntityPermission entityPermission) {
-        GlResourceType glResourceType;
+        var baseQuery = session.getDslContext()
+                .select(GlResourceTypes.fields())
+                .from(GlResourceTypes)
+                .join(GlResourceTypeDetails).onKey(GL_RESOURCE_TYPE_DETAILS_GL_RESOURCE_TYPE_FK)
+                .where(GlResourceTypeDetails.IS_DEFAULT.eq(true),
+                        GlResourceTypeDetails.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypes, glresourcetypedetails
-                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_isdefault = 1 AND glrtypdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypes, glresourcetypedetails
-                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_isdefault = 1 AND glrtypdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glResourceTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            glResourceType = glResourceTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glResourceType;
+        return glResourceTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlResourceType getDefaultGlResourceType() {
@@ -2554,37 +2341,20 @@ public class AccountingControl
     }
     
     private List<GlResourceType> getGlResourceTypes(EntityPermission entityPermission) {
-        List<GlResourceType> glResourceTypes;
+        var baseQuery = session.getDslContext()
+                .select(GlResourceTypes.fields())
+                .from(GlResourceTypes)
+                .join(GlResourceTypeDetails).onKey(GL_RESOURCE_TYPE_DETAILS_GL_RESOURCE_TYPE_FK)
+                .where(GlResourceTypeDetails.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypes, glresourcetypedetails
-                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_thrutime = ?
-                        ORDER BY glrtypdt_sortorder, glrtypdt_glresourcetypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypes, glresourcetypedetails
-                        WHERE glrtyp_glresourcetypeid = glrtypdt_glrtyp_glresourcetypeid AND glrtypdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlResourceTypeDetails.SORT_ORDER, GlResourceTypeDetails.GL_RESOURCE_TYPE_NAME),
+                    GlResourceTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glResourceTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            glResourceTypes = glResourceTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glResourceTypes;
+        return glResourceTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GlResourceType> getGlResourceTypes() {
@@ -2729,6 +2499,9 @@ public class AccountingControl
     @Inject
     protected GlResourceTypeDescriptionFactory glResourceTypeDescriptionFactory;
 
+    @Inject
+    GlResourceTypeDescriptionTransferCache glResourceTypeDescriptionTransferCache;
+
     public GlResourceTypeDescription createGlResourceTypeDescription(GlResourceType glResourceType, Language language, String description, BasePK createdBy) {
         var glResourceTypeDescription = glResourceTypeDescriptionFactory.create(glResourceType, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2739,38 +2512,19 @@ public class AccountingControl
     }
     
     private GlResourceTypeDescription getGlResourceTypeDescription(GlResourceType glResourceType, Language language, EntityPermission entityPermission) {
-        GlResourceTypeDescription glResourceTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(GlResourceTypeDescriptions.fields())
+                .from(GlResourceTypeDescriptions)
+                .where(GlResourceTypeDescriptions.GL_RESOURCE_TYPE.eq(glResourceType.getPrimaryKey()),
+                        GlResourceTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        GlResourceTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypedescriptions
-                        WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_lang_languageid = ? AND glrtypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypedescriptions
-                        WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_lang_languageid = ? AND glrtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glResourceTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            glResourceTypeDescription = glResourceTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glResourceTypeDescription;
+        return glResourceTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlResourceTypeDescription getGlResourceTypeDescription(GlResourceType glResourceType, Language language) {
@@ -2790,38 +2544,24 @@ public class AccountingControl
     }
     
     private List<GlResourceTypeDescription> getGlResourceTypeDescriptionsByGlResourceType(GlResourceType glResourceType, EntityPermission entityPermission) {
-        List<GlResourceTypeDescription> glResourceTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypedescriptions, languages
-                        WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_thrutime = ? AND glrtypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glresourcetypedescriptions
-                        WHERE glrtypd_glrtyp_glresourcetypeid = ? AND glrtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GlResourceTypeDescriptions.fields())
+                    .from(GlResourceTypeDescriptions)
+                    .join(Languages).onKey(GL_RESOURCE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(GlResourceTypeDescriptions.GL_RESOURCE_TYPE.eq(glResourceType.getPrimaryKey()),
+                            GlResourceTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GlResourceTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GlResourceTypeDescriptions.fields())
+                    .from(GlResourceTypeDescriptions)
+                    .where(GlResourceTypeDescriptions.GL_RESOURCE_TYPE.eq(glResourceType.getPrimaryKey()),
+                            GlResourceTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = glResourceTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            glResourceTypeDescriptions = glResourceTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glResourceTypeDescriptions;
+        return glResourceTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GlResourceTypeDescription> getGlResourceTypeDescriptionsByGlResourceType(GlResourceType glResourceType) {
@@ -2902,10 +2642,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected GlAccountDetailFactory glAccountDetailFactory;
+
+    @Inject
     protected GlAccountFactory glAccountFactory;
 
     @Inject
-    protected GlAccountDetailFactory glAccountDetailFactory;
+    GlAccountTransferCache glAccountTransferCache;
 
     public GlAccount createGlAccount(String glAccountName, GlAccount parentGlAccount, GlAccountType glAccountType,
             GlAccountClass glAccountClass, GlAccountCategory glAccountCategory, GlResourceType glResourceType, Currency currency,
@@ -2959,76 +2702,67 @@ public class AccountingControl
     }
 
     public long countGlAccounts() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM glaccounts, glaccountdetails
-                WHERE gla_activedetailid = gladt_glaccountdetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGlAccountsByGlAccountType(GlAccountType glAccountType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM glaccounts, glaccountdetails
-                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ?
-                """, glAccountType);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_ACCOUNT_TYPE.eq(glAccountType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGlAccountsByGlAccountClass(GlAccountClass glAccountClass) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM glaccounts, glaccountdetails
-                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ?
-                """, glAccountClass);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_ACCOUNT_CLASS.eq(glAccountClass.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGlAccountsByGlAccountCategory(GlAccountCategory glAccountCategory) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM glaccounts, glaccountdetails
-                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
-                """, glAccountCategory);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_ACCOUNT_CATEGORY.eq(glAccountCategory.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGlAccountsByGlResourceType(GlResourceType glResourceType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM glaccounts, glaccountdetails
-                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ?
-                """, glResourceType);
+        return session.getDslContext()
+                .selectCount()
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_RESOURCE_TYPE.eq(glResourceType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public GlAccount getGlAccountByName(String glAccountName, EntityPermission entityPermission) {
-        GlAccount glAccount;
+        var baseQuery = session.getDslContext()
+                .select(GlAccounts.fields())
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_ACCOUNT_NAME.eq(glAccountName));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glaccountname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glaccountname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glAccountFactory.prepareStatement(query);
-            
-            ps.setString(1, glAccountName);
-            
-            glAccount = glAccountFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccount;
+        return glAccountFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlAccount getGlAccountByName(String glAccountName) {
@@ -3044,36 +2778,19 @@ public class AccountingControl
     }
     
     private GlAccount getDefaultGlAccount(GlAccountCategoryPK glAccountCategoryPK, EntityPermission entityPermission) {
-        GlAccount glAccount;
+        var baseQuery = session.getDslContext()
+                .select(GlAccounts.fields())
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_ACCOUNT_CATEGORY.eq(glAccountCategoryPK),
+                        GlAccountDetails.IS_DEFAULT.eq(true));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? AND gladt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? AND gladt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccountCategoryPK.getEntityId());
-            
-            glAccount = glAccountFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccount;
+        return glAccountFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlAccount getDefaultGlAccount(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
@@ -3109,28 +2826,19 @@ public class AccountingControl
     }
     
     private List<GlAccount> getGlAccounts(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(GlAccounts.fields())
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK);
         
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM glaccounts, glaccountdetails
-                    WHERE gla_activedetailid = gladt_glaccountdetailid
-                    ORDER BY gladt_glaccountname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM glaccounts, glaccountdetails
-                    WHERE gla_activedetailid = gladt_glaccountdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountDetails.GL_ACCOUNT_NAME),
+                    GlAccountFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = glAccountFactory.prepareStatement(query);
-        
-        return glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
+        return glAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GlAccount> getGlAccounts() {
@@ -3142,38 +2850,20 @@ public class AccountingControl
     }
 
     private List<GlAccount> getGlAccountsByGlAccountType(GlAccountType glAccountType, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts;
+        var baseQuery = session.getDslContext()
+                .select(GlAccounts.fields())
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_ACCOUNT_TYPE.eq(glAccountType.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountDetails.GL_ACCOUNT_NAME),
+                    GlAccountFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ?
-                        ORDER BY gladt_glaccountname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = glAccountFactory.prepareStatement(query);
-
-            ps.setLong(1, glAccountType.getPrimaryKey().getEntityId());
-
-            glAccounts = glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return glAccounts;
+        return glAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GlAccount> getGlAccountsByGlAccountType(GlAccountType glAccountType) {
@@ -3185,38 +2875,20 @@ public class AccountingControl
     }
 
     private List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts;
+        var baseQuery = session.getDslContext()
+                .select(GlAccounts.fields())
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_ACCOUNT_CLASS.eq(glAccountClass.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountDetails.GL_ACCOUNT_NAME),
+                    GlAccountFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ?
-                        ORDER BY gladt_glaccountname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = glAccountFactory.prepareStatement(query);
-
-            ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
-
-            glAccounts = glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return glAccounts;
+        return glAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass) {
@@ -3228,38 +2900,20 @@ public class AccountingControl
     }
 
     private List<GlAccount> getGlAccountsByGlAccountCategory(GlAccountCategoryPK glAccountCategoryPK, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts;
+        var baseQuery = session.getDslContext()
+                .select(GlAccounts.fields())
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_ACCOUNT_CATEGORY.eq(glAccountCategoryPK));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
-                        ORDER BY gladt_glaccountname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountDetails.GL_ACCOUNT_NAME),
+                    GlAccountFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccountCategoryPK.getEntityId());
-            
-            glAccounts = glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccounts;
+        return glAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     private List<GlAccount> getGlAccountsByGlAccountCategory(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
@@ -3283,38 +2937,20 @@ public class AccountingControl
     }
     
     private List<GlAccount> getGlAccountsByGlResourceType(GlResourceType glResourceType, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts;
+        var baseQuery = session.getDslContext()
+                .select(GlAccounts.fields())
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.GL_RESOURCE_TYPE.eq(glResourceType.getPrimaryKey()));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ?
-                        ORDER BY gladt_glaccountname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccounts, glaccountdetails
-                        WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountDetails.GL_ACCOUNT_NAME),
+                    GlAccountFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, glResourceType.getPrimaryKey().getEntityId());
-            
-            glAccounts = glAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccounts;
+        return glAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GlAccount> getGlAccountsByGlResourceType(GlResourceType glResourceType) {
@@ -3325,33 +2961,22 @@ public class AccountingControl
         return getGlAccountsByGlResourceType(glResourceType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getGlAccountsByParentGlAccountQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM glaccounts, glaccountdetails
-                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_parentglaccountid = ?
-                ORDER BY gladt_sortorder, gladt_glaccountname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM glaccounts, glaccountdetails
-                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_parentglaccountid = ?
-                FOR UPDATE
-                """);
-        getGlAccountsByParentGlAccountQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GlAccount> getGlAccountsByParentGlAccount(GlAccount parentGlAccount,
             EntityPermission entityPermission) {
-        return glAccountFactory.getEntitiesFromQuery(entityPermission, getGlAccountsByParentGlAccountQueries,
-                parentGlAccount);
+        var baseQuery = session.getDslContext()
+                .select(GlAccounts.fields())
+                .from(GlAccounts)
+                .join(GlAccountDetails).onKey(GL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(GlAccountDetails.PARENT_GL_ACCOUNT.eq(parentGlAccount.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GlAccountDetails.GL_ACCOUNT_NAME),
+                    GlAccountFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return glAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GlAccount> getGlAccountsByParentGlAccount(GlAccount parentGlAccount) {
@@ -3621,6 +3246,9 @@ public class AccountingControl
     @Inject
     protected GlAccountDescriptionFactory glAccountDescriptionFactory;
 
+    @Inject
+    GlAccountDescriptionTransferCache glAccountDescriptionTransferCache;
+
     public GlAccountDescription createGlAccountDescription(GlAccount glAccount, Language language, String description, BasePK createdBy) {
         var glAccountDescription = glAccountDescriptionFactory.create(glAccount, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -3631,38 +3259,19 @@ public class AccountingControl
     }
     
     private GlAccountDescription getGlAccountDescription(GlAccount glAccount, Language language, EntityPermission entityPermission) {
-        GlAccountDescription glAccountDescription;
+        var baseQuery = session.getDslContext()
+                .select(GlAccountDescriptions.fields())
+                .from(GlAccountDescriptions)
+                .where(GlAccountDescriptions.GL_ACCOUNT.eq(glAccount.getPrimaryKey()),
+                        GlAccountDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        GlAccountDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountdescriptions
-                        WHERE glad_gla_glaccountid = ? AND glad_lang_languageid = ? AND glad_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountdescriptions
-                        WHERE glad_gla_glaccountid = ? AND glad_lang_languageid = ? AND glad_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glAccountDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            glAccountDescription = glAccountDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccountDescription;
+        return glAccountDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlAccountDescription getGlAccountDescription(GlAccount glAccount, Language language) {
@@ -3682,38 +3291,24 @@ public class AccountingControl
     }
     
     private List<GlAccountDescription> getGlAccountDescriptionsByGlAccount(GlAccount glAccount, EntityPermission entityPermission) {
-        List<GlAccountDescription> glAccountDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountdescriptions, languages
-                        WHERE glad_gla_glaccountid = ? AND glad_thrutime = ? AND glad_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountdescriptions
-                        WHERE glad_gla_glaccountid = ? AND glad_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GlAccountDescriptions.fields())
+                    .from(GlAccountDescriptions)
+                    .join(Languages).onKey(GL_ACCOUNT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(GlAccountDescriptions.GL_ACCOUNT.eq(glAccount.getPrimaryKey()),
+                            GlAccountDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GlAccountDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GlAccountDescriptions.fields())
+                    .from(GlAccountDescriptions)
+                    .where(GlAccountDescriptions.GL_ACCOUNT.eq(glAccount.getPrimaryKey()),
+                            GlAccountDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = glAccountDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            glAccountDescriptions = glAccountDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccountDescriptions;
+        return glAccountDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GlAccountDescription> getGlAccountDescriptionsByGlAccount(GlAccount glAccount) {
@@ -3801,38 +3396,19 @@ public class AccountingControl
     }
     
     private GlAccountSummary getGlAccountSummary(GlAccount glAccount, Party groupParty, Period period, EntityPermission entityPermission) {
-        GlAccountSummary glAccountSummary;
+        var baseQuery = session.getDslContext()
+                .select(GlAccountSummaries.fields())
+                .from(GlAccountSummaries)
+                .where(GlAccountSummaries.GL_ACCOUNT.eq(glAccount.getPrimaryKey()),
+                        GlAccountSummaries.GROUP_PARTY.eq(groupParty.getPrimaryKey()),
+                        GlAccountSummaries.PERIOD.eq(period.getPrimaryKey()));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountsummaries
-                        WHERE glasmy_gla_glaccountid = ? AND glasmy_grouppartyid = ? AND glasmy_prd_periodid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM glaccountsummaries
-                        WHERE glasmy_gla_glaccountid = ? AND glasmy_grouppartyid = ? AND glasmy_prd_periodid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = glAccountSummaryFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
-            ps.setLong(2, groupParty.getPrimaryKey().getEntityId());
-            ps.setLong(3, period.getPrimaryKey().getEntityId());
-            
-            glAccountSummary = glAccountSummaryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return glAccountSummary;
+        return glAccountSummaryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GlAccountSummary getGlAccountSummary(GlAccount glAccount, Party groupParty, Period period) {
@@ -3848,10 +3424,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TransactionTypeDetailFactory transactionTypeDetailFactory;
+
+    @Inject
     protected TransactionTypeFactory transactionTypeFactory;
 
     @Inject
-    protected TransactionTypeDetailFactory transactionTypeDetailFactory;
+    TransactionTypeTransferCache transactionTypeTransferCache;
 
     public TransactionType createTransactionType(String transactionTypeName, Integer sortOrder, BasePK createdBy) {
         var transactionType = transactionTypeFactory.create();
@@ -3885,44 +3464,27 @@ public class AccountingControl
     }
 
     public long countTransactionTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactiontypes
-                        JOIN transactiontypedetails ON trxtyp_activedetailid = trxtypdt_transactiontypedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionTypes)
+                .join(TransactionTypeDetails).onKey(TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public TransactionType getTransactionTypeByName(String transactionTypeName, EntityPermission entityPermission) {
-        TransactionType transactionType;
+        var baseQuery = session.getDslContext()
+                .select(TransactionTypes.fields())
+                .from(TransactionTypes)
+                .join(TransactionTypeDetails).onKey(TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(TransactionTypeDetails.TRANSACTION_TYPE_NAME.eq(transactionTypeName));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactiontypes, transactiontypedetails
-                        WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid AND trxtypdt_transactiontypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactiontypes, transactiontypedetails
-                        WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid AND trxtypdt_transactiontypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, transactionTypeName);
-            
-            transactionType = transactionTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionType;
+        return transactionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TransactionType getTransactionTypeByName(String transactionTypeName) {
@@ -3942,28 +3504,19 @@ public class AccountingControl
     }
     
     private List<TransactionType> getTransactionTypes(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(TransactionTypes.fields())
+                .from(TransactionTypes)
+                .join(TransactionTypeDetails).onKey(TRANSACTION_TYPES_ACTIVE_DETAIL_FK);
         
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactiontypes, transactiontypedetails
-                    WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid
-                    ORDER BY trxtypdt_transactiontypename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactiontypes, transactiontypedetails
-                    WHERE trxtyp_activedetailid = trxtypdt_transactiontypedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TransactionTypeDetails.TRANSACTION_TYPE_NAME),
+                    TransactionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = transactionTypeFactory.prepareStatement(query);
-        
-        return transactionTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        return transactionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionType> getTransactionTypes() {
@@ -4038,6 +3591,9 @@ public class AccountingControl
     @Inject
     protected TransactionTypeDescriptionFactory transactionTypeDescriptionFactory;
 
+    @Inject
+    TransactionTypeDescriptionTransferCache transactionTypeDescriptionTransferCache;
+
     public TransactionTypeDescription createTransactionTypeDescription(TransactionType transactionType, Language language, String description, BasePK createdBy) {
         var transactionTypeDescription = transactionTypeDescriptionFactory.create(transactionType, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -4048,38 +3604,19 @@ public class AccountingControl
     }
     
     private TransactionTypeDescription getTransactionTypeDescription(TransactionType transactionType, Language language, EntityPermission entityPermission) {
-        TransactionTypeDescription transactionTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(TransactionTypeDescriptions.fields())
+                .from(TransactionTypeDescriptions)
+                .where(TransactionTypeDescriptions.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()),
+                        TransactionTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactiontypedescriptions
-                        WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_lang_languageid = ? AND trxtypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactiontypedescriptions
-                        WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_lang_languageid = ? AND trxtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            transactionTypeDescription = transactionTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionTypeDescription;
+        return transactionTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TransactionTypeDescription getTransactionTypeDescription(TransactionType transactionType, Language language) {
@@ -4099,38 +3636,24 @@ public class AccountingControl
     }
     
     private List<TransactionTypeDescription> getTransactionTypeDescriptionsByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionTypeDescription> transactionTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactiontypedescriptions, languages
-                        WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_thrutime = ? AND trxtypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactiontypedescriptions
-                        WHERE trxtypd_trxtyp_transactiontypeid = ? AND trxtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionTypeDescriptions.fields())
+                    .from(TransactionTypeDescriptions)
+                    .join(Languages).onKey(TRANSACTION_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TransactionTypeDescriptions.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()),
+                            TransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TransactionTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionTypeDescriptions.fields())
+                    .from(TransactionTypeDescriptions)
+                    .where(TransactionTypeDescriptions.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()),
+                            TransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = transactionTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            transactionTypeDescriptions = transactionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionTypeDescriptions;
+        return transactionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionTypeDescription> getTransactionTypeDescriptionsByTransactionType(TransactionType transactionType) {
@@ -4211,10 +3734,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TransactionGlAccountCategoryDetailFactory transactionGlAccountCategoryDetailFactory;
+
+    @Inject
     protected TransactionGlAccountCategoryFactory transactionGlAccountCategoryFactory;
 
     @Inject
-    protected TransactionGlAccountCategoryDetailFactory transactionGlAccountCategoryDetailFactory;
+    TransactionGlAccountCategoryTransferCache transactionGlAccountCategoryTransferCache;
 
     public TransactionGlAccountCategory createTransactionGlAccountCategory(TransactionType transactionType, String transactionGlAccountCategoryName, GlAccountCategory glAccountCategory,
             Integer sortOrder, BasePK createdBy) {
@@ -4249,46 +3775,29 @@ public class AccountingControl
     }
 
     public long countTransactionGlAccountCategoriesByTransactionType(final TransactionType transactionType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactionglaccountcategories
-                        JOIN transactionglaccountcategorydetails ON trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid
-                        WHERE trxglacdt_trxtyp_transactiontypeid = ?
-                        """, transactionType);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionGlAccountCategories)
+                .join(TransactionGlAccountCategoryDetails).onKey(TRANSACTION_GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(TransactionGlAccountCategoryDetails.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(TransactionType transactionType, String transactionGlAccountCategoryName, EntityPermission entityPermission) {
-        TransactionGlAccountCategory transactionGlAccountCategory;
+        var baseQuery = session.getDslContext()
+                .select(TransactionGlAccountCategories.fields())
+                .from(TransactionGlAccountCategories)
+                .join(TransactionGlAccountCategoryDetails).onKey(TRANSACTION_GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(TransactionGlAccountCategoryDetails.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()),
+                        TransactionGlAccountCategoryDetails.TRANSACTION_GL_ACCOUNT_CATEGORY_NAME.eq(transactionGlAccountCategoryName));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccountcategories, transactionglaccountcategorydetails
-                        WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? AND trxglacdt_transactionglaccountcategoryname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccountcategories, transactionglaccountcategorydetails
-                        WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ? AND trxglacdt_transactionglaccountcategoryname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionGlAccountCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
-            ps.setString(2, transactionGlAccountCategoryName);
-            
-            transactionGlAccountCategory = transactionGlAccountCategoryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGlAccountCategory;
+        return transactionGlAccountCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByName(TransactionType transactionType, String transactionGlAccountCategoryName) {
@@ -4308,37 +3817,20 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccountCategory> getTransactionGlAccountCategoriesByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionGlAccountCategory> transactionGlAccountCategories;
+        var baseQuery = session.getDslContext()
+                .select(TransactionGlAccountCategories.fields())
+                .from(TransactionGlAccountCategories)
+                .join(TransactionGlAccountCategoryDetails).onKey(TRANSACTION_GL_ACCOUNT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(TransactionGlAccountCategoryDetails.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()));
         
-        try {
-            String query = null;
-            
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactionglaccountcategories, transactionglaccountcategorydetails
-                    WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ?
-                    ORDER BY trxglacdt_sortorder, trxglacdt_transactionglaccountcategoryname
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactionglaccountcategories, transactionglaccountcategorydetails
-                    WHERE trxglac_activedetailid = trxglacdt_transactionglaccountcategorydetailid AND trxglacdt_trxtyp_transactiontypeid = ?
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TransactionGlAccountCategoryDetails.SORT_ORDER, TransactionGlAccountCategoryDetails.TRANSACTION_GL_ACCOUNT_CATEGORY_NAME),
+                    TransactionGlAccountCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionGlAccountCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
-            
-            transactionGlAccountCategories = transactionGlAccountCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGlAccountCategories;
+        return transactionGlAccountCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionGlAccountCategory> getTransactionGlAccountCategoriesByTransactionType(TransactionType transactionType) {
@@ -4419,6 +3911,9 @@ public class AccountingControl
     @Inject
     protected TransactionGlAccountCategoryDescriptionFactory transactionGlAccountCategoryDescriptionFactory;
 
+    @Inject
+    TransactionGlAccountCategoryDescriptionTransferCache transactionGlAccountCategoryDescriptionTransferCache;
+
      public TransactionGlAccountCategoryDescription createTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language, String description,
              BasePK createdBy) {
          var transactionGlAccountCategoryDescription = transactionGlAccountCategoryDescriptionFactory.create(transactionGlAccountCategory,
@@ -4430,38 +3925,19 @@ public class AccountingControl
     }
     
     private TransactionGlAccountCategoryDescription getTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language, EntityPermission entityPermission) {
-        TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription;
+        var baseQuery = session.getDslContext()
+                .select(TransactionGlAccountCategoryDescriptions.fields())
+                .from(TransactionGlAccountCategoryDescriptions)
+                .where(TransactionGlAccountCategoryDescriptions.TRANSACTION_GL_ACCOUNT_CATEGORY.eq(transactionGlAccountCategory.getPrimaryKey()),
+                        TransactionGlAccountCategoryDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TransactionGlAccountCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccountcategorydescriptions
-                        WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_lang_languageid = ? AND trxglacd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccountcategorydescriptions
-                        WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_lang_languageid = ? AND trxglacd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionGlAccountCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            transactionGlAccountCategoryDescription = transactionGlAccountCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGlAccountCategoryDescription;
+        return transactionGlAccountCategoryDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TransactionGlAccountCategoryDescription getTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language) {
@@ -4481,38 +3957,24 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccountCategoryDescription> getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, EntityPermission entityPermission) {
-        List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccountcategorydescriptions, languages
-                        WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_thrutime = ? AND trxglacd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccountcategorydescriptions
-                        WHERE trxglacd_trxglac_transactionglaccountcategoryid = ? AND trxglacd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionGlAccountCategoryDescriptions.fields())
+                    .from(TransactionGlAccountCategoryDescriptions)
+                    .join(Languages).onKey(TRANSACTION_GL_ACCOUNT_CATEGORY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TransactionGlAccountCategoryDescriptions.TRANSACTION_GL_ACCOUNT_CATEGORY.eq(transactionGlAccountCategory.getPrimaryKey()),
+                            TransactionGlAccountCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TransactionGlAccountCategoryDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionGlAccountCategoryDescriptions.fields())
+                    .from(TransactionGlAccountCategoryDescriptions)
+                    .where(TransactionGlAccountCategoryDescriptions.TRANSACTION_GL_ACCOUNT_CATEGORY.eq(transactionGlAccountCategory.getPrimaryKey()),
+                            TransactionGlAccountCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = transactionGlAccountCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            transactionGlAccountCategoryDescriptions = transactionGlAccountCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGlAccountCategoryDescriptions;
+        return transactionGlAccountCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionGlAccountCategoryDescription> getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory) {
@@ -4593,10 +4055,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TransactionEntityRoleTypeDetailFactory transactionEntityRoleTypeDetailFactory;
+
+    @Inject
     protected TransactionEntityRoleTypeFactory transactionEntityRoleTypeFactory;
 
     @Inject
-    protected TransactionEntityRoleTypeDetailFactory transactionEntityRoleTypeDetailFactory;
+    TransactionEntityRoleTypeTransferCache transactionEntityRoleTypeTransferCache;
 
      public TransactionEntityRoleType createTransactionEntityRoleType(TransactionType transactionType, String transactionEntityRoleTypeName, EntityType entityType,
             Integer sortOrder, BasePK createdBy) {
@@ -4631,46 +4096,29 @@ public class AccountingControl
     }
 
     public long countTransactionEntityRoleTypesByTransactionType(final TransactionType transactionType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactionentityroletypes
-                        JOIN transactionentityroletypedetails ON trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid
-                        WHERE trxertypdt_trxtyp_transactiontypeid = ?
-                        """, transactionType);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionEntityRoleTypes)
+                .join(TransactionEntityRoleTypeDetails).onKey(TRANSACTION_ENTITY_ROLE_TYPES_ACTIVE_DETAIL_FK)
+                .where(TransactionEntityRoleTypeDetails.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
     public TransactionEntityRoleType getTransactionEntityRoleTypeByName(TransactionType transactionType, String transactionEntityRoleTypeName, EntityPermission entityPermission) {
-        TransactionEntityRoleType transactionEntityRoleType;
+        var baseQuery = session.getDslContext()
+                .select(TransactionEntityRoleTypes.fields())
+                .from(TransactionEntityRoleTypes)
+                .join(TransactionEntityRoleTypeDetails).onKey(TRANSACTION_ENTITY_ROLE_TYPES_ACTIVE_DETAIL_FK)
+                .where(TransactionEntityRoleTypeDetails.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()),
+                        TransactionEntityRoleTypeDetails.TRANSACTION_ENTITY_ROLE_TYPE_NAME.eq(transactionEntityRoleTypeName));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroletypes, transactionentityroletypedetails
-                        WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? AND trxertypdt_transactionentityroletypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroletypes, transactionentityroletypedetails
-                        WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ? AND trxertypdt_transactionentityroletypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionEntityRoleTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
-            ps.setString(2, transactionEntityRoleTypeName);
-            
-            transactionEntityRoleType = transactionEntityRoleTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionEntityRoleType;
+        return transactionEntityRoleTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TransactionEntityRoleType getTransactionEntityRoleTypeByName(TransactionType transactionType, String transactionEntityRoleTypeName) {
@@ -4690,38 +4138,20 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleType> getTransactionEntityRoleTypesByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleType> transactionEntityRoleTypes;
+        var baseQuery = session.getDslContext()
+                .select(TransactionEntityRoleTypes.fields())
+                .from(TransactionEntityRoleTypes)
+                .join(TransactionEntityRoleTypeDetails).onKey(TRANSACTION_ENTITY_ROLE_TYPES_ACTIVE_DETAIL_FK)
+                .where(TransactionEntityRoleTypeDetails.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()));
         
-        try {
-            String query = null;
-            
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactionentityroletypes, transactionentityroletypedetails
-                    WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ?
-                    ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactionentityroletypes, transactionentityroletypedetails
-                    WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ?
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TransactionEntityRoleTypeDetails.SORT_ORDER, TransactionEntityRoleTypeDetails.TRANSACTION_ENTITY_ROLE_TYPE_NAME),
+                    TransactionEntityRoleTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionEntityRoleTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
-            
-            transactionEntityRoleTypes = transactionEntityRoleTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionEntityRoleTypes;
+        return transactionEntityRoleTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionEntityRoleType> getTransactionEntityRoleTypesByTransactionType(TransactionType transactionType) {
@@ -4733,38 +4163,25 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleType> getTransactionEntityRoleTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleType> transactionEntityRoleTypes;
-        
-        try {
-            String query = null;
-            
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactionentityroletypes, transactionentityroletypedetails, transactions, transactiondetails
-                    WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_ent_entitytypeid = ?
-                    AND trxertypdt_trxtyp_transactiontypeid = trx_transactionid AND trx_lastdetailid = trxdt_transactiondetailid
-                    ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename, trxdt_transactionname
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactionentityroletypes, transactionentityroletypedetails
-                    WHERE trxertyp_activedetailid = trxertypdt_transactionentityroletypedetailid AND trxertypdt_trxtyp_transactiontypeid = ?
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionEntityRoleTypes.fields())
+                    .from(TransactionEntityRoleTypes)
+                    .join(TransactionEntityRoleTypeDetails).onKey(TRANSACTION_ENTITY_ROLE_TYPES_ACTIVE_DETAIL_FK)
+                    .join(TransactionTypes).onKey(TRANSACTION_ENTITY_ROLE_TYPE_DETAILS_TRANSACTION_TYPE_FK)
+                    .join(TransactionTypeDetails).onKey(TRANSACTION_TYPES_LAST_DETAIL_FK)
+                    .where(TransactionEntityRoleTypeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                    .orderBy(TransactionEntityRoleTypeDetails.SORT_ORDER, TransactionEntityRoleTypeDetails.TRANSACTION_ENTITY_ROLE_TYPE_NAME, TransactionTypeDetails.SORT_ORDER, TransactionTypeDetails.TRANSACTION_TYPE_NAME),
+                    TransactionEntityRoleTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionEntityRoleTypes.fields())
+                    .from(TransactionEntityRoleTypes)
+                    .join(TransactionEntityRoleTypeDetails).onKey(TRANSACTION_ENTITY_ROLE_TYPES_ACTIVE_DETAIL_FK)
+                    .where(TransactionEntityRoleTypeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = transactionEntityRoleTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            
-            transactionEntityRoleTypes = transactionEntityRoleTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionEntityRoleTypes;
+        return transactionEntityRoleTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionEntityRoleType> getTransactionEntityRoleTypesByEntityType(EntityType entityType) {
@@ -4852,6 +4269,9 @@ public class AccountingControl
     @Inject
     protected TransactionEntityRoleTypeDescriptionFactory transactionEntityRoleTypeDescriptionFactory;
 
+    @Inject
+    TransactionEntityRoleTypeDescriptionTransferCache transactionEntityRoleTypeDescriptionTransferCache;
+
     public TransactionEntityRoleTypeDescription createTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language, String description, BasePK createdBy) {
         var transactionEntityRoleTypeDescription = transactionEntityRoleTypeDescriptionFactory.create(transactionEntityRoleType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
@@ -4862,38 +4282,19 @@ public class AccountingControl
     }
     
     private TransactionEntityRoleTypeDescription getTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language, EntityPermission entityPermission) {
-        TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(TransactionEntityRoleTypeDescriptions.fields())
+                .from(TransactionEntityRoleTypeDescriptions)
+                .where(TransactionEntityRoleTypeDescriptions.TRANSACTION_ENTITY_ROLE_TYPE.eq(transactionEntityRoleType.getPrimaryKey()),
+                        TransactionEntityRoleTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TransactionEntityRoleTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroletypedescriptions
-                        WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_lang_languageid = ? AND trxertypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroletypedescriptions
-                        WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_lang_languageid = ? AND trxertypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionEntityRoleTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionEntityRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            transactionEntityRoleTypeDescription = transactionEntityRoleTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionEntityRoleTypeDescription;
+        return transactionEntityRoleTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TransactionEntityRoleTypeDescription getTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language) {
@@ -4913,38 +4314,24 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleTypeDescription> getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroletypedescriptions, languages
-                        WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_thrutime = ? AND trxertypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroletypedescriptions
-                        WHERE trxertypd_trxertyp_transactionentityroletypeid = ? AND trxertypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionEntityRoleTypeDescriptions.fields())
+                    .from(TransactionEntityRoleTypeDescriptions)
+                    .join(Languages).onKey(TRANSACTION_ENTITY_ROLE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TransactionEntityRoleTypeDescriptions.TRANSACTION_ENTITY_ROLE_TYPE.eq(transactionEntityRoleType.getPrimaryKey()),
+                            TransactionEntityRoleTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TransactionEntityRoleTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionEntityRoleTypeDescriptions.fields())
+                    .from(TransactionEntityRoleTypeDescriptions)
+                    .where(TransactionEntityRoleTypeDescriptions.TRANSACTION_ENTITY_ROLE_TYPE.eq(transactionEntityRoleType.getPrimaryKey()),
+                            TransactionEntityRoleTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = transactionEntityRoleTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionEntityRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            transactionEntityRoleTypeDescriptions = transactionEntityRoleTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionEntityRoleTypeDescriptions;
+        return transactionEntityRoleTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionEntityRoleTypeDescription> getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType) {
@@ -5027,6 +4414,9 @@ public class AccountingControl
     @Inject
     protected TransactionGlAccountFactory transactionGlAccountFactory;
 
+    @Inject
+    TransactionGlAccountTransferCache transactionGlAccountTransferCache;
+
      public TransactionGlAccount createTransactionGlAccount(TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, BasePK createdBy) {
          var transactionGlAccount = transactionGlAccountFactory.create(transactionGlAccountCategory, glAccount, session.getStartTime(), Session.MAX_TIME);
         
@@ -5036,40 +4426,27 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccount> getTransactionGlAccountsByGlAccount(GlAccount glAccount, EntityPermission entityPermission) {
-        List<TransactionGlAccount> transactionGlAccounts;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccounts, transactionglaccountcategories, transactionglaccountcategorydetails, transactiontypes, transactiontypedetails
-                        WHERE trxgla_gla_glaccountid = ? AND trxgla_thrutime = ?
-                        AND trxgla_trxglac_transactionglaccountcategoryid = trxglac_transactionglaccountcategoryid AND trxglac_lastdetailid = trxglacdt_transactionglaccountcategorydetailid
-                        AND trxglacdt_trxtyp_transactiontypeid = trxtyp_transactiontypeid AND trxtyp_lastdetailid = trxtypdt_transactiontypedetailid
-                        ORDER BY trxglacdt_sortorder, trxglacdt_transactionglaccountcategoryname, trxtypdt_sortorder, trxtypdt_transactiontypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccounts
-                        WHERE trxgla_gla_glaccountid = ? AND trxgla_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionGlAccounts.fields())
+                    .from(TransactionGlAccounts)
+                    .join(TransactionGlAccountCategories).onKey(TRANSACTION_GL_ACCOUNTS_TRANSACTION_GL_ACCOUNT_CATEGORY_FK)
+                    .join(TransactionGlAccountCategoryDetails).onKey(TRANSACTION_GL_ACCOUNT_CATEGORIES_LAST_DETAIL_FK)
+                    .join(TransactionTypes).onKey(TRANSACTION_GL_ACCOUNT_CATEGORY_DETAILS_TRANSACTION_TYPE_FK)
+                    .join(TransactionTypeDetails).onKey(TRANSACTION_TYPES_LAST_DETAIL_FK)
+                    .where(TransactionGlAccounts.GL_ACCOUNT.eq(glAccount.getPrimaryKey()),
+                            TransactionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TransactionGlAccountCategoryDetails.SORT_ORDER, TransactionGlAccountCategoryDetails.TRANSACTION_GL_ACCOUNT_CATEGORY_NAME, TransactionTypeDetails.SORT_ORDER, TransactionTypeDetails.TRANSACTION_TYPE_NAME),
+                    TransactionGlAccountFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionGlAccounts.fields())
+                    .from(TransactionGlAccounts)
+                    .where(TransactionGlAccounts.GL_ACCOUNT.eq(glAccount.getPrimaryKey()),
+                            TransactionGlAccounts.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = transactionGlAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            transactionGlAccounts = transactionGlAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGlAccounts;
+        return transactionGlAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionGlAccount> getTransactionGlAccountsByGlAccount(GlAccount glAccount) {
@@ -5081,37 +4458,18 @@ public class AccountingControl
     }
     
     private TransactionGlAccount getTransactionGlAccount(TransactionGlAccountCategory transactionGlAccountCategory, EntityPermission entityPermission) {
-        TransactionGlAccount transactionGlAccount;
+        var baseQuery = session.getDslContext()
+                .select(TransactionGlAccounts.fields())
+                .from(TransactionGlAccounts)
+                .where(TransactionGlAccounts.TRANSACTION_GL_ACCOUNT_CATEGORY.eq(transactionGlAccountCategory.getPrimaryKey()),
+                        TransactionGlAccounts.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccounts
-                        WHERE trxgla_trxglac_transactionglaccountcategoryid = ? AND trxgla_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionglaccounts
-                        WHERE trxgla_trxglac_transactionglaccountcategoryid = ? AND trxgla_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionGlAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, transactionGlAccountCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            transactionGlAccount = transactionGlAccountFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGlAccount;
+        return transactionGlAccountFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TransactionGlAccount getTransactionGlAccount(TransactionGlAccountCategory transactionGlAccountCategory) {
@@ -5179,10 +4537,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TransactionGroupDetailFactory transactionGroupDetailFactory;
+
+    @Inject
     protected TransactionGroupFactory transactionGroupFactory;
 
     @Inject
-    protected TransactionGroupDetailFactory transactionGroupDetailFactory;
+    TransactionGroupTransferCache transactionGroupTransferCache;
 
     public TransactionGroup getActiveTransactionGroup(BasePK createdBy) {
         var workflowStep = workflowControl.getWorkflowStepUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
@@ -5190,34 +4551,25 @@ public class AccountingControl
         TransactionGroup transactionGroup = null;
         
         if(workflowStep != null) {
-            List<TransactionGroup> transactionGroups;
-            
-            try {
-                var ps = transactionGroupFactory.prepareStatement(
-                        """
-                        SELECT _ALL_
-                        FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances,
-                        transactiongroups, transactiongroupdetails, workflowentitystatuses, entitytimes
-                        WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid
-                        AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                        AND ent_activedetailid = entdt_entitytypedetailid
-                        AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
-                        AND entdt_entitytypename = ?
-                        AND ent_entitytypeid = eni_ent_entitytypeid AND trxgrp_transactiongroupid = eni_entityuniqueid
-                        AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
-                        AND eni_entityinstanceid = etim_eni_entityinstanceid
-                        ORDER BY etim_createdtime DESC
-                        """);
-                
-                ps.setString(1, ComponentVendors.ECHO_THREE.name());
-                ps.setString(2, EntityTypes.TransactionGroup.name());
-                ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
-                ps.setLong(4, Session.MAX_TIME);
-                
-                transactionGroups = transactionGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
+            var query = session.getDslContext()
+                    .select(TransactionGroups.fields())
+                    .from(TransactionGroups)
+                    .join(EntityInstances).on(TransactionGroups.TRANSACTION_GROUP.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                    .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                    .join(TransactionGroupDetails).onKey(TRANSACTION_GROUPS_ACTIVE_DETAIL_FK)
+                    .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                    .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                    .where(ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                            EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.TransactionGroup.name()),
+                            WorkflowEntityStatuses.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()),
+                            WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityTimes.CREATED_TIME.desc())
+                    .limit(1);
+
+            var transactionGroups = transactionGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
             
             if(transactionGroups != null && !transactionGroups.isEmpty()) {
                 transactionGroup = transactionGroups.iterator().next();
@@ -5274,11 +4626,12 @@ public class AccountingControl
     }
 
     public long countTransactionGroups() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactiongroups
-                        JOIN transactiongroupdetails ON trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionGroups)
+                .join(TransactionGroupDetails).onKey(TRANSACTION_GROUPS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public TransactionGroupDetailValue getTransactionGroupDetailValueForUpdate(TransactionGroup transactionGroup) {
@@ -5286,36 +4639,18 @@ public class AccountingControl
     }
     
     public TransactionGroup getTransactionGroupByName(String transactionGroupName, EntityPermission entityPermission) {
-        TransactionGroup transactionGroup;
+        var baseQuery = session.getDslContext()
+                .select(TransactionGroups.fields())
+                .from(TransactionGroups)
+                .join(TransactionGroupDetails).onKey(TRANSACTION_GROUPS_ACTIVE_DETAIL_FK)
+                .where(TransactionGroupDetails.TRANSACTION_GROUP_NAME.eq(transactionGroupName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactiongroups, transactiongroupdetails
-                        WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid AND trxgrpdt_transactiongroupname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactiongroups, transactiongroupdetails
-                        WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid AND trxgrpdt_transactiongroupname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = transactionGroupFactory.prepareStatement(query);
-            
-            ps.setString(1, transactionGroupName);
-            
-            transactionGroup = transactionGroupFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGroup;
+        return transactionGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TransactionGroup getTransactionGroupByName(String transactionGroupName) {
@@ -5331,28 +4666,19 @@ public class AccountingControl
     }
     
     private List<TransactionGroup> getTransactionGroups(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(TransactionGroups.fields())
+                .from(TransactionGroups)
+                .join(TransactionGroupDetails).onKey(TRANSACTION_GROUPS_ACTIVE_DETAIL_FK);
         
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactiongroups, transactiongroupdetails
-                    WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid
-                    ORDER BY trxgrpdt_transactiongroupname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM transactiongroups, transactiongroupdetails
-                    WHERE trxgrp_activedetailid = trxgrpdt_transactiongroupdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TransactionGroupDetails.TRANSACTION_GROUP_NAME),
+                    TransactionGroupFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = transactionGroupFactory.prepareStatement(query);
-        
-        return transactionGroupFactory.getEntitiesFromQuery(entityPermission, ps);
+        return transactionGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionGroup> getTransactionGroups() {
@@ -5418,10 +4744,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TransactionDetailFactory transactionDetailFactory;
+
+    @Inject
     protected TransactionFactory transactionFactory;
 
     @Inject
-    protected TransactionDetailFactory transactionDetailFactory;
+    TransactionTransferCache transactionTransferCache;
 
     public Transaction createTransaction(Party groupParty, TransactionType transactionType, BasePK createdBy) {
         return createTransaction(groupParty, getActiveTransactionGroup(createdBy), transactionType, createdBy);
@@ -5471,38 +4800,42 @@ public class AccountingControl
     }
 
     public long countTransactions() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactions
-                        JOIN transactiondetails ON trx_activedetailid = trxdt_transactiondetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Transactions)
+                .join(TransactionDetails).onKey(TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTransactionsByTransactionGroup(Party groupParty) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactions
-                        JOIN transactiondetails ON trx_activedetailid = trxdt_transactiondetailid
-                        WHERE trxdt_grouppartyid = ?
-                        """, groupParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(Transactions)
+                .join(TransactionDetails).onKey(TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(TransactionDetails.GROUP_PARTY.eq(groupParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTransactionsByTransactionGroup(TransactionGroup transactionGroup) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactions
-                        JOIN transactiondetails ON trx_activedetailid = trxdt_transactiondetailid
-                        WHERE trxdt_trxgrp_transactiongroupid = ?
-                        """, transactionGroup);
+        return session.getDslContext()
+                .selectCount()
+                .from(Transactions)
+                .join(TransactionDetails).onKey(TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(TransactionDetails.TRANSACTION_GROUP.eq(transactionGroup.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTransactionsByTransactionType(TransactionType transactionType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactions
-                        JOIN transactiondetails ON trx_activedetailid = trxdt_transactiondetailid
-                        WHERE trxdt_trxtyp_transactiontypeid = ?
-                        """, transactionType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Transactions)
+                .join(TransactionDetails).onKey(TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(TransactionDetails.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public TransactionDetailValue getTransactionDetailValueForUpdate(Transaction transaction) {
@@ -5510,36 +4843,18 @@ public class AccountingControl
     }
 
     public Transaction getTransactionByName(String transactionName, EntityPermission entityPermission) {
-        Transaction transaction;
+        var baseQuery = session.getDslContext()
+                .select(Transactions.fields())
+                .from(Transactions)
+                .join(TransactionDetails).onKey(TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(TransactionDetails.TRANSACTION_NAME.eq(transactionName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactions, transactiondetails
-                        WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_transactionname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactions, transactiondetails
-                        WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_transactionname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = transactionFactory.prepareStatement(query);
-
-            ps.setString(1, transactionName);
-
-            transaction = transactionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return transaction;
+        return transactionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Transaction getTransactionByName(String transactionName) {
@@ -5555,60 +4870,38 @@ public class AccountingControl
     }
 
     public List<Transaction> getTransactions() {
-        var ps = transactionFactory.prepareStatement("""
-                        SELECT _ALL_
-                        FROM transactions, transactiondetails
-                        WHERE trx_activedetailid = trxdt_transactiondetailid
-                        ORDER BY trxdt_transactionname
-                        _LIMIT_
-                        """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(Transactions.fields())
+                .from(Transactions)
+                .join(TransactionDetails).onKey(TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .orderBy(TransactionDetails.TRANSACTION_NAME),
+                TransactionFactory.class);
 
-        return transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<Transaction> getTransactionsByTransactionGroup(TransactionGroup transactionGroup) {
-        List<Transaction> transactions;
+        var query = session.applyLimit(session.getDslContext()
+                .select(Transactions.fields())
+                .from(Transactions)
+                .join(TransactionDetails).onKey(TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(TransactionDetails.TRANSACTION_GROUP.eq(transactionGroup.getPrimaryKey()))
+                .orderBy(TransactionDetails.TRANSACTION_NAME),
+                TransactionFactory.class);
 
-        try {
-            var ps = transactionFactory.prepareStatement("""
-                            SELECT _ALL_
-                            FROM transactions, transactiondetails
-                            WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxgrp_transactiongroupid = ?
-                            ORDER BY trxdt_transactionname
-                            _LIMIT_
-                            """);
-
-            ps.setLong(1, transactionGroup.getPrimaryKey().getEntityId());
-
-            transactions = transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return transactions;
+        return transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<Transaction> getTransactionsByTransactionType(TransactionType transactionType) {
-        List<Transaction> transactions;
+        var query = session.applyLimit(session.getDslContext()
+                .select(Transactions.fields())
+                .from(Transactions)
+                .join(TransactionDetails).onKey(TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(TransactionDetails.TRANSACTION_TYPE.eq(transactionType.getPrimaryKey()))
+                .orderBy(TransactionDetails.TRANSACTION_NAME),
+                TransactionFactory.class);
         
-        try {
-            var ps = transactionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM transactions, transactiondetails
-                    WHERE trx_activedetailid = trxdt_transactiondetailid AND trxdt_trxtyp_transactiontypeid = ?
-                    ORDER BY trxdt_transactionname
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, transactionType.getPrimaryKey().getEntityId());
-            
-            transactions = transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactions;
+        return transactionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public TransactionTransfer getTransactionTransfer(UserVisit userVisit, Transaction transaction) {
@@ -5641,36 +4934,17 @@ public class AccountingControl
     }
     
     private TransactionStatus getTransactionStatus(Transaction transaction, EntityPermission entityPermission) {
-        TransactionStatus transactionStatus;
+        var baseQuery = session.getDslContext()
+                .select(TransactionStatuses.fields())
+                .from(TransactionStatuses)
+                .where(TransactionStatuses.TRANSACTION.eq(transaction.getPrimaryKey()));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionstatuses
-                        WHERE trxst_trx_transactionid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionstatuses
-                        WHERE trxst_trx_transactionid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionStatusFactory.prepareStatement(query);
-            
-            ps.setLong(1, transaction.getPrimaryKey().getEntityId());
-            
-            transactionStatus = transactionStatusFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionStatus;
+        return transactionStatusFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TransactionStatus getTransactionStatus(Transaction transaction) {
@@ -5696,6 +4970,9 @@ public class AccountingControl
     @Inject
     protected TransactionGlEntryFactory transactionGlEntryFactory;
 
+    @Inject
+    TransactionGlEntryTransferCache transactionGlEntryTransferCache;
+
     public TransactionGlEntry createTransactionGlEntry(Transaction transaction, Integer transactionGlEntrySequence,
             Party groupParty, TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount,
             Currency originalCurrency, Long originalDebit, Long originalCredit, Long debit, Long credit,
@@ -5710,72 +4987,52 @@ public class AccountingControl
     }
 
     public long countTransactionGlEntryByTransaction(Transaction transaction) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactionglentries
-                        WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ?
-                        """, transaction, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionGlEntries)
+                .where(TransactionGlEntries.TRANSACTION.eq(transaction.getPrimaryKey()),
+                        TransactionGlEntries.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTransactionGlEntryByGlAccount(GlAccount glAccount) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactionglentries
-                        WHERE trxgla_gla_glaccountid = ? AND trxglent_thrutime = ?
-                        """, glAccount, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionGlEntries)
+                .where(TransactionGlAccounts.GL_ACCOUNT.eq(glAccount.getPrimaryKey()),
+                        TransactionGlEntries.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<TransactionGlEntry> getTransactionGlEntriesByTransaction(Transaction transaction) {
-        List<TransactionGlEntry> transactionGlEntries;
+        var query = session.applyLimit(session.getDslContext()
+                .select(TransactionGlEntries.fields())
+                .from(TransactionGlEntries)
+                .where(TransactionGlEntries.TRANSACTION.eq(transaction.getPrimaryKey()),
+                        TransactionGlEntries.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(TransactionGlEntries.TRANSACTION_GL_ENTRY_SEQUENCE),
+                TransactionGlEntryFactory.class);
         
-        try {
-            var ps = transactionGlEntryFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM transactionglentries
-                    WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ?
-                    ORDER BY trxglent_transactionglentrysequence
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, transaction.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            transactionGlEntries = transactionGlEntryFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGlEntries;
+        return transactionGlEntryFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<TransactionGlEntry> getTransactionGlEntriesByGlAccount(GlAccount glAccount) {
-        List<TransactionGlEntry> transactionGlEntries;
-        
-        try {
-            var ps = transactionGlEntryFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM transactionglentries
-                    JOIN transactiontimes ON trxglent_trx_transactionid = txntim_trx_transactionid AND txntim_thrutime
-                    JOIN transactiontimetypes ON txntim_txntimtyp_transactiontimetypeid = txntimtyp_transactiontimetypeid
-                    JOIN transactiontimetypedetails ON txntimtyp_lastdetailid = txntimtypdt_transactiontimetypedetailid
-                    WHERE trxglent_gla_glaccountid = ? AND trxglent_thrutime = ? AND txntimtypdt_transactiontimetypename = ?
-                    ORDER BY txntim_time
-                    _LIMIT_
-                    """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(TransactionGlEntries.fields())
+                .from(TransactionGlEntries)
+                .join(TransactionTimes).on(TransactionGlEntries.TRANSACTION.eq(TransactionTimes.TRANSACTION))
+                .join(TransactionTimeTypes).onKey(TRANSACTION_TIMES_TRANSACTION_TIME_TYPE_FK)
+                .join(TransactionTimeTypeDetails).onKey(TRANSACTION_TIME_TYPES_LAST_DETAIL_FK)
+                .where(TransactionTimes.THRU_TIME.eq(Session.MAX_TIME),
+                        TransactionGlEntries.GL_ACCOUNT.eq(glAccount.getPrimaryKey()),
+                        TransactionGlEntries.THRU_TIME.eq(Session.MAX_TIME),
+                        TransactionTimeTypeDetails.TRANSACTION_TIME_TYPE_NAME.eq(com.echothree.model.control.accounting.common.TransactionTimeTypes.TRANSACTION_TIME.name()))
+                .orderBy(TransactionTimes.TIME),
+                TransactionGlEntryFactory.class);
 
-            ps.setLong(1, glAccount.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setString(3, TransactionTimeTypes.TRANSACTION_TIME.name());
-
-            transactionGlEntries = transactionGlEntryFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionGlEntries;
+        return transactionGlEntryFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public TransactionGlEntryTransfer getTransactionGlEntryTransfer(UserVisit userVisit, TransactionGlEntry transactionGlEntry) {
@@ -5803,6 +5060,9 @@ public class AccountingControl
     @Inject
     protected TransactionEntityRoleFactory transactionEntityRoleFactory;
 
+    @Inject
+    TransactionEntityRoleTransferCache transactionEntityRoleTransferCache;
+
     public TransactionEntityRole createTransactionEntityRole(Transaction transaction, TransactionEntityRoleType transactionEntityRoleType, EntityInstance entityInstance, BasePK createdBy) {
         var transactionEntityRole = transactionEntityRoleFactory.create(transaction, transactionEntityRoleType, entityInstance, session.getStartTime(),
                 Session.MAX_TIME);
@@ -5813,71 +5073,46 @@ public class AccountingControl
     }
 
     public long countTransactionEntityRolesByTransaction(final Transaction transaction) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM transactionentityroles
-                        WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ?
-                        """, transaction, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionEntityRoles)
+                .where(TransactionEntityRoles.TRANSACTION.eq(transaction.getPrimaryKey()),
+                        TransactionEntityRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public TransactionEntityRole getTransactionEntityRole(Transaction transaction, TransactionEntityRoleType transactionEntityRoleType) {
-        TransactionEntityRole transactionEntityRole;
+        var query = session.getDslContext()
+                .select(TransactionEntityRoles.fields())
+                .from(TransactionEntityRoles)
+                .where(TransactionEntityRoles.TRANSACTION.eq(transaction.getPrimaryKey()),
+                        TransactionEntityRoles.TRANSACTION_ENTITY_ROLE_TYPE.eq(transactionEntityRoleType.getPrimaryKey()),
+                        TransactionEntityRoles.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            var ps = transactionEntityRoleFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM transactionentityroles
-                    WHERE trxer_trx_transactionid = ? AND trxer_trxertyp_transactionentityroletypeid = ? AND trxer_thrutime = ?
-                    """);
-            
-            ps.setLong(1, transaction.getPrimaryKey().getEntityId());
-            ps.setLong(2, transactionEntityRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            transactionEntityRole = transactionEntityRoleFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionEntityRole;
+        return transactionEntityRoleFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     private List<TransactionEntityRole> getTransactionEntityRolesByTransaction(Transaction transaction, EntityPermission entityPermission) {
-        List<TransactionEntityRole> transactionEntityRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroles, transactionentityroletypes, transactionentityroletypedetails
-                        WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ?
-                        AND trxer_trxertyp_transactionentityroletypeid = trxertyp_transactionentityroletypeid AND trxertyp_lastdetailid = trxertypdt_transactionentityroletypedetailid
-                        ORDER BY trxertypdt_sortorder, trxertypdt_transactionentityroletypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroles
-                        WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionEntityRoles.fields())
+                    .from(TransactionEntityRoles)
+                    .join(TransactionEntityRoleTypes).onKey(TRANSACTION_ENTITY_ROLES_TRANSACTION_ENTITY_ROLE_TYPE_FK)
+                    .join(TransactionEntityRoleTypeDetails).onKey(TRANSACTION_ENTITY_ROLE_TYPES_LAST_DETAIL_FK)
+                    .where(TransactionEntityRoles.TRANSACTION.eq(transaction.getPrimaryKey()),
+                            TransactionEntityRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TransactionEntityRoleTypeDetails.SORT_ORDER, TransactionEntityRoleTypeDetails.TRANSACTION_ENTITY_ROLE_TYPE_NAME),
+                    TransactionEntityRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionEntityRoles.fields())
+                    .from(TransactionEntityRoles)
+                    .where(TransactionEntityRoles.TRANSACTION.eq(transaction.getPrimaryKey()),
+                            TransactionEntityRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = transactionEntityRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, transaction.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            transactionEntityRoles = transactionEntityRoleFactory.getEntitiesFromQuery( entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionEntityRoles;
+        return transactionEntityRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionEntityRole> getTransactionEntityRolesByTransaction(Transaction transaction) {
@@ -5889,39 +5124,20 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRole> getTransactionEntityRolesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<TransactionEntityRole> transactionEntityRoles;
+        var baseQuery = session.getDslContext()
+                .select(TransactionEntityRoles.fields())
+                .from(TransactionEntityRoles)
+                .where(TransactionEntityRoles.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        TransactionEntityRoles.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroles
-                        WHERE trxer_eni_entityinstanceid = ? AND trxer_thrutime = ?
-                        ORDER BY trxer_transactionentityroleid
-                        """; // TODO: this should probably be ordered by something else
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM transactionentityroles
-                        WHERE trxer_eni_entityinstanceid = ? AND trxer_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TransactionEntityRoles.TRANSACTION_ENTITY_ROLE),
+                    TransactionEntityRoleFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = transactionEntityRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            transactionEntityRoles = transactionEntityRoleFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return transactionEntityRoles;
+        return transactionEntityRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TransactionEntityRole> getTransactionEntityRolesByEntityInstance(EntityInstance entityInstance) {
@@ -5975,10 +5191,13 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SymbolPositionDetailFactory symbolPositionDetailFactory;
+
+    @Inject
     protected SymbolPositionFactory symbolPositionFactory;
 
     @Inject
-    protected SymbolPositionDetailFactory symbolPositionDetailFactory;
+    SymbolPositionTransferCache symbolPositionTransferCache;
 
     public SymbolPosition createSymbolPosition(String symbolPositionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSymbolPosition = getDefaultSymbolPosition();
@@ -6024,46 +5243,28 @@ public class AccountingControl
     }
 
     public long countSymbolPositions() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM symbolpositions, symbolpositiondetails
-                WHERE sympos_activedetailid = symposdt_symbolpositiondetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SymbolPositions)
+                .join(SymbolPositionDetails).onKey(SYMBOL_POSITIONS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SymbolPosition getSymbolPositionByName(String symbolPositionName, EntityPermission entityPermission) {
-        SymbolPosition symbolPosition;
+        var baseQuery = session.getDslContext()
+                .select(SymbolPositions.fields())
+                .from(SymbolPositions)
+                .join(SymbolPositionDetails).onKey(SYMBOL_POSITION_DETAILS_SYMBOL_POSITION_FK)
+                .where(SymbolPositionDetails.SYMBOL_POSITION_NAME.eq(symbolPositionName),
+                        SymbolPositionDetails.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositions, symbolpositiondetails
-                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_symbolpositionname = ? AND symposdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositions, symbolpositiondetails
-                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_symbolpositionname = ? AND symposdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = symbolPositionFactory.prepareStatement(query);
-            
-            ps.setString(1, symbolPositionName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            symbolPosition = symbolPositionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return symbolPosition;
+        return symbolPositionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SymbolPosition getSymbolPositionByName(String symbolPositionName) {
@@ -6083,36 +5284,19 @@ public class AccountingControl
     }
     
     private SymbolPosition getDefaultSymbolPosition(EntityPermission entityPermission) {
-        SymbolPosition symbolPosition;
+        var baseQuery = session.getDslContext()
+                .select(SymbolPositions.fields())
+                .from(SymbolPositions)
+                .join(SymbolPositionDetails).onKey(SYMBOL_POSITION_DETAILS_SYMBOL_POSITION_FK)
+                .where(SymbolPositionDetails.IS_DEFAULT.eq(true),
+                        SymbolPositionDetails.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositions, symbolpositiondetails
-                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_isdefault = 1 AND symposdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositions, symbolpositiondetails
-                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_isdefault = 1 AND symposdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = symbolPositionFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            symbolPosition = symbolPositionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return symbolPosition;
+        return symbolPositionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SymbolPosition getDefaultSymbolPosition() {
@@ -6128,38 +5312,20 @@ public class AccountingControl
     }
     
     private List<SymbolPosition> getSymbolPositions(EntityPermission entityPermission) {
-        List<SymbolPosition> symbolPositions;
+        var baseQuery = session.getDslContext()
+                .select(SymbolPositions.fields())
+                .from(SymbolPositions)
+                .join(SymbolPositionDetails).onKey(SYMBOL_POSITION_DETAILS_SYMBOL_POSITION_FK)
+                .where(SymbolPositionDetails.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositions, symbolpositiondetails
-                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ?
-                        ORDER BY symposdt_sortorder, symposdt_symbolpositionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositions, symbolpositiondetails
-                        WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SymbolPositionDetails.SORT_ORDER, SymbolPositionDetails.SYMBOL_POSITION_NAME),
+                    SymbolPositionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = symbolPositionFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            symbolPositions = symbolPositionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return symbolPositions;
+        return symbolPositionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SymbolPosition> getSymbolPositions() {
@@ -6303,6 +5469,9 @@ public class AccountingControl
     @Inject
     protected SymbolPositionDescriptionFactory symbolPositionDescriptionFactory;
 
+    @Inject
+    SymbolPositionDescriptionTransferCache symbolPositionDescriptionTransferCache;
+
     public SymbolPositionDescription createSymbolPositionDescription(SymbolPosition symbolPosition, Language language, String description, BasePK createdBy) {
         var symbolPositionDescription = symbolPositionDescriptionFactory.create(symbolPosition, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -6313,38 +5482,19 @@ public class AccountingControl
     }
     
     private SymbolPositionDescription getSymbolPositionDescription(SymbolPosition symbolPosition, Language language, EntityPermission entityPermission) {
-        SymbolPositionDescription symbolPositionDescription;
+        var baseQuery = session.getDslContext()
+                .select(SymbolPositionDescriptions.fields())
+                .from(SymbolPositionDescriptions)
+                .where(SymbolPositionDescriptions.SYMBOL_POSITION.eq(symbolPosition.getPrimaryKey()),
+                        SymbolPositionDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SymbolPositionDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositiondescriptions
-                        WHERE symposd_sympos_symbolpositionid = ? AND symposd_lang_languageid = ? AND symposd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositiondescriptions
-                        WHERE symposd_sympos_symbolpositionid = ? AND symposd_lang_languageid = ? AND symposd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = symbolPositionDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, symbolPosition.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            symbolPositionDescription = symbolPositionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return symbolPositionDescription;
+        return symbolPositionDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SymbolPositionDescription getSymbolPositionDescription(SymbolPosition symbolPosition, Language language) {
@@ -6364,38 +5514,24 @@ public class AccountingControl
     }
     
     private List<SymbolPositionDescription> getSymbolPositionDescriptionsBySymbolPosition(SymbolPosition symbolPosition, EntityPermission entityPermission) {
-        List<SymbolPositionDescription> symbolPositionDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositiondescriptions, languages
-                        WHERE symposd_sympos_symbolpositionid = ? AND symposd_thrutime = ? AND symposd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM symbolpositiondescriptions
-                        WHERE symposd_sympos_symbolpositionid = ? AND symposd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SymbolPositionDescriptions.fields())
+                    .from(SymbolPositionDescriptions)
+                    .join(Languages).onKey(SYMBOL_POSITION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SymbolPositionDescriptions.SYMBOL_POSITION.eq(symbolPosition.getPrimaryKey()),
+                            SymbolPositionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SymbolPositionDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SymbolPositionDescriptions.fields())
+                    .from(SymbolPositionDescriptions)
+                    .where(SymbolPositionDescriptions.SYMBOL_POSITION.eq(symbolPosition.getPrimaryKey()),
+                            SymbolPositionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = symbolPositionDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, symbolPosition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            symbolPositionDescriptions = symbolPositionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return symbolPositionDescriptions;
+        return symbolPositionDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SymbolPositionDescription> getSymbolPositionDescriptionsBySymbolPosition(SymbolPosition symbolPosition) {
