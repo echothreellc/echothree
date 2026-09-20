@@ -16,27 +16,37 @@
 
 package com.echothree.model.control.party.server.control;
 
+
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.transfer.PartyEntityTypeTransfer;
+import com.echothree.model.control.party.server.transfer.PartyEntityTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyEntityType;
 import com.echothree.model.data.party.server.factory.PartyEntityTypeFactory;
 import com.echothree.model.data.party.server.value.PartyEntityTypeValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTY_ENTITY_TYPES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.party.PartyEntityTypes.PartyEntityTypes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
 @CommandScope
 public class PartyEntityTypeControl
-        extends BasePartyControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of PartyEntityTypeControl */
     protected PartyEntityTypeControl() {
@@ -50,6 +60,9 @@ public class PartyEntityTypeControl
     @Inject
     protected PartyEntityTypeFactory partyEntityTypeFactory;
 
+    @Inject
+    PartyEntityTypeTransferCache partyEntityTypeTransferCache;
+
     public PartyEntityType createPartyEntityType(Party party, EntityType entityType, Boolean confirmDelete, BasePK createdBy) {
         var partyEntityType = partyEntityTypeFactory.create(party, entityType, confirmDelete, session.getStartTime(), Session.MAX_TIME);
 
@@ -59,54 +72,39 @@ public class PartyEntityTypeControl
     }
 
     public long countPartyEntityTypesByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyentitytypes
-                        WHERE pent_par_partyid = ? AND pent_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyEntityTypes)
+                .where(PartyEntityTypes.PARTY.eq(party.getPrimaryKey()),
+                        PartyEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyEntityTypesByEntityType(final EntityType entityType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyentitytypes
-                        WHERE pent_ent_entitytypeid = ? AND pent_thrutime = ?
-                        """, entityType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyEntityTypes)
+                .where(PartyEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        PartyEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyEntityType getPartyEntityType(Party party, EntityType entityType, EntityPermission entityPermission) {
-        PartyEntityType partyEntityType;
+        var baseQuery = session.getDslContext()
+                .select(PartyEntityTypes.fields())
+                .from(PartyEntityTypes)
+                .where(PartyEntityTypes.PARTY.eq(party.getPrimaryKey()),
+                        PartyEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        PartyEntityTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyentitytypes
-                        WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyentitytypes
-                        WHERE pent_par_partyid = ? AND pent_ent_entitytypeid = ? AND pent_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = partyEntityTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            partyEntityType = partyEntityTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return partyEntityType;
+        return partyEntityTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyEntityType getPartyEntityType(Party party, EntityType entityType) {
@@ -126,40 +124,27 @@ public class PartyEntityTypeControl
     }
 
     private List<PartyEntityType> getPartyEntityTypesByParty(Party party, EntityPermission entityPermission) {
-        List<PartyEntityType> partyEntityTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyEntityTypes.fields())
+                    .from(PartyEntityTypes)
+                    .join(EntityTypes).onKey(PARTY_ENTITY_TYPES_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                    .where(PartyEntityTypes.PARTY.eq(party.getPrimaryKey()),
+                            PartyEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME, ComponentVendorDetails.COMPONENT_VENDOR_NAME),
+                    PartyEntityTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyEntityTypes.fields())
+                    .from(PartyEntityTypes)
+                    .where(PartyEntityTypes.PARTY.eq(party.getPrimaryKey()),
+                            PartyEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyentitytypes, entitytypes, entitytypedetails, componentvendors, componentvendordetails
-                        WHERE pent_par_partyid = ? AND pent_thrutime = ?
-                        AND pent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
-                        AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
-                        ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyentitytypes
-                        WHERE pent_par_partyid = ? AND pent_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = partyEntityTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            partyEntityTypes = partyEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return partyEntityTypes;
+        return partyEntityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyEntityType> getPartyEntityTypesByParty(Party party) {

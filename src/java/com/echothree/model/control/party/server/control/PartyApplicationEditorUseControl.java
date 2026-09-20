@@ -16,8 +16,10 @@
 
 package com.echothree.model.control.party.server.control;
 
+
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.transfer.PartyApplicationEditorUseTransfer;
+import com.echothree.model.control.party.server.transfer.PartyApplicationEditorUseTransferCache;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -28,20 +30,29 @@ import com.echothree.model.data.party.server.factory.PartyApplicationEditorUseDe
 import com.echothree.model.data.party.server.factory.PartyApplicationEditorUseFactory;
 import com.echothree.model.data.party.server.value.PartyApplicationEditorUseDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.APPLICATION_EDITOR_USES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTY_APPLICATION_EDITOR_USE_DETAILS_APPLICATION_EDITOR_USE_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTY_APPLICATION_EDITOR_USE_DETAILS_PARTY_FK;
+import static com.echothree.model.jooq.server.tables.core.ApplicationEditorUseDetails.ApplicationEditorUseDetails;
+import static com.echothree.model.jooq.server.tables.core.ApplicationEditorUses.ApplicationEditorUses;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyApplicationEditorUseDetails.PartyApplicationEditorUseDetails;
+import static com.echothree.model.jooq.server.tables.party.PartyApplicationEditorUses.PartyApplicationEditorUses;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 
 @CommandScope
 public class PartyApplicationEditorUseControl
-        extends BasePartyControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of PartyApplicationEditorUseControl */
     protected PartyApplicationEditorUseControl() {
@@ -53,10 +64,13 @@ public class PartyApplicationEditorUseControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PartyApplicationEditorUseDetailFactory partyApplicationEditorUseDetailFactory;
+
+    @Inject
     protected PartyApplicationEditorUseFactory partyApplicationEditorUseFactory;
 
     @Inject
-    protected PartyApplicationEditorUseDetailFactory partyApplicationEditorUseDetailFactory;
+    PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache;
 
     public PartyApplicationEditorUse createPartyApplicationEditorUse(Party party, ApplicationEditorUse applicationEditorUse,
             ApplicationEditor applicationEditor, Integer preferredHeight, Integer preferredWidth, BasePK createdBy) {
@@ -91,58 +105,49 @@ public class PartyApplicationEditorUseControl
     }
 
     public long countPartyApplicationEditorUsesByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyapplicationeditoruses
-                        JOIN partyapplicationeditorusedetails ON parappledtrusedt_partyapplicationeditorusedetailid = parappledtruse_activedetailid
-                        WHERE parappledtrusedt_par_partyid = ?
-                        """, party);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyApplicationEditorUses)
+                .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                .where(PartyApplicationEditorUseDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyApplicationEditorUsesByApplicationEditorUse(final ApplicationEditorUse applicationEditorUse) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyapplicationeditoruses
-                        JOIN partyapplicationeditorusedetails ON parappledtrusedt_partyapplicationeditorusedetailid = parappledtruse_activedetailid
-                        WHERE parappledtrusedt_appledtruse_applicationeditoruseid = ?
-                        """, applicationEditorUse);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyApplicationEditorUses)
+                .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                .where(PartyApplicationEditorUseDetails.APPLICATION_EDITOR_USE.eq(applicationEditorUse.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyApplicationEditorUsesByApplicationEditor(final ApplicationEditor applicationEditor) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyapplicationeditoruses
-                        JOIN partyapplicationeditorusedetails ON parappledtrusedt_partyapplicationeditorusedetailid = parappledtruse_activedetailid
-                        WHERE parappledtrusedt_appledtr_applicationeditorid = ?
-                        """, applicationEditor);
-    }
-
-    private static final Map<EntityPermission, String> getPartyApplicationEditorUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partyapplicationeditoruses, partyapplicationeditorusedetails
-                WHERE parappledtruse_activedetailid = parappledtrusedt_partyapplicationeditorusedetailid
-                AND parappledtrusedt_par_partyid = ? AND parappledtrusedt_appledtruse_applicationeditoruseid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partyapplicationeditoruses, partyapplicationeditorusedetails
-                WHERE parappledtruse_activedetailid = parappledtrusedt_partyapplicationeditorusedetailid
-                AND parappledtrusedt_par_partyid = ? AND parappledtrusedt_appledtruse_applicationeditoruseid = ?
-                FOR UPDATE
-                """);
-        getPartyApplicationEditorUseQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyApplicationEditorUses)
+                .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                .where(PartyApplicationEditorUseDetails.APPLICATION_EDITOR.eq(applicationEditor.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyApplicationEditorUse getPartyApplicationEditorUse(Party party, ApplicationEditorUse applicationEditorUse, EntityPermission entityPermission) {
-        return partyApplicationEditorUseFactory.getEntityFromQuery(entityPermission, getPartyApplicationEditorUseQueries,
-                party, applicationEditorUse);
+        var baseQuery = session.getDslContext()
+                .select(PartyApplicationEditorUses.fields())
+                .from(PartyApplicationEditorUses)
+                .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                .where(PartyApplicationEditorUseDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyApplicationEditorUseDetails.APPLICATION_EDITOR_USE.eq(applicationEditorUse.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyApplicationEditorUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyApplicationEditorUse getPartyApplicationEditorUse(Party party, ApplicationEditorUse applicationEditorUse) {
@@ -161,33 +166,26 @@ public class PartyApplicationEditorUseControl
         return getPartyApplicationEditorUseDetailValueForUpdate(getPartyApplicationEditorUseForUpdate(party, applicationEditorUse));
     }
 
-    private static final Map<EntityPermission, String> getPartyApplicationEditorUsesByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partyapplicationeditoruses, partyapplicationeditorusedetails, applicationeditoruses, applicationeditorusedetails
-                WHERE parappledtruse_activedetailid = parappledtrusedt_partyapplicationeditorusedetailid AND parappledtrusedt_par_partyid = ?
-                AND parappledtrusedt_appledtruse_applicationeditoruseid = appledtruse_applicationeditoruseid AND appledtruse_lastdetailid = appledtrusedt_applicationeditorusedetailid
-                ORDER BY appledtrusedt_sortorder, appledtrusedt_applicationeditorusename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partyapplicationeditoruses, partyapplicationeditorusedetails
-                WHERE parappledtruse_activedetailid = parappledtrusedt_partyapplicationeditorusedetailid AND parappledtrusedt_par_partyid = ?
-                FOR UPDATE
-                """);
-        getPartyApplicationEditorUsesByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyApplicationEditorUse> getPartyApplicationEditorUsesByParty(Party party, EntityPermission entityPermission) {
-        return partyApplicationEditorUseFactory.getEntitiesFromQuery(entityPermission, getPartyApplicationEditorUsesByPartyQueries,
-                party);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyApplicationEditorUses.fields())
+                    .from(PartyApplicationEditorUses)
+                    .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .join(ApplicationEditorUses).onKey(PARTY_APPLICATION_EDITOR_USE_DETAILS_APPLICATION_EDITOR_USE_FK)
+                    .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_LAST_DETAIL_FK)
+                    .where(PartyApplicationEditorUseDetails.PARTY.eq(party.getPrimaryKey()))
+                    .orderBy(ApplicationEditorUseDetails.SORT_ORDER, ApplicationEditorUseDetails.APPLICATION_EDITOR_USE_NAME),
+                    PartyApplicationEditorUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyApplicationEditorUses.fields())
+                    .from(PartyApplicationEditorUses)
+                    .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .where(PartyApplicationEditorUseDetails.PARTY.eq(party.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyApplicationEditorUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyApplicationEditorUse> getPartyApplicationEditorUsesByParty(Party party) {
@@ -198,34 +196,27 @@ public class PartyApplicationEditorUseControl
         return getPartyApplicationEditorUsesByParty(party, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyApplicationEditorUsesByApplicationEditorUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partyapplicationeditoruses, partyapplicationeditorusedetails, parties, partydetails
-                WHERE parappledtruse_activedetailid = parappledtrusedt_partyapplicationeditorusedetailid AND parappledtrusedt_appledtruse_applicationeditoruseid = ?
-                AND parappledtrusedt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                ORDER BY pardt_partyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partyapplicationeditoruses, partyapplicationeditorusedetails, parties, partydetails
-                WHERE parappledtruse_activedetailid = parappledtrusedt_partyapplicationeditorusedetailid AND parappledtrusedt_appledtruse_applicationeditoruseid = ?
-                FOR UPDATE
-                """);
-        getPartyApplicationEditorUsesByApplicationEditorUseQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyApplicationEditorUse> getPartyApplicationEditorUsesByApplicationEditorUse(ApplicationEditorUse applicationEditorUse,
             EntityPermission entityPermission) {
-        return partyApplicationEditorUseFactory.getEntitiesFromQuery(entityPermission, getPartyApplicationEditorUsesByApplicationEditorUseQueries,
-                applicationEditorUse);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyApplicationEditorUses.fields())
+                    .from(PartyApplicationEditorUses)
+                    .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_APPLICATION_EDITOR_USE_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyApplicationEditorUseDetails.APPLICATION_EDITOR_USE.eq(applicationEditorUse.getPrimaryKey()))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyApplicationEditorUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyApplicationEditorUses.fields())
+                    .from(PartyApplicationEditorUses)
+                    .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .where(PartyApplicationEditorUseDetails.APPLICATION_EDITOR_USE.eq(applicationEditorUse.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyApplicationEditorUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyApplicationEditorUse> getPartyApplicationEditorUsesByApplicationEditorUse(ApplicationEditorUse applicationEditorUse) {
@@ -236,35 +227,29 @@ public class PartyApplicationEditorUseControl
         return getPartyApplicationEditorUsesByApplicationEditorUse(applicationEditorUse, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyApplicationEditorUsesByApplicationEditorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partyapplicationeditoruses, partyapplicationeditorusedetails, parties, partydetails, applicationeditoruses, applicationeditorusedetails
-                WHERE parappledtruse_activedetailid = parappledtrusedt_partyapplicationeditorusedetailid AND parappledtrusedt_appledtr_applicationeditorid = ?
-                AND parappledtrusedt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                AND parappledtrusedt_appledtruse_applicationeditoruseid = appledtruse_applicationeditoruseid AND appledtruse_lastdetailid = appledtrusedt_applicationeditorusedetailid
-                ORDER BY pardt_partyname, appledtrusedt_sortorder, appledtrusedt_applicationeditorusename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partyapplicationeditoruses, partyapplicationeditorusedetails
-                WHERE parappledtruse_activedetailid = parappledtrusedt_partyapplicationeditorusedetailid AND parappledtrusedt_appledtr_applicationeditorid = ?
-                FOR UPDATE
-                """);
-        getPartyApplicationEditorUsesByApplicationEditorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyApplicationEditorUse> getPartyApplicationEditorUsesByApplicationEditor(ApplicationEditor applicationEditor,
             EntityPermission entityPermission) {
-        return partyApplicationEditorUseFactory.getEntitiesFromQuery(entityPermission, getPartyApplicationEditorUsesByApplicationEditorQueries,
-                applicationEditor);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyApplicationEditorUses.fields())
+                    .from(PartyApplicationEditorUses)
+                    .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_APPLICATION_EDITOR_USE_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .join(ApplicationEditorUses).onKey(PARTY_APPLICATION_EDITOR_USE_DETAILS_APPLICATION_EDITOR_USE_FK)
+                    .join(ApplicationEditorUseDetails).onKey(APPLICATION_EDITOR_USES_LAST_DETAIL_FK)
+                    .where(PartyApplicationEditorUseDetails.APPLICATION_EDITOR.eq(applicationEditor.getPrimaryKey()))
+                    .orderBy(PartyDetails.PARTY_NAME, ApplicationEditorUseDetails.SORT_ORDER, ApplicationEditorUseDetails.APPLICATION_EDITOR_USE_NAME),
+                    PartyApplicationEditorUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyApplicationEditorUses.fields())
+                    .from(PartyApplicationEditorUses)
+                    .join(PartyApplicationEditorUseDetails).onKey(PARTY_APPLICATION_EDITOR_USES_ACTIVE_DETAIL_FK)
+                    .where(PartyApplicationEditorUseDetails.APPLICATION_EDITOR.eq(applicationEditor.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyApplicationEditorUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyApplicationEditorUse> getPartyApplicationEditorUsesByApplicationEditor(ApplicationEditor applicationEditor) {
