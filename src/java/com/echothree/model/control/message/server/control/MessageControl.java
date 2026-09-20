@@ -67,14 +67,34 @@ import com.echothree.model.data.message.server.value.MessageTypeDescriptionValue
 import com.echothree.model.data.message.server.value.MessageTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.ENTITY_MESSAGES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.ENTITY_MESSAGES_MESSAGE_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.MESSAGES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.MESSAGES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.MESSAGE_BLOBS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.MESSAGE_CLOBS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.MESSAGE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.MESSAGE_STRINGS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.MESSAGE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.message.MessageForeignKeys.MESSAGE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.message.EntityMessages.EntityMessages;
+import static com.echothree.model.jooq.server.tables.message.MessageBlobs.MessageBlobs;
+import static com.echothree.model.jooq.server.tables.message.MessageClobs.MessageClobs;
+import static com.echothree.model.jooq.server.tables.message.MessageDescriptions.MessageDescriptions;
+import static com.echothree.model.jooq.server.tables.message.MessageDetails.MessageDetails;
+import static com.echothree.model.jooq.server.tables.message.MessageStrings.MessageStrings;
+import static com.echothree.model.jooq.server.tables.message.MessageTypeDescriptions.MessageTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.message.MessageTypeDetails.MessageTypeDetails;
+import static com.echothree.model.jooq.server.tables.message.MessageTypes.MessageTypes;
+import static com.echothree.model.jooq.server.tables.message.Messages.Messages;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -91,42 +111,17 @@ public class MessageControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Message Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    MessageTypeTransferCache messageTypeTransferCache;
-
-    @Inject
-    MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache;
-
-    @Inject
-    MessageTransferCache messageTransferCache;
-
-    @Inject
-    MessageStringTransferCache messageStringTransferCache;
-
-    @Inject
-    MessageBlobTransferCache messageBlobTransferCache;
-
-    @Inject
-    MessageClobTransferCache messageClobTransferCache;
-
-    @Inject
-    MessageDescriptionTransferCache messageDescriptionTransferCache;
-
-    @Inject
-    EntityMessageTransferCache entityMessageTransferCache;
-    
-    // --------------------------------------------------------------------------------
     //   Message Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected MessageTypeDetailFactory messageTypeDetailFactory;
 
     @Inject
     protected MessageTypeFactory messageTypeFactory;
 
     @Inject
-    protected MessageTypeDetailFactory messageTypeDetailFactory;
+    MessageTypeTransferCache messageTypeTransferCache;
 
     public MessageType createMessageType(EntityType entityType, String messageTypeName, MimeTypeUsageType mimeTypeUsageType,
             Integer sortOrder, BasePK createdBy) {
@@ -162,47 +157,30 @@ public class MessageControl
     }
 
     public long countMessageTypesByEntityType(final EntityType entityType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM messagetypes
-                        JOIN messagetypedetails ON mssgtypdt_messagetypedetailid = mssgtyp_activedetailid
-                        WHERE mssgtypdt_ent_entitytypeid = ?
-                        """, entityType);
+        return session.getDslContext()
+                .selectCount()
+                .from(MessageTypes)
+                .join(MessageTypeDetails).onKey(MESSAGE_TYPES_ACTIVE_DETAIL_FK)
+                .where(MessageTypeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<MessageType> getMessageTypes(EntityType entityType, EntityPermission entityPermission) {
-        List<MessageType> messageTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagetypes, messagetypedetails
-                        WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ?
-                        ORDER BY mssgtypdt_sortorder, mssgtypdt_messagetypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagetypes, messagetypedetails
-                        WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(MessageTypes.fields())
+                .from(MessageTypes)
+                .join(MessageTypeDetails).onKey(MESSAGE_TYPES_ACTIVE_DETAIL_FK)
+                .where(MessageTypeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
 
-            var ps = messageTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            
-            messageTypes = messageTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(MessageTypeDetails.SORT_ORDER, MessageTypeDetails.MESSAGE_TYPE_NAME),
+                    MessageTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<MessageType> getMessageTypes(EntityType entityType) {
@@ -214,39 +192,19 @@ public class MessageControl
     }
     
     private MessageType getMessageTypeByName(EntityType entityType, String messageTypeName, EntityPermission entityPermission) {
-        MessageType messageType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagetypes, messagetypedetails
-                        WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ?
-                        AND mssgtypdt_messagetypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagetypes, messagetypedetails
-                        WHERE mssgtyp_activedetailid = mssgtypdt_messagetypedetailid AND mssgtypdt_ent_entitytypeid = ?
-                        AND mssgtypdt_messagetypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(MessageTypes.fields())
+                .from(MessageTypes)
+                .join(MessageTypeDetails).onKey(MESSAGE_TYPES_ACTIVE_DETAIL_FK)
+                .where(MessageTypeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        MessageTypeDetails.MESSAGE_TYPE_NAME.eq(messageTypeName));
 
-            var ps = messageTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setString(2, messageTypeName);
-            
-            messageType = messageTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public MessageType getMessageTypeByName(EntityType entityType, String messageTypeName) {
@@ -336,6 +294,9 @@ public class MessageControl
     @Inject
     protected MessageTypeDescriptionFactory messageTypeDescriptionFactory;
 
+    @Inject
+    MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache;
+
     public MessageTypeDescription createMessageTypeDescription(MessageType messageType, Language language, String description,
             BasePK createdBy) {
         var messageTypeDescription = messageTypeDescriptionFactory.create(messageType,
@@ -347,38 +308,19 @@ public class MessageControl
     }
     
     private MessageTypeDescription getMessageTypeDescription(MessageType messageType, Language language, EntityPermission entityPermission) {
-        MessageTypeDescription messageTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagetypedescriptions
-                        WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_lang_languageid = ? AND mssgtypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagetypedescriptions
-                        WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_lang_languageid = ? AND mssgtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(MessageTypeDescriptions.fields())
+                .from(MessageTypeDescriptions)
+                .where(MessageTypeDescriptions.MESSAGE_TYPE.eq(messageType.getPrimaryKey()),
+                        MessageTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        MessageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = messageTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, messageType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            messageTypeDescription = messageTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public MessageTypeDescription getMessageTypeDescription(MessageType messageType, Language language) {
@@ -398,39 +340,24 @@ public class MessageControl
     }
     
     private List<MessageTypeDescription> getMessageTypeDescriptionsByMessageType(MessageType messageType, EntityPermission entityPermission) {
-        List<MessageTypeDescription> messageTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagetypedescriptions, languages
-                        WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_thrutime = ? AND mssgtypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagetypedescriptions
-                        WHERE mssgtypd_mssgtyp_messagetypeid = ? AND mssgtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MessageTypeDescriptions.fields())
+                    .from(MessageTypeDescriptions)
+                    .join(Languages).onKey(MESSAGE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(MessageTypeDescriptions.MESSAGE_TYPE.eq(messageType.getPrimaryKey()),
+                            MessageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    MessageTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MessageTypeDescriptions.fields())
+                    .from(MessageTypeDescriptions)
+                    .where(MessageTypeDescriptions.MESSAGE_TYPE.eq(messageType.getPrimaryKey()),
+                            MessageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = messageTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, messageType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            messageTypeDescriptions = messageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageTypeDescriptions;
+        return messageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<MessageTypeDescription> getMessageTypeDescriptionsByMessageType(MessageType messageType) {
@@ -512,10 +439,13 @@ public class MessageControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected MessageDetailFactory messageDetailFactory;
+
+    @Inject
     protected MessageFactory messageFactory;
 
     @Inject
-    protected MessageDetailFactory messageDetailFactory;
+    MessageTransferCache messageTransferCache;
 
     public Message createMessage(MessageType messageType, String messageName, Boolean includeByDefault, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -563,47 +493,30 @@ public class MessageControl
     }
 
     public long countMessagesByMessageType(final MessageType messageType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM messages
-                        JOIN messagedetails ON mssgdt_messagedetailid = mssg_activedetailid
-                        WHERE mssgdt_mssgtyp_messagetypeid = ?
-                        """, messageType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Messages)
+                .join(MessageDetails).onKey(MESSAGES_ACTIVE_DETAIL_FK)
+                .where(MessageDetails.MESSAGE_TYPE.eq(messageType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<Message> getMessagesByMessageType(MessageType messageType, EntityPermission entityPermission) {
-        List<Message> messages;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messages, messagedetails
-                        WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ?
-                        ORDER BY mssgdt_sortorder, mssgdt_messagename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messages, messagedetails
-                        WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Messages.fields())
+                .from(Messages)
+                .join(MessageDetails).onKey(MESSAGES_ACTIVE_DETAIL_FK)
+                .where(MessageDetails.MESSAGE_TYPE.eq(messageType.getPrimaryKey()));
 
-            var ps = messageFactory.prepareStatement(query);
-            
-            ps.setLong(1, messageType.getPrimaryKey().getEntityId());
-            
-            messages = messageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messages;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(MessageDetails.SORT_ORDER, MessageDetails.MESSAGE_NAME),
+                    MessageFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Message> getMessagesByMessageType(MessageType messageType) {
@@ -615,38 +528,19 @@ public class MessageControl
     }
     
     private Message getDefaultMessage(MessageType messageType, EntityPermission entityPermission) {
-        Message message;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messages, messagedetails
-                        WHERE mssg_activedetailid = mssgdt_messagedetailid
-                        AND mssgdt_mssgtyp_messagetypeid = ? AND mssgdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messages, messagedetails
-                        WHERE mssg_activedetailid = mssgdt_messagedetailid
-                        AND mssgdt_mssgtyp_messagetypeid = ? AND mssgdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Messages.fields())
+                .from(Messages)
+                .join(MessageDetails).onKey(MESSAGES_ACTIVE_DETAIL_FK)
+                .where(MessageDetails.MESSAGE_TYPE.eq(messageType.getPrimaryKey()),
+                        MessageDetails.IS_DEFAULT.eq(true));
 
-            var ps = messageFactory.prepareStatement(query);
-            
-            ps.setLong(1, messageType.getPrimaryKey().getEntityId());
-            
-            message = messageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return message;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Message getDefaultMessage(MessageType messageType) {
@@ -662,39 +556,19 @@ public class MessageControl
     }
     
     private Message getMessageByName(MessageType messageType, String messageName, EntityPermission entityPermission) {
-        Message message;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messages, messagedetails
-                        WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ?
-                        AND mssgdt_messagename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messages, messagedetails
-                        WHERE mssg_activedetailid = mssgdt_messagedetailid AND mssgdt_mssgtyp_messagetypeid = ?
-                        AND mssgdt_messagename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Messages.fields())
+                .from(Messages)
+                .join(MessageDetails).onKey(MESSAGES_ACTIVE_DETAIL_FK)
+                .where(MessageDetails.MESSAGE_TYPE.eq(messageType.getPrimaryKey()),
+                        MessageDetails.MESSAGE_NAME.eq(messageName));
 
-            var ps = messageFactory.prepareStatement(query);
-            
-            ps.setLong(1, messageType.getPrimaryKey().getEntityId());
-            ps.setString(2, messageName);
-            
-            message = messageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return message;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Message getMessageByName(MessageType messageType, String messageName) {
@@ -863,6 +737,9 @@ public class MessageControl
     @Inject
     protected MessageDescriptionFactory messageDescriptionFactory;
 
+    @Inject
+    MessageDescriptionTransferCache messageDescriptionTransferCache;
+
     public MessageDescription createMessageDescription(Message message, Language language, String description, BasePK createdBy) {
         var messageDescription = messageDescriptionFactory.create(message,
                 language, description, session.getStartTime(), Session.MAX_TIME);
@@ -873,38 +750,19 @@ public class MessageControl
     }
     
     private MessageDescription getMessageDescription(Message message, Language language, EntityPermission entityPermission) {
-        MessageDescription messageDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagedescriptions
-                        WHERE mssgd_mssg_messageid = ? AND mssgd_lang_languageid = ? AND mssgd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagedescriptions
-                        WHERE mssgd_mssg_messageid = ? AND mssgd_lang_languageid = ? AND mssgd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(MessageDescriptions.fields())
+                .from(MessageDescriptions)
+                .where(MessageDescriptions.MESSAGE.eq(message.getPrimaryKey()),
+                        MessageDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        MessageDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = messageDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            messageDescription = messageDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public MessageDescription getMessageDescription(Message message, Language language) {
@@ -924,39 +782,24 @@ public class MessageControl
     }
     
     private List<MessageDescription> getMessageDescriptionsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageDescription> messageDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagedescriptions, languages
-                        WHERE mssgd_mssg_messageid = ? AND mssgd_thrutime = ? AND mssgd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagedescriptions
-                        WHERE mssgd_mssg_messageid = ? AND mssgd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MessageDescriptions.fields())
+                    .from(MessageDescriptions)
+                    .join(Languages).onKey(MESSAGE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(MessageDescriptions.MESSAGE.eq(message.getPrimaryKey()),
+                            MessageDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    MessageDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MessageDescriptions.fields())
+                    .from(MessageDescriptions)
+                    .where(MessageDescriptions.MESSAGE.eq(message.getPrimaryKey()),
+                            MessageDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = messageDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            messageDescriptions = messageDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageDescriptions;
+        return messageDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<MessageDescription> getMessageDescriptionsByMessage(Message message) {
@@ -1038,6 +881,9 @@ public class MessageControl
     @Inject
     protected MessageStringFactory messageStringFactory;
 
+    @Inject
+    MessageStringTransferCache messageStringTransferCache;
+
     public MessageString createMessageString(Message message, Language language, String string, BasePK createdBy) {
         var messageString = messageStringFactory.create(message, language, string,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1048,40 +894,24 @@ public class MessageControl
     }
     
     private List<MessageString> getMessageStringsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageString> messageStrings;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagestrings, languages
-                        WHERE mssgs_mssg_messageid = ? AND mssgs_thrutime = ?
-                        AND mssgs_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagestrings
-                        WHERE mssgs_mssg_messageid = ? AND mssgs_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MessageStrings.fields())
+                    .from(MessageStrings)
+                    .join(Languages).onKey(MESSAGE_STRINGS_LANGUAGE_FK)
+                    .where(MessageStrings.MESSAGE.eq(message.getPrimaryKey()),
+                            MessageStrings.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    MessageStringFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MessageStrings.fields())
+                    .from(MessageStrings)
+                    .where(MessageStrings.MESSAGE.eq(message.getPrimaryKey()),
+                            MessageStrings.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = messageStringFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            messageStrings = messageStringFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageStrings;
+        return messageStringFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<MessageString> getMessageStringsByMessage(Message message) {
@@ -1093,38 +923,19 @@ public class MessageControl
     }
     
     private MessageString getMessageString(Message message, Language language, EntityPermission entityPermission) {
-        MessageString messageString;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagestrings
-                        WHERE mssgs_mssg_messageid = ? AND mssgs_lang_languageid = ? AND mssgs_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messagestrings
-                        WHERE mssgs_mssg_messageid = ? AND mssgs_lang_languageid = ? AND mssgs_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(MessageStrings.fields())
+                .from(MessageStrings)
+                .where(MessageStrings.MESSAGE.eq(message.getPrimaryKey()),
+                        MessageStrings.LANGUAGE.eq(language.getPrimaryKey()),
+                        MessageStrings.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = messageStringFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            messageString = messageStringFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageString;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageStringFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public MessageString getMessageString(Message message, Language language) {
@@ -1201,6 +1012,9 @@ public class MessageControl
     @Inject
     protected MessageBlobFactory messageBlobFactory;
 
+    @Inject
+    MessageBlobTransferCache messageBlobTransferCache;
+
     public MessageBlob createMessageBlob(Message message, Language language, MimeType mimeType, ByteArray blob, BasePK createdBy) {
         var messageBlob = messageBlobFactory.create(message, language, mimeType, blob,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1211,40 +1025,24 @@ public class MessageControl
     }
     
     private List<MessageBlob> getMessageBlobsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageBlob> messageBlobs;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messageblobs, languages
-                        WHERE mssgb_mssg_messageid = ? AND mssgb_thrutime = ?
-                        AND mssgb_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messageblobs
-                        WHERE mssgb_mssg_messageid = ? AND mssgb_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MessageBlobs.fields())
+                    .from(MessageBlobs)
+                    .join(Languages).onKey(MESSAGE_BLOBS_LANGUAGE_FK)
+                    .where(MessageBlobs.MESSAGE.eq(message.getPrimaryKey()),
+                            MessageBlobs.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    MessageBlobFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MessageBlobs.fields())
+                    .from(MessageBlobs)
+                    .where(MessageBlobs.MESSAGE.eq(message.getPrimaryKey()),
+                            MessageBlobs.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = messageBlobFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            messageBlobs = messageBlobFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageBlobs;
+        return messageBlobFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<MessageBlob> getMessageBlobsByMessage(Message message) {
@@ -1256,38 +1054,19 @@ public class MessageControl
     }
     
     private MessageBlob getMessageBlob(Message message, Language language, EntityPermission entityPermission) {
-        MessageBlob messageBlob;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messageblobs
-                        WHERE mssgb_mssg_messageid = ? AND mssgb_lang_languageid = ? AND mssgb_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messageblobs
-                        WHERE mssgb_mssg_messageid = ? AND mssgb_lang_languageid = ? AND mssgb_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(MessageBlobs.fields())
+                .from(MessageBlobs)
+                .where(MessageBlobs.MESSAGE.eq(message.getPrimaryKey()),
+                        MessageBlobs.LANGUAGE.eq(language.getPrimaryKey()),
+                        MessageBlobs.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = messageBlobFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            messageBlob = messageBlobFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageBlob;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageBlobFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public MessageBlob getMessageBlob(Message message, Language language) {
@@ -1365,6 +1144,9 @@ public class MessageControl
     @Inject
     protected MessageClobFactory messageClobFactory;
 
+    @Inject
+    MessageClobTransferCache messageClobTransferCache;
+
     public MessageClob createMessageClob(Message message, Language language, MimeType mimeType, String clob, BasePK createdBy) {
         var messageClob = messageClobFactory.create(message, language, mimeType, clob,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1375,40 +1157,24 @@ public class MessageControl
     }
     
     private List<MessageClob> getMessageClobsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageClob> messageClobs;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messageclobs, languages
-                        WHERE mssgc_mssg_messageid = ? AND mssgc_thrutime = ?
-                        AND mssgc_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messageclobs
-                        WHERE mssgc_mssg_messageid = ? AND mssgc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(MessageClobs.fields())
+                    .from(MessageClobs)
+                    .join(Languages).onKey(MESSAGE_CLOBS_LANGUAGE_FK)
+                    .where(MessageClobs.MESSAGE.eq(message.getPrimaryKey()),
+                            MessageClobs.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    MessageClobFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(MessageClobs.fields())
+                    .from(MessageClobs)
+                    .where(MessageClobs.MESSAGE.eq(message.getPrimaryKey()),
+                            MessageClobs.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = messageClobFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            messageClobs = messageClobFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageClobs;
+        return messageClobFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<MessageClob> getMessageClobsByMessage(Message message) {
@@ -1420,38 +1186,19 @@ public class MessageControl
     }
     
     private MessageClob getMessageClob(Message message, Language language, EntityPermission entityPermission) {
-        MessageClob messageClob;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messageclobs
-                        WHERE mssgc_mssg_messageid = ? AND mssgc_lang_languageid = ? AND mssgc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM messageclobs
-                        WHERE mssgc_mssg_messageid = ? AND mssgc_lang_languageid = ? AND mssgc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(MessageClobs.fields())
+                .from(MessageClobs)
+                .where(MessageClobs.MESSAGE.eq(message.getPrimaryKey()),
+                        MessageClobs.LANGUAGE.eq(language.getPrimaryKey()),
+                        MessageClobs.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = messageClobFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            messageClob = messageClobFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return messageClob;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return messageClobFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public MessageClob getMessageClob(Message message, Language language) {
@@ -1529,6 +1276,9 @@ public class MessageControl
     @Inject
     protected EntityMessageFactory entityMessageFactory;
 
+    @Inject
+    EntityMessageTransferCache entityMessageTransferCache;
+
     public EntityMessage createEntityMessage(EntityInstance entityInstance, Message message, BasePK createdBy) {
         var entityMessage = entityMessageFactory.create(entityInstance, message,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1539,54 +1289,39 @@ public class MessageControl
     }
 
     public long countEntityMessageByEntityInstance(final EntityInstance entityInstance) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM entitymessages
-                        WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ?
-                        """, entityInstance, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityMessages)
+                .where(EntityMessages.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityMessages.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityMessageByMessage(final Message message) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM entitymessages
-                        WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ?
-                        """, message, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityMessages)
+                .where(EntityMessages.MESSAGE.eq(message.getPrimaryKey()),
+                        EntityMessages.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private EntityMessage getEntityMessage(EntityInstance entityInstance, Message message, EntityPermission entityPermission) {
-        EntityMessage entityMessage;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymessages
-                        WHERE emssg_eni_entityinstanceid = ? AND emssg_mssg_messageid = ? AND emssg_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymessages
-                        WHERE emssg_eni_entityinstanceid = ? AND emssg_mssg_messageid = ? AND emssg_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityMessages.fields())
+                .from(EntityMessages)
+                .where(EntityMessages.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityMessages.MESSAGE.eq(message.getPrimaryKey()),
+                        EntityMessages.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = entityMessageFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, message.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityMessage = entityMessageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityMessage;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityMessageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityMessage getEntityMessage(EntityInstance entityInstance, Message message) {
@@ -1598,40 +1333,25 @@ public class MessageControl
     }
     
     private List<EntityMessage> getEntityMessagesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<EntityMessage> entityMessages;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymessages, messages, messagedetails
-                        WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ?
-                        AND emssg_mssg_messageid = mssg_messageid AND mssg_lastdetailid = mssgdt_messagedetailid
-                        ORDER BY mssgdt_sortorder, mssgdt_messagename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymessages
-                        WHERE emssg_eni_entityinstanceid = ? AND emssg_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityMessages.fields())
+                    .from(EntityMessages)
+                    .join(Messages).onKey(ENTITY_MESSAGES_MESSAGE_FK)
+                    .join(MessageDetails).onKey(MESSAGES_LAST_DETAIL_FK)
+                    .where(EntityMessages.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                            EntityMessages.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(MessageDetails.SORT_ORDER, MessageDetails.MESSAGE_NAME),
+                    EntityMessageFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityMessages.fields())
+                    .from(EntityMessages)
+                    .where(EntityMessages.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                            EntityMessages.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityMessageFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityMessages = entityMessageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityMessages;
+        return entityMessageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityMessage> getEntityMessagesByEntityInstance(EntityInstance entityInstance) {
@@ -1643,39 +1363,24 @@ public class MessageControl
     }
     
     private List<EntityMessage> getEntityMessagesByMessage(Message message, EntityPermission entityPermission) {
-        List<EntityMessage> entityMessages;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymessages, entityinstances
-                        WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ? AND emssg_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY eni_entityuniqueid
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitymessages
-                        WHERE emssg_mssg_messageid = ? AND emssg_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityMessages.fields())
+                    .from(EntityMessages)
+                    .join(EntityInstances).onKey(ENTITY_MESSAGES_ENTITY_INSTANCE_FK)
+                    .where(EntityMessages.MESSAGE.eq(message.getPrimaryKey()),
+                            EntityMessages.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityInstances.ENTITY_UNIQUE),
+                    EntityMessageFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityMessages.fields())
+                    .from(EntityMessages)
+                    .where(EntityMessages.MESSAGE.eq(message.getPrimaryKey()),
+                            EntityMessages.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityMessageFactory.prepareStatement(query);
-            
-            ps.setLong(1, message.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityMessages = entityMessageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityMessages;
+        return entityMessageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityMessage> getEntityMessagesByMessage(Message message) {
