@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.control;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeChoicesBean;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUnitChoicesBean;
@@ -138,7 +137,6 @@ import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
-import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
@@ -364,13 +362,193 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
+import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.style.server.entity.StylePath;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.customer.CustomerForeignKeys.CUSTOMER_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_CONDITIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODE_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODE_UNITS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODE_USES_HARMONIZED_TARIFF_SCHEDULE_CODE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODE_USES_HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_ALIASES_ITEM_ALIAS_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_ALIASES_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_ALIAS_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_CATEGORIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_CATEGORY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_COUNTRY_OF_ORIGINS_COUNTRY_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_COUNTRY_OF_ORIGINS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_DETAILS_ITEM_DESCRIPTION_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_DETAILS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_DETAILS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_TYPE_USES_ITEM_DESCRIPTION_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_TYPE_USES_ITEM_DESCRIPTION_TYPE_USE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_TYPE_USE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_TYPE_USE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_DESCRIPTION_TYPE_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_COUNTRY_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_IMAGE_DESCRIPTIONS_ITEM_DESCRIPTION_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_IMAGE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_IMAGE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_PACK_CHECK_REQUIREMENTS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_PACK_CHECK_REQUIREMENTS_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_PRICES_CURRENCY_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_PRICES_INVENTORY_CONDITION_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_PRICES_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_PRICES_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_SHIPPING_TIMES_CUSTOMER_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_SHIPPING_TIMES_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_CUSTOMER_TYPE_LIMITS_CUSTOMER_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_CUSTOMER_TYPE_LIMITS_INVENTORY_CONDITION_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_CUSTOMER_TYPE_LIMITS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_CUSTOMER_TYPE_LIMITS_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_LIMITS_INVENTORY_CONDITION_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_LIMITS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_LIMITS_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_OF_MEASURE_TYPES_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_OF_MEASURE_TYPES_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_PRICE_LIMITS_CURRENCY_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_PRICE_LIMITS_INVENTORY_CONDITION_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_PRICE_LIMITS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_UNIT_PRICE_LIMITS_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_VOLUMES_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_VOLUMES_ITEM_VOLUME_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_VOLUMES_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_VOLUME_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_VOLUME_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_VOLUME_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_WEIGHTS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_WEIGHTS_ITEM_WEIGHT_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_WEIGHTS_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_WEIGHT_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_WEIGHT_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_WEIGHT_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.RELATED_ITEMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.RELATED_ITEM_DETAILS_FROM_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.RELATED_ITEM_DETAILS_RELATED_ITEM_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.RELATED_ITEM_DETAILS_TO_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.RELATED_ITEM_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.RELATED_ITEM_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.RELATED_ITEM_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPE_DETAILS_UNIT_OF_MEASURE_KIND_FK;
+import static com.echothree.model.jooq.server.tables.accounting.Currencies.Currencies;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.customer.CustomerTypeDetails.CustomerTypeDetails;
+import static com.echothree.model.jooq.server.tables.customer.CustomerTypes.CustomerTypes;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeDetails.GeoCodeDetails;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodes.GeoCodes;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDetails.InventoryConditionDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditions.InventoryConditions;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeDetails.HarmonizedTariffScheduleCodeDetails;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeTranslations.HarmonizedTariffScheduleCodeTranslations;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeUnitDescriptions.HarmonizedTariffScheduleCodeUnitDescriptions;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeUnitDetails.HarmonizedTariffScheduleCodeUnitDetails;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeUnits.HarmonizedTariffScheduleCodeUnits;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeUseTypeDescriptions.HarmonizedTariffScheduleCodeUseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeUseTypeDetails.HarmonizedTariffScheduleCodeUseTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeUseTypes.HarmonizedTariffScheduleCodeUseTypes;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodeUses.HarmonizedTariffScheduleCodeUses;
+import static com.echothree.model.jooq.server.tables.item.HarmonizedTariffScheduleCodes.HarmonizedTariffScheduleCodes;
+import static com.echothree.model.jooq.server.tables.item.ItemAliasChecksumTypeDescriptions.ItemAliasChecksumTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemAliasChecksumTypes.ItemAliasChecksumTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemAliasTypeDescriptions.ItemAliasTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemAliasTypeDetails.ItemAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemAliasTypes.ItemAliasTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemAliases.ItemAliases;
+import static com.echothree.model.jooq.server.tables.item.ItemBlobDescriptions.ItemBlobDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemCategories.ItemCategories;
+import static com.echothree.model.jooq.server.tables.item.ItemCategoryDescriptions.ItemCategoryDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemCategoryDetails.ItemCategoryDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemClobDescriptions.ItemClobDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemCountryOfOrigins.ItemCountryOfOrigins;
+import static com.echothree.model.jooq.server.tables.item.ItemDeliveryTypeDescriptions.ItemDeliveryTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemDeliveryTypes.ItemDeliveryTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptionDetails.ItemDescriptionDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptionTypeDescriptions.ItemDescriptionTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptionTypeDetails.ItemDescriptionTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptionTypeUseTypeDescriptions.ItemDescriptionTypeUseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptionTypeUseTypeDetails.ItemDescriptionTypeUseTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptionTypeUseTypes.ItemDescriptionTypeUseTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptionTypeUses.ItemDescriptionTypeUses;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptionTypes.ItemDescriptionTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemDescriptions.ItemDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemFixedPrices.ItemFixedPrices;
+import static com.echothree.model.jooq.server.tables.item.ItemHarmonizedTariffScheduleCodeDetails.ItemHarmonizedTariffScheduleCodeDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemHarmonizedTariffScheduleCodes.ItemHarmonizedTariffScheduleCodes;
+import static com.echothree.model.jooq.server.tables.item.ItemImageDescriptionTypes.ItemImageDescriptionTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemImageDescriptions.ItemImageDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemImageTypeDescriptions.ItemImageTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemImageTypeDetails.ItemImageTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemImageTypes.ItemImageTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemInventoryTypeDescriptions.ItemInventoryTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemInventoryTypes.ItemInventoryTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemKitMembers.ItemKitMembers;
+import static com.echothree.model.jooq.server.tables.item.ItemKitOptions.ItemKitOptions;
+import static com.echothree.model.jooq.server.tables.item.ItemPackCheckRequirements.ItemPackCheckRequirements;
+import static com.echothree.model.jooq.server.tables.item.ItemPriceTypeDescriptions.ItemPriceTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemPriceTypes.ItemPriceTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemPrices.ItemPrices;
+import static com.echothree.model.jooq.server.tables.item.ItemShippingTimes.ItemShippingTimes;
+import static com.echothree.model.jooq.server.tables.item.ItemStringDescriptions.ItemStringDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemTypeDescriptions.ItemTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemTypes.ItemTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemUnitCustomerTypeLimits.ItemUnitCustomerTypeLimits;
+import static com.echothree.model.jooq.server.tables.item.ItemUnitLimits.ItemUnitLimits;
+import static com.echothree.model.jooq.server.tables.item.ItemUnitOfMeasureTypes.ItemUnitOfMeasureTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemUnitPriceLimits.ItemUnitPriceLimits;
+import static com.echothree.model.jooq.server.tables.item.ItemUseTypeDescriptions.ItemUseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemUseTypes.ItemUseTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemVariablePrices.ItemVariablePrices;
+import static com.echothree.model.jooq.server.tables.item.ItemVolumeTypeDescriptions.ItemVolumeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemVolumeTypeDetails.ItemVolumeTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemVolumeTypes.ItemVolumeTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemVolumes.ItemVolumes;
+import static com.echothree.model.jooq.server.tables.item.ItemWeightTypeDescriptions.ItemWeightTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.ItemWeightTypeDetails.ItemWeightTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemWeightTypes.ItemWeightTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemWeights.ItemWeights;
+import static com.echothree.model.jooq.server.tables.item.Items.Items;
+import static com.echothree.model.jooq.server.tables.item.RelatedItemDetails.RelatedItemDetails;
+import static com.echothree.model.jooq.server.tables.item.RelatedItemTypeDescriptions.RelatedItemTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.item.RelatedItemTypeDetails.RelatedItemTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.RelatedItemTypes.RelatedItemTypes;
+import static com.echothree.model.jooq.server.tables.item.RelatedItems.RelatedItems;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindDetails.UnitOfMeasureKindDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKinds.UnitOfMeasureKinds;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeDetails.UnitOfMeasureTypeDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypes.UnitOfMeasureTypes;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
@@ -381,18 +559,15 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import static java.lang.Math.toIntExact;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
+import org.jooq.Condition;
+import org.jooq.Select;
 
 @CommandScope
 public class ItemControl
@@ -416,153 +591,14 @@ public class ItemControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Item Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    ItemTypeTransferCache itemTypeTransferCache;
-
-    @Inject
-    ItemDeliveryTypeTransferCache itemDeliveryTypeTransferCache;
-
-    @Inject
-    ItemInventoryTypeTransferCache itemInventoryTypeTransferCache;
-
-    @Inject
-    RelatedItemTypeTransferCache relatedItemTypeTransferCache;
-
-    @Inject
-    RelatedItemTypeDescriptionTransferCache relatedItemTypeDescriptionTransferCache;
-
-    @Inject
-    RelatedItemTransferCache relatedItemTransferCache;
-
-    @Inject
-    ItemUseTypeTransferCache itemUseTypeTransferCache;
-
-    @Inject
-    ItemPriceTypeTransferCache itemPriceTypeTransferCache;
-
-    @Inject
-    ItemTransferCache itemTransferCache;
-
-    @Inject
-    ItemUnitOfMeasureTypeTransferCache itemUnitOfMeasureTypeTransferCache;
-
-    @Inject
-    ItemPriceTransferCache itemPriceTransferCache;
-
-    @Inject
-    ItemVolumeTypeTransferCache itemVolumeTypeTransferCache;
-
-    @Inject
-    ItemVolumeTypeDescriptionTransferCache itemVolumeTypeDescriptionTransferCache;
-
-    @Inject
-    ItemVolumeTransferCache itemVolumeTransferCache;
-
-    @Inject
-    ItemShippingTimeTransferCache itemShippingTimeTransferCache;
-
-    @Inject
-    ItemAliasTransferCache itemAliasTransferCache;
-
-    @Inject
-    ItemAliasChecksumTypeTransferCache itemAliasChecksumTypeTransferCache;
-
-    @Inject
-    ItemAliasTypeTransferCache itemAliasTypeTransferCache;
-
-    @Inject
-    ItemAliasTypeDescriptionTransferCache itemAliasTypeDescriptionTransferCache;
-
-    @Inject
-    ItemDescriptionTransferCache itemDescriptionTransferCache;
-
-    @Inject
-    ItemDescriptionTypeTransferCache itemDescriptionTypeTransferCache;
-
-    @Inject
-    ItemDescriptionTypeDescriptionTransferCache itemDescriptionTypeDescriptionTransferCache;
-
-    @Inject
-    ItemDescriptionTypeUseTypeTransferCache itemDescriptionTypeUseTypeTransferCache;
-
-    @Inject
-    ItemDescriptionTypeUseTypeDescriptionTransferCache itemDescriptionTypeUseTypeDescriptionTransferCache;
-
-    @Inject
-    ItemDescriptionTypeUseTransferCache itemDescriptionTypeUseTransferCache;
-
-    @Inject
-    ItemWeightTypeTransferCache itemWeightTypeTransferCache;
-
-    @Inject
-    ItemWeightTypeDescriptionTransferCache itemWeightTypeDescriptionTransferCache;
-
-    @Inject
-    ItemWeightTransferCache itemWeightTransferCache;
-
-    @Inject
-    ItemCategoryDescriptionTransferCache itemCategoryDescriptionTransferCache;
-
-    @Inject
-    ItemCategoryTransferCache itemCategoryTransferCache;
-
-    @Inject
-    ItemKitMemberTransferCache itemKitMemberTransferCache;
-
-    @Inject
-    ItemCountryOfOriginTransferCache itemCountryOfOriginTransferCache;
-
-    @Inject
-    ItemPackCheckRequirementTransferCache itemPackCheckRequirementTransferCache;
-
-    @Inject
-    ItemUnitCustomerTypeLimitTransferCache itemUnitCustomerTypeLimitTransferCache;
-
-    @Inject
-    ItemUnitLimitTransferCache itemUnitLimitTransferCache;
-
-    @Inject
-    ItemUnitPriceLimitTransferCache itemUnitPriceLimitTransferCache;
-
-    @Inject
-    ItemImageTypeTransferCache itemImageTypeTransferCache;
-
-    @Inject
-    ItemImageTypeDescriptionTransferCache itemImageTypeDescriptionTransferCache;
-
-    @Inject
-    HarmonizedTariffScheduleCodeTransferCache harmonizedTariffScheduleCodeTransferCache;
-
-    @Inject
-    HarmonizedTariffScheduleCodeTranslationTransferCache harmonizedTariffScheduleCodeTranslationTransferCache;
-
-    @Inject
-    HarmonizedTariffScheduleCodeUnitTransferCache harmonizedTariffScheduleCodeUnitTransferCache;
-
-    @Inject
-    HarmonizedTariffScheduleCodeUnitDescriptionTransferCache harmonizedTariffScheduleCodeUnitDescriptionTransferCache;
-
-    @Inject
-    HarmonizedTariffScheduleCodeUseTypeTransferCache harmonizedTariffScheduleCodeUseTypeTransferCache;
-
-    @Inject
-    HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache;
-
-    @Inject
-    HarmonizedTariffScheduleCodeUseTransferCache harmonizedTariffScheduleCodeUseTransferCache;
-
-    @Inject
-    ItemHarmonizedTariffScheduleCodeTransferCache itemHarmonizedTariffScheduleCodeTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Item Types
     // --------------------------------------------------------------------------------
 
     @Inject
     protected ItemTypeFactory itemTypeFactory;
+
+    @Inject
+    ItemTypeTransferCache itemTypeTransferCache;
 
     public ItemType createItemType(String itemTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var itemType = itemTypeFactory.create(itemTypeName, isDefault, sortOrder);
@@ -573,10 +609,11 @@ public class ItemControl
     }
 
     public long countItemTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemtypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemType */
@@ -595,36 +632,17 @@ public class ItemControl
     }
 
     public ItemType getItemTypeByName(String itemTypeName, EntityPermission entityPermission) {
-        ItemType itemType;
+        var baseQuery = session.getDslContext()
+                .select(ItemTypes.fields())
+                .from(ItemTypes)
+                .where(ItemTypes.ITEM_TYPE_NAME.eq(itemTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemtypes
-                        WHERE ityp_itemtypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemtypes
-                        WHERE ityp_itemtypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemTypeFactory.prepareStatement(query);
-
-            ps.setString(1, itemTypeName);
-
-            itemType = itemTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemType;
+        return itemTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemType getItemTypeByName(String itemTypeName) {
@@ -636,26 +654,17 @@ public class ItemControl
     }
 
     public ItemType getDefaultItemType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemTypes.fields())
+                .from(ItemTypes)
+                .where(ItemTypes.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemtypes
-                    WHERE ityp_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemtypes
-                    WHERE ityp_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemTypeFactory.prepareStatement(query);
-
-        return itemTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return itemTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemType getDefaultItemType() {
@@ -671,14 +680,13 @@ public class ItemControl
     }
     
     public List<ItemType> getItemTypes() {
-        var ps = itemTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM itemtypes
-                ORDER BY ityp_sortorder, ityp_itemtypename
-                _LIMIT_
-                """);
-        
-        return itemTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ItemTypes.fields())
+                .from(ItemTypes)
+                .orderBy(ItemTypes.SORT_ORDER, ItemTypes.ITEM_TYPE_NAME),
+                ItemTypeFactory.class);
+
+        return itemTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ItemTypeChoicesBean getItemTypeChoices(String defaultItemTypeChoice, Language language, boolean allowNullChoice) {
@@ -748,24 +756,13 @@ public class ItemControl
     }
     
     public ItemTypeDescription getItemTypeDescription(ItemType itemType, Language language) {
-        ItemTypeDescription itemTypeDescription;
-        
-        try {
-            var ps = itemTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM itemtypedescriptions
-                    WHERE itypd_ityp_itemtypeid = ? AND itypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, itemType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            itemTypeDescription = itemTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemTypeDescription;
+        var query = session.getDslContext()
+                .select(ItemTypeDescriptions.fields())
+                .from(ItemTypeDescriptions)
+                .where(ItemTypeDescriptions.ITEM_TYPE.eq(itemType.getPrimaryKey()),
+                        ItemTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return itemTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestItemTypeDescription(ItemType itemType, Language language) {
@@ -792,6 +789,9 @@ public class ItemControl
     @Inject
     protected ItemDeliveryTypeFactory itemDeliveryTypeFactory;
 
+    @Inject
+    ItemDeliveryTypeTransferCache itemDeliveryTypeTransferCache;
+
     public ItemDeliveryType createItemDeliveryType(String itemDeliveryTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var itemDeliveryType = itemDeliveryTypeFactory.create(itemDeliveryTypeName, isDefault, sortOrder);
@@ -802,10 +802,11 @@ public class ItemControl
     }
 
     public long countItemDeliveryTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemdeliverytypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemDeliveryTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemDeliveryType */
@@ -824,36 +825,17 @@ public class ItemControl
     }
 
     public ItemDeliveryType getItemDeliveryTypeByName(String itemDeliveryTypeName, EntityPermission entityPermission) {
-        ItemDeliveryType itemDeliveryType;
-        
-        try {
-            String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemDeliveryTypes.fields())
+                .from(ItemDeliveryTypes)
+                .where(ItemDeliveryTypes.ITEM_DELIVERY_TYPE_NAME.eq(itemDeliveryTypeName));
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemdeliverytypes
-                        WHERE idlvrtyp_itemdeliverytypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemdeliverytypes
-                        WHERE idlvrtyp_itemdeliverytypename = ?
-                        FOR UPDATE
-                        """;
-            }
-            
-            var ps = itemDeliveryTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, itemDeliveryTypeName);
-            
-            itemDeliveryType = itemDeliveryTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemDeliveryType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDeliveryTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDeliveryType getItemDeliveryTypeByName(String itemDeliveryTypeName) {
@@ -865,26 +847,17 @@ public class ItemControl
     }
 
     public ItemDeliveryType getDefaultItemDeliveryType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemDeliveryTypes.fields())
+                .from(ItemDeliveryTypes)
+                .where(ItemDeliveryTypes.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemdeliverytypes
-                    WHERE idlvrtyp_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemdeliverytypes
-                    WHERE idlvrtyp_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemDeliveryTypeFactory.prepareStatement(query);
-
-        return itemDeliveryTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return itemDeliveryTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDeliveryType getDefaultItemDeliveryType() {
@@ -900,14 +873,13 @@ public class ItemControl
     }
     
     public List<ItemDeliveryType> getItemDeliveryTypes() {
-        var ps = itemDeliveryTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM itemdeliverytypes
-                ORDER BY idlvrtyp_sortorder, idlvrtyp_itemdeliverytypename
-                _LIMIT_
-                """);
-        
-        return itemDeliveryTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ItemDeliveryTypes.fields())
+                .from(ItemDeliveryTypes)
+                .orderBy(ItemDeliveryTypes.SORT_ORDER, ItemDeliveryTypes.ITEM_DELIVERY_TYPE_NAME),
+                ItemDeliveryTypeFactory.class);
+
+        return itemDeliveryTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ItemDeliveryTypeChoicesBean getItemDeliveryTypeChoices(String defaultItemDeliveryTypeChoice, Language language, boolean allowNullChoice) {
@@ -977,24 +949,13 @@ public class ItemControl
     }
     
     public ItemDeliveryTypeDescription getItemDeliveryTypeDescription(ItemDeliveryType itemDeliveryType, Language language) {
-        ItemDeliveryTypeDescription itemDeliveryTypeDescription;
-        
-        try {
-            var ps = itemDeliveryTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM itemdeliverytypedescriptions
-                    WHERE idlvrtypd_idlvrtyp_itemdeliverytypeid = ? AND idlvrtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, itemDeliveryType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            itemDeliveryTypeDescription = itemDeliveryTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemDeliveryTypeDescription;
+        var query = session.getDslContext()
+                .select(ItemDeliveryTypeDescriptions.fields())
+                .from(ItemDeliveryTypeDescriptions)
+                .where(ItemDeliveryTypeDescriptions.ITEM_DELIVERY_TYPE.eq(itemDeliveryType.getPrimaryKey()),
+                        ItemDeliveryTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return itemDeliveryTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestItemDeliveryTypeDescription(ItemDeliveryType itemDeliveryType, Language language) {
@@ -1021,6 +982,9 @@ public class ItemControl
     @Inject
     protected ItemInventoryTypeFactory itemInventoryTypeFactory;
 
+    @Inject
+    ItemInventoryTypeTransferCache itemInventoryTypeTransferCache;
+
     public ItemInventoryType createItemInventoryType(String itemInventoryTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var itemInventoryType = itemInventoryTypeFactory.create(itemInventoryTypeName, isDefault, sortOrder);
@@ -1031,10 +995,11 @@ public class ItemControl
     }
 
     public long countItemInventoryTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM iteminventorytypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemInventoryTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemInventoryType */
@@ -1053,36 +1018,17 @@ public class ItemControl
     }
 
     public ItemInventoryType getItemInventoryTypeByName(String itemInventoryTypeName, EntityPermission entityPermission) {
-        ItemInventoryType itemInventoryType;
+        var baseQuery = session.getDslContext()
+                .select(ItemInventoryTypes.fields())
+                .from(ItemInventoryTypes)
+                .where(ItemInventoryTypes.ITEM_INVENTORY_TYPE_NAME.eq(itemInventoryTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM iteminventorytypes
-                        WHERE iinvtyp_iteminventorytypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM iteminventorytypes
-                        WHERE iinvtyp_iteminventorytypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemInventoryTypeFactory.prepareStatement(query);
-
-            ps.setString(1, itemInventoryTypeName);
-
-            itemInventoryType = itemInventoryTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemInventoryType;
+        return itemInventoryTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemInventoryType getItemInventoryTypeByName(String itemInventoryTypeName) {
@@ -1094,26 +1040,17 @@ public class ItemControl
     }
 
     public ItemInventoryType getDefaultItemInventoryType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemInventoryTypes.fields())
+                .from(ItemInventoryTypes)
+                .where(ItemInventoryTypes.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM iteminventorytypes
-                    WHERE iinvtyp_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM iteminventorytypes
-                    WHERE iinvtyp_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemInventoryTypeFactory.prepareStatement(query);
-
-        return itemInventoryTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return itemInventoryTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemInventoryType getDefaultItemInventoryType() {
@@ -1129,14 +1066,13 @@ public class ItemControl
     }
 
     public List<ItemInventoryType> getItemInventoryTypes() {
-        var ps = itemInventoryTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM iteminventorytypes
-                ORDER BY iinvtyp_sortorder, iinvtyp_iteminventorytypename
-                _LIMIT_
-                """);
-        
-        return itemInventoryTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ItemInventoryTypes.fields())
+                .from(ItemInventoryTypes)
+                .orderBy(ItemInventoryTypes.SORT_ORDER, ItemInventoryTypes.ITEM_INVENTORY_TYPE_NAME),
+                ItemInventoryTypeFactory.class);
+
+        return itemInventoryTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ItemInventoryTypeChoicesBean getItemInventoryTypeChoices(String defaultItemInventoryTypeChoice, Language language, boolean allowNullChoice) {
@@ -1206,24 +1142,13 @@ public class ItemControl
     }
     
     public ItemInventoryTypeDescription getItemInventoryTypeDescription(ItemInventoryType itemInventoryType, Language language) {
-        ItemInventoryTypeDescription itemInventoryTypeDescription;
-        
-        try {
-            var ps = itemInventoryTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM iteminventorytypedescriptions
-                    WHERE iinvtypd_iinvtyp_iteminventorytypeid = ? AND iinvtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, itemInventoryType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            itemInventoryTypeDescription = itemInventoryTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemInventoryTypeDescription;
+        var query = session.getDslContext()
+                .select(ItemInventoryTypeDescriptions.fields())
+                .from(ItemInventoryTypeDescriptions)
+                .where(ItemInventoryTypeDescriptions.ITEM_INVENTORY_TYPE.eq(itemInventoryType.getPrimaryKey()),
+                        ItemInventoryTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return itemInventoryTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestItemInventoryTypeDescription(ItemInventoryType itemInventoryType, Language language) {
@@ -1250,6 +1175,9 @@ public class ItemControl
     @Inject
     protected ItemUseTypeFactory itemUseTypeFactory;
 
+    @Inject
+    ItemUseTypeTransferCache itemUseTypeTransferCache;
+
     public ItemUseType createItemUseType(String itemUseTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var itemUseType = itemUseTypeFactory.create(itemUseTypeName, isDefault, sortOrder);
@@ -1260,10 +1188,11 @@ public class ItemControl
     }
 
     public long countItemUseTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemusetypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUseTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemUseType */
@@ -1282,36 +1211,17 @@ public class ItemControl
     }
 
     public ItemUseType getItemUseTypeByName(String itemUseTypeName, EntityPermission entityPermission) {
-        ItemUseType itemUseType;
+        var baseQuery = session.getDslContext()
+                .select(ItemUseTypes.fields())
+                .from(ItemUseTypes)
+                .where(ItemUseTypes.ITEM_USE_TYPE_NAME.eq(itemUseTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemusetypes
-                        WHERE iutyp_itemusetypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemusetypes
-                        WHERE iutyp_itemusetypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemUseTypeFactory.prepareStatement(query);
-
-            ps.setString(1, itemUseTypeName);
-
-            itemUseType = itemUseTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemUseType;
+        return itemUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemUseType getItemUseTypeByName(String itemUseTypeName) {
@@ -1323,26 +1233,17 @@ public class ItemControl
     }
 
     public ItemUseType getDefaultItemUseType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemUseTypes.fields())
+                .from(ItemUseTypes)
+                .where(ItemUseTypes.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemusetypes
-                    WHERE iutyp_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemusetypes
-                    WHERE iutyp_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemUseTypeFactory.prepareStatement(query);
-
-        return itemUseTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return itemUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemUseType getDefaultItemUseType() {
@@ -1358,14 +1259,13 @@ public class ItemControl
     }
 
     public List<ItemUseType> getItemUseTypes() {
-        var ps = itemUseTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM itemusetypes
-                ORDER BY iutyp_sortorder, iutyp_itemusetypename
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ItemUseTypes.fields())
+                .from(ItemUseTypes)
+                .orderBy(ItemUseTypes.SORT_ORDER, ItemUseTypes.ITEM_USE_TYPE_NAME),
+                ItemUseTypeFactory.class);
 
-        return itemUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return itemUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public ItemUseTypeChoicesBean getItemUseTypeChoices(String defaultItemUseTypeChoice, Language language, boolean allowNullChoice) {
@@ -1435,24 +1335,13 @@ public class ItemControl
     }
 
     public ItemUseTypeDescription getItemUseTypeDescription(ItemUseType itemUseType, Language language) {
-        ItemUseTypeDescription itemUseTypeDescription;
-        
-        try {
-            var ps = itemUseTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM itemusetypedescriptions
-                    WHERE iutypd_iutyp_itemusetypeid = ? AND iutypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, itemUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            itemUseTypeDescription = itemUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUseTypeDescription;
+        var query = session.getDslContext()
+                .select(ItemUseTypeDescriptions.fields())
+                .from(ItemUseTypeDescriptions)
+                .where(ItemUseTypeDescriptions.ITEM_USE_TYPE.eq(itemUseType.getPrimaryKey()),
+                        ItemUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return itemUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestItemUseTypeDescription(ItemUseType itemUseType, Language language) {
@@ -1477,10 +1366,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemCategoryDetailFactory itemCategoryDetailFactory;
+
+    @Inject
     protected ItemCategoryFactory itemCategoryFactory;
 
     @Inject
-    protected ItemCategoryDetailFactory itemCategoryDetailFactory;
+    ItemCategoryTransferCache itemCategoryTransferCache;
 
     public ItemCategory createItemCategory(String itemCategoryName, ItemCategory parentItemCategory, Sequence itemSequence, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -1514,21 +1406,22 @@ public class ItemControl
     }
 
     public long countItemCategories() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemcategories, itemcategorydetails
-                WHERE ic_activedetailid = icdt_itemcategorydetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemCategories)
+                .join(ItemCategoryDetails).onKey(ITEM_CATEGORIES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemCategoriesByParentItemCategory(ItemCategory parentItemCategory) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemcategories, itemcategorydetails
-                WHERE ic_activedetailid = icdt_itemcategorydetailid
-                AND icdt_parentitemcategoryid = ?
-                """,
-                parentItemCategory);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemCategories)
+                .join(ItemCategoryDetails).onKey(ITEM_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemCategoryDetails.PARENT_ITEM_CATEGORY.eq(parentItemCategory.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemCategory */
@@ -1547,36 +1440,18 @@ public class ItemControl
     }
 
     public ItemCategory getItemCategoryByName(String itemCategoryName, EntityPermission entityPermission) {
-        ItemCategory itemCategory;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemcategories, itemcategorydetails
-                        WHERE ic_activedetailid = icdt_itemcategorydetailid AND icdt_itemcategoryname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemcategories, itemcategorydetails
-                        WHERE ic_activedetailid = icdt_itemcategorydetailid AND icdt_itemcategoryname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemCategories.fields())
+                .from(ItemCategories)
+                .join(ItemCategoryDetails).onKey(ITEM_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemCategoryDetails.ITEM_CATEGORY_NAME.eq(itemCategoryName));
 
-            var ps = itemCategoryFactory.prepareStatement(query);
-            
-            ps.setString(1, itemCategoryName);
-            
-            itemCategory = itemCategoryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemCategory;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemCategory getItemCategoryByName(String itemCategoryName) {
@@ -1596,26 +1471,18 @@ public class ItemControl
     }
     
     private ItemCategory getDefaultItemCategory(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemcategories, itemcategorydetails
-                    WHERE ic_activedetailid = icdt_itemcategorydetailid AND icdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemcategories, itemcategorydetails
-                    WHERE ic_activedetailid = icdt_itemcategorydetailid AND icdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(ItemCategories.fields())
+                .from(ItemCategories)
+                .join(ItemCategoryDetails).onKey(ITEM_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemCategoryDetails.IS_DEFAULT.eq(true));
 
-        var ps = itemCategoryFactory.prepareStatement(query);
-        
-        return itemCategoryFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemCategory getDefaultItemCategory() {
@@ -1631,27 +1498,19 @@ public class ItemControl
     }
     
     private List<ItemCategory> getItemCategories(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemcategories, itemcategorydetails
-                    WHERE ic_activedetailid = icdt_itemcategorydetailid
-                    ORDER BY icdt_sortorder, icdt_itemcategoryname
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemcategories, itemcategorydetails
-                    WHERE ic_activedetailid = icdt_itemcategorydetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(ItemCategories.fields())
+                .from(ItemCategories)
+                .join(ItemCategoryDetails).onKey(ITEM_CATEGORIES_ACTIVE_DETAIL_FK);
 
-        var ps = itemCategoryFactory.prepareStatement(query);
-        
-        return itemCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemCategoryDetails.SORT_ORDER, ItemCategoryDetails.ITEM_CATEGORY_NAME),
+                    ItemCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemCategory> getItemCategories() {
@@ -1664,37 +1523,20 @@ public class ItemControl
     
     private List<ItemCategory> getItemCategoriesByParentItemCategory(ItemCategory parentItemCategory,
             EntityPermission entityPermission) {
-        List<ItemCategory> itemCategories;
+        var baseQuery = session.getDslContext()
+                .select(ItemCategories.fields())
+                .from(ItemCategories)
+                .join(ItemCategoryDetails).onKey(ITEM_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemCategoryDetails.PARENT_ITEM_CATEGORY.eq(parentItemCategory.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemCategoryDetails.SORT_ORDER, ItemCategoryDetails.ITEM_CATEGORY_NAME),
+                    ItemCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemcategories, itemcategorydetails
-                        WHERE ic_activedetailid = icdt_itemcategorydetailid AND icdt_parentitemcategoryid = ?
-                        ORDER BY icdt_sortorder, icdt_itemcategoryname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemcategories, itemcategorydetails
-                        WHERE ic_activedetailid = icdt_itemcategorydetailid AND icdt_parentitemcategoryid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemCategoryFactory.prepareStatement(query);
-
-            ps.setLong(1, parentItemCategory.getPrimaryKey().getEntityId());
-
-            itemCategories = itemCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemCategories;
+        return itemCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemCategory> getItemCategoriesByParentItemCategory(ItemCategory parentItemCategory) {
@@ -1887,6 +1729,9 @@ public class ItemControl
     @Inject
     protected ItemCategoryDescriptionFactory itemCategoryDescriptionFactory;
 
+    @Inject
+    ItemCategoryDescriptionTransferCache itemCategoryDescriptionTransferCache;
+
     public ItemCategoryDescription createItemCategoryDescription(ItemCategory itemCategory, Language language, String description, BasePK createdBy) {
         var itemCategoryDescription = itemCategoryDescriptionFactory.create(itemCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -1897,38 +1742,19 @@ public class ItemControl
     }
     
     private ItemCategoryDescription getItemCategoryDescription(ItemCategory itemCategory, Language language, EntityPermission entityPermission) {
-        ItemCategoryDescription itemCategoryDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemcategorydescriptions
-                        WHERE icd_ic_itemcategoryid = ? AND icd_lang_languageid = ? AND icd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemcategorydescriptions
-                        WHERE icd_ic_itemcategoryid = ? AND icd_lang_languageid = ? AND icd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemCategoryDescriptions.fields())
+                .from(ItemCategoryDescriptions)
+                .where(ItemCategoryDescriptions.ITEM_CATEGORY.eq(itemCategory.getPrimaryKey()),
+                        ItemCategoryDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemCategoryDescription = itemCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemCategoryDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemCategoryDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemCategoryDescription getItemCategoryDescription(ItemCategory itemCategory, Language language) {
@@ -1948,38 +1774,24 @@ public class ItemControl
     }
     
     private List<ItemCategoryDescription> getItemCategoryDescriptionsByItemCategory(ItemCategory itemCategory, EntityPermission entityPermission) {
-        List<ItemCategoryDescription> itemCategoryDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemcategorydescriptions, languages
-                        WHERE icd_ic_itemcategoryid = ? AND icd_thrutime = ? AND icd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemcategorydescriptions
-                        WHERE icd_ic_itemcategoryid = ? AND icd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemCategoryDescriptions.fields())
+                    .from(ItemCategoryDescriptions)
+                    .join(Languages).onKey(ITEM_CATEGORY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemCategoryDescriptions.ITEM_CATEGORY.eq(itemCategory.getPrimaryKey()),
+                            ItemCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemCategoryDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemCategoryDescriptions.fields())
+                    .from(ItemCategoryDescriptions)
+                    .where(ItemCategoryDescriptions.ITEM_CATEGORY.eq(itemCategory.getPrimaryKey()),
+                            ItemCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemCategoryDescriptions = itemCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemCategoryDescriptions;
+        return itemCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemCategoryDescription> getItemCategoryDescriptionsByItemCategory(ItemCategory itemCategory) {
@@ -2061,10 +1873,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemDetailFactory itemDetailFactory;
+
+    @Inject
     protected ItemFactory itemFactory;
 
     @Inject
-    protected ItemDetailFactory itemDetailFactory;
+    ItemTransferCache itemTransferCache;
 
     public Item createItem(String itemName, ItemType itemType, ItemUseType itemUseType, ItemCategory itemCategory,
             ItemAccountingCategory itemAccountingCategory, ItemPurchasingCategory itemPurchasingCategory, Party companyParty,
@@ -2092,91 +1907,92 @@ public class ItemControl
     }
     
     public long countItems() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemsByItemCategory(ItemCategory itemCategory) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                AND itmdt_ic_itemcategoryid = ?
-                """,
-                itemCategory);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_CATEGORY.eq(itemCategory.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                AND itmdt_iactgc_itemaccountingcategoryid = ?
-                """,
-                itemAccountingCategory);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                AND itmdt_iprchc_itempurchasingcategoryid = ?
-                """,
-                itemPurchasingCategory);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_PURCHASING_CATEGORY.eq(itemPurchasingCategory.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemsByCompanyParty(Party companyParty) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                AND itmdt_companypartyid = ?
-                """,
-                companyParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.COMPANY_PARTY.eq(companyParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                AND itmdt_uomk_unitofmeasurekindid = ?
-                """,
-                unitOfMeasureKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemsByCancellationPolicy(CancellationPolicy cancellationPolicy) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                AND itmdt_cnclplcy_cancellationpolicyid = ?
-                """,
-                cancellationPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemsByReturnPolicy(ReturnPolicy returnPolicy) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                AND itmdt_rtnplcy_returnpolicyid = ?
-                """,
-                returnPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemsByStylePath(StylePath stylePath) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM items, itemdetails
-                WHERE itm_activedetailid = itmdt_itemdetailid
-                AND itmdt_stylpth_stylepathid = ?
-                """,
-                stylePath);
+        return session.getDslContext()
+                .selectCount()
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.STYLE_PATH.eq(stylePath.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Item */
@@ -2195,28 +2011,19 @@ public class ItemControl
     }
     
     private List<Item> getItems(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(Items.fields())
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK);
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM items, itemdetails
-                    WHERE itm_activedetailid = itmdt_itemdetailid
-                    ORDER BY itmdt_itemname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM items, itemdetails
-                    WHERE itm_activedetailid = itmdt_itemdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemFactory.prepareStatement(query);
-
-        return itemFactory.getEntitiesFromQuery(entityPermission, ps);
+        return itemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Item> getItems() {
@@ -2228,38 +2035,20 @@ public class ItemControl
     }
 
     private List<Item> getItemsByItemCategory(EntityPermission entityPermission, ItemCategory itemCategory) {
-        List<Item> items;
+        var baseQuery = session.getDslContext()
+                .select(Items.fields())
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_CATEGORY.eq(itemCategory.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_ic_itemcategoryid = ?
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_ic_itemcategoryid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemFactory.prepareStatement(query);
-
-            ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
-
-            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return items;
+        return itemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Item> getItemsByItemCategory(ItemCategory itemCategory) {
@@ -2271,38 +2060,20 @@ public class ItemControl
     }
 
     private List<Item> getItemsByItemAccountingCategory(EntityPermission entityPermission, ItemAccountingCategory itemAccountingCategory) {
-        List<Item> items;
+        var baseQuery = session.getDslContext()
+                .select(Items.fields())
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_ACCOUNTING_CATEGORY.eq(itemAccountingCategory.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iactgc_itemaccountingcategoryid = ?
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iactgc_itemaccountingcategoryid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemFactory.prepareStatement(query);
-
-            ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
-
-            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return items;
+        return itemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Item> getItemsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory) {
@@ -2314,38 +2085,20 @@ public class ItemControl
     }
 
     private List<Item> getItemsByItemPurchasingCategory(EntityPermission entityPermission, ItemPurchasingCategory itemPurchasingCategory) {
-        List<Item> items;
+        var baseQuery = session.getDslContext()
+                .select(Items.fields())
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_PURCHASING_CATEGORY.eq(itemPurchasingCategory.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iprchc_itempurchasingcategoryid = ?
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iprchc_itempurchasingcategoryid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemFactory.prepareStatement(query);
-
-            ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
-
-            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return items;
+        return itemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Item> getItemsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory) {
@@ -2357,38 +2110,20 @@ public class ItemControl
     }
 
     private List<Item> getItemsByCompanyParty(EntityPermission entityPermission, Party companyParty) {
-        List<Item> items;
+        var baseQuery = session.getDslContext()
+                .select(Items.fields())
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.COMPANY_PARTY.eq(companyParty.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_companypartyid = ?
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_companypartyid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemFactory.prepareStatement(query);
-
-            ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
-
-            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return items;
+        return itemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Item> getItemsByCompanyParty(Party companyParty) {
@@ -2400,38 +2135,20 @@ public class ItemControl
     }
 
     private List<Item> getItemsByUnitOfMeasureKind(EntityPermission entityPermission, UnitOfMeasureKind unitOfMeasureKind) {
-        List<Item> items;
+        var baseQuery = session.getDslContext()
+                .select(Items.fields())
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_uomk_unitofmeasurekindid = ?
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_uomk_unitofmeasurekindid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemFactory.prepareStatement(query);
-
-            ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
-
-            items = itemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return items;
+        return itemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Item> getItemsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
@@ -2443,36 +2160,18 @@ public class ItemControl
     }
 
     private Item getItemByName(String itemName, EntityPermission entityPermission) {
-        Item item;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_itemname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM items, itemdetails
-                        WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_itemname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Items.fields())
+                .from(Items)
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_NAME.eq(itemName));
 
-            var ps = itemFactory.prepareStatement(query);
-            
-            ps.setString(1, itemName);
-            
-            item = itemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return item;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Item getItemByName(String itemName) {
@@ -2625,6 +2324,9 @@ public class ItemControl
     @Inject
     protected ItemUnitOfMeasureTypeFactory itemUnitOfMeasureTypeFactory;
 
+    @Inject
+    ItemUnitOfMeasureTypeTransferCache itemUnitOfMeasureTypeTransferCache;
+
     public ItemUnitOfMeasureType createItemUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultItemUnitOfMeasureType = getDefaultItemUnitOfMeasureType(item);
@@ -2648,56 +2350,39 @@ public class ItemControl
     }
 
     public long countItemUnitOfMeasureTypesByItem(Item item) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemunitofmeasuretypes
-                WHERE iuomt_itm_itemid = ? AND iuomt_thrutime = ?
-                """,
-                item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitOfMeasureTypes)
+                .where(ItemUnitOfMeasureTypes.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitOfMeasureTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitOfMeasureTypesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemunitofmeasuretypes
-                WHERE iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ?
-                """,
-                unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitOfMeasureTypes)
+                .where(ItemUnitOfMeasureTypes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitOfMeasureTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemUnitOfMeasureType getItemUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        ItemUnitOfMeasureType itemUnitOfMeasureType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemunitofmeasuretypes
-                        WHERE iuomt_itm_itemid = ? AND iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemunitofmeasuretypes
-                        WHERE iuomt_itm_itemid = ? AND iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemUnitOfMeasureTypes.fields())
+                .from(ItemUnitOfMeasureTypes)
+                .where(ItemUnitOfMeasureTypes.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitOfMeasureTypes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitOfMeasureTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemUnitOfMeasureTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemUnitOfMeasureType = itemUnitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitOfMeasureType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemUnitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemUnitOfMeasureType getItemUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType) {
@@ -2719,37 +2404,19 @@ public class ItemControl
     }
     
     private ItemUnitOfMeasureType getDefaultItemUnitOfMeasureType(Item item, EntityPermission entityPermission) {
-        ItemUnitOfMeasureType itemUnitOfMeasureType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemunitofmeasuretypes
-                        WHERE iuomt_itm_itemid = ? AND iuomt_isdefault = 1 AND iuomt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemunitofmeasuretypes
-                        WHERE iuomt_itm_itemid = ? AND iuomt_isdefault = 1 AND iuomt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemUnitOfMeasureTypes.fields())
+                .from(ItemUnitOfMeasureTypes)
+                .where(ItemUnitOfMeasureTypes.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitOfMeasureTypes.IS_DEFAULT.eq(true),
+                        ItemUnitOfMeasureTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemUnitOfMeasureTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitOfMeasureType = itemUnitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitOfMeasureType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemUnitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemUnitOfMeasureType getDefaultItemUnitOfMeasureType(Item item) {
@@ -2767,41 +2434,27 @@ public class ItemControl
     }
     
     private List<ItemUnitOfMeasureType> getItemUnitOfMeasureTypesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemunitofmeasuretypes, unitofmeasuretypes, unitofmeasuretypedetails, unitofmeasurekinds, unitofmeasurekinddetails
-                        WHERE iuomt_itm_itemid = ? AND iuomt_thrutime = ?
-                        AND iuomt_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                        AND uomtdt_uomk_unitofmeasurekindid = uomk_unitofmeasurekindid AND uomk_lastdetailid = uomkdt_unitofmeasurekinddetailid
-                        ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemunitofmeasuretypes
-                        WHERE iuomt_itm_itemid = ? AND iuomt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitOfMeasureTypes.fields())
+                    .from(ItemUnitOfMeasureTypes)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_UNIT_OF_MEASURE_TYPES_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureKinds).onKey(UNIT_OF_MEASURE_TYPE_DETAILS_UNIT_OF_MEASURE_KIND_FK)
+                    .join(UnitOfMeasureKindDetails).onKey(UNIT_OF_MEASURE_KINDS_LAST_DETAIL_FK)
+                    .where(ItemUnitOfMeasureTypes.ITEM.eq(item.getPrimaryKey()),
+                            ItemUnitOfMeasureTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME),
+                    ItemUnitOfMeasureTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitOfMeasureTypes.fields())
+                    .from(ItemUnitOfMeasureTypes)
+                    .where(ItemUnitOfMeasureTypes.ITEM.eq(item.getPrimaryKey()),
+                            ItemUnitOfMeasureTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitOfMeasureTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitOfMeasureTypes = itemUnitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitOfMeasureTypes;
+        return itemUnitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitOfMeasureType> getItemUnitOfMeasureTypesByItem(Item item) {
@@ -2813,40 +2466,25 @@ public class ItemControl
     }
     
     private List<ItemUnitOfMeasureType> getItemUnitOfMeasureTypesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemunitofmeasuretypes, items, itemdetails
-                        WHERE iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ?
-                        AND iuomt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemunitofmeasuretypes
-                        WHERE iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitOfMeasureTypes.fields())
+                    .from(ItemUnitOfMeasureTypes)
+                    .join(Items).onKey(ITEM_UNIT_OF_MEASURE_TYPES_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(ItemUnitOfMeasureTypes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemUnitOfMeasureTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemUnitOfMeasureTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitOfMeasureTypes.fields())
+                    .from(ItemUnitOfMeasureTypes)
+                    .where(ItemUnitOfMeasureTypes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemUnitOfMeasureTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitOfMeasureTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitOfMeasureTypes = itemUnitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitOfMeasureTypes;
+        return itemUnitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitOfMeasureType> getItemUnitOfMeasureTypesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -2980,6 +2618,9 @@ public class ItemControl
     @Inject
     protected ItemShippingTimeFactory itemShippingTimeFactory;
 
+    @Inject
+    ItemShippingTimeTransferCache itemShippingTimeTransferCache;
+
     public ItemShippingTime createItemShippingTime(Item item, CustomerType customerType, Long shippingStartTime, Long shippingEndTime,
             BasePK createdBy) {
         var itemShippingTime = itemShippingTimeFactory.create(item, customerType,
@@ -2991,54 +2632,39 @@ public class ItemControl
     }
 
     public long countItemShippingTimesByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemshippingtimes
-                        WHERE istim_itm_itemid = ? AND istim_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemShippingTimes)
+                .where(ItemShippingTimes.ITEM.eq(item.getPrimaryKey()),
+                        ItemShippingTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemShippingTimesByCustomerType(final CustomerType customerType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemshippingtimes
-                        WHERE istim_cuty_customertypeid = ? AND istim_thrutime = ?
-                        """, customerType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemShippingTimes)
+                .where(ItemShippingTimes.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        ItemShippingTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemShippingTime getItemShippingTime(Item item, CustomerType customerType, EntityPermission entityPermission) {
-        ItemShippingTime itemShippingTime;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemshippingtimes
-                        WHERE istim_itm_itemid = ? AND istim_cuty_customertypeid = ? AND istim_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemshippingtimes
-                        WHERE istim_itm_itemid = ? AND istim_cuty_customertypeid = ? AND istim_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemShippingTimes.fields())
+                .from(ItemShippingTimes)
+                .where(ItemShippingTimes.ITEM.eq(item.getPrimaryKey()),
+                        ItemShippingTimes.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        ItemShippingTimes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemShippingTimeFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, customerType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemShippingTime = itemShippingTimeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemShippingTime;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemShippingTimeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemShippingTime getItemShippingTime(Item item, CustomerType customerType) {
@@ -3058,40 +2684,25 @@ public class ItemControl
     }
     
     private List<ItemShippingTime> getItemShippingTimesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemShippingTime> itemShippingTimes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemshippingtimes, customertypes, customertypedetails
-                        WHERE istim_itm_itemid = ? AND istim_thrutime = ?
-                        AND istim_cuty_customertypeid = cuty_customertypeid
-                        AND cuty_lastdetailid = cutydt_customertypedetailid
-                        ORDER BY cutydt_sortorder, cutydt_customertypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemshippingtimes
-                        WHERE istim_itm_itemid = ? AND istim_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemShippingTimes.fields())
+                    .from(ItemShippingTimes)
+                    .join(CustomerTypes).onKey(ITEM_SHIPPING_TIMES_CUSTOMER_TYPE_FK)
+                    .join(CustomerTypeDetails).onKey(CUSTOMER_TYPES_LAST_DETAIL_FK)
+                    .where(ItemShippingTimes.ITEM.eq(item.getPrimaryKey()),
+                            ItemShippingTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CustomerTypeDetails.SORT_ORDER, CustomerTypeDetails.CUSTOMER_TYPE_NAME),
+                    ItemShippingTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemShippingTimes.fields())
+                    .from(ItemShippingTimes)
+                    .where(ItemShippingTimes.ITEM.eq(item.getPrimaryKey()),
+                            ItemShippingTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemShippingTimeFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemShippingTimes = itemShippingTimeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemShippingTimes;
+        return itemShippingTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemShippingTime> getItemShippingTimesByItem(Item item) {
@@ -3103,40 +2714,25 @@ public class ItemControl
     }
     
     private List<ItemShippingTime> getItemShippingTimesByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<ItemShippingTime> itemShippingTimes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemshippingtimes, items, itemdetails
-                        WHERE istim_cuty_customertypeid = ? AND istim_thrutime = ?
-                        AND istim_itm_itemid = itm_itemid
-                        AND itm_lastdetailid = itmdt_itemdetailid
-                        ORDER BY itmdt_itemname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemshippingtimes
-                        WHERE istim_cuty_customertypeid = ? AND istim_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemShippingTimes.fields())
+                    .from(ItemShippingTimes)
+                    .join(Items).onKey(ITEM_SHIPPING_TIMES_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(ItemShippingTimes.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            ItemShippingTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemShippingTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemShippingTimes.fields())
+                    .from(ItemShippingTimes)
+                    .where(ItemShippingTimes.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            ItemShippingTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemShippingTimeFactory.prepareStatement(query);
-            
-            ps.setLong(1, customerType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemShippingTimes = itemShippingTimeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemShippingTimes;
+        return itemShippingTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemShippingTime> getItemShippingTimesByCustomerType(CustomerType customerType) {
@@ -3218,6 +2814,9 @@ public class ItemControl
     @Inject
     protected ItemAliasChecksumTypeFactory itemAliasChecksumTypeFactory;
 
+    @Inject
+    ItemAliasChecksumTypeTransferCache itemAliasChecksumTypeTransferCache;
+
     public ItemAliasChecksumType createItemAliasChecksumType(String itemAliasChecksumTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var itemAliasChecksumType = itemAliasChecksumTypeFactory.create(itemAliasChecksumTypeName, isDefault, sortOrder);
@@ -3228,10 +2827,11 @@ public class ItemControl
     }
 
     public long countItemAliasChecksumTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemaliaschecksumtypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemAliasChecksumTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemAliasChecksumType */
@@ -3250,36 +2850,17 @@ public class ItemControl
     }
 
     public ItemAliasChecksumType getItemAliasChecksumTypeByName(String itemAliasChecksumTypeName, EntityPermission entityPermission) {
-        ItemAliasChecksumType itemAliasChecksumType;
+        var baseQuery = session.getDslContext()
+                .select(ItemAliasChecksumTypes.fields())
+                .from(ItemAliasChecksumTypes)
+                .where(ItemAliasChecksumTypes.ITEM_ALIAS_CHECKSUM_TYPE_NAME.eq(itemAliasChecksumTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliaschecksumtypes
-                        WHERE iact_itemaliaschecksumtypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliaschecksumtypes
-                        WHERE iact_itemaliaschecksumtypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemAliasChecksumTypeFactory.prepareStatement(query);
-
-            ps.setString(1, itemAliasChecksumTypeName);
-
-            itemAliasChecksumType = itemAliasChecksumTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemAliasChecksumType;
+        return itemAliasChecksumTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemAliasChecksumType getItemAliasChecksumTypeByName(String itemAliasChecksumTypeName) {
@@ -3291,26 +2872,17 @@ public class ItemControl
     }
 
     public ItemAliasChecksumType getDefaultItemAliasChecksumType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemAliasChecksumTypes.fields())
+                .from(ItemAliasChecksumTypes)
+                .where(ItemAliasChecksumTypes.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemaliaschecksumtypes
-                    WHERE iact_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemaliaschecksumtypes
-                    WHERE iact_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemAliasChecksumTypeFactory.prepareStatement(query);
-
-        return itemAliasChecksumTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return itemAliasChecksumTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemAliasChecksumType getDefaultItemAliasChecksumType() {
@@ -3326,14 +2898,13 @@ public class ItemControl
     }
 
     public List<ItemAliasChecksumType> getItemAliasChecksumTypes() {
-        var ps = itemAliasChecksumTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM itemaliaschecksumtypes
-                ORDER BY iact_sortorder, iact_itemaliaschecksumtypename
-                _LIMIT_
-                """);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ItemAliasChecksumTypes.fields())
+                .from(ItemAliasChecksumTypes)
+                .orderBy(ItemAliasChecksumTypes.SORT_ORDER, ItemAliasChecksumTypes.ITEM_ALIAS_CHECKSUM_TYPE_NAME),
+                ItemAliasChecksumTypeFactory.class);
 
-        return itemAliasChecksumTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return itemAliasChecksumTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public ItemAliasChecksumTypeChoicesBean getItemAliasChecksumTypeChoices(String defaultItemAliasChecksumTypeChoice, Language language, boolean allowNullChoice) {
@@ -3403,24 +2974,13 @@ public class ItemControl
     }
 
     public ItemAliasChecksumTypeDescription getItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language) {
-        ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription;
+        var query = session.getDslContext()
+                .select(ItemAliasChecksumTypeDescriptions.fields())
+                .from(ItemAliasChecksumTypeDescriptions)
+                .where(ItemAliasChecksumTypeDescriptions.ITEM_ALIAS_CHECKSUM_TYPE.eq(itemAliasChecksumType.getPrimaryKey()),
+                        ItemAliasChecksumTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
 
-        try {
-            var ps = itemAliasChecksumTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM itemaliaschecksumtypedescriptions
-                    WHERE iactd_iact_itemaliaschecksumtypeid = ? AND iactd_lang_languageid = ?
-                    """);
-
-            ps.setLong(1, itemAliasChecksumType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-
-            itemAliasChecksumTypeDescription = itemAliasChecksumTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemAliasChecksumTypeDescription;
+        return itemAliasChecksumTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public String getBestItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language) {
@@ -3445,10 +3005,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemAliasTypeDetailFactory itemAliasTypeDetailFactory;
+
+    @Inject
     protected ItemAliasTypeFactory itemAliasTypeFactory;
 
     @Inject
-    protected ItemAliasTypeDetailFactory itemAliasTypeDetailFactory;
+    ItemAliasTypeTransferCache itemAliasTypeTransferCache;
 
     public ItemAliasType createItemAliasType(String itemAliasTypeName, String validationPattern, ItemAliasChecksumType itemAliasChecksumType, Boolean allowMultiple,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -3500,44 +3063,27 @@ public class ItemControl
     }
 
     public long countItemAliasTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemaliastypes, itemaliastypedetails
-                WHERE iat_activedetailid = iatdt_itemaliastypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemAliasTypes)
+                .join(ItemAliasTypeDetails).onKey(ITEM_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ItemAliasType getItemAliasTypeByName(String itemAliasTypeName, EntityPermission entityPermission) {
-        ItemAliasType itemAliasType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliastypes, itemaliastypedetails
-                        WHERE iat_activedetailid = iatdt_itemaliastypedetailid AND iatdt_itemaliastypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliastypes, itemaliastypedetails
-                        WHERE iat_activedetailid = iatdt_itemaliastypedetailid AND iatdt_itemaliastypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemAliasTypes.fields())
+                .from(ItemAliasTypes)
+                .join(ItemAliasTypeDetails).onKey(ITEM_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemAliasTypeDetails.ITEM_ALIAS_TYPE_NAME.eq(itemAliasTypeName));
 
-            var ps = itemAliasTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, itemAliasTypeName);
-            
-            itemAliasType = itemAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAliasType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemAliasType getItemAliasTypeByName(String itemAliasTypeName) {
@@ -3557,26 +3103,18 @@ public class ItemControl
     }
     
     public ItemAliasType getDefaultItemAliasType(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemaliastypes, itemaliastypedetails
-                    WHERE iat_activedetailid = iatdt_itemaliastypedetailid AND iatdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemaliastypes, itemaliastypedetails
-                    WHERE iat_activedetailid = iatdt_itemaliastypedetailid AND iatdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(ItemAliasTypes.fields())
+                .from(ItemAliasTypes)
+                .join(ItemAliasTypeDetails).onKey(ITEM_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemAliasTypeDetails.IS_DEFAULT.eq(true));
 
-        var ps = itemAliasTypeFactory.prepareStatement(query);
-        
-        return itemAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemAliasType getDefaultItemAliasType() {
@@ -3592,27 +3130,19 @@ public class ItemControl
     }
     
     private List<ItemAliasType> getItemAliasTypes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemaliastypes, itemaliastypedetails
-                    WHERE iat_activedetailid = iatdt_itemaliastypedetailid
-                    ORDER BY iatdt_sortorder, iatdt_itemaliastypename
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM itemaliastypes, itemaliastypedetails
-                    WHERE iat_activedetailid = iatdt_itemaliastypedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(ItemAliasTypes.fields())
+                .from(ItemAliasTypes)
+                .join(ItemAliasTypeDetails).onKey(ITEM_ALIAS_TYPES_ACTIVE_DETAIL_FK);
 
-        var ps = itemAliasTypeFactory.prepareStatement(query);
-        
-        return itemAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemAliasTypeDetails.SORT_ORDER, ItemAliasTypeDetails.ITEM_ALIAS_TYPE_NAME),
+                    ItemAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemAliasType> getItemAliasTypes() {
@@ -3770,6 +3300,9 @@ public class ItemControl
     @Inject
     protected ItemAliasTypeDescriptionFactory itemAliasTypeDescriptionFactory;
 
+    @Inject
+    ItemAliasTypeDescriptionTransferCache itemAliasTypeDescriptionTransferCache;
+
     public ItemAliasTypeDescription createItemAliasTypeDescription(ItemAliasType itemAliasType, Language language,
             String description, BasePK createdBy) {
         var itemAliasTypeDescription = itemAliasTypeDescriptionFactory.create(
@@ -3781,38 +3314,19 @@ public class ItemControl
     }
     
     private ItemAliasTypeDescription getItemAliasTypeDescription(ItemAliasType itemAliasType, Language language, EntityPermission entityPermission) {
-        ItemAliasTypeDescription itemAliasTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliastypedescriptions
-                        WHERE iatd_iat_itemaliastypeid = ? AND iatd_lang_languageid = ? AND iatd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliastypedescriptions
-                        WHERE iatd_iat_itemaliastypeid = ? AND iatd_lang_languageid = ? AND iatd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemAliasTypeDescriptions.fields())
+                .from(ItemAliasTypeDescriptions)
+                .where(ItemAliasTypeDescriptions.ITEM_ALIAS_TYPE.eq(itemAliasType.getPrimaryKey()),
+                        ItemAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemAliasTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemAliasTypeDescription = itemAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAliasTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemAliasTypeDescription getItemAliasTypeDescription(ItemAliasType itemAliasType, Language language) {
@@ -3833,38 +3347,24 @@ public class ItemControl
     
     private List<ItemAliasTypeDescription> getItemAliasTypeDescriptionsByItemAliasType(ItemAliasType itemAliasType,
             EntityPermission entityPermission) {
-        List<ItemAliasTypeDescription> itemAliasTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliastypedescriptions, languages
-                        WHERE iatd_iat_itemaliastypeid = ? AND iatd_thrutime = ? AND iatd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliastypedescriptions
-                        WHERE iatd_iat_itemaliastypeid = ? AND iatd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemAliasTypeDescriptions.fields())
+                    .from(ItemAliasTypeDescriptions)
+                    .join(Languages).onKey(ITEM_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemAliasTypeDescriptions.ITEM_ALIAS_TYPE.eq(itemAliasType.getPrimaryKey()),
+                            ItemAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemAliasTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemAliasTypeDescriptions.fields())
+                    .from(ItemAliasTypeDescriptions)
+                    .where(ItemAliasTypeDescriptions.ITEM_ALIAS_TYPE.eq(itemAliasType.getPrimaryKey()),
+                            ItemAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemAliasTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemAliasTypeDescriptions = itemAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAliasTypeDescriptions;
+        return itemAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemAliasTypeDescription> getItemAliasTypeDescriptionsByItemAliasType(ItemAliasType itemAliasType) {
@@ -3948,6 +3448,9 @@ public class ItemControl
     @Inject
     protected ItemAliasFactory itemAliasFactory;
 
+    @Inject
+    ItemAliasTransferCache itemAliasTransferCache;
+
     public ItemAlias createItemAlias(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType, String alias,
             BasePK createdBy) {
         var itemAlias = itemAliasFactory.create(item, unitOfMeasureType, itemAliasType, alias,
@@ -3959,69 +3462,60 @@ public class ItemControl
     }
 
     public long countItemAliasesByItem(Item item) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemaliases
-                WHERE itmal_itm_itemid = ? AND itmal_thrutime = ?
-                """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemAliases)
+                .where(ItemAliases.ITEM.eq(item.getPrimaryKey()),
+                        ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemAliasesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemaliases
-                WHERE itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ?
-                """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemAliases)
+                .where(ItemAliases.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemAliasesByItemAliasType(ItemAliasType itemAliasType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemaliases
-                WHERE itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ?
-                """, itemAliasType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemAliases)
+                .where(ItemAliases.ITEM_ALIAS_TYPE.eq(itemAliasType.getPrimaryKey()),
+                        ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemAliases(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemaliases
-                WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ?
-                """,  item, unitOfMeasureType, itemAliasType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemAliases)
+                .where(ItemAliases.ITEM.eq(item.getPrimaryKey()),
+                        ItemAliases.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemAliases.ITEM_ALIAS_TYPE.eq(itemAliasType.getPrimaryKey()),
+                        ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
     private ItemAlias getItemAliasByAlias(String alias, EntityPermission entityPermission) {
-        ItemAlias itemAlias;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases
-                        WHERE itmal_alias = ? AND itmal_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases
-                        WHERE itmal_alias = ? AND itmal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemAliases.fields())
+                .from(ItemAliases)
+                .where(ItemAliases.ALIAS.eq(alias),
+                        ItemAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemAliasFactory.prepareStatement(query);
-            
-            ps.setString(1, alias);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemAlias = itemAliasFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAlias;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAliasFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemAlias getItemAliasByAlias(String alias) {
@@ -4042,41 +3536,22 @@ public class ItemControl
     
     private List<ItemAlias> getItemAliases(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType,
             EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases
-                        WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ?
-                        ORDER BY itmal_alias
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases
-                        WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemAliases.fields())
+                .from(ItemAliases)
+                .where(ItemAliases.ITEM.eq(item.getPrimaryKey()),
+                        ItemAliases.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemAliases.ITEM_ALIAS_TYPE.eq(itemAliasType.getPrimaryKey()),
+                        ItemAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemAliasFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, itemAliasType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            itemAliases = itemAliasFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAliases;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemAliases.ALIAS),
+                    ItemAliasFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemAlias> getItemAliases(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType) {
@@ -4088,40 +3563,25 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases, itemaliastypes, itemaliastypedetails
-                        WHERE itmal_itm_itemid = ? AND itmal_thrutime = ?
-                        AND itmal_iat_itemaliastypeid = iat_itemaliastypeid AND iat_lastdetailid = iatdt_itemaliastypedetailid
-                        ORDER BY iatdt_sortorder, iatdt_itemaliastypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases
-                        WHERE itmal_itm_itemid = ? AND itmal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemAliases.fields())
+                    .from(ItemAliases)
+                    .join(ItemAliasTypes).onKey(ITEM_ALIASES_ITEM_ALIAS_TYPE_FK)
+                    .join(ItemAliasTypeDetails).onKey(ITEM_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(ItemAliases.ITEM.eq(item.getPrimaryKey()),
+                            ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemAliasTypeDetails.SORT_ORDER, ItemAliasTypeDetails.ITEM_ALIAS_TYPE_NAME),
+                    ItemAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemAliases.fields())
+                    .from(ItemAliases)
+                    .where(ItemAliases.ITEM.eq(item.getPrimaryKey()),
+                            ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemAliasFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemAliases = itemAliasFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAliases;
+        return itemAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemAlias> getItemAliasesByItem(Item item) {
@@ -4133,40 +3593,25 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases, items, itemdetails
-                        WHERE itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ?
-                        AND itmal_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases
-                        WHERE itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemAliases.fields())
+                    .from(ItemAliases)
+                    .join(Items).onKey(ITEM_ALIASES_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(ItemAliases.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemAliases.fields())
+                    .from(ItemAliases)
+                    .where(ItemAliases.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemAliasFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemAliases = itemAliasFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAliases;
+        return itemAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemAlias> getItemAliasesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -4178,40 +3623,25 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByItemAliasType(ItemAliasType itemAliasType, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases, items, itemdetails
-                        WHERE itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ?
-                        AND itmal_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemaliases
-                        WHERE itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemAliases.fields())
+                    .from(ItemAliases)
+                    .join(Items).onKey(ITEM_ALIASES_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(ItemAliases.ITEM_ALIAS_TYPE.eq(itemAliasType.getPrimaryKey()),
+                            ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemAliases.fields())
+                    .from(ItemAliases)
+                    .where(ItemAliases.ITEM_ALIAS_TYPE.eq(itemAliasType.getPrimaryKey()),
+                            ItemAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemAliasFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemAliasType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemAliases = itemAliasFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAliases;
+        return itemAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemAlias> getItemAliasesByItemAliasType(ItemAliasType itemAliasType) {
@@ -4222,28 +3652,37 @@ public class ItemControl
         return getItemAliasesByItemAliasType(itemAliasType, EntityPermission.READ_WRITE);
     }
     
+    private List<ItemAlias> getItemAliasesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType,
+            EntityPermission entityPermission) {
+        var condition = ItemAliases.ITEM.eq(item.getPrimaryKey())
+                .and(ItemAliases.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()))
+                .and(ItemAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemAliases.fields())
+                    .from(ItemAliases)
+                    .join(ItemAliasTypes).onKey(ITEM_ALIASES_ITEM_ALIAS_TYPE_FK)
+                    .join(ItemAliasTypeDetails).onKey(ITEM_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(condition)
+                    .orderBy(ItemAliasTypeDetails.SORT_ORDER, ItemAliasTypeDetails.ITEM_ALIAS_TYPE_NAME, ItemAliases.ALIAS),
+                    ItemAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemAliases.fields())
+                    .from(ItemAliases)
+                    .where(condition)
+                    .forUpdate();
+        };
+
+        return itemAliasFactory.getEntitiesFromQuery(entityPermission, query);
+    }
+
     public List<ItemAlias> getItemAliasesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemAlias> itemAliases;
-        
-        try {
-            var ps = itemAliasFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM itemaliases
-                    WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ?
-                    FOR UPDATE
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemAliases = itemAliasFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemAliases;
+        return getItemAliasesByItemAndUnitOfMeasureType(item, unitOfMeasureType, EntityPermission.READ_ONLY);
+    }
+
+    public List<ItemAlias> getItemAliasesByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
+        return getItemAliasesByItemAndUnitOfMeasureType(item, unitOfMeasureType, EntityPermission.READ_WRITE);
     }
     
     public void updateItemAliasFromValue(ItemAliasValue itemAliasValue, BasePK updatedBy) {
@@ -4309,7 +3748,7 @@ public class ItemControl
     }
     
     public void deleteItemAliasesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        deleteItemAliases(getItemAliasesByItemAndUnitOfMeasureType(item, unitOfMeasureType), deletedBy);
+        deleteItemAliases(getItemAliasesByItemAndUnitOfMeasureTypeForUpdate(item, unitOfMeasureType), deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -4329,37 +3768,18 @@ public class ItemControl
     }
     
     private ItemKitOption getItemKitOption(Item item, EntityPermission entityPermission) {
-        ItemKitOption itemKitOption;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemkitoptions
-                        WHERE ikopt_itm_itemid = ? AND ikopt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itemkitoptions
-                        WHERE ikopt_itm_itemid = ? AND ikopt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemKitOptions.fields())
+                .from(ItemKitOptions)
+                .where(ItemKitOptions.ITEM.eq(item.getPrimaryKey()),
+                        ItemKitOptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitOptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemKitOption = itemKitOptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitOption;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemKitOptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemKitOption getItemKitOption(Item item) {
@@ -4405,6 +3825,9 @@ public class ItemControl
     @Inject
     protected ItemCountryOfOriginFactory itemCountryOfOriginFactory;
 
+    @Inject
+    ItemCountryOfOriginTransferCache itemCountryOfOriginTransferCache;
+
     public ItemCountryOfOrigin createItemCountryOfOrigin(Item item, GeoCode countryGeoCode, Integer percent, BasePK createdBy) {
         var itemCountryOfOrigin = itemCountryOfOriginFactory.create(item, countryGeoCode, percent,
                 session.getStartTime(), Session.MAX_TIME);
@@ -4415,54 +3838,39 @@ public class ItemControl
     }
 
     public long countItemCountryOfOriginsByItem(final Item item) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemcountryoforigins
-                WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ?
-                """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemCountryOfOrigins)
+                .where(ItemCountryOfOrigins.ITEM.eq(item.getPrimaryKey()),
+                        ItemCountryOfOrigins.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemCountryOfOriginsByCountryGeoCode(final GeoCode countryGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemcountryoforigins
-                WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
-                """, countryGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemCountryOfOrigins)
+                .where(ItemCountryOfOrigins.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ItemCountryOfOrigins.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemCountryOfOrigin getItemCountryOfOrigin(Item item, GeoCode countryGeoCode, EntityPermission entityPermission) {
-        ItemCountryOfOrigin itemCountryOfOrigin;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemcountryoforigins
-                WHERE icoorgn_itm_itemid = ? AND icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemcountryoforigins
-                WHERE icoorgn_itm_itemid = ? AND icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemCountryOfOrigins.fields())
+                .from(ItemCountryOfOrigins)
+                .where(ItemCountryOfOrigins.ITEM.eq(item.getPrimaryKey()),
+                        ItemCountryOfOrigins.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ItemCountryOfOrigins.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemCountryOfOriginFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, countryGeoCode.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemCountryOfOrigin = itemCountryOfOriginFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemCountryOfOrigin;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemCountryOfOriginFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemCountryOfOrigin getItemCountryOfOrigin(Item item, GeoCode countryGeoCode) {
@@ -4482,39 +3890,25 @@ public class ItemControl
     }
     
     private List<ItemCountryOfOrigin> getItemCountryOfOriginsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemCountryOfOrigin> itemCountryOfOrigins;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemcountryoforigins, geocodes, geocodedetails
-                WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ?
-                AND icoorgn_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                ORDER BY geodt_sortorder, geodt_geocodename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemcountryoforigins
-                WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemCountryOfOrigins.fields())
+                    .from(ItemCountryOfOrigins)
+                    .join(GeoCodes).onKey(ITEM_COUNTRY_OF_ORIGINS_COUNTRY_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(ItemCountryOfOrigins.ITEM.eq(item.getPrimaryKey()),
+                            ItemCountryOfOrigins.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    ItemCountryOfOriginFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemCountryOfOrigins.fields())
+                    .from(ItemCountryOfOrigins)
+                    .where(ItemCountryOfOrigins.ITEM.eq(item.getPrimaryKey()),
+                            ItemCountryOfOrigins.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemCountryOfOriginFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemCountryOfOrigins = itemCountryOfOriginFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemCountryOfOrigins;
+        return itemCountryOfOriginFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemCountryOfOrigin> getItemCountryOfOriginsByItem(Item item) {
@@ -4526,39 +3920,25 @@ public class ItemControl
     }
     
     private List<ItemCountryOfOrigin> getItemCountryOfOriginsByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        List<ItemCountryOfOrigin> itemCountryOfOrigins;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemcountryoforigins, items, itemdetails
-                WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
-                AND icoorgn_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                ORDER BY itmdt_itemname
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemcountryoforigins
-                WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemCountryOfOrigins.fields())
+                    .from(ItemCountryOfOrigins)
+                    .join(Items).onKey(ITEM_COUNTRY_OF_ORIGINS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(ItemCountryOfOrigins.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                            ItemCountryOfOrigins.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    ItemCountryOfOriginFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemCountryOfOrigins.fields())
+                    .from(ItemCountryOfOrigins)
+                    .where(ItemCountryOfOrigins.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                            ItemCountryOfOrigins.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemCountryOfOriginFactory.prepareStatement(query);
-            
-            ps.setLong(1, countryGeoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemCountryOfOrigins = itemCountryOfOriginFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemCountryOfOrigins;
+        return itemCountryOfOriginFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemCountryOfOrigin> getItemCountryOfOriginsByCountryGeoCode(GeoCode countryGeoCode) {
@@ -4634,6 +4014,9 @@ public class ItemControl
     @Inject
     protected ItemKitMemberFactory itemKitMemberFactory;
 
+    @Inject
+    ItemKitMemberTransferCache itemKitMemberTransferCache;
+
     public ItemKitMember createItemKitMember(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Item memberItem, InventoryCondition memberInventoryCondition, UnitOfMeasureType memberUnitOfMeasureType,
             Long quantity, BasePK createdBy) {
@@ -4647,95 +4030,92 @@ public class ItemControl
     }
 
     public long countItemKitMembersByItem(Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemkitmembers
-                        WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemKitMembers)
+                .where(ItemKitMembers.ITEM.eq(item.getPrimaryKey()),
+                        ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemKitMembersByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemkitmembers
-                        WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ?
-                        """, inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemKitMembers)
+                .where(ItemKitMembers.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemKitMembersByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemkitmembers
-                        WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemKitMembers)
+                .where(ItemKitMembers.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemKitMembersByMemberItem(Item memberItem) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemkitmembers
-                        WHERE ikm_memberitemid = ? AND ikm_thrutime = ?
-                        """, memberItem, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemKitMembers)
+                .where(ItemKitMembers.MEMBER_ITEM.eq(memberItem.getPrimaryKey()),
+                        ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemKitMembersByMemberInventoryCondition(InventoryCondition memberInventoryCondition) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemkitmembers
-                        WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ?
-                        """, memberInventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemKitMembers)
+                .where(ItemKitMembers.MEMBER_INVENTORY_CONDITION.eq(memberInventoryCondition.getPrimaryKey()),
+                        ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemKitMembersByMemberUnitOfMeasureType(UnitOfMeasureType memberUnitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemkitmembers
-                        WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?
-                        """, memberUnitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemKitMembers)
+                .where(ItemKitMembers.MEMBER_UNIT_OF_MEASURE_TYPE.eq(memberUnitOfMeasureType.getPrimaryKey()),
+                        ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemKitMember getItemKitMember(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Item memberItem, InventoryCondition memberInventoryCondition, UnitOfMeasureType memberUnitOfMeasureType,
             EntityPermission entityPermission) {
-        ItemKitMember itemKitMember;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ?  AND ikm_uomt_unitofmeasuretypeid = ?
-                AND ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ?  AND ikm_memberunitofmeasuretypeid = ?
-                AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ?  AND ikm_uomt_unitofmeasuretypeid = ?
-                AND ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ?  AND ikm_memberunitofmeasuretypeid = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(ItemKitMembers.fields())
+                    .from(ItemKitMembers)
+                    .where(ItemKitMembers.ITEM.eq(item.getPrimaryKey()),
+                            ItemKitMembers.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemKitMembers.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemKitMembers.MEMBER_ITEM.eq(memberItem.getPrimaryKey()),
+                            ItemKitMembers.MEMBER_INVENTORY_CONDITION.eq(memberInventoryCondition.getPrimaryKey()),
+                            ItemKitMembers.MEMBER_UNIT_OF_MEASURE_TYPE.eq(memberUnitOfMeasureType.getPrimaryKey()),
+                            ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemKitMembers.fields())
+                    .from(ItemKitMembers)
+                    .where(ItemKitMembers.ITEM.eq(item.getPrimaryKey()),
+                            ItemKitMembers.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemKitMembers.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemKitMembers.MEMBER_ITEM.eq(memberItem.getPrimaryKey()),
+                            ItemKitMembers.MEMBER_INVENTORY_CONDITION.eq(memberInventoryCondition.getPrimaryKey()),
+                            ItemKitMembers.MEMBER_UNIT_OF_MEASURE_TYPE.eq(memberUnitOfMeasureType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, memberItem.getPrimaryKey().getEntityId());
-            ps.setLong(5, memberInventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(6, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(7, Session.MAX_TIME);
-            
-            itemKitMember = itemKitMemberFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMember;
+        return itemKitMemberFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemKitMember getItemKitMember(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
@@ -4758,44 +4138,57 @@ public class ItemControl
                 memberUnitOfMeasureType).getItemKitMemberValue().clone();
     }
     
+    private List<ItemKitMember> getItemKitMembers(Condition condition, EntityPermission entityPermission) {
+        var kitItems = Items.as("kitItems");
+        var kitItemDetails = ItemDetails.as("kitItemDetails");
+        var kitInventoryConditions = InventoryConditions.as("kitInventoryConditions");
+        var kitInventoryConditionDetails = InventoryConditionDetails.as("kitInventoryConditionDetails");
+        var kitUnitOfMeasureTypes = UnitOfMeasureTypes.as("kitUnitOfMeasureTypes");
+        var kitUnitOfMeasureTypeDetails = UnitOfMeasureTypeDetails.as("kitUnitOfMeasureTypeDetails");
+        var memberItems = Items.as("memberItems");
+        var memberItemDetails = ItemDetails.as("memberItemDetails");
+        var memberInventoryConditions = InventoryConditions.as("memberInventoryConditions");
+        var memberInventoryConditionDetails = InventoryConditionDetails.as("memberInventoryConditionDetails");
+        var memberUnitOfMeasureTypes = UnitOfMeasureTypes.as("memberUnitOfMeasureTypes");
+        var memberUnitOfMeasureTypeDetails = UnitOfMeasureTypeDetails.as("memberUnitOfMeasureTypeDetails");
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemKitMembers.fields())
+                    .from(ItemKitMembers)
+                    .join(kitItems).on(ItemKitMembers.ITEM.eq(kitItems.ITEM))
+                    .join(kitItemDetails).on(kitItems.LAST_DETAIL.eq(kitItemDetails.ITEM_DETAIL))
+                    .join(kitInventoryConditions).on(ItemKitMembers.INVENTORY_CONDITION.eq(kitInventoryConditions.INVENTORY_CONDITION))
+                    .join(kitInventoryConditionDetails).on(kitInventoryConditions.LAST_DETAIL.eq(kitInventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
+                    .join(kitUnitOfMeasureTypes).on(ItemKitMembers.UNIT_OF_MEASURE_TYPE.eq(kitUnitOfMeasureTypes.UNIT_OF_MEASURE_TYPE))
+                    .join(kitUnitOfMeasureTypeDetails).on(kitUnitOfMeasureTypes.LAST_DETAIL.eq(kitUnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_DETAIL))
+                    .join(memberItems).on(ItemKitMembers.MEMBER_ITEM.eq(memberItems.ITEM))
+                    .join(memberItemDetails).on(memberItems.LAST_DETAIL.eq(memberItemDetails.ITEM_DETAIL))
+                    .join(memberInventoryConditions).on(ItemKitMembers.MEMBER_INVENTORY_CONDITION.eq(memberInventoryConditions.INVENTORY_CONDITION))
+                    .join(memberInventoryConditionDetails).on(memberInventoryConditions.LAST_DETAIL.eq(memberInventoryConditionDetails.INVENTORY_CONDITION_DETAIL))
+                    .join(memberUnitOfMeasureTypes).on(ItemKitMembers.MEMBER_UNIT_OF_MEASURE_TYPE.eq(memberUnitOfMeasureTypes.UNIT_OF_MEASURE_TYPE))
+                    .join(memberUnitOfMeasureTypeDetails).on(memberUnitOfMeasureTypes.LAST_DETAIL.eq(memberUnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_DETAIL))
+                    .where(condition)
+                    .orderBy(kitItemDetails.ITEM_NAME, kitInventoryConditionDetails.SORT_ORDER, kitInventoryConditionDetails.INVENTORY_CONDITION_NAME, kitUnitOfMeasureTypeDetails.SORT_ORDER, kitUnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, memberItemDetails.ITEM_NAME, memberInventoryConditionDetails.SORT_ORDER, memberInventoryConditionDetails.INVENTORY_CONDITION_NAME, memberUnitOfMeasureTypeDetails.SORT_ORDER, memberUnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemKitMemberFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemKitMembers.fields())
+                    .from(ItemKitMembers)
+                    .where(condition)
+                    .forUpdate();
+        };
+
+        return itemKitMemberFactory.getEntitiesFromQuery(entityPermission, query);
+    }
+
     private List<ItemKitMember> getItemKitMembersFromItem(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: 'ORDER BY'
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ? AND ikm_uomt_unitofmeasuretypeid = ?
-                AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ? AND ikm_uomt_unitofmeasuretypeid = ?
-                AND ikm_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var condition = ItemKitMembers.ITEM.eq(item.getPrimaryKey())
+                .and(ItemKitMembers.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()))
+                .and(ItemKitMembers.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()))
+                .and(ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        return getItemKitMembers(condition, entityPermission);
     }
     
     public List<ItemKitMember> getItemKitMembersFromItem(Item item, InventoryCondition inventoryCondition,
@@ -4810,42 +4203,12 @@ public class ItemControl
     
     private List<ItemKitMember> getItemKitMembersFromMemberItem(Item memberItem, InventoryCondition memberInventoryCondition,
             UnitOfMeasureType memberUnitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: 'ORDER BY'
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ? AND ikm_memberunitofmeasuretypeid = ?
-                AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ? AND ikm_memberunitofmeasuretypeid = ?
-                AND ikm_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var condition = ItemKitMembers.MEMBER_ITEM.eq(memberItem.getPrimaryKey())
+                .and(ItemKitMembers.MEMBER_INVENTORY_CONDITION.eq(memberInventoryCondition.getPrimaryKey()))
+                .and(ItemKitMembers.MEMBER_UNIT_OF_MEASURE_TYPE.eq(memberUnitOfMeasureType.getPrimaryKey()))
+                .and(ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, memberItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, memberInventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        return getItemKitMembers(condition, entityPermission);
     }
     
     public List<ItemKitMember> getItemKitMembersFromMemberItem(Item memberItem, InventoryCondition memberInventoryCondition,
@@ -4859,38 +4222,10 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByItem(Item item, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: 'ORDER BY'
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var condition = ItemKitMembers.ITEM.eq(item.getPrimaryKey())
+                .and(ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        return getItemKitMembers(condition, entityPermission);
     }
     
     public List<ItemKitMember> getItemKitMembersByItem(Item item) {
@@ -4902,38 +4237,10 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberItem(Item memberItem, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: 'ORDER BY'
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_memberitemid = ? AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var condition = ItemKitMembers.MEMBER_ITEM.eq(memberItem.getPrimaryKey())
+                .and(ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, memberItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        return getItemKitMembers(condition, entityPermission);
     }
     
     public List<ItemKitMember> getItemKitMembersByMemberItem(Item memberItem) {
@@ -4945,38 +4252,10 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: 'ORDER BY'
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var condition = ItemKitMembers.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey())
+                .and(ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        return getItemKitMembers(condition, entityPermission);
     }
     
     public List<ItemKitMember> getItemKitMembersByInventoryCondition(InventoryCondition inventoryCondition) {
@@ -4988,38 +4267,10 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberInventoryCondition(InventoryCondition memberInventoryCondition, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: 'ORDER BY'
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var condition = ItemKitMembers.MEMBER_INVENTORY_CONDITION.eq(memberInventoryCondition.getPrimaryKey())
+                .and(ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, memberInventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        return getItemKitMembers(condition, entityPermission);
     }
     
     public List<ItemKitMember> getItemKitMembersByMemberInventoryCondition(InventoryCondition memberInventoryCondition) {
@@ -5031,38 +4282,10 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: 'ORDER BY'
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var condition = ItemKitMembers.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey())
+                .and(ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        return getItemKitMembers(condition, entityPermission);
     }
     
     public List<ItemKitMember> getItemKitMembersByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -5074,61 +4297,22 @@ public class ItemControl
     }
     
     public List<ItemKitMember> getItemKitMembersByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            var ps = itemKitMemberFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_itm_itemid = ? AND ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
-                FOR UPDATE
-                """);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        var query = session.getDslContext()
+                .select(ItemKitMembers.fields())
+                .from(ItemKitMembers)
+                .where(ItemKitMembers.ITEM.eq(item.getPrimaryKey()),
+                        ItemKitMembers.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+
+        return itemKitMemberFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberUnitOfMeasureType(UnitOfMeasureType memberUnitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: 'ORDER BY'
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var condition = ItemKitMembers.MEMBER_UNIT_OF_MEASURE_TYPE.eq(memberUnitOfMeasureType.getPrimaryKey())
+                .and(ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemKitMemberFactory.prepareStatement(query);
-            
-            ps.setLong(1, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        return getItemKitMembers(condition, entityPermission);
     }
     
     public List<ItemKitMember> getItemKitMembersByMemberUnitOfMeasureType(UnitOfMeasureType memberUnitOfMeasureType) {
@@ -5140,27 +4324,15 @@ public class ItemControl
     }
     
     public List<ItemKitMember> getItemKitMembersByMemberItemAndUnitOfMeasureTypeForUpdate(Item memberItem, UnitOfMeasureType memberUnitOfMeasureType) {
-        List<ItemKitMember> itemKitMembers;
-        
-        try {
-            var ps = itemKitMemberFactory.prepareStatement(
-                    """
-                SELECT _ALL_
-                FROM itemkitmembers
-                WHERE ikm_memberitemid = ? AND ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?
-                FOR UPDATE
-                """);
-            
-            ps.setLong(1, memberItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemKitMembers = itemKitMemberFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemKitMembers;
+        var query = session.getDslContext()
+                .select(ItemKitMembers.fields())
+                .from(ItemKitMembers)
+                .where(ItemKitMembers.MEMBER_ITEM.eq(memberItem.getPrimaryKey()),
+                        ItemKitMembers.MEMBER_UNIT_OF_MEASURE_TYPE.eq(memberUnitOfMeasureType.getPrimaryKey()),
+                        ItemKitMembers.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+
+        return itemKitMemberFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public void updateItemKitMemberFromValue(ItemKitMemberValue itemKitMemberValue, BasePK updatedBy) {
@@ -5251,6 +4423,9 @@ public class ItemControl
     @Inject
     protected ItemPackCheckRequirementFactory itemPackCheckRequirementFactory;
 
+    @Inject
+    ItemPackCheckRequirementTransferCache itemPackCheckRequirementTransferCache;
+
     public ItemPackCheckRequirement createItemPackCheckRequirement(Item item, UnitOfMeasureType unitOfMeasureType,
             Long minimumQuantity, Long maximumQuantity, BasePK createdBy) {
         var itemPackCheckRequirement = itemPackCheckRequirementFactory.create(item,
@@ -5262,54 +4437,39 @@ public class ItemControl
     }
 
     public long countItemPackCheckRequirementByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itempackcheckrequirements
-                        WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemPackCheckRequirements)
+                .where(ItemPackCheckRequirements.ITEM.eq(item.getPrimaryKey()),
+                        ItemPackCheckRequirements.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemPackCheckRequirementByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itempackcheckrequirements
-                        WHERE ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemPackCheckRequirements)
+                .where(ItemPackCheckRequirements.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemPackCheckRequirements.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemPackCheckRequirement getItemPackCheckRequirement(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        ItemPackCheckRequirement itemPackCheckRequirement;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itempackcheckrequirements
-                WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itempackcheckrequirements
-                WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemPackCheckRequirements.fields())
+                .from(ItemPackCheckRequirements)
+                .where(ItemPackCheckRequirements.ITEM.eq(item.getPrimaryKey()),
+                        ItemPackCheckRequirements.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemPackCheckRequirements.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemPackCheckRequirementFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemPackCheckRequirement = itemPackCheckRequirementFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPackCheckRequirement;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemPackCheckRequirementFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemPackCheckRequirement getItemPackCheckRequirement(Item item, UnitOfMeasureType unitOfMeasureType) {
@@ -5329,40 +4489,25 @@ public class ItemControl
     }
 
     private List<ItemPackCheckRequirement> getItemPackCheckRequirementsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itempackcheckrequirements, unitofmeasuretypes, unitofmeasuretypedetails
-                WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ?
-                AND ipcr_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
-                AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itempackcheckrequirements
-                WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemPackCheckRequirements.fields())
+                    .from(ItemPackCheckRequirements)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_PACK_CHECK_REQUIREMENTS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemPackCheckRequirements.ITEM.eq(item.getPrimaryKey()),
+                            ItemPackCheckRequirements.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemPackCheckRequirementFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemPackCheckRequirements.fields())
+                    .from(ItemPackCheckRequirements)
+                    .where(ItemPackCheckRequirements.ITEM.eq(item.getPrimaryKey()),
+                            ItemPackCheckRequirements.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemPackCheckRequirementFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemPackCheckRequirements = itemPackCheckRequirementFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPackCheckRequirements;
+        return itemPackCheckRequirementFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemPackCheckRequirement> getItemPackCheckRequirementsByItem(Item item) {
@@ -5374,39 +4519,25 @@ public class ItemControl
     }
     
     private List<ItemPackCheckRequirement> getItemPackCheckRequirementsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itempackcheckrequirements, items, itemdetails
-                WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ?
-                AND ipcr_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itempackcheckrequirements
-                WHERE ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemPackCheckRequirements.fields())
+                    .from(ItemPackCheckRequirements)
+                    .join(Items).onKey(ITEM_PACK_CHECK_REQUIREMENTS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(ItemPackCheckRequirements.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemPackCheckRequirements.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemPackCheckRequirementFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemPackCheckRequirements.fields())
+                    .from(ItemPackCheckRequirements)
+                    .where(ItemPackCheckRequirements.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemPackCheckRequirements.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemPackCheckRequirementFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemPackCheckRequirements = itemPackCheckRequirementFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPackCheckRequirements;
+        return itemPackCheckRequirementFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemPackCheckRequirement> getItemPackCheckRequirementsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -5419,28 +4550,15 @@ public class ItemControl
     
     public List<ItemPackCheckRequirement> getItemPackCheckRequirementsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements;
-        
-        try {
-            var ps = itemPackCheckRequirementFactory.prepareStatement(
-                    """
-                SELECT _ALL_
-                FROM itempackcheckrequirements
-                WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
-                FOR UPDATE
-                """);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemPackCheckRequirements = itemPackCheckRequirementFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPackCheckRequirements;
+        var query = session.getDslContext()
+                .select(ItemPackCheckRequirements.fields())
+                .from(ItemPackCheckRequirements)
+                .where(ItemPackCheckRequirements.ITEM.eq(item.getPrimaryKey()),
+                        ItemPackCheckRequirements.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemPackCheckRequirements.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+
+        return itemPackCheckRequirementFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public void updateItemPackCheckRequirementFromValue(ItemPackCheckRequirementValue itemPackCheckRequirementValue, BasePK updatedBy) {
@@ -5515,6 +4633,9 @@ public class ItemControl
     @Inject
     protected ItemUnitCustomerTypeLimitFactory itemUnitCustomerTypeLimitFactory;
 
+    @Inject
+    ItemUnitCustomerTypeLimitTransferCache itemUnitCustomerTypeLimitTransferCache;
+
     public ItemUnitCustomerTypeLimit createItemUnitCustomerTypeLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, CustomerType customerType, Long minimumQuantity, Long maximumQuantity,
             BasePK createdBy) {
@@ -5528,75 +4649,62 @@ public class ItemControl
     }
 
     public long countItemUnitCustomerTypeLimitsByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitcustomertypelimits
-                        WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitCustomerTypeLimits)
+                .where(ItemUnitCustomerTypeLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitCustomerTypeLimitsByInventoryCondition(final InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitcustomertypelimits
-                        WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
-                        """, inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitCustomerTypeLimits)
+                .where(ItemUnitCustomerTypeLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitCustomerTypeLimitsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitcustomertypelimits
-                        WHERE iuctl_uomt_unitofmeasuretypeid = ? AND iuctl_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitCustomerTypeLimits)
+                .where(ItemUnitCustomerTypeLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitCustomerTypeLimitsByCustomerType(final CustomerType customerType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitcustomertypelimits
-                        WHERE iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?
-                        """, customerType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitCustomerTypeLimits)
+                .where(ItemUnitCustomerTypeLimits.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemUnitCustomerTypeLimit getItemUnitCustomerTypeLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, CustomerType customerType, EntityPermission entityPermission) {
-        ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits
-                WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_uomt_unitofmeasuretypeid = ?
-                AND iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits
-                WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_uomt_unitofmeasuretypeid = ?
-                AND iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemUnitCustomerTypeLimits.fields())
+                .from(ItemUnitCustomerTypeLimits)
+                .where(ItemUnitCustomerTypeLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, customerType.getPrimaryKey().getEntityId());
-            ps.setLong(5, Session.MAX_TIME);
-            
-            itemUnitCustomerTypeLimit = itemUnitCustomerTypeLimitFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitCustomerTypeLimit;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemUnitCustomerTypeLimitFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemUnitCustomerTypeLimit getItemUnitCustomerTypeLimit(Item item, InventoryCondition inventoryCondition,
@@ -5619,41 +4727,29 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, customertypes, customertypedetails
-                WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ?
-                AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
-                ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cutydt_sortorder, cutydt_customertypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits
-                WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitCustomerTypeLimits.fields())
+                    .from(ItemUnitCustomerTypeLimits)
+                    .join(InventoryConditions).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(CustomerTypes).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_CUSTOMER_TYPE_FK)
+                    .join(CustomerTypeDetails).onKey(CUSTOMER_TYPES_LAST_DETAIL_FK)
+                    .where(ItemUnitCustomerTypeLimits.ITEM.eq(item.getPrimaryKey()),
+                            ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, CustomerTypeDetails.SORT_ORDER, CustomerTypeDetails.CUSTOMER_TYPE_NAME),
+                    ItemUnitCustomerTypeLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitCustomerTypeLimits.fields())
+                    .from(ItemUnitCustomerTypeLimits)
+                    .where(ItemUnitCustomerTypeLimits.ITEM.eq(item.getPrimaryKey()),
+                            ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitCustomerTypeLimits;
+        return itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByItem(Item item) {
@@ -5665,41 +4761,29 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, customertypes, customertypedetails
-                WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
-                AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
-                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cutydt_sortorder, cutydt_customertypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits
-                WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitCustomerTypeLimits.fields())
+                    .from(ItemUnitCustomerTypeLimits)
+                    .join(Items).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(CustomerTypes).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_CUSTOMER_TYPE_FK)
+                    .join(CustomerTypeDetails).onKey(CUSTOMER_TYPES_LAST_DETAIL_FK)
+                    .where(ItemUnitCustomerTypeLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, CustomerTypeDetails.SORT_ORDER, CustomerTypeDetails.CUSTOMER_TYPE_NAME),
+                    ItemUnitCustomerTypeLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitCustomerTypeLimits.fields())
+                    .from(ItemUnitCustomerTypeLimits)
+                    .where(ItemUnitCustomerTypeLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitCustomerTypeLimits;
+        return itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByInventoryCondition(InventoryCondition inventoryCondition) {
@@ -5711,41 +4795,29 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, customertypes, customertypedetails
-                WHERE iuctl_uomt_unitofmeasuretypeid = ? AND iuctl_thrutime = ?
-                AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
-                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, cutydt_sortorder, cutydt_customertypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits
-                WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitCustomerTypeLimits.fields())
+                    .from(ItemUnitCustomerTypeLimits)
+                    .join(Items).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(CustomerTypes).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_CUSTOMER_TYPE_FK)
+                    .join(CustomerTypeDetails).onKey(CUSTOMER_TYPES_LAST_DETAIL_FK)
+                    .where(ItemUnitCustomerTypeLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, CustomerTypeDetails.SORT_ORDER, CustomerTypeDetails.CUSTOMER_TYPE_NAME),
+                    ItemUnitCustomerTypeLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitCustomerTypeLimits.fields())
+                    .from(ItemUnitCustomerTypeLimits)
+                    .where(ItemUnitCustomerTypeLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitCustomerTypeLimits;
+        return itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -5758,66 +4830,41 @@ public class ItemControl
     
     public List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
-        
-        try {
-            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(
-                    """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits
-                WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
-                FOR UPDATE
-                """);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitCustomerTypeLimits;
+        var query = session.getDslContext()
+                .select(ItemUnitCustomerTypeLimits.fields())
+                .from(ItemUnitCustomerTypeLimits)
+                .where(ItemUnitCustomerTypeLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+
+        return itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails
-                WHERE iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?
-                AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitcustomertypelimits
-                WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitCustomerTypeLimits.fields())
+                    .from(ItemUnitCustomerTypeLimits)
+                    .join(Items).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_UNIT_CUSTOMER_TYPE_LIMITS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemUnitCustomerTypeLimits.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemUnitCustomerTypeLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitCustomerTypeLimits.fields())
+                    .from(ItemUnitCustomerTypeLimits)
+                    .where(ItemUnitCustomerTypeLimits.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            ItemUnitCustomerTypeLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitCustomerTypeLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, customerType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitCustomerTypeLimits = itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitCustomerTypeLimits;
+        return itemUnitCustomerTypeLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByCustomerType(CustomerType customerType) {
@@ -5913,6 +4960,9 @@ public class ItemControl
     @Inject
     protected ItemUnitLimitFactory itemUnitLimitFactory;
 
+    @Inject
+    ItemUnitLimitTransferCache itemUnitLimitTransferCache;
+
     public ItemUnitLimit createItemUnitLimit(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Long minimumQuantity, Long maximumQuantity, BasePK createdBy) {
         var itemUnitLimit = itemUnitLimitFactory.create(item, inventoryCondition, unitOfMeasureType,
@@ -5924,66 +4974,51 @@ public class ItemControl
     }
 
     public long countItemUnitLimitsByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitlimits
-                        WHERE iul_itm_itemid = ? AND iul_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitLimits)
+                .where(ItemUnitLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitLimitsByInventoryCondition(final InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitlimits
-                        WHERE iul_itm_itemid = ? AND iul_thrutime = ?
-                        """, inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitLimits)
+                .where(ItemUnitLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitLimitsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitlimits
-                        WHERE iul_itm_itemid = ? AND iul_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitLimits)
+                .where(ItemUnitLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemUnitLimit getItemUnitLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        ItemUnitLimit itemUnitLimit;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitlimits
-                WHERE iul_itm_itemid = ? AND iul_invcon_inventoryconditionid = ? AND iul_uomt_unitofmeasuretypeid = ?
-                AND iul_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitlimits
-                WHERE iul_itm_itemid = ? AND iul_invcon_inventoryconditionid = ? AND iul_uomt_unitofmeasuretypeid = ?
-                AND iul_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemUnitLimits.fields())
+                .from(ItemUnitLimits)
+                .where(ItemUnitLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemUnitLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemUnitLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            itemUnitLimit = itemUnitLimitFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitLimit;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemUnitLimitFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemUnitLimit getItemUnitLimit(Item item, InventoryCondition inventoryCondition,
@@ -6005,40 +5040,27 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitlimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails
-                WHERE iul_itm_itemid = ? AND iul_thrutime = ?
-                AND iul_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND iul_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitlimits
-                WHERE iul_itm_itemid = ? AND iul_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitLimits.fields())
+                    .from(ItemUnitLimits)
+                    .join(InventoryConditions).onKey(ITEM_UNIT_LIMITS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_UNIT_LIMITS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemUnitLimits.ITEM.eq(item.getPrimaryKey()),
+                            ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemUnitLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitLimits.fields())
+                    .from(ItemUnitLimits)
+                    .where(ItemUnitLimits.ITEM.eq(item.getPrimaryKey()),
+                            ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitLimits = itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitLimits;
+        return itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitLimit> getItemUnitLimitsByItem(Item item) {
@@ -6050,40 +5072,27 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitlimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails
-                WHERE iul_invcon_inventoryconditionid = ? AND iul_thrutime = ?
-                AND iul_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND iul_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitlimits
-                WHERE iul_invcon_inventoryconditionid = ? AND iul_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitLimits.fields())
+                    .from(ItemUnitLimits)
+                    .join(Items).onKey(ITEM_UNIT_LIMITS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_UNIT_LIMITS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemUnitLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemUnitLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitLimits.fields())
+                    .from(ItemUnitLimits)
+                    .where(ItemUnitLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitLimits = itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitLimits;
+        return itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitLimit> getItemUnitLimitsByInventoryCondition(InventoryCondition inventoryCondition) {
@@ -6095,40 +5104,27 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitlimits, items, itemdetails, inventoryconditions, inventoryconditiondetails
-                WHERE iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ?
-                AND iul_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND iul_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitlimits
-                WHERE iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitLimits.fields())
+                    .from(ItemUnitLimits)
+                    .join(Items).onKey(ITEM_UNIT_LIMITS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(ITEM_UNIT_LIMITS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .where(ItemUnitLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME),
+                    ItemUnitLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitLimits.fields())
+                    .from(ItemUnitLimits)
+                    .where(ItemUnitLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitLimits = itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitLimits;
+        return itemUnitLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitLimit> getItemUnitLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -6140,27 +5136,15 @@ public class ItemControl
     }
     
     public List<ItemUnitLimit> getItemUnitLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitLimit> itemUnitLimits;
-        
-        try {
-            var ps = itemUnitLimitFactory.prepareStatement(
-                    """
-                SELECT _ALL_
-                FROM itemunitlimits
-                WHERE iul_itm_itemid = ? AND iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ?
-                FOR UPDATE
-                """);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemUnitLimits = itemUnitLimitFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitLimits;
+        var query = session.getDslContext()
+                .select(ItemUnitLimits.fields())
+                .from(ItemUnitLimits)
+                .where(ItemUnitLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+
+        return itemUnitLimitFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public void updateItemUnitLimitFromValue(ItemUnitLimitValue itemUnitLimitValue, BasePK updatedBy) {
@@ -6242,6 +5226,9 @@ public class ItemControl
     @Inject
     protected ItemUnitPriceLimitFactory itemUnitPriceLimitFactory;
 
+    @Inject
+    ItemUnitPriceLimitTransferCache itemUnitPriceLimitTransferCache;
+
     public ItemUnitPriceLimit createItemUnitPriceLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long minimumUnitPrice, Long maximumUnitPrice,
             BasePK createdBy) {
@@ -6254,75 +5241,62 @@ public class ItemControl
     }
 
     public long countItemUnitPriceLimitsByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitpricelimits
-                        WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitPriceLimits)
+                .where(ItemUnitPriceLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitPriceLimitsByInventoryCondition(final InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitpricelimits
-                        WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
-                        """, inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitPriceLimits)
+                .where(ItemUnitPriceLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitPriceLimitsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitpricelimits
-                        WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitPriceLimits)
+                .where(ItemUnitPriceLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemUnitPriceLimitsByCurrency(final Currency currency) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemunitpricelimits
-                        WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
-                        """, currency, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemUnitPriceLimits)
+                .where(ItemUnitPriceLimits.CURRENCY.eq(currency.getPrimaryKey()),
+                        ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemUnitPriceLimit getItemUnitPriceLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, EntityPermission entityPermission) {
-        ItemUnitPriceLimit itemUnitPriceLimit;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitpricelimits
-                WHERE iupl_itm_itemid = ? AND iupl_invcon_inventoryconditionid = ? AND iupl_uomt_unitofmeasuretypeid = ?
-                AND iupl_cur_currencyid = ? AND iupl_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitpricelimits
-                WHERE iupl_itm_itemid = ? AND iupl_invcon_inventoryconditionid = ? AND iupl_uomt_unitofmeasuretypeid = ?
-                AND iupl_cur_currencyid = ? AND iupl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemUnitPriceLimits.fields())
+                .from(ItemUnitPriceLimits)
+                .where(ItemUnitPriceLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitPriceLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemUnitPriceLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitPriceLimits.CURRENCY.eq(currency.getPrimaryKey()),
+                        ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemUnitPriceLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, currency.getPrimaryKey().getEntityId());
-            ps.setLong(5, Session.MAX_TIME);
-            
-            itemUnitPriceLimit = itemUnitPriceLimitFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitPriceLimit;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemUnitPriceLimitFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemUnitPriceLimit getItemUnitPriceLimit(Item item, InventoryCondition inventoryCondition,
@@ -6345,41 +5319,28 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitpricelimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
-                WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
-                AND iupl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND iupl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                AND iupl_cur_currencyid = cur_currencyid
-                ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitpricelimits
-                WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitPriceLimits.fields())
+                    .from(ItemUnitPriceLimits)
+                    .join(InventoryConditions).onKey(ITEM_UNIT_PRICE_LIMITS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_UNIT_PRICE_LIMITS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(ITEM_UNIT_PRICE_LIMITS_CURRENCY_FK)
+                    .where(ItemUnitPriceLimits.ITEM.eq(item.getPrimaryKey()),
+                            ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ItemUnitPriceLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitPriceLimits.fields())
+                    .from(ItemUnitPriceLimits)
+                    .where(ItemUnitPriceLimits.ITEM.eq(item.getPrimaryKey()),
+                            ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitPriceLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitPriceLimits = itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitPriceLimits;
+        return itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitPriceLimit> getItemUnitPriceLimitsByItem(Item item) {
@@ -6391,41 +5352,28 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitpricelimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
-                WHERE iupl_invcon_inventoryconditionid = ? AND iupl_thrutime = ?
-                AND iupl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND iupl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                AND iupl_cur_currencyid = cur_currencyid
-                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitpricelimits
-                WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitPriceLimits.fields())
+                    .from(ItemUnitPriceLimits)
+                    .join(Items).onKey(ITEM_UNIT_PRICE_LIMITS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_UNIT_PRICE_LIMITS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(ITEM_UNIT_PRICE_LIMITS_CURRENCY_FK)
+                    .where(ItemUnitPriceLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ItemUnitPriceLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitPriceLimits.fields())
+                    .from(ItemUnitPriceLimits)
+                    .where(ItemUnitPriceLimits.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitPriceLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitPriceLimits = itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitPriceLimits;
+        return itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitPriceLimit> getItemUnitPriceLimitsByInventoryCondition(InventoryCondition inventoryCondition) {
@@ -6437,41 +5385,28 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitpricelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies
-                WHERE iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ?
-                AND iupl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND iupl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND iupl_cur_currencyid = cur_currencyid
-                ORDER BY itmdt_itemname, uomtdt_sortorder, invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemunitpricelimits
-                WHERE iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemUnitPriceLimits.fields())
+                    .from(ItemUnitPriceLimits)
+                    .join(Items).onKey(ITEM_UNIT_PRICE_LIMITS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(ITEM_UNIT_PRICE_LIMITS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(ITEM_UNIT_PRICE_LIMITS_CURRENCY_FK)
+                    .where(ItemUnitPriceLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ItemUnitPriceLimitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemUnitPriceLimits.fields())
+                    .from(ItemUnitPriceLimits)
+                    .where(ItemUnitPriceLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemUnitPriceLimitFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemUnitPriceLimits = itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitPriceLimits;
+        return itemUnitPriceLimitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemUnitPriceLimit> getItemUnitPriceLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -6484,27 +5419,15 @@ public class ItemControl
     
     public List<ItemUnitPriceLimit> getItemUnitPriceLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits;
-        
-        try {
-            var ps = itemUnitPriceLimitFactory.prepareStatement(
-                    """
-                SELECT _ALL_
-                FROM itemunitpricelimits
-                WHERE iupl_itm_itemid = ? AND iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ?
-                FOR UPDATE
-                """);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemUnitPriceLimits = itemUnitPriceLimitFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemUnitPriceLimits;
+        var query = session.getDslContext()
+                .select(ItemUnitPriceLimits.fields())
+                .from(ItemUnitPriceLimits)
+                .where(ItemUnitPriceLimits.ITEM.eq(item.getPrimaryKey()),
+                        ItemUnitPriceLimits.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemUnitPriceLimits.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+
+        return itemUnitPriceLimitFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public void updateItemUnitPriceLimitFromValue(ItemUnitPriceLimitValue itemUnitPriceLimitValue, BasePK updatedBy) {
@@ -6587,6 +5510,9 @@ public class ItemControl
     @Inject
     protected ItemPriceTypeFactory itemPriceTypeFactory;
 
+    @Inject
+    ItemPriceTypeTransferCache itemPriceTypeTransferCache;
+
     public ItemPriceType createItemPriceType(String itemPriceTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var itemPriceType = itemPriceTypeFactory.create(itemPriceTypeName, isDefault, sortOrder);
@@ -6597,11 +5523,11 @@ public class ItemControl
     }
 
     public long countItemPriceTypes() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM itempricetypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemPriceTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemPriceType */
@@ -6620,36 +5546,17 @@ public class ItemControl
     }
 
     public ItemPriceType getItemPriceTypeByName(String itemPriceTypeName, EntityPermission entityPermission) {
-        ItemPriceType itemPriceType;
+        var baseQuery = session.getDslContext()
+                .select(ItemPriceTypes.fields())
+                .from(ItemPriceTypes)
+                .where(ItemPriceTypes.ITEM_PRICE_TYPE_NAME.eq(itemPriceTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itempricetypes
-                WHERE ipt_itempricetypename = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itempricetypes
-                WHERE ipt_itempricetypename = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemPriceTypeFactory.prepareStatement(query);
-
-            ps.setString(1, itemPriceTypeName);
-
-            itemPriceType = itemPriceTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemPriceType;
+        return itemPriceTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemPriceType getItemPriceTypeByName(String itemPriceTypeName) {
@@ -6661,26 +5568,17 @@ public class ItemControl
     }
 
     public ItemPriceType getDefaultItemPriceType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemPriceTypes.fields())
+                .from(ItemPriceTypes)
+                .where(ItemPriceTypes.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                SELECT _ALL_
-                FROM itempricetypes
-                WHERE ipt_isdefault = 1
-                """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                SELECT _ALL_
-                FROM itempricetypes
-                WHERE ipt_isdefault = 1
-                FOR UPDATE
-                """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemPriceTypeFactory.prepareStatement(query);
-
-        return itemPriceTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return itemPriceTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemPriceType getDefaultItemPriceType() {
@@ -6696,15 +5594,13 @@ public class ItemControl
     }
 
     public List<ItemPriceType> getItemPriceTypes() {
-        var ps = itemPriceTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM itempricetypes
-                ORDER BY ipt_sortorder, ipt_itempricetypename
-                _LIMIT_
-                """);
-        
-        return itemPriceTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ItemPriceTypes.fields())
+                .from(ItemPriceTypes)
+                .orderBy(ItemPriceTypes.SORT_ORDER, ItemPriceTypes.ITEM_PRICE_TYPE_NAME),
+                ItemPriceTypeFactory.class);
+
+        return itemPriceTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ItemPriceTypeChoicesBean getItemPriceTypeChoices(String defaultItemPriceTypeChoice, Language language,
@@ -6775,25 +5671,13 @@ public class ItemControl
     }
     
     public ItemPriceTypeDescription getItemPriceTypeDescription(ItemPriceType itemPriceType, Language language) {
-        ItemPriceTypeDescription itemPriceTypeDescription;
-        
-        try {
-            var ps = itemPriceTypeDescriptionFactory.prepareStatement(
-                    """
-                SELECT _ALL_
-                FROM itempricetypedescriptions
-                WHERE iptd_ipt_itempricetypeid = ? AND iptd_lang_languageid = ?
-                """);
-            
-            ps.setLong(1, itemPriceType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            itemPriceTypeDescription = itemPriceTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPriceTypeDescription;
+        var query = session.getDslContext()
+                .select(ItemPriceTypeDescriptions.fields())
+                .from(ItemPriceTypeDescriptions)
+                .where(ItemPriceTypeDescriptions.ITEM_PRICE_TYPE.eq(itemPriceType.getPrimaryKey()),
+                        ItemPriceTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return itemPriceTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestItemPriceTypeDescription(ItemPriceType itemPriceType, Language language) {
@@ -6820,6 +5704,9 @@ public class ItemControl
     @Inject
     protected ItemPriceFactory itemPriceFactory;
 
+    @Inject
+    ItemPriceTransferCache itemPriceTransferCache;
+
     public ItemPrice createItemPrice(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, BasePK createdBy) {
         var itemPrice = itemPriceFactory.create(item, inventoryCondition, unitOfMeasureType, currency,
@@ -6831,74 +5718,68 @@ public class ItemControl
     }
 
     public long countItemPricesByItem(Item item) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemprices
-                WHERE itmp_itm_itemid = ? AND itmp_thrutime = ?""",
-                item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemPrices)
+                .where(ItemPrices.ITEM.eq(item.getPrimaryKey()),
+                        ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemPricesByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemprices
-                WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ?""",
-                inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemPrices)
+                .where(ItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemprices
-                WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?""",
-                unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemPrices)
+                .where(ItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemPricesByCurrency(Currency currency) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemprices
-                WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ?""",
-                currency, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemPrices)
+                .where(ItemPrices.CURRENCY.eq(currency.getPrimaryKey()),
+                        ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ItemPrice> getItemPricesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
-                WHERE itmp_itm_itemid = ? AND itmp_thrutime = ?
-                AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                AND itmp_cur_currencyid = cur_currencyid
-                ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
-                _LIMIT_
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices
-                WHERE itmp_itm_itemid = ? AND itmp_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .join(InventoryConditions).onKey(ITEM_PRICES_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_PRICES_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(ITEM_PRICES_CURRENCY_FK)
+                    .where(ItemPrices.ITEM.eq(item.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ItemPriceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .where(ItemPrices.ITEM.eq(item.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemPriceFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPrices;
+        return itemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemPrice> getItemPricesByItem(Item item) {
@@ -6910,42 +5791,28 @@ public class ItemControl
     }
     
     private List<ItemPrice> getItemPricesByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
-                WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ?
-                AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                AND itmp_cur_currencyid = cur_currencyid
-                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
-                _LIMIT_
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices
-                WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .join(Items).onKey(ITEM_PRICES_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_PRICES_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(ITEM_PRICES_CURRENCY_FK)
+                    .where(ItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ItemPriceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .where(ItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemPriceFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPrices;
+        return itemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemPrice> getItemPricesByInventoryCondition(InventoryCondition inventoryCondition) {
@@ -6957,42 +5824,28 @@ public class ItemControl
     }
 
     private List<ItemPrice> getItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .join(Items).onKey(ITEM_PRICES_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(ITEM_PRICES_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(ITEM_PRICES_CURRENCY_FK)
+                    .where(ItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ItemPriceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .where(ItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices, items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies
-                WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?
-                AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND itmp_cur_currencyid = cur_currencyid
-                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname
-                _LIMIT_
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices
-                WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemPriceFactory.prepareStatement(query);
-
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemPrices;
+        return itemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemPrice> getItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -7004,42 +5857,29 @@ public class ItemControl
     }
 
     private List<ItemPrice> getItemPricesByCurrency(Currency currency, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .join(Items).onKey(ITEM_PRICES_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(ITEM_PRICES_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_PRICES_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemPrices.CURRENCY.eq(currency.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemPriceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .where(ItemPrices.CURRENCY.eq(currency.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails
-                WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ?
-                AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                _LIMIT_
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices
-                WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemPriceFactory.prepareStatement(query);
-
-            ps.setLong(1, currency.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemPrices;
+        return itemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemPrice> getItemPricesByCurrency(Currency currency) {
@@ -7051,67 +5891,41 @@ public class ItemControl
     }
 
     public List<ItemPrice> getItemPricesByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemPrice> itemPrices;
-        
-        try {
-            var ps = itemPriceFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM itemprices
-                WHERE itmp_itm_itemid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?
-                FOR UPDATE
-                """);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemPrices = itemPriceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPrices;
+        var query = session.getDslContext()
+                .select(ItemPrices.fields())
+                .from(ItemPrices)
+                .where(ItemPrices.ITEM.eq(item.getPrimaryKey()),
+                        ItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+
+        return itemPriceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     private List<ItemPrice> getItemPrices(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices, currencies
-                WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ?
-                AND itmp_thrutime = ? AND itmp_cur_currencyid = cur_currencyid
-                ORDER BY cur_sortorder, cur_currencyisoname
-                _LIMIT_
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices
-                WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ?
-                AND itmp_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .join(Currencies).onKey(ITEM_PRICES_CURRENCY_FK)
+                    .where(ItemPrices.ITEM.eq(item.getPrimaryKey()),
+                            ItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ItemPriceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemPrices.fields())
+                    .from(ItemPrices)
+                    .where(ItemPrices.ITEM.eq(item.getPrimaryKey()),
+                            ItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemPriceFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            itemPrices = itemPriceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPrices;
+        return itemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemPrice> getItemPrices(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType) {
@@ -7124,42 +5938,21 @@ public class ItemControl
     
     private ItemPrice getItemPrice(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
-        ItemPrice itemPrice;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices
-                WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_cur_currencyid = ?
-                AND itmp_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemprices
-                WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_cur_currencyid = ?
-                AND itmp_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemPrices.fields())
+                .from(ItemPrices)
+                .where(ItemPrices.ITEM.eq(item.getPrimaryKey()),
+                        ItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemPrices.CURRENCY.eq(currency.getPrimaryKey()),
+                        ItemPrices.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemPriceFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, currency.getPrimaryKey().getEntityId());
-            ps.setLong(5, Session.MAX_TIME);
-            
-            itemPrice = itemPriceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPrice;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemPriceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemPrice getItemPrice(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
@@ -7198,13 +5991,13 @@ public class ItemControl
         var item = itemPrice.getItem();
         var itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
         
-        if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
+        if(com.echothree.model.control.item.common.ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
             var itemFixedPrice = getItemFixedPriceForUpdate(itemPrice);
             
             if(itemFixedPrice != null) {
                 deleteItemFixedPrice(itemFixedPrice, deletedBy);
             }
-        } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
+        } else if(com.echothree.model.control.item.common.ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
             var itemVariablePrice = getItemVariablePriceForUpdate(itemPrice);
             
             if(itemVariablePrice != null) {
@@ -7260,37 +6053,18 @@ public class ItemControl
     }
     
     private ItemFixedPrice getItemFixedPrice(ItemPrice itemPrice, EntityPermission entityPermission) {
-        ItemFixedPrice itemFixedPrice;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemfixedprices
-                WHERE itmfp_itmp_itempriceid = ? AND itmfp_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemfixedprices
-                WHERE itmfp_itmp_itempriceid = ? AND itmfp_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemFixedPrices.fields())
+                .from(ItemFixedPrices)
+                .where(ItemFixedPrices.ITEM_PRICE.eq(itemPrice.getPrimaryKey()),
+                        ItemFixedPrices.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemFixedPriceFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemPrice.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemFixedPrice = itemFixedPriceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemFixedPrice;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemFixedPriceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemFixedPrice getItemFixedPrice(ItemPrice itemPrice) {
@@ -7311,23 +6085,15 @@ public class ItemControl
         return itemFixedPrice == null? null: itemFixedPrice.getItemFixedPriceValue().clone();
     }
     
-    private static final Map<EntityPermission, String> getItemFixedPriceHistoryQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemfixedprices
-                WHERE itmfp_itmp_itempriceid = ?
-                ORDER BY itmfp_thrutime
-                """);
-        getItemFixedPriceHistoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public List<ItemFixedPrice> getItemFixedPriceHistory(ItemPrice itemPrice) {
-        return itemFixedPriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getItemFixedPriceHistoryQueries,
-                itemPrice);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ItemFixedPrices.fields())
+                .from(ItemFixedPrices)
+                .where(ItemFixedPrices.ITEM_PRICE.eq(itemPrice.getPrimaryKey()))
+                .orderBy(ItemFixedPrices.THRU_TIME),
+                ItemFixedPriceFactory.class);
+
+        return itemFixedPriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public void updateItemFixedPriceFromValue(ItemFixedPriceValue itemFixedPriceValue, BasePK updatedBy) {
@@ -7373,39 +6139,20 @@ public class ItemControl
     }
     
     private ItemVariablePrice getItemVariablePrice(ItemPrice itemPrice, EntityPermission entityPermission) {
-        ItemVariablePrice itemVariablePrice;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvariableprices
-                WHERE itmvp_itmp_itempriceid = ? AND itmvp_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvariableprices
-                WHERE itmvp_itmp_itempriceid = ? AND itmvp_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemVariablePrices.fields())
+                .from(ItemVariablePrices)
+                .where(ItemVariablePrices.ITEM_PRICE.eq(itemPrice.getPrimaryKey()),
+                        ItemVariablePrices.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemVariablePriceFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemPrice.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemVariablePrice = itemVariablePriceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemVariablePrice;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemVariablePriceFactory.getEntityFromQuery(entityPermission, query);
     }
-    
+
     public ItemVariablePrice getItemVariablePrice(ItemPrice itemPrice) {
         return getItemVariablePrice(itemPrice, EntityPermission.READ_ONLY);
     }
@@ -7424,23 +6171,15 @@ public class ItemControl
         return itemVariablePrice == null? null: itemVariablePrice.getItemVariablePriceValue().clone();
     }
     
-    private static final Map<EntityPermission, String> getItemVariablePriceHistoryQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemvariableprices
-                WHERE itmvp_itmp_itempriceid = ?
-                ORDER BY itmvp_thrutime
-                """);
-        getItemVariablePriceHistoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public List<ItemVariablePrice> getItemVariablePriceHistory(ItemPrice itemPrice) {
-        return itemVariablePriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getItemVariablePriceHistoryQueries,
-                itemPrice);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ItemVariablePrices.fields())
+                .from(ItemVariablePrices)
+                .where(ItemVariablePrices.ITEM_PRICE.eq(itemPrice.getPrimaryKey()))
+                .orderBy(ItemVariablePrices.THRU_TIME),
+                ItemVariablePriceFactory.class);
+
+        return itemVariablePriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public void updateItemVariablePriceFromValue(ItemVariablePriceValue itemVariablePriceValue, BasePK updatedBy) {
@@ -7475,10 +6214,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemDescriptionTypeDetailFactory itemDescriptionTypeDetailFactory;
+
+    @Inject
     protected ItemDescriptionTypeFactory itemDescriptionTypeFactory;
 
     @Inject
-    protected ItemDescriptionTypeDetailFactory itemDescriptionTypeDetailFactory;
+    ItemDescriptionTypeTransferCache itemDescriptionTypeTransferCache;
 
     public ItemDescriptionType createItemDescriptionType(String itemDescriptionTypeName, ItemDescriptionType parentItemDescriptionType,
             Boolean useParentIfMissing, MimeTypeUsageType mimeTypeUsageType, Boolean checkContentWebAddress, Boolean includeInIndex, Boolean indexDefault,
@@ -7533,46 +6275,37 @@ public class ItemControl
     }
 
     public long countItemDescriptionTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemDescriptionTypes)
+                .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemDescriptionTypesByParentItemDescriptionType(ItemDescriptionType parentItemDescriptionType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_parentitemdescriptiontypeid = ?
-                """,
-                parentItemDescriptionType);
-    }
-
-    private static final Map<EntityPermission, String> getItemDescriptionTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_itemdescriptiontypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_itemdescriptiontypename = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemDescriptionTypes)
+                .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionTypeDetails.PARENT_ITEM_DESCRIPTION_TYPE.eq(parentItemDescriptionType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ItemDescriptionType getItemDescriptionTypeByName(String itemDescriptionTypeName, EntityPermission entityPermission) {
-        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeByNameQueries, itemDescriptionTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypes.fields())
+                .from(ItemDescriptionTypes)
+                .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionTypeDetails.ITEM_DESCRIPTION_TYPE_NAME.eq(itemDescriptionTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDescriptionType getItemDescriptionTypeByName(String itemDescriptionTypeName) {
@@ -7587,31 +6320,21 @@ public class ItemControl
         return getItemDescriptionTypeDetailValueForUpdate(getItemDescriptionTypeByNameForUpdate(itemDescriptionTypeName));
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypesByIncludeInIndexQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_includeinindex = 1
-                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_includeinindex = 1
-                FOR UPDATE
-                """);
-        getItemDescriptionTypesByIncludeInIndexQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescriptionType> getItemDescriptionTypesByIncludeInIndex(EntityPermission entityPermission) {
-        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypesByIncludeInIndexQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypes.fields())
+                .from(ItemDescriptionTypes)
+                .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionTypeDetails.INCLUDE_IN_INDEX.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDescriptionTypeDetails.SORT_ORDER, ItemDescriptionTypeDetails.ITEM_DESCRIPTION_TYPE_NAME),
+                    ItemDescriptionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescriptionType> getItemDescriptionTypesByIncludeInIndex() {
@@ -7622,29 +6345,19 @@ public class ItemControl
         return getItemDescriptionTypesByIncludeInIndex(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getIndexDefaultItemDescriptionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_indexdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_indexdefault = 1
-                FOR UPDATE
-                """);
-        getIndexDefaultItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ItemDescriptionType getIndexDefaultItemDescriptionType(EntityPermission entityPermission) {
-        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, getIndexDefaultItemDescriptionTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypes.fields())
+                .from(ItemDescriptionTypes)
+                .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionTypeDetails.INDEX_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDescriptionType getIndexDefaultItemDescriptionType() {
@@ -7659,29 +6372,19 @@ public class ItemControl
         return getIndexDefaultItemDescriptionTypeForUpdate().getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getDefaultItemDescriptionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                AND idtdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ItemDescriptionType getDefaultItemDescriptionType(EntityPermission entityPermission) {
-        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, getDefaultItemDescriptionTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypes.fields())
+                .from(ItemDescriptionTypes)
+                .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDescriptionType getDefaultItemDescriptionType() {
@@ -7696,29 +6399,20 @@ public class ItemControl
         return getDefaultItemDescriptionTypeForUpdate().getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
-                FOR UPDATE
-                """);
-        getItemDescriptionTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescriptionType> getItemDescriptionTypes(EntityPermission entityPermission) {
-        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypes.fields())
+                .from(ItemDescriptionTypes)
+                .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDescriptionTypeDetails.SORT_ORDER, ItemDescriptionTypeDetails.ITEM_DESCRIPTION_TYPE_NAME),
+                    ItemDescriptionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescriptionType> getItemDescriptionTypes() {
@@ -7729,31 +6423,22 @@ public class ItemControl
         return getItemDescriptionTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypesByParentItemDescriptionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid AND idtdt_parentitemdescriptiontypeid = ?
-                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid AND idtdt_parentitemdescriptiontypeid = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypesByParentItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescriptionType> getItemDescriptionTypesByParentItemDescriptionType(ItemDescriptionType parentItemDescriptionType,
             EntityPermission entityPermission) {
-        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypesByParentItemDescriptionTypeQueries,
-                parentItemDescriptionType);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypes.fields())
+                .from(ItemDescriptionTypes)
+                .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionTypeDetails.PARENT_ITEM_DESCRIPTION_TYPE.eq(parentItemDescriptionType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDescriptionTypeDetails.SORT_ORDER, ItemDescriptionTypeDetails.ITEM_DESCRIPTION_TYPE_NAME),
+                    ItemDescriptionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescriptionType> getItemDescriptionTypesByParentItemDescriptionType(ItemDescriptionType parentItemDescriptionType) {
@@ -7962,6 +6647,9 @@ public class ItemControl
     @Inject
     protected ItemDescriptionTypeDescriptionFactory itemDescriptionTypeDescriptionFactory;
 
+    @Inject
+    ItemDescriptionTypeDescriptionTransferCache itemDescriptionTypeDescriptionTransferCache;
+
     public ItemDescriptionTypeDescription createItemDescriptionTypeDescription(ItemDescriptionType itemDescriptionType, Language language, String description, BasePK createdBy) {
         var itemDescriptionTypeDescription = itemDescriptionTypeDescriptionFactory.create(itemDescriptionType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -7971,28 +6659,20 @@ public class ItemControl
         return itemDescriptionTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypedescriptions
-                WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_lang_languageid = ? AND idtd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypedescriptions
-                WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_lang_languageid = ? AND idtd_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ItemDescriptionTypeDescription getItemDescriptionTypeDescription(ItemDescriptionType itemDescriptionType, Language language, EntityPermission entityPermission) {
-        return itemDescriptionTypeDescriptionFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeDescriptionQueries,
-                itemDescriptionType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypeDescriptions.fields())
+                .from(ItemDescriptionTypeDescriptions)
+                .where(ItemDescriptionTypeDescriptions.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                        ItemDescriptionTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemDescriptionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDescriptionTypeDescription getItemDescriptionTypeDescription(ItemDescriptionType itemDescriptionType, Language language) {
@@ -8011,30 +6691,25 @@ public class ItemControl
         return getItemDescriptionTypeDescriptionValue(getItemDescriptionTypeDescriptionForUpdate(itemDescriptionType, language));
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypeDescriptionsByItemDescriptionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypedescriptions, languages
-                WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_thrutime = ? AND idtd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypedescriptions
-                WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeDescriptionsByItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescriptionTypeDescription> getItemDescriptionTypeDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        return itemDescriptionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeDescriptionsByItemDescriptionTypeQueries,
-                itemDescriptionType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemDescriptionTypeDescriptions.fields())
+                    .from(ItemDescriptionTypeDescriptions)
+                    .join(Languages).onKey(ITEM_DESCRIPTION_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemDescriptionTypeDescriptions.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                            ItemDescriptionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemDescriptionTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemDescriptionTypeDescriptions.fields())
+                    .from(ItemDescriptionTypeDescriptions)
+                    .where(ItemDescriptionTypeDescriptions.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                            ItemDescriptionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return itemDescriptionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescriptionTypeDescription> getItemDescriptionTypeDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType) {
@@ -8130,28 +6805,19 @@ public class ItemControl
         return itemImageDescriptionType;
     }
 
-    private static final Map<EntityPermission, String> getItemImageDescriptionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemimagedescriptiontypes
-                WHERE iimgdt_idt_itemdescriptiontypeid = ? AND iimgdt_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemimagedescriptiontypes
-                WHERE iimgdt_idt_itemdescriptiontypeid = ? AND iimgdt_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemImageDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ItemImageDescriptionType getItemImageDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        return itemImageDescriptionTypeFactory.getEntityFromQuery(entityPermission, getItemImageDescriptionTypeQueries,
-                itemDescriptionType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ItemImageDescriptionTypes.fields())
+                .from(ItemImageDescriptionTypes)
+                .where(ItemImageDescriptionTypes.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                        ItemImageDescriptionTypes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemImageDescriptionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemImageDescriptionType getItemImageDescriptionType(ItemDescriptionType itemDescriptionType) {
@@ -8217,10 +6883,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemDescriptionTypeUseTypeDetailFactory itemDescriptionTypeUseTypeDetailFactory;
+
+    @Inject
     protected ItemDescriptionTypeUseTypeFactory itemDescriptionTypeUseTypeFactory;
 
     @Inject
-    protected ItemDescriptionTypeUseTypeDetailFactory itemDescriptionTypeUseTypeDetailFactory;
+    ItemDescriptionTypeUseTypeTransferCache itemDescriptionTypeUseTypeTransferCache;
 
     public ItemDescriptionTypeUseType createItemDescriptionTypeUseType(String itemDescriptionTypeUseTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -8269,36 +6938,27 @@ public class ItemControl
     }
 
     public long countItemDescriptionTypeUseTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getItemDescriptionTypeUseTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
-                AND idtutypdt_itemdescriptiontypeusetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
-                AND idtutypdt_itemdescriptiontypeusetypename = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemDescriptionTypeUseTypes)
+                .join(ItemDescriptionTypeUseTypeDetails).onKey(ITEM_DESCRIPTION_TYPE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByName(String itemDescriptionTypeUseTypeName, EntityPermission entityPermission) {
-        return itemDescriptionTypeUseTypeFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeUseTypeByNameQueries, itemDescriptionTypeUseTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypeUseTypes.fields())
+                .from(ItemDescriptionTypeUseTypes)
+                .join(ItemDescriptionTypeUseTypeDetails).onKey(ITEM_DESCRIPTION_TYPE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionTypeUseTypeDetails.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME.eq(itemDescriptionTypeUseTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByName(String itemDescriptionTypeUseTypeName) {
@@ -8317,29 +6977,19 @@ public class ItemControl
         return getItemDescriptionTypeUseTypeDetailValueForUpdate(getItemDescriptionTypeUseTypeByNameForUpdate(itemDescriptionTypeUseTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultItemDescriptionTypeUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
-                AND idtutypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
-                AND idtutypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultItemDescriptionTypeUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ItemDescriptionTypeUseType getDefaultItemDescriptionTypeUseType(EntityPermission entityPermission) {
-        return itemDescriptionTypeUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultItemDescriptionTypeUseTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypeUseTypes.fields())
+                .from(ItemDescriptionTypeUseTypes)
+                .join(ItemDescriptionTypeUseTypeDetails).onKey(ITEM_DESCRIPTION_TYPE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionTypeUseTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDescriptionTypeUseType getDefaultItemDescriptionTypeUseType() {
@@ -8354,29 +7004,20 @@ public class ItemControl
         return getDefaultItemDescriptionTypeUseTypeForUpdate().getLastDetailForUpdate().getItemDescriptionTypeUseTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypeUseTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
-                ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeUseTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypes(EntityPermission entityPermission) {
-        return itemDescriptionTypeUseTypeFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUseTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypeUseTypes.fields())
+                .from(ItemDescriptionTypeUseTypes)
+                .join(ItemDescriptionTypeUseTypeDetails).onKey(ITEM_DESCRIPTION_TYPE_USE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDescriptionTypeUseTypeDetails.SORT_ORDER, ItemDescriptionTypeUseTypeDetails.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME),
+                    ItemDescriptionTypeUseTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeUseTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypes() {
@@ -8387,48 +7028,11 @@ public class ItemControl
         return getItemDescriptionTypeUseTypes(EntityPermission.READ_WRITE);
     }
 
-    private List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypesByParentItemDescriptionTypeUseType(ItemDescriptionTypeUseType parentItemDescriptionTypeUseType,
-            EntityPermission entityPermission) {
-        List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes;
 
-        try {
-            String query = null;
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid AND idtutypdt_parentitemdescriptiontypeusetypeid = ?
-                ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid AND idtutypdt_parentitemdescriptiontypeusetypeid = ?
-                FOR UPDATE
-                """;
-            }
 
-            var ps = itemDescriptionTypeUseTypeFactory.prepareStatement(query);
 
-            ps.setLong(1, parentItemDescriptionTypeUseType.getPrimaryKey().getEntityId());
 
-            itemDescriptionTypeUseTypes = itemDescriptionTypeUseTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemDescriptionTypeUseTypes;
-    }
-
-    public List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypesByParentItemDescriptionTypeUseType(ItemDescriptionTypeUseType parentItemDescriptionTypeUseType) {
-        return getItemDescriptionTypeUseTypesByParentItemDescriptionTypeUseType(parentItemDescriptionTypeUseType, EntityPermission.READ_ONLY);
-    }
-
-    public List<ItemDescriptionTypeUseType> getItemDescriptionTypeUseTypesByParentItemDescriptionTypeUseTypeForUpdate(ItemDescriptionTypeUseType parentItemDescriptionTypeUseType) {
-        return getItemDescriptionTypeUseTypesByParentItemDescriptionTypeUseType(parentItemDescriptionTypeUseType, EntityPermission.READ_WRITE);
-    }
 
     public ItemDescriptionTypeUseTypeTransfer getItemDescriptionTypeUseTypeTransfer(UserVisit userVisit, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
         return itemDescriptionTypeUseTypeTransferCache.getTransfer(userVisit, itemDescriptionTypeUseType);
@@ -8448,10 +7052,7 @@ public class ItemControl
         return getItemDescriptionTypeUseTypeTransfers(userVisit, getItemDescriptionTypeUseTypes());
     }
 
-    public List<ItemDescriptionTypeUseTypeTransfer> getItemDescriptionTypeUseTypeTransfersByParentItemDescriptionTypeUseType(UserVisit userVisit,
-            ItemDescriptionTypeUseType parentItemDescriptionTypeUseType) {
-        return getItemDescriptionTypeUseTypeTransfers(userVisit, getItemDescriptionTypeUseTypesByParentItemDescriptionTypeUseType(parentItemDescriptionTypeUseType));
-    }
+
 
     public ItemDescriptionTypeUseTypeChoicesBean getItemDescriptionTypeUseTypeChoices(String defaultItemDescriptionTypeUseTypeChoice, Language language, boolean allowNullChoice) {
         var itemDescriptionTypeUseTypes = getItemDescriptionTypeUseTypes();
@@ -8568,6 +7169,9 @@ public class ItemControl
     @Inject
     protected ItemDescriptionTypeUseTypeDescriptionFactory itemDescriptionTypeUseTypeDescriptionFactory;
 
+    @Inject
+    ItemDescriptionTypeUseTypeDescriptionTransferCache itemDescriptionTypeUseTypeDescriptionTransferCache;
+
     public ItemDescriptionTypeUseTypeDescription createItemDescriptionTypeUseTypeDescription(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             Language language, String description, BasePK createdBy) {
         var itemDescriptionTypeUseTypeDescription = itemDescriptionTypeUseTypeDescriptionFactory.create(itemDescriptionTypeUseType,
@@ -8578,29 +7182,21 @@ public class ItemControl
         return itemDescriptionTypeUseTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypeUseTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypedescriptions
-                WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_lang_languageid = ? AND idtutypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypedescriptions
-                WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_lang_languageid = ? AND idtutypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ItemDescriptionTypeUseTypeDescription getItemDescriptionTypeUseTypeDescription(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             Language language, EntityPermission entityPermission) {
-        return itemDescriptionTypeUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeUseTypeDescriptionQueries,
-                itemDescriptionTypeUseType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypeUseTypeDescriptions.fields())
+                .from(ItemDescriptionTypeUseTypeDescriptions)
+                .where(ItemDescriptionTypeUseTypeDescriptions.ITEM_DESCRIPTION_TYPE_USE_TYPE.eq(itemDescriptionTypeUseType.getPrimaryKey()),
+                        ItemDescriptionTypeUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemDescriptionTypeUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDescriptionTypeUseTypeDescription getItemDescriptionTypeUseTypeDescription(ItemDescriptionTypeUseType itemDescriptionTypeUseType, Language language) {
@@ -8619,31 +7215,26 @@ public class ItemControl
         return getItemDescriptionTypeUseTypeDescriptionValue(getItemDescriptionTypeUseTypeDescriptionForUpdate(itemDescriptionTypeUseType, language));
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypedescriptions, languages
-                WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_thrutime = ? AND idtutypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeusetypedescriptions
-                WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescriptionTypeUseTypeDescription> getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             EntityPermission entityPermission) {
-        return itemDescriptionTypeUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeQueries,
-                itemDescriptionTypeUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemDescriptionTypeUseTypeDescriptions.fields())
+                    .from(ItemDescriptionTypeUseTypeDescriptions)
+                    .join(Languages).onKey(ITEM_DESCRIPTION_TYPE_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemDescriptionTypeUseTypeDescriptions.ITEM_DESCRIPTION_TYPE_USE_TYPE.eq(itemDescriptionTypeUseType.getPrimaryKey()),
+                            ItemDescriptionTypeUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemDescriptionTypeUseTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemDescriptionTypeUseTypeDescriptions.fields())
+                    .from(ItemDescriptionTypeUseTypeDescriptions)
+                    .where(ItemDescriptionTypeUseTypeDescriptions.ITEM_DESCRIPTION_TYPE_USE_TYPE.eq(itemDescriptionTypeUseType.getPrimaryKey()),
+                            ItemDescriptionTypeUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return itemDescriptionTypeUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescriptionTypeUseTypeDescription> getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
@@ -8727,6 +7318,9 @@ public class ItemControl
     @Inject
     protected ItemDescriptionTypeUseFactory itemDescriptionTypeUseFactory;
 
+    @Inject
+    ItemDescriptionTypeUseTransferCache itemDescriptionTypeUseTransferCache;
+
     public ItemDescriptionTypeUse createItemDescriptionTypeUse(ItemDescriptionType itemDescriptionType, ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             BasePK createdBy) {
         var itemDescriptionTypeUse = itemDescriptionTypeUseFactory.create(itemDescriptionType, itemDescriptionTypeUseType,
@@ -8738,45 +7332,40 @@ public class ItemControl
     }
 
     public long countItemDescriptionTypeUsesByItemDescriptionType(ItemDescriptionType itemDescriptionType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemdescriptiontypeuses
-                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_thrutime = ?
-                """, itemDescriptionType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemDescriptionTypeUses)
+                .where(ItemDescriptionTypeUses.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                        ItemDescriptionTypeUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemDescriptionTypeUsesByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemdescriptiontypeuses
-                WHERE idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
-                """, itemDescriptionTypeUseType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getItemDescriptionTypeUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeuses
-                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeuses
-                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeUseQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemDescriptionTypeUses)
+                .where(ItemDescriptionTypeUses.ITEM_DESCRIPTION_TYPE_USE_TYPE.eq(itemDescriptionTypeUseType.getPrimaryKey()),
+                        ItemDescriptionTypeUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemDescriptionTypeUse getItemDescriptionTypeUse(ItemDescriptionType itemDescriptionType, ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             EntityPermission entityPermission) {
-        return itemDescriptionTypeUseFactory.getEntityFromQuery(entityPermission, getItemDescriptionTypeUseQueries, itemDescriptionType,
-                itemDescriptionTypeUseType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptionTypeUses.fields())
+                .from(ItemDescriptionTypeUses)
+                .where(ItemDescriptionTypeUses.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                        ItemDescriptionTypeUses.ITEM_DESCRIPTION_TYPE_USE_TYPE.eq(itemDescriptionTypeUseType.getPrimaryKey()),
+                        ItemDescriptionTypeUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionTypeUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemDescriptionTypeUse getItemDescriptionTypeUse(ItemDescriptionType itemDescriptionType, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
@@ -8791,31 +7380,26 @@ public class ItemControl
         return getItemDescriptionTypeUseForUpdate(itemDescriptionType, itemDescriptionTypeUseType).getItemDescriptionTypeUseValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypeUsesByItemDescriptionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeuses, itemdescriptiontypes, itemdescriptiontypedetails
-                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_thrutime = ?
-                AND idtu_idt_itemdescriptiontypeid = idt_itemdescriptiontypeid AND idt_lastdetailid = idtdt_itemdescriptiontypedetailid
-                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeuses
-                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeUsesByItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescriptionTypeUse> getItemDescriptionTypeUsesByItemDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        return itemDescriptionTypeUseFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUsesByItemDescriptionTypeQueries,
-                itemDescriptionType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemDescriptionTypeUses.fields())
+                    .from(ItemDescriptionTypeUses)
+                    .join(ItemDescriptionTypes).onKey(ITEM_DESCRIPTION_TYPE_USES_ITEM_DESCRIPTION_TYPE_FK)
+                    .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_LAST_DETAIL_FK)
+                    .where(ItemDescriptionTypeUses.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                            ItemDescriptionTypeUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDescriptionTypeDetails.SORT_ORDER, ItemDescriptionTypeDetails.ITEM_DESCRIPTION_TYPE_NAME),
+                    ItemDescriptionTypeUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemDescriptionTypeUses.fields())
+                    .from(ItemDescriptionTypeUses)
+                    .where(ItemDescriptionTypeUses.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                            ItemDescriptionTypeUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return itemDescriptionTypeUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescriptionTypeUse> getItemDescriptionTypeUsesByItemDescriptionType(ItemDescriptionType itemDescriptionType) {
@@ -8826,32 +7410,27 @@ public class ItemControl
         return getItemDescriptionTypeUsesByItemDescriptionType(itemDescriptionType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemDescriptionTypeUsesByItemDescriptionTypeUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeuses, itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
-                WHERE idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
-                AND idtu_idtutyp_itemdescriptiontypeusetypeid = idtutyp_itemdescriptiontypeusetypeid AND idtutyp_lastdetailid = idtutypdt_itemdescriptiontypeusetypedetailid
-                ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptiontypeuses
-                WHERE idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemDescriptionTypeUsesByItemDescriptionTypeUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescriptionTypeUse> getItemDescriptionTypeUsesByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType,
             EntityPermission entityPermission) {
-        return itemDescriptionTypeUseFactory.getEntitiesFromQuery(entityPermission, getItemDescriptionTypeUsesByItemDescriptionTypeUseTypeQueries,
-                itemDescriptionTypeUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemDescriptionTypeUses.fields())
+                    .from(ItemDescriptionTypeUses)
+                    .join(ItemDescriptionTypeUseTypes).onKey(ITEM_DESCRIPTION_TYPE_USES_ITEM_DESCRIPTION_TYPE_USE_TYPE_FK)
+                    .join(ItemDescriptionTypeUseTypeDetails).onKey(ITEM_DESCRIPTION_TYPE_USE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemDescriptionTypeUses.ITEM_DESCRIPTION_TYPE_USE_TYPE.eq(itemDescriptionTypeUseType.getPrimaryKey()),
+                            ItemDescriptionTypeUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDescriptionTypeUseTypeDetails.SORT_ORDER, ItemDescriptionTypeUseTypeDetails.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME),
+                    ItemDescriptionTypeUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemDescriptionTypeUses.fields())
+                    .from(ItemDescriptionTypeUses)
+                    .where(ItemDescriptionTypeUses.ITEM_DESCRIPTION_TYPE_USE_TYPE.eq(itemDescriptionTypeUseType.getPrimaryKey()),
+                            ItemDescriptionTypeUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return itemDescriptionTypeUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescriptionTypeUse> getItemDescriptionTypeUsesByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
@@ -8910,10 +7489,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemImageTypeDetailFactory itemImageTypeDetailFactory;
+
+    @Inject
     protected ItemImageTypeFactory itemImageTypeFactory;
 
     @Inject
-    protected ItemImageTypeDetailFactory itemImageTypeDetailFactory;
+    ItemImageTypeTransferCache itemImageTypeTransferCache;
 
     public ItemImageType createItemImageType(String itemImageTypeName, MimeType preferredMimeType, Integer quality, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -8966,36 +7548,27 @@ public class ItemControl
     }
 
     public long countItemImageTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemimagetypes, itemimagetypedetails
-                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getItemImageTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemimagetypes, itemimagetypedetails
-                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
-                AND iimgtdt_itemimagetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemimagetypes, itemimagetypedetails
-                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
-                AND iimgtdt_itemimagetypename = ?
-                FOR UPDATE
-                """);
-        getItemImageTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemImageTypes)
+                .join(ItemImageTypeDetails).onKey(ITEM_IMAGE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ItemImageType getItemImageTypeByName(String itemImageTypeName, EntityPermission entityPermission) {
-        return itemImageTypeFactory.getEntityFromQuery(entityPermission, getItemImageTypeByNameQueries, itemImageTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ItemImageTypes.fields())
+                .from(ItemImageTypes)
+                .join(ItemImageTypeDetails).onKey(ITEM_IMAGE_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemImageTypeDetails.ITEM_IMAGE_TYPE_NAME.eq(itemImageTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemImageTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemImageType getItemImageTypeByName(String itemImageTypeName) {
@@ -9010,29 +7583,19 @@ public class ItemControl
         return getItemImageTypeDetailValueForUpdate(getItemImageTypeByNameForUpdate(itemImageTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultItemImageTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemimagetypes, itemimagetypedetails
-                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
-                AND iimgtdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemimagetypes, itemimagetypedetails
-                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
-                AND iimgtdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultItemImageTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ItemImageType getDefaultItemImageType(EntityPermission entityPermission) {
-        return itemImageTypeFactory.getEntityFromQuery(entityPermission, getDefaultItemImageTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemImageTypes.fields())
+                .from(ItemImageTypes)
+                .join(ItemImageTypeDetails).onKey(ITEM_IMAGE_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemImageTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemImageTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemImageType getDefaultItemImageType() {
@@ -9047,29 +7610,20 @@ public class ItemControl
         return getDefaultItemImageTypeForUpdate().getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getItemImageTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemimagetypes, itemimagetypedetails
-                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
-                ORDER BY iimgtdt_sortorder, iimgtdt_itemimagetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemimagetypes, itemimagetypedetails
-                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
-                FOR UPDATE
-                """);
-        getItemImageTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemImageType> getItemImageTypes(EntityPermission entityPermission) {
-        return itemImageTypeFactory.getEntitiesFromQuery(entityPermission, getItemImageTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemImageTypes.fields())
+                .from(ItemImageTypes)
+                .join(ItemImageTypeDetails).onKey(ITEM_IMAGE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemImageTypeDetails.SORT_ORDER, ItemImageTypeDetails.ITEM_IMAGE_TYPE_NAME),
+                    ItemImageTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemImageTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemImageType> getItemImageTypes() {
@@ -9216,6 +7770,9 @@ public class ItemControl
     @Inject
     protected ItemImageTypeDescriptionFactory itemImageTypeDescriptionFactory;
 
+    @Inject
+    ItemImageTypeDescriptionTransferCache itemImageTypeDescriptionTransferCache;
+
     public ItemImageTypeDescription createItemImageTypeDescription(ItemImageType itemImageType,
             Language language, String description, BasePK createdBy) {
         var itemImageTypeDescription = itemImageTypeDescriptionFactory.create(itemImageType,
@@ -9226,29 +7783,21 @@ public class ItemControl
         return itemImageTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getItemImageTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemimagetypedescriptions
-                WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_lang_languageid = ? AND iimgtd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemimagetypedescriptions
-                WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_lang_languageid = ? AND iimgtd_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemImageTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ItemImageTypeDescription getItemImageTypeDescription(ItemImageType itemImageType,
             Language language, EntityPermission entityPermission) {
-        return itemImageTypeDescriptionFactory.getEntityFromQuery(entityPermission, getItemImageTypeDescriptionQueries,
-                itemImageType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ItemImageTypeDescriptions.fields())
+                .from(ItemImageTypeDescriptions)
+                .where(ItemImageTypeDescriptions.ITEM_IMAGE_TYPE.eq(itemImageType.getPrimaryKey()),
+                        ItemImageTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemImageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemImageTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemImageTypeDescription getItemImageTypeDescription(ItemImageType itemImageType, Language language) {
@@ -9267,31 +7816,26 @@ public class ItemControl
         return getItemImageTypeDescriptionValue(getItemImageTypeDescriptionForUpdate(itemImageType, language));
     }
 
-    private static final Map<EntityPermission, String> getItemImageTypeDescriptionsByItemImageTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemimagetypedescriptions, languages
-                WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_thrutime = ? AND iimgtd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemimagetypedescriptions
-                WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemImageTypeDescriptionsByItemImageTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemImageTypeDescription> getItemImageTypeDescriptionsByItemImageType(ItemImageType itemImageType,
             EntityPermission entityPermission) {
-        return itemImageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getItemImageTypeDescriptionsByItemImageTypeQueries,
-                itemImageType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemImageTypeDescriptions.fields())
+                    .from(ItemImageTypeDescriptions)
+                    .join(Languages).onKey(ITEM_IMAGE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemImageTypeDescriptions.ITEM_IMAGE_TYPE.eq(itemImageType.getPrimaryKey()),
+                            ItemImageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemImageTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemImageTypeDescriptions.fields())
+                    .from(ItemImageTypeDescriptions)
+                    .where(ItemImageTypeDescriptions.ITEM_IMAGE_TYPE.eq(itemImageType.getPrimaryKey()),
+                            ItemImageTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return itemImageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemImageTypeDescription> getItemImageTypeDescriptionsByItemImageType(ItemImageType itemImageType) {
@@ -9373,10 +7917,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemDescriptionDetailFactory itemDescriptionDetailFactory;
+
+    @Inject
     protected ItemDescriptionFactory itemDescriptionFactory;
 
     @Inject
-    protected ItemDescriptionDetailFactory itemDescriptionDetailFactory;
+    ItemDescriptionTransferCache itemDescriptionTransferCache;
 
     public ItemDescription createItemDescription(ItemDescriptionType itemDescriptionType, Item item, Language language,
             MimeType mimeType, BasePK createdBy) {
@@ -9411,34 +7958,34 @@ public class ItemControl
         return getItemDescriptionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getScaledItemDescriptionsByItemDescriptionTypePKQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                // TODO: ORDER BY
-                """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid
-                AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ?
-                AND idescdt_idt_itemdescriptiontypeid = ? AND iimgdesc_scaledfromparent = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid
-                AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ?
-                AND idescdt_idt_itemdescriptiontypeid = ? AND iimgdesc_scaledfromparent = 1
-                FOR UPDATE
-                """);
-        getScaledItemDescriptionsByItemDescriptionTypePKQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescription> getScaledItemDescriptionsByItemDescriptionTypePK(ItemDescriptionTypePK itemDescriptionTypePK, EntityPermission entityPermission) {
-        return itemDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaledItemDescriptionsByItemDescriptionTypePKQueries,
-                Session.MAX_TIME, itemDescriptionTypePK);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptions.fields())
+                .from(ItemDescriptions)
+                .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                .join(ItemImageDescriptions).onKey(ITEM_IMAGE_DESCRIPTIONS_ITEM_DESCRIPTION_FK)
+                .where(ItemImageDescriptions.THRU_TIME.eq(Session.MAX_TIME),
+                        ItemDescriptionDetails.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionTypePK),
+                        ItemImageDescriptions.SCALED_FROM_PARENT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemDescriptions.fields())
+                    .from(ItemDescriptions)
+                    .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                    .join(ItemImageDescriptions).onKey(ITEM_IMAGE_DESCRIPTIONS_ITEM_DESCRIPTION_FK)
+                    .join(Items).onKey(ITEM_DESCRIPTION_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(Languages).onKey(ITEM_DESCRIPTION_DETAILS_LANGUAGE_FK)
+                    .where(ItemImageDescriptions.THRU_TIME.eq(Session.MAX_TIME),
+                            ItemDescriptionDetails.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionTypePK),
+                            ItemImageDescriptions.SCALED_FROM_PARENT.eq(true))
+                    .orderBy(ItemDetails.ITEM_NAME, Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemDescriptionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescription> getScaledItemDescriptionsByItemDescriptionTypePK(ItemDescriptionTypePK itemDescriptionTypePK) {
@@ -9449,33 +7996,36 @@ public class ItemControl
         return getScaledItemDescriptionsByItemDescriptionTypePK(itemDescriptionTypePK, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getScaledItemDescriptionsByItemImageTypePKQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        // TODO: ORDER BY
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid
-                AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ?
-                AND iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_scaledfromparent = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid
-                AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ?
-                AND iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_scaledfromparent = 1
-                FOR UPDATE
-                """);
-        getScaledItemDescriptionsByItemImageTypePKQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemDescription> getScaledItemDescriptionsByItemImageTypePK(ItemImageTypePK itemDescriptionTypePK, EntityPermission entityPermission) {
-        return itemDescriptionFactory.getEntitiesFromQuery(entityPermission, getScaledItemDescriptionsByItemImageTypePKQueries,
-                Session.MAX_TIME, itemDescriptionTypePK);
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptions.fields())
+                .from(ItemDescriptions)
+                .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                .join(ItemImageDescriptions).onKey(ITEM_IMAGE_DESCRIPTIONS_ITEM_DESCRIPTION_FK)
+                .where(ItemImageDescriptions.THRU_TIME.eq(Session.MAX_TIME),
+                        ItemImageDescriptions.ITEM_IMAGE_TYPE.eq(itemDescriptionTypePK),
+                        ItemImageDescriptions.SCALED_FROM_PARENT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemDescriptions.fields())
+                    .from(ItemDescriptions)
+                    .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                    .join(ItemImageDescriptions).onKey(ITEM_IMAGE_DESCRIPTIONS_ITEM_DESCRIPTION_FK)
+                    .join(Items).onKey(ITEM_DESCRIPTION_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(ItemDescriptionTypes).onKey(ITEM_DESCRIPTION_DETAILS_ITEM_DESCRIPTION_TYPE_FK)
+                    .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_LAST_DETAIL_FK)
+                    .join(Languages).onKey(ITEM_DESCRIPTION_DETAILS_LANGUAGE_FK)
+                    .where(ItemImageDescriptions.THRU_TIME.eq(Session.MAX_TIME),
+                            ItemImageDescriptions.ITEM_IMAGE_TYPE.eq(itemDescriptionTypePK),
+                            ItemImageDescriptions.SCALED_FROM_PARENT.eq(true))
+                    .orderBy(ItemDetails.ITEM_NAME, ItemDescriptionTypeDetails.SORT_ORDER, ItemDescriptionTypeDetails.ITEM_DESCRIPTION_TYPE_NAME, Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemDescriptionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescription> getScaledItemDescriptionsByItemImageTypePK(ItemImageTypePK itemDescriptionTypePK) {
@@ -9487,40 +8037,26 @@ public class ItemControl
     }
 
     public List<ItemDescription> getItemDescriptionsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemDescription> itemDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemDescriptions.fields())
+                    .from(ItemDescriptions)
+                    .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                    .join(ItemDescriptionTypes).onKey(ITEM_DESCRIPTION_DETAILS_ITEM_DESCRIPTION_TYPE_FK)
+                    .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_LAST_DETAIL_FK)
+                    .join(Languages).onKey(ITEM_DESCRIPTION_DETAILS_LANGUAGE_FK)
+                    .where(ItemDescriptionDetails.ITEM.eq(item.getPrimaryKey()))
+                    .orderBy(ItemDescriptionTypeDetails.SORT_ORDER, ItemDescriptionTypeDetails.ITEM_DESCRIPTION_TYPE_NAME, Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemDescriptions.fields())
+                    .from(ItemDescriptions)
+                    .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                    .where(ItemDescriptionDetails.ITEM.eq(item.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails, itemdescriptiontypes, itemdescriptiontypedetails, languages
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ?
-                AND idescdt_idt_itemdescriptiontypeid = idt_itemdescriptiontypeid AND idt_lastdetailid = idtdt_itemdescriptiontypedetailid
-                AND idescdt_lang_languageid = lang_languageid
-                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename, lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-
-            itemDescriptions = itemDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemDescriptions;
+        return itemDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescription> getItemDescriptionsByItem(Item item) {
@@ -9532,40 +8068,26 @@ public class ItemControl
     }
 
     private List<ItemDescription> getItemDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        List<ItemDescription> itemDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemDescriptions.fields())
+                    .from(ItemDescriptions)
+                    .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(ITEM_DESCRIPTION_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(Languages).onKey(ITEM_DESCRIPTION_DETAILS_LANGUAGE_FK)
+                    .where(ItemDescriptionDetails.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()))
+                    .orderBy(ItemDetails.ITEM_NAME, Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemDescriptions.fields())
+                    .from(ItemDescriptions)
+                    .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                    .where(ItemDescriptionDetails.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails, items, itemdetails, languages
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ?
-                AND idescdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND idescdt_lang_languageid = lang_languageid
-                ORDER BY itmdt_itemname, lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, itemDescriptionType.getPrimaryKey().getEntityId());
-
-            itemDescriptions = itemDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemDescriptions;
+        return itemDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemDescription> getItemDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType) {
@@ -9577,51 +8099,31 @@ public class ItemControl
     }
 
     public long countItemDescriptionsByItem(Item item) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM itemdescriptions, itemdescriptiondetails
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ?
-                """,
-                item);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemDescriptions)
+                .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionDetails.ITEM.eq(item.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemDescription getItemDescription(ItemDescriptionType itemDescriptionType, Item item, Language language,
             EntityPermission entityPermission) {
-        ItemDescription itemDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ?
-                AND idescdt_itm_itemid = ? AND idescdt_lang_languageid = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemdescriptions, itemdescriptiondetails
-                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ?
-                AND idescdt_itm_itemid = ? AND idescdt_lang_languageid = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemDescriptions.fields())
+                .from(ItemDescriptions)
+                .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_ACTIVE_DETAIL_FK)
+                .where(ItemDescriptionDetails.ITEM_DESCRIPTION_TYPE.eq(itemDescriptionType.getPrimaryKey()),
+                        ItemDescriptionDetails.ITEM.eq(item.getPrimaryKey()),
+                        ItemDescriptionDetails.LANGUAGE.eq(language.getPrimaryKey()));
 
-            var ps = itemDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemDescriptionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, item.getPrimaryKey().getEntityId());
-            ps.setLong(3, language.getPrimaryKey().getEntityId());
-            
-            itemDescription = itemDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemDescription getItemDescription(ItemDescriptionType itemDescriptionType, Item item, Language language) {
@@ -9801,37 +8303,18 @@ public class ItemControl
     }
     
     private ItemBlobDescription getItemBlobDescription(ItemDescription itemDescription, EntityPermission entityPermission) {
-        ItemBlobDescription itemBlobDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemblobdescriptions
-                WHERE ibdesc_idesc_itemdescriptionid = ? AND ibdesc_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemblobdescriptions
-                WHERE ibdesc_idesc_itemdescriptionid = ? AND ibdesc_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemBlobDescriptions.fields())
+                .from(ItemBlobDescriptions)
+                .where(ItemBlobDescriptions.ITEM_DESCRIPTION.eq(itemDescription.getPrimaryKey()),
+                        ItemBlobDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemBlobDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemBlobDescription = itemBlobDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemBlobDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemBlobDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     
@@ -9900,30 +8383,19 @@ public class ItemControl
         return itemImageDescription;
     }
 
-    private static final Map<EntityPermission, String> getItemImageDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itemimagedescriptions
-                WHERE iimgdesc_idesc_itemdescriptionid = ? AND iimgdesc_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itemimagedescriptions
-                WHERE iimgdesc_idesc_itemdescriptionid = ? AND iimgdesc_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemImageDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ItemImageDescription getItemImageDescription(ItemDescription itemDescription, EntityPermission entityPermission) {
-        return itemImageDescriptionFactory.getEntityFromQuery(entityPermission, getItemImageDescriptionQueries,
-                itemDescription, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ItemImageDescriptions.fields())
+                .from(ItemImageDescriptions)
+                .where(ItemImageDescriptions.ITEM_DESCRIPTION.eq(itemDescription.getPrimaryKey()),
+                        ItemImageDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemImageDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemImageDescription getItemImageDescription(ItemDescription itemDescription) {
@@ -9942,30 +8414,32 @@ public class ItemControl
         return getItemImageDescriptionValue(getItemImageDescriptionForUpdate(itemDescription));
     }
 
-    private static final Map<EntityPermission, String> getItemImageDescriptionByItemImageTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                // TODO: ORDER BY
-                """
-                SELECT _ALL_
-                FROM itemimagedescriptions
-                WHERE iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemimagedescriptions
-                WHERE iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_thrutime = ?
-                FOR UPDATE
-                """);
-        getItemImageDescriptionByItemImageTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemImageDescription> getItemImageDescriptionsByItemImageType(ItemImageType itemImageType, EntityPermission entityPermission) {
-        return itemImageDescriptionFactory.getEntitiesFromQuery(entityPermission, getItemImageDescriptionByItemImageTypeQueries,
-                itemImageType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ItemImageDescriptions.fields())
+                .from(ItemImageDescriptions)
+                .where(ItemImageDescriptions.ITEM_IMAGE_TYPE.eq(itemImageType.getPrimaryKey()),
+                        ItemImageDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemImageDescriptions.fields())
+                    .from(ItemImageDescriptions)
+                    .join(ItemDescriptions).onKey(ITEM_IMAGE_DESCRIPTIONS_ITEM_DESCRIPTION_FK)
+                    .join(ItemDescriptionDetails).onKey(ITEM_DESCRIPTIONS_LAST_DETAIL_FK)
+                    .join(Items).onKey(ITEM_DESCRIPTION_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(ItemDescriptionTypes).onKey(ITEM_DESCRIPTION_DETAILS_ITEM_DESCRIPTION_TYPE_FK)
+                    .join(ItemDescriptionTypeDetails).onKey(ITEM_DESCRIPTION_TYPES_LAST_DETAIL_FK)
+                    .join(Languages).onKey(ITEM_DESCRIPTION_DETAILS_LANGUAGE_FK)
+                    .where(ItemImageDescriptions.ITEM_IMAGE_TYPE.eq(itemImageType.getPrimaryKey()),
+                            ItemImageDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, ItemDescriptionTypeDetails.SORT_ORDER, ItemDescriptionTypeDetails.ITEM_DESCRIPTION_TYPE_NAME, Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemImageDescriptionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemImageDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemImageDescription> getItemImageDescriptionsByItemImageType(ItemImageType itemImageType) {
@@ -10029,37 +8503,18 @@ public class ItemControl
     }
     
     private ItemClobDescription getItemClobDescription(ItemDescription itemDescription, EntityPermission entityPermission) {
-        ItemClobDescription itemClobDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemclobdescriptions
-                WHERE icdesc_idesc_itemdescriptionid = ? AND icdesc_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemclobdescriptions
-                WHERE icdesc_idesc_itemdescriptionid = ? AND icdesc_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemClobDescriptions.fields())
+                .from(ItemClobDescriptions)
+                .where(ItemClobDescriptions.ITEM_DESCRIPTION.eq(itemDescription.getPrimaryKey()),
+                        ItemClobDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemClobDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemClobDescription = itemClobDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemClobDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemClobDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemClobDescription getItemClobDescription(ItemDescription itemDescription) {
@@ -10128,37 +8583,18 @@ public class ItemControl
     }
     
     private ItemStringDescription getItemStringDescription(ItemDescription itemDescription, EntityPermission entityPermission) {
-        ItemStringDescription itemStringDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemstringdescriptions
-                WHERE isdesc_idesc_itemdescriptionid = ? AND isdesc_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemstringdescriptions
-                WHERE isdesc_idesc_itemdescriptionid = ? AND isdesc_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemStringDescriptions.fields())
+                .from(ItemStringDescriptions)
+                .where(ItemStringDescriptions.ITEM_DESCRIPTION.eq(itemDescription.getPrimaryKey()),
+                        ItemStringDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemStringDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemDescription.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemStringDescription = itemStringDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemStringDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemStringDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemStringDescription getItemStringDescription(ItemDescription itemDescription) {
@@ -10214,10 +8650,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemVolumeTypeDetailFactory itemVolumeTypeDetailFactory;
+
+    @Inject
     protected ItemVolumeTypeFactory itemVolumeTypeFactory;
 
     @Inject
-    protected ItemVolumeTypeDetailFactory itemVolumeTypeDetailFactory;
+    ItemVolumeTypeTransferCache itemVolumeTypeTransferCache;
 
     public ItemVolumeType createItemVolumeType(String itemVolumeTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -10269,45 +8708,27 @@ public class ItemControl
     }
 
     public long countItemVolumeTypes() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM itemvolumetypes, itemvolumetypedetails
-                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemVolumeTypes)
+                .join(ItemVolumeTypeDetails).onKey(ITEM_VOLUME_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ItemVolumeType getItemVolumeTypeByName(String itemVolumeTypeName, EntityPermission entityPermission) {
-        ItemVolumeType itemVolumeType;
+        var baseQuery = session.getDslContext()
+                .select(ItemVolumeTypes.fields())
+                .from(ItemVolumeTypes)
+                .join(ItemVolumeTypeDetails).onKey(ITEM_VOLUME_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemVolumeTypeDetails.ITEM_VOLUME_TYPE_NAME.eq(itemVolumeTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumetypes, itemvolumetypedetails
-                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_itemvolumetypename = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumetypes, itemvolumetypedetails
-                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_itemvolumetypename = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemVolumeTypeFactory.prepareStatement(query);
-
-            ps.setString(1, itemVolumeTypeName);
-
-            itemVolumeType = itemVolumeTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemVolumeType;
+        return itemVolumeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemVolumeType getItemVolumeTypeByName(String itemVolumeTypeName) {
@@ -10327,26 +8748,18 @@ public class ItemControl
     }
 
     public ItemVolumeType getDefaultItemVolumeType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemVolumeTypes.fields())
+                .from(ItemVolumeTypes)
+                .join(ItemVolumeTypeDetails).onKey(ITEM_VOLUME_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemVolumeTypeDetails.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                SELECT _ALL_
-                FROM itemvolumetypes, itemvolumetypedetails
-                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_isdefault = 1
-                """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                SELECT _ALL_
-                FROM itemvolumetypes, itemvolumetypedetails
-                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_isdefault = 1
-                FOR UPDATE
-                """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemVolumeTypeFactory.prepareStatement(query);
-
-        return itemVolumeTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return itemVolumeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemVolumeType getDefaultItemVolumeType() {
@@ -10362,28 +8775,19 @@ public class ItemControl
     }
 
     private List<ItemVolumeType> getItemVolumeTypes(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemVolumeTypes.fields())
+                .from(ItemVolumeTypes)
+                .join(ItemVolumeTypeDetails).onKey(ITEM_VOLUME_TYPES_ACTIVE_DETAIL_FK);
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                SELECT _ALL_
-                FROM itemvolumetypes, itemvolumetypedetails
-                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid
-                ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename
-                _LIMIT_
-                """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                SELECT _ALL_
-                FROM itemvolumetypes, itemvolumetypedetails
-                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid
-                FOR UPDATE
-                """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemVolumeTypeDetails.SORT_ORDER, ItemVolumeTypeDetails.ITEM_VOLUME_TYPE_NAME),
+                    ItemVolumeTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemVolumeTypeFactory.prepareStatement(query);
-
-        return itemVolumeTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        return itemVolumeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemVolumeType> getItemVolumeTypes() {
@@ -10527,6 +8931,9 @@ public class ItemControl
     @Inject
     protected ItemVolumeTypeDescriptionFactory itemVolumeTypeDescriptionFactory;
 
+    @Inject
+    ItemVolumeTypeDescriptionTransferCache itemVolumeTypeDescriptionTransferCache;
+
     public ItemVolumeTypeDescription createItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language,
             String description, BasePK createdBy) {
         var itemVolumeTypeDescription = itemVolumeTypeDescriptionFactory.create(
@@ -10538,38 +8945,19 @@ public class ItemControl
     }
 
     private ItemVolumeTypeDescription getItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language, EntityPermission entityPermission) {
-        ItemVolumeTypeDescription itemVolumeTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(ItemVolumeTypeDescriptions.fields())
+                .from(ItemVolumeTypeDescriptions)
+                .where(ItemVolumeTypeDescriptions.ITEM_VOLUME_TYPE.eq(itemVolumeType.getPrimaryKey()),
+                        ItemVolumeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemVolumeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumetypedescriptions
-                WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_lang_languageid = ? AND ivoltd_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumetypedescriptions
-                WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_lang_languageid = ? AND ivoltd_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemVolumeTypeDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            itemVolumeTypeDescription = itemVolumeTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemVolumeTypeDescription;
+        return itemVolumeTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemVolumeTypeDescription getItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language) {
@@ -10590,38 +8978,24 @@ public class ItemControl
 
     private List<ItemVolumeTypeDescription> getItemVolumeTypeDescriptionsByItemVolumeType(ItemVolumeType itemVolumeType,
             EntityPermission entityPermission) {
-        List<ItemVolumeTypeDescription> itemVolumeTypeDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemVolumeTypeDescriptions.fields())
+                    .from(ItemVolumeTypeDescriptions)
+                    .join(Languages).onKey(ITEM_VOLUME_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemVolumeTypeDescriptions.ITEM_VOLUME_TYPE.eq(itemVolumeType.getPrimaryKey()),
+                            ItemVolumeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemVolumeTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemVolumeTypeDescriptions.fields())
+                    .from(ItemVolumeTypeDescriptions)
+                    .where(ItemVolumeTypeDescriptions.ITEM_VOLUME_TYPE.eq(itemVolumeType.getPrimaryKey()),
+                            ItemVolumeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumetypedescriptions, languages
-                WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_thrutime = ? AND ivoltd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumetypedescriptions
-                WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemVolumeTypeDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            itemVolumeTypeDescriptions = itemVolumeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemVolumeTypeDescriptions;
+        return itemVolumeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemVolumeTypeDescription> getItemVolumeTypeDescriptionsByItemVolumeType(ItemVolumeType itemVolumeType) {
@@ -10705,6 +9079,9 @@ public class ItemControl
     @Inject
     protected ItemVolumeFactory itemVolumeFactory;
 
+    @Inject
+    ItemVolumeTransferCache itemVolumeTransferCache;
+
     public ItemVolume createItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType,
             Long height, Long width, Long depth, BasePK createdBy) {
         var itemVolume = itemVolumeFactory.create(item, unitOfMeasureType, itemVolumeType, height, width, depth,
@@ -10716,64 +9093,51 @@ public class ItemControl
     }
 
     public long countItemVolumesByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemvolumes
-                        WHERE ivol_itm_itemid = ? AND ivol_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemVolumes)
+                .where(ItemVolumes.ITEM.eq(item.getPrimaryKey()),
+                        ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemVolumesByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemvolumes
-                        WHERE ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemVolumes)
+                .where(ItemVolumes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemVolumesByItemVolumeType(final ItemVolumeType itemVolumeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemvolumes
-                        WHERE ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ?
-                        """, itemVolumeType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemVolumes)
+                .where(ItemVolumes.ITEM_VOLUME_TYPE.eq(itemVolumeType.getPrimaryKey()),
+                        ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemVolume getItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType,
             EntityPermission entityPermission) {
-        ItemVolume itemVolume;
+        var baseQuery = session.getDslContext()
+                .select(ItemVolumes.fields())
+                .from(ItemVolumes)
+                .where(ItemVolumes.ITEM.eq(item.getPrimaryKey()),
+                        ItemVolumes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemVolumes.ITEM_VOLUME_TYPE.eq(itemVolumeType.getPrimaryKey()),
+                        ItemVolumes.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumes
-                WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumes
-                WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemVolumeFactory.prepareStatement(query);
-
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, itemVolumeType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-
-            itemVolume = itemVolumeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemVolume;
+        return itemVolumeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemVolume getItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType) {
@@ -10793,41 +9157,27 @@ public class ItemControl
     }
 
     private List<ItemVolume> getItemVolumes(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemVolume> itemVolumes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemVolumes.fields())
+                    .from(ItemVolumes)
+                    .join(ItemVolumeTypes).onKey(ITEM_VOLUMES_ITEM_VOLUME_TYPE_FK)
+                    .join(ItemVolumeTypeDetails).onKey(ITEM_VOLUME_TYPES_LAST_DETAIL_FK)
+                    .where(ItemVolumes.ITEM.eq(item.getPrimaryKey()),
+                            ItemVolumes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemVolumeTypeDetails.SORT_ORDER, ItemVolumeTypeDetails.ITEM_VOLUME_TYPE_NAME),
+                    ItemVolumeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemVolumes.fields())
+                    .from(ItemVolumes)
+                    .where(ItemVolumes.ITEM.eq(item.getPrimaryKey()),
+                            ItemVolumes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumes
-                JOIN itemvolumetypes ON ivol_ivolt_itemvolumetypeid = ivolt_itemvolumetypeid
-                JOIN itemvolumetypedetails ON ivolt_lastdetailid = ivoltdt_itemvolumetypedetailid
-                WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?
-                ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumes
-                WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemVolumeFactory.prepareStatement(query);
-
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            itemVolumes = itemVolumeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemVolumes;
+        return itemVolumeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemVolume> getItemVolumes(Item item, UnitOfMeasureType unitOfMeasureType) {
@@ -10839,42 +9189,27 @@ public class ItemControl
     }
 
     private List<ItemVolume> getItemVolumesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemVolume> itemVolumes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemVolumes.fields())
+                    .from(ItemVolumes)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_VOLUMES_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(ItemVolumeTypes).onKey(ITEM_VOLUMES_ITEM_VOLUME_TYPE_FK)
+                    .join(ItemVolumeTypeDetails).onKey(ITEM_VOLUME_TYPES_LAST_DETAIL_FK)
+                    .where(ItemVolumes.ITEM.eq(item.getPrimaryKey()),
+                            ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, ItemVolumeTypeDetails.SORT_ORDER, ItemVolumeTypeDetails.ITEM_VOLUME_TYPE_NAME),
+                    ItemVolumeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemVolumes.fields())
+                    .from(ItemVolumes)
+                    .where(ItemVolumes.ITEM.eq(item.getPrimaryKey()),
+                            ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumes
-                JOIN unitofmeasuretypes ON ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
-                JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                JOIN itemvolumetypes ON ivol_ivolt_itemvolumetypeid = ivolt_itemvolumetypeid
-                JOIN itemvolumetypedetails ON ivolt_lastdetailid = ivoltdt_itemvolumetypedetailid
-                WHERE ivol_itm_itemid = ? AND ivol_thrutime = ?
-                ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, ivoltdt_sortorder, ivoltdt_itemvolumetypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumes
-                WHERE ivol_itm_itemid = ? AND ivol_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemVolumeFactory.prepareStatement(query);
-
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            itemVolumes = itemVolumeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemVolumes;
+        return itemVolumeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemVolume> getItemVolumesByItem(Item item) {
@@ -10886,42 +9221,27 @@ public class ItemControl
     }
 
     private List<ItemVolume> getItemVolumesByItemVolumeType(ItemVolumeType itemVolumeType, EntityPermission entityPermission) {
-        List<ItemVolume> itemVolumes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemVolumes.fields())
+                    .from(ItemVolumes)
+                    .join(Items).onKey(ITEM_VOLUMES_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_VOLUMES_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemVolumes.ITEM_VOLUME_TYPE.eq(itemVolumeType.getPrimaryKey()),
+                            ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemVolumeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemVolumes.fields())
+                    .from(ItemVolumes)
+                    .where(ItemVolumes.ITEM_VOLUME_TYPE.eq(itemVolumeType.getPrimaryKey()),
+                            ItemVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumes
-                JOIN items ON ivol_itm_itemid = itm_itemid
-                JOIN itemdetails ON itm_lastdetailid = itmdt_itemdetailid
-                JOIN unitofmeasuretypes ON ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
-                JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                WHERE ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?
-                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemvolumes
-                WHERE ivol_itm_itemid = ? AND ivol_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemVolumeFactory.prepareStatement(query);
-
-            ps.setLong(1, itemVolumeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            itemVolumes = itemVolumeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemVolumes;
+        return itemVolumeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemVolume> getItemVolumesByItemVolumeType(ItemVolumeType itemVolumeType) {
@@ -11006,10 +9326,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemWeightTypeDetailFactory itemWeightTypeDetailFactory;
+
+    @Inject
     protected ItemWeightTypeFactory itemWeightTypeFactory;
 
     @Inject
-    protected ItemWeightTypeDetailFactory itemWeightTypeDetailFactory;
+    ItemWeightTypeTransferCache itemWeightTypeTransferCache;
 
     public ItemWeightType createItemWeightType(String itemWeightTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -11061,44 +9384,27 @@ public class ItemControl
     }
 
     public long countItemWeightTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itemweighttypes, itemweighttypedetails
-                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemWeightTypes)
+                .join(ItemWeightTypeDetails).onKey(ITEM_WEIGHT_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ItemWeightType getItemWeightTypeByName(String itemWeightTypeName, EntityPermission entityPermission) {
-        ItemWeightType itemWeightType;
+        var baseQuery = session.getDslContext()
+                .select(ItemWeightTypes.fields())
+                .from(ItemWeightTypes)
+                .join(ItemWeightTypeDetails).onKey(ITEM_WEIGHT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemWeightTypeDetails.ITEM_WEIGHT_TYPE_NAME.eq(itemWeightTypeName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweighttypes, itemweighttypedetails
-                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_itemweighttypename = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweighttypes, itemweighttypedetails
-                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_itemweighttypename = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemWeightTypeFactory.prepareStatement(query);
-
-            ps.setString(1, itemWeightTypeName);
-
-            itemWeightType = itemWeightTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemWeightType;
+        return itemWeightTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemWeightType getItemWeightTypeByName(String itemWeightTypeName) {
@@ -11118,26 +9424,18 @@ public class ItemControl
     }
 
     public ItemWeightType getDefaultItemWeightType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemWeightTypes.fields())
+                .from(ItemWeightTypes)
+                .join(ItemWeightTypeDetails).onKey(ITEM_WEIGHT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ItemWeightTypeDetails.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                SELECT _ALL_
-                FROM itemweighttypes, itemweighttypedetails
-                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_isdefault = 1
-                """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                SELECT _ALL_
-                FROM itemweighttypes, itemweighttypedetails
-                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_isdefault = 1
-                FOR UPDATE
-                """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemWeightTypeFactory.prepareStatement(query);
-
-        return itemWeightTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return itemWeightTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemWeightType getDefaultItemWeightType() {
@@ -11153,28 +9451,19 @@ public class ItemControl
     }
 
     private List<ItemWeightType> getItemWeightTypes(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ItemWeightTypes.fields())
+                .from(ItemWeightTypes)
+                .join(ItemWeightTypeDetails).onKey(ITEM_WEIGHT_TYPES_ACTIVE_DETAIL_FK);
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                SELECT _ALL_
-                FROM itemweighttypes, itemweighttypedetails
-                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid
-                ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename
-                _LIMIT_
-                """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                SELECT _ALL_
-                FROM itemweighttypes, itemweighttypedetails
-                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid
-                FOR UPDATE
-                """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemWeightTypeDetails.SORT_ORDER, ItemWeightTypeDetails.ITEM_WEIGHT_TYPE_NAME),
+                    ItemWeightTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = itemWeightTypeFactory.prepareStatement(query);
-
-        return itemWeightTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        return itemWeightTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemWeightType> getItemWeightTypes() {
@@ -11319,6 +9608,9 @@ public class ItemControl
     @Inject
     protected ItemWeightTypeDescriptionFactory itemWeightTypeDescriptionFactory;
 
+    @Inject
+    ItemWeightTypeDescriptionTransferCache itemWeightTypeDescriptionTransferCache;
+
     public ItemWeightTypeDescription createItemWeightTypeDescription(ItemWeightType itemWeightType, Language language,
             String description, BasePK createdBy) {
         var itemWeightTypeDescription = itemWeightTypeDescriptionFactory.create(
@@ -11330,38 +9622,19 @@ public class ItemControl
     }
 
     private ItemWeightTypeDescription getItemWeightTypeDescription(ItemWeightType itemWeightType, Language language, EntityPermission entityPermission) {
-        ItemWeightTypeDescription itemWeightTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(ItemWeightTypeDescriptions.fields())
+                .from(ItemWeightTypeDescriptions)
+                .where(ItemWeightTypeDescriptions.ITEM_WEIGHT_TYPE.eq(itemWeightType.getPrimaryKey()),
+                        ItemWeightTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemWeightTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweighttypedescriptions
-                WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_lang_languageid = ? AND iwghttd_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweighttypedescriptions
-                WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_lang_languageid = ? AND iwghttd_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemWeightTypeDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, itemWeightType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            itemWeightTypeDescription = itemWeightTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemWeightTypeDescription;
+        return itemWeightTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemWeightTypeDescription getItemWeightTypeDescription(ItemWeightType itemWeightType, Language language) {
@@ -11382,38 +9655,24 @@ public class ItemControl
 
     private List<ItemWeightTypeDescription> getItemWeightTypeDescriptionsByItemWeightType(ItemWeightType itemWeightType,
             EntityPermission entityPermission) {
-        List<ItemWeightTypeDescription> itemWeightTypeDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemWeightTypeDescriptions.fields())
+                    .from(ItemWeightTypeDescriptions)
+                    .join(Languages).onKey(ITEM_WEIGHT_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemWeightTypeDescriptions.ITEM_WEIGHT_TYPE.eq(itemWeightType.getPrimaryKey()),
+                            ItemWeightTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemWeightTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemWeightTypeDescriptions.fields())
+                    .from(ItemWeightTypeDescriptions)
+                    .where(ItemWeightTypeDescriptions.ITEM_WEIGHT_TYPE.eq(itemWeightType.getPrimaryKey()),
+                            ItemWeightTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweighttypedescriptions, languages
-                WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_thrutime = ? AND iwghttd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweighttypedescriptions
-                WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemWeightTypeDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, itemWeightType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            itemWeightTypeDescriptions = itemWeightTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemWeightTypeDescriptions;
+        return itemWeightTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemWeightTypeDescription> getItemWeightTypeDescriptionsByItemWeightType(ItemWeightType itemWeightType) {
@@ -11497,6 +9756,9 @@ public class ItemControl
     @Inject
     protected ItemWeightFactory itemWeightFactory;
 
+    @Inject
+    ItemWeightTransferCache itemWeightTransferCache;
+
     public ItemWeight createItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType,
             Long weight, BasePK createdBy) {
         var itemWeight = itemWeightFactory.create(item, unitOfMeasureType, itemWeightType, weight,
@@ -11508,64 +9770,51 @@ public class ItemControl
     }
 
     public long countItemWeightsByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemweights
-                        WHERE iwght_itm_itemid = ? AND iwght_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemWeights)
+                .where(ItemWeights.ITEM.eq(item.getPrimaryKey()),
+                        ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemWeightsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemweights
-                        WHERE iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemWeights)
+                .where(ItemWeights.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemWeightsByItemWeightType(final ItemWeightType itemWeightType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemweights
-                        WHERE iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ?
-                        """, itemWeightType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemWeights)
+                .where(ItemWeights.ITEM_WEIGHT_TYPE.eq(itemWeightType.getPrimaryKey()),
+                        ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ItemWeight getItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType,
             EntityPermission entityPermission) {
-        ItemWeight itemWeight;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweights
-                WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ?
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweights
-                WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ?
-                FOR UPDATE
-                """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ItemWeights.fields())
+                .from(ItemWeights)
+                .where(ItemWeights.ITEM.eq(item.getPrimaryKey()),
+                        ItemWeights.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ItemWeights.ITEM_WEIGHT_TYPE.eq(itemWeightType.getPrimaryKey()),
+                        ItemWeights.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = itemWeightFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, itemWeightType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            itemWeight = itemWeightFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemWeight;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemWeightFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemWeight getItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType) {
@@ -11585,41 +9834,27 @@ public class ItemControl
     }
 
     private List<ItemWeight> getItemWeights(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemWeight> itemWeights;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemWeights.fields())
+                    .from(ItemWeights)
+                    .join(ItemWeightTypes).onKey(ITEM_WEIGHTS_ITEM_WEIGHT_TYPE_FK)
+                    .join(ItemWeightTypeDetails).onKey(ITEM_WEIGHT_TYPES_LAST_DETAIL_FK)
+                    .where(ItemWeights.ITEM.eq(item.getPrimaryKey()),
+                            ItemWeights.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemWeightTypeDetails.SORT_ORDER, ItemWeightTypeDetails.ITEM_WEIGHT_TYPE_NAME),
+                    ItemWeightFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemWeights.fields())
+                    .from(ItemWeights)
+                    .where(ItemWeights.ITEM.eq(item.getPrimaryKey()),
+                            ItemWeights.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweights
-                JOIN itemweighttypes ON iwght_iwghtt_itemweighttypeid = iwghtt_itemweighttypeid
-                JOIN itemweighttypedetails ON iwghtt_lastdetailid = iwghttdt_itemweighttypedetailid
-                WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?
-                ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweights
-                WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemWeightFactory.prepareStatement(query);
-
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            itemWeights = itemWeightFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemWeights;
+        return itemWeightFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemWeight> getItemWeights(Item item, UnitOfMeasureType unitOfMeasureType) {
@@ -11631,42 +9866,27 @@ public class ItemControl
     }
 
     private List<ItemWeight> getItemWeightsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemWeight> itemWeights;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemWeights.fields())
+                    .from(ItemWeights)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_WEIGHTS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(ItemWeightTypes).onKey(ITEM_WEIGHTS_ITEM_WEIGHT_TYPE_FK)
+                    .join(ItemWeightTypeDetails).onKey(ITEM_WEIGHT_TYPES_LAST_DETAIL_FK)
+                    .where(ItemWeights.ITEM.eq(item.getPrimaryKey()),
+                            ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, ItemWeightTypeDetails.SORT_ORDER, ItemWeightTypeDetails.ITEM_WEIGHT_TYPE_NAME),
+                    ItemWeightFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemWeights.fields())
+                    .from(ItemWeights)
+                    .where(ItemWeights.ITEM.eq(item.getPrimaryKey()),
+                            ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweights
-                JOIN unitofmeasuretypes ON iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
-                JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                JOIN itemweighttypes ON iwght_iwghtt_itemweighttypeid = iwghtt_itemweighttypeid
-                JOIN itemweighttypedetails ON iwghtt_lastdetailid = iwghttdt_itemweighttypedetailid
-                WHERE iwght_itm_itemid = ? AND iwght_thrutime = ?
-                ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, iwghttdt_sortorder, iwghttdt_itemweighttypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweights
-                WHERE iwght_itm_itemid = ? AND iwght_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemWeightFactory.prepareStatement(query);
-
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            itemWeights = itemWeightFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemWeights;
+        return itemWeightFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemWeight> getItemWeightsByItem(Item item) {
@@ -11678,42 +9898,27 @@ public class ItemControl
     }
 
     private List<ItemWeight> getItemWeightsByItemWeightType(ItemWeightType itemWeightType, EntityPermission entityPermission) {
-        List<ItemWeight> itemWeights;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemWeights.fields())
+                    .from(ItemWeights)
+                    .join(Items).onKey(ITEM_WEIGHTS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(ITEM_WEIGHTS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemWeights.ITEM_WEIGHT_TYPE.eq(itemWeightType.getPrimaryKey()),
+                            ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    ItemWeightFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemWeights.fields())
+                    .from(ItemWeights)
+                    .where(ItemWeights.ITEM_WEIGHT_TYPE.eq(itemWeightType.getPrimaryKey()),
+                            ItemWeights.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweights
-                JOIN items ON iwght_itm_itemid = itm_itemid
-                JOIN itemdetails ON itm_lastdetailid = itmdt_itemdetailid
-                JOIN unitofmeasuretypes ON iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
-                JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                WHERE iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?
-                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                SELECT _ALL_
-                FROM itemweights
-                WHERE iwght_itm_itemid = ? AND iwght_thrutime = ?
-                FOR UPDATE
-                """;
-            }
-
-            var ps = itemWeightFactory.prepareStatement(query);
-
-            ps.setLong(1, itemWeightType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            itemWeights = itemWeightFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemWeights;
+        return itemWeightFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemWeight> getItemWeightsByItemWeightType(ItemWeightType itemWeightType) {
@@ -11793,10 +9998,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected RelatedItemTypeDetailFactory relatedItemTypeDetailFactory;
+
+    @Inject
     protected RelatedItemTypeFactory relatedItemTypeFactory;
 
     @Inject
-    protected RelatedItemTypeDetailFactory relatedItemTypeDetailFactory;
+    RelatedItemTypeTransferCache relatedItemTypeTransferCache;
 
     public RelatedItemType createRelatedItemType(String relatedItemTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -11849,36 +10057,27 @@ public class ItemControl
     }
 
     public long countRelatedItemTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getRelatedItemTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
-                AND rltitypdt_relateditemtypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
-                AND rltitypdt_relateditemtypename = ?
-                FOR UPDATE
-                """);
-        getRelatedItemTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(RelatedItemTypes)
+                .join(RelatedItemTypeDetails).onKey(RELATED_ITEM_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public RelatedItemType getRelatedItemTypeByName(String relatedItemTypeName, EntityPermission entityPermission) {
-        return relatedItemTypeFactory.getEntityFromQuery(entityPermission, getRelatedItemTypeByNameQueries, relatedItemTypeName);
+        var baseQuery = session.getDslContext()
+                .select(RelatedItemTypes.fields())
+                .from(RelatedItemTypes)
+                .join(RelatedItemTypeDetails).onKey(RELATED_ITEM_TYPES_ACTIVE_DETAIL_FK)
+                .where(RelatedItemTypeDetails.RELATED_ITEM_TYPE_NAME.eq(relatedItemTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return relatedItemTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public RelatedItemType getRelatedItemTypeByName(String relatedItemTypeName) {
@@ -11897,29 +10096,19 @@ public class ItemControl
         return getRelatedItemTypeDetailValueForUpdate(getRelatedItemTypeByNameForUpdate(relatedItemTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultRelatedItemTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
-                AND rltitypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
-                AND rltitypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public RelatedItemType getDefaultRelatedItemType(EntityPermission entityPermission) {
-        return relatedItemTypeFactory.getEntityFromQuery(entityPermission, getDefaultRelatedItemTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(RelatedItemTypes.fields())
+                .from(RelatedItemTypes)
+                .join(RelatedItemTypeDetails).onKey(RELATED_ITEM_TYPES_ACTIVE_DETAIL_FK)
+                .where(RelatedItemTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return relatedItemTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public RelatedItemType getDefaultRelatedItemType() {
@@ -11934,29 +10123,20 @@ public class ItemControl
         return getDefaultRelatedItemTypeForUpdate().getLastDetailForUpdate().getRelatedItemTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getRelatedItemTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
-                ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
-                FOR UPDATE
-                """);
-        getRelatedItemTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<RelatedItemType> getRelatedItemTypes(EntityPermission entityPermission) {
-        return relatedItemTypeFactory.getEntitiesFromQuery(entityPermission, getRelatedItemTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(RelatedItemTypes.fields())
+                .from(RelatedItemTypes)
+                .join(RelatedItemTypeDetails).onKey(RELATED_ITEM_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(RelatedItemTypeDetails.SORT_ORDER, RelatedItemTypeDetails.RELATED_ITEM_TYPE_NAME),
+                    RelatedItemTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return relatedItemTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<RelatedItemType> getRelatedItemTypes() {
@@ -11967,40 +10147,11 @@ public class ItemControl
         return getRelatedItemTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getRelatedItemTypesByParentRelatedItemTypeQueries;
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid AND rltitypdt_parentrelateditemtypeid = ?
-                ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM relateditemtypes, relateditemtypedetails
-                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid AND rltitypdt_parentrelateditemtypeid = ?
-                FOR UPDATE
-                """);
-        getRelatedItemTypesByParentRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
 
-    private List<RelatedItemType> getRelatedItemTypesByParentRelatedItemType(RelatedItemType parentRelatedItemType, EntityPermission entityPermission) {
-        return relatedItemTypeFactory.getEntitiesFromQuery(entityPermission, getRelatedItemTypesByParentRelatedItemTypeQueries,
-                parentRelatedItemType);
-    }
 
-    public List<RelatedItemType> getRelatedItemTypesByParentRelatedItemType(RelatedItemType parentRelatedItemType) {
-        return getRelatedItemTypesByParentRelatedItemType(parentRelatedItemType, EntityPermission.READ_ONLY);
-    }
 
-    public List<RelatedItemType> getRelatedItemTypesByParentRelatedItemTypeForUpdate(RelatedItemType parentRelatedItemType) {
-        return getRelatedItemTypesByParentRelatedItemType(parentRelatedItemType, EntityPermission.READ_WRITE);
-    }
 
     public RelatedItemTypeTransfer getRelatedItemTypeTransfer(UserVisit userVisit, RelatedItemType relatedItemType) {
         return relatedItemTypeTransferCache.getTransfer(userVisit, relatedItemType);
@@ -12020,10 +10171,7 @@ public class ItemControl
         return getRelatedItemTypeTransfers(userVisit, getRelatedItemTypes());
     }
 
-    public List<RelatedItemTypeTransfer> getRelatedItemTypeTransfersByParentRelatedItemType(UserVisit userVisit,
-            RelatedItemType parentRelatedItemType) {
-        return getRelatedItemTypeTransfers(userVisit, getRelatedItemTypesByParentRelatedItemType(parentRelatedItemType));
-    }
+
 
     public RelatedItemTypeChoicesBean getRelatedItemTypeChoices(String defaultRelatedItemTypeChoice, Language language, boolean allowNullChoice) {
         var relatedItemTypes = getRelatedItemTypes();
@@ -12140,6 +10288,9 @@ public class ItemControl
     @Inject
     protected RelatedItemTypeDescriptionFactory relatedItemTypeDescriptionFactory;
 
+    @Inject
+    RelatedItemTypeDescriptionTransferCache relatedItemTypeDescriptionTransferCache;
+
     public RelatedItemTypeDescription createRelatedItemTypeDescription(RelatedItemType relatedItemType,
             Language language, String description, BasePK createdBy) {
         var relatedItemTypeDescription = relatedItemTypeDescriptionFactory.create(relatedItemType,
@@ -12150,29 +10301,21 @@ public class ItemControl
         return relatedItemTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getRelatedItemTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditemtypedescriptions
-                WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_lang_languageid = ? AND rltitypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditemtypedescriptions
-                WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_lang_languageid = ? AND rltitypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getRelatedItemTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private RelatedItemTypeDescription getRelatedItemTypeDescription(RelatedItemType relatedItemType,
             Language language, EntityPermission entityPermission) {
-        return relatedItemTypeDescriptionFactory.getEntityFromQuery(entityPermission, getRelatedItemTypeDescriptionQueries,
-                relatedItemType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(RelatedItemTypeDescriptions.fields())
+                .from(RelatedItemTypeDescriptions)
+                .where(RelatedItemTypeDescriptions.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                        RelatedItemTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        RelatedItemTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return relatedItemTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public RelatedItemTypeDescription getRelatedItemTypeDescription(RelatedItemType relatedItemType, Language language) {
@@ -12191,31 +10334,26 @@ public class ItemControl
         return getRelatedItemTypeDescriptionValue(getRelatedItemTypeDescriptionForUpdate(relatedItemType, language));
     }
 
-    private static final Map<EntityPermission, String> getRelatedItemTypeDescriptionsByRelatedItemTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditemtypedescriptions, languages
-                WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_thrutime = ? AND rltitypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditemtypedescriptions
-                WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getRelatedItemTypeDescriptionsByRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<RelatedItemTypeDescription> getRelatedItemTypeDescriptionsByRelatedItemType(RelatedItemType relatedItemType,
             EntityPermission entityPermission) {
-        return relatedItemTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getRelatedItemTypeDescriptionsByRelatedItemTypeQueries,
-                relatedItemType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(RelatedItemTypeDescriptions.fields())
+                    .from(RelatedItemTypeDescriptions)
+                    .join(Languages).onKey(RELATED_ITEM_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(RelatedItemTypeDescriptions.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                            RelatedItemTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    RelatedItemTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(RelatedItemTypeDescriptions.fields())
+                    .from(RelatedItemTypeDescriptions)
+                    .where(RelatedItemTypeDescriptions.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                            RelatedItemTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return relatedItemTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<RelatedItemTypeDescription> getRelatedItemTypeDescriptionsByRelatedItemType(RelatedItemType relatedItemType) {
@@ -12297,10 +10435,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected RelatedItemDetailFactory relatedItemDetailFactory;
+
+    @Inject
     protected RelatedItemFactory relatedItemFactory;
 
     @Inject
-    protected RelatedItemDetailFactory relatedItemDetailFactory;
+    RelatedItemTransferCache relatedItemTransferCache;
 
     public RelatedItem createRelatedItem(RelatedItemType relatedItemType, Item fromItem, Item toItem, Integer sortOrder, BasePK createdBy) {
         var relatedItem = relatedItemFactory.create();
@@ -12319,29 +10460,21 @@ public class ItemControl
         return relatedItem;
     }
 
-    private static final Map<EntityPermission, String> getRelatedItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ? AND rltidt_toitemid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ? AND rltidt_toitemid = ?
-                FOR UPDATE
-                """);
-        getRelatedItemQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private RelatedItem getRelatedItem(RelatedItemType relatedItemType, Item fromItem, Item toItem, EntityPermission entityPermission) {
-        return relatedItemFactory.getEntityFromQuery(entityPermission, getRelatedItemQueries, relatedItemType, fromItem, toItem);
+        var baseQuery = session.getDslContext()
+                .select(RelatedItems.fields())
+                .from(RelatedItems)
+                .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                        RelatedItemDetails.FROM_ITEM.eq(fromItem.getPrimaryKey()),
+                        RelatedItemDetails.TO_ITEM.eq(toItem.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return relatedItemFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public RelatedItem getRelatedItem(RelatedItemType relatedItemType, Item fromItem, Item toItem) {
@@ -12360,32 +10493,26 @@ public class ItemControl
         return getRelatedItemDetailValueForUpdate(getRelatedItemForUpdate(relatedItemType, fromItem, toItem));
     }
 
-    private static final Map<EntityPermission, String> getRelatedItemsByRelatedItemTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails, items, itemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ?
-                AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                ORDER BY rltidt_sortorder, itmdt_itemname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ?
-                FOR UPDATE
-                """);
-        getRelatedItemsByRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<RelatedItem> getRelatedItemsByRelatedItemType(RelatedItemType relatedItemType, EntityPermission entityPermission) {
-        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeQueries, relatedItemType);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(RELATED_ITEM_DETAILS_FROM_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()))
+                    .orderBy(RelatedItemDetails.SORT_ORDER, ItemDetails.ITEM_NAME),
+                    RelatedItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<RelatedItem> getRelatedItemsByRelatedItemType(RelatedItemType relatedItemType) {
@@ -12397,41 +10524,37 @@ public class ItemControl
     }
 
     public long countRelatedItemsByRelatedItemType(RelatedItemType relatedItemType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ?
-                """,
-                relatedItemType);
-    }
-
-    private static final Map<EntityPermission, String> getRelatedItemsByRelatedItemTypeAndFromItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails, items, itemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ?
-                AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                ORDER BY rltidt_sortorder, itmdt_itemname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ?
-                FOR UPDATE
-                """);
-        getRelatedItemsByRelatedItemTypeAndFromItemQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(RelatedItems)
+                .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<RelatedItem> getRelatedItemsByRelatedItemTypeAndFromItem(RelatedItemType relatedItemType, Item fromItem, EntityPermission entityPermission) {
-        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeAndFromItemQueries, relatedItemType, fromItem);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(RELATED_ITEM_DETAILS_FROM_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                            RelatedItemDetails.FROM_ITEM.eq(fromItem.getPrimaryKey()))
+                    .orderBy(RelatedItemDetails.SORT_ORDER, ItemDetails.ITEM_NAME),
+                    RelatedItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                            RelatedItemDetails.FROM_ITEM.eq(fromItem.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<RelatedItem> getRelatedItemsByRelatedItemTypeAndFromItem(RelatedItemType relatedItemType, Item fromItem) {
@@ -12443,41 +10566,38 @@ public class ItemControl
     }
 
     public long countRelatedItemsByRelatedItemTypeAndFromItem(RelatedItemType relatedItemType, Item fromItem) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ?
-                """,
-                relatedItemType, fromItem);
-    }
-
-    private static final Map<EntityPermission, String> getRelatedItemsByRelatedItemTypeAndToItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails, items, itemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ?
-                AND rltidt_toitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                ORDER BY rltidt_sortorder, itmdt_itemname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ?
-                FOR UPDATE
-                """);
-        getRelatedItemsByRelatedItemTypeAndToItemQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(RelatedItems)
+                .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                        RelatedItemDetails.FROM_ITEM.eq(fromItem.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<RelatedItem> getRelatedItemsByRelatedItemTypeAndToItem(RelatedItemType relatedItemType, Item toItem, EntityPermission entityPermission) {
-        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByRelatedItemTypeAndToItemQueries, relatedItemType, toItem);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(RELATED_ITEM_DETAILS_TO_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                            RelatedItemDetails.TO_ITEM.eq(toItem.getPrimaryKey()))
+                    .orderBy(RelatedItemDetails.SORT_ORDER, ItemDetails.ITEM_NAME),
+                    RelatedItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                            RelatedItemDetails.TO_ITEM.eq(toItem.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<RelatedItem> getRelatedItemsByRelatedItemTypeAndToItem(RelatedItemType relatedItemType, Item toItem) {
@@ -12489,42 +10609,38 @@ public class ItemControl
     }
 
     public long countRelatedItemsByRelatedItemTypeAndToItem(RelatedItemType relatedItemType, Item toItem) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ?
-                """,
-                relatedItemType, toItem);
-    }
-
-    private static final Map<EntityPermission, String> getRelatedItemsByFromItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails, relateditemtypes, relateditemtypedetails, items, itemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_fromitemid = ?
-                AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid AND rltityp_lastdetailid = rltitypdt_relateditemtypedetailid
-                AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename, rltidt_sortorder, itmdt_itemname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_fromitemid = ?
-                FOR UPDATE
-                """);
-        getRelatedItemsByFromItemQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(RelatedItems)
+                .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                .where(RelatedItemDetails.RELATED_ITEM_TYPE.eq(relatedItemType.getPrimaryKey()),
+                        RelatedItemDetails.TO_ITEM.eq(toItem.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<RelatedItem> getRelatedItemsByFromItem(Item fromItem, EntityPermission entityPermission) {
-        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByFromItemQueries, fromItem);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .join(RelatedItemTypes).onKey(RELATED_ITEM_DETAILS_RELATED_ITEM_TYPE_FK)
+                    .join(RelatedItemTypeDetails).onKey(RELATED_ITEM_TYPES_LAST_DETAIL_FK)
+                    .join(Items).onKey(RELATED_ITEM_DETAILS_FROM_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(RelatedItemDetails.FROM_ITEM.eq(fromItem.getPrimaryKey()))
+                    .orderBy(RelatedItemTypeDetails.SORT_ORDER, RelatedItemTypeDetails.RELATED_ITEM_TYPE_NAME, RelatedItemDetails.SORT_ORDER, ItemDetails.ITEM_NAME),
+                    RelatedItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(RelatedItemDetails.FROM_ITEM.eq(fromItem.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<RelatedItem> getRelatedItemsByFromItem(Item fromItem) {
@@ -12536,42 +10652,37 @@ public class ItemControl
     }
 
     public long countRelatedItemsByFromItem(Item fromItem) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_fromitemid = ?
-                """,
-                fromItem);
-    }
-
-    private static final Map<EntityPermission, String> getRelatedItemsByToItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails, relateditemtypes, relateditemtypedetails, items, itemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_toitemid = ?
-                AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid AND rltityp_lastdetailid = rltitypdt_relateditemtypedetailid
-                AND rltidt_toitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename, rltidt_sortorder, itmdt_itemname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_toitemid = ?
-                FOR UPDATE
-                """);
-        getRelatedItemsByToItemQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(RelatedItems)
+                .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                .where(RelatedItemDetails.FROM_ITEM.eq(fromItem.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<RelatedItem> getRelatedItemsByToItem(Item toItem, EntityPermission entityPermission) {
-        return relatedItemFactory.getEntitiesFromQuery(entityPermission, getRelatedItemsByToItemQueries, toItem);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .join(RelatedItemTypes).onKey(RELATED_ITEM_DETAILS_RELATED_ITEM_TYPE_FK)
+                    .join(RelatedItemTypeDetails).onKey(RELATED_ITEM_TYPES_LAST_DETAIL_FK)
+                    .join(Items).onKey(RELATED_ITEM_DETAILS_TO_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(RelatedItemDetails.TO_ITEM.eq(toItem.getPrimaryKey()))
+                    .orderBy(RelatedItemTypeDetails.SORT_ORDER, RelatedItemTypeDetails.RELATED_ITEM_TYPE_NAME, RelatedItemDetails.SORT_ORDER, ItemDetails.ITEM_NAME),
+                    RelatedItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(RelatedItems.fields())
+                    .from(RelatedItems)
+                    .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(RelatedItemDetails.TO_ITEM.eq(toItem.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return relatedItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<RelatedItem> getRelatedItemsByToItem(Item toItem) {
@@ -12583,13 +10694,13 @@ public class ItemControl
     }
 
     public long countRelatedItemsByToItem(Item toItem) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM relateditems, relateditemdetails
-                WHERE rlti_activedetailid = rltidt_relateditemdetailid
-                AND rltidt_toitemid = ?
-                """,
-                toItem);
+        return session.getDslContext()
+                .selectCount()
+                .from(RelatedItems)
+                .join(RelatedItemDetails).onKey(RELATED_ITEMS_ACTIVE_DETAIL_FK)
+                .where(RelatedItemDetails.TO_ITEM.eq(toItem.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public RelatedItemTransfer getRelatedItemTransfer(UserVisit userVisit, RelatedItem relatedItem) {
@@ -12684,10 +10795,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected HarmonizedTariffScheduleCodeDetailFactory harmonizedTariffScheduleCodeDetailFactory;
+
+    @Inject
     protected HarmonizedTariffScheduleCodeFactory harmonizedTariffScheduleCodeFactory;
 
     @Inject
-    protected HarmonizedTariffScheduleCodeDetailFactory harmonizedTariffScheduleCodeDetailFactory;
+    HarmonizedTariffScheduleCodeTransferCache harmonizedTariffScheduleCodeTransferCache;
 
     public HarmonizedTariffScheduleCode createHarmonizedTariffScheduleCode(GeoCode countryGeoCode, String harmonizedTariffScheduleCodeName,
             HarmonizedTariffScheduleCodeUnit firstHarmonizedTariffScheduleCodeUnit, HarmonizedTariffScheduleCodeUnit secondHarmonizedTariffScheduleCodeUnit,
@@ -12737,45 +10851,39 @@ public class ItemControl
     }
     
     public long countHarmonizedTariffScheduleCodes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(HarmonizedTariffScheduleCodes)
+                .join(HarmonizedTariffScheduleCodeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?
-                """, countryGeoCode);
-    }
-
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodesByCountryGeoCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?
-                ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodesByCountryGeoCodeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(HarmonizedTariffScheduleCodes)
+                .join(HarmonizedTariffScheduleCodeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesByCountryGeoCodeQueries,
-                countryGeoCode);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodes.fields())
+                .from(HarmonizedTariffScheduleCodes)
+                .join(HarmonizedTariffScheduleCodeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(HarmonizedTariffScheduleCodeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME),
+                    HarmonizedTariffScheduleCodeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode) {
@@ -12786,30 +10894,21 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnitQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_firstharmonizedtariffschedulecodeunitid = ?
-                ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_firstharmonizedtariffschedulecodeunitid = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit firstHarmonizedTariffScheduleCodeUnit, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnitQueries,
-                firstHarmonizedTariffScheduleCodeUnit);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodes.fields())
+                .from(HarmonizedTariffScheduleCodes)
+                .join(HarmonizedTariffScheduleCodeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeDetails.FIRST_HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT.eq(firstHarmonizedTariffScheduleCodeUnit.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(HarmonizedTariffScheduleCodeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME),
+                    HarmonizedTariffScheduleCodeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit firstHarmonizedTariffScheduleCodeUnit) {
@@ -12820,30 +10919,21 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnit(firstHarmonizedTariffScheduleCodeUnit, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnitQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_secondharmonizedtariffschedulecodeunitid = ?
-                ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_secondharmonizedtariffschedulecodeunitid = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit secondHarmonizedTariffScheduleCodeUnit, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnitQueries,
-                secondHarmonizedTariffScheduleCodeUnit);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodes.fields())
+                .from(HarmonizedTariffScheduleCodes)
+                .join(HarmonizedTariffScheduleCodeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeDetails.SECOND_HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT.eq(secondHarmonizedTariffScheduleCodeUnit.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(HarmonizedTariffScheduleCodeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME),
+                    HarmonizedTariffScheduleCodeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCode> getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit secondHarmonizedTariffScheduleCodeUnit) {
@@ -12854,30 +10944,20 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnit(secondHarmonizedTariffScheduleCodeUnit, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getDefaultHarmonizedTariffScheduleCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
-                AND hztscdt_countrygeocodeid = ? AND hztscdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
-                AND hztscdt_countrygeocodeid = ? AND hztscdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private HarmonizedTariffScheduleCode getDefaultHarmonizedTariffScheduleCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeQueries,
-                countryGeoCode);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodes.fields())
+                .from(HarmonizedTariffScheduleCodes)
+                .join(HarmonizedTariffScheduleCodeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCode getDefaultHarmonizedTariffScheduleCode(GeoCode countryGeoCode) {
@@ -12892,30 +10972,20 @@ public class ItemControl
         return getDefaultHarmonizedTariffScheduleCodeForUpdate(countryGeoCode).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
-                AND hztscdt_countrygeocodeid = ? AND hztscdt_harmonizedtariffschedulecodename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
-                AND hztscdt_countrygeocodeid = ? AND hztscdt_harmonizedtariffschedulecodename = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByName(GeoCode countryGeoCode, String harmonizedTariffScheduleCodeName, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeByNameQueries,
-                countryGeoCode, harmonizedTariffScheduleCodeName);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodes.fields())
+                .from(HarmonizedTariffScheduleCodes)
+                .join(HarmonizedTariffScheduleCodeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME.eq(harmonizedTariffScheduleCodeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByName(GeoCode countryGeoCode, String harmonizedTariffScheduleCodeName) {
@@ -13099,6 +11169,9 @@ public class ItemControl
     @Inject
     protected HarmonizedTariffScheduleCodeTranslationFactory harmonizedTariffScheduleCodeTranslationFactory;
 
+    @Inject
+    HarmonizedTariffScheduleCodeTranslationTransferCache harmonizedTariffScheduleCodeTranslationTransferCache;
+
     public HarmonizedTariffScheduleCodeTranslation createHarmonizedTariffScheduleCodeTranslation(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             Language language, String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
         var harmonizedTariffScheduleCodeTranslation = harmonizedTariffScheduleCodeTranslationFactory.create(harmonizedTariffScheduleCode,
@@ -13109,28 +11182,20 @@ public class ItemControl
         return harmonizedTariffScheduleCodeTranslation;
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeTranslationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodetranslations
-                WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_lang_languageid = ? AND hztsctr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodetranslations
-                WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_lang_languageid = ? AND hztsctr_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private HarmonizedTariffScheduleCodeTranslation getHarmonizedTariffScheduleCodeTranslation(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, Language language, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeTranslationFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeTranslationQueries,
-                harmonizedTariffScheduleCode, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeTranslations.fields())
+                .from(HarmonizedTariffScheduleCodeTranslations)
+                .where(HarmonizedTariffScheduleCodeTranslations.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCodeTranslation getHarmonizedTariffScheduleCodeTranslation(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, Language language) {
@@ -13149,29 +11214,25 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodeTranslationValue(getHarmonizedTariffScheduleCodeTranslationForUpdate(harmonizedTariffScheduleCode, language));
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodetranslations, languages
-                WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_thrutime = ? AND hztsctr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodetranslations
-                WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCodeTranslation> getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeTranslationFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeQueries,
-                harmonizedTariffScheduleCode, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeTranslations.fields())
+                    .from(HarmonizedTariffScheduleCodeTranslations)
+                    .join(Languages).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_TRANSLATIONS_LANGUAGE_FK)
+                    .where(HarmonizedTariffScheduleCodeTranslations.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    HarmonizedTariffScheduleCodeTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeTranslations.fields())
+                    .from(HarmonizedTariffScheduleCodeTranslations)
+                    .where(HarmonizedTariffScheduleCodeTranslations.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCodeTranslation> getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
@@ -13248,10 +11309,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected HarmonizedTariffScheduleCodeUseTypeDetailFactory harmonizedTariffScheduleCodeUseTypeDetailFactory;
+
+    @Inject
     protected HarmonizedTariffScheduleCodeUseTypeFactory harmonizedTariffScheduleCodeUseTypeFactory;
 
     @Inject
-    protected HarmonizedTariffScheduleCodeUseTypeDetailFactory harmonizedTariffScheduleCodeUseTypeDetailFactory;
+    HarmonizedTariffScheduleCodeUseTypeTransferCache harmonizedTariffScheduleCodeUseTypeTransferCache;
 
     public HarmonizedTariffScheduleCodeUseType createHarmonizedTariffScheduleCodeUseType(String harmonizedTariffScheduleCodeUseTypeName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -13299,35 +11363,27 @@ public class ItemControl
     }
 
     public long countHarmonizedTariffScheduleCodeUseTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM harmonizedtariffschedulecodeusetypes
-                        JOIN harmonizedtariffschedulecodeusetypedetails ON hztscutypdt_harmonizedtariffschedulecodeusetypedetailid = hztscutyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUseTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_harmonizedtariffschedulecodeusetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_harmonizedtariffschedulecodeusetypename = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(HarmonizedTariffScheduleCodeUseTypes)
+                .join(HarmonizedTariffScheduleCodeUseTypeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByName(String harmonizedTariffScheduleCodeUseTypeName, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeByNameQueries,
-                harmonizedTariffScheduleCodeUseTypeName);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUseTypes.fields())
+                .from(HarmonizedTariffScheduleCodeUseTypes)
+                .join(HarmonizedTariffScheduleCodeUseTypeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeUseTypeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME.eq(harmonizedTariffScheduleCodeUseTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByName(String harmonizedTariffScheduleCodeUseTypeName) {
@@ -13346,27 +11402,19 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodeUseTypeDetailValueForUpdate(getHarmonizedTariffScheduleCodeUseTypeByNameForUpdate(harmonizedTariffScheduleCodeUseTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultHarmonizedTariffScheduleCodeUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultHarmonizedTariffScheduleCodeUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private HarmonizedTariffScheduleCodeUseType getDefaultHarmonizedTariffScheduleCodeUseType(EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeUseTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUseTypes.fields())
+                .from(HarmonizedTariffScheduleCodeUseTypes)
+                .join(HarmonizedTariffScheduleCodeUseTypeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeUseTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCodeUseType getDefaultHarmonizedTariffScheduleCodeUseType() {
@@ -13381,29 +11429,20 @@ public class ItemControl
         return getDefaultHarmonizedTariffScheduleCodeUseType(EntityPermission.READ_WRITE).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUseTypeDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUseTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
-                ORDER BY hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUseTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCodeUseType> getHarmonizedTariffScheduleCodeUseTypes(EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUseTypeFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUseTypes.fields())
+                .from(HarmonizedTariffScheduleCodeUseTypes)
+                .join(HarmonizedTariffScheduleCodeUseTypeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(HarmonizedTariffScheduleCodeUseTypeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeUseTypeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME),
+                    HarmonizedTariffScheduleCodeUseTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUseTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCodeUseType> getHarmonizedTariffScheduleCodeUseTypes() {
@@ -13545,6 +11584,9 @@ public class ItemControl
     @Inject
     protected HarmonizedTariffScheduleCodeUseTypeDescriptionFactory harmonizedTariffScheduleCodeUseTypeDescriptionFactory;
 
+    @Inject
+    HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache;
+
     public HarmonizedTariffScheduleCodeUseTypeDescription createHarmonizedTariffScheduleCodeUseTypeDescription(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType,
             Language language, String description, BasePK createdBy) {
         var harmonizedTariffScheduleCodeUseTypeDescription = harmonizedTariffScheduleCodeUseTypeDescriptionFactory.create(harmonizedTariffScheduleCodeUseType,
@@ -13555,28 +11597,20 @@ public class ItemControl
         return harmonizedTariffScheduleCodeUseTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUseTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypedescriptions
-                WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_lang_languageid = ? AND hztscutypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypedescriptions
-                WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_lang_languageid = ? AND hztscutypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private HarmonizedTariffScheduleCodeUseTypeDescription getHarmonizedTariffScheduleCodeUseTypeDescription(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, Language language, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeDescriptionQueries,
-                harmonizedTariffScheduleCodeUseType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUseTypeDescriptions.fields())
+                .from(HarmonizedTariffScheduleCodeUseTypeDescriptions)
+                .where(HarmonizedTariffScheduleCodeUseTypeDescriptions.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCodeUseTypeDescription getHarmonizedTariffScheduleCodeUseTypeDescription(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, Language language) {
@@ -13595,29 +11629,25 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodeUseTypeDescriptionValue(getHarmonizedTariffScheduleCodeUseTypeDescriptionForUpdate(harmonizedTariffScheduleCodeUseType, language));
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypedescriptions, languages
-                WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_thrutime = ? AND hztscutypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeusetypedescriptions
-                WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCodeUseTypeDescription> getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeQueries,
-                harmonizedTariffScheduleCodeUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeUseTypeDescriptions.fields())
+                    .from(HarmonizedTariffScheduleCodeUseTypeDescriptions)
+                    .join(Languages).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(HarmonizedTariffScheduleCodeUseTypeDescriptions.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    HarmonizedTariffScheduleCodeUseTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeUseTypeDescriptions.fields())
+                    .from(HarmonizedTariffScheduleCodeUseTypeDescriptions)
+                    .where(HarmonizedTariffScheduleCodeUseTypeDescriptions.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCodeUseTypeDescription> getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
@@ -13699,10 +11729,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected HarmonizedTariffScheduleCodeUnitDetailFactory harmonizedTariffScheduleCodeUnitDetailFactory;
+
+    @Inject
     protected HarmonizedTariffScheduleCodeUnitFactory harmonizedTariffScheduleCodeUnitFactory;
 
     @Inject
-    protected HarmonizedTariffScheduleCodeUnitDetailFactory harmonizedTariffScheduleCodeUnitDetailFactory;
+    HarmonizedTariffScheduleCodeUnitTransferCache harmonizedTariffScheduleCodeUnitTransferCache;
 
     public HarmonizedTariffScheduleCodeUnit createHarmonizedTariffScheduleCodeUnit(String harmonizedTariffScheduleCodeUnitName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -13750,35 +11783,27 @@ public class ItemControl
     }
 
     public long countHarmonizedTariffScheduleCodeUnits() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM harmonizedtariffschedulecodeunits
-                        JOIN harmonizedtariffschedulecodeunitdetails ON hztscuntdt_harmonizedtariffschedulecodeunitdetailid = hztscunt_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUnitByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
-                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_harmonizedtariffschedulecodeunitname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
-                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_harmonizedtariffschedulecodeunitname = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUnitByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(HarmonizedTariffScheduleCodeUnits)
+                .join(HarmonizedTariffScheduleCodeUnitDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_UNITS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByName(String harmonizedTariffScheduleCodeUnitName, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUnitFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitByNameQueries,
-                harmonizedTariffScheduleCodeUnitName);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUnits.fields())
+                .from(HarmonizedTariffScheduleCodeUnits)
+                .join(HarmonizedTariffScheduleCodeUnitDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_UNITS_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeUnitDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME.eq(harmonizedTariffScheduleCodeUnitName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUnitFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByName(String harmonizedTariffScheduleCodeUnitName) {
@@ -13797,27 +11822,19 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodeUnitDetailValueForUpdate(getHarmonizedTariffScheduleCodeUnitByNameForUpdate(harmonizedTariffScheduleCodeUnitName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultHarmonizedTariffScheduleCodeUnitQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
-                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
-                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultHarmonizedTariffScheduleCodeUnitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private HarmonizedTariffScheduleCodeUnit getDefaultHarmonizedTariffScheduleCodeUnit(EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUnitFactory.getEntityFromQuery(entityPermission, getDefaultHarmonizedTariffScheduleCodeUnitQueries);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUnits.fields())
+                .from(HarmonizedTariffScheduleCodeUnits)
+                .join(HarmonizedTariffScheduleCodeUnitDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_UNITS_ACTIVE_DETAIL_FK)
+                .where(HarmonizedTariffScheduleCodeUnitDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUnitFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCodeUnit getDefaultHarmonizedTariffScheduleCodeUnit() {
@@ -13832,29 +11849,20 @@ public class ItemControl
         return getDefaultHarmonizedTariffScheduleCodeUnit(EntityPermission.READ_WRITE).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUnitDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUnitsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
-                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid
-                ORDER BY hztscuntdt_sortorder, hztscuntdt_harmonizedtariffschedulecodeunitname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
-                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUnitsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCodeUnit> getHarmonizedTariffScheduleCodeUnits(EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUnitFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitsQueries);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUnits.fields())
+                .from(HarmonizedTariffScheduleCodeUnits)
+                .join(HarmonizedTariffScheduleCodeUnitDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_UNITS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(HarmonizedTariffScheduleCodeUnitDetails.SORT_ORDER, HarmonizedTariffScheduleCodeUnitDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME),
+                    HarmonizedTariffScheduleCodeUnitFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUnitFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCodeUnit> getHarmonizedTariffScheduleCodeUnits() {
@@ -13996,6 +12004,9 @@ public class ItemControl
     @Inject
     protected HarmonizedTariffScheduleCodeUnitDescriptionFactory harmonizedTariffScheduleCodeUnitDescriptionFactory;
 
+    @Inject
+    HarmonizedTariffScheduleCodeUnitDescriptionTransferCache harmonizedTariffScheduleCodeUnitDescriptionTransferCache;
+
     public HarmonizedTariffScheduleCodeUnitDescription createHarmonizedTariffScheduleCodeUnitDescription(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit,
             Language language, String description, BasePK createdBy) {
         var harmonizedTariffScheduleCodeUnitDescription = harmonizedTariffScheduleCodeUnitDescriptionFactory.create(harmonizedTariffScheduleCodeUnit,
@@ -14006,28 +12017,20 @@ public class ItemControl
         return harmonizedTariffScheduleCodeUnitDescription;
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUnitDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunitdescriptions
-                WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_lang_languageid = ? AND hztscuntd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunitdescriptions
-                WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_lang_languageid = ? AND hztscuntd_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUnitDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private HarmonizedTariffScheduleCodeUnitDescription getHarmonizedTariffScheduleCodeUnitDescription(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, Language language, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUnitDescriptionFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitDescriptionQueries,
-                harmonizedTariffScheduleCodeUnit, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUnitDescriptions.fields())
+                .from(HarmonizedTariffScheduleCodeUnitDescriptions)
+                .where(HarmonizedTariffScheduleCodeUnitDescriptions.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT.eq(harmonizedTariffScheduleCodeUnit.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeUnitDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeUnitDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUnitDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCodeUnitDescription getHarmonizedTariffScheduleCodeUnitDescription(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, Language language) {
@@ -14046,29 +12049,25 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodeUnitDescriptionValue(getHarmonizedTariffScheduleCodeUnitDescriptionForUpdate(harmonizedTariffScheduleCodeUnit, language));
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunitdescriptions, languages
-                WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_thrutime = ? AND hztscuntd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeunitdescriptions
-                WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCodeUnitDescription> getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUnitDescriptionFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitQueries,
-                harmonizedTariffScheduleCodeUnit, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeUnitDescriptions.fields())
+                    .from(HarmonizedTariffScheduleCodeUnitDescriptions)
+                    .join(Languages).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(HarmonizedTariffScheduleCodeUnitDescriptions.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT.eq(harmonizedTariffScheduleCodeUnit.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeUnitDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    HarmonizedTariffScheduleCodeUnitDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeUnitDescriptions.fields())
+                    .from(HarmonizedTariffScheduleCodeUnitDescriptions)
+                    .where(HarmonizedTariffScheduleCodeUnitDescriptions.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT.eq(harmonizedTariffScheduleCodeUnit.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeUnitDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUnitDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCodeUnitDescription> getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
@@ -14152,6 +12151,9 @@ public class ItemControl
     @Inject
     protected HarmonizedTariffScheduleCodeUseFactory harmonizedTariffScheduleCodeUseFactory;
 
+    @Inject
+    HarmonizedTariffScheduleCodeUseTransferCache harmonizedTariffScheduleCodeUseTransferCache;
+
     public HarmonizedTariffScheduleCodeUse createHarmonizedTariffScheduleCodeUse(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, BasePK createdBy) {
         var harmonizedTariffScheduleCodeUse = harmonizedTariffScheduleCodeUseFactory.create(harmonizedTariffScheduleCode,
@@ -14163,44 +12165,40 @@ public class ItemControl
     }
 
     public long countHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM harmonizedtariffschedulecodeuses
-                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_thrutime = ?
-                """, harmonizedTariffScheduleCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(HarmonizedTariffScheduleCodeUses)
+                .where(HarmonizedTariffScheduleCodeUses.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM harmonizedtariffschedulecodeuses
-                WHERE hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
-                """, harmonizedTariffScheduleCodeUseType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeuses
-                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeuses
-                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUseQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(HarmonizedTariffScheduleCodeUses)
+                .where(HarmonizedTariffScheduleCodeUses.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private HarmonizedTariffScheduleCodeUse getHarmonizedTariffScheduleCodeUse(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUseFactory.getEntityFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUseQueries,
-                harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(HarmonizedTariffScheduleCodeUses.fields())
+                .from(HarmonizedTariffScheduleCodeUses)
+                .where(HarmonizedTariffScheduleCodeUses.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeUses.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()),
+                        HarmonizedTariffScheduleCodeUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public HarmonizedTariffScheduleCodeUse getHarmonizedTariffScheduleCodeUse(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
@@ -14222,30 +12220,26 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodeUseValue(getHarmonizedTariffScheduleCodeUseForUpdate(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType));
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeuses, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_thrutime = ?
-                AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
-                ORDER BY hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeuses
-                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCodeUse> getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUseFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeQueries,
-                harmonizedTariffScheduleCode, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeUses.fields())
+                    .from(HarmonizedTariffScheduleCodeUses)
+                    .join(HarmonizedTariffScheduleCodeUseTypes).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USES_HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_FK)
+                    .join(HarmonizedTariffScheduleCodeUseTypeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_LAST_DETAIL_FK)
+                    .where(HarmonizedTariffScheduleCodeUses.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(HarmonizedTariffScheduleCodeUseTypeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeUseTypeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME),
+                    HarmonizedTariffScheduleCodeUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeUses.fields())
+                    .from(HarmonizedTariffScheduleCodeUses)
+                    .where(HarmonizedTariffScheduleCodeUses.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCodeUse> getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
@@ -14256,31 +12250,27 @@ public class ItemControl
         return getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeuses, harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
-                WHERE hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
-                AND hztscu_hztsc_harmonizedtariffschedulecodeid = hztsc_harmonizedtariffschedulecodeid AND hztsc_lastdetailid = hztscdt_harmonizedtariffschedulecodedetailid
-                ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM harmonizedtariffschedulecodeuses
-                WHERE hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
-                FOR UPDATE
-                """);
-        getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<HarmonizedTariffScheduleCodeUse> getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType,
             EntityPermission entityPermission) {
-        return harmonizedTariffScheduleCodeUseFactory.getEntitiesFromQuery(entityPermission, getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseTypeQueries,
-                harmonizedTariffScheduleCodeUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeUses.fields())
+                    .from(HarmonizedTariffScheduleCodeUses)
+                    .join(HarmonizedTariffScheduleCodes).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USES_HARMONIZED_TARIFF_SCHEDULE_CODE_FK)
+                    .join(HarmonizedTariffScheduleCodeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODES_LAST_DETAIL_FK)
+                    .where(HarmonizedTariffScheduleCodeUses.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(HarmonizedTariffScheduleCodeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME),
+                    HarmonizedTariffScheduleCodeUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(HarmonizedTariffScheduleCodeUses.fields())
+                    .from(HarmonizedTariffScheduleCodeUses)
+                    .where(HarmonizedTariffScheduleCodeUses.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()),
+                            HarmonizedTariffScheduleCodeUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return harmonizedTariffScheduleCodeUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<HarmonizedTariffScheduleCodeUse> getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
@@ -14343,10 +12333,13 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemHarmonizedTariffScheduleCodeDetailFactory itemHarmonizedTariffScheduleCodeDetailFactory;
+
+    @Inject
     protected ItemHarmonizedTariffScheduleCodeFactory itemHarmonizedTariffScheduleCodeFactory;
 
     @Inject
-    protected ItemHarmonizedTariffScheduleCodeDetailFactory itemHarmonizedTariffScheduleCodeDetailFactory;
+    ItemHarmonizedTariffScheduleCodeTransferCache itemHarmonizedTariffScheduleCodeTransferCache;
 
     public ItemHarmonizedTariffScheduleCode createItemHarmonizedTariffScheduleCode(Item item, GeoCode countryGeoCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
@@ -14384,66 +12377,67 @@ public class ItemControl
     }
 
     public long countItemHarmonizedTariffScheduleCodesByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemharmonizedtariffschedulecodes
-                        JOIN itemharmonizedtariffschedulecodedetails ON itmhztscdt_itemharmonizedtariffschedulecodedetailid = itmhztsc_activedetailid
-                        WHERE itmhztscdt_itm_itemid = ?
-                        """, item);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemHarmonizedTariffScheduleCodes)
+                .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(ItemHarmonizedTariffScheduleCodeDetails.ITEM.eq(item.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemHarmonizedTariffScheduleCodesByCountryGeoCode(final GeoCode countryGeoCode) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemharmonizedtariffschedulecodes
-                        JOIN itemharmonizedtariffschedulecodedetails ON itmhztscdt_itemharmonizedtariffschedulecodedetailid = itmhztsc_activedetailid
-                        WHERE itmhztscdt_countrygeocodeid = ?
-                        """, countryGeoCode);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemHarmonizedTariffScheduleCodes)
+                .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(ItemHarmonizedTariffScheduleCodeDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseType(final HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemharmonizedtariffschedulecodes
-                        JOIN itemharmonizedtariffschedulecodedetails ON itmhztscdt_itemharmonizedtariffschedulecodedetailid = itmhztsc_activedetailid
-                        WHERE itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
-                        """, harmonizedTariffScheduleCodeUseType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemHarmonizedTariffScheduleCodes)
+                .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(ItemHarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCode(final HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM itemharmonizedtariffschedulecodes
-                        JOIN itemharmonizedtariffschedulecodedetails ON itmhztscdt_itemharmonizedtariffschedulecodedetailid = itmhztsc_activedetailid
-                        WHERE itmhztscdt_hztsc_harmonizedtariffschedulecodeid = ?
-                        """, harmonizedTariffScheduleCode);
-    }
-
-    private static final Map<EntityPermission, String> getItemHarmonizedTariffScheduleCodesByItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, geocodes, geocodedetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_itm_itemid = ?
-                AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
-                ORDER BY geodt_sortorder, geodt_geocodename, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_itm_itemid = ?
-                FOR UPDATE
-                """);
-        getItemHarmonizedTariffScheduleCodesByItemQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemHarmonizedTariffScheduleCodes)
+                .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(ItemHarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByItem(Item item, EntityPermission entityPermission) {
-        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByItemQueries,
-                item);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemHarmonizedTariffScheduleCodes.fields())
+                    .from(ItemHarmonizedTariffScheduleCodes)
+                    .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                    .join(GeoCodes).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_COUNTRY_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .join(HarmonizedTariffScheduleCodeUseTypes).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_FK)
+                    .join(HarmonizedTariffScheduleCodeUseTypeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemHarmonizedTariffScheduleCodeDetails.ITEM.eq(item.getPrimaryKey()))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME, HarmonizedTariffScheduleCodeUseTypeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeUseTypeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME),
+                    ItemHarmonizedTariffScheduleCodeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemHarmonizedTariffScheduleCodes.fields())
+                    .from(ItemHarmonizedTariffScheduleCodes)
+                    .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                    .where(ItemHarmonizedTariffScheduleCodeDetails.ITEM.eq(item.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByItem(Item item) {
@@ -14454,31 +12448,28 @@ public class ItemControl
         return getItemHarmonizedTariffScheduleCodesByItem(item, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemHarmonizedTariffScheduleCodesByCountryGeoCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_countrygeocodeid = ?
-                AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
-                ORDER BY itmdt_itemname, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_countrygeocodeid = ?
-                FOR UPDATE
-                """);
-        getItemHarmonizedTariffScheduleCodesByCountryGeoCodeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByCountryGeoCodeQueries,
-                countryGeoCode);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemHarmonizedTariffScheduleCodes.fields())
+                    .from(ItemHarmonizedTariffScheduleCodes)
+                    .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(HarmonizedTariffScheduleCodeUseTypes).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_FK)
+                    .join(HarmonizedTariffScheduleCodeUseTypeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemHarmonizedTariffScheduleCodeDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()))
+                    .orderBy(ItemDetails.ITEM_NAME, HarmonizedTariffScheduleCodeUseTypeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeUseTypeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME),
+                    ItemHarmonizedTariffScheduleCodeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemHarmonizedTariffScheduleCodes.fields())
+                    .from(ItemHarmonizedTariffScheduleCodes)
+                    .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                    .where(ItemHarmonizedTariffScheduleCodeDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode) {
@@ -14489,31 +12480,28 @@ public class ItemControl
         return getItemHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, geocodes, geocodedetails
-                AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
-                ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
-                FOR UPDATE
-                """);
-        getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, EntityPermission entityPermission) {
-        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseQueries,
-                harmonizedTariffScheduleCodeUseType);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemHarmonizedTariffScheduleCodes.fields())
+                    .from(ItemHarmonizedTariffScheduleCodes)
+                    .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(GeoCodes).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_COUNTRY_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(ItemHarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()))
+                    .orderBy(ItemDetails.ITEM_NAME, GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    ItemHarmonizedTariffScheduleCodeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemHarmonizedTariffScheduleCodes.fields())
+                    .from(ItemHarmonizedTariffScheduleCodes)
+                    .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                    .where(ItemHarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUse(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
@@ -14524,32 +12512,30 @@ public class ItemControl
         return getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseType(harmonizedTariffScheduleCodeUseType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, geocodes, geocodedetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztsc_harmonizedtariffschedulecodeid = ?
-                AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
-                ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztsc_harmonizedtariffschedulecodeid = ?
-                FOR UPDATE
-                """);
-        getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, EntityPermission entityPermission) {
-        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeQueries,
-                harmonizedTariffScheduleCode);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemHarmonizedTariffScheduleCodes.fields())
+                    .from(ItemHarmonizedTariffScheduleCodes)
+                    .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                    .join(Items).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(GeoCodes).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_COUNTRY_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .join(HarmonizedTariffScheduleCodeUseTypes).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE_DETAILS_HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_FK)
+                    .join(HarmonizedTariffScheduleCodeUseTypeDetails).onKey(HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPES_LAST_DETAIL_FK)
+                    .where(ItemHarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()))
+                    .orderBy(ItemDetails.ITEM_NAME, GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME, HarmonizedTariffScheduleCodeUseTypeDetails.SORT_ORDER, HarmonizedTariffScheduleCodeUseTypeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE_NAME),
+                    ItemHarmonizedTariffScheduleCodeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemHarmonizedTariffScheduleCodes.fields())
+                    .from(ItemHarmonizedTariffScheduleCodes)
+                    .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                    .where(ItemHarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE.eq(harmonizedTariffScheduleCode.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return itemHarmonizedTariffScheduleCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemHarmonizedTariffScheduleCode> getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
@@ -14560,31 +12546,22 @@ public class ItemControl
         return getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemHarmonizedTariffScheduleCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid
-                AND itmhztscdt_itm_itemid = ? AND itmhztscdt_countrygeocodeid = ? AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
-                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid
-                AND itmhztscdt_itm_itemid = ? AND itmhztscdt_countrygeocodeid = ? AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
-                FOR UPDATE
-                """);
-        getItemHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ItemHarmonizedTariffScheduleCode getItemHarmonizedTariffScheduleCode(Item item, GeoCode countryGeoCode,
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, EntityPermission entityPermission) {
-        return itemHarmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, getItemHarmonizedTariffScheduleCodeQueries,
-                item, countryGeoCode, harmonizedTariffScheduleCodeUseType);
+        var baseQuery = session.getDslContext()
+                .select(ItemHarmonizedTariffScheduleCodes.fields())
+                .from(ItemHarmonizedTariffScheduleCodes)
+                .join(ItemHarmonizedTariffScheduleCodeDetails).onKey(ITEM_HARMONIZED_TARIFF_SCHEDULE_CODES_ACTIVE_DETAIL_FK)
+                .where(ItemHarmonizedTariffScheduleCodeDetails.ITEM.eq(item.getPrimaryKey()),
+                        ItemHarmonizedTariffScheduleCodeDetails.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ItemHarmonizedTariffScheduleCodeDetails.HARMONIZED_TARIFF_SCHEDULE_CODE_USE_TYPE.eq(harmonizedTariffScheduleCodeUseType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemHarmonizedTariffScheduleCodeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemHarmonizedTariffScheduleCode getItemHarmonizedTariffScheduleCode(Item item, GeoCode countryGeoCode,
@@ -14698,31 +12675,46 @@ public class ItemControl
     //   Item Searches
     // --------------------------------------------------------------------------------
 
-    public List<ItemResultTransfer> getItemResultTransfers(UserVisitSearch userVisitSearch) {
-        var itemResultTransfers = new ArrayList<ItemResultTransfer>(toIntExact(searchControl.countSearchResults(userVisitSearch)));;
-        var includeItem = false;
+    private List<Long> getItemIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
+        var search = userVisitSearch.getSearch();
+        var cachedSearch = search.getCachedSearch();
+        Select<?> query;
 
-        // ItemTransfer objects are not included unless specifically requested;
-        var options = session.getOptions();
-        if(options != null) {
-            includeItem = options.contains(SearchOptions.ItemResultIncludeItem);
-        }
+        if(cachedSearch == null) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
+        } else {
+            var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
 
-        if(userVisitSearch.getSearch().getCachedSearch() != null) {
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
+
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
         }
 
-        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var itemControl = this;
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-            while(rs.next()) {
-                var item = itemFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+    public List<ItemResultTransfer> getItemResultTransfers(UserVisitSearch userVisitSearch) {
+        var entityIds = getItemIdsFromUserVisitSearch(userVisitSearch);
+        var itemResultTransfers = new ArrayList<ItemResultTransfer>(entityIds.size());
+        var options = session.getOptions();
+        var includeItem = options != null && options.contains(SearchOptions.ItemResultIncludeItem);
 
-                itemResultTransfers.add(new ItemResultTransfer(item.getLastDetail().getItemName(),
-                        includeItem ? itemControl.getItemTransfer(userVisitSearch.getUserVisit(), item) : null));
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+        for(var entityUniqueId : entityIds) {
+            var item = itemFactory.getEntityFromPK(EntityPermission.READ_ONLY, new ItemPK(entityUniqueId));
+
+            itemResultTransfers.add(new ItemResultTransfer(item.getLastDetail().getItemName(),
+                    includeItem ? getItemTransfer(userVisitSearch.getUserVisit(), item) : null));
         }
 
         return itemResultTransfers;
@@ -14731,16 +12723,10 @@ public class ItemControl
     public List<ItemObject> getItemObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var itemObjects = new ArrayList<ItemObject>();
 
-        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var itemControl = this;
+        for(var entityUniqueId : getItemIdsFromUserVisitSearch(userVisitSearch)) {
+            var item = getItemByPK(new ItemPK(entityUniqueId));
 
-            while(rs.next()) {
-                var item = itemControl.getItemByPK(new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
-
-                itemObjects.add(new ItemObject(item));
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            itemObjects.add(new ItemObject(item));
         }
 
         return itemObjects;
