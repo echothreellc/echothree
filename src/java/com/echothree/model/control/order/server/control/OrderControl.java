@@ -48,38 +48,57 @@ import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOGS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_DETAILS_CONTENT_COLLECTION_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_COLLECTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_CONTENT_CATALOGS_CONTENT_CATALOG_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_CONTENT_CATALOGS_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ROLES_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ROLES_ORDER_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_USER_VISITS_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_USER_VISITS_USER_VISIT_FK;
+import static com.echothree.model.jooq.server.tables.content.ContentCatalogDetails.ContentCatalogDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentCatalogs.ContentCatalogs;
+import static com.echothree.model.jooq.server.tables.content.ContentCollectionDetails.ContentCollectionDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentCollections.ContentCollections;
+import static com.echothree.model.jooq.server.tables.order.OrderContentCatalogs.OrderContentCatalogs;
+import static com.echothree.model.jooq.server.tables.order.OrderDetails.OrderDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderRoleTypes.OrderRoleTypes;
+import static com.echothree.model.jooq.server.tables.order.OrderRoles.OrderRoles;
+import static com.echothree.model.jooq.server.tables.order.OrderStatuses.OrderStatuses;
+import static com.echothree.model.jooq.server.tables.order.OrderUserVisits.OrderUserVisits;
+import static com.echothree.model.jooq.server.tables.order.Orders.Orders;
+import static com.echothree.model.jooq.server.tables.user.UserVisits.UserVisits;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
     
     @Inject
-    protected OrderAdjustmentControl orderAdjustmentControl;
+    private OrderAdjustmentControl orderAdjustmentControl;
 
     @Inject
     protected OrderLineControl orderLineControl;
 
     @Inject
-    protected OrderRoleControl orderRoleControl;
+    private OrderRoleControl orderRoleControl;
 
     @Inject
     protected OrderTimeControl orderTimeControl;
 
     @Inject
-    protected OrderTypeControl orderTypeControl;
+    private OrderTypeControl orderTypeControl;
 
     @Inject
     protected WishlistControl wishlistControl;
@@ -94,10 +113,10 @@ public class OrderControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderFactory orderFactory;
+    protected OrderDetailFactory orderDetailFactory;
 
     @Inject
-    protected OrderDetailFactory orderDetailFactory;
+    private OrderFactory orderFactory;
 
     public Order createOrder(OrderType orderType, String orderName, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete,
             Boolean allowBackorders, Boolean allowSubstitutions, Boolean allowCombiningShipments, Term term, FreeOnBoard freeOnBoard,
@@ -142,61 +161,59 @@ public class OrderControl
     }
 
     public long countOrdersByOrderType(final OrderType orderType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM orders, orderdetails
-                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ?
-                """, orderType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Orders)
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrdersByOrderPriority(final OrderPriority orderPriority) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM orders, orderdetails
-                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordpr_orderpriorityid = ?
-                """, orderPriority);
+        return session.getDslContext()
+                .selectCount()
+                .from(Orders)
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_PRIORITY.eq(orderPriority.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrdersByCancellationPolicy(final CancellationPolicy cancellationPolicy) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM orders, orderdetails
-                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_cnclplcy_cancellationpolicyid = ?
-                """, cancellationPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(Orders)
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrdersByReturnPolicy(final ReturnPolicy returnPolicy) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM orders, orderdetails
-                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_rtnplcy_returnpolicyid = ?
-                """, returnPolicy);
-    }
-
-    private static final Map<EntityPermission, String> getOrderByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orders, orderdetails
-                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ? AND orddt_ordername = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orders, orderdetails
-                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_ordtyp_ordertypeid = ? AND orddt_ordername = ?
-                FOR UPDATE
-                """);
-        getOrderByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Orders)
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public Order getOrderByName(OrderType orderType, String orderName, EntityPermission entityPermission) {
-        return orderFactory.getEntityFromQuery(entityPermission, getOrderByNameQueries,
-                orderType, orderName);
+        var baseQuery = session.getDslContext()
+                .select(Orders.fields())
+                .from(Orders)
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderDetails.ORDER_NAME.eq(orderName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderFactory.getEntityFromQuery(entityPermission, query);
     }
 
     private Order getOrderByNameUsingNames(String orderTypeName, String orderName, EntityPermission entityPermission) {
@@ -231,15 +248,18 @@ public class OrderControl
     }
     
     public long countOrdersByBillToAndReference(final Party billToParty, final String reference) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orders, orderdetails, orderroles, orderroletypes
-                WHERE ord_activedetailid = orddt_orderdetailid AND orddt_reference = ?
-                AND ord_orderid = ordr_ord_orderid AND ordr_thrutime = ? AND ordr_par_partyid = ?
-                AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid AND ordrtyp_orderroletypename = ?
-                """,
-                reference, Session.MAX_TIME, billToParty, OrderRoleTypes.BILL_TO.name());
+        return session.getDslContext()
+                .selectCount()
+                .from(Orders)
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .join(OrderRoles).onKey(ORDER_ROLES_ORDER_FK)
+                .join(OrderRoleTypes).onKey(ORDER_ROLES_ORDER_ROLE_TYPE_FK)
+                .where(OrderDetails.REFERENCE.eq(reference),
+                        OrderRoles.THRU_TIME.eq(Session.MAX_TIME),
+                        OrderRoles.PARTY.eq(billToParty.getPrimaryKey()),
+                        OrderRoleTypes.ORDER_ROLE_TYPE_NAME.eq(com.echothree.model.control.order.common.OrderRoleTypes.BILL_TO.name()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public OrderTransfer getOrderTransfer(UserVisit userVisit, Order order) {
@@ -326,43 +346,24 @@ public class OrderControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderStatusFactory orderStatusFactory;
+    private OrderStatusFactory orderStatusFactory;
 
     public OrderStatus createOrderStatus(Order order) {
         return orderStatusFactory.create(order, 0, 0, 0, 0);
     }
     
     private OrderStatus getOrderStatus(Order order, EntityPermission entityPermission) {
-        OrderStatus orderStatus;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderstatuses
-                        WHERE ordst_ord_orderid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderstatuses
-                        WHERE ordst_ord_orderid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderStatuses.fields())
+                .from(OrderStatuses)
+                .where(OrderStatuses.ORDER.eq(order.getPrimaryKey()));
 
-            var ps = orderStatusFactory.prepareStatement(query);
-            
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-            
-            orderStatus = orderStatusFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderStatus;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderStatusFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OrderStatus getOrderStatus(Order order) {
@@ -386,52 +387,46 @@ public class OrderControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderUserVisitFactory orderUserVisitFactory;
+    private OrderUserVisitFactory orderUserVisitFactory;
 
     public OrderUserVisit createOrderUserVisit(Order order, UserVisit userVisit) {
         return orderUserVisitFactory.create(order, userVisit, session.getStartTime(), Session.MAX_TIME);
     }
 
     public long countOrderUserVisitByOrder(final Order order) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderuservisits
-                        WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
-                        """, order, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderUserVisits)
+                .where(OrderUserVisits.ORDER.eq(order.getPrimaryKey()),
+                        OrderUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderUserVisitByUserVisit(final UserVisit userVisit) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderuservisits
-                        WHERE orduvis_uvis_uservisitid = ? AND orduvis_thrutime = ?
-                        """, userVisit, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getOrderUserVisitQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderuservisits
-                WHERE orduvis_ord_orderid = ? AND orduvis_uvis_uservisitid = ? AND orduvis_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderuservisits
-                WHERE orduvis_ord_orderid = ? AND orduvis_uvis_uservisitid = ? AND orduvis_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderUserVisitQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderUserVisits)
+                .where(OrderUserVisits.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                        OrderUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private OrderUserVisit getOrderUserVisit(Order order, UserVisit userVisit, EntityPermission entityPermission) {
-        return orderUserVisitFactory.getEntityFromQuery(entityPermission, getOrderUserVisitQueries,
-                order, userVisit, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderUserVisits.fields())
+                .from(OrderUserVisits)
+                .where(OrderUserVisits.ORDER.eq(order.getPrimaryKey()),
+                        OrderUserVisits.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                        OrderUserVisits.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderUserVisitFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OrderUserVisit getOrderUserVisit(Order order, UserVisit userVisit) {
@@ -450,33 +445,25 @@ public class OrderControl
         return getOrderUserVisitValue(getOrderUserVisitForUpdate(order, userVisit));
     }
     
-    private static final Map<EntityPermission, String> getOrderUserVisitsByOrderQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderuservisits, uservisits
-                WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
-                AND orduvis_uvis_uservisitid = uvis_uservisitid
-                ORDER BY uvis_fromtime
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderuservisits
-                WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderUserVisitsByOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderUserVisit> getOrderUserVisitsByOrder(Order order, EntityPermission entityPermission) {
-        return orderUserVisitFactory.getEntitiesFromQuery(entityPermission, getOrderUserVisitsByOrderQueries,
-                order, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderUserVisits.fields())
+                    .from(OrderUserVisits)
+                    .join(UserVisits).onKey(ORDER_USER_VISITS_USER_VISIT_FK)
+                    .where(OrderUserVisits.ORDER.eq(order.getPrimaryKey()),
+                            OrderUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UserVisits.FROM_TIME),
+                    OrderUserVisitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderUserVisits.fields())
+                    .from(OrderUserVisits)
+                    .where(OrderUserVisits.ORDER.eq(order.getPrimaryKey()),
+                            OrderUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderUserVisitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OrderUserVisit> getOrderUserVisitsByOrder(Order order) {
@@ -487,33 +474,26 @@ public class OrderControl
         return getOrderUserVisitsByOrder(order, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getOrderUserVisitsByUserVisitQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderuservisits, orders, orderdetails
-                WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
-                AND orduvis_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid
-                ORDER BY orddt_ordername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderuservisits
-                WHERE orduvis_ord_orderid = ? AND orduvis_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderUserVisitsByUserVisitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderUserVisit> getOrderUserVisitsByUserVisit(UserVisit userVisit, EntityPermission entityPermission) {
-        return orderUserVisitFactory.getEntitiesFromQuery(entityPermission, getOrderUserVisitsByUserVisitQueries,
-                userVisit, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderUserVisits.fields())
+                    .from(OrderUserVisits)
+                    .join(Orders).onKey(ORDER_USER_VISITS_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(OrderUserVisits.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                            OrderUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME),
+                    OrderUserVisitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderUserVisits.fields())
+                    .from(OrderUserVisits)
+                    .where(OrderUserVisits.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                            OrderUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderUserVisitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OrderUserVisit> getOrderUserVisitsByUserVisit(UserVisit userVisit) {
@@ -566,10 +546,10 @@ public class OrderControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderContentCatalogFactory orderContentCatalogFactory;
+    private OrderContentCatalogFactory orderContentCatalogFactory;
 
     @Inject
-    OrderContentCatalogTransferCache orderContentCatalogTransferCache;
+    private OrderContentCatalogTransferCache orderContentCatalogTransferCache;
 
     public OrderContentCatalog createOrderContentCatalog(Order order, ContentCatalog contentCatalog, BasePK createdBy) {
         var orderContentCatalog = orderContentCatalogFactory.create(order, contentCatalog, session.getStartTime(), Session.MAX_TIME);
@@ -580,50 +560,50 @@ public class OrderControl
     }
 
     public long countOrderContentCatalogsByOrder(Order order) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM ordercontentcatalogs
-                        WHERE ordcntct_ord_orderid = ? AND ordcntct_thrutime = ?
-                        """, order, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderContentCatalogs)
+                .where(OrderContentCatalogs.ORDER.eq(order.getPrimaryKey()),
+                        OrderContentCatalogs.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderContentCatalogsByContentCatalog(ContentCatalog contentCatalog) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM ordercontentcatalogs
-                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
-                        """, contentCatalog, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderContentCatalogs)
+                .where(OrderContentCatalogs.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                        OrderContentCatalogs.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public boolean orderContentCatalogExists(Order order, ContentCatalog contentCatalog) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM ordercontentcatalogs
-                        WHERE ordcntct_ord_orderid = ? AND ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
-                        """, order, contentCatalog, Session.MAX_TIME) == 1;
-    }
-
-    private static final Map<EntityPermission, String> getOrderContentCatalogQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordercontentcatalogs
-                        WHERE ordcntct_ord_orderid = ? AND ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordercontentcatalogs
-                        WHERE ordcntct_ord_orderid = ? AND ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderContentCatalogQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderContentCatalogs)
+                .where(OrderContentCatalogs.ORDER.eq(order.getPrimaryKey()),
+                        OrderContentCatalogs.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                        OrderContentCatalogs.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
 
     private OrderContentCatalog getOrderContentCatalog(Order order, ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        return orderContentCatalogFactory.getEntityFromQuery(entityPermission, getOrderContentCatalogQueries, order, contentCatalog, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderContentCatalogs.fields())
+                .from(OrderContentCatalogs)
+                .where(OrderContentCatalogs.ORDER.eq(order.getPrimaryKey()),
+                        OrderContentCatalogs.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                        OrderContentCatalogs.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderContentCatalogFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderContentCatalog getOrderContentCatalog(Order order, ContentCatalog contentCatalog) {
@@ -642,33 +622,28 @@ public class OrderControl
         return getOrderContentCatalogValue(getOrderContentCatalogForUpdate(order, contentCatalog));
     }
 
-    private static final Map<EntityPermission, String> getOrderContentCatalogsByOrderQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordercontentcatalogs
-                        JOIN contentcatalogs ON cntct_contentcatalogid = ordcntct_cntct_contentcatalogid
-                        JOIN contentcatalogdetails ON cntctdt_contentcatalogdetailid = cntct_lastdetailid
-                        JOIN contentcollections ON cntc_contentcollectionid = cntctdt_cntc_contentcollectionid
-                        JOIN contentcollectiondetails ON cntcdt_contentcollectiondetailid = cntc_lastdetailid
-                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
-                        ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordercontentcatalogs
-                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderContentCatalogsByOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderContentCatalog> getOrderContentCatalogsByOrder(Order order, EntityPermission entityPermission) {
-        return orderContentCatalogFactory.getEntitiesFromQuery(entityPermission, getOrderContentCatalogsByOrderQueries, order, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderContentCatalogs.fields())
+                    .from(OrderContentCatalogs)
+                    .join(ContentCatalogs).onKey(ORDER_CONTENT_CATALOGS_CONTENT_CATALOG_FK)
+                    .join(ContentCatalogDetails).onKey(CONTENT_CATALOGS_LAST_DETAIL_FK)
+                    .join(ContentCollections).onKey(CONTENT_CATALOG_DETAILS_CONTENT_COLLECTION_FK)
+                    .join(ContentCollectionDetails).onKey(CONTENT_COLLECTIONS_LAST_DETAIL_FK)
+                    .where(OrderContentCatalogs.ORDER.eq(order.getPrimaryKey()),
+                            OrderContentCatalogs.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentCollectionDetails.CONTENT_COLLECTION_NAME, ContentCatalogDetails.SORT_ORDER, ContentCatalogDetails.CONTENT_CATALOG_NAME),
+                    OrderContentCatalogFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderContentCatalogs.fields())
+                    .from(OrderContentCatalogs)
+                    .where(OrderContentCatalogs.ORDER.eq(order.getPrimaryKey()),
+                            OrderContentCatalogs.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderContentCatalogFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderContentCatalog> getOrderContentCatalogsByOrder(Order order) {
@@ -679,31 +654,26 @@ public class OrderControl
         return getOrderContentCatalogsByOrder(order, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOrderContentCatalogsByContentCatalogQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordercontentcatalogs
-                        JOIN orders ON ord_orderid = ordcntct_ord_orderid
-                        JOIN orderdetails ON ord_lastdetailid = orddt_orderdetailid
-                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
-                        ORDER BY orddt_ordername
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordercontentcatalogs
-                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderContentCatalogsByContentCatalogQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderContentCatalog> getOrderContentCatalogsByContentCatalog(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        return orderContentCatalogFactory.getEntitiesFromQuery(entityPermission, getOrderContentCatalogsByContentCatalogQueries, contentCatalog, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderContentCatalogs.fields())
+                    .from(OrderContentCatalogs)
+                    .join(Orders).onKey(ORDER_CONTENT_CATALOGS_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(OrderContentCatalogs.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                            OrderContentCatalogs.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME),
+                    OrderContentCatalogFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderContentCatalogs.fields())
+                    .from(OrderContentCatalogs)
+                    .where(OrderContentCatalogs.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                            OrderContentCatalogs.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderContentCatalogFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderContentCatalog> getOrderContentCatalogsByContentCatalog(ContentCatalog contentCatalog) {

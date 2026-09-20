@@ -22,6 +22,10 @@ import com.echothree.model.control.order.common.transfer.OrderLineTimeTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
+import com.echothree.model.control.order.server.transfer.OrderLineTimeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTimeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTimeTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderTimeTypePK;
 import com.echothree.model.data.order.server.entity.Order;
@@ -42,22 +46,40 @@ import com.echothree.model.data.order.server.value.OrderTimeTypeDetailValue;
 import com.echothree.model.data.order.server.value.OrderTimeValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_LINES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_LINE_DETAILS_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_LINE_TIMES_ORDER_LINE_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_LINE_TIMES_ORDER_TIME_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_TIMES_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_TIMES_ORDER_TIME_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_TIME_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_TIME_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_TIME_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderDetails.OrderDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderLineDetails.OrderLineDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderLineTimes.OrderLineTimes;
+import static com.echothree.model.jooq.server.tables.order.OrderLines.OrderLines;
+import static com.echothree.model.jooq.server.tables.order.OrderTimeTypeDescriptions.OrderTimeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.order.OrderTimeTypeDetails.OrderTimeTypeDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderTimeTypes.OrderTimeTypes;
+import static com.echothree.model.jooq.server.tables.order.OrderTimes.OrderTimes;
+import static com.echothree.model.jooq.server.tables.order.Orders.Orders;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderTimeControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of OrderControl */
     protected OrderTimeControl() {
@@ -69,10 +91,13 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderTimeTypeFactory orderTimeTypeFactory;
+    protected OrderTimeTypeDetailFactory orderTimeTypeDetailFactory;
 
     @Inject
-    protected OrderTimeTypeDetailFactory orderTimeTypeDetailFactory;
+    private OrderTimeTypeFactory orderTimeTypeFactory;
+
+    @Inject
+    private OrderTimeTypeTransferCache orderTimeTypeTransferCache;
 
     public OrderTimeType createOrderTimeType(OrderType orderType, String orderTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultOrderTimeType = getDefaultOrderTimeType(orderType);
@@ -124,38 +149,29 @@ public class OrderTimeControl
     }
 
     public long countOrderTimeTypes(OrderType orderType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM ordertimetypes, ordertimetypedetails
-                WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                AND ordtimtypdt_ordtyp_ordertypeid = ?
-                """, orderType);
-    }
-
-    private static final Map<EntityPermission, String> getOrderTimeTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordertimetypes, ordertimetypedetails
-                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                        AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_ordertimetypename = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordertimetypes, ordertimetypedetails
-                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                        AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_ordertimetypename = ?
-                        FOR UPDATE
-                        """);
-        getOrderTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderTimeTypes)
+                .join(OrderTimeTypeDetails).onKey(ORDER_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderTimeTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public OrderTimeType getOrderTimeTypeByName(OrderType orderType, String orderTimeTypeName, EntityPermission entityPermission) {
-        return orderTimeTypeFactory.getEntityFromQuery(entityPermission, getOrderTimeTypeByNameQueries,
-                orderType, orderTimeTypeName);
+        var baseQuery = session.getDslContext()
+                .select(OrderTimeTypes.fields())
+                .from(OrderTimeTypes)
+                .join(OrderTimeTypeDetails).onKey(ORDER_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderTimeTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderTimeTypeDetails.ORDER_TIME_TYPE_NAME.eq(orderTimeTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderTimeType getOrderTimeTypeByName(OrderType orderType, String orderTimeTypeName) {
@@ -174,30 +190,20 @@ public class OrderTimeControl
         return getOrderTimeTypeDetailValueForUpdate(getOrderTimeTypeByNameForUpdate(orderType, orderTimeTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultOrderTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordertimetypes, ordertimetypedetails
-                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                        AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_isdefault = 1
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordertimetypes, ordertimetypedetails
-                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                        AND ordtimtypdt_ordtyp_ordertypeid = ? AND ordtimtypdt_isdefault = 1
-                        FOR UPDATE
-                        """);
-        getDefaultOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public OrderTimeType getDefaultOrderTimeType(OrderType orderType, EntityPermission entityPermission) {
-        return orderTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderTimeTypeQueries,
-                orderType);
+        var baseQuery = session.getDslContext()
+                .select(OrderTimeTypes.fields())
+                .from(OrderTimeTypes)
+                .join(OrderTimeTypeDetails).onKey(ORDER_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderTimeTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderTimeTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderTimeType getDefaultOrderTimeType(OrderType orderType) {
@@ -212,32 +218,21 @@ public class OrderTimeControl
         return getDefaultOrderTimeTypeForUpdate(orderType).getLastDetailForUpdate().getOrderTimeTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getOrderTimeTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordertimetypes, ordertimetypedetails
-                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                        AND ordtimtypdt_ordtyp_ordertypeid = ?
-                        ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordertimetypes, ordertimetypedetails
-                        WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                        AND ordtimtypdt_ordtyp_ordertypeid = ?
-                        FOR UPDATE
-                        """);
-        getOrderTimeTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderTimeType> getOrderTimeTypes(OrderType orderType, EntityPermission entityPermission) {
-        return orderTimeTypeFactory.getEntitiesFromQuery(entityPermission, getOrderTimeTypesQueries,
-                orderType);
+        var baseQuery = session.getDslContext()
+                .select(OrderTimeTypes.fields())
+                .from(OrderTimeTypes)
+                .join(OrderTimeTypeDetails).onKey(ORDER_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderTimeTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderTimeTypeDetails.SORT_ORDER, OrderTimeTypeDetails.ORDER_TIME_TYPE_NAME),
+                    OrderTimeTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderTimeType> getOrderTimeTypes(OrderType orderType) {
@@ -383,7 +378,10 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderTimeTypeDescriptionFactory orderTimeTypeDescriptionFactory;
+    private OrderTimeTypeDescriptionFactory orderTimeTypeDescriptionFactory;
+
+    @Inject
+    private OrderTimeTypeDescriptionTransferCache orderTimeTypeDescriptionTransferCache;
 
     public OrderTimeTypeDescription createOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language, String description, BasePK createdBy) {
         var orderTimeTypeDescription = orderTimeTypeDescriptionFactory.create(orderTimeType, language, description,
@@ -394,28 +392,20 @@ public class OrderTimeControl
         return orderTimeTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getOrderTimeTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordertimetypedescriptions
-                        WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_lang_languageid = ? AND ordtimtypd_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordertimetypedescriptions
-                        WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_lang_languageid = ? AND ordtimtypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderTimeTypeDescription getOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language, EntityPermission entityPermission) {
-        return orderTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderTimeTypeDescriptionQueries,
-                orderTimeType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderTimeTypeDescriptions.fields())
+                .from(OrderTimeTypeDescriptions)
+                .where(OrderTimeTypeDescriptions.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                        OrderTimeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        OrderTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderTimeTypeDescription getOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language) {
@@ -434,30 +424,25 @@ public class OrderTimeControl
         return getOrderTimeTypeDescriptionValue(getOrderTimeTypeDescriptionForUpdate(orderTimeType, language));
     }
 
-    private static final Map<EntityPermission, String> getOrderTimeTypeDescriptionsByOrderTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordertimetypedescriptions, languages
-                        WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_thrutime = ? AND ordtimtypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordertimetypedescriptions
-                        WHERE ordtimtypd_ordtimtyp_ordertimetypeid = ? AND ordtimtypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderTimeTypeDescriptionsByOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderTimeTypeDescription> getOrderTimeTypeDescriptionsByOrderTimeType(OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return orderTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderTimeTypeDescriptionsByOrderTimeTypeQueries,
-                orderTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderTimeTypeDescriptions.fields())
+                    .from(OrderTimeTypeDescriptions)
+                    .join(Languages).onKey(ORDER_TIME_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(OrderTimeTypeDescriptions.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                            OrderTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    OrderTimeTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderTimeTypeDescriptions.fields())
+                    .from(OrderTimeTypeDescriptions)
+                    .where(OrderTimeTypeDescriptions.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                            OrderTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderTimeTypeDescription> getOrderTimeTypeDescriptionsByOrderTimeType(OrderTimeType orderTimeType) {
@@ -539,7 +524,10 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderTimeFactory orderTimeFactory;
+    private OrderTimeFactory orderTimeFactory;
+
+    @Inject
+    private OrderTimeTransferCache orderTimeTransferCache;
 
     public OrderTime createOrderTime(Order order, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
         var orderTime = orderTimeFactory.create(order, orderTimeType, time, session.getStartTime(), Session.MAX_TIME);
@@ -550,50 +538,50 @@ public class OrderTimeControl
     }
 
     public long countOrderTimesByOrder(Order order) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM ordertimes
-                        WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ?
-                        """, order, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderTimes)
+                .where(OrderTimes.ORDER.eq(order.getPrimaryKey()),
+                        OrderTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderTimesByOrderTimeType(OrderTimeType orderTimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM ordertimes
-                        WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
-                        """, orderTimeType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderTimes)
+                .where(OrderTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                        OrderTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public boolean orderTimeExists(Order order, OrderTimeType orderTimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM ordertimes
-                        WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
-                        """, order, orderTimeType, Session.MAX_TIME) == 1;
-    }
-
-    private static final Map<EntityPermission, String> getOrderTimeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordertimes
-                        WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordertimes
-                        WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderTimeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderTimes)
+                .where(OrderTimes.ORDER.eq(order.getPrimaryKey()),
+                        OrderTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                        OrderTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
 
     private OrderTime getOrderTime(Order order, OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return orderTimeFactory.getEntityFromQuery(entityPermission, getOrderTimeQueries, order, orderTimeType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderTimes.fields())
+                .from(OrderTimes)
+                .where(OrderTimes.ORDER.eq(order.getPrimaryKey()),
+                        OrderTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                        OrderTimes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTimeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderTime getOrderTime(Order order, OrderTimeType orderTimeType) {
@@ -612,30 +600,26 @@ public class OrderTimeControl
         return getOrderTimeValue(getOrderTimeForUpdate(order, orderTimeType));
     }
 
-    private static final Map<EntityPermission, String> getOrderTimesByOrderQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordertimes, ordertimetypes, ordertimetypedetails
-                        WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ?
-                        AND ordtim_ordtimtyp_ordertimetypeid = ordtimtyp_ordertimetypeid AND ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                        ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordertimes
-                        WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderTimesByOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderTime> getOrderTimesByOrder(Order order, EntityPermission entityPermission) {
-        return orderTimeFactory.getEntitiesFromQuery(entityPermission, getOrderTimesByOrderQueries, order, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderTimes.fields())
+                    .from(OrderTimes)
+                    .join(OrderTimeTypes).onKey(ORDER_TIMES_ORDER_TIME_TYPE_FK)
+                    .join(OrderTimeTypeDetails).onKey(ORDER_TIME_TYPES_LAST_DETAIL_FK)
+                    .where(OrderTimes.ORDER.eq(order.getPrimaryKey()),
+                            OrderTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderTimeTypeDetails.SORT_ORDER, OrderTimeTypeDetails.ORDER_TIME_TYPE_NAME),
+                    OrderTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderTimes.fields())
+                    .from(OrderTimes)
+                    .where(OrderTimes.ORDER.eq(order.getPrimaryKey()),
+                            OrderTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderTime> getOrderTimesByOrder(Order order) {
@@ -646,30 +630,26 @@ public class OrderTimeControl
         return getOrderTimesByOrder(order, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOrderTimesByOrderTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM ordertimes, orders, orderdetails
-                        WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
-                        AND ordtim_ord_orderid = ordtim_ord_orderid AND ord_activedetailid = orddt_orderdetailid
-                        ORDER BY orddt_ordername
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM ordertimes
-                        WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderTimesByOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderTime> getOrderTimesByOrderTimeType(OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return orderTimeFactory.getEntitiesFromQuery(entityPermission, getOrderTimesByOrderTimeTypeQueries, orderTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderTimes.fields())
+                    .from(OrderTimes)
+                    .join(Orders).onKey(ORDER_TIMES_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(OrderTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                            OrderTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME),
+                    OrderTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderTimes.fields())
+                    .from(OrderTimes)
+                    .where(OrderTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                            OrderTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderTime> getOrderTimesByOrderTimeType(OrderTimeType orderTimeType) {
@@ -746,7 +726,10 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderLineTimeFactory orderLineTimeFactory;
+    private OrderLineTimeFactory orderLineTimeFactory;
+
+    @Inject
+    private OrderLineTimeTransferCache orderLineTimeTransferCache;
 
     public OrderLineTime createOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
         var orderLineTime = orderLineTimeFactory.create(orderLine, orderTimeType, time, session.getStartTime(), Session.MAX_TIME);
@@ -757,51 +740,50 @@ public class OrderTimeControl
     }
 
     public long countOrderLineTimesByOrderLine(OrderLine orderLine) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderlinetimes
-                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ?
-                        """, orderLine, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLineTimes)
+                .where(OrderLineTimes.ORDER_LINE.eq(orderLine.getPrimaryKey()),
+                        OrderLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderLineTimesByOrderTimeType(OrderTimeType orderTimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderlinetimes
-                        WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
-                        """, orderTimeType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLineTimes)
+                .where(OrderLineTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                        OrderLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public boolean orderLineTimeExists(OrderLine orderLine, OrderTimeType orderTimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderlinetimes
-                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
-                        """, orderLine, orderTimeType, Session.MAX_TIME) == 1;
-    }
-
-    private static final Map<EntityPermission, String> getOrderLineTimeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM orderlinetimes
-                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM orderlinetimes
-                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderLineTimeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLineTimes)
+                .where(OrderLineTimes.ORDER_LINE.eq(orderLine.getPrimaryKey()),
+                        OrderLineTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                        OrderLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
 
     private OrderLineTime getOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return orderLineTimeFactory.getEntityFromQuery(entityPermission, getOrderLineTimeQueries,
-                orderLine, orderTimeType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderLineTimes.fields())
+                .from(OrderLineTimes)
+                .where(OrderLineTimes.ORDER_LINE.eq(orderLine.getPrimaryKey()),
+                        OrderLineTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                        OrderLineTimes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineTimeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderLineTime getOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType) {
@@ -820,31 +802,26 @@ public class OrderTimeControl
         return getOrderLineTimeValue(getOrderLineTimeForUpdate(orderLine, orderTimeType));
     }
 
-    private static final Map<EntityPermission, String> getOrderLineTimesByOrderQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM orderlinetimes, ordertimetypes, ordertimetypedetails
-                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ?
-                        AND ordltim_ordtimtyp_ordertimetypeid = ordtimtyp_ordertimetypeid AND ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
-                        ORDER BY ordtimtypdt_sortorder, ordtimtypdt_ordertimetypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM orderlinetimes
-                        WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderLineTimesByOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderLineTime> getOrderLineTimesByOrderLine(OrderLine orderLine, EntityPermission entityPermission) {
-        return orderLineTimeFactory.getEntitiesFromQuery(entityPermission, getOrderLineTimesByOrderQueries,
-                orderLine, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderLineTimes.fields())
+                    .from(OrderLineTimes)
+                    .join(OrderTimeTypes).onKey(ORDER_LINE_TIMES_ORDER_TIME_TYPE_FK)
+                    .join(OrderTimeTypeDetails).onKey(ORDER_TIME_TYPES_LAST_DETAIL_FK)
+                    .where(OrderLineTimes.ORDER_LINE.eq(orderLine.getPrimaryKey()),
+                            OrderLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderTimeTypeDetails.SORT_ORDER, OrderTimeTypeDetails.ORDER_TIME_TYPE_NAME),
+                    OrderLineTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderLineTimes.fields())
+                    .from(OrderLineTimes)
+                    .where(OrderLineTimes.ORDER_LINE.eq(orderLine.getPrimaryKey()),
+                            OrderLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderLineTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderLineTime> getOrderLineTimesByOrderLine(OrderLine orderLine) {
@@ -855,31 +832,28 @@ public class OrderTimeControl
         return getOrderLineTimesByOrderLine(orderLine, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOrderLineTimesByOrderTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM orderlinetimes, orders, orderdetails
-                        WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
-                        AND ordltim_ordl_orderlineid = ordltim_ordl_orderlineid AND ord_activedetailid = orddt_orderdetailid
-                        ORDER BY orddt_ordername
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM orderlinetimes
-                        WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getOrderLineTimesByOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderLineTime> getOrderLineTimesByOrderTimeType(OrderTimeType orderTimeType, EntityPermission entityPermission) {
-        return orderLineTimeFactory.getEntitiesFromQuery(entityPermission, getOrderLineTimesByOrderTimeTypeQueries,
-                orderTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderLineTimes.fields())
+                    .from(OrderLineTimes)
+                    .join(OrderLines).onKey(ORDER_LINE_TIMES_ORDER_LINE_FK)
+                    .join(OrderLineDetails).onKey(ORDER_LINES_LAST_DETAIL_FK)
+                    .join(Orders).onKey(ORDER_LINE_DETAILS_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(OrderLineTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                            OrderLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME, OrderLineDetails.ORDER_LINE_SEQUENCE),
+                    OrderLineTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderLineTimes.fields())
+                    .from(OrderLineTimes)
+                    .where(OrderLineTimes.ORDER_TIME_TYPE.eq(orderTimeType.getPrimaryKey()),
+                            OrderLineTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderLineTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderLineTime> getOrderLineTimesByOrderTimeType(OrderTimeType orderTimeType) {

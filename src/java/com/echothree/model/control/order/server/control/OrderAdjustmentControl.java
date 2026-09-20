@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.choice.OrderAdjustmentTypeChoicesBean;
 import com.echothree.model.control.order.common.transfer.OrderAdjustmentTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAdjustmentTypeTransfer;
+import com.echothree.model.control.order.server.transfer.OrderAdjustmentTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderAdjustmentTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderAdjustmentPK;
 import com.echothree.model.data.order.common.pk.OrderAdjustmentTypePK;
@@ -37,24 +39,29 @@ import com.echothree.model.data.order.server.value.OrderAdjustmentTypeDescriptio
 import com.echothree.model.data.order.server.value.OrderAdjustmentTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ADJUSTMENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ADJUSTMENT_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderAdjustmentDetails.OrderAdjustmentDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderAdjustmentTypeDescriptions.OrderAdjustmentTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.order.OrderAdjustmentTypeDetails.OrderAdjustmentTypeDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderAdjustmentTypes.OrderAdjustmentTypes;
+import static com.echothree.model.jooq.server.tables.order.OrderAdjustments.OrderAdjustments;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderAdjustmentControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of OrderControl */
     protected OrderAdjustmentControl() {
@@ -66,10 +73,13 @@ public class OrderAdjustmentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderAdjustmentTypeFactory orderAdjustmentTypeFactory;
+    protected OrderAdjustmentTypeDetailFactory orderAdjustmentTypeDetailFactory;
 
     @Inject
-    protected OrderAdjustmentTypeDetailFactory orderAdjustmentTypeDetailFactory;
+    private OrderAdjustmentTypeFactory orderAdjustmentTypeFactory;
+
+    @Inject
+    private OrderAdjustmentTypeTransferCache orderAdjustmentTypeTransferCache;
 
     public OrderAdjustmentType createOrderAdjustmentType(OrderType orderType, String orderAdjustmentTypeName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -117,40 +127,29 @@ public class OrderAdjustmentControl
     }
 
     public long countOrderAdjustmentTypesByOrderType(final OrderType orderType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderadjustmenttypes
-                        JOIN orderadjustmenttypedetails ON ordadjtypdt_orderadjustmenttypedetailid = ordadjtyp_activedetailid
-                        WHERE ordadjtypdt_ordtyp_ordertypeid = ?
-                        """, orderType);
-    }
-
-    private static final Map<EntityPermission, String> getOrderAdjustmentTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypes, orderadjustmenttypedetails
-                WHERE ordadjtyp_activedetailid = ordadjtypdt_orderadjustmenttypedetailid
-                AND ordadjtypdt_ordtyp_ordertypeid = ? AND ordadjtypdt_orderadjustmenttypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypes, orderadjustmenttypedetails
-                WHERE ordadjtyp_activedetailid = ordadjtypdt_orderadjustmenttypedetailid
-                AND ordadjtypdt_ordtyp_ordertypeid = ? AND ordadjtypdt_orderadjustmenttypename = ?
-                FOR UPDATE
-                """);
-        getOrderAdjustmentTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderAdjustmentTypes)
+                .join(OrderAdjustmentTypeDetails).onKey(ORDER_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderAdjustmentTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private OrderAdjustmentType getOrderAdjustmentTypeByName(OrderType orderType, String orderAdjustmentTypeName, EntityPermission entityPermission) {
-        return orderAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getOrderAdjustmentTypeByNameQueries,
-                orderType, orderAdjustmentTypeName);
+        var baseQuery = session.getDslContext()
+                .select(OrderAdjustmentTypes.fields())
+                .from(OrderAdjustmentTypes)
+                .join(OrderAdjustmentTypeDetails).onKey(ORDER_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderAdjustmentTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderAdjustmentTypeDetails.ORDER_ADJUSTMENT_TYPE_NAME.eq(orderAdjustmentTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAdjustmentTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderAdjustmentType getOrderAdjustmentTypeByName(OrderType orderType, String orderAdjustmentTypeName) {
@@ -169,32 +168,20 @@ public class OrderAdjustmentControl
         return getOrderAdjustmentTypeDetailValueForUpdate(getOrderAdjustmentTypeByNameForUpdate(orderType, orderAdjustmentTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultOrderAdjustmentTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypes, orderadjustmenttypedetails
-                WHERE ordadjtyp_activedetailid = ordadjtypdt_orderadjustmenttypedetailid
-                AND ordadjtypdt_ordtyp_ordertypeid = ? AND ordadjtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypes, orderadjustmenttypedetails
-                WHERE ordadjtyp_activedetailid = ordadjtypdt_orderadjustmenttypedetailid
-                AND ordadjtypdt_ordtyp_ordertypeid = ? AND ordadjtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultOrderAdjustmentTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderAdjustmentType getDefaultOrderAdjustmentType(OrderType orderType, EntityPermission entityPermission) {
-        return orderAdjustmentTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderAdjustmentTypeQueries,
-                orderType);
+        var baseQuery = session.getDslContext()
+                .select(OrderAdjustmentTypes.fields())
+                .from(OrderAdjustmentTypes)
+                .join(OrderAdjustmentTypeDetails).onKey(ORDER_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderAdjustmentTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderAdjustmentTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAdjustmentTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderAdjustmentType getDefaultOrderAdjustmentType(OrderType orderType) {
@@ -209,34 +196,21 @@ public class OrderAdjustmentControl
         return getDefaultOrderAdjustmentTypeForUpdate(orderType).getLastDetailForUpdate().getOrderAdjustmentTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getOrderAdjustmentTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypes, orderadjustmenttypedetails
-                WHERE ordadjtyp_activedetailid = ordadjtypdt_orderadjustmenttypedetailid
-                AND ordadjtypdt_ordtyp_ordertypeid = ?
-                ORDER BY ordadjtypdt_sortorder, ordadjtypdt_orderadjustmenttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypes, orderadjustmenttypedetails
-                WHERE ordadjtyp_activedetailid = ordadjtypdt_orderadjustmenttypedetailid
-                AND ordadjtypdt_ordtyp_ordertypeid = ?
-                FOR UPDATE
-                """);
-        getOrderAdjustmentTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderAdjustmentType> getOrderAdjustmentTypes(OrderType orderType, EntityPermission entityPermission) {
-        return orderAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission, getOrderAdjustmentTypesQueries,
-                orderType);
+        var baseQuery = session.getDslContext()
+                .select(OrderAdjustmentTypes.fields())
+                .from(OrderAdjustmentTypes)
+                .join(OrderAdjustmentTypeDetails).onKey(ORDER_ADJUSTMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderAdjustmentTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderAdjustmentTypeDetails.SORT_ORDER, OrderAdjustmentTypeDetails.ORDER_ADJUSTMENT_TYPE_NAME),
+                    OrderAdjustmentTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAdjustmentTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderAdjustmentType> getOrderAdjustmentTypes(OrderType orderType) {
@@ -382,7 +356,10 @@ public class OrderAdjustmentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderAdjustmentTypeDescriptionFactory orderAdjustmentTypeDescriptionFactory;
+    private OrderAdjustmentTypeDescriptionFactory orderAdjustmentTypeDescriptionFactory;
+
+    @Inject
+    private OrderAdjustmentTypeDescriptionTransferCache orderAdjustmentTypeDescriptionTransferCache;
 
     public OrderAdjustmentTypeDescription createOrderAdjustmentTypeDescription(OrderAdjustmentType orderAdjustmentType, Language language, String description, BasePK createdBy) {
         var orderAdjustmentTypeDescription = orderAdjustmentTypeDescriptionFactory.create(orderAdjustmentType, language, description,
@@ -393,30 +370,20 @@ public class OrderAdjustmentControl
         return orderAdjustmentTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getOrderAdjustmentTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypedescriptions
-                WHERE ordadjtypd_ordadjtyp_orderadjustmenttypeid = ? AND ordadjtypd_lang_languageid = ? AND ordadjtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypedescriptions
-                WHERE ordadjtypd_ordadjtyp_orderadjustmenttypeid = ? AND ordadjtypd_lang_languageid = ? AND ordadjtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderAdjustmentTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderAdjustmentTypeDescription getOrderAdjustmentTypeDescription(OrderAdjustmentType orderAdjustmentType, Language language, EntityPermission entityPermission) {
-        return orderAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderAdjustmentTypeDescriptionQueries,
-                orderAdjustmentType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderAdjustmentTypeDescriptions.fields())
+                .from(OrderAdjustmentTypeDescriptions)
+                .where(OrderAdjustmentTypeDescriptions.ORDER_ADJUSTMENT_TYPE.eq(orderAdjustmentType.getPrimaryKey()),
+                        OrderAdjustmentTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        OrderAdjustmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAdjustmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderAdjustmentTypeDescription getOrderAdjustmentTypeDescription(OrderAdjustmentType orderAdjustmentType, Language language) {
@@ -435,31 +402,25 @@ public class OrderAdjustmentControl
         return getOrderAdjustmentTypeDescriptionValue(getOrderAdjustmentTypeDescriptionForUpdate(orderAdjustmentType, language));
     }
 
-    private static final Map<EntityPermission, String> getOrderAdjustmentTypeDescriptionsByOrderAdjustmentTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypedescriptions, languages
-                WHERE ordadjtypd_ordadjtyp_orderadjustmenttypeid = ? AND ordadjtypd_thrutime = ? AND ordadjtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderadjustmenttypedescriptions
-                WHERE ordadjtypd_ordadjtyp_orderadjustmenttypeid = ? AND ordadjtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderAdjustmentTypeDescriptionsByOrderAdjustmentTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderAdjustmentTypeDescription> getOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(OrderAdjustmentType orderAdjustmentType, EntityPermission entityPermission) {
-        return orderAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderAdjustmentTypeDescriptionsByOrderAdjustmentTypeQueries,
-                orderAdjustmentType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderAdjustmentTypeDescriptions.fields())
+                    .from(OrderAdjustmentTypeDescriptions)
+                    .join(Languages).onKey(ORDER_ADJUSTMENT_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(OrderAdjustmentTypeDescriptions.ORDER_ADJUSTMENT_TYPE.eq(orderAdjustmentType.getPrimaryKey()),
+                            OrderAdjustmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    OrderAdjustmentTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderAdjustmentTypeDescriptions.fields())
+                    .from(OrderAdjustmentTypeDescriptions)
+                    .where(OrderAdjustmentTypeDescriptions.ORDER_ADJUSTMENT_TYPE.eq(orderAdjustmentType.getPrimaryKey()),
+                            OrderAdjustmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderAdjustmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderAdjustmentTypeDescription> getOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(OrderAdjustmentType orderAdjustmentType) {
@@ -541,10 +502,10 @@ public class OrderAdjustmentControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderAdjustmentFactory orderAdjustmentFactory;
+    protected OrderAdjustmentDetailFactory orderAdjustmentDetailFactory;
 
     @Inject
-    protected OrderAdjustmentDetailFactory orderAdjustmentDetailFactory;
+    private OrderAdjustmentFactory orderAdjustmentFactory;
 
     public OrderAdjustment createOrderAdjustment(Order order, Integer orderAdjustmentSequence, OrderAdjustmentType orderAdjustmentType, Long amount,
             BasePK createdBy) {
@@ -580,55 +541,40 @@ public class OrderAdjustmentControl
     }
 
     public long countOrderAdjustmentsByOrder(final Order order) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderadjustments
-                        JOIN orderadjustmentdetails ON ordadjdt_orderadjustmentdetailid = ordadj_activedetailid
-                        WHERE ordadjdt_ord_orderid = ?
-                        """, order);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderAdjustments)
+                .join(OrderAdjustmentDetails).onKey(ORDER_ADJUSTMENTS_ACTIVE_DETAIL_FK)
+                .where(OrderAdjustmentDetails.ORDER.eq(order.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderAdjustmentsByOrderAdjustmentType(final OrderAdjustmentType orderAdjustmentType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderadjustments
-                        JOIN orderadjustmentdetails ON ordadjdt_orderadjustmentdetailid = ordadj_activedetailid
-                        WHERE ordadjdt_ordadjtyp_orderadjustmenttypeid = ?
-                        """, orderAdjustmentType);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderAdjustments)
+                .join(OrderAdjustmentDetails).onKey(ORDER_ADJUSTMENTS_ACTIVE_DETAIL_FK)
+                .where(OrderAdjustmentDetails.ORDER_ADJUSTMENT_TYPE.eq(orderAdjustmentType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<OrderAdjustment> getOrderAdjustmentsByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderAdjustment> orderAdjustments;
+        var baseQuery = session.getDslContext()
+                .select(OrderAdjustments.fields())
+                .from(OrderAdjustments)
+                .join(OrderAdjustmentDetails).onKey(ORDER_ADJUSTMENTS_ACTIVE_DETAIL_FK)
+                .where(OrderAdjustmentDetails.ORDER.eq(order.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderAdjustmentDetails.ORDER_ADJUSTMENT_SEQUENCE),
+                    OrderAdjustmentFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderadjustments, orderadjustmentdetails
-                        WHERE ordadj_activedetailid = ordadjdt_orderadjustmentdetailid AND ordadjdt_ord_orderid = ?
-                        ORDER BY ordadjdt_orderadjustmentsequence
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderadjustments, orderadjustmentdetails
-                        WHERE ordadj_activedetailid = ordadjdt_orderadjustmentdetailid AND ordadjdt_ord_orderid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = orderAdjustmentFactory.prepareStatement(query);
-
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-
-            orderAdjustments = orderAdjustmentFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return orderAdjustments;
+        return orderAdjustmentFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderAdjustment> getOrderAdjustmentsByOrder(Order order) {

@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.choice.OrderPriorityChoicesBean;
 import com.echothree.model.control.order.common.transfer.OrderPriorityDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderPriorityTransfer;
+import com.echothree.model.control.order.server.transfer.OrderPriorityDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderPriorityTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderPriorityPK;
 import com.echothree.model.data.order.server.entity.OrderPriority;
@@ -32,22 +34,26 @@ import com.echothree.model.data.order.server.value.OrderPriorityDescriptionValue
 import com.echothree.model.data.order.server.value.OrderPriorityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_PRIORITIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_PRIORITY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderPriorities.OrderPriorities;
+import static com.echothree.model.jooq.server.tables.order.OrderPriorityDescriptions.OrderPriorityDescriptions;
+import static com.echothree.model.jooq.server.tables.order.OrderPriorityDetails.OrderPriorityDetails;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderPriorityControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of OrderControl */
     protected OrderPriorityControl() {
@@ -59,10 +65,13 @@ public class OrderPriorityControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderPriorityFactory orderPriorityFactory;
+    protected OrderPriorityDetailFactory orderPriorityDetailFactory;
 
     @Inject
-    protected OrderPriorityDetailFactory orderPriorityDetailFactory;
+    private OrderPriorityFactory orderPriorityFactory;
+
+    @Inject
+    private OrderPriorityTransferCache orderPriorityTransferCache;
 
     public OrderPriority createOrderPriority(OrderType orderType, String orderPriorityName, Integer priority, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -115,42 +124,29 @@ public class OrderPriorityControl
     }
 
     public long countOrderPriorities(OrderType orderType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderpriorities, orderprioritydetails
-                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
-                AND ordprdt_ordtyp_ordertypeid = ?
-                """,
-                orderType);
-    }
-
-    private static final Map<EntityPermission, String> getOrderPriorityByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderpriorities, orderprioritydetails
-                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
-                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderpriorities, orderprioritydetails
-                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
-                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_orderpriorityname = ?
-                FOR UPDATE
-                """);
-        getOrderPriorityByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderPriorities)
+                .join(OrderPriorityDetails).onKey(ORDER_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(OrderPriorityDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public OrderPriority getOrderPriorityByName(OrderType orderType, String orderPriorityName, EntityPermission entityPermission) {
-        return orderPriorityFactory.getEntityFromQuery(entityPermission, getOrderPriorityByNameQueries,
-                orderType, orderPriorityName);
+        var baseQuery = session.getDslContext()
+                .select(OrderPriorities.fields())
+                .from(OrderPriorities)
+                .join(OrderPriorityDetails).onKey(ORDER_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(OrderPriorityDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderPriorityDetails.ORDER_PRIORITY_NAME.eq(orderPriorityName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderPriorityFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderPriority getOrderPriorityByName(OrderType orderType, String orderPriorityName) {
@@ -169,32 +165,20 @@ public class OrderPriorityControl
         return getOrderPriorityDetailValueForUpdate(getOrderPriorityByNameForUpdate(orderType, orderPriorityName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultOrderPriorityQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderpriorities, orderprioritydetails
-                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
-                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderpriorities, orderprioritydetails
-                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
-                AND ordprdt_ordtyp_ordertypeid = ? AND ordprdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultOrderPriorityQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public OrderPriority getDefaultOrderPriority(OrderType orderType, EntityPermission entityPermission) {
-        return orderPriorityFactory.getEntityFromQuery(entityPermission, getDefaultOrderPriorityQueries,
-                orderType);
+        var baseQuery = session.getDslContext()
+                .select(OrderPriorities.fields())
+                .from(OrderPriorities)
+                .join(OrderPriorityDetails).onKey(ORDER_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(OrderPriorityDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderPriorityDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderPriorityFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderPriority getDefaultOrderPriority(OrderType orderType) {
@@ -209,33 +193,21 @@ public class OrderPriorityControl
         return getDefaultOrderPriorityForUpdate(orderType).getLastDetailForUpdate().getOrderPriorityDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getOrderPrioritiesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderpriorities, orderprioritydetails
-                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
-                AND ordprdt_ordtyp_ordertypeid = ?
-                ORDER BY ordprdt_sortorder, ordprdt_orderpriorityname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderpriorities, orderprioritydetails
-                WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid
-                AND ordprdt_ordtyp_ordertypeid = ?
-                FOR UPDATE
-                """);
-        getOrderPrioritiesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderPriority> getOrderPriorities(OrderType orderType, EntityPermission entityPermission) {
-        return orderPriorityFactory.getEntitiesFromQuery(entityPermission, getOrderPrioritiesQueries,
-                orderType);
+        var baseQuery = session.getDslContext()
+                .select(OrderPriorities.fields())
+                .from(OrderPriorities)
+                .join(OrderPriorityDetails).onKey(ORDER_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(OrderPriorityDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderPriorityDetails.SORT_ORDER, OrderPriorityDetails.ORDER_PRIORITY_NAME),
+                    OrderPriorityFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderPriorityFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderPriority> getOrderPriorities(OrderType orderType) {
@@ -381,7 +353,10 @@ public class OrderPriorityControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderPriorityDescriptionFactory orderPriorityDescriptionFactory;
+    private OrderPriorityDescriptionFactory orderPriorityDescriptionFactory;
+
+    @Inject
+    private OrderPriorityDescriptionTransferCache orderPriorityDescriptionTransferCache;
 
     public OrderPriorityDescription createOrderPriorityDescription(OrderPriority orderPriority, Language language, String description, BasePK createdBy) {
         var orderPriorityDescription = orderPriorityDescriptionFactory.create(orderPriority, language, description,
@@ -392,30 +367,20 @@ public class OrderPriorityControl
         return orderPriorityDescription;
     }
 
-    private static final Map<EntityPermission, String> getOrderPriorityDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderprioritydescriptions
-                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderprioritydescriptions
-                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_lang_languageid = ? AND ordprd_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderPriorityDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderPriorityDescription getOrderPriorityDescription(OrderPriority orderPriority, Language language, EntityPermission entityPermission) {
-        return orderPriorityDescriptionFactory.getEntityFromQuery(entityPermission, getOrderPriorityDescriptionQueries,
-                orderPriority, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderPriorityDescriptions.fields())
+                .from(OrderPriorityDescriptions)
+                .where(OrderPriorityDescriptions.ORDER_PRIORITY.eq(orderPriority.getPrimaryKey()),
+                        OrderPriorityDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        OrderPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderPriorityDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderPriorityDescription getOrderPriorityDescription(OrderPriority orderPriority, Language language) {
@@ -434,31 +399,25 @@ public class OrderPriorityControl
         return getOrderPriorityDescriptionValue(getOrderPriorityDescriptionForUpdate(orderPriority, language));
     }
 
-    private static final Map<EntityPermission, String> getOrderPriorityDescriptionsByOrderPriorityQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderprioritydescriptions, languages
-                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ? AND ordprd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderprioritydescriptions
-                WHERE ordprd_ordpr_orderpriorityid = ? AND ordprd_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderPriorityDescriptionsByOrderPriorityQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderPriorityDescription> getOrderPriorityDescriptionsByOrderPriority(OrderPriority orderPriority, EntityPermission entityPermission) {
-        return orderPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderPriorityDescriptionsByOrderPriorityQueries,
-                orderPriority, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderPriorityDescriptions.fields())
+                    .from(OrderPriorityDescriptions)
+                    .join(Languages).onKey(ORDER_PRIORITY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(OrderPriorityDescriptions.ORDER_PRIORITY.eq(orderPriority.getPrimaryKey()),
+                            OrderPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    OrderPriorityDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderPriorityDescriptions.fields())
+                    .from(OrderPriorityDescriptions)
+                    .where(OrderPriorityDescriptions.ORDER_PRIORITY.eq(orderPriority.getPrimaryKey()),
+                            OrderPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderPriorityDescription> getOrderPriorityDescriptionsByOrderPriority(OrderPriority orderPriority) {
