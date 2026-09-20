@@ -74,6 +74,33 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLISTS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_ALIASES_PICKLIST_ALIAS_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_ALIASES_PICKLIST_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_ALIAS_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_TIMES_PICKLIST_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_TIMES_PICKLIST_TIME_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_TIME_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_TIME_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_TIME_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.picklist.PicklistForeignKeys.PICKLIST_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistAliasTypeDescriptions.PicklistAliasTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistAliasTypeDetails.PicklistAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistAliasTypes.PicklistAliasTypes;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistAliases.PicklistAliases;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistDetails.PicklistDetails;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistTimeTypeDescriptions.PicklistTimeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistTimeTypeDetails.PicklistTimeTypeDetails;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistTimeTypes.PicklistTimeTypes;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistTimes.PicklistTimes;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistTypeDescriptions.PicklistTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistTypeDetails.PicklistTypeDetails;
+import static com.echothree.model.jooq.server.tables.picklist.PicklistTypes.PicklistTypes;
+import static com.echothree.model.jooq.server.tables.picklist.Picklists.Picklists;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
@@ -81,11 +108,8 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
@@ -100,42 +124,17 @@ public class PicklistControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Picklist Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    PicklistTypeTransferCache picklistTypeTransferCache;
-
-    @Inject
-    PicklistTypeDescriptionTransferCache picklistTypeDescriptionTransferCache;
-
-    @Inject
-    PicklistAliasTypeTransferCache picklistAliasTypeTransferCache;
-
-    @Inject
-    PicklistAliasTypeDescriptionTransferCache picklistAliasTypeDescriptionTransferCache;
-
-    @Inject
-    PicklistAliasTransferCache picklistAliasTransferCache;
-
-    @Inject
-    PicklistTimeTypeTransferCache picklistTimeTypeTransferCache;
-
-    @Inject
-    PicklistTimeTypeDescriptionTransferCache picklistTimeTypeDescriptionTransferCache;
-
-    @Inject
-    PicklistTimeTransferCache picklistTimeTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Picklist Types
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PicklistTypeFactory picklistTypeFactory;
+    protected PicklistTypeDetailFactory picklistTypeDetailFactory;
 
     @Inject
-    protected PicklistTypeDetailFactory picklistTypeDetailFactory;
+    private PicklistTypeFactory picklistTypeFactory;
+
+    @Inject
+    private PicklistTypeTransferCache picklistTypeTransferCache;
 
     public PicklistType createPicklistType(String picklistTypeName, PicklistType parentPicklistType, SequenceType picklistSequenceType, Workflow picklistWorkflow,
             WorkflowEntrance picklistWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -184,38 +183,27 @@ public class PicklistControl
     }
 
     public long countPicklistTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM picklisttypes
-                        JOIN picklisttypedetails ON pcklsttypdt_picklisttypedetailid = pcklsttyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getPicklistTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttypes, picklisttypedetails
-                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
-                AND pcklsttypdt_picklisttypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttypes, picklisttypedetails
-                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
-                AND pcklsttypdt_picklisttypename = ?
-                FOR UPDATE
-                """);
-        getPicklistTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PicklistTypes)
+                .join(PicklistTypeDetails).onKey(PICKLIST_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PicklistType getPicklistTypeByName(String picklistTypeName, EntityPermission entityPermission) {
-        return picklistTypeFactory.getEntityFromQuery(entityPermission, getPicklistTypeByNameQueries, picklistTypeName);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTypes.fields())
+                .from(PicklistTypes)
+                .join(PicklistTypeDetails).onKey(PICKLIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistTypeDetails.PICKLIST_TYPE_NAME.eq(picklistTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistType getPicklistTypeByName(String picklistTypeName) {
@@ -234,31 +222,19 @@ public class PicklistControl
         return getPicklistTypeDetailValueForUpdate(getPicklistTypeByNameForUpdate(picklistTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPicklistTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttypes, picklisttypedetails
-                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
-                AND pcklsttypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttypes, picklisttypedetails
-                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
-                AND pcklsttypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultPicklistTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PicklistType getDefaultPicklistType(EntityPermission entityPermission) {
-        return picklistTypeFactory.getEntityFromQuery(entityPermission, getDefaultPicklistTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTypes.fields())
+                .from(PicklistTypes)
+                .join(PicklistTypeDetails).onKey(PICKLIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistType getDefaultPicklistType() {
@@ -273,31 +249,20 @@ public class PicklistControl
         return getDefaultPicklistTypeForUpdate().getLastDetailForUpdate().getPicklistTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPicklistTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttypes, picklisttypedetails
-                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
-                ORDER BY pcklsttypdt_sortorder, pcklsttypdt_picklisttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttypes, picklisttypedetails
-                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid
-                FOR UPDATE
-                """);
-        getPicklistTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistType> getPicklistTypes(EntityPermission entityPermission) {
-        return picklistTypeFactory.getEntitiesFromQuery(entityPermission, getPicklistTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTypes.fields())
+                .from(PicklistTypes)
+                .join(PicklistTypeDetails).onKey(PICKLIST_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PicklistTypeDetails.SORT_ORDER, PicklistTypeDetails.PICKLIST_TYPE_NAME),
+                    PicklistTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistType> getPicklistTypes() {
@@ -308,33 +273,22 @@ public class PicklistControl
         return getPicklistTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPicklistTypesByParentPicklistTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttypes, picklisttypedetails
-                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid AND pcklsttypdt_parentpicklisttypeid = ?
-                ORDER BY pcklsttypdt_sortorder, pcklsttypdt_picklisttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttypes, picklisttypedetails
-                WHERE pcklsttyp_activedetailid = pcklsttypdt_picklisttypedetailid AND pcklsttypdt_parentpicklisttypeid = ?
-                FOR UPDATE
-                """);
-        getPicklistTypesByParentPicklistTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistType> getPicklistTypesByParentPicklistType(PicklistType parentPicklistType,
             EntityPermission entityPermission) {
-        return picklistTypeFactory.getEntitiesFromQuery(entityPermission, getPicklistTypesByParentPicklistTypeQueries,
-                parentPicklistType);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTypes.fields())
+                .from(PicklistTypes)
+                .join(PicklistTypeDetails).onKey(PICKLIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistTypeDetails.PARENT_PICKLIST_TYPE.eq(parentPicklistType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PicklistTypeDetails.SORT_ORDER, PicklistTypeDetails.PICKLIST_TYPE_NAME),
+                    PicklistTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistType> getPicklistTypesByParentPicklistType(PicklistType parentPicklistType) {
@@ -525,7 +479,10 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PicklistTypeDescriptionFactory picklistTypeDescriptionFactory;
+    private PicklistTypeDescriptionFactory picklistTypeDescriptionFactory;
+
+    @Inject
+    private PicklistTypeDescriptionTransferCache picklistTypeDescriptionTransferCache;
 
     public PicklistTypeDescription createPicklistTypeDescription(PicklistType picklistType, Language language, String description, BasePK createdBy) {
         var picklistTypeDescription = picklistTypeDescriptionFactory.create(picklistType, language, description,
@@ -536,30 +493,20 @@ public class PicklistControl
         return picklistTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getPicklistTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttypedescriptions
-                WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_lang_languageid = ? AND pcklsttypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttypedescriptions
-                WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_lang_languageid = ? AND pcklsttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PicklistTypeDescription getPicklistTypeDescription(PicklistType picklistType, Language language, EntityPermission entityPermission) {
-        return picklistTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPicklistTypeDescriptionQueries,
-                picklistType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTypeDescriptions.fields())
+                .from(PicklistTypeDescriptions)
+                .where(PicklistTypeDescriptions.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()),
+                        PicklistTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PicklistTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistTypeDescription getPicklistTypeDescription(PicklistType picklistType, Language language) {
@@ -578,31 +525,25 @@ public class PicklistControl
         return getPicklistTypeDescriptionValue(getPicklistTypeDescriptionForUpdate(picklistType, language));
     }
 
-    private static final Map<EntityPermission, String> getPicklistTypeDescriptionsByPicklistTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttypedescriptions, languages
-                WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_thrutime = ? AND pcklsttypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttypedescriptions
-                WHERE pcklsttypd_pcklsttyp_picklisttypeid = ? AND pcklsttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistTypeDescriptionsByPicklistTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistTypeDescription> getPicklistTypeDescriptionsByPicklistType(PicklistType picklistType, EntityPermission entityPermission) {
-        return picklistTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPicklistTypeDescriptionsByPicklistTypeQueries,
-                picklistType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PicklistTypeDescriptions.fields())
+                    .from(PicklistTypeDescriptions)
+                    .join(Languages).onKey(PICKLIST_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PicklistTypeDescriptions.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()),
+                            PicklistTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PicklistTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PicklistTypeDescriptions.fields())
+                    .from(PicklistTypeDescriptions)
+                    .where(PicklistTypeDescriptions.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()),
+                            PicklistTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return picklistTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistTypeDescription> getPicklistTypeDescriptionsByPicklistType(PicklistType picklistType) {
@@ -684,10 +625,13 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PicklistTimeTypeFactory picklistTimeTypeFactory;
+    protected PicklistTimeTypeDetailFactory picklistTimeTypeDetailFactory;
 
     @Inject
-    protected PicklistTimeTypeDetailFactory picklistTimeTypeDetailFactory;
+    private PicklistTimeTypeFactory picklistTimeTypeFactory;
+
+    @Inject
+    private PicklistTimeTypeTransferCache picklistTimeTypeTransferCache;
 
     public PicklistTimeType createPicklistTimeType(PicklistType picklistType, String picklistTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPicklistTimeType = getDefaultPicklistTimeType(picklistType);
@@ -734,40 +678,29 @@ public class PicklistControl
     }
 
     public long countPicklistTimeTypesByPicklistType(final PicklistType picklistType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM picklisttimetypes
-                        JOIN picklisttimetypedetails ON pcklsttimtypdt_picklisttimetypedetailid = pcklsttimtyp_activedetailid
-                        WHERE pcklsttimtypdt_pcklsttyp_picklisttypeid = ?
-                        """, picklistType);
-    }
-
-    private static final Map<EntityPermission, String> getPicklistTimeTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypes, picklisttimetypedetails
-                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
-                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_picklisttimetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypes, picklisttimetypedetails
-                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
-                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_picklisttimetypename = ?
-                FOR UPDATE
-                """);
-        getPicklistTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PicklistTimeTypes)
+                .join(PicklistTimeTypeDetails).onKey(PICKLIST_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistTimeTypeDetails.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PicklistTimeType getPicklistTimeTypeByName(PicklistType picklistType, String picklistTimeTypeName, EntityPermission entityPermission) {
-        return picklistTimeTypeFactory.getEntityFromQuery(entityPermission, getPicklistTimeTypeByNameQueries,
-                picklistType, picklistTimeTypeName);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTimeTypes.fields())
+                .from(PicklistTimeTypes)
+                .join(PicklistTimeTypeDetails).onKey(PICKLIST_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistTimeTypeDetails.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()),
+                        PicklistTimeTypeDetails.PICKLIST_TIME_TYPE_NAME.eq(picklistTimeTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistTimeType getPicklistTimeTypeByName(PicklistType picklistType, String picklistTimeTypeName) {
@@ -786,32 +719,20 @@ public class PicklistControl
         return getPicklistTimeTypeDetailValueForUpdate(getPicklistTimeTypeByNameForUpdate(picklistType, picklistTimeTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPicklistTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypes, picklisttimetypedetails
-                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
-                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypes, picklisttimetypedetails
-                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
-                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ? AND pcklsttimtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultPicklistTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PicklistTimeType getDefaultPicklistTimeType(PicklistType picklistType, EntityPermission entityPermission) {
-        return picklistTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultPicklistTimeTypeQueries,
-                picklistType);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTimeTypes.fields())
+                .from(PicklistTimeTypes)
+                .join(PicklistTimeTypeDetails).onKey(PICKLIST_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistTimeTypeDetails.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()),
+                        PicklistTimeTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistTimeType getDefaultPicklistTimeType(PicklistType picklistType) {
@@ -826,33 +747,21 @@ public class PicklistControl
         return getDefaultPicklistTimeTypeForUpdate(picklistType).getLastDetailForUpdate().getPicklistTimeTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPicklistTimeTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypes, picklisttimetypedetails
-                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
-                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ?
-                ORDER BY pcklsttimtypdt_sortorder, pcklsttimtypdt_picklisttimetypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypes, picklisttimetypedetails
-                WHERE pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
-                AND pcklsttimtypdt_pcklsttyp_picklisttypeid = ?
-                FOR UPDATE
-                """);
-        getPicklistTimeTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistTimeType> getPicklistTimeTypes(PicklistType picklistType, EntityPermission entityPermission) {
-        return picklistTimeTypeFactory.getEntitiesFromQuery(entityPermission, getPicklistTimeTypesQueries,
-                picklistType);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTimeTypes.fields())
+                .from(PicklistTimeTypes)
+                .join(PicklistTimeTypeDetails).onKey(PICKLIST_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistTimeTypeDetails.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PicklistTimeTypeDetails.SORT_ORDER, PicklistTimeTypeDetails.PICKLIST_TIME_TYPE_NAME),
+                    PicklistTimeTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistTimeType> getPicklistTimeTypes(PicklistType picklistType) {
@@ -998,7 +907,10 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PicklistTimeTypeDescriptionFactory picklistTimeTypeDescriptionFactory;
+    private PicklistTimeTypeDescriptionFactory picklistTimeTypeDescriptionFactory;
+
+    @Inject
+    private PicklistTimeTypeDescriptionTransferCache picklistTimeTypeDescriptionTransferCache;
 
     public PicklistTimeTypeDescription createPicklistTimeTypeDescription(PicklistTimeType picklistTimeType, Language language, String description, BasePK createdBy) {
         var picklistTimeTypeDescription = picklistTimeTypeDescriptionFactory.create(picklistTimeType, language, description,
@@ -1009,30 +921,20 @@ public class PicklistControl
         return picklistTimeTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getPicklistTimeTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypedescriptions
-                WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_lang_languageid = ? AND pcklsttimtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypedescriptions
-                WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_lang_languageid = ? AND pcklsttimtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PicklistTimeTypeDescription getPicklistTimeTypeDescription(PicklistTimeType picklistTimeType, Language language, EntityPermission entityPermission) {
-        return picklistTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPicklistTimeTypeDescriptionQueries,
-                picklistTimeType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTimeTypeDescriptions.fields())
+                .from(PicklistTimeTypeDescriptions)
+                .where(PicklistTimeTypeDescriptions.PICKLIST_TIME_TYPE.eq(picklistTimeType.getPrimaryKey()),
+                        PicklistTimeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PicklistTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistTimeTypeDescription getPicklistTimeTypeDescription(PicklistTimeType picklistTimeType, Language language) {
@@ -1051,31 +953,25 @@ public class PicklistControl
         return getPicklistTimeTypeDescriptionValue(getPicklistTimeTypeDescriptionForUpdate(picklistTimeType, language));
     }
 
-    private static final Map<EntityPermission, String> getPicklistTimeTypeDescriptionsByPicklistTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypedescriptions, languages
-                WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_thrutime = ? AND pcklsttimtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttimetypedescriptions
-                WHERE pcklsttimtypd_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttimtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistTimeTypeDescriptionsByPicklistTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistTimeTypeDescription> getPicklistTimeTypeDescriptionsByPicklistTimeType(PicklistTimeType picklistTimeType, EntityPermission entityPermission) {
-        return picklistTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPicklistTimeTypeDescriptionsByPicklistTimeTypeQueries,
-                picklistTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PicklistTimeTypeDescriptions.fields())
+                    .from(PicklistTimeTypeDescriptions)
+                    .join(Languages).onKey(PICKLIST_TIME_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PicklistTimeTypeDescriptions.PICKLIST_TIME_TYPE.eq(picklistTimeType.getPrimaryKey()),
+                            PicklistTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PicklistTimeTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PicklistTimeTypeDescriptions.fields())
+                    .from(PicklistTimeTypeDescriptions)
+                    .where(PicklistTimeTypeDescriptions.PICKLIST_TIME_TYPE.eq(picklistTimeType.getPrimaryKey()),
+                            PicklistTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return picklistTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistTimeTypeDescription> getPicklistTimeTypeDescriptionsByPicklistTimeType(PicklistTimeType picklistTimeType) {
@@ -1157,10 +1053,13 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PicklistAliasTypeFactory picklistAliasTypeFactory;
+    protected PicklistAliasTypeDetailFactory picklistAliasTypeDetailFactory;
 
     @Inject
-    protected PicklistAliasTypeDetailFactory picklistAliasTypeDetailFactory;
+    private PicklistAliasTypeFactory picklistAliasTypeFactory;
+
+    @Inject
+    private PicklistAliasTypeTransferCache picklistAliasTypeTransferCache;
 
     public PicklistAliasType createPicklistAliasType(PicklistType picklistType, String picklistAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -1207,40 +1106,29 @@ public class PicklistControl
     }
 
     public long countPicklistAliasTypesByPicklistType(final PicklistType picklistType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM picklistaliastypes
-                        JOIN picklistaliastypedetails ON pcklstaltypdt_picklistaliastypedetailid = pcklstaltyp_activedetailid
-                        WHERE pcklstaltypdt_pcklsttyp_picklisttypeid = ?
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getPicklistAliasTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypes, picklistaliastypedetails
-                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
-                AND pcklstaltypdt_picklistaliastypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypes, picklistaliastypedetails
-                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
-                AND pcklstaltypdt_picklistaliastypename = ?
-                FOR UPDATE
-                """);
-        getPicklistAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PicklistAliasTypes)
+                .join(PicklistAliasTypeDetails).onKey(PICKLIST_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistAliasTypeDetails.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PicklistAliasType getPicklistAliasTypeByName(PicklistType picklistType, String picklistAliasTypeName, EntityPermission entityPermission) {
-        return picklistAliasTypeFactory.getEntityFromQuery(entityPermission, getPicklistAliasTypeByNameQueries,
-                picklistType, picklistAliasTypeName);
+        var baseQuery = session.getDslContext()
+                .select(PicklistAliasTypes.fields())
+                .from(PicklistAliasTypes)
+                .join(PicklistAliasTypeDetails).onKey(PICKLIST_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistAliasTypeDetails.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()),
+                        PicklistAliasTypeDetails.PICKLIST_ALIAS_TYPE_NAME.eq(picklistAliasTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistAliasType getPicklistAliasTypeByName(PicklistType picklistType, String picklistAliasTypeName) {
@@ -1260,31 +1148,20 @@ public class PicklistControl
         return getPicklistAliasTypeDetailValueForUpdate(getPicklistAliasTypeByNameForUpdate(picklistType, picklistAliasTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPicklistAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypes, picklistaliastypedetails
-                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
-                AND pcklstaltypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypes, picklistaliastypedetails
-                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
-                AND pcklstaltypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultPicklistAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PicklistAliasType getDefaultPicklistAliasType(PicklistType picklistType, EntityPermission entityPermission) {
-        return picklistAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultPicklistAliasTypeQueries, picklistType);
+        var baseQuery = session.getDslContext()
+                .select(PicklistAliasTypes.fields())
+                .from(PicklistAliasTypes)
+                .join(PicklistAliasTypeDetails).onKey(PICKLIST_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistAliasTypeDetails.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()),
+                        PicklistAliasTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistAliasType getDefaultPicklistAliasType(PicklistType picklistType) {
@@ -1299,30 +1176,21 @@ public class PicklistControl
         return getDefaultPicklistAliasTypeForUpdate(picklistType).getLastDetailForUpdate().getPicklistAliasTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPicklistAliasTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypes, picklistaliastypedetails
-                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
-                ORDER BY pcklstaltypdt_sortorder, pcklstaltypdt_picklistaliastypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypes, picklistaliastypedetails
-                WHERE pcklstaltyp_activedetailid = pcklstaltypdt_picklistaliastypedetailid AND pcklstaltypdt_pcklsttyp_picklisttypeid = ?
-                FOR UPDATE
-                """);
-        getPicklistAliasTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistAliasType> getPicklistAliasTypes(PicklistType picklistType, EntityPermission entityPermission) {
-        return picklistAliasTypeFactory.getEntitiesFromQuery(entityPermission, getPicklistAliasTypesQueries, picklistType);
+        var baseQuery = session.getDslContext()
+                .select(PicklistAliasTypes.fields())
+                .from(PicklistAliasTypes)
+                .join(PicklistAliasTypeDetails).onKey(PICKLIST_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(PicklistAliasTypeDetails.PICKLIST_TYPE.eq(picklistType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PicklistAliasTypeDetails.SORT_ORDER, PicklistAliasTypeDetails.PICKLIST_ALIAS_TYPE_NAME),
+                    PicklistAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistAliasType> getPicklistAliasTypes(PicklistType picklistType) {
@@ -1479,7 +1347,10 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PicklistAliasTypeDescriptionFactory picklistAliasTypeDescriptionFactory;
+    private PicklistAliasTypeDescriptionFactory picklistAliasTypeDescriptionFactory;
+
+    @Inject
+    private PicklistAliasTypeDescriptionTransferCache picklistAliasTypeDescriptionTransferCache;
 
     public PicklistAliasTypeDescription createPicklistAliasTypeDescription(PicklistAliasType picklistAliasType, Language language, String description, BasePK createdBy) {
         var picklistAliasTypeDescription = picklistAliasTypeDescriptionFactory.create(picklistAliasType, language,
@@ -1490,30 +1361,20 @@ public class PicklistControl
         return picklistAliasTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getPicklistAliasTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypedescriptions
-                WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_lang_languageid = ? AND pcklstaltypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypedescriptions
-                WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_lang_languageid = ? AND pcklstaltypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PicklistAliasTypeDescription getPicklistAliasTypeDescription(PicklistAliasType picklistAliasType, Language language, EntityPermission entityPermission) {
-        return picklistAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPicklistAliasTypeDescriptionQueries,
-                picklistAliasType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PicklistAliasTypeDescriptions.fields())
+                .from(PicklistAliasTypeDescriptions)
+                .where(PicklistAliasTypeDescriptions.PICKLIST_ALIAS_TYPE.eq(picklistAliasType.getPrimaryKey()),
+                        PicklistAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PicklistAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistAliasTypeDescription getPicklistAliasTypeDescription(PicklistAliasType picklistAliasType, Language language) {
@@ -1532,31 +1393,25 @@ public class PicklistControl
         return getPicklistAliasTypeDescriptionValue(getPicklistAliasTypeDescriptionForUpdate(picklistAliasType, language));
     }
 
-    private static final Map<EntityPermission, String> getPicklistAliasTypeDescriptionsByPicklistAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypedescriptions, languages
-                WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_thrutime = ? AND pcklstaltypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliastypedescriptions
-                WHERE pcklstaltypd_pcklstaltyp_picklistaliastypeid = ? AND pcklstaltypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistAliasTypeDescriptionsByPicklistAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistAliasTypeDescription> getPicklistAliasTypeDescriptionsByPicklistAliasType(PicklistAliasType picklistAliasType, EntityPermission entityPermission) {
-        return picklistAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPicklistAliasTypeDescriptionsByPicklistAliasTypeQueries,
-                picklistAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PicklistAliasTypeDescriptions.fields())
+                    .from(PicklistAliasTypeDescriptions)
+                    .join(Languages).onKey(PICKLIST_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PicklistAliasTypeDescriptions.PICKLIST_ALIAS_TYPE.eq(picklistAliasType.getPrimaryKey()),
+                            PicklistAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PicklistAliasTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PicklistAliasTypeDescriptions.fields())
+                    .from(PicklistAliasTypeDescriptions)
+                    .where(PicklistAliasTypeDescriptions.PICKLIST_ALIAS_TYPE.eq(picklistAliasType.getPrimaryKey()),
+                            PicklistAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return picklistAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistAliasTypeDescription> getPicklistAliasTypeDescriptionsByPicklistAliasType(PicklistAliasType picklistAliasType) {
@@ -1638,7 +1493,10 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PicklistTimeFactory picklistTimeFactory;
+    private PicklistTimeFactory picklistTimeFactory;
+
+    @Inject
+    private PicklistTimeTransferCache picklistTimeTransferCache;
 
     public PicklistTime createPicklistTime(Picklist picklist, PicklistTimeType picklistTimeType, Long time, BasePK createdBy) {
         var picklistTime = picklistTimeFactory.create(picklist, picklistTimeType, time, session.getStartTime(), Session.MAX_TIME);
@@ -1649,44 +1507,39 @@ public class PicklistControl
     }
 
     public long countPicklistTimesByPicklist(Picklist picklist) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM picklisttimes
-                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ?
-                """, picklist, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PicklistTimes)
+                .where(PicklistTimes.PICKLIST.eq(picklist.getPrimaryKey()),
+                        PicklistTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPicklistTimesByPicklistTimeType(PicklistTimeType picklistTimeType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM picklisttimes
-                WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
-                """, picklistTimeType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPicklistTimeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttimes
-                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttimes
-                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistTimeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PicklistTimes)
+                .where(PicklistTimes.PICKLIST_TIME_TYPE.eq(picklistTimeType.getPrimaryKey()),
+                        PicklistTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PicklistTime getPicklistTime(Picklist picklist, PicklistTimeType picklistTimeType, EntityPermission entityPermission) {
-        return picklistTimeFactory.getEntityFromQuery(entityPermission, getPicklistTimeQueries, picklist, picklistTimeType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PicklistTimes.fields())
+                .from(PicklistTimes)
+                .where(PicklistTimes.PICKLIST.eq(picklist.getPrimaryKey()),
+                        PicklistTimes.PICKLIST_TIME_TYPE.eq(picklistTimeType.getPrimaryKey()),
+                        PicklistTimes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistTimeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistTime getPicklistTime(Picklist picklist, PicklistTimeType picklistTimeType) {
@@ -1705,31 +1558,26 @@ public class PicklistControl
         return getPicklistTimeValue(getPicklistTimeForUpdate(picklist, picklistTimeType));
     }
 
-    private static final Map<EntityPermission, String> getPicklistTimesByPicklistQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttimes, picklisttimetypes, picklisttimetypedetails
-                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ?
-                AND pcklsttim_pcklsttimtyp_picklisttimetypeid = pcklsttimtyp_picklisttimetypeid AND pcklsttimtyp_activedetailid = pcklsttimtypdt_picklisttimetypedetailid
-                ORDER BY pcklsttimtypdt_sortorder, pcklsttimtypdt_picklisttimetypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttimes
-                WHERE pcklsttim_pcklst_picklistid = ? AND pcklsttim_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistTimesByPicklistQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistTime> getPicklistTimesByPicklist(Picklist picklist, EntityPermission entityPermission) {
-        return picklistTimeFactory.getEntitiesFromQuery(entityPermission, getPicklistTimesByPicklistQueries, picklist, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PicklistTimes.fields())
+                    .from(PicklistTimes)
+                    .join(PicklistTimeTypes).onKey(PICKLIST_TIMES_PICKLIST_TIME_TYPE_FK)
+                    .join(PicklistTimeTypeDetails).onKey(PICKLIST_TIME_TYPES_LAST_DETAIL_FK)
+                    .where(PicklistTimes.PICKLIST.eq(picklist.getPrimaryKey()),
+                            PicklistTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PicklistTimeTypeDetails.SORT_ORDER, PicklistTimeTypeDetails.PICKLIST_TIME_TYPE_NAME),
+                    PicklistTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PicklistTimes.fields())
+                    .from(PicklistTimes)
+                    .where(PicklistTimes.PICKLIST.eq(picklist.getPrimaryKey()),
+                            PicklistTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return picklistTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistTime> getPicklistTimesByPicklist(Picklist picklist) {
@@ -1740,31 +1588,26 @@ public class PicklistControl
         return getPicklistTimesByPicklist(picklist, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPicklistTimesByPicklistTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklisttimes, picklists, picklistdetails
-                WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
-                AND pcklsttim_pcklst_picklistid = pcklsttim_pcklst_picklistid AND pcklst_activedetailid = pcklstdt_picklistdetailid
-                ORDER BY pcklstdt_picklistname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklisttimes
-                WHERE pcklsttim_pcklsttimtyp_picklisttimetypeid = ? AND pcklsttim_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistTimesByPicklistTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistTime> getPicklistTimesByPicklistTimeType(PicklistTimeType picklistTimeType, EntityPermission entityPermission) {
-        return picklistTimeFactory.getEntitiesFromQuery(entityPermission, getPicklistTimesByPicklistTimeTypeQueries, picklistTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PicklistTimes.fields())
+                    .from(PicklistTimes)
+                    .join(Picklists).onKey(PICKLIST_TIMES_PICKLIST_FK)
+                    .join(PicklistDetails).onKey(PICKLISTS_LAST_DETAIL_FK)
+                    .where(PicklistTimes.PICKLIST_TIME_TYPE.eq(picklistTimeType.getPrimaryKey()),
+                            PicklistTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PicklistDetails.PICKLIST_NAME),
+                    PicklistTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PicklistTimes.fields())
+                    .from(PicklistTimes)
+                    .where(PicklistTimes.PICKLIST_TIME_TYPE.eq(picklistTimeType.getPrimaryKey()),
+                            PicklistTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return picklistTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistTime> getPicklistTimesByPicklistTimeType(PicklistTimeType picklistTimeType) {
@@ -1841,7 +1684,10 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PicklistAliasFactory picklistAliasFactory;
+    private PicklistAliasFactory picklistAliasFactory;
+
+    @Inject
+    private PicklistAliasTransferCache picklistAliasTransferCache;
 
     public PicklistAlias createPicklistAlias(Picklist picklist, PicklistAliasType picklistAliasType, String alias, BasePK createdBy) {
         var picklistAlias = picklistAliasFactory.create(picklist, picklistAliasType, alias, session.getStartTime(), Session.MAX_TIME);
@@ -1852,45 +1698,39 @@ public class PicklistControl
     }
 
     public long countPicklistAliasesBy(final Picklist picklist) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM picklistaliases
-                        WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_thrutime = ?
-                        """, picklist, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PicklistAliases)
+                .where(PicklistAliases.PICKLIST.eq(picklist.getPrimaryKey()),
+                        PicklistAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPicklistAliasesBy(final PicklistAliasType picklistAliasType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM picklistaliases
-                        WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
-                        """, picklistAliasType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPicklistAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliases
-                WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliases
-                WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistAliasQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PicklistAliases)
+                .where(PicklistAliases.PICKLIST_ALIAS_TYPE.eq(picklistAliasType.getPrimaryKey()),
+                        PicklistAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PicklistAlias getPicklistAlias(Picklist picklist, PicklistAliasType picklistAliasType, EntityPermission entityPermission) {
-        return picklistAliasFactory.getEntityFromQuery(entityPermission, getPicklistAliasQueries,
-                picklist, picklistAliasType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PicklistAliases.fields())
+                .from(PicklistAliases)
+                .where(PicklistAliases.PICKLIST.eq(picklist.getPrimaryKey()),
+                        PicklistAliases.PICKLIST_ALIAS_TYPE.eq(picklistAliasType.getPrimaryKey()),
+                        PicklistAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistAlias getPicklistAlias(Picklist picklist, PicklistAliasType picklistAliasType) {
@@ -1909,29 +1749,20 @@ public class PicklistControl
         return getPicklistAliasValue(getPicklistAliasForUpdate(picklist, picklistAliasType));
     }
 
-    private static final Map<EntityPermission, String> getPicklistAliasByAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliases
-                WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_alias = ? AND pcklstal_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliases
-                WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_alias = ? AND pcklstal_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PicklistAlias getPicklistAliasByAlias(PicklistAliasType picklistAliasType, String alias, EntityPermission entityPermission) {
-        return picklistAliasFactory.getEntityFromQuery(entityPermission, getPicklistAliasByAliasQueries, picklistAliasType, alias, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PicklistAliases.fields())
+                .from(PicklistAliases)
+                .where(PicklistAliases.PICKLIST_ALIAS_TYPE.eq(picklistAliasType.getPrimaryKey()),
+                        PicklistAliases.ALIAS.eq(alias),
+                        PicklistAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return picklistAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PicklistAlias getPicklistAliasByAlias(PicklistAliasType picklistAliasType, String alias) {
@@ -1942,32 +1773,26 @@ public class PicklistControl
         return getPicklistAliasByAlias(picklistAliasType, alias, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPicklistAliasesByPicklistQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliases, picklistaliastypes, picklistaliastypedetails
-                WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_thrutime = ?
-                AND pcklstal_pcklstaltyp_picklistaliastypeid = pcklstaltyp_picklistaliastypeid AND pcklstaltyp_lastdetailid = pcklstaltypdt_picklistaliastypedetailid
-                ORDER BY pcklstaltypdt_sortorder, pcklstaltypdt_picklistaliastypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliases
-                WHERE pcklstal_pcklst_picklistid = ? AND pcklstal_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistAliasesByPicklistQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistAlias> getPicklistAliasesByPicklist(Picklist picklist, EntityPermission entityPermission) {
-        return picklistAliasFactory.getEntitiesFromQuery(entityPermission, getPicklistAliasesByPicklistQueries,
-                picklist, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PicklistAliases.fields())
+                    .from(PicklistAliases)
+                    .join(PicklistAliasTypes).onKey(PICKLIST_ALIASES_PICKLIST_ALIAS_TYPE_FK)
+                    .join(PicklistAliasTypeDetails).onKey(PICKLIST_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(PicklistAliases.PICKLIST.eq(picklist.getPrimaryKey()),
+                            PicklistAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PicklistAliasTypeDetails.SORT_ORDER, PicklistAliasTypeDetails.PICKLIST_ALIAS_TYPE_NAME),
+                    PicklistAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PicklistAliases.fields())
+                    .from(PicklistAliases)
+                    .where(PicklistAliases.PICKLIST.eq(picklist.getPrimaryKey()),
+                            PicklistAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return picklistAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistAlias> getPicklistAliasesByPicklist(Picklist picklist) {
@@ -1978,32 +1803,26 @@ public class PicklistControl
         return getPicklistAliasesByPicklist(picklist, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPicklistAliasesByPicklistAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM picklistaliases, picklistes, picklistdetails
-                WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
-                AND pcklstal_pcklst_picklistid = pcklst_picklistid AND pcklst_lastdetailid = pcklstdt_picklistdetailid
-                ORDER BY pcklstdt_picklistname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM picklistaliases
-                WHERE pcklstal_pcklstaltyp_picklistaliastypeid = ? AND pcklstal_thrutime = ?
-                FOR UPDATE
-                """);
-        getPicklistAliasesByPicklistAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PicklistAlias> getPicklistAliasesByPicklistAliasType(PicklistAliasType picklistAliasType, EntityPermission entityPermission) {
-        return picklistAliasFactory.getEntitiesFromQuery(entityPermission, getPicklistAliasesByPicklistAliasTypeQueries,
-                picklistAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PicklistAliases.fields())
+                    .from(PicklistAliases)
+                    .join(Picklists).onKey(PICKLIST_ALIASES_PICKLIST_FK)
+                    .join(PicklistDetails).onKey(PICKLISTS_LAST_DETAIL_FK)
+                    .where(PicklistAliases.PICKLIST_ALIAS_TYPE.eq(picklistAliasType.getPrimaryKey()),
+                            PicklistAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PicklistDetails.PICKLIST_NAME),
+                    PicklistAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PicklistAliases.fields())
+                    .from(PicklistAliases)
+                    .where(PicklistAliases.PICKLIST_ALIAS_TYPE.eq(picklistAliasType.getPrimaryKey()),
+                            PicklistAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return picklistAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PicklistAlias> getPicklistAliasesByPicklistAliasType(PicklistAliasType picklistAliasType) {
