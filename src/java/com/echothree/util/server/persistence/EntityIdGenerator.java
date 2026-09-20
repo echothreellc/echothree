@@ -16,12 +16,12 @@
 
 package com.echothree.util.server.persistence;
 
+import static com.echothree.model.jooq.server.tables.core.EntityIds.EntityIds;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.locks.ReentrantLock;
+import org.jooq.exception.DataAccessException;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +29,6 @@ public class EntityIdGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(EntityIdGenerator.class);
 
-    static private final String selectQuery = "SELECT eid_lastentityid FROM entityids WHERE eid_componentvendorname = ? AND eid_entitytypename = ?";
-    static private final String updateQuery = "UPDATE entityids SET eid_lastentityid = ? WHERE eid_componentvendorname = ? AND eid_entitytypename = ? AND eid_lastentityid = ?";
-    static private final String insertQuery = "INSERT INTO entityids (eid_componentvendorname, eid_entitytypename, eid_lastentityid) VALUES (?, ?, ?)";
-    
     static private final int defaultChunkSize = 100;
     static private final int retryCount = 5;
 
@@ -63,84 +59,59 @@ public class EntityIdGenerator {
         init(componentVendorName, entityTypeName, defaultChunkSize);
     }
     
-    public Connection getConnection() {
-        return DslContextFactory.getInstance().getNTDslContext().parsingConnection();
-    }
-    
-    private boolean getNewChunk()
-            throws SQLException {
+    private boolean getNewChunk() {
         log.debug("getNewChunk(), componentVendorName = {}, entityTypeName = {}",
                 componentVendorName, entityTypeName);
 
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        long currentMax;
+        var context = DslContextFactory.getInstance().getNTDslContext();
 
-        try(var conn = getConnection();) {
-            try {
-                ps = conn.prepareStatement(selectQuery);
-                ps.setString(1, componentVendorName);
-                ps.setString(2, entityTypeName);
-                rs = ps.executeQuery();
+        // Keep the read and conditional write on one nontransactional connection.
+        // Do not enlist ID reservations in the caller's transaction.
+        return context.connectionResult(connection -> {
+            var dslContext = DSL.using(context.configuration().derive(connection));
+            var currentMax = dslContext
+                    .select(EntityIds.LAST_ENTITY)
+                    .from(EntityIds)
+                    .where(EntityIds.COMPONENT_VENDOR_NAME.eq(componentVendorName),
+                            EntityIds.ENTITY_TYPE_NAME.eq(entityTypeName))
+                    .fetchOne();
 
-                if(rs.next()) {
-                    currentMax = rs.getLong(1);
+            if(currentMax != null) {
+                var lastEntityId = currentMax.value1();
+                var nextMax = lastEntityId + chunkSize;
+                var rowCount = dslContext
+                        .update(EntityIds)
+                        .set(EntityIds.LAST_ENTITY, nextMax)
+                        .where(EntityIds.COMPONENT_VENDOR_NAME.eq(componentVendorName),
+                                EntityIds.ENTITY_TYPE_NAME.eq(entityTypeName),
+                                EntityIds.LAST_ENTITY.eq(lastEntityId))
+                        .execute();
 
-                    rs.close();
-                    rs = null;
-
-                    ps.close();
-                    ps = null;
-
-                    ps = conn.prepareStatement(updateQuery);
-                    ps.setLong(1, currentMax + chunkSize);
-                    ps.setString(2, componentVendorName);
-                    ps.setString(3, entityTypeName);
-                    ps.setLong(4, currentMax);
-
-                    if(ps.executeUpdate() != 1)
-                        return false;
-                    else {
-                        guardedValue = currentMax + chunkSize;
-                        currentValue = currentMax;
-                        return true;
-                    }
-                } else {
-                    rs.close();
-                    rs = null;
-
-                    ps.close();
-                    ps = null;
-
-                    ps = conn.prepareStatement(insertQuery);
-                    ps.setString(1, componentVendorName);
-                    ps.setString(2, entityTypeName);
-                    ps.setLong(3, chunkSize);
-
-                    if(ps.executeUpdate() != 1) {
-                        return false;
-                    } else {
-                        guardedValue = chunkSize;
-                        currentValue = 0;
-                        return true;
-                    }
-                }
-            } finally {
-                if(rs != null) {
-                    rs.close();
+                // A competing allocator may have reserved this range first.
+                if(rowCount != 1) {
+                    return false;
                 }
 
-                if(ps != null) {
-                    ps.close();
+                guardedValue = nextMax;
+                currentValue = lastEntityId;
+            } else {
+                var rowCount = dslContext
+                        .insertInto(EntityIds, EntityIds.COMPONENT_VENDOR_NAME, EntityIds.ENTITY_TYPE_NAME, EntityIds.LAST_ENTITY)
+                        .values(componentVendorName, entityTypeName, (long)chunkSize)
+                        .execute();
+
+                if(rowCount != 1) {
+                    return false;
                 }
 
-                if(conn != null) {
-                    conn.close();
-                }
+                guardedValue = chunkSize;
+                currentValue = 0;
             }
-        }
+
+            return true;
+        });
     }
-    
+
     public long getNextEntityId() {
         long nextEntityId;
 
@@ -152,8 +123,9 @@ public class EntityIdGenerator {
                         if(getNewChunk())
                             break;
                     }
-                } catch (SQLException se) {
-                    throw new PersistenceDatabaseException(se);
+                } catch (DataAccessException ex) {
+                    var sqlException = ex.getCause(SQLException.class);
+                    throw new PersistenceDatabaseException(sqlException == null ? ex : sqlException);
                 }
             }
 
