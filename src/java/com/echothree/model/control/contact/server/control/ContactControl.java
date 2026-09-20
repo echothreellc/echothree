@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.contact.server.control;
 
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.CONTACT_MECHANISM_ALIASES_CONTACT_MECHANISM_ALIAS_TYPE_FK;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
@@ -173,7 +174,62 @@ import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.CONTACT_MECHANISMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.CONTACT_MECHANISMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.CONTACT_MECHANISM_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.CONTACT_MECHANISM_ALIAS_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.CONTACT_MECHANISM_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_ALIASES_CONTACT_MECHANISM_ALIAS_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_DETAILS_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_PURPOSE_DETAILS_CONTACT_MECHANISM_PURPOSE_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_PURPOSE_DETAILS_PARTY_CONTACT_MECHANISM_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_RELATIONSHIPS_FROM_PARTY_CONTACT_MECHANISM_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_RELATIONSHIPS_TO_PARTY_CONTACT_MECHANISM_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.POSTAL_ADDRESS_FORMATS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.POSTAL_ADDRESS_FORMAT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.POSTAL_ADDRESS_LINES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTY_DETAILS_PARTY_TYPE_FK;
+import static com.echothree.model.jooq.server.tables.contact.ContactEmailAddresses.ContactEmailAddresses;
+import static com.echothree.model.jooq.server.tables.contact.ContactInet4Addresses.ContactInet4Addresses;
+import static com.echothree.model.jooq.server.tables.contact.ContactInet6Addresses.ContactInet6Addresses;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismAliasTypeDescriptions.ContactMechanismAliasTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismAliasTypeDetails.ContactMechanismAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismAliasTypes.ContactMechanismAliasTypes;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismAliases.ContactMechanismAliases;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismDetails.ContactMechanismDetails;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismPurposeDescriptions.ContactMechanismPurposeDescriptions;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismPurposes.ContactMechanismPurposes;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismTypeDescriptions.ContactMechanismTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismTypes.ContactMechanismTypes;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanisms.ContactMechanisms;
+import static com.echothree.model.jooq.server.tables.contact.ContactPostalAddressCorrections.ContactPostalAddressCorrections;
+import static com.echothree.model.jooq.server.tables.contact.ContactPostalAddresses.ContactPostalAddresses;
+import static com.echothree.model.jooq.server.tables.contact.ContactTelephones.ContactTelephones;
+import static com.echothree.model.jooq.server.tables.contact.ContactWebAddresses.ContactWebAddresses;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanismAliases.PartyContactMechanismAliases;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanismDetails.PartyContactMechanismDetails;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanismPurposeDetails.PartyContactMechanismPurposeDetails;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanismPurposes.PartyContactMechanismPurposes;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanismRelationships.PartyContactMechanismRelationships;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanisms.PartyContactMechanisms;
+import static com.echothree.model.jooq.server.tables.contact.PostalAddressElementTypeDescriptions.PostalAddressElementTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.contact.PostalAddressElementTypes.PostalAddressElementTypes;
+import static com.echothree.model.jooq.server.tables.contact.PostalAddressFormatDescriptions.PostalAddressFormatDescriptions;
+import static com.echothree.model.jooq.server.tables.contact.PostalAddressFormatDetails.PostalAddressFormatDetails;
+import static com.echothree.model.jooq.server.tables.contact.PostalAddressFormats.PostalAddressFormats;
+import static com.echothree.model.jooq.server.tables.contact.PostalAddressLineDetails.PostalAddressLineDetails;
+import static com.echothree.model.jooq.server.tables.contact.PostalAddressLineElements.PostalAddressLineElements;
+import static com.echothree.model.jooq.server.tables.contact.PostalAddressLines.PostalAddressLines;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.party.PartyTypes.PartyTypes;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -181,13 +237,9 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -228,75 +280,14 @@ public class ContactControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Contact Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    PostalAddressFormatTransferCache postalAddressFormatTransferCache;
-
-    @Inject
-    PostalAddressElementTypeTransferCache postalAddressElementTypeTransferCache;
-
-    @Inject
-    ContactMechanismAliasTypeTransferCache contactMechanismAliasTypeTransferCache;
-
-    @Inject
-    ContactMechanismAliasTypeDescriptionTransferCache contactMechanismAliasTypeDescriptionTransferCache;
-
-    @Inject
-    ContactMechanismPurposeTransferCache contactMechanismPurposeTransferCache;
-
-    @Inject
-    ContactMechanismTypeTransferCache contactMechanismTypeTransferCache;
-
-    @Inject
-    ContactMechanismTransferCache contactMechanismTransferCache;
-
-    @Inject
-    ContactEmailAddressTransferCache contactEmailAddressTransferCache;
-
-    @Inject
-    ContactPostalAddressTransferCache contactPostalAddressTransferCache;
-
-    @Inject
-    ContactTelephoneTransferCache contactTelephoneTransferCache;
-
-    @Inject
-    PostalAddressFormatDescriptionTransferCache postalAddressFormatDescriptionTransferCache;
-
-    @Inject
-    PostalAddressLineTransferCache postalAddressLineTransferCache;
-
-    @Inject
-    PostalAddressLineElementTransferCache postalAddressLineElementTransferCache;
-
-    @Inject
-    ContactWebAddressTransferCache contactWebAddressTransferCache;
-
-    @Inject
-    ContactMechanismAliasTransferCache contactMechanismAliasTransferCache;
-
-    @Inject
-    PartyContactMechanismAliasTransferCache partyContactMechanismAliasTransferCache;
-
-    @Inject
-    PartyContactMechanismPurposeTransferCache partyContactMechanismPurposeTransferCache;
-
-    @Inject
-    PartyContactMechanismRelationshipTransferCache partyContactMechanismRelationshipTransferCache;
-
-    @Inject
-    PartyContactMechanismTransferCache partyContactMechanismTransferCache;
-
-    @Inject
-    ContactInet4AddressTransferCache contactInet4AddressTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Contact Mechanism Types
     // --------------------------------------------------------------------------------
 
     @Inject
     protected ContactMechanismTypeFactory contactMechanismTypeFactory;
+
+    @Inject
+    ContactMechanismTypeTransferCache contactMechanismTypeTransferCache;
 
     public ContactMechanismType createContactMechanismType(String contactMechanismTypeName,
             ContactMechanismType parentContactMechanismType, Boolean isDefault, Integer sortOrder) {
@@ -320,41 +311,30 @@ public class ContactControl
     }
 
     public long countContactMechanismTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactmechanismtypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactMechanismTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContactMechanismType getContactMechanismTypeByName(String contactMechanismTypeName) {
-        ContactMechanismType contactMechanismType;
-        
-        try {
-            var ps = contactMechanismTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM contactmechanismtypes
-                    WHERE cmt_contactmechanismtypename = ?
-                    """);
-            
-            ps.setString(1, contactMechanismTypeName);
-            
-            contactMechanismType = contactMechanismTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactMechanismType;
+        var query = session.getDslContext()
+                .select(ContactMechanismTypes.fields())
+                .from(ContactMechanismTypes)
+                .where(ContactMechanismTypes.CONTACT_MECHANISM_TYPE_NAME.eq(contactMechanismTypeName));
+
+        return contactMechanismTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ContactMechanismType> getContactMechanismTypes() {
-        var ps = contactMechanismTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM contactmechanismtypes
-                ORDER BY cmt_sortorder, cmt_contactmechanismtypename
-                _LIMIT_
-                """);
-        
-        return contactMechanismTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ContactMechanismTypes.fields())
+                .from(ContactMechanismTypes)
+                .orderBy(ContactMechanismTypes.SORT_ORDER, ContactMechanismTypes.CONTACT_MECHANISM_TYPE_NAME),
+                ContactMechanismTypeFactory.class);
+
+        return contactMechanismTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ContactMechanismTypeChoicesBean getContactMechanismTypeChoices(String defaultContactMechanismTypeChoice, Language language, boolean allowNullChoice) {
@@ -417,24 +397,13 @@ public class ContactControl
     
     public ContactMechanismTypeDescription getContactMechanismTypeDescription(ContactMechanismType contactMechanismType,
             Language language) {
-        ContactMechanismTypeDescription contactMechanismTypeDescription;
-        
-        try {
-            var ps = contactMechanismTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM contactmechanismtypedescriptions
-                    WHERE cmtd_cmt_contactmechanismtypeid = ? AND cmtd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, contactMechanismType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            contactMechanismTypeDescription = contactMechanismTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactMechanismTypeDescription;
+        var query = session.getDslContext()
+                .select(ContactMechanismTypeDescriptions.fields())
+                .from(ContactMechanismTypeDescriptions)
+                .where(ContactMechanismTypeDescriptions.CONTACT_MECHANISM_TYPE.eq(contactMechanismType.getPrimaryKey()),
+                        ContactMechanismTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return contactMechanismTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestContactMechanismTypeDescription(ContactMechanismType contactMechanismType, Language language) {
@@ -459,10 +428,13 @@ public class ContactControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContactMechanismAliasTypeDetailFactory contactMechanismAliasTypeDetailFactory;
+
+    @Inject
     protected ContactMechanismAliasTypeFactory contactMechanismAliasTypeFactory;
 
     @Inject
-    protected ContactMechanismAliasTypeDetailFactory contactMechanismAliasTypeDetailFactory;
+    ContactMechanismAliasTypeTransferCache contactMechanismAliasTypeTransferCache;
 
     public ContactMechanismAliasType createContactMechanismAliasType(String contactMechanismAliasTypeName, String validationPattern, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -510,36 +482,27 @@ public class ContactControl
     }
 
     public long countContactMechanismAliasTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactmechanismaliastypes
-                        JOIN contactmechanismaliastypedetails ON cmchaltypdt_contactmechanismaliastypedetailid = cmchaltyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getContactMechanismAliasTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypes, contactmechanismaliastypedetails
-                WHERE cmchaltyp_activedetailid = cmchaltypdt_contactmechanismaliastypedetailid
-                AND cmchaltypdt_contactmechanismaliastypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypes, contactmechanismaliastypedetails
-                WHERE cmchaltyp_activedetailid = cmchaltypdt_contactmechanismaliastypedetailid
-                AND cmchaltypdt_contactmechanismaliastypename = ?
-                FOR UPDATE
-                """);
-        getContactMechanismAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactMechanismAliasTypes)
+                .join(ContactMechanismAliasTypeDetails).onKey(CONTACT_MECHANISM_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContactMechanismAliasType getContactMechanismAliasTypeByName(String contactMechanismAliasTypeName, EntityPermission entityPermission) {
-        return contactMechanismAliasTypeFactory.getEntityFromQuery(entityPermission, getContactMechanismAliasTypeByNameQueries, contactMechanismAliasTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanismAliasTypes.fields())
+                .from(ContactMechanismAliasTypes)
+                .join(ContactMechanismAliasTypeDetails).onKey(CONTACT_MECHANISM_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(ContactMechanismAliasTypeDetails.CONTACT_MECHANISM_ALIAS_TYPE_NAME.eq(contactMechanismAliasTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactMechanismAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactMechanismAliasType getContactMechanismAliasTypeByName(String contactMechanismAliasTypeName) {
@@ -558,29 +521,19 @@ public class ContactControl
         return getContactMechanismAliasTypeDetailValueForUpdate(getContactMechanismAliasTypeByNameForUpdate(contactMechanismAliasTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultContactMechanismAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypes, contactmechanismaliastypedetails
-                WHERE cmchaltyp_activedetailid = cmchaltypdt_contactmechanismaliastypedetailid
-                AND cmchaltypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypes, contactmechanismaliastypedetails
-                WHERE cmchaltyp_activedetailid = cmchaltypdt_contactmechanismaliastypedetailid
-                AND cmchaltypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultContactMechanismAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ContactMechanismAliasType getDefaultContactMechanismAliasType(EntityPermission entityPermission) {
-        return contactMechanismAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultContactMechanismAliasTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanismAliasTypes.fields())
+                .from(ContactMechanismAliasTypes)
+                .join(ContactMechanismAliasTypeDetails).onKey(CONTACT_MECHANISM_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(ContactMechanismAliasTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactMechanismAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactMechanismAliasType getDefaultContactMechanismAliasType() {
@@ -595,29 +548,20 @@ public class ContactControl
         return getDefaultContactMechanismAliasTypeForUpdate().getLastDetailForUpdate().getContactMechanismAliasTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getContactMechanismAliasTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypes, contactmechanismaliastypedetails
-                WHERE cmchaltyp_activedetailid = cmchaltypdt_contactmechanismaliastypedetailid
-                ORDER BY cmchaltypdt_sortorder, cmchaltypdt_contactmechanismaliastypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypes, contactmechanismaliastypedetails
-                WHERE cmchaltyp_activedetailid = cmchaltypdt_contactmechanismaliastypedetailid
-                FOR UPDATE
-                """);
-        getContactMechanismAliasTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactMechanismAliasType> getContactMechanismAliasTypes(EntityPermission entityPermission) {
-        return contactMechanismAliasTypeFactory.getEntitiesFromQuery(entityPermission, getContactMechanismAliasTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanismAliasTypes.fields())
+                .from(ContactMechanismAliasTypes)
+                .join(ContactMechanismAliasTypeDetails).onKey(CONTACT_MECHANISM_ALIAS_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactMechanismAliasTypeDetails.SORT_ORDER, ContactMechanismAliasTypeDetails.CONTACT_MECHANISM_ALIAS_TYPE_NAME),
+                    ContactMechanismAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactMechanismAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactMechanismAliasType> getContactMechanismAliasTypes() {
@@ -628,48 +572,11 @@ public class ContactControl
         return getContactMechanismAliasTypes(EntityPermission.READ_WRITE);
     }
 
-    private List<ContactMechanismAliasType> getContactMechanismAliasTypesByParentContactMechanismAliasType(ContactMechanismAliasType parentContactMechanismAliasType,
-            EntityPermission entityPermission) {
-        List<ContactMechanismAliasType> contactMechanismAliasTypes;
 
-        try {
-            String query = null;
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanismaliastypes, contactmechanismaliastypedetails
-                        WHERE cmchaltyp_activedetailid = cmchaltypdt_contactmechanismaliastypedetailid AND cmchaltypdt_parentcontactmechanismaliastypeid = ?
-                        ORDER BY cmchaltypdt_sortorder, cmchaltypdt_contactmechanismaliastypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanismaliastypes, contactmechanismaliastypedetails
-                        WHERE cmchaltyp_activedetailid = cmchaltypdt_contactmechanismaliastypedetailid AND cmchaltypdt_parentcontactmechanismaliastypeid = ?
-                        FOR UPDATE
-                        """;
-            }
 
-            var ps = contactMechanismAliasTypeFactory.prepareStatement(query);
 
-            ps.setLong(1, parentContactMechanismAliasType.getPrimaryKey().getEntityId());
 
-            contactMechanismAliasTypes = contactMechanismAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contactMechanismAliasTypes;
-    }
-
-    public List<ContactMechanismAliasType> getContactMechanismAliasTypesByParentContactMechanismAliasType(ContactMechanismAliasType parentContactMechanismAliasType) {
-        return getContactMechanismAliasTypesByParentContactMechanismAliasType(parentContactMechanismAliasType, EntityPermission.READ_ONLY);
-    }
-
-    public List<ContactMechanismAliasType> getContactMechanismAliasTypesByParentContactMechanismAliasTypeForUpdate(ContactMechanismAliasType parentContactMechanismAliasType) {
-        return getContactMechanismAliasTypesByParentContactMechanismAliasType(parentContactMechanismAliasType, EntityPermission.READ_WRITE);
-    }
 
     public ContactMechanismAliasTypeTransfer getContactMechanismAliasTypeTransfer(UserVisit userVisit, ContactMechanismAliasType contactMechanismAliasType) {
         return contactMechanismAliasTypeTransferCache.getContactMechanismAliasTypeTransfer(userVisit, contactMechanismAliasType);
@@ -689,10 +596,7 @@ public class ContactControl
         return getContactMechanismAliasTypeTransfers(userVisit, getContactMechanismAliasTypes());
     }
 
-    public List<ContactMechanismAliasTypeTransfer> getContactMechanismAliasTypeTransfersByParentContactMechanismAliasType(UserVisit userVisit,
-            ContactMechanismAliasType parentContactMechanismAliasType) {
-        return getContactMechanismAliasTypeTransfers(userVisit, getContactMechanismAliasTypesByParentContactMechanismAliasType(parentContactMechanismAliasType));
-    }
+
 
     public ContactMechanismAliasTypeChoicesBean getContactMechanismAliasTypeChoices(String defaultContactMechanismAliasTypeChoice, Language language, boolean allowNullChoice) {
         var contactMechanismAliasTypes = getContactMechanismAliasTypes();
@@ -810,6 +714,9 @@ public class ContactControl
     @Inject
     protected ContactMechanismAliasTypeDescriptionFactory contactMechanismAliasTypeDescriptionFactory;
 
+    @Inject
+    ContactMechanismAliasTypeDescriptionTransferCache contactMechanismAliasTypeDescriptionTransferCache;
+
     public ContactMechanismAliasTypeDescription createContactMechanismAliasTypeDescription(ContactMechanismAliasType contactMechanismAliasType,
             Language language, String description, BasePK createdBy) {
         var contactMechanismAliasTypeDescription = contactMechanismAliasTypeDescriptionFactory.create(contactMechanismAliasType,
@@ -820,29 +727,21 @@ public class ContactControl
         return contactMechanismAliasTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getContactMechanismAliasTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypedescriptions
-                WHERE cmchaltypd_cmchaltyp_contactmechanismaliastypeid = ? AND cmchaltypd_lang_languageid = ? AND cmchaltypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypedescriptions
-                WHERE cmchaltypd_cmchaltyp_contactmechanismaliastypeid = ? AND cmchaltypd_lang_languageid = ? AND cmchaltypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactMechanismAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ContactMechanismAliasTypeDescription getContactMechanismAliasTypeDescription(ContactMechanismAliasType contactMechanismAliasType,
             Language language, EntityPermission entityPermission) {
-        return contactMechanismAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getContactMechanismAliasTypeDescriptionQueries,
-                contactMechanismAliasType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanismAliasTypeDescriptions.fields())
+                .from(ContactMechanismAliasTypeDescriptions)
+                .where(ContactMechanismAliasTypeDescriptions.CONTACT_MECHANISM_ALIAS_TYPE.eq(contactMechanismAliasType.getPrimaryKey()),
+                        ContactMechanismAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContactMechanismAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactMechanismAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactMechanismAliasTypeDescription getContactMechanismAliasTypeDescription(ContactMechanismAliasType contactMechanismAliasType, Language language) {
@@ -861,31 +760,26 @@ public class ContactControl
         return getContactMechanismAliasTypeDescriptionValue(getContactMechanismAliasTypeDescriptionForUpdate(contactMechanismAliasType, language));
     }
 
-    private static final Map<EntityPermission, String> getContactMechanismAliasTypeDescriptionsByContactMechanismAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypedescriptions, languages
-                WHERE cmchaltypd_cmchaltyp_contactmechanismaliastypeid = ? AND cmchaltypd_thrutime = ? AND cmchaltypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM contactmechanismaliastypedescriptions
-                WHERE cmchaltypd_cmchaltyp_contactmechanismaliastypeid = ? AND cmchaltypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactMechanismAliasTypeDescriptionsByContactMechanismAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactMechanismAliasTypeDescription> getContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(ContactMechanismAliasType contactMechanismAliasType,
             EntityPermission entityPermission) {
-        return contactMechanismAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactMechanismAliasTypeDescriptionsByContactMechanismAliasTypeQueries,
-                contactMechanismAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContactMechanismAliasTypeDescriptions.fields())
+                    .from(ContactMechanismAliasTypeDescriptions)
+                    .join(Languages).onKey(CONTACT_MECHANISM_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContactMechanismAliasTypeDescriptions.CONTACT_MECHANISM_ALIAS_TYPE.eq(contactMechanismAliasType.getPrimaryKey()),
+                            ContactMechanismAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContactMechanismAliasTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContactMechanismAliasTypeDescriptions.fields())
+                    .from(ContactMechanismAliasTypeDescriptions)
+                    .where(ContactMechanismAliasTypeDescriptions.CONTACT_MECHANISM_ALIAS_TYPE.eq(contactMechanismAliasType.getPrimaryKey()),
+                            ContactMechanismAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return contactMechanismAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactMechanismAliasTypeDescription> getContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(ContactMechanismAliasType contactMechanismAliasType) {
@@ -969,6 +863,9 @@ public class ContactControl
     @Inject
     protected ContactMechanismPurposeFactory contactMechanismPurposeFactory;
 
+    @Inject
+    ContactMechanismPurposeTransferCache contactMechanismPurposeTransferCache;
+
     public ContactMechanismPurpose createContactMechanismPurpose(String contactMechanismPurposeName,
             ContactMechanismType contactMechanismType, Boolean eventSubscriber, Boolean isDefault, Integer sortOrder) {
         return contactMechanismPurposeFactory.create(contactMechanismPurposeName, contactMechanismType,
@@ -991,62 +888,41 @@ public class ContactControl
     }
 
     public long countContactMechanismPurposes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactmechanismpurposes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactMechanismPurposes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContactMechanismPurpose getContactMechanismPurposeByName(String contactMechanismPurposeName) {
-        ContactMechanismPurpose contactMechanismPurpose;
-        
-        try {
-            var ps = contactMechanismPurposeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM contactmechanismpurposes
-                    WHERE cmpr_contactmechanismpurposename = ?
-                    """);
-            
-            ps.setString(1, contactMechanismPurposeName);
-            
-            contactMechanismPurpose = contactMechanismPurposeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactMechanismPurpose;
+        var query = session.getDslContext()
+                .select(ContactMechanismPurposes.fields())
+                .from(ContactMechanismPurposes)
+                .where(ContactMechanismPurposes.CONTACT_MECHANISM_PURPOSE_NAME.eq(contactMechanismPurposeName));
+
+        return contactMechanismPurposeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ContactMechanismPurpose> getContactMechanismPurposes() {
-        var ps = contactMechanismPurposeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM contactmechanismpurposes
-                ORDER BY cmpr_sortorder, cmpr_contactmechanismpurposename
-                """);
-        
-        return contactMechanismPurposeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ContactMechanismPurposes.fields())
+                .from(ContactMechanismPurposes)
+                .orderBy(ContactMechanismPurposes.SORT_ORDER, ContactMechanismPurposes.CONTACT_MECHANISM_PURPOSE_NAME),
+                ContactMechanismPurposeFactory.class);
+
+        return contactMechanismPurposeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ContactMechanismPurpose> getContactMechanismPurposesByContactMechanismType(ContactMechanismType contactMechanismType) {
-        List<ContactMechanismPurpose> contactMechanismPurposes;
-        
-        try {
-            var ps = contactMechanismPurposeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM contactmechanismpurposes
-                    WHERE cmpr_cmt_contactmechanismtypeid = ?
-                    ORDER BY cmpr_sortorder, cmpr_contactmechanismpurposename
-                    """);
-            
-            ps.setLong(1, contactMechanismType.getPrimaryKey().getEntityId());
-            
-            contactMechanismPurposes = contactMechanismPurposeFactory.getEntitiesFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactMechanismPurposes;
+        var query = session.applyLimit(session.getDslContext()
+                .select(ContactMechanismPurposes.fields())
+                .from(ContactMechanismPurposes)
+                .where(ContactMechanismPurposes.CONTACT_MECHANISM_TYPE.eq(contactMechanismType.getPrimaryKey()))
+                .orderBy(ContactMechanismPurposes.SORT_ORDER, ContactMechanismPurposes.CONTACT_MECHANISM_PURPOSE_NAME),
+                ContactMechanismPurposeFactory.class);
+
+        return contactMechanismPurposeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ContactMechanismPurposeChoicesBean getContactMechanismPurposeChoices(String defaultContactMechanismPurposeChoice, Language language,
@@ -1182,24 +1058,13 @@ public class ContactControl
     
     public ContactMechanismPurposeDescription getContactMechanismPurposeDescription(ContactMechanismPurpose contactMechanismPurpose,
             Language language) {
-        ContactMechanismPurposeDescription contactMechanismPurposeDescription;
-        
-        try {
-            var ps = contactMechanismPurposeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM contactmechanismpurposedescriptions
-                    WHERE cmprd_cmpr_contactmechanismpurposeid = ? AND cmprd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, contactMechanismPurpose.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            contactMechanismPurposeDescription = contactMechanismPurposeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactMechanismPurposeDescription;
+        var query = session.getDslContext()
+                .select(ContactMechanismPurposeDescriptions.fields())
+                .from(ContactMechanismPurposeDescriptions)
+                .where(ContactMechanismPurposeDescriptions.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()),
+                        ContactMechanismPurposeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return contactMechanismPurposeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestContactMechanismPurposeDescription(ContactMechanismPurpose contactMechanismPurpose, Language language) {
@@ -1224,10 +1089,13 @@ public class ContactControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContactMechanismDetailFactory contactMechanismDetailFactory;
+
+    @Inject
     protected ContactMechanismFactory contactMechanismFactory;
 
     @Inject
-    protected ContactMechanismDetailFactory contactMechanismDetailFactory;
+    ContactMechanismTransferCache contactMechanismTransferCache;
 
     public ContactMechanism createContactMechanism(String contactMechanismName, ContactMechanismType contactMechanismType,
             Boolean allowSolicitation, BasePK createdBy) {
@@ -1263,53 +1131,37 @@ public class ContactControl
     }
 
     public long countContactMechanisms() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactmechanisms
-                        JOIN contactmechanismdetails ON cmchdt_contactmechanismdetailid = cmch_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactMechanisms)
+                .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactMechanismsByContactMechanismType(final ContactMechanismType contactMechanismType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactmechanisms
-                        JOIN contactmechanismdetails ON cmchdt_contactmechanismdetailid = cmch_activedetailid
-                        WHERE cmchdt_cmt_contactmechanismtypeid = ?
-                        """, contactMechanismType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactMechanisms)
+                .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(ContactMechanismDetails.CONTACT_MECHANISM_TYPE.eq(contactMechanismType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContactMechanism getContactMechanismByName(String contactMechanismName, EntityPermission entityPermission) {
-        ContactMechanism contactMechanism;
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanisms.fields())
+                .from(ContactMechanisms)
+                .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(ContactMechanismDetails.CONTACT_MECHANISM_NAME.eq(contactMechanismName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanisms, contactmechanismdetails
-                        WHERE cmch_activedetailid = cmchdt_contactmechanismdetailid AND cmchdt_contactmechanismname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanisms, contactmechanismdetails
-                        WHERE cmch_activedetailid = cmchdt_contactmechanismdetailid AND cmchdt_contactmechanismname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = contactMechanismFactory.prepareStatement(query);
-
-            ps.setString(1, contactMechanismName);
-
-            contactMechanism = contactMechanismFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contactMechanism;
+        return contactMechanismFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactMechanism getContactMechanismByName(String contactMechanismName) {
@@ -1321,27 +1173,19 @@ public class ContactControl
     }
 
     public List<ContactMechanism> getContactMechanisms(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanisms.fields())
+                .from(ContactMechanisms)
+                .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK);
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM contactmechanisms
-                    JOIN contactmechanismdetails ON cmchdt_contactmechanismdetailid = cmch_activedetailid
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM contactmechanisms
-                    JOIN contactmechanismdetails ON cmchdt_contactmechanismdetailid = cmch_activedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactMechanismDetails.CONTACT_MECHANISM_NAME),
+                    ContactMechanismFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = contactMechanismFactory.prepareStatement(query);
-
-        return contactMechanismFactory.getEntitiesFromQuery(entityPermission, ps);
+        return contactMechanismFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactMechanism> getContactMechanism() {
@@ -1542,18 +1386,18 @@ public class ContactControl
         contactMechanism.store();
 
         var contactMechanismTypeName = contactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
-        if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
+        if(contactMechanismTypeName.equals(com.echothree.model.control.contact.common.ContactMechanismTypes.EMAIL_ADDRESS.name())) {
             deleteContactEmailAddressByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.INET_4.name())) {
+        } else if(contactMechanismTypeName.equals(com.echothree.model.control.contact.common.ContactMechanismTypes.INET_4.name())) {
             deleteContactInet4AddressByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.INET_6.name())) {
+        } else if(contactMechanismTypeName.equals(com.echothree.model.control.contact.common.ContactMechanismTypes.INET_6.name())) {
             deleteContactInet6AddressByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
+        } else if(contactMechanismTypeName.equals(com.echothree.model.control.contact.common.ContactMechanismTypes.POSTAL_ADDRESS.name())) {
             deleteContactPostalAddressByContactMechanism(contactMechanism, deletedBy);
             deleteContactPostalAddressCorrectionByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.TELECOM_ADDRESS.name())) {
+        } else if(contactMechanismTypeName.equals(com.echothree.model.control.contact.common.ContactMechanismTypes.TELECOM_ADDRESS.name())) {
             deleteContactTelephoneByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
+        } else if(contactMechanismTypeName.equals(com.echothree.model.control.contact.common.ContactMechanismTypes.WEB_ADDRESS.name())) {
             deleteContactWebAddressByContactMechanism(contactMechanism, deletedBy);
         }
         
@@ -1567,6 +1411,9 @@ public class ContactControl
     @Inject
     protected ContactMechanismAliasFactory contactMechanismAliasFactory;
 
+    @Inject
+    ContactMechanismAliasTransferCache contactMechanismAliasTransferCache;
+
     public ContactMechanismAlias createContactMechanismAlias(ContactMechanism contactMechanism,
             ContactMechanismAliasType contactMechanismAliasType, String alias, BasePK createdBy) {
 
@@ -1579,54 +1426,47 @@ public class ContactControl
     }
 
     public long countContactMechanismAliasBy(final ContactMechanism contactMechanism) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactmechanismaliases
-                        WHERE cmchal_cmch_contactmechanismid = ? AND cmchal_thrutime = ?
-                        """, contactMechanism, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactMechanismAliases)
+                .where(ContactMechanismAliases.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactMechanismAliasBy(final ContactMechanismAliasType contactMechanismAliasType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactmechanismaliases
-                        WHERE cmchal_cmchaltyp_contactmechanismaliastypeid = ? AND cmchal_thrutime = ?
-                        """, contactMechanismAliasType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactMechanismAliases)
+                .where(ContactMechanismAliases.CONTACT_MECHANISM_ALIAS_TYPE.eq(contactMechanismAliasType.getPrimaryKey()),
+                        ContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ContactMechanismAlias> getContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        List<ContactMechanismAlias> contactMechanismAliases;
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanismAliases.fields())
+                .from(ContactMechanismAliases)
+                .where(ContactMechanismAliases.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContactMechanismAliases.fields())
+                    .from(ContactMechanismAliases)
+                    .join(ContactMechanismAliasTypes).onKey(CONTACT_MECHANISM_ALIASES_CONTACT_MECHANISM_ALIAS_TYPE_FK)
+                    .join(ContactMechanismAliasTypeDetails).onKey(CONTACT_MECHANISM_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(ContactMechanismAliases.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                            ContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContactMechanismAliasTypeDetails.SORT_ORDER, ContactMechanismAliasTypeDetails.CONTACT_MECHANISM_ALIAS_TYPE_NAME, ContactMechanismAliases.ALIAS),
+                    ContactMechanismAliasFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanismaliases
-                        WHERE cmchal_cmch_contactmechanismid = ? AND cmchal_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanismaliases
-                        WHERE cmchal_cmch_contactmechanismid = ? AND cmchal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = contactMechanismAliasFactory.prepareStatement(query);
-
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            contactMechanismAliases = contactMechanismAliasFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contactMechanismAliases;
+        return contactMechanismAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactMechanismAlias> getContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism) {
@@ -1639,37 +1479,20 @@ public class ContactControl
 
     private List<ContactMechanismAlias> getContactMechanismAliasesByContactMechanismAliasType(ContactMechanismAliasType contactMechanismAliasType,
             EntityPermission entityPermission) {
-        List<ContactMechanismAlias> contactMechanismAliases;
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanismAliases.fields())
+                .from(ContactMechanismAliases)
+                .where(ContactMechanismAliases.CONTACT_MECHANISM_ALIAS_TYPE.eq(contactMechanismAliasType.getPrimaryKey()),
+                        ContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactMechanismAliases.ALIAS),
+                    ContactMechanismAliasFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanismaliases
-                        WHERE cmchal_cmchaltyp_contactmechanismaliastypeid = ? AND cmchal_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanismaliases
-                        WHERE cmchal_cmchaltyp_contactmechanismaliastypeid = ? AND cmchal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = contactMechanismAliasFactory.prepareStatement(query);
-
-            ps.setLong(1, contactMechanismAliasType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            contactMechanismAliases = contactMechanismAliasFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contactMechanismAliases;
+        return contactMechanismAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactMechanismAlias> getContactMechanismAliasesByContactMechanismAliasType(ContactMechanismAliasType contactMechanismAliasType) {
@@ -1682,38 +1505,19 @@ public class ContactControl
 
     private ContactMechanismAlias getContactMechanismAliasByAlias(ContactMechanismAliasType contactMechanismAliasType,
             String alias, EntityPermission entityPermission) {
-        ContactMechanismAlias contactMechanismAlias;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanismaliases
-                        WHERE cmchal_cmchaltyp_contactmechanismaliastypeid = ? AND cmchal_alias = ? AND cmchal_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactmechanismaliases
-                        WHERE cmchal_cmchaltyp_contactmechanismaliastypeid = ? AND cmchal_alias = ? AND cmchal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContactMechanismAliases.fields())
+                .from(ContactMechanismAliases)
+                .where(ContactMechanismAliases.CONTACT_MECHANISM_ALIAS_TYPE.eq(contactMechanismAliasType.getPrimaryKey()),
+                        ContactMechanismAliases.ALIAS.eq(alias),
+                        ContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contactMechanismAliasFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactMechanismAliasType.getPrimaryKey().getEntityId());
-            ps.setString(2, alias);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contactMechanismAlias = contactMechanismAliasFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactMechanismAlias;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactMechanismAliasFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContactMechanismAlias getContactMechanismAliasByAlias(ContactMechanismAliasType contactMechanismAliasType,
@@ -1768,6 +1572,9 @@ public class ContactControl
     @Inject
     protected ContactEmailAddressFactory contactEmailAddressFactory;
 
+    @Inject
+    ContactEmailAddressTransferCache contactEmailAddressTransferCache;
+
     public ContactEmailAddress createContactEmailAddress(ContactMechanism contactMechanism, String emailAddress, BasePK createdBy) {
         var contactEmailAddress = contactEmailAddressFactory.create(contactMechanism,
                 emailAddress, session.getStartTime(), Session.MAX_TIME);
@@ -1778,37 +1585,18 @@ public class ContactControl
     }
     
     private ContactEmailAddress getContactEmailAddress(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactEmailAddress contactEmailAddress;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactemailaddresses
-                        WHERE ctea_cmch_contactmechanismid = ? AND ctea_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactemailaddresses
-                        WHERE ctea_cmch_contactmechanismid = ? AND ctea_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContactEmailAddresses.fields())
+                .from(ContactEmailAddresses)
+                .where(ContactEmailAddresses.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactEmailAddresses.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contactEmailAddressFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contactEmailAddress = contactEmailAddressFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactEmailAddress;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactEmailAddressFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContactEmailAddress getContactEmailAddress(ContactMechanism contactMechanism) {
@@ -1861,6 +1649,9 @@ public class ContactControl
     @Inject
     protected ContactInet4AddressFactory contactInet4AddressFactory;
 
+    @Inject
+    ContactInet4AddressTransferCache contactInet4AddressTransferCache;
+
     public ContactInet4Address createContactInet4Address(ContactMechanism contactMechanism, Integer inet4Address, BasePK createdBy) {
         var contactInet4Address = contactInet4AddressFactory.create(contactMechanism,
                 inet4Address, session.getStartTime(), Session.MAX_TIME);
@@ -1871,37 +1662,18 @@ public class ContactControl
     }
     
     private ContactInet4Address getContactInet4Address(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactInet4Address contactInet4Address;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactinet4addresses
-                        WHERE cti4a_cmch_contactmechanismid = ? AND cti4a_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactinet4addresses
-                        WHERE cti4a_cmch_contactmechanismid = ? AND cti4a_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContactInet4Addresses.fields())
+                .from(ContactInet4Addresses)
+                .where(ContactInet4Addresses.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactInet4Addresses.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = session.prepareStatement(ContactInet4AddressFactory.class, query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contactInet4Address = contactInet4AddressFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactInet4Address;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactInet4AddressFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContactInet4Address getContactInet4Address(ContactMechanism contactMechanism) {
@@ -1965,37 +1737,18 @@ public class ContactControl
     }
     
     private ContactInet6Address getContactInet6Address(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactInet6Address contactInet6Address;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactinet6addresses
-                        WHERE cti6a_cmch_contactmechanismid = ? AND cti6a_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactinet6addresses
-                        WHERE cti6a_cmch_contactmechanismid = ? AND cti6a_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContactInet6Addresses.fields())
+                .from(ContactInet6Addresses)
+                .where(ContactInet6Addresses.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactInet6Addresses.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = session.prepareStatement(ContactInet6AddressFactory.class, query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contactInet6Address = contactInet6AddressFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactInet6Address;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactInet6AddressFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContactInet6Address getContactInet6Address(ContactMechanism contactMechanism) {
@@ -2045,6 +1798,9 @@ public class ContactControl
     @Inject
     protected ContactPostalAddressFactory contactPostalAddressFactory;
 
+    @Inject
+    ContactPostalAddressTransferCache contactPostalAddressTransferCache;
+
     public ContactPostalAddress createContactPostalAddress(ContactMechanism contactMechanism, PersonalTitle personalTitle,
             String firstName, String firstNameSdx, String middleName, String middleNameSdx, String lastName, String lastNameSdx,
             NameSuffix nameSuffix, String companyName, String attention, String address1, String address2, String address3, String city,
@@ -2061,93 +1817,88 @@ public class ContactControl
     }
 
     public long countContactPostalAddressesByPersonalTitle(PersonalTitle personalTitle) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresses
-                WHERE ctpa_pert_personaltitleid = ? AND ctpa_thrutime = ?
-                """, personalTitle, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddresses)
+                .where(ContactPostalAddresses.PERSONAL_TITLE.eq(personalTitle.getPrimaryKey()),
+                        ContactPostalAddresses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressesByNameSuffix(NameSuffix nameSuffix) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresses
-                WHERE ctpa_nsfx_namesuffixid = ? AND ctpa_thrutime = ?
-                """, nameSuffix, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddresses)
+                .where(ContactPostalAddresses.NAME_SUFFIX.eq(nameSuffix.getPrimaryKey()),
+                        ContactPostalAddresses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressesByCityGeoCode(GeoCode cityGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresses
-                WHERE ctpa_citygeocodeid = ? AND ctpa_thrutime = ?
-                """, cityGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddresses)
+                .where(ContactPostalAddresses.CITY_GEO_CODE.eq(cityGeoCode.getPrimaryKey()),
+                        ContactPostalAddresses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressesByCountyGeoCode(GeoCode countyGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresses
-                WHERE ctpa_countygeocodeid = ? AND ctpa_thrutime = ?
-                """, countyGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddresses)
+                .where(ContactPostalAddresses.COUNTY_GEO_CODE.eq(countyGeoCode.getPrimaryKey()),
+                        ContactPostalAddresses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressesByStateGeoCode(GeoCode stateGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresses
-                WHERE ctpa_stategeocodeid = ? AND ctpa_thrutime = ?
-                """, stateGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddresses)
+                .where(ContactPostalAddresses.STATE_GEO_CODE.eq(stateGeoCode.getPrimaryKey()),
+                        ContactPostalAddresses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressesByPostalCodeGeoCode(GeoCode postalCodeGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresses
-                WHERE ctpa_postalcodegeocodeid = ? AND ctpa_thrutime = ?
-                """, postalCodeGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddresses)
+                .where(ContactPostalAddresses.POSTAL_CODE_GEO_CODE.eq(postalCodeGeoCode.getPrimaryKey()),
+                        ContactPostalAddresses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressesByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresses
-                WHERE ctpa_countrygeocodeid = ? AND ctpa_thrutime = ?
-                """, countryGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddresses)
+                .where(ContactPostalAddresses.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ContactPostalAddresses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ContactPostalAddress getContactPostalAddress(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactPostalAddress contactPostalAddress;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactpostaladdresses
-                        WHERE ctpa_cmch_contactmechanismid = ? AND ctpa_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactpostaladdresses
-                        WHERE ctpa_cmch_contactmechanismid = ? AND ctpa_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContactPostalAddresses.fields())
+                .from(ContactPostalAddresses)
+                .where(ContactPostalAddresses.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactPostalAddresses.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contactPostalAddressFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contactPostalAddress = contactPostalAddressFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactPostalAddress;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactPostalAddressFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContactPostalAddress getContactPostalAddress(ContactMechanism contactMechanism) {
@@ -2236,77 +1987,68 @@ public class ContactControl
     }
     
     public long countContactPostalAddressCorrectionsByCityGeoCode(GeoCode cityGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresscorrections
-                WHERE ctpac_citygeocodeid = ? AND ctpac_thrutime = ?
-                """, cityGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddressCorrections)
+                .where(ContactPostalAddressCorrections.CITY_GEO_CODE.eq(cityGeoCode.getPrimaryKey()),
+                        ContactPostalAddressCorrections.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressCorrectionsByCountyGeoCode(GeoCode countyGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresscorrections
-                WHERE ctpac_countygeocodeid = ? AND ctpac_thrutime = ?
-                """, countyGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddressCorrections)
+                .where(ContactPostalAddressCorrections.COUNTY_GEO_CODE.eq(countyGeoCode.getPrimaryKey()),
+                        ContactPostalAddressCorrections.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressCorrectionsByStateGeoCode(GeoCode stateGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresscorrections
-                WHERE ctpac_stategeocodeid = ? AND ctpac_thrutime = ?
-                """, stateGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddressCorrections)
+                .where(ContactPostalAddressCorrections.STATE_GEO_CODE.eq(stateGeoCode.getPrimaryKey()),
+                        ContactPostalAddressCorrections.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressCorrectionsByPostalCodeGeoCode(GeoCode postalCodeGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresscorrections
-                WHERE ctpac_postalcodegeocodeid = ? AND ctpac_thrutime = ?
-                """, postalCodeGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddressCorrections)
+                .where(ContactPostalAddressCorrections.POSTAL_CODE_GEO_CODE.eq(postalCodeGeoCode.getPrimaryKey()),
+                        ContactPostalAddressCorrections.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactPostalAddressCorrectionsByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contactpostaladdresscorrections
-                WHERE ctpac_ devrezid = ? AND ctpac_thrutime = ?
-                """, countryGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactPostalAddressCorrections)
+                .where(ContactPostalAddressCorrections.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ContactPostalAddressCorrections.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ContactPostalAddressCorrection getContactPostalAddressCorrection(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactPostalAddressCorrection contactPostalAddressCorrection;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactpostaladdresscorrections
-                        WHERE ctpac_cmch_contactmechanismid = ? AND ctpac_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactpostaladdresscorrections
-                        WHERE ctpac_cmch_contactmechanismid = ? AND ctpac_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContactPostalAddressCorrections.fields())
+                .from(ContactPostalAddressCorrections)
+                .where(ContactPostalAddressCorrections.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactPostalAddressCorrections.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contactPostalAddressCorrectionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contactPostalAddressCorrection = contactPostalAddressCorrectionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactPostalAddressCorrection;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactPostalAddressCorrectionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContactPostalAddressCorrection getContactPostalAddressCorrection(ContactMechanism contactMechanism) {
@@ -2370,6 +2112,9 @@ public class ContactControl
     @Inject
     protected ContactTelephoneFactory contactTelephoneFactory;
 
+    @Inject
+    ContactTelephoneTransferCache contactTelephoneTransferCache;
+
     public ContactTelephone createContactTelephone(ContactMechanism contactMechanism, GeoCode countryGeoCode, String areaCode,
             String telephoneNumber, String telephoneExtension, BasePK createdBy) {
         var contactTelephone = contactTelephoneFactory.create(contactMechanism, countryGeoCode,
@@ -2381,45 +2126,28 @@ public class ContactControl
     }
     
     public long countContactTelephonesByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM contacttelephones
-                WHERE cttp_countrygeocodeid = ? AND cttp_thrutime = ?
-                """, countryGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactTelephones)
+                .where(ContactTelephones.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ContactTelephones.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ContactTelephone getContactTelephone(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactTelephone contactTelephone;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contacttelephones
-                        WHERE cttp_cmch_contactmechanismid = ? AND cttp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contacttelephones
-                        WHERE cttp_cmch_contactmechanismid = ? AND cttp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContactTelephones.fields())
+                .from(ContactTelephones)
+                .where(ContactTelephones.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactTelephones.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contactTelephoneFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contactTelephone = contactTelephoneFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactTelephone;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactTelephoneFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContactTelephone getContactTelephone(ContactMechanism contactMechanism) {
@@ -2475,6 +2203,9 @@ public class ContactControl
     @Inject
     protected ContactWebAddressFactory contactWebAddressFactory;
 
+    @Inject
+    ContactWebAddressTransferCache contactWebAddressTransferCache;
+
     public ContactWebAddress createContactWebAddress(ContactMechanism contactMechanism, String url, BasePK createdBy) {
         var contactWebAddress = contactWebAddressFactory.create(contactMechanism, url,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2485,37 +2216,18 @@ public class ContactControl
     }
     
     private ContactWebAddress getContactWebAddress(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactWebAddress contactWebAddress;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactwebaddresses
-                        WHERE ctwa_cmch_contactmechanismid = ? AND ctwa_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contactwebaddresses
-                        WHERE ctwa_cmch_contactmechanismid = ? AND ctwa_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContactWebAddresses.fields())
+                .from(ContactWebAddresses)
+                .where(ContactWebAddresses.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        ContactWebAddresses.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contactWebAddressFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contactWebAddress = contactWebAddressFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contactWebAddress;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactWebAddressFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContactWebAddress getContactWebAddress(ContactMechanism contactMechanism) {
@@ -2566,10 +2278,13 @@ public class ContactControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PartyContactMechanismDetailFactory partyContactMechanismDetailFactory;
+
+    @Inject
     protected PartyContactMechanismFactory partyContactMechanismFactory;
 
     @Inject
-    protected PartyContactMechanismDetailFactory partyContactMechanismDetailFactory;
+    PartyContactMechanismTransferCache partyContactMechanismTransferCache;
 
     public PartyContactMechanism createPartyContactMechanism(Party party, ContactMechanism contactMechanism, String description,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -2617,62 +2332,48 @@ public class ContactControl
     }
 
     public long countPartyContactMechanisms() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactmechanisms
-                        JOIN partycontactmechanismdetails ON pcm_activedetailid = pcmdt_partycontactmechanismdetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyContactMechanismsByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactmechanisms
-                        JOIN partycontactmechanismdetails ON pcm_activedetailid = pcmdt_partycontactmechanismdetailid
-                        WHERE pcmdt_par_partyid = ?
-                        """, party);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyContactMechanismsByContactMechanism(final ContactMechanism contactMechanism) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactmechanisms
-                        JOIN partycontactmechanismdetails ON pcm_activedetailid = pcmdt_partycontactmechanismdetailid
-                        WHERE pcmdt_cmch_contactmechanismid = ?
-                        """, contactMechanism);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismDetails.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyContactMechanism getDefaultPartyContactMechanism(Party party, EntityPermission entityPermission) {
-        PartyContactMechanism partyContactMechanism;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? AND pcmdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? AND pcmdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanisms.fields())
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyContactMechanismDetails.IS_DEFAULT.eq(true));
 
-            var ps = partyContactMechanismFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            
-            partyContactMechanism = partyContactMechanismFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanism;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactMechanismFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyContactMechanism getDefaultPartyContactMechanism(Party party) {
@@ -2689,37 +2390,19 @@ public class ContactControl
 
     public PartyContactMechanism getPartyContactMechanism(Party party, ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        PartyContactMechanism partyContactMechanism;
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanisms.fields())
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyContactMechanismDetails.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? AND pcmdt_cmch_contactmechanismid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ? AND pcmdt_cmch_contactmechanismid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = partyContactMechanismFactory.prepareStatement(query);
-
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, contactMechanism.getPrimaryKey().getEntityId());
-
-            partyContactMechanism = partyContactMechanismFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return partyContactMechanism;
+        return partyContactMechanismFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyContactMechanism getPartyContactMechanism(Party party, ContactMechanism contactMechanism) {
@@ -2731,30 +2414,23 @@ public class ContactControl
     }
 
     public List<PartyContactMechanism> getPartyContactMechanisms(EntityPermission entityPermission) {
-        String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanisms.fields())
+                    .from(PartyContactMechanisms)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                    .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .orderBy(ContactMechanismDetails.CONTACT_MECHANISM_NAME),
+                    PartyContactMechanismFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactMechanisms.fields())
+                    .from(PartyContactMechanisms)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .forUpdate();
+        };
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM partycontactmechanisms
-                    JOIN partycontactmechanismdetails ON pcmdt_partycontactmechanismdetailid = pcm_activedetailid
-                    JOIN contactmechanisms ON cmch_contactmechanismid = pcmdt_cmch_contactmechanismid
-                    JOIN contactmechanismdetails ON cmchdt_contactmechanismdetailid = cmch_activedetailid
-                    ORDER BY cmchdt_contactmechanismname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM partycontactmechanisms
-                    JOIN partycontactmechanismdetails ON pcmdt_partycontactmechanismdetailid = pcm_activedetailid
-                    FOR UPDATE
-                    """;
-        }
-
-        var ps = partyContactMechanismFactory.prepareStatement(query);
-
-        return partyContactMechanismFactory.getEntitiesFromQuery(entityPermission, ps);
+        return partyContactMechanismFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyContactMechanism> getPartyContactMechanisms() {
@@ -2774,40 +2450,26 @@ public class ContactControl
     }
     
     private List<PartyContactMechanism> getPartyContactMechanismsByParty(Party party, EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails, contactmechanismtypes
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                        AND pcmdt_cmch_contactmechanismid = cmch_contactmechanismid
-                        AND cmch_activedetailid = cmchdt_contactmechanismdetailid AND cmchdt_cmt_contactmechanismtypeid = cmt_contactmechanismtypeid
-                        ORDER BY cmt_sortorder, cmt_contactmechanismtypename, cmchdt_contactmechanismname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanisms.fields())
+                    .from(PartyContactMechanisms)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                    .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .join(ContactMechanismTypes).onKey(CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_TYPE_FK)
+                    .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()))
+                    .orderBy(ContactMechanismTypes.SORT_ORDER, ContactMechanismTypes.CONTACT_MECHANISM_TYPE_NAME, ContactMechanismDetails.CONTACT_MECHANISM_NAME),
+                    PartyContactMechanismFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactMechanisms.fields())
+                    .from(PartyContactMechanisms)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = partyContactMechanismFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            
-            partyContactMechanism = partyContactMechanismFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanism;
+        return partyContactMechanismFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyContactMechanism> getPartyContactMechanismsByParty(Party party) {
@@ -2820,40 +2482,23 @@ public class ContactControl
     
     private List<PartyContactMechanism> getPartyContactMechanismsByPartyAndContactMechanismType(Party party,
             ContactMechanismType contactMechanismType, EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                        AND pcmdt_cmch_contactmechanismid = cmch_contactmechanismid AND cmch_activedetailid = cmchdt_contactmechanismdetailid
-                        AND cmchdt_cmt_contactmechanismtypeid = ?
-                        ORDER BY cmchdt_contactmechanismname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails
-                        WHERE pcmdt_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanisms.fields())
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()),
+                        ContactMechanismDetails.CONTACT_MECHANISM_TYPE.eq(contactMechanismType.getPrimaryKey()));
 
-            var ps = partyContactMechanismFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, contactMechanismType.getPrimaryKey().getEntityId());
-            
-            partyContactMechanism = partyContactMechanismFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanism;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactMechanismDetails.CONTACT_MECHANISM_NAME),
+                    PartyContactMechanismFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactMechanismFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyContactMechanism> getPartyContactMechanismsByPartyAndContactMechanismType(Party party,
@@ -2868,39 +2513,26 @@ public class ContactControl
     
     private List<PartyContactMechanism> getPartyContactMechanismsByContactMechanism(ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails, parties, partydetails, partytypes
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_cmch_contactmechanismid = ?
-                        AND pcmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
-                        ORDER BY pcmdt_sortorder, pardt_partyname, ptyp_sortorder, ptyp_partytypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_cmch_contactmechanismid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanisms.fields())
+                    .from(PartyContactMechanisms)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_CONTACT_MECHANISM_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .join(PartyTypes).onKey(PARTY_DETAILS_PARTY_TYPE_FK)
+                    .where(PartyContactMechanismDetails.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()))
+                    .orderBy(PartyContactMechanismDetails.SORT_ORDER, PartyDetails.PARTY_NAME, PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME),
+                    PartyContactMechanismFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactMechanisms.fields())
+                    .from(PartyContactMechanisms)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .where(PartyContactMechanismDetails.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = partyContactMechanismFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            
-            partyContactMechanism = partyContactMechanismFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanism;
+        return partyContactMechanismFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyContactMechanism> getPartyContactMechanismsByContactMechanism(ContactMechanism contactMechanism) {
@@ -3117,78 +2749,48 @@ public class ContactControl
     // --------------------------------------------------------------------------------
     
     public PartyContactMechanism getPartyContactMechanismByInet4Address(Party party, Integer inet4Address) {
-        PartyContactMechanism partyContactMechanism;
-        
-        try {
-            var ps = partyContactMechanismFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails, contactinet4addresses
-                    WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                    AND pcmdt_cmch_contactmechanismid = cmch_contactmechanismid AND cmch_activedetailid = cmchdt_contactmechanismdetailid
-                    AND cmchdt_cmch_contactmechanismid = cti4a_cmch_contactmechanismid AND cti4a_thrutime = ?
-                    AND cti4a_inet4address = ?
-                    """);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setInt(3, inet4Address);
-            
-            partyContactMechanism = partyContactMechanismFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanism;
+        var query = session.getDslContext()
+                .select(PartyContactMechanisms.fields())
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactInet4Addresses).on(ContactMechanismDetails.CONTACT_MECHANISM.eq(ContactInet4Addresses.CONTACT_MECHANISM))
+                .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()),
+                        ContactInet4Addresses.THRU_TIME.eq(Session.MAX_TIME),
+                        ContactInet4Addresses.INET4_ADDRESS.eq(inet4Address));
+
+        return partyContactMechanismFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public PartyContactMechanism getPartyContactMechanismByEmailAddress(Party party, String emailAddress) {
-        PartyContactMechanism partyContactMechanism;
-        
-        try {
-            var ps = partyContactMechanismFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails, contactemailaddresses
-                    WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                    AND pcmdt_cmch_contactmechanismid = cmch_contactmechanismid AND cmch_activedetailid = cmchdt_contactmechanismdetailid
-                    AND cmchdt_cmch_contactmechanismid = ctea_cmch_contactmechanismid AND ctea_thrutime = ?
-                    AND ctea_emailaddress = ?
-                    """);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setString(3, emailAddress);
-            
-            partyContactMechanism = partyContactMechanismFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanism;
+        var query = session.getDslContext()
+                .select(PartyContactMechanisms.fields())
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactEmailAddresses).on(ContactMechanismDetails.CONTACT_MECHANISM.eq(ContactEmailAddresses.CONTACT_MECHANISM))
+                .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()),
+                        ContactEmailAddresses.THRU_TIME.eq(Session.MAX_TIME),
+                        ContactEmailAddresses.EMAIL_ADDRESS.eq(emailAddress));
+
+        return partyContactMechanismFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<PartyContactMechanism> getPartyContactMechanismsByEmailAddress(String emailAddress) {
-        List<PartyContactMechanism> partyContactMechanisms;
-        
-        try {
-            var ps = partyContactMechanismFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails, contactemailaddresses
-                    WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid
-                    AND pcmdt_cmch_contactmechanismid = cmch_contactmechanismid AND cmch_activedetailid = cmchdt_contactmechanismdetailid
-                    AND cmchdt_cmch_contactmechanismid = ctea_cmch_contactmechanismid AND ctea_thrutime = ?
-                    AND ctea_emailaddress = ?
-                    """);
-            // TODO: 'ORDER BY' the Party's created time
-            
-            ps.setLong(1, Session.MAX_TIME);
-            ps.setString(2, emailAddress);
-            
-            partyContactMechanisms = partyContactMechanismFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanisms;
+        var query = session.applyLimit(session.getDslContext()
+                .select(PartyContactMechanisms.fields())
+                .from(PartyContactMechanisms)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactEmailAddresses).on(ContactMechanismDetails.CONTACT_MECHANISM.eq(ContactEmailAddresses.CONTACT_MECHANISM))
+                .where(ContactEmailAddresses.THRU_TIME.eq(Session.MAX_TIME),
+                        ContactEmailAddresses.EMAIL_ADDRESS.eq(emailAddress)),
+                PartyContactMechanismFactory.class);
+
+        return partyContactMechanismFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     // --------------------------------------------------------------------------------
@@ -3197,6 +2799,9 @@ public class ContactControl
 
     @Inject
     protected PartyContactMechanismAliasFactory partyContactMechanismAliasFactory;
+
+    @Inject
+    PartyContactMechanismAliasTransferCache partyContactMechanismAliasTransferCache;
 
     public PartyContactMechanismAlias createPartyContactMechanismAlias(Party party, ContactMechanism contactMechanism,
             ContactMechanismAliasType contactMechanismAliasType, String alias, BasePK createdBy) {
@@ -3210,63 +2815,57 @@ public class ContactControl
     }
 
     public long countPartyContactMechanismAliasByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactmechanismaliases
-                        WHERE pcmchal_par_partyid = ? AND pcmchal_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanismAliases)
+                .where(PartyContactMechanismAliases.PARTY.eq(party.getPrimaryKey()),
+                        PartyContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyContactMechanismAliasByContactMechanism(final ContactMechanism contactMechanism) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactmechanismaliases
-                        WHERE pcmchal_cmch_contactmechanismid = ? AND pcmchal_thrutime = ?
-                        """, contactMechanism, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanismAliases)
+                .where(PartyContactMechanismAliases.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                        PartyContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyContactMechanismAliasByContactMechanismAliasType(final ContactMechanismAliasType contactMechanismAliasType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactmechanismaliases
-                        WHERE pcmchal_cmchaltyp_contactmechanismaliastypeid = ? AND pcmchal_thrutime = ?
-                        """, contactMechanismAliasType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanismAliases)
+                .where(PartyContactMechanismAliases.CONTACT_MECHANISM_ALIAS_TYPE.eq(contactMechanismAliasType.getPrimaryKey()),
+                        PartyContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<PartyContactMechanismAlias> getPartyContactMechanismAliasesByParty(Party party,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismAlias> partyContactMechanismAliases;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismaliases
-                        WHERE pcmchal_cmch_contactmechanismid = ? AND pcmchal_thrutime = ?
-                        """; // TODO: needs ORDER BY
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismaliases
-                        WHERE pcmchal_cmch_contactmechanismid = ? AND pcmchal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanismAliases.fields())
+                .from(PartyContactMechanismAliases)
+                .where(PartyContactMechanismAliases.PARTY.eq(party.getPrimaryKey()),
+                        PartyContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyContactMechanismAliasFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyContactMechanismAliases = partyContactMechanismAliasFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanismAliases;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanismAliases.fields())
+                    .from(PartyContactMechanismAliases)
+                    .join(ContactMechanismAliasTypes).onKey(PARTY_CONTACT_MECHANISM_ALIASES_CONTACT_MECHANISM_ALIAS_TYPE_FK)
+                    .join(ContactMechanismAliasTypeDetails).onKey(CONTACT_MECHANISM_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(PartyContactMechanismAliases.PARTY.eq(party.getPrimaryKey()),
+                            PartyContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContactMechanismAliasTypeDetails.SORT_ORDER, ContactMechanismAliasTypeDetails.CONTACT_MECHANISM_ALIAS_TYPE_NAME, PartyContactMechanismAliases.ALIAS),
+                    PartyContactMechanismAliasFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactMechanismAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyContactMechanismAlias> getPartyContactMechanismAliasesByParty(Party party) {
@@ -3279,40 +2878,25 @@ public class ContactControl
     
     private List<PartyContactMechanismAlias> getPartyContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismAlias> partyContactMechanismAliases;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismaliases, contactmechanismaliastypes, contactmechanismaliastypedetails
-                        WHERE pcmchal_cmch_contactmechanismid = ? AND pcmchal_thrutime = ?
-                        AND pcmchal_cmchaltyp_contactmechanismaliastypeid = cmchaltyp_contactmechanismaliastypeid AND cmchaltyp_lastdetailid = cmchaltypdt_contactmechanismaliastypedetailid
-                        ORDER BY cmchaltypdt_sortorder, cmchaltypdt_contactmechanismaliastypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismaliases
-                        WHERE pcmchal_cmch_contactmechanismid = ? AND pcmchal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanismAliases.fields())
+                    .from(PartyContactMechanismAliases)
+                    .join(ContactMechanismAliasTypes).onKey(PARTY_CONTACT_MECHANISM_ALIASES_CONTACT_MECHANISM_ALIAS_TYPE_FK)
+                    .join(ContactMechanismAliasTypeDetails).onKey(CONTACT_MECHANISM_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(PartyContactMechanismAliases.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                            PartyContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContactMechanismAliasTypeDetails.SORT_ORDER, ContactMechanismAliasTypeDetails.CONTACT_MECHANISM_ALIAS_TYPE_NAME),
+                    PartyContactMechanismAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactMechanismAliases.fields())
+                    .from(PartyContactMechanismAliases)
+                    .where(PartyContactMechanismAliases.CONTACT_MECHANISM.eq(contactMechanism.getPrimaryKey()),
+                            PartyContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = partyContactMechanismAliasFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyContactMechanismAliases = partyContactMechanismAliasFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanismAliases;
+        return partyContactMechanismAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyContactMechanismAlias> getPartyContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism) {
@@ -3325,42 +2909,20 @@ public class ContactControl
     
     private PartyContactMechanismAlias getPartyContactMechanismAliasByAlias(Party party,
             ContactMechanismAliasType contactMechanismAliasType, String alias, EntityPermission entityPermission) {
-        PartyContactMechanismAlias partyContactMechanismAlias;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismaliases
-                        WHERE pcmchal_par_partyid = ? AND pcmchal_cmchaltyp_contactmechanismaliastypeid = ?
-                        AND pcmchal_alias = ? AND pcmchal_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismaliases
-                        WHERE pcmchal_par_partyid = ? AND pcmchal_cmchaltyp_contactmechanismaliastypeid = ?
-                        AND pcmchal_alias = ? AND pcmchal_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanismAliases.fields())
+                .from(PartyContactMechanismAliases)
+                .where(PartyContactMechanismAliases.PARTY.eq(party.getPrimaryKey()),
+                        PartyContactMechanismAliases.CONTACT_MECHANISM_ALIAS_TYPE.eq(contactMechanismAliasType.getPrimaryKey()),
+                        PartyContactMechanismAliases.ALIAS.eq(alias),
+                        PartyContactMechanismAliases.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyContactMechanismAliasFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, contactMechanismAliasType.getPrimaryKey().getEntityId());
-            ps.setString(3, alias);
-            ps.setLong(4, Session.MAX_TIME);
-            
-            partyContactMechanismAlias = partyContactMechanismAliasFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanismAlias;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactMechanismAliasFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyContactMechanismAlias getPartyContactMechanismAliasByAlias(Party party,
@@ -3404,10 +2966,13 @@ public class ContactControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PartyContactMechanismPurposeDetailFactory partyContactMechanismPurposeDetailFactory;
+
+    @Inject
     protected PartyContactMechanismPurposeFactory partyContactMechanismPurposeFactory;
 
     @Inject
-    protected PartyContactMechanismPurposeDetailFactory partyContactMechanismPurposeDetailFactory;
+    PartyContactMechanismPurposeTransferCache partyContactMechanismPurposeTransferCache;
 
     public PartyContactMechanismPurpose createPartyContactMechanismPurpose(PartyContactMechanism partyContactMechanism,
             ContactMechanismPurpose contactMechanismPurpose, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -3456,59 +3021,42 @@ public class ContactControl
     }
 
     public long countPartyContactMechanismPurposesByPartyContactMechanism(final PartyContactMechanism partyContactMechanism) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactmechanismpurposes
-                        JOIN partycontactmechanismpurposedetails ON pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid
-                        WHERE pcmpdt_cmpr_contactmechanismpurposeid = ?
-                        """, partyContactMechanism);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanismPurposes)
+                .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismPurposeDetails.PARTY_CONTACT_MECHANISM.eq(partyContactMechanism.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyContactMechanismPurposesByContactMechanismPurpose(final ContactMechanismPurpose contactMechanismPurpose) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactmechanismpurposes
-                        JOIN partycontactmechanismpurposedetails ON pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid
-                        WHERE pcmpdt_cmpr_contactmechanismpurposeid = ?
-                        """, contactMechanismPurpose);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanismPurposes)
+                .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyContactMechanismPurpose getDefaultPartyContactMechanismPurpose(PartyPK partyPK, ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
-        PartyContactMechanismPurpose partyContactMechanismPurpose;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails, partycontactmechanismpurposes, partycontactmechanismpurposedetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                        AND pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid
-                        AND pcm_partycontactmechanismid = pcmpdt_pcm_partycontactmechanismid AND pcmpdt_cmpr_contactmechanismpurposeid = ? AND pcmpdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanisms, partycontactmechanismdetails, partycontactmechanismpurposes, partycontactmechanismpurposedetails
-                        WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                        AND pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid
-                        AND pcm_partycontactmechanismid = pcmpdt_pcm_partycontactmechanismid AND pcmpdt_cmpr_contactmechanismpurposeid = ? AND pcmpdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanismPurposes.fields())
+                .from(PartyContactMechanismPurposes)
+                .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_PURPOSE_DETAILS_PARTY_CONTACT_MECHANISM_FK)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismDetails.PARTY.eq(partyPK),
+                        PartyContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()),
+                        PartyContactMechanismPurposeDetails.IS_DEFAULT.eq(true));
 
-            var ps = partyContactMechanismPurposeFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyPK.getEntityId());
-            ps.setLong(2, contactMechanismPurpose.getPrimaryKey().getEntityId());
-            
-            partyContactMechanismPurpose = partyContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanismPurpose;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyContactMechanismPurpose getDefaultPartyContactMechanismPurpose(Party party, ContactMechanismPurpose contactMechanismPurpose) {
@@ -3544,38 +3092,19 @@ public class ContactControl
     
     private PartyContactMechanismPurpose getPartyContactMechanismPurpose(PartyContactMechanism partyContactMechanism,
             ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
-        PartyContactMechanismPurpose partyContactMechanismPurpose;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismpurposes, partycontactmechanismpurposedetails
-                        WHERE pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid AND pcmpdt_pcm_partycontactmechanismid = ? AND pcmpdt_cmpr_contactmechanismpurposeid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismpurposes, partycontactmechanismpurposedetails
-                        WHERE pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid AND pcmpdt_pcm_partycontactmechanismid = ? AND pcmpdt_cmpr_contactmechanismpurposeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanismPurposes.fields())
+                .from(PartyContactMechanismPurposes)
+                .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismPurposeDetails.PARTY_CONTACT_MECHANISM.eq(partyContactMechanism.getPrimaryKey()),
+                        PartyContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()));
 
-            var ps = partyContactMechanismPurposeFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, contactMechanismPurpose.getPrimaryKey().getEntityId());
-            
-            partyContactMechanismPurpose = partyContactMechanismPurposeFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanismPurpose;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyContactMechanismPurpose getPartyContactMechanismPurpose(PartyContactMechanism partyContactMechanism,
@@ -3595,27 +3124,32 @@ public class ContactControl
     
     private List<PartyContactMechanismPurpose> getPartyContactMechanismPurposesByContactMechanismPurposeAndParty(ContactMechanismPurpose contactMechanismPurpose,
             Party party, EntityPermission entityPermission) {
-        List<PartyContactMechanismPurpose> partyContactMechanismPurposes;
-        
-        try {
-            var ps = partyContactMechanismPurposeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM partycontactmechanisms, partycontactmechanismdetails, partycontactmechanismpurposes, partycontactmechanismpurposedetails
-                    WHERE pcm_activedetailid = pcmdt_partycontactmechanismdetailid AND pcmdt_par_partyid = ?
-                    AND pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid
-                    AND pcm_partycontactmechanismid = pcmpdt_pcm_partycontactmechanismid AND pcmpdt_cmpr_contactmechanismpurposeid = ?
-                    """);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, contactMechanismPurpose.getPrimaryKey().getEntityId());
-            
-            partyContactMechanismPurposes = partyContactMechanismPurposeFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanismPurposes;
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanismPurposes.fields())
+                .from(PartyContactMechanismPurposes)
+                .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_PURPOSE_DETAILS_PARTY_CONTACT_MECHANISM_FK)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanismPurposes.fields())
+                    .from(PartyContactMechanismPurposes)
+                    .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                    .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_PURPOSE_DETAILS_PARTY_CONTACT_MECHANISM_FK)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                    .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                    .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_LAST_DETAIL_FK)
+                    .where(PartyContactMechanismDetails.PARTY.eq(party.getPrimaryKey()),
+                            PartyContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()))
+                    .orderBy(PartyContactMechanismPurposeDetails.SORT_ORDER, ContactMechanismDetails.CONTACT_MECHANISM_NAME),
+                    PartyContactMechanismPurposeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyContactMechanismPurpose> getPartyContactMechanismPurposesByContactMechanismPurposeAndParty(ContactMechanismPurpose contactMechanismPurpose,
@@ -3635,39 +3169,24 @@ public class ContactControl
     
     private List<PartyContactMechanismPurpose> getPartyContactMechanismPurposesByPartyContactMechanism(PartyContactMechanism partyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismPurpose> partyContactMechanismAliases;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismpurposes, partycontactmechanismpurposedetails, contactmechanismpurposes
-                        WHERE pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid AND pcmpdt_pcm_partycontactmechanismid = ?
-                        AND pcmpdt_cmpr_contactmechanismpurposeid = cmpr_contactmechanismpurposeid
-                        ORDER BY cmpr_contactmechanismpurposename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycontactmechanismpurposes, partycontactmechanismpurposedetails
-                        WHERE pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid AND pcmpdt_pcm_partycontactmechanismid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanismPurposes.fields())
+                    .from(PartyContactMechanismPurposes)
+                    .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                    .join(ContactMechanismPurposes).onKey(PARTY_CONTACT_MECHANISM_PURPOSE_DETAILS_CONTACT_MECHANISM_PURPOSE_FK)
+                    .where(PartyContactMechanismPurposeDetails.PARTY_CONTACT_MECHANISM.eq(partyContactMechanism.getPrimaryKey()))
+                    .orderBy(ContactMechanismPurposes.CONTACT_MECHANISM_PURPOSE_NAME),
+                    PartyContactMechanismPurposeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactMechanismPurposes.fields())
+                    .from(PartyContactMechanismPurposes)
+                    .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                    .where(PartyContactMechanismPurposeDetails.PARTY_CONTACT_MECHANISM.eq(partyContactMechanism.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = partyContactMechanismPurposeFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
-            
-            partyContactMechanismAliases = partyContactMechanismPurposeFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyContactMechanismAliases;
+        return partyContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyContactMechanismPurpose> getPartyContactMechanismPurposesByPartyContactMechanism(PartyContactMechanism partyContactMechanism) {
@@ -3785,6 +3304,9 @@ public class ContactControl
     @Inject
     protected PartyContactMechanismRelationshipFactory partyContactMechanismRelationshipFactory;
 
+    @Inject
+    PartyContactMechanismRelationshipTransferCache partyContactMechanismRelationshipTransferCache;
+
     public PartyContactMechanismRelationship createPartyContactMechanismRelationship(PartyContactMechanism fromPartyContactMechanism,
             PartyContactMechanism toPartyContactMechanism, BasePK createdBy) {
         var partyContactMechanismRelationship = partyContactMechanismRelationshipFactory.create(fromPartyContactMechanism,
@@ -3796,52 +3318,51 @@ public class ContactControl
     }
     
     public boolean partyContactMechanismRelationshipExists(PartyContactMechanism fromPartyContactMechanism, PartyContactMechanism toPartyContactMechanism) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partycontactmechanismrelationships
-                WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?
-                """, fromPartyContactMechanism, toPartyContactMechanism, Session.MAX_TIME) == 1;
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanismRelationships)
+                .where(PartyContactMechanismRelationships.FROM_PARTY_CONTACT_MECHANISM.eq(fromPartyContactMechanism.getPrimaryKey()),
+                        PartyContactMechanismRelationships.TO_PARTY_CONTACT_MECHANISM.eq(toPartyContactMechanism.getPrimaryKey()),
+                        PartyContactMechanismRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
 
     public long countPartyContactMechanismRelationshipsByFromPartyContactMechanism(PartyContactMechanism fromPartyContactMechanism) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partycontactmechanismrelationships
-                WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_thrutime = ?
-                """, fromPartyContactMechanism, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanismRelationships)
+                .where(PartyContactMechanismRelationships.FROM_PARTY_CONTACT_MECHANISM.eq(fromPartyContactMechanism.getPrimaryKey()),
+                        PartyContactMechanismRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyContactMechanismRelationshipsByToPartyContactMechanism(PartyContactMechanism toPartyContactMechanism) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partycontactmechanismrelationships
-                WHERE pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?
-                """, toPartyContactMechanism, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPartyContactMechanismRelationshipQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycontactmechanismrelationships
-                WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycontactmechanismrelationships
-                WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyContactMechanismRelationshipQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactMechanismRelationships)
+                .where(PartyContactMechanismRelationships.TO_PARTY_CONTACT_MECHANISM.eq(toPartyContactMechanism.getPrimaryKey()),
+                        PartyContactMechanismRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public PartyContactMechanismRelationship getPartyContactMechanismRelationship(PartyContactMechanism fromPartyContactMechanism,
             PartyContactMechanism toPartyContactMechanism, EntityPermission entityPermission) {
-        return partyContactMechanismRelationshipFactory.getEntityFromQuery(entityPermission, getPartyContactMechanismRelationshipQueries,
-                fromPartyContactMechanism, toPartyContactMechanism, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyContactMechanismRelationships.fields())
+                .from(PartyContactMechanismRelationships)
+                .where(PartyContactMechanismRelationships.FROM_PARTY_CONTACT_MECHANISM.eq(fromPartyContactMechanism.getPrimaryKey()),
+                        PartyContactMechanismRelationships.TO_PARTY_CONTACT_MECHANISM.eq(toPartyContactMechanism.getPrimaryKey()),
+                        PartyContactMechanismRelationships.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactMechanismRelationshipFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyContactMechanismRelationship getPartyContactMechanismRelationship(PartyContactMechanism fromPartyContactMechanism,
@@ -3854,31 +3375,28 @@ public class ContactControl
         return getPartyContactMechanismRelationship(fromPartyContactMechanism, toPartyContactMechanism, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyContactMechanismRelationshipsByFromPartyContactMechanismQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycontactmechanismrelationships, partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails
-                WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_thrutime = ?
-                AND pcmr_topartycontactmechanismid = pcm_partycontactmechanismid AND pcm_lastdetailid = pcmdt_partycontactmechanismdetailid
-                AND pcmdt_cmch_contactmechanismid = cmch_contactmechanismid AND cmch_lastdetailid = cmchdt_contactmechanismdetailid
-                ORDER BY pcmdt_sortorder, cmchdt_contactmechanismname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycontactmechanismrelationships
-                WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyContactMechanismRelationshipsByFromPartyContactMechanismQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public List<PartyContactMechanismRelationship> getPartyContactMechanismRelationshipsByFromPartyContactMechanism(PartyContactMechanism fromPartyContactMechanism, EntityPermission entityPermission) {
-        return partyContactMechanismRelationshipFactory.getEntitiesFromQuery(entityPermission, getPartyContactMechanismRelationshipsByFromPartyContactMechanismQueries,
-                fromPartyContactMechanism, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanismRelationships.fields())
+                    .from(PartyContactMechanismRelationships)
+                    .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_RELATIONSHIPS_TO_PARTY_CONTACT_MECHANISM_FK)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_LAST_DETAIL_FK)
+                    .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                    .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_LAST_DETAIL_FK)
+                    .where(PartyContactMechanismRelationships.FROM_PARTY_CONTACT_MECHANISM.eq(fromPartyContactMechanism.getPrimaryKey()),
+                            PartyContactMechanismRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyContactMechanismDetails.SORT_ORDER, ContactMechanismDetails.CONTACT_MECHANISM_NAME),
+                    PartyContactMechanismRelationshipFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactMechanismRelationships.fields())
+                    .from(PartyContactMechanismRelationships)
+                    .where(PartyContactMechanismRelationships.FROM_PARTY_CONTACT_MECHANISM.eq(fromPartyContactMechanism.getPrimaryKey()),
+                            PartyContactMechanismRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyContactMechanismRelationshipFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyContactMechanismRelationship> getPartyContactMechanismRelationshipsByFromPartyContactMechanism(PartyContactMechanism fromPartyContactMechanism) {
@@ -3889,32 +3407,29 @@ public class ContactControl
         return getPartyContactMechanismRelationshipsByFromPartyContactMechanism(fromPartyContactMechanism, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyContactMechanismRelationshipsByToPartyContactMechanismQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycontactmechanismrelationships, partycontactmechanisms, partycontactmechanismdetails, contactmechanisms, contactmechanismdetails
-                WHERE pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?
-                AND pcmr_frompartycontactmechanismid = pcm_partycontactmechanismid AND pcm_lastdetailid = pcmdt_partycontactmechanismdetailid
-                AND pcmdt_cmch_contactmechanismid = cmch_contactmechanismid AND cmch_lastdetailid = cmchdt_contactmechanismdetailid
-                ORDER BY pcmdt_sortorder, cmchdt_contactmechanismname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycontactmechanismrelationships
-                WHERE pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyContactMechanismRelationshipsByToPartyContactMechanismQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public List<PartyContactMechanismRelationship> getPartyContactMechanismRelationshipsByToPartyContactMechanism(PartyContactMechanism toPartyContactMechanism,
             EntityPermission entityPermission) {
-        return partyContactMechanismRelationshipFactory.getEntitiesFromQuery(entityPermission, getPartyContactMechanismRelationshipsByToPartyContactMechanismQueries,
-                toPartyContactMechanism, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactMechanismRelationships.fields())
+                    .from(PartyContactMechanismRelationships)
+                    .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_RELATIONSHIPS_FROM_PARTY_CONTACT_MECHANISM_FK)
+                    .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISMS_LAST_DETAIL_FK)
+                    .join(ContactMechanisms).onKey(PARTY_CONTACT_MECHANISM_DETAILS_CONTACT_MECHANISM_FK)
+                    .join(ContactMechanismDetails).onKey(CONTACT_MECHANISMS_LAST_DETAIL_FK)
+                    .where(PartyContactMechanismRelationships.TO_PARTY_CONTACT_MECHANISM.eq(toPartyContactMechanism.getPrimaryKey()),
+                            PartyContactMechanismRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyContactMechanismDetails.SORT_ORDER, ContactMechanismDetails.CONTACT_MECHANISM_NAME),
+                    PartyContactMechanismRelationshipFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactMechanismRelationships.fields())
+                    .from(PartyContactMechanismRelationships)
+                    .where(PartyContactMechanismRelationships.TO_PARTY_CONTACT_MECHANISM.eq(toPartyContactMechanism.getPrimaryKey()),
+                            PartyContactMechanismRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyContactMechanismRelationshipFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyContactMechanismRelationship> getPartyContactMechanismRelationshipsByToPartyContactMechanism(PartyContactMechanism toPartyContactMechanism) {
@@ -3982,46 +3497,39 @@ public class ContactControl
     @Inject
     protected PostalAddressElementTypeFactory postalAddressElementTypeFactory;
 
+    @Inject
+    PostalAddressElementTypeTransferCache postalAddressElementTypeTransferCache;
+
     public PostalAddressElementType createPostalAddressElementType(String postalAddressElementTypeName, Boolean isDefault,
             Integer sortOrder) {
         return postalAddressElementTypeFactory.create(postalAddressElementTypeName, isDefault, sortOrder);
     }
 
     public long countPostalAddressElementType() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM postaladdresselementtypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(PostalAddressElementTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public PostalAddressElementType getPostalAddressElementTypeByName(String postalAddressElementTypeName) {
-        PostalAddressElementType postalAddressElementType;
-        
-        try {
-            var ps = postalAddressElementTypeFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM postaladdresselementtypes
-                    WHERE pstaetyp_postaladdresselementtypename = ?
-                    """);
-            
-            ps.setString(1, postalAddressElementTypeName);
-            
-            postalAddressElementType = postalAddressElementTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return postalAddressElementType;
+        var query = session.getDslContext()
+                .select(PostalAddressElementTypes.fields())
+                .from(PostalAddressElementTypes)
+                .where(PostalAddressElementTypes.POSTAL_ADDRESS_ELEMENT_TYPE_NAME.eq(postalAddressElementTypeName));
+
+        return postalAddressElementTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<PostalAddressElementType> getPostalAddressElementTypes() {
-        var ps = postalAddressElementTypeFactory.prepareStatement("""
-                SELECT _ALL_
-                FROM postaladdresselementtypes
-                ORDER BY pstaetyp_sortorder, pstaetyp_postaladdresselementtypename
-                """);
-        
-        return postalAddressElementTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(PostalAddressElementTypes.fields())
+                .from(PostalAddressElementTypes)
+                .orderBy(PostalAddressElementTypes.SORT_ORDER, PostalAddressElementTypes.POSTAL_ADDRESS_ELEMENT_TYPE_NAME),
+                PostalAddressElementTypeFactory.class);
+
+        return postalAddressElementTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public PostalAddressElementTypeChoicesBean getPostalAddressElementTypeChoices(String defaultPostalAddressElementTypeChoice, Language language,
@@ -4071,24 +3579,13 @@ public class ContactControl
     }
     
     public PostalAddressElementTypeDescription getPostalAddressElementTypeDescription(PostalAddressElementType postalAddressElementType, Language language) {
-        PostalAddressElementTypeDescription postalAddressElementTypeDescription;
+        var query = session.getDslContext()
+                .select(PostalAddressElementTypeDescriptions.fields())
+                .from(PostalAddressElementTypeDescriptions)
+                .where(PostalAddressElementTypeDescriptions.POSTAL_ADDRESS_ELEMENT_TYPE.eq(postalAddressElementType.getPrimaryKey()),
+                        PostalAddressElementTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
 
-        try {
-            var ps = postalAddressElementTypeDescriptionFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM postaladdresselementtypedescriptions
-                    WHERE pstaetypd_pstaetyp_postaladdresselementtypeid = ? AND pstaetypd_lang_languageid = ?
-                    """);
-
-            ps.setLong(1, postalAddressElementType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-
-            postalAddressElementTypeDescription = postalAddressElementTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch(SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return postalAddressElementTypeDescription;
+        return postalAddressElementTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestPostalAddressElementTypeDescription(PostalAddressElementType postalAddressElementType, Language language) {
@@ -4113,10 +3610,13 @@ public class ContactControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PostalAddressFormatDetailFactory postalAddressFormatDetailFactory;
+
+    @Inject
     protected PostalAddressFormatFactory postalAddressFormatFactory;
 
     @Inject
-    protected PostalAddressFormatDetailFactory postalAddressFormatDetailFactory;
+    PostalAddressFormatTransferCache postalAddressFormatTransferCache;
 
     public PostalAddressFormat createPostalAddressFormat(String postalAddressFormatName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -4164,36 +3664,28 @@ public class ContactControl
     }
 
     public long countPostalAddressFormats() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM postaladdressformats
-                        JOIN postaladdressformatdetails ON pstafmtdt_postaladdressformatdetailid = pstafmt_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(PostalAddressFormats)
+                .join(PostalAddressFormatDetails).onKey(POSTAL_ADDRESS_FORMATS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<PostalAddressFormat> getPostalAddressFormats(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM postaladdressformats, postaladdressformatdetails
-                    WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid
-                    ORDER BY pstafmtdt_sortorder, pstafmtdt_postaladdressformatname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM postaladdressformats, postaladdressformatdetails
-                    WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(PostalAddressFormats.fields())
+                .from(PostalAddressFormats)
+                .join(PostalAddressFormatDetails).onKey(POSTAL_ADDRESS_FORMATS_ACTIVE_DETAIL_FK);
 
-        var ps = postalAddressFormatFactory.prepareStatement(query);
-        
-        return postalAddressFormatFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PostalAddressFormatDetails.SORT_ORDER, PostalAddressFormatDetails.POSTAL_ADDRESS_FORMAT_NAME),
+                    PostalAddressFormatFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return postalAddressFormatFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PostalAddressFormat> getPostalAddressFormats() {
@@ -4205,26 +3697,18 @@ public class ContactControl
     }
     
     private PostalAddressFormat getDefaultPostalAddressFormat(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM postaladdressformats, postaladdressformatdetails
-                    WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid AND pstafmtdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM postaladdressformats, postaladdressformatdetails
-                    WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid AND pstafmtdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(PostalAddressFormats.fields())
+                .from(PostalAddressFormats)
+                .join(PostalAddressFormatDetails).onKey(POSTAL_ADDRESS_FORMATS_ACTIVE_DETAIL_FK)
+                .where(PostalAddressFormatDetails.IS_DEFAULT.eq(true));
 
-        var ps = postalAddressFormatFactory.prepareStatement(query);
-        
-        return postalAddressFormatFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return postalAddressFormatFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PostalAddressFormat getDefaultPostalAddressFormat() {
@@ -4240,36 +3724,18 @@ public class ContactControl
     }
     
     private PostalAddressFormat getPostalAddressFormatByName(String postalAddressFormatName, EntityPermission entityPermission) {
-        PostalAddressFormat postalAddressFormat;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdressformats, postaladdressformatdetails
-                        WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid AND pstafmtdt_postaladdressformatname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdressformats, postaladdressformatdetails
-                        WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid AND pstafmtdt_postaladdressformatname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PostalAddressFormats.fields())
+                .from(PostalAddressFormats)
+                .join(PostalAddressFormatDetails).onKey(POSTAL_ADDRESS_FORMATS_ACTIVE_DETAIL_FK)
+                .where(PostalAddressFormatDetails.POSTAL_ADDRESS_FORMAT_NAME.eq(postalAddressFormatName));
 
-            var ps = postalAddressFormatFactory.prepareStatement(query);
-            
-            ps.setString(1, postalAddressFormatName);
-            
-            postalAddressFormat = postalAddressFormatFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return postalAddressFormat;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return postalAddressFormatFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PostalAddressFormat getPostalAddressFormatByName(String postalAddressFormatName) {
@@ -4421,6 +3887,9 @@ public class ContactControl
     @Inject
     protected PostalAddressFormatDescriptionFactory postalAddressFormatDescriptionFactory;
 
+    @Inject
+    PostalAddressFormatDescriptionTransferCache postalAddressFormatDescriptionTransferCache;
+
     public PostalAddressFormatDescription createPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat,
             Language language, String description, BasePK createdBy) {
         var postalAddressFormatDescription = postalAddressFormatDescriptionFactory.create(
@@ -4432,38 +3901,19 @@ public class ContactControl
     }
     
     private PostalAddressFormatDescription getPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat, Language language, EntityPermission entityPermission) {
-        PostalAddressFormatDescription postalAddressFormatDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdressformatdescriptions
-                        WHERE pstafmtd_pstafmt_postaladdressformatid = ? AND pstafmtd_lang_languageid = ? AND pstafmtd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdressformatdescriptions
-                        WHERE pstafmtd_pstafmt_postaladdressformatid = ? AND pstafmtd_lang_languageid = ? AND pstafmtd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PostalAddressFormatDescriptions.fields())
+                .from(PostalAddressFormatDescriptions)
+                .where(PostalAddressFormatDescriptions.POSTAL_ADDRESS_FORMAT.eq(postalAddressFormat.getPrimaryKey()),
+                        PostalAddressFormatDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PostalAddressFormatDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = postalAddressFormatDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, postalAddressFormat.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            postalAddressFormatDescription = postalAddressFormatDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return postalAddressFormatDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return postalAddressFormatDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PostalAddressFormatDescription getPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat, Language language) {
@@ -4483,38 +3933,24 @@ public class ContactControl
     }
     
     private List<PostalAddressFormatDescription> getPostalAddressFormatDescriptionsByPostalAddressFormat(PostalAddressFormat postalAddressFormat, EntityPermission entityPermission) {
-        List<PostalAddressFormatDescription> postalAddressFormatDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdressformatdescriptions, languages
-                        WHERE pstafmtd_pstafmt_postaladdressformatid = ? AND pstafmtd_thrutime = ? AND pstafmtd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdressformatdescriptions
-                        WHERE pstafmtd_pstafmt_postaladdressformatid = ? AND pstafmtd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PostalAddressFormatDescriptions.fields())
+                    .from(PostalAddressFormatDescriptions)
+                    .join(Languages).onKey(POSTAL_ADDRESS_FORMAT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PostalAddressFormatDescriptions.POSTAL_ADDRESS_FORMAT.eq(postalAddressFormat.getPrimaryKey()),
+                            PostalAddressFormatDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PostalAddressFormatDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PostalAddressFormatDescriptions.fields())
+                    .from(PostalAddressFormatDescriptions)
+                    .where(PostalAddressFormatDescriptions.POSTAL_ADDRESS_FORMAT.eq(postalAddressFormat.getPrimaryKey()),
+                            PostalAddressFormatDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = postalAddressFormatDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, postalAddressFormat.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            postalAddressFormatDescriptions = postalAddressFormatDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return postalAddressFormatDescriptions;
+        return postalAddressFormatDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PostalAddressFormatDescription> getPostalAddressFormatDescriptionsByPostalAddressFormat(PostalAddressFormat postalAddressFormat) {
@@ -4595,10 +4031,13 @@ public class ContactControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PostalAddressLineDetailFactory postalAddressLineDetailFactory;
+
+    @Inject
     protected PostalAddressLineFactory postalAddressLineFactory;
 
     @Inject
-    protected PostalAddressLineDetailFactory postalAddressLineDetailFactory;
+    PostalAddressLineTransferCache postalAddressLineTransferCache;
 
     public PostalAddressLine createPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder,
             String prefix, Boolean alwaysIncludePrefix, String suffix, Boolean alwaysIncludeSuffix, Boolean collapseIfEmpty,
@@ -4636,49 +4075,30 @@ public class ContactControl
     }
 
     public long countPostalAddressLinesByPostalAddressFormat(final PostalAddressFormat postalAddressFormat) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM postaladdresslines
-                        JOIN postaladdresslinedetails ON pstaldt_postaladdresslinedetailid = pstal_activedetailid
-                        WHERE pstaldt_pstafmt_postaladdressformatid = ?
-                        """, postalAddressFormat);
+        return session.getDslContext()
+                .selectCount()
+                .from(PostalAddressLines)
+                .join(PostalAddressLineDetails).onKey(POSTAL_ADDRESS_LINES_ACTIVE_DETAIL_FK)
+                .where(PostalAddressLineDetails.POSTAL_ADDRESS_FORMAT.eq(postalAddressFormat.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PostalAddressLine getPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder,
             EntityPermission entityPermission) {
-        PostalAddressLine postalAddressLine;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdresslines, postaladdresslinedetails
-                        WHERE pstal_activedetailid = pstaldt_postaladdresslinedetailid
-                        AND pstaldt_pstafmt_postaladdressformatid = ? AND pstaldt_postaladdresslinesortorder = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdresslines, postaladdresslinedetails
-                        WHERE pstal_activedetailid = pstaldt_postaladdresslinedetailid
-                        AND pstaldt_pstafmt_postaladdressformatid = ? AND pstaldt_postaladdresslinesortorder = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PostalAddressLines.fields())
+                .from(PostalAddressLines)
+                .join(PostalAddressLineDetails).onKey(POSTAL_ADDRESS_LINES_ACTIVE_DETAIL_FK)
+                .where(PostalAddressLineDetails.POSTAL_ADDRESS_FORMAT.eq(postalAddressFormat.getPrimaryKey()),
+                        PostalAddressLineDetails.POSTAL_ADDRESS_LINE_SORT_ORDER.eq(postalAddressLineSortOrder));
 
-            var ps = postalAddressLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, postalAddressFormat.getPrimaryKey().getEntityId());
-            ps.setInt(2, postalAddressLineSortOrder);
-            
-            postalAddressLine = postalAddressLineFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return postalAddressLine;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return postalAddressLineFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PostalAddressLine getPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder) {
@@ -4699,39 +4119,20 @@ public class ContactControl
     
     private List<PostalAddressLine> getPostalAddressLinesByPostalAddressFormat(PostalAddressFormat postalAddressFormat,
             EntityPermission entityPermission) {
-        List<PostalAddressLine> postalAddressLines;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdresslines, postaladdresslinedetails
-                        WHERE pstal_activedetailid = pstaldt_postaladdresslinedetailid
-                        AND pstaldt_pstafmt_postaladdressformatid = ?
-                        ORDER BY pstaldt_postaladdresslinesortorder
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM postaladdresslines, postaladdresslinedetails
-                        WHERE pstal_activedetailid = pstaldt_postaladdresslinedetailid
-                        AND pstaldt_pstafmt_postaladdressformatid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PostalAddressLines.fields())
+                .from(PostalAddressLines)
+                .join(PostalAddressLineDetails).onKey(POSTAL_ADDRESS_LINES_ACTIVE_DETAIL_FK)
+                .where(PostalAddressLineDetails.POSTAL_ADDRESS_FORMAT.eq(postalAddressFormat.getPrimaryKey()));
 
-            var ps = postalAddressLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, postalAddressFormat.getPrimaryKey().getEntityId());
-            
-            postalAddressLines = postalAddressLineFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return postalAddressLines;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PostalAddressLineDetails.POSTAL_ADDRESS_LINE_SORT_ORDER),
+                    PostalAddressLineFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return postalAddressLineFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PostalAddressLine> getPostalAddressLinesByPostalAddressFormat(PostalAddressFormat postalAddressFormat) {
@@ -4815,6 +4216,9 @@ public class ContactControl
     @Inject
     protected PostalAddressLineElementFactory postalAddressLineElementFactory;
 
+    @Inject
+    PostalAddressLineElementTransferCache postalAddressLineElementTransferCache;
+
     public PostalAddressLineElement createPostalAddressLineElement(PostalAddressLine postalAddressLine,
             Integer postalAddressLineElementSortOrder, PostalAddressElementType postalAddressElementType, String prefix,
             Boolean alwaysIncludePrefix, String suffix, Boolean alwaysIncludeSuffix, BasePK createdBy) {
@@ -4829,44 +4233,40 @@ public class ContactControl
     }
 
     public long countPostalAddressLineElementsByPostalAddressLine(final PostalAddressLine postalAddressLine) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM postaladdresslineelements
-                        WHERE pstale_pstal_postaladdresslineid = ? AND pstale_thrutime = ?
-                        """, postalAddressLine, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PostalAddressLineElements)
+                .where(PostalAddressLineElements.POSTAL_ADDRESS_LINE.eq(postalAddressLine.getPrimaryKey()),
+                        PostalAddressLineElements.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPostalAddressLineElementsByPostalAddressElementType(final PostalAddressElementType postalAddressElementType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM postaladdresslineelements
-                        WHERE pstale_pstaetyp_postaladdresselementtypeid = ? AND pstale_thrutime = ?
-                        """, postalAddressElementType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PostalAddressLineElements)
+                .where(PostalAddressLineElements.POSTAL_ADDRESS_ELEMENT_TYPE.eq(postalAddressElementType.getPrimaryKey()),
+                        PostalAddressLineElements.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PostalAddressLineElement getPostalAddressLineElement(PostalAddressLine postalAddressLine,
             Integer postalAddressLineElementSortOrder, EntityPermission entityPermission) {
-        PostalAddressLineElement postalAddressLineElement;
-        
-        try {
-            var ps = postalAddressLineElementFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM postaladdresslineelements
-                    WHERE pstale_pstal_postaladdresslineid = ? AND pstale_postaladdresslineelementsortorder = ?
-                    AND pstale_thrutime = ?
-                    """);
-            
-            ps.setLong(1, postalAddressLine.getPrimaryKey().getEntityId());
-            ps.setInt(2, postalAddressLineElementSortOrder);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            postalAddressLineElement = postalAddressLineElementFactory.getEntityFromQuery(entityPermission,
-                    ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return postalAddressLineElement;
+        var baseQuery = session.getDslContext()
+                .select(PostalAddressLineElements.fields())
+                .from(PostalAddressLineElements)
+                .where(PostalAddressLineElements.POSTAL_ADDRESS_LINE.eq(postalAddressLine.getPrimaryKey()),
+                        PostalAddressLineElements.POSTAL_ADDRESS_LINE_ELEMENT_SORT_ORDER.eq(postalAddressLineElementSortOrder),
+                        PostalAddressLineElements.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return postalAddressLineElementFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PostalAddressLineElement getPostalAddressLineElement(PostalAddressLine postalAddressLine,
@@ -4890,26 +4290,24 @@ public class ContactControl
     
     private List<PostalAddressLineElement> getPostalAddressLineElementsByPostalAddressLine(PostalAddressLine postalAddressLine,
             EntityPermission entityPermission) {
-        List<PostalAddressLineElement> postalAddressLineElements;
-        
-        try {
-            var ps = postalAddressLineElementFactory.prepareStatement("""
-                    SELECT _ALL_
-                    FROM postaladdresslineelements
-                    WHERE pstale_pstal_postaladdresslineid = ? AND pstale_thrutime = ?
-                    ORDER BY pstale_postaladdresslineelementsortorder
-                    """);
-            
-            ps.setLong(1, postalAddressLine.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            postalAddressLineElements = postalAddressLineElementFactory.getEntitiesFromQuery(entityPermission,
-                    ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return postalAddressLineElements;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PostalAddressLineElements.fields())
+                    .from(PostalAddressLineElements)
+                    .where(PostalAddressLineElements.POSTAL_ADDRESS_LINE.eq(postalAddressLine.getPrimaryKey()),
+                            PostalAddressLineElements.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PostalAddressLineElements.POSTAL_ADDRESS_LINE_ELEMENT_SORT_ORDER),
+                    PostalAddressLineElementFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PostalAddressLineElements.fields())
+                    .from(PostalAddressLineElements)
+                    .where(PostalAddressLineElements.POSTAL_ADDRESS_LINE.eq(postalAddressLine.getPrimaryKey()),
+                            PostalAddressLineElements.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PostalAddressLineElements.POSTAL_ADDRESS_LINE_ELEMENT_SORT_ORDER)
+                    .forUpdate();
+        };
+
+        return postalAddressLineElementFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PostalAddressLineElement> getPostalAddressLineElementsByPostalAddressLine(PostalAddressLine postalAddressLine) {
